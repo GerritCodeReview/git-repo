@@ -1,3 +1,15 @@
 [flake8]
-max-line-length=80
-ignore=E111,E114,E402
+max-line-length=100
+ignore=
+    # E111: Indentation is not a multiple of four
+    E111,
+    # E114: Indentation is not a multiple of four (comment)
+    E114,
+    # E402: Module level import not at top of file
+    E402,
+    # E731: do not assign a lambda expression, use a def
+    E731,
+    # W503: Line break before binary operator
+    W503,
+    # W504: Line break after binary operator
+    W504

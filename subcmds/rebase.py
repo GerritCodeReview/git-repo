@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2010 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
 import sys
 
 from color import Coloring
@@ -30,7 +27,7 @@ class RebaseColoring(Coloring):
 
 
 class Rebase(Command):
-  common = True
+  COMMON = True
   helpSummary = "Rebase local branches on upstream branch"
   helpUsage = """
 %prog {[<project>...] | -i <project>...}
@@ -42,39 +39,37 @@ branch but need to incorporate new upstream changes "underneath" them.
 """
 
   def _Options(self, p):
-    p.add_option('-i', '--interactive',
-                dest="interactive", action="store_true",
-                help="interactive rebase (single project only)")
+    g = p.get_option_group('--quiet')
+    g.add_option('-i', '--interactive',
+                 dest="interactive", action="store_true",
+                 help="interactive rebase (single project only)")
 
     p.add_option('--fail-fast',
                  dest='fail_fast', action='store_true',
-                 help='Stop rebasing after first error is hit')
+                 help='stop rebasing after first error is hit')
     p.add_option('-f', '--force-rebase',
                  dest='force_rebase', action='store_true',
-                 help='Pass --force-rebase to git rebase')
+                 help='pass --force-rebase to git rebase')
     p.add_option('--no-ff',
-                 dest='no_ff', action='store_true',
-                 help='Pass --no-ff to git rebase')
-    p.add_option('-q', '--quiet',
-                 dest='quiet', action='store_true',
-                 help='Pass --quiet to git rebase')
+                 dest='ff', default=True, action='store_false',
+                 help='pass --no-ff to git rebase')
     p.add_option('--autosquash',
                  dest='autosquash', action='store_true',
-                 help='Pass --autosquash to git rebase')
+                 help='pass --autosquash to git rebase')
     p.add_option('--whitespace',
                  dest='whitespace', action='store', metavar='WS',
-                 help='Pass --whitespace to git rebase')
+                 help='pass --whitespace to git rebase')
     p.add_option('--auto-stash',
                  dest='auto_stash', action='store_true',
-                 help='Stash local modifications before starting')
+                 help='stash local modifications before starting')
     p.add_option('-m', '--onto-manifest',
                  dest='onto_manifest', action='store_true',
-                 help='Rebase onto the manifest version instead of upstream '
-                      'HEAD.  This helps to make sure the local tree stays '
-                      'consistent if you previously synced to a manifest.')
+                 help='rebase onto the manifest version instead of upstream '
+                      'HEAD (this helps to make sure the local tree stays '
+                      'consistent if you previously synced to a manifest)')
 
   def Execute(self, opt, args):
-    all_projects = self.GetProjects(args)
+    all_projects = self.GetProjects(args, all_manifests=not opt.this_manifest_only)
     one_project = len(all_projects) == 1
 
     if opt.interactive and not one_project:
@@ -82,7 +77,7 @@ branch but need to incorporate new upstream changes "underneath" them.
             file=sys.stderr)
       if len(args) == 1:
         print('note: project %s is mapped to more than one path' % (args[0],),
-            file=sys.stderr)
+              file=sys.stderr)
       return 1
 
     # Setup the common git rebase args that we use for all projects.
@@ -93,7 +88,7 @@ branch but need to incorporate new upstream changes "underneath" them.
       common_args.append('--quiet')
     if opt.force_rebase:
       common_args.append('--force-rebase')
-    if opt.no_ff:
+    if not opt.ff:
       common_args.append('--no-ff')
     if opt.autosquash:
       common_args.append('--autosquash')
@@ -103,6 +98,7 @@ branch but need to incorporate new upstream changes "underneath" them.
     config = self.manifest.manifestProject.config
     out = RebaseColoring(config)
     out.redirect(sys.stdout)
+    _RelPath = lambda p: p.RelPath(local=opt.this_manifest_only)
 
     ret = 0
     for project in all_projects:
@@ -112,7 +108,7 @@ branch but need to incorporate new upstream changes "underneath" them.
       cb = project.CurrentBranch
       if not cb:
         if one_project:
-          print("error: project %s has a detached HEAD" % project.relpath,
+          print("error: project %s has a detached HEAD" % _RelPath(project),
                 file=sys.stderr)
           return 1
         # ignore branches with detatched HEADs
@@ -122,7 +118,7 @@ branch but need to incorporate new upstream changes "underneath" them.
       if not upbranch.LocalMerge:
         if one_project:
           print("error: project %s does not track any remote branches"
-                % project.relpath, file=sys.stderr)
+                % _RelPath(project), file=sys.stderr)
           return 1
         # ignore branches without remotes
         continue
@@ -135,7 +131,7 @@ branch but need to incorporate new upstream changes "underneath" them.
       args.append(upbranch.LocalMerge)
 
       out.project('project %s: rebasing %s -> %s',
-                  project.relpath, cb, upbranch.LocalMerge)
+                  _RelPath(project), cb, upbranch.LocalMerge)
       out.nl()
       out.flush()
 

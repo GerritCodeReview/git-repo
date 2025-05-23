@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
 import sys
 
 from color import Coloring
 from command import InteractiveCommand
 from git_command import GitCommand
+
 
 class _ProjectList(Coloring):
   def __init__(self, gc):
@@ -28,8 +26,9 @@ class _ProjectList(Coloring):
     self.header = self.printer('header', attr='bold')
     self.help = self.printer('help', fg='red', attr='bold')
 
+
 class Stage(InteractiveCommand):
-  common = True
+  COMMON = True
   helpSummary = "Stage file(s) for commit"
   helpUsage = """
 %prog -i [<project>...]
@@ -39,7 +38,8 @@ The '%prog' command stages files to prepare the next commit.
 """
 
   def _Options(self, p):
-    p.add_option('-i', '--interactive',
+    g = p.get_option_group('--quiet')
+    g.add_option('-i', '--interactive',
                  dest='interactive', action='store_true',
                  help='use interactive staging')
 
@@ -50,7 +50,9 @@ The '%prog' command stages files to prepare the next commit.
       self.Usage()
 
   def _Interactive(self, opt, args):
-    all_projects = [p for p in self.GetProjects(args) if p.IsDirty()]
+    all_projects = [
+        p for p in self.GetProjects(args, all_manifests=not opt.this_manifest_only)
+        if p.IsDirty()]
     if not all_projects:
       print('no projects have uncommitted modifications', file=sys.stderr)
       return
@@ -62,7 +64,8 @@ The '%prog' command stages files to prepare the next commit.
 
       for i in range(len(all_projects)):
         project = all_projects[i]
-        out.write('%3d:    %s', i + 1, project.relpath + '/')
+        out.write('%3d:    %s', i + 1,
+                  project.RelPath(local=opt.this_manifest_only) + '/')
         out.nl()
       out.nl()
 
@@ -72,6 +75,7 @@ The '%prog' command stages files to prepare the next commit.
       out.nl()
 
       out.prompt('project> ')
+      out.flush()
       try:
         a = sys.stdin.readline()
       except KeyboardInterrupt:
@@ -99,11 +103,14 @@ The '%prog' command stages files to prepare the next commit.
           _AddI(all_projects[a_index - 1])
           continue
 
-      projects = [p for p in all_projects if a in [p.name, p.relpath]]
+      projects = [
+          p for p in all_projects
+          if a in [p.name, p.RelPath(local=opt.this_manifest_only)]]
       if len(projects) == 1:
         _AddI(projects[0])
         continue
     print('Bye.')
+
 
 def _AddI(project):
   p = GitCommand(project, ['add', '--interactive'], bare=False)

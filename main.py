@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
+#!/usr/bin/env python3
 #
 # Copyright (C) 2008 The Android Open Source Project
 #
@@ -21,23 +20,15 @@ People shouldn't run this directly; instead, they should use the `repo` wrapper
 which takes care of execing this entry point.
 """
 
-from __future__ import print_function
 import getpass
 import netrc
 import optparse
 import os
+import shlex
 import sys
 import textwrap
 import time
-
-from pyversion import is_python3
-if is_python3():
-  import urllib.request
-else:
-  import imp
-  import urllib2
-  urllib = imp.new_module('urllib')
-  urllib.request = urllib2
+import urllib.request
 
 try:
   import kerberos
@@ -47,8 +38,9 @@ except ImportError:
 from color import SetDefaultColoring
 import event_log
 from repo_trace import SetTrace
-from git_command import git, GitCommand, user_agent
-from git_config import init_ssh, close_ssh
+from git_command import user_agent
+from git_config import RepoConfig
+from git_trace2_event_log import EventLog
 from command import InteractiveCommand
 from command import MirrorSafeCommand
 from command import GitcAvailableCommand, GitcClientCommand
@@ -62,25 +54,54 @@ from error import NoManifestException
 from error import NoSuchProjectError
 from error import RepoChangedException
 import gitc_utils
-from manifest_xml import GitcManifest, XmlManifest
+from manifest_xml import GitcClient, RepoClient
 from pager import RunPager, TerminatePager
 from wrapper import WrapperPath, Wrapper
 
 from subcmds import all_commands
 
-if not is_python3():
-  input = raw_input
+
+# NB: These do not need to be kept in sync with the repo launcher script.
+# These may be much newer as it allows the repo launcher to roll between
+# different repo releases while source versions might require a newer python.
+#
+# The soft version is when we start warning users that the version is old and
+# we'll be dropping support for it.  We'll refuse to work with versions older
+# than the hard version.
+#
+# python-3.6 is in Ubuntu Bionic.
+MIN_PYTHON_VERSION_SOFT = (3, 6)
+MIN_PYTHON_VERSION_HARD = (3, 6)
+
+if sys.version_info.major < 3:
+  print('repo: error: Python 2 is no longer supported; '
+        'Please upgrade to Python {}.{}+.'.format(*MIN_PYTHON_VERSION_SOFT),
+        file=sys.stderr)
+  sys.exit(1)
+else:
+  if sys.version_info < MIN_PYTHON_VERSION_HARD:
+    print('repo: error: Python 3 version is too old; '
+          'Please upgrade to Python {}.{}+.'.format(*MIN_PYTHON_VERSION_SOFT),
+          file=sys.stderr)
+    sys.exit(1)
+  elif sys.version_info < MIN_PYTHON_VERSION_SOFT:
+    print('repo: warning: your Python 3 version is no longer supported; '
+          'Please upgrade to Python {}.{}+.'.format(*MIN_PYTHON_VERSION_SOFT),
+          file=sys.stderr)
+
 
 global_options = optparse.OptionParser(
     usage='repo [-p|--paginate|--no-pager] COMMAND [ARGS]',
     add_help_option=False)
 global_options.add_option('-h', '--help', action='store_true',
                           help='show this help message and exit')
+global_options.add_option('--help-all', action='store_true',
+                          help='show this help message with all subcommands and exit')
 global_options.add_option('-p', '--paginate',
                           dest='pager', action='store_true',
                           help='display command output in the pager')
 global_options.add_option('--no-pager',
-                          dest='no_pager', action='store_true',
+                          dest='pager', action='store_false',
                           help='disable the pager')
 global_options.add_option('--color',
                           choices=('auto', 'always', 'never'), default=None,
@@ -97,44 +118,81 @@ global_options.add_option('--time',
 global_options.add_option('--version',
                           dest='show_version', action='store_true',
                           help='display this version of repo')
+global_options.add_option('--show-toplevel',
+                          action='store_true',
+                          help='display the path of the top-level directory of '
+                               'the repo client checkout')
 global_options.add_option('--event-log',
                           dest='event_log', action='store',
                           help='filename of event log to append timeline to')
+global_options.add_option('--git-trace2-event-log', action='store',
+                          help='directory to write git trace2 event log to')
+global_options.add_option('--submanifest-path', action='store',
+                          metavar='REL_PATH', help='submanifest path')
+
 
 class _Repo(object):
   def __init__(self, repodir):
     self.repodir = repodir
     self.commands = all_commands
-    # add 'branch' as an alias for 'branches'
-    all_commands['branch'] = all_commands['branches']
+
+  def _PrintHelp(self, short: bool = False, all_commands: bool = False):
+    """Show --help screen."""
+    global_options.print_help()
+    print()
+    if short:
+      commands = ' '.join(sorted(self.commands))
+      wrapped_commands = textwrap.wrap(commands, width=77)
+      print('Available commands:\n  %s' % ('\n  '.join(wrapped_commands),))
+      print('\nRun `repo help <command>` for command-specific details.')
+      print('Bug reports:', Wrapper().BUG_URL)
+    else:
+      cmd = self.commands['help']()
+      if all_commands:
+        cmd.PrintAllCommandsBody()
+      else:
+        cmd.PrintCommonCommandsBody()
 
   def _ParseArgs(self, argv):
     """Parse the main `repo` command line options."""
-    name = None
-    glob = []
-
-    for i in range(len(argv)):
-      if not argv[i].startswith('-'):
-        name = argv[i]
-        if i > 0:
-          glob = argv[:i]
+    for i, arg in enumerate(argv):
+      if not arg.startswith('-'):
+        name = arg
+        glob = argv[:i]
         argv = argv[i + 1:]
         break
-    if not name:
+    else:
+      name = None
       glob = argv
-      name = 'help'
       argv = []
     gopts, _gargs = global_options.parse_args(glob)
 
-    if gopts.help:
-      global_options.print_help()
-      commands = ' '.join(sorted(self.commands))
-      wrapped_commands = textwrap.wrap(commands, width=77)
-      print('\nAvailable commands:\n  %s' % ('\n  '.join(wrapped_commands),))
-      print('\nRun `repo help <command>` for command-specific details.')
-      global_options.exit()
+    if name:
+      name, alias_args = self._ExpandAlias(name)
+      argv = alias_args + argv
 
     return (name, gopts, argv)
+
+  def _ExpandAlias(self, name):
+    """Look up user registered aliases."""
+    # We don't resolve aliases for existing subcommands.  This matches git.
+    if name in self.commands:
+      return name, []
+
+    key = 'alias.%s' % (name,)
+    alias = RepoConfig.ForRepository(self.repodir).GetString(key)
+    if alias is None:
+      alias = RepoConfig.ForUser().GetString(key)
+    if alias is None:
+      return name, []
+
+    args = alias.strip().split(' ', 1)
+    name = args[0]
+    if len(args) == 2:
+      args = shlex.split(args[1])
+    else:
+      args = []
+    return name, args
 
   def _Run(self, name, gopts, argv):
     """Execute the requested subcommand."""
@@ -142,31 +200,52 @@ class _Repo(object):
 
     if gopts.trace:
       SetTrace()
-    if gopts.show_version:
-      if name == 'help':
-        name = 'version'
-      else:
-        print('fatal: invalid usage of --version', file=sys.stderr)
-        return 1
+
+    # Handle options that terminate quickly first.
+    if gopts.help or gopts.help_all:
+      self._PrintHelp(short=False, all_commands=gopts.help_all)
+      return 0
+    elif gopts.show_version:
+      # Always allow global --version regardless of subcommand validity.
+      name = 'version'
+    elif gopts.show_toplevel:
+      print(os.path.dirname(self.repodir))
+      return 0
+    elif not name:
+      # No subcommand specified, so show the help/subcommand.
+      self._PrintHelp(short=True)
+      return 1
 
     SetDefaultColoring(gopts.color)
 
+    git_trace2_event_log = EventLog()
+    outer_client = RepoClient(self.repodir)
+    repo_client = outer_client
+    if gopts.submanifest_path:
+      repo_client = RepoClient(self.repodir,
+                               submanifest_path=gopts.submanifest_path,
+                               outer_client=outer_client)
+    gitc_manifest = None
+    gitc_client_name = gitc_utils.parse_clientdir(os.getcwd())
+    if gitc_client_name:
+      gitc_manifest = GitcClient(self.repodir, gitc_client_name)
+      repo_client.isGitcClient = True
+
     try:
-      cmd = self.commands[name]
+      cmd = self.commands[name](
+          repodir=self.repodir,
+          client=repo_client,
+          manifest=repo_client.manifest,
+          outer_client=outer_client,
+          outer_manifest=outer_client.manifest,
+          gitc_manifest=gitc_manifest,
+          git_event_log=git_trace2_event_log)
     except KeyError:
       print("repo: '%s' is not a repo command.  See 'repo help'." % name,
             file=sys.stderr)
       return 1
 
-    cmd.repodir = self.repodir
-    cmd.manifest = XmlManifest(cmd.repodir)
-    cmd.gitc_manifest = None
-    gitc_client_name = gitc_utils.parse_clientdir(os.getcwd())
-    if gitc_client_name:
-      cmd.gitc_manifest = GitcManifest(cmd.repodir, gitc_client_name)
-      cmd.manifest.isGitcClient = True
-
-    Editor.globalConfig = cmd.manifest.globalConfig
+    Editor.globalConfig = cmd.client.globalConfig
 
     if not isinstance(cmd, MirrorSafeCommand) and cmd.manifest.IsMirror:
       print("fatal: '%s' requires a working directory" % name,
@@ -188,13 +267,13 @@ class _Repo(object):
       copts = cmd.ReadEnvironmentOptions(copts)
     except NoManifestException as e:
       print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),
-        file=sys.stderr)
+            file=sys.stderr)
       print('error: manifest missing or unreadable -- please run init',
             file=sys.stderr)
       return 1
 
-    if not gopts.no_pager and not isinstance(cmd, InteractiveCommand):
-      config = cmd.manifest.globalConfig
+    if gopts.pager is not False and not isinstance(cmd, InteractiveCommand):
+      config = cmd.client.globalConfig
       if gopts.pager:
         use_pager = True
       else:
@@ -207,13 +286,46 @@ class _Repo(object):
     start = time.time()
     cmd_event = cmd.event_log.Add(name, event_log.TASK_COMMAND, start)
     cmd.event_log.SetParent(cmd_event)
+    git_trace2_event_log.StartEvent()
+    git_trace2_event_log.CommandEvent(name='repo', subcommands=[name])
+
     try:
+      cmd.CommonValidateOptions(copts, cargs)
       cmd.ValidateOptions(copts, cargs)
-      result = cmd.Execute(copts, cargs)
+
+      this_manifest_only = copts.this_manifest_only
+      outer_manifest = copts.outer_manifest
+      if cmd.MULTI_MANIFEST_SUPPORT or this_manifest_only:
+        result = cmd.Execute(copts, cargs)
+      elif outer_manifest and repo_client.manifest.is_submanifest:
+        # The command does not support multi-manifest, we are using a
+        # submanifest, and the command line is for the outermost manifest.
+        # Re-run using the outermost manifest, which will recurse through the
+        # submanifests.
+        gopts.submanifest_path = ''
+        result = self._Run(name, gopts, argv)
+      else:
+        # No multi-manifest support. Run the command in the current
+        # (sub)manifest, and then any child submanifests.
+        result = cmd.Execute(copts, cargs)
+        for submanifest in repo_client.manifest.submanifests.values():
+          spec = submanifest.ToSubmanifestSpec()
+          gopts.submanifest_path = submanifest.repo_client.path_prefix
+          child_argv = argv[:]
+          child_argv.append('--no-outer-manifest')
+          # Not all subcommands support the 3 manifest options, so only add them
+          # if the original command includes them.
+          if hasattr(copts, 'manifest_url'):
+            child_argv.extend(['--manifest-url', spec.manifestUrl])
+          if hasattr(copts, 'manifest_name'):
+            child_argv.extend(['--manifest-name', spec.manifestName])
+          if hasattr(copts, 'manifest_branch'):
+            child_argv.extend(['--manifest-branch', spec.revision])
+          result = self._Run(name, gopts, child_argv) or result
     except (DownloadError, ManifestInvalidRevisionError,
-        NoManifestException) as e:
+            NoManifestException) as e:
       print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),
-        file=sys.stderr)
+            file=sys.stderr)
       if isinstance(e, NoManifestException):
         print('error: manifest missing or unreadable -- please run init',
               file=sys.stderr)
@@ -228,7 +340,8 @@ class _Repo(object):
       if e.name:
         print('error: project group must be enabled for project %s' % e.name, file=sys.stderr)
       else:
-        print('error: project group must be enabled for the project in the current directory', file=sys.stderr)
+        print('error: project group must be enabled for the project in the current directory',
+              file=sys.stderr)
       result = 1
     except SystemExit as e:
       if e.code:
@@ -248,48 +361,77 @@ class _Repo(object):
 
       cmd.event_log.FinishEvent(cmd_event, finish,
                                 result is None or result == 0)
+      git_trace2_event_log.DefParamRepoEvents(
+          cmd.manifest.manifestProject.config.DumpConfigDict())
+      git_trace2_event_log.ExitEvent(result)
+
       if gopts.event_log:
         cmd.event_log.Write(os.path.abspath(
                             os.path.expanduser(gopts.event_log)))
 
+      git_trace2_event_log.Write(gopts.git_trace2_event_log)
     return result
 
 
-def _CheckWrapperVersion(ver, repo_path):
+def _CheckWrapperVersion(ver_str, repo_path):
+  """Verify the repo launcher is new enough for this checkout.
+
+  Args:
+    ver_str: The version string passed from the repo launcher when it ran us.
+    repo_path: The path to the repo launcher that loaded us.
+  """
+  # Refuse to work with really old wrapper versions.  We don't test these,
+  # so might as well require a somewhat recent sane version.
+  # v1.15 of the repo launcher was released in ~Mar 2012.
+  MIN_REPO_VERSION = (1, 15)
+  min_str = '.'.join(str(x) for x in MIN_REPO_VERSION)
+
   if not repo_path:
     repo_path = '~/bin/repo'
 
-  if not ver:
+  if not ver_str:
     print('no --wrapper-version argument', file=sys.stderr)
     sys.exit(1)
 
+  # Pull out the version of the repo launcher we know about to compare.
   exp = Wrapper().VERSION
-  ver = tuple(map(int, ver.split('.')))
-  if len(ver) == 1:
-    ver = (0, ver[0])
+  ver = tuple(map(int, ver_str.split('.')))
 
   exp_str = '.'.join(map(str, exp))
-  if exp[0] > ver[0] or ver < (0, 4):
+  if ver < MIN_REPO_VERSION:
     print("""
-!!! A new repo command (%5s) is available.    !!!
-!!! You must upgrade before you can continue:   !!!
+repo: error:
+!!! Your version of repo %s is too old.
+!!! We need at least version %s.
+!!! A new version of repo (%s) is available.
+!!! You must upgrade before you can continue:
 
     cp %s %s
-""" % (exp_str, WrapperPath(), repo_path), file=sys.stderr)
+""" % (ver_str, min_str, exp_str, WrapperPath(), repo_path), file=sys.stderr)
     sys.exit(1)
 
   if exp > ver:
-    print("""
-... A new repo command (%5s) is available.
+    print('\n... A new version of repo (%s) is available.' % (exp_str,),
+          file=sys.stderr)
+    if os.access(repo_path, os.W_OK):
+      print("""\
 ... You should upgrade soon:
-
     cp %s %s
-""" % (exp_str, WrapperPath(), repo_path), file=sys.stderr)
+""" % (WrapperPath(), repo_path), file=sys.stderr)
+    else:
+      print("""\
+... New version is available at: %s
+... The launcher is run from: %s
+!!! The launcher is not writable.  Please talk to your sysadmin or distro
+!!! to get an update installed.
+""" % (WrapperPath(), repo_path), file=sys.stderr)
+
 
 def _CheckRepoDir(repo_dir):
   if not repo_dir:
     print('no --repo-dir argument', file=sys.stderr)
     sys.exit(1)
+
 
 def _PruneOptions(argv, opt):
   i = 0
@@ -306,6 +448,7 @@ def _PruneOptions(argv, opt):
       continue
     i += 1
 
+
 class _UserAgentHandler(urllib.request.BaseHandler):
   def http_request(self, req):
     req.add_header('User-Agent', user_agent.repo)
@@ -314,6 +457,7 @@ class _UserAgentHandler(urllib.request.BaseHandler):
   def https_request(self, req):
     req.add_header('User-Agent', user_agent.repo)
     return req
+
 
 def _AddPasswordFromUserInput(handler, msg, req):
   # If repo could not find auth info from netrc, try to get it from user input
@@ -328,51 +472,56 @@ def _AddPasswordFromUserInput(handler, msg, req):
       return
     handler.passwd.add_password(None, url, user, password)
 
+
 class _BasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
   def http_error_401(self, req, fp, code, msg, headers):
     _AddPasswordFromUserInput(self, msg, req)
     return urllib.request.HTTPBasicAuthHandler.http_error_401(
-      self, req, fp, code, msg, headers)
+        self, req, fp, code, msg, headers)
 
   def http_error_auth_reqed(self, authreq, host, req, headers):
     try:
       old_add_header = req.add_header
+
       def _add_header(name, val):
         val = val.replace('\n', '')
         old_add_header(name, val)
       req.add_header = _add_header
       return urllib.request.AbstractBasicAuthHandler.http_error_auth_reqed(
-        self, authreq, host, req, headers)
-    except:
+          self, authreq, host, req, headers)
+    except Exception:
       reset = getattr(self, 'reset_retry_count', None)
       if reset is not None:
         reset()
       elif getattr(self, 'retried', None):
         self.retried = 0
       raise
+
 
 class _DigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
   def http_error_401(self, req, fp, code, msg, headers):
     _AddPasswordFromUserInput(self, msg, req)
     return urllib.request.HTTPDigestAuthHandler.http_error_401(
-      self, req, fp, code, msg, headers)
+        self, req, fp, code, msg, headers)
 
   def http_error_auth_reqed(self, auth_header, host, req, headers):
     try:
       old_add_header = req.add_header
+
       def _add_header(name, val):
         val = val.replace('\n', '')
         old_add_header(name, val)
       req.add_header = _add_header
       return urllib.request.AbstractDigestAuthHandler.http_error_auth_reqed(
-        self, auth_header, host, req, headers)
-    except:
+          self, auth_header, host, req, headers)
+    except Exception:
       reset = getattr(self, 'reset_retry_count', None)
       if reset is not None:
         reset()
       elif getattr(self, 'retried', None):
         self.retried = 0
       raise
+
 
 class _KerberosAuthHandler(urllib.request.BaseHandler):
   def __init__(self):
@@ -392,7 +541,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
 
       if self.retried > 3:
         raise urllib.request.HTTPError(req.get_full_url(), 401,
-          "Negotiate auth failed", headers, None)
+                                       "Negotiate auth failed", headers, None)
       else:
         self.retried += 1
 
@@ -408,7 +557,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
         return response
     except kerberos.GSSError:
       return None
-    except:
+    except Exception:
       self.reset_retry_count()
       raise
     finally:
@@ -454,6 +603,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
       kerberos.authGSSClientClean(self.context)
       self.context = None
 
+
 def init_http():
   handlers = [_UserAgentHandler()]
 
@@ -462,7 +612,7 @@ def init_http():
     n = netrc.netrc()
     for host in n.hosts:
       p = n.hosts[host]
-      mgr.add_password(p[1], 'http://%s/'  % host, p[0], p[2])
+      mgr.add_password(p[1], 'http://%s/' % host, p[0], p[2])
       mgr.add_password(p[1], 'https://%s/' % host, p[0], p[2])
   except netrc.NetrcParseError:
     pass
@@ -480,6 +630,7 @@ def init_http():
     handlers.append(urllib.request.HTTPHandler(debuglevel=1))
     handlers.append(urllib.request.HTTPSHandler(debuglevel=1))
   urllib.request.install_opener(urllib.request.build_opener(*handlers))
+
 
 def _Main(argv):
   result = 0
@@ -502,20 +653,16 @@ def _Main(argv):
 
   repo = _Repo(opt.repodir)
   try:
-    try:
-      init_ssh()
-      init_http()
-      name, gopts, argv = repo._ParseArgs(argv)
-      run = lambda: repo._Run(name, gopts, argv) or 0
-      if gopts.trace_python:
-        import trace
-        tracer = trace.Trace(count=False, trace=True, timing=True,
-                             ignoredirs=set(sys.path[1:]))
-        result = tracer.runfunc(run)
-      else:
-        result = run()
-    finally:
-      close_ssh()
+    init_http()
+    name, gopts, argv = repo._ParseArgs(argv)
+    run = lambda: repo._Run(name, gopts, argv) or 0
+    if gopts.trace_python:
+      import trace
+      tracer = trace.Trace(count=False, trace=True, timing=True,
+                           ignoredirs=set(sys.path[1:]))
+      result = tracer.runfunc(run)
+    else:
+      result = run()
   except KeyboardInterrupt:
     print('aborted by user', file=sys.stderr)
     result = 1
@@ -528,7 +675,7 @@ def _Main(argv):
     argv = list(sys.argv)
     argv.extend(rce.extra_args)
     try:
-      os.execv(__file__, argv)
+      os.execv(sys.executable, [__file__] + argv)
     except OSError as e:
       print('fatal: cannot restart repo after upgrade', file=sys.stderr)
       print('fatal: %s' % e, file=sys.stderr)
@@ -536,6 +683,7 @@ def _Main(argv):
 
   TerminatePager()
   sys.exit(result)
+
 
 if __name__ == '__main__':
   _Main(sys.argv[1:])

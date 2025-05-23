@@ -3,14 +3,14 @@
 # Short Version
 
  - Make small logical changes.
- - Provide a meaningful commit message.
- - Check for coding errors and style nits with pyflakes and flake8
+ - [Provide a meaningful commit message][commit-message-style].
+ - Check for coding errors and style nits with flake8.
  - Make sure all code is under the Apache License, 2.0.
  - Publish your changes for review.
  - Make corrections if requested.
  - Verify your changes on gerrit so they can be submitted.
 
-   `git push https://gerrit-review.googlesource.com/git-repo HEAD:refs/for/master`
+   `git push https://gerrit-review.googlesource.com/git-repo HEAD:refs/for/main`
 
 
 # Long Version
@@ -26,10 +26,11 @@ yourself with the following relevant bits.
 
 ## Make separate commits for logically separate changes.
 
-Unless your patch is really trivial, you should not be sending
-out a patch that was generated between your working tree and your
-commit head.  Instead, always make a commit with complete commit
-message and generate a series of patches from your repository.
+Unless your patch is really trivial, you should not be sending out a patch that
+was generated between your working tree and your commit head.
+Instead, always make a commit with a complete
+[commit message][commit-message-style] and generate a series of patches from
+your repository.
 It is a good discipline.
 
 Describe the technical detail of the change(s).
@@ -38,34 +39,30 @@ If your description starts to get too long, that's a sign that you
 probably need to split up your commit to finer grained pieces.
 
 
-## Check for coding errors and style nits with pyflakes and flake8
+## Check for coding errors and style violations with flake8
 
-### Coding errors
-
-Run `pyflakes` on changed modules:
-
-    pyflakes file.py
-
-Ideally there should be no new errors or warnings introduced.
-
-### Style violations
-
-Run `flake8` on changes modules:
+Run `flake8` on changed modules:
 
     flake8 file.py
 
-Note that repo generally follows [Google's python style guide] rather than
-[PEP 8], so it's possible that the output of `flake8` will be quite noisy.
-It's not mandatory to avoid all warnings, but at least the maximum line
-length should be followed.
+Note that repo generally follows [Google's Python Style Guide] rather than
+[PEP 8], with a couple of notable exceptions:
 
-If there are many occurrences of the same warning that cannot be
-avoided without going against the Google style guide, these may be
-suppressed in the included `.flake8` file.
+* Indentation is at 2 columns rather than 4
+* The maximum line length is 100 columns rather than 80
 
-[Google's python style guide]: https://google.github.io/styleguide/pyguide.html
+There should be no new errors or warnings introduced.
+
+Warnings that cannot be avoided without going against the Google Style Guide
+may be suppressed inline individally using a `# noqa` comment as described
+in the [flake8 documentation].
+
+If there are many occurrences of the same warning, these may be suppressed for
+the entire project in the included `.flake8` file.
+
+[Google's Python Style Guide]: https://google.github.io/styleguide/pyguide.html
 [PEP 8]: https://www.python.org/dev/peps/pep-0008/
-
+[flake8 documentation]: https://flake8.pycqa.org/en/3.1.1/user/ignoring-errors.html#in-line-ignoring-errors
 
 ## Running tests
 
@@ -154,7 +151,7 @@ Push your patches over HTTPS to the review server, possibly through
 a remembered remote to make this easier in the future:
 
     git config remote.review.url https://gerrit-review.googlesource.com/git-repo
-    git config remote.review.push HEAD:refs/for/master
+    git config remote.review.push HEAD:refs/for/main
 
     git push review
 
@@ -175,3 +172,6 @@ After you receive a Code-Review+2 from the maintainer, select the Verified
 button on the gerrit page for the change. This verifies that you have tested
 your changes and notifies the maintainer that they are ready to be submitted.
 The maintainer will then submit your changes to the repository.
+
+
+[commit-message-style]: https://chris.beams.io/posts/git-commit/

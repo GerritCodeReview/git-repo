@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2016 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +14,13 @@
 
 import errno
 
-from pyversion import is_python3
 from ctypes import WinDLL, get_last_error, FormatError, WinError, addressof
-from ctypes import c_buffer
-from ctypes.wintypes import BOOL, BOOLEAN, LPCWSTR, DWORD, HANDLE, POINTER, c_ubyte
-from ctypes.wintypes import WCHAR, USHORT, LPVOID, Structure, Union, ULONG
-from ctypes.wintypes import byref
+from ctypes import c_buffer, c_ubyte, Structure, Union, byref
+from ctypes.wintypes import BOOL, BOOLEAN, LPCWSTR, DWORD, HANDLE
+from ctypes.wintypes import WCHAR, USHORT, LPVOID, ULONG, LPDWORD
 
 kernel32 = WinDLL('kernel32', use_last_error=True)
 
-LPDWORD = POINTER(DWORD)
 UCHAR = c_ubyte
 
 # Win32 error codes
@@ -147,7 +142,8 @@ def create_dirsymlink(source, link_name):
 
 
 def _create_symlink(source, link_name, dwFlags):
-  if not CreateSymbolicLinkW(link_name, source, dwFlags | SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE):
+  if not CreateSymbolicLinkW(link_name, source,
+                             dwFlags | SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE):
     # See https://github.com/golang/go/pull/24307/files#diff-b87bc12e4da2497308f9ef746086e4f0
     # "the unprivileged create flag is unsupported below Windows 10 (1703, v10.0.14972).
     # retry without it."
@@ -198,24 +194,13 @@ def readlink(path):
         'Error reading symbolic link \"%s\"'.format(path))
   rdb = REPARSE_DATA_BUFFER.from_buffer(target_buffer)
   if rdb.ReparseTag == IO_REPARSE_TAG_SYMLINK:
-    return _preserve_encoding(path, rdb.SymbolicLinkReparseBuffer.PrintName)
+    return rdb.SymbolicLinkReparseBuffer.PrintName
   elif rdb.ReparseTag == IO_REPARSE_TAG_MOUNT_POINT:
-    return _preserve_encoding(path, rdb.MountPointReparseBuffer.PrintName)
+    return rdb.MountPointReparseBuffer.PrintName
   # Unsupported reparse point type
   _raise_winerror(
       ERROR_NOT_SUPPORTED,
       'Error reading symbolic link \"%s\"'.format(path))
-
-
-def _preserve_encoding(source, target):
-  """Ensures target is the same string type (i.e. unicode or str) as source."""
-
-  if is_python3():
-    return target
-
-  if isinstance(source, unicode):
-    return unicode(target)
-  return str(target)
 
 
 def _raise_winerror(code, error_desc):

@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,17 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
 import re
 import sys
 
 from command import Command
-from error import GitError
+from error import GitError, NoSuchProjectError
 
 CHANGE_RE = re.compile(r'^([1-9][0-9]*)(?:[/\.-]([1-9][0-9]*))?$')
 
+
 class Download(Command):
-  common = True
+  COMMON = True
   helpSummary = "Download and checkout a change"
   helpUsage = """
 %prog {[project] change[/patchset]}...
@@ -36,9 +34,13 @@ If no project is specified try to use current directory as a project.
 """
 
   def _Options(self, p):
+    p.add_option('-b', '--branch',
+                 help='create a new branch first')
     p.add_option('-c', '--cherry-pick',
                  dest='cherrypick', action='store_true',
                  help="cherry-pick instead of checkout")
+    p.add_option('-x', '--record-origin', action='store_true',
+                 help='pass -x when cherry-picking')
     p.add_option('-r', '--revert',
                  dest='revert', action='store_true',
                  help="revert instead of checkout")
@@ -46,7 +48,7 @@ If no project is specified try to use current directory as a project.
                  dest='ffonly', action='store_true',
                  help="force fast-forward merge")
 
-  def _ParseChangeIds(self, args):
+  def _ParseChangeIds(self, opt, args):
     if not args:
       self.Usage()
 
@@ -58,6 +60,7 @@ If no project is specified try to use current directory as a project.
       if m:
         if not project:
           project = self.GetProjects(".")[0]
+          print('Defaulting to cwd project', project.name)
         chg_id = int(m.group(1))
         if m.group(2):
           ps_id = int(m.group(2))
@@ -74,11 +77,35 @@ If no project is specified try to use current directory as a project.
                 ps_id = max(int(match.group(1)), ps_id)
         to_get.append((project, chg_id, ps_id))
       else:
-        project = self.GetProjects([a])[0]
+        projects = self.GetProjects([a], all_manifests=not opt.this_manifest_only)
+        if len(projects) > 1:
+          # If the cwd is one of the projects, assume they want that.
+          try:
+            project = self.GetProjects('.')[0]
+          except NoSuchProjectError:
+            project = None
+          if project not in projects:
+            print('error: %s matches too many projects; please re-run inside '
+                  'the project checkout.' % (a,), file=sys.stderr)
+            for project in projects:
+              print('  %s/ @ %s' % (project.RelPath(local=opt.this_manifest_only),
+                                    project.revisionExpr), file=sys.stderr)
+            sys.exit(1)
+        else:
+          project = projects[0]
+          print('Defaulting to cwd project', project.name)
     return to_get
 
+  def ValidateOptions(self, opt, args):
+    if opt.record_origin:
+      if not opt.cherrypick:
+        self.OptionParser.error('-x only makes sense with --cherry-pick')
+
+      if opt.ffonly:
+        self.OptionParser.error('-x and --ff are mutually exclusive options')
+
   def Execute(self, opt, args):
-    for project, change_id, ps_id in self._ParseChangeIds(args):
+    for project, change_id, ps_id in self._ParseChangeIds(opt, args):
       dl = project.DownloadPatchSet(change_id, ps_id)
       if not dl:
         print('[%s] change %d/%d not found'
@@ -93,22 +120,41 @@ If no project is specified try to use current directory as a project.
         continue
 
       if len(dl.commits) > 1:
-        print('[%s] %d/%d depends on %d unmerged changes:' \
+        print('[%s] %d/%d depends on %d unmerged changes:'
               % (project.name, change_id, ps_id, len(dl.commits)),
               file=sys.stderr)
         for c in dl.commits:
           print('  %s' % (c), file=sys.stderr)
-      if opt.cherrypick:
-        try:
-          project._CherryPick(dl.commit)
-        except GitError:
-          print('[%s] Could not complete the cherry-pick of %s' \
-                % (project.name, dl.commit), file=sys.stderr)
-          sys.exit(1)
 
+      if opt.cherrypick:
+        mode = 'cherry-pick'
       elif opt.revert:
-        project._Revert(dl.commit)
+        mode = 'revert'
       elif opt.ffonly:
-        project._FastForward(dl.commit, ffonly=True)
+        mode = 'fast-forward merge'
       else:
-        project._Checkout(dl.commit)
+        mode = 'checkout'
+
+      # We'll combine the branch+checkout operation, but all the rest need a
+      # dedicated branch start.
+      if opt.branch and mode != 'checkout':
+        project.StartBranch(opt.branch)
+
+      try:
+        if opt.cherrypick:
+          project._CherryPick(dl.commit, ffonly=opt.ffonly,
+                              record_origin=opt.record_origin)
+        elif opt.revert:
+          project._Revert(dl.commit)
+        elif opt.ffonly:
+          project._FastForward(dl.commit, ffonly=True)
+        else:
+          if opt.branch:
+            project.StartBranch(opt.branch, revision=dl.commit)
+          else:
+            project._Checkout(dl.commit)
+
+      except GitError:
+        print('[%s] Could not complete the %s of %s'
+              % (project.name, mode, dl.commit), file=sys.stderr)
+        sys.exit(1)

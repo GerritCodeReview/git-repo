@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2010 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
 import re
 import sys
 from command import Command
@@ -22,8 +19,9 @@ from git_command import GitCommand
 
 CHANGE_ID_RE = re.compile(r'^\s*Change-Id: I([0-9a-f]{40})\s*$')
 
+
 class CherryPick(Command):
-  common = True
+  COMMON = True
   helpSummary = "Cherry-pick a change."
   helpUsage = """
 %prog <sha1>
@@ -34,9 +32,6 @@ The change id will be updated, and a reference to the old
 change id will be added.
 """
 
-  def _Options(self, p):
-    pass
-
   def ValidateOptions(self, opt, args):
     if len(args) != 1:
       self.Usage()
@@ -46,8 +41,8 @@ change id will be added.
 
     p = GitCommand(None,
                    ['rev-parse', '--verify', reference],
-                   capture_stdout = True,
-                   capture_stderr = True)
+                   capture_stdout=True,
+                   capture_stderr=True)
     if p.Wait() != 0:
       print(p.stderr, file=sys.stderr)
       sys.exit(1)
@@ -61,12 +56,14 @@ change id will be added.
 
     p = GitCommand(None,
                    ['cherry-pick', sha1],
-                   capture_stdout = True,
-                   capture_stderr = True)
+                   capture_stdout=True,
+                   capture_stderr=True)
     status = p.Wait()
 
-    print(p.stdout, file=sys.stdout)
-    print(p.stderr, file=sys.stderr)
+    if p.stdout:
+      print(p.stdout.strip(), file=sys.stdout)
+    if p.stderr:
+      print(p.stderr.strip(), file=sys.stderr)
 
     if status == 0:
       # The cherry-pick was applied correctly. We just need to edit the
@@ -74,11 +71,9 @@ change id will be added.
       new_msg = self._Reformat(old_msg, sha1)
 
       p = GitCommand(None, ['commit', '--amend', '-F', '-'],
-                     provide_stdin = True,
-                     capture_stdout = True,
-                     capture_stderr = True)
-      p.stdin.write(new_msg)
-      p.stdin.close()
+                     input=new_msg,
+                     capture_stdout=True,
+                     capture_stderr=True)
       if p.Wait() != 0:
         print("error: Failed to update commit message", file=sys.stderr)
         sys.exit(1)
@@ -97,7 +92,7 @@ change id will be added.
 
   def _StripHeader(self, commit_msg):
     lines = commit_msg.splitlines()
-    return "\n".join(lines[lines.index("")+1:])
+    return "\n".join(lines[lines.index("") + 1:])
 
   def _Reformat(self, old_msg, sha1):
     new_msg = []

@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2009 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,12 +16,14 @@ import os
 from repo_trace import Trace
 import platform_utils
 
-HEAD      = 'HEAD'
+HEAD = 'HEAD'
 R_CHANGES = 'refs/changes/'
-R_HEADS   = 'refs/heads/'
-R_TAGS    = 'refs/tags/'
-R_PUB     = 'refs/published/'
-R_M       = 'refs/remotes/m/'
+R_HEADS = 'refs/heads/'
+R_TAGS = 'refs/tags/'
+R_PUB = 'refs/published/'
+R_WORKTREE = 'refs/worktree/'
+R_WORKTREE_M = R_WORKTREE + 'm/'
+R_M = 'refs/remotes/m/'
 
 
 class GitRefs(object):
@@ -131,11 +131,14 @@ class GitRefs(object):
     base = os.path.join(self._gitdir, prefix)
     for name in platform_utils.listdir(base):
       p = os.path.join(base, name)
-      if platform_utils.isdir(p):
+      # We don't implement the full ref validation algorithm, just the simple
+      # rules that would show up in local filesystems.
+      # https://git-scm.com/docs/git-check-ref-format
+      if name.startswith('.') or name.endswith('.lock'):
+        pass
+      elif platform_utils.isdir(p):
         self._mtime[prefix] = os.path.getmtime(base)
         self._ReadLoose(prefix + name + '/')
-      elif name.endswith('.lock'):
-        pass
       else:
         self._ReadLoose1(p, prefix + name)
 
@@ -144,7 +147,7 @@ class GitRefs(object):
       with open(path) as fd:
         mtime = os.path.getmtime(path)
         ref_id = fd.readline()
-    except (IOError, OSError):
+    except (OSError, UnicodeError):
       return
 
     try:

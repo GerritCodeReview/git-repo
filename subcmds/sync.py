@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,37 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
+import collections
+import functools
+import http.cookiejar as cookielib
+import io
 import json
+import multiprocessing
 import netrc
 from optparse import SUPPRESS_HELP
 import os
-import re
 import socket
-import subprocess
 import sys
 import tempfile
 import time
-
-from pyversion import is_python3
-if is_python3():
-  import http.cookiejar as cookielib
-  import urllib.error
-  import urllib.parse
-  import urllib.request
-  import xmlrpc.client
-else:
-  import cookielib
-  import imp
-  import urllib2
-  import urlparse
-  import xmlrpclib
-  urllib = imp.new_module('urllib')
-  urllib.error = urllib2
-  urllib.parse = urlparse
-  urllib.request = urllib2
-  xmlrpc = imp.new_module('xmlrpc')
-  xmlrpc.client = xmlrpclib
+import urllib.error
+import urllib.parse
+import urllib.request
+import xml.parsers.expat
+import xmlrpc.client
 
 try:
   import threading as _threading
@@ -53,44 +38,36 @@ except ImportError:
 
 try:
   import resource
+
   def _rlimit_nofile():
     return resource.getrlimit(resource.RLIMIT_NOFILE)
 except ImportError:
   def _rlimit_nofile():
     return (256, 256)
 
-try:
-  import multiprocessing
-except ImportError:
-  multiprocessing = None
-
 import event_log
-from git_command import GIT, git_require
+from git_command import git_require
 from git_config import GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
+import git_superproject
 import gitc_utils
 from project import Project
 from project import RemoteSpec
-from command import Command, MirrorSafeCommand
+from command import Command, DEFAULT_LOCAL_JOBS, MirrorSafeCommand, WORKER_BATCH_SIZE
 from error import RepoChangedException, GitError, ManifestParseError
 import platform_utils
 from project import SyncBuffer
 from progress import Progress
+import ssh
 from wrapper import Wrapper
 from manifest_xml import GitcManifest
 
 _ONE_DAY_S = 24 * 60 * 60
 
-class _FetchError(Exception):
-  """Internal error thrown in _FetchHelper() when we don't want stack trace."""
-  pass
-
-class _CheckoutError(Exception):
-  """Internal error thrown in _CheckoutOne() when we don't want stack trace."""
 
 class Sync(Command, MirrorSafeCommand):
-  jobs = 1
-  common = True
+  COMMON = True
+  MULTI_MANIFEST_SUPPORT = True
   helpSummary = "Update working tree to the latest revision"
   helpUsage = """
 %prog [<project>...]
@@ -133,11 +110,11 @@ if the manifest server specified in the manifest file already includes
 credentials.
 
 By default, all projects will be synced. The --fail-fast option can be used
-to halt syncing as soon as possible when the the first project fails to sync.
+to halt syncing as soon as possible when the first project fails to sync.
 
 The --force-sync option can be used to overwrite existing git
 directories if they have previously been linked to a different
-object direcotry. WARNING: This may cause data to be lost since
+object directory. WARNING: This may cause data to be lost since
 refs may be removed when overwriting.
 
 The --force-remove-dirty option can be used to remove previously used
@@ -191,12 +168,16 @@ If the remote SSH daemon is Gerrit Code Review, version 2.0.10 or
 later is required to fix a server side protocol bug.
 
 """
+  # A value of 0 means we want parallel jobs, but we'll determine the default
+  # value later on.
+  PARALLEL_JOBS = 0
 
   def _Options(self, p, show_smart=True):
-    try:
-      self.jobs = self.manifest.default.sync_j
-    except ManifestParseError:
-      self.jobs = 1
+    p.add_option('--jobs-network', default=None, type=int, metavar='JOBS',
+                 help='number of network jobs to run in parallel (defaults to --jobs or 1)')
+    p.add_option('--jobs-checkout', default=None, type=int, metavar='JOBS',
+                 help='number of local checkout jobs to run in parallel (defaults to --jobs or '
+                      f'{DEFAULT_LOCAL_JOBS})')
 
     p.add_option('-f', '--force-broken',
                  dest='force_broken', action='store_true',
@@ -217,6 +198,10 @@ later is required to fix a server side protocol bug.
     p.add_option('-l', '--local-only',
                  dest='local_only', action='store_true',
                  help="only update working tree, don't fetch")
+    p.add_option('--no-manifest-update', '--nmu',
+                 dest='mp_update', action='store_false', default='true',
+                 help='use the existing manifest checkout as-is. '
+                      '(do not update to the latest revision)')
     p.add_option('-n', '--network-only',
                  dest='network_only', action='store_true',
                  help="fetch only, don't update working tree")
@@ -226,17 +211,15 @@ later is required to fix a server side protocol bug.
     p.add_option('-c', '--current-branch',
                  dest='current_branch_only', action='store_true',
                  help='fetch only current branch from server')
-    p.add_option('-q', '--quiet',
-                 dest='quiet', action='store_true',
-                 help='be more quiet')
-    p.add_option('-j', '--jobs',
-                 dest='jobs', action='store', type='int',
-                 help="projects to fetch simultaneously (default %d)" % self.jobs)
+    p.add_option('--no-current-branch',
+                 dest='current_branch_only', action='store_false',
+                 help='fetch all branches from server')
     p.add_option('-m', '--manifest-name',
                  dest='manifest_name',
                  help='temporary manifest to use for this sync', metavar='NAME.xml')
-    p.add_option('--no-clone-bundle',
-                 dest='no_clone_bundle', action='store_true',
+    p.add_option('--clone-bundle', action='store_true',
+                 help='enable use of /clone.bundle on HTTP/HTTPS')
+    p.add_option('--no-clone-bundle', dest='clone_bundle', action='store_false',
                  help='disable use of /clone.bundle on HTTP/HTTPS')
     p.add_option('-u', '--manifest-server-username', action='store',
                  dest='manifest_server_username',
@@ -247,14 +230,26 @@ later is required to fix a server side protocol bug.
     p.add_option('--fetch-submodules',
                  dest='fetch_submodules', action='store_true',
                  help='fetch submodules from server')
+    p.add_option('--use-superproject', action='store_true',
+                 help='use the manifest superproject to sync projects; implies -c')
+    p.add_option('--no-use-superproject', action='store_false',
+                 dest='use_superproject',
+                 help='disable use of manifest superprojects')
+    p.add_option('--tags', action='store_true',
+                 help='fetch tags')
     p.add_option('--no-tags',
-                 dest='no_tags', action='store_true',
-                 help="don't fetch tags")
+                 dest='tags', action='store_false',
+                 help="don't fetch tags (default)")
     p.add_option('--optimized-fetch',
                  dest='optimized_fetch', action='store_true',
                  help='only fetch projects fixed to sha1 if revision does not exist locally')
-    p.add_option('--prune', dest='prune', action='store_true',
-                 help='delete refs that no longer exist on the remote')
+    p.add_option('--retry-fetches',
+                 default=0, action='store', type='int',
+                 help='number of times to retry fetches on transient errors')
+    p.add_option('--prune', action='store_true',
+                 help='delete refs that no longer exist on the remote (default)')
+    p.add_option('--no-prune', dest='prune', action='store_false',
+                 help='do not delete refs that no longer exist on the remote')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -265,432 +260,521 @@ later is required to fix a server side protocol bug.
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
-                 dest='no_repo_verify', action='store_true',
+                 dest='repo_verify', default=True, action='store_false',
                  help='do not verify repo source code')
     g.add_option('--repo-upgraded',
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
-  def _FetchProjectList(self, opt, projects, sem, *args, **kwargs):
-    """Main function of the fetch threads.
+  def _GetBranch(self, manifest_project):
+    """Returns the branch name for getting the approved smartsync manifest.
+
+    Args:
+      manifest_project: the manifestProject to query.
+    """
+    b = manifest_project.GetBranch(manifest_project.CurrentBranch)
+    branch = b.merge
+    if branch.startswith(R_HEADS):
+      branch = branch[len(R_HEADS):]
+    return branch
+
+  def _GetCurrentBranchOnly(self, opt, manifest):
+    """Returns whether current-branch or use-superproject options are enabled.
+
+    Args:
+      opt: Program options returned from optparse.  See _Options().
+      manifest: The manifest to use.
+
+    Returns:
+      True if a superproject is requested, otherwise the value of the
+      current_branch option (True, False or None).
+    """
+    return git_superproject.UseSuperproject(opt.use_superproject, manifest) or opt.current_branch_only
+
+  def _UpdateProjectsRevisionId(self, opt, args, superproject_logging_data,
+                                manifest):
+    """Update revisionId of projects with the commit hash from the superproject.
+
+    This function updates each project's revisionId with the commit hash from
+    the superproject.  It writes the updated manifest into a file and reloads
+    the manifest from it.  When appropriate, sub manifests are also processed.
+
+    Args:
+      opt: Program options returned from optparse.  See _Options().
+      args: Arguments to pass to GetProjects. See the GetProjects
+          docstring for details.
+      superproject_logging_data: A dictionary of superproject data to log.
+      manifest: The manifest to use.
+    """
+    have_superproject = manifest.superproject or any(
+        m.superproject for m in manifest.all_children)
+    if not have_superproject:
+      return
+
+    if opt.local_only and manifest.superproject:
+      manifest_path = manifest.superproject.manifest_path
+      if manifest_path:
+        self._ReloadManifest(manifest_path, manifest)
+      return
+
+    all_projects = self.GetProjects(args,
+                                    missing_ok=True,
+                                    submodules_ok=opt.fetch_submodules,
+                                    manifest=manifest,
+                                    all_manifests=not opt.this_manifest_only)
+
+    per_manifest = collections.defaultdict(list)
+    manifest_paths = {}
+    if opt.this_manifest_only:
+      per_manifest[manifest.path_prefix] = all_projects
+    else:
+      for p in all_projects:
+        per_manifest[p.manifest.path_prefix].append(p)
+
+    superproject_logging_data = {}
+    need_unload = False
+    for m in self.ManifestList(opt):
+      if not m.path_prefix in per_manifest:
+        continue
+      use_super = git_superproject.UseSuperproject(opt.use_superproject, m)
+      if superproject_logging_data:
+        superproject_logging_data['multimanifest'] = True
+      superproject_logging_data.update(
+          superproject=use_super,
+          haslocalmanifests=bool(m.HasLocalManifests),
+          hassuperprojecttag=bool(m.superproject),
+      )
+      if use_super and (m.IsMirror or m.IsArchive):
+        # Don't use superproject, because we have no working tree.
+        use_super = False
+        superproject_logging_data['superproject'] = False
+        superproject_logging_data['noworktree'] = True
+        if opt.use_superproject is not False:
+          print(f'{m.path_prefix}: not using superproject because there is no '
+                'working tree.')
+
+      if not use_super:
+        continue
+      m.superproject.SetQuiet(opt.quiet)
+      print_messages = git_superproject.PrintMessages(opt.use_superproject, m)
+      m.superproject.SetPrintMessages(print_messages)
+      update_result = m.superproject.UpdateProjectsRevisionId(
+          per_manifest[m.path_prefix], git_event_log=self.git_event_log)
+      manifest_path = update_result.manifest_path
+      superproject_logging_data['updatedrevisionid'] = bool(manifest_path)
+      if manifest_path:
+        m.SetManifestOverride(manifest_path)
+        need_unload = True
+      else:
+        if print_messages:
+          print(f'{m.path_prefix}: warning: Update of revisionId from '
+                'superproject has failed, repo sync will not use superproject '
+                'to fetch the source. ',
+                'Please resync with the --no-use-superproject option to avoid '
+                'this repo warning.',
+                file=sys.stderr)
+        if update_result.fatal and opt.use_superproject is not None:
+          sys.exit(1)
+    if need_unload:
+      m.outer_client.manifest.Unload()
+
+  def _FetchProjectList(self, opt, projects):
+    """Main function of the fetch worker.
+
+    The projects we're given share the same underlying git object store, so we
+    have to fetch them in serial.
 
     Delegates most of the work to _FetchHelper.
 
     Args:
       opt: Program options returned from optparse.  See _Options().
       projects: Projects to fetch.
-      sem: We'll release() this semaphore when we exit so that another thread
-          can be started up.
-      *args, **kwargs: Remaining arguments to pass to _FetchHelper. See the
-          _FetchHelper docstring for details.
     """
-    try:
-        for project in projects:
-          success = self._FetchHelper(opt, project, *args, **kwargs)
-          if not success and opt.fail_fast:
-            break
-    finally:
-        sem.release()
+    return [self._FetchOne(opt, x) for x in projects]
 
-  def _FetchHelper(self, opt, project, lock, fetched, pm, err_event,
-                   clone_filter):
+  def _FetchOne(self, opt, project):
     """Fetch git objects for a single project.
 
     Args:
       opt: Program options returned from optparse.  See _Options().
       project: Project object for the project to fetch.
-      lock: Lock for accessing objects that are shared amongst multiple
-          _FetchHelper() threads.
-      fetched: set object that we will add project.gitdir to when we're done
-          (with our lock held).
-      pm: Instance of a Project object.  We will call pm.update() (with our
-          lock held).
-      err_event: We'll set this event in the case of an error (after printing
-          out info about the error).
-      clone_filter: Filter for use in a partial clone.
 
     Returns:
       Whether the fetch was successful.
     """
-    # We'll set to true once we've locked the lock.
-    did_lock = False
-
-    # Encapsulate everything in a try/except/finally so that:
-    # - We always set err_event in the case of an exception.
-    # - We always make sure we unlock the lock if we locked it.
     start = time.time()
     success = False
+    buf = io.StringIO()
     try:
-      try:
-        success = project.Sync_NetworkHalf(
+      success = project.Sync_NetworkHalf(
           quiet=opt.quiet,
-          current_branch_only=opt.current_branch_only,
+          verbose=opt.verbose,
+          output_redir=buf,
+          current_branch_only=self._GetCurrentBranchOnly(opt, project.manifest),
           force_sync=opt.force_sync,
-          clone_bundle=not opt.no_clone_bundle,
-          no_tags=opt.no_tags, archive=self.manifest.IsArchive,
+          clone_bundle=opt.clone_bundle,
+          tags=opt.tags, archive=project.manifest.IsArchive,
           optimized_fetch=opt.optimized_fetch,
+          retry_fetches=opt.retry_fetches,
           prune=opt.prune,
-          clone_filter=clone_filter)
-        self._fetch_times.Set(project, time.time() - start)
+          ssh_proxy=self.ssh_proxy,
+          clone_filter=project.manifest.CloneFilter,
+          partial_clone_exclude=project.manifest.PartialCloneExclude)
 
-        # Lock around all the rest of the code, since printing, updating a set
-        # and Progress.update() are not thread safe.
-        lock.acquire()
-        did_lock = True
+      output = buf.getvalue()
+      if (opt.verbose or not success) and output:
+        print('\n' + output.rstrip())
 
-        if not success:
-          err_event.set()
-          print('error: Cannot fetch %s from %s'
-                % (project.name, project.remote.url),
-                file=sys.stderr)
-          if opt.fail_fast:
-            raise _FetchError()
-
-        fetched.add(project.gitdir)
-        pm.update(msg=project.name)
-      except _FetchError:
-        pass
-      except Exception as e:
-        print('error: Cannot fetch %s (%s: %s)' \
+      if not success:
+        print('error: Cannot fetch %s from %s'
+              % (project.name, project.remote.url),
+              file=sys.stderr)
+    except GitError as e:
+      print('error.GitError: Cannot fetch %s' % str(e), file=sys.stderr)
+    except Exception as e:
+      print('error: Cannot fetch %s (%s: %s)'
             % (project.name, type(e).__name__, str(e)), file=sys.stderr)
-        err_event.set()
-        raise
-    finally:
-      if did_lock:
-        lock.release()
-      finish = time.time()
-      self.event_log.AddSync(project, event_log.TASK_SYNC_NETWORK,
-                             start, finish, success)
+      raise
 
-    return success
+    finish = time.time()
+    return (success, project, start, finish)
 
-  def _Fetch(self, projects, opt):
+  @classmethod
+  def _FetchInitChild(cls, ssh_proxy):
+    cls.ssh_proxy = ssh_proxy
+
+  def _Fetch(self, projects, opt, err_event, ssh_proxy):
+    ret = True
+
+    jobs = opt.jobs_network
     fetched = set()
-    lock = _threading.Lock()
-    pm = Progress('Fetching projects', len(projects),
-                  always_print_percentage=opt.quiet)
+    pm = Progress('Fetching', len(projects), delay=False, quiet=opt.quiet)
 
     objdir_project_map = dict()
     for project in projects:
       objdir_project_map.setdefault(project.objdir, []).append(project)
+    projects_list = list(objdir_project_map.values())
 
-    threads = set()
-    sem = _threading.Semaphore(self.jobs)
-    err_event = _threading.Event()
-    for project_list in objdir_project_map.values():
-      # Check for any errors before running any more tasks.
-      # ...we'll let existing threads finish, though.
-      if err_event.isSet() and opt.fail_fast:
-        break
+    def _ProcessResults(results_sets):
+      ret = True
+      for results in results_sets:
+        for (success, project, start, finish) in results:
+          self._fetch_times.Set(project, finish - start)
+          self.event_log.AddSync(project, event_log.TASK_SYNC_NETWORK,
+                                 start, finish, success)
+          # Check for any errors before running any more tasks.
+          # ...we'll let existing jobs finish, though.
+          if not success:
+            ret = False
+          else:
+            fetched.add(project.gitdir)
+          pm.update(msg=project.name)
+        if not ret and opt.fail_fast:
+          break
+      return ret
 
-      sem.acquire()
-      kwargs = dict(opt=opt,
-                    projects=project_list,
-                    sem=sem,
-                    lock=lock,
-                    fetched=fetched,
-                    pm=pm,
-                    err_event=err_event,
-                    clone_filter=self.manifest.CloneFilter)
-      if self.jobs > 1:
-        t = _threading.Thread(target = self._FetchProjectList,
-                              kwargs = kwargs)
-        # Ensure that Ctrl-C will not freeze the repo process.
-        t.daemon = True
-        threads.add(t)
-        t.start()
+    # We pass the ssh proxy settings via the class.  This allows multiprocessing
+    # to pickle it up when spawning children.  We can't pass it as an argument
+    # to _FetchProjectList below as multiprocessing is unable to pickle those.
+    Sync.ssh_proxy = None
+
+    # NB: Multiprocessing is heavy, so don't spin it up for one job.
+    if len(projects_list) == 1 or jobs == 1:
+      self._FetchInitChild(ssh_proxy)
+      if not _ProcessResults(self._FetchProjectList(opt, x) for x in projects_list):
+        ret = False
+    else:
+      # Favor throughput over responsiveness when quiet.  It seems that imap()
+      # will yield results in batches relative to chunksize, so even as the
+      # children finish a sync, we won't see the result until one child finishes
+      # ~chunksize jobs.  When using a large --jobs with large chunksize, this
+      # can be jarring as there will be a large initial delay where repo looks
+      # like it isn't doing anything and sits at 0%, but then suddenly completes
+      # a lot of jobs all at once.  Since this code is more network bound, we
+      # can accept a bit more CPU overhead with a smaller chunksize so that the
+      # user sees more immediate & continuous feedback.
+      if opt.quiet:
+        chunksize = WORKER_BATCH_SIZE
       else:
-        self._FetchProjectList(**kwargs)
+        pm.update(inc=0, msg='warming up')
+        chunksize = 4
+      with multiprocessing.Pool(jobs, initializer=self._FetchInitChild,
+                                initargs=(ssh_proxy,)) as pool:
+        results = pool.imap_unordered(
+            functools.partial(self._FetchProjectList, opt),
+            projects_list,
+            chunksize=chunksize)
+        if not _ProcessResults(results):
+          ret = False
+          pool.close()
 
-    for t in threads:
-      t.join()
-
-    # If we saw an error, exit with code 1 so that other scripts can check.
-    if err_event.isSet() and opt.fail_fast:
-      print('\nerror: Exited sync due to fetch errors', file=sys.stderr)
-      sys.exit(1)
+    # Cleanup the reference now that we're done with it, and we're going to
+    # release any resources it points to.  If we don't, later multiprocessing
+    # usage (e.g. checkouts) will try to pickle and then crash.
+    del Sync.ssh_proxy
 
     pm.end()
     self._fetch_times.Save()
 
-    if not self.manifest.IsArchive:
-      self._GCProjects(projects)
+    if not self.outer_client.manifest.IsArchive:
+      self._GCProjects(projects, opt, err_event)
 
-    return fetched
+    return (ret, fetched)
 
-  def _CheckoutWorker(self, opt, sem, project, *args, **kwargs):
-    """Main function of the fetch threads.
-
-    Delegates most of the work to _CheckoutOne.
+  def _FetchMain(self, opt, args, all_projects, err_event,
+                 ssh_proxy, manifest):
+    """The main network fetch loop.
 
     Args:
       opt: Program options returned from optparse.  See _Options().
-      projects: Projects to fetch.
-      sem: We'll release() this semaphore when we exit so that another thread
-          can be started up.
-      *args, **kwargs: Remaining arguments to pass to _CheckoutOne. See the
-          _CheckoutOne docstring for details.
-    """
-    try:
-      return self._CheckoutOne(opt, project, *args, **kwargs)
-    finally:
-      sem.release()
+      args: Command line args used to filter out projects.
+      all_projects: List of all projects that should be fetched.
+      err_event: Whether an error was hit while processing.
+      ssh_proxy: SSH manager for clients & masters.
+      manifest: The manifest to use.
 
-  def _CheckoutOne(self, opt, project, lock, pm, err_event, err_results):
+    Returns:
+      List of all projects that should be checked out.
+    """
+    rp = manifest.repoProject
+
+    to_fetch = []
+    now = time.time()
+    if _ONE_DAY_S <= (now - rp.LastFetch):
+      to_fetch.append(rp)
+    to_fetch.extend(all_projects)
+    to_fetch.sort(key=self._fetch_times.Get, reverse=True)
+
+    success, fetched = self._Fetch(to_fetch, opt, err_event, ssh_proxy)
+    if not success:
+      err_event.set()
+
+    _PostRepoFetch(rp, opt.repo_verify)
+    if opt.network_only:
+      # bail out now; the rest touches the working tree
+      if err_event.is_set():
+        print('\nerror: Exited sync due to fetch errors.\n', file=sys.stderr)
+        sys.exit(1)
+      return
+
+    # Iteratively fetch missing and/or nested unregistered submodules
+    previously_missing_set = set()
+    while True:
+      self._ReloadManifest(None, manifest)
+      all_projects = self.GetProjects(args,
+                                      missing_ok=True,
+                                      submodules_ok=opt.fetch_submodules,
+                                      manifest=manifest,
+                                      all_manifests=not opt.this_manifest_only)
+      missing = []
+      for project in all_projects:
+        if project.gitdir not in fetched:
+          missing.append(project)
+      if not missing:
+        break
+      # Stop us from non-stopped fetching actually-missing repos: If set of
+      # missing repos has not been changed from last fetch, we break.
+      missing_set = set(p.name for p in missing)
+      if previously_missing_set == missing_set:
+        break
+      previously_missing_set = missing_set
+      success, new_fetched = self._Fetch(missing, opt, err_event, ssh_proxy)
+      if not success:
+        err_event.set()
+      fetched.update(new_fetched)
+
+    return all_projects
+
+  def _CheckoutOne(self, detach_head, force_sync, project):
     """Checkout work tree for one project
 
     Args:
-      opt: Program options returned from optparse.  See _Options().
+      detach_head: Whether to leave a detached HEAD.
+      force_sync: Force checking out of the repo.
       project: Project object for the project to checkout.
-      lock: Lock for accessing objects that are shared amongst multiple
-          _CheckoutWorker() threads.
-      pm: Instance of a Project object.  We will call pm.update() (with our
-          lock held).
-      err_event: We'll set this event in the case of an error (after printing
-          out info about the error).
-      err_results: A list of strings, paths to git repos where checkout
-          failed.
 
     Returns:
       Whether the fetch was successful.
     """
-    # We'll set to true once we've locked the lock.
-    did_lock = False
-
-    # Encapsulate everything in a try/except/finally so that:
-    # - We always set err_event in the case of an exception.
-    # - We always make sure we unlock the lock if we locked it.
     start = time.time()
-    syncbuf = SyncBuffer(self.manifest.manifestProject.config,
-                         detach_head=opt.detach_head)
+    syncbuf = SyncBuffer(project.manifest.manifestProject.config,
+                         detach_head=detach_head)
     success = False
     try:
-      try:
-        project.Sync_LocalHalf(syncbuf, force_sync=opt.force_sync)
+      project.Sync_LocalHalf(syncbuf, force_sync=force_sync)
+      success = syncbuf.Finish()
+    except GitError as e:
+      print('error.GitError: Cannot checkout %s: %s' %
+            (project.name, str(e)), file=sys.stderr)
+    except Exception as e:
+      print('error: Cannot checkout %s: %s: %s' %
+            (project.name, type(e).__name__, str(e)),
+            file=sys.stderr)
+      raise
 
-        # Lock around all the rest of the code, since printing, updating a set
-        # and Progress.update() are not thread safe.
-        lock.acquire()
-        success = syncbuf.Finish()
-        did_lock = True
+    if not success:
+      print('error: Cannot checkout %s' % (project.name), file=sys.stderr)
+    finish = time.time()
+    return (success, project, start, finish)
 
-        if not success:
-          err_event.set()
-          print('error: Cannot checkout %s' % (project.name),
-                file=sys.stderr)
-          raise _CheckoutError()
-
-        pm.update(msg=project.name)
-      except _CheckoutError:
-        pass
-      except Exception as e:
-        print('error: Cannot checkout %s: %s: %s' %
-              (project.name, type(e).__name__, str(e)),
-              file=sys.stderr)
-        err_event.set()
-        raise
-    finally:
-      if did_lock:
-        if not success:
-          err_results.append(project.relpath)
-        lock.release()
-      finish = time.time()
-      self.event_log.AddSync(project, event_log.TASK_SYNC_LOCAL,
-                             start, finish, success)
-
-    return success
-
-  def _Checkout(self, all_projects, opt):
+  def _Checkout(self, all_projects, opt, err_results):
     """Checkout projects listed in all_projects
 
     Args:
       all_projects: List of all projects that should be checked out.
       opt: Program options returned from optparse.  See _Options().
+      err_results: A list of strings, paths to git repos where checkout failed.
     """
+    # Only checkout projects with worktrees.
+    all_projects = [x for x in all_projects if x.worktree]
 
-    # Perform checkouts in multiple threads when we are using partial clone.
-    # Without partial clone, all needed git objects are already downloaded,
-    # in this situation it's better to use only one process because the checkout
-    # would be mostly disk I/O; with partial clone, the objects are only
-    # downloaded when demanded (at checkout time), which is similar to the
-    # Sync_NetworkHalf case and parallelism would be helpful.
-    if self.manifest.CloneFilter:
-      syncjobs = self.jobs
-    else:
-      syncjobs = 1
+    def _ProcessResults(pool, pm, results):
+      ret = True
+      for (success, project, start, finish) in results:
+        self.event_log.AddSync(project, event_log.TASK_SYNC_LOCAL,
+                               start, finish, success)
+        # Check for any errors before running any more tasks.
+        # ...we'll let existing jobs finish, though.
+        if not success:
+          ret = False
+          err_results.append(project.relpath)
+          if opt.fail_fast:
+            if pool:
+              pool.close()
+            return ret
+        pm.update(msg=project.name)
+      return ret
 
-    lock = _threading.Lock()
-    pm = Progress('Checking out projects', len(all_projects))
+    return self.ExecuteInParallel(
+        opt.jobs_checkout,
+        functools.partial(self._CheckoutOne, opt.detach_head, opt.force_sync),
+        all_projects,
+        callback=_ProcessResults,
+        output=Progress('Checking out', len(all_projects), quiet=opt.quiet)) and not err_results
 
-    threads = set()
-    sem = _threading.Semaphore(syncjobs)
-    err_event = _threading.Event()
-    err_results = []
+  def _GCProjects(self, projects, opt, err_event):
+    pm = Progress('Garbage collecting', len(projects), delay=False, quiet=opt.quiet)
+    pm.update(inc=0, msg='prescan')
 
-    for project in all_projects:
-      # Check for any errors before running any more tasks.
-      # ...we'll let existing threads finish, though.
-      if err_event.isSet() and opt.fail_fast:
-        break
-
-      sem.acquire()
-      if project.worktree:
-        kwargs = dict(opt=opt,
-                      sem=sem,
-                      project=project,
-                      lock=lock,
-                      pm=pm,
-                      err_event=err_event,
-                      err_results=err_results)
-        if syncjobs > 1:
-          t = _threading.Thread(target=self._CheckoutWorker,
-                                kwargs=kwargs)
-          # Ensure that Ctrl-C will not freeze the repo process.
-          t.daemon = True
-          threads.add(t)
-          t.start()
-        else:
-          self._CheckoutWorker(**kwargs)
-
-    for t in threads:
-      t.join()
-
-    pm.end()
-    # If we saw an error, exit with code 1 so that other scripts can check.
-    if err_event.isSet():
-      print('\nerror: Exited sync due to checkout errors', file=sys.stderr)
-      if err_results:
-        print('Failing repos:\n%s' % '\n'.join(err_results),
-              file=sys.stderr)
-      sys.exit(1)
-
-  def _GCProjects(self, projects):
-    gc_gitdirs = {}
+    tidy_dirs = {}
     for project in projects:
-      if len(project.manifest.GetProjectsWithName(project.name)) > 1:
-        print('Shared project %s found, disabling pruning.' % project.name)
-        project.bare_git.config('--replace-all', 'gc.pruneExpire', 'never')
-      gc_gitdirs[project.gitdir] = project.bare_git
+      # Make sure pruning never kicks in with shared projects that do not use
+      # alternates to avoid corruption.
+      if (not project.use_git_worktrees and
+              len(project.manifest.GetProjectsWithName(project.name, all_manifests=True)) > 1):
+        if project.UseAlternates:
+          # Undo logic set by previous versions of repo.
+          project.config.SetString('extensions.preciousObjects', None)
+          project.config.SetString('gc.pruneExpire', None)
+        else:
+          if not opt.quiet:
+            print('\r%s: Shared project %s found, disabling pruning.' %
+                  (project.relpath, project.name))
+          if git_require((2, 7, 0)):
+            project.EnableRepositoryExtension('preciousObjects')
+          else:
+            # This isn't perfect, but it's the best we can do with old git.
+            print('\r%s: WARNING: shared projects are unreliable when using old '
+                  'versions of git; please upgrade to git-2.7.0+.'
+                  % (project.relpath,),
+                  file=sys.stderr)
+            project.config.SetString('gc.pruneExpire', 'never')
+      project.config.SetString('gc.autoDetach', 'false')
+      # Only call git gc once per objdir, but call pack-refs for the remainder.
+      if project.objdir not in tidy_dirs:
+        tidy_dirs[project.objdir] = (
+            True,  # Run a full gc.
+            project.bare_git,
+        )
+      elif project.gitdir not in tidy_dirs:
+        tidy_dirs[project.gitdir] = (
+            False,  # Do not run a full gc; just run pack-refs.
+            project.bare_git,
+        )
 
-    has_dash_c = git_require((1, 7, 2))
-    if multiprocessing and has_dash_c:
-      cpu_count = multiprocessing.cpu_count()
-    else:
-      cpu_count = 1
-    jobs = min(self.jobs, cpu_count)
+    jobs = opt.jobs
 
     if jobs < 2:
-      for bare_git in gc_gitdirs.values():
-        bare_git.gc('--auto')
+      for (run_gc, bare_git) in tidy_dirs.values():
+        pm.update(msg=bare_git._project.name)
+        if run_gc:
+          bare_git.gc('--auto')
+        else:
+          bare_git.pack_refs()
+      pm.end()
       return
 
+    cpu_count = os.cpu_count()
     config = {'pack.threads': cpu_count // jobs if cpu_count > jobs else 1}
 
     threads = set()
     sem = _threading.Semaphore(jobs)
-    err_event = _threading.Event()
 
-    def GC(bare_git):
+    def tidy_up(run_gc, bare_git):
+      pm.start(bare_git._project.name)
       try:
         try:
-          bare_git.gc('--auto', config=config)
+          if run_gc:
+            bare_git.gc('--auto', config=config)
+          else:
+            bare_git.pack_refs(config=config)
         except GitError:
           err_event.set()
-        except:
+        except Exception:
           err_event.set()
           raise
       finally:
+        pm.finish(bare_git._project.name)
         sem.release()
 
-    for bare_git in gc_gitdirs.values():
-      if err_event.isSet():
+    for (run_gc, bare_git) in tidy_dirs.values():
+      if err_event.is_set() and opt.fail_fast:
         break
       sem.acquire()
-      t = _threading.Thread(target=GC, args=(bare_git,))
+      t = _threading.Thread(target=tidy_up, args=(run_gc, bare_git,))
       t.daemon = True
       threads.add(t)
       t.start()
 
     for t in threads:
       t.join()
+    pm.end()
 
-    if err_event.isSet():
-      print('\nerror: Exited sync due to gc errors', file=sys.stderr)
-      sys.exit(1)
+  def _ReloadManifest(self, manifest_name, manifest):
+    """Reload the manfiest from the file specified by the |manifest_name|.
 
-  def _ReloadManifest(self, manifest_name=None):
+    It unloads the manifest if |manifest_name| is None.
+
+    Args:
+      manifest_name: Manifest file to be reloaded.
+      manifest: The manifest to use.
+    """
     if manifest_name:
-      # Override calls _Unload already
-      self.manifest.Override(manifest_name)
+      # Override calls Unload already
+      manifest.Override(manifest_name)
     else:
-      self.manifest._Unload()
+      manifest.Unload()
 
-  def _DeleteProject(self, path):
-    print('Deleting obsolete path %s' % path, file=sys.stderr)
+  def UpdateProjectList(self, opt, manifest):
+    """Update the cached projects list for |manifest|
 
-    # Delete the .git directory first, so we're less likely to have a partially
-    # working git repository around. There shouldn't be any git projects here,
-    # so rmtree works.
-    try:
-      platform_utils.rmtree(os.path.join(path, '.git'))
-    except OSError as e:
-      print('Failed to remove %s (%s)' % (os.path.join(path, '.git'), str(e)), file=sys.stderr)
-      print('error: Failed to delete obsolete path %s' % path, file=sys.stderr)
-      print('       remove manually, then run sync again', file=sys.stderr)
-      return 1
+    In a multi-manifest checkout, each manifest has its own project.list.
 
-    # Delete everything under the worktree, except for directories that contain
-    # another git project
-    dirs_to_remove = []
-    failed = False
-    for root, dirs, files in platform_utils.walk(path):
-      for f in files:
-        try:
-          platform_utils.remove(os.path.join(root, f))
-        except OSError as e:
-          print('Failed to remove %s (%s)' % (os.path.join(root, f), str(e)), file=sys.stderr)
-          failed = True
-      dirs[:] = [d for d in dirs
-                 if not os.path.lexists(os.path.join(root, d, '.git'))]
-      dirs_to_remove += [os.path.join(root, d) for d in dirs
-                         if os.path.join(root, d) not in dirs_to_remove]
-    for d in reversed(dirs_to_remove):
-      if platform_utils.islink(d):
-        try:
-          platform_utils.remove(d)
-        except OSError as e:
-          print('Failed to remove %s (%s)' % (os.path.join(root, d), str(e)), file=sys.stderr)
-          failed = True
-      elif len(platform_utils.listdir(d)) == 0:
-        try:
-          platform_utils.rmdir(d)
-        except OSError as e:
-          print('Failed to remove %s (%s)' % (os.path.join(root, d), str(e)), file=sys.stderr)
-          failed = True
-          continue
-    if failed:
-      print('error: Failed to delete obsolete path %s' % path, file=sys.stderr)
-      print('       remove manually, then run sync again', file=sys.stderr)
-      return 1
+    Args:
+      opt: Program options returned from optparse.  See _Options().
+      manifest: The manifest to use.
 
-    # Try deleting parent dirs if they are empty
-    project_dir = path
-    while project_dir != self.manifest.topdir:
-      if len(platform_utils.listdir(project_dir)) == 0:
-        platform_utils.rmdir(project_dir)
-      else:
-        break
-      project_dir = os.path.dirname(project_dir)
-
-    return 0
-
-  def UpdateProjectList(self, opt):
+    Returns:
+      0: success
+      1: failure
+    """
     new_project_paths = []
-    for project in self.GetProjects(None, missing_ok=True):
+    for project in self.GetProjects(None, missing_ok=True, manifest=manifest,
+                                    all_manifests=False):
       if project.relpath:
         new_project_paths.append(project.relpath)
     file_name = 'project.list'
-    file_path = os.path.join(self.manifest.repodir, file_name)
+    file_path = os.path.join(manifest.subdir, file_name)
     old_project_paths = []
 
     if os.path.exists(file_path):
@@ -702,31 +786,23 @@ later is required to fix a server side protocol bug.
           continue
         if path not in new_project_paths:
           # If the path has already been deleted, we don't need to do it
-          gitdir = os.path.join(self.manifest.topdir, path, '.git')
+          gitdir = os.path.join(manifest.topdir, path, '.git')
           if os.path.exists(gitdir):
             project = Project(
-                           manifest = self.manifest,
-                           name = path,
-                           remote = RemoteSpec('origin'),
-                           gitdir = gitdir,
-                           objdir = gitdir,
-                           worktree = os.path.join(self.manifest.topdir, path),
-                           relpath = path,
-                           revisionExpr = 'HEAD',
-                           revisionId = None,
-                           groups = None)
-
-            if project.IsDirty() and opt.force_remove_dirty:
-              print('WARNING: Removing dirty project "%s": uncommitted changes '
-                    'erased' % project.relpath, file=sys.stderr)
-              self._DeleteProject(project.worktree)
-            elif project.IsDirty():
-              print('error: Cannot remove project "%s": uncommitted changes '
-                    'are present' % project.relpath, file=sys.stderr)
-              print('       commit changes, then run sync again',
-                    file=sys.stderr)
-              return 1
-            elif self._DeleteProject(project.worktree):
+                manifest=manifest,
+                name=path,
+                remote=RemoteSpec('origin'),
+                gitdir=gitdir,
+                objdir=gitdir,
+                use_git_worktrees=os.path.isfile(gitdir),
+                worktree=os.path.join(manifest.topdir, path),
+                relpath=path,
+                revisionExpr='HEAD',
+                revisionId=None,
+                groups=None)
+            if not project.DeleteWorktree(
+                    quiet=opt.quiet,
+                    force=opt.force_remove_dirty):
               return 1
 
     new_project_paths.sort()
@@ -735,17 +811,68 @@ later is required to fix a server side protocol bug.
       fd.write('\n')
     return 0
 
-  def _SmartSyncSetup(self, opt, smart_sync_manifest_path):
-    if not self.manifest.manifest_server:
+  def UpdateCopyLinkfileList(self, manifest):
+    """Save all dests of copyfile and linkfile, and update them if needed.
+
+    Returns:
+      Whether update was successful.
+    """
+    new_paths = {}
+    new_linkfile_paths = []
+    new_copyfile_paths = []
+    for project in self.GetProjects(None, missing_ok=True,
+                                    manifest=manifest, all_manifests=False):
+      new_linkfile_paths.extend(x.dest for x in project.linkfiles)
+      new_copyfile_paths.extend(x.dest for x in project.copyfiles)
+
+    new_paths = {
+        'linkfile': new_linkfile_paths,
+        'copyfile': new_copyfile_paths,
+    }
+
+    copylinkfile_name = 'copy-link-files.json'
+    copylinkfile_path = os.path.join(manifest.subdir, copylinkfile_name)
+    old_copylinkfile_paths = {}
+
+    if os.path.exists(copylinkfile_path):
+      with open(copylinkfile_path, 'rb') as fp:
+        try:
+          old_copylinkfile_paths = json.load(fp)
+        except Exception:
+          print('error: %s is not a json formatted file.' %
+                copylinkfile_path, file=sys.stderr)
+          platform_utils.remove(copylinkfile_path)
+          return False
+
+      need_remove_files = []
+      need_remove_files.extend(
+          set(old_copylinkfile_paths.get('linkfile', [])) -
+          set(new_linkfile_paths))
+      need_remove_files.extend(
+          set(old_copylinkfile_paths.get('copyfile', [])) -
+          set(new_copyfile_paths))
+
+      for need_remove_file in need_remove_files:
+        # Try to remove the updated copyfile or linkfile.
+        # So, if the file is not exist, nothing need to do.
+        platform_utils.remove(need_remove_file, missing_ok=True)
+
+    # Create copy-link-files.json, save dest path of "copyfile" and "linkfile".
+    with open(copylinkfile_path, 'w', encoding='utf-8') as fp:
+      json.dump(new_paths, fp)
+    return True
+
+  def _SmartSyncSetup(self, opt, smart_sync_manifest_path, manifest):
+    if not manifest.manifest_server:
       print('error: cannot smart sync: no manifest server defined in '
             'manifest', file=sys.stderr)
       sys.exit(1)
 
-    manifest_server = self.manifest.manifest_server
+    manifest_server = manifest.manifest_server
     if not opt.quiet:
       print('Using manifest server %s' % manifest_server)
 
-    if not '@' in manifest_server:
+    if '@' not in manifest_server:
       username = None
       password = None
       if opt.manifest_server_username and opt.manifest_server_password:
@@ -782,19 +909,15 @@ later is required to fix a server side protocol bug.
     try:
       server = xmlrpc.client.Server(manifest_server, transport=transport)
       if opt.smart_sync:
-        p = self.manifest.manifestProject
-        b = p.GetBranch(p.CurrentBranch)
-        branch = b.merge
-        if branch.startswith(R_HEADS):
-          branch = branch[len(R_HEADS):]
+        branch = self._GetBranch(manifest.manifestProject)
 
-        env = os.environ.copy()
-        if 'SYNC_TARGET' in env:
-          target = env['SYNC_TARGET']
+        if 'SYNC_TARGET' in os.environ:
+          target = os.environ['SYNC_TARGET']
           [success, manifest_str] = server.GetApprovedManifest(branch, target)
-        elif 'TARGET_PRODUCT' in env and 'TARGET_BUILD_VARIANT' in env:
-          target = '%s-%s' % (env['TARGET_PRODUCT'],
-                              env['TARGET_BUILD_VARIANT'])
+        elif ('TARGET_PRODUCT' in os.environ and
+              'TARGET_BUILD_VARIANT' in os.environ):
+          target = '%s-%s' % (os.environ['TARGET_PRODUCT'],
+                              os.environ['TARGET_BUILD_VARIANT'])
           [success, manifest_str] = server.GetApprovedManifest(branch, target)
         else:
           [success, manifest_str] = server.GetApprovedManifest(branch)
@@ -812,33 +935,68 @@ later is required to fix a server side protocol bug.
                 % (smart_sync_manifest_path, e),
                 file=sys.stderr)
           sys.exit(1)
-        self._ReloadManifest(manifest_name)
+        self._ReloadManifest(manifest_name, manifest)
       else:
         print('error: manifest server RPC call failed: %s' %
               manifest_str, file=sys.stderr)
         sys.exit(1)
     except (socket.error, IOError, xmlrpc.client.Fault) as e:
       print('error: cannot connect to manifest server %s:\n%s'
-            % (self.manifest.manifest_server, e), file=sys.stderr)
+            % (manifest.manifest_server, e), file=sys.stderr)
       sys.exit(1)
     except xmlrpc.client.ProtocolError as e:
       print('error: cannot connect to manifest server %s:\n%d %s'
-            % (self.manifest.manifest_server, e.errcode, e.errmsg),
+            % (manifest.manifest_server, e.errcode, e.errmsg),
             file=sys.stderr)
       sys.exit(1)
 
     return manifest_name
 
+  def _UpdateAllManifestProjects(self, opt, mp, manifest_name):
+    """Fetch & update the local manifest project.
+
+    After syncing the manifest project, if the manifest has any sub manifests,
+    those are recursively processed.
+
+    Args:
+      opt: Program options returned from optparse.  See _Options().
+      mp: the manifestProject to query.
+      manifest_name: Manifest file to be reloaded.
+    """
+    if not mp.standalone_manifest_url:
+      self._UpdateManifestProject(opt, mp, manifest_name)
+
+    if mp.manifest.submanifests:
+      for submanifest in mp.manifest.submanifests.values():
+        child = submanifest.repo_client.manifest
+        child.manifestProject.SyncWithPossibleInit(
+            submanifest,
+            current_branch_only=self._GetCurrentBranchOnly(opt, child),
+            verbose=opt.verbose,
+            tags=opt.tags,
+            git_event_log=self.git_event_log,
+        )
+        self._UpdateAllManifestProjects(opt, child.manifestProject, None)
+
   def _UpdateManifestProject(self, opt, mp, manifest_name):
-    """Fetch & update the local manifest project."""
+    """Fetch & update the local manifest project.
+
+    Args:
+      opt: Program options returned from optparse.  See _Options().
+      mp: the manifestProject to query.
+      manifest_name: Manifest file to be reloaded.
+    """
     if not opt.local_only:
       start = time.time()
-      success = mp.Sync_NetworkHalf(quiet=opt.quiet,
-                                    current_branch_only=opt.current_branch_only,
-                                    no_tags=opt.no_tags,
+      success = mp.Sync_NetworkHalf(quiet=opt.quiet, verbose=opt.verbose,
+                                    current_branch_only=self._GetCurrentBranchOnly(opt, mp.manifest),
+                                    force_sync=opt.force_sync,
+                                    tags=opt.tags,
                                     optimized_fetch=opt.optimized_fetch,
-                                    submodules=self.manifest.HasSubmodules,
-                                    clone_filter=self.manifest.CloneFilter)
+                                    retry_fetches=opt.retry_fetches,
+                                    submodules=mp.manifest.HasSubmodules,
+                                    clone_filter=mp.manifest.CloneFilter,
+                                    partial_clone_exclude=mp.manifest.PartialCloneExclude)
       finish = time.time()
       self.event_log.AddSync(mp, event_log.TASK_SYNC_NETWORK,
                              start, finish, success)
@@ -846,15 +1004,13 @@ later is required to fix a server side protocol bug.
     if mp.HasChanges:
       syncbuf = SyncBuffer(mp.config)
       start = time.time()
-      mp.Sync_LocalHalf(syncbuf, submodules=self.manifest.HasSubmodules)
+      mp.Sync_LocalHalf(syncbuf, submodules=mp.manifest.HasSubmodules)
       clean = syncbuf.Finish()
       self.event_log.AddSync(mp, event_log.TASK_SYNC_LOCAL,
                              start, time.time(), clean)
       if not clean:
         sys.exit(1)
-      self._ReloadManifest(opt.manifest_name)
-      if opt.jobs is None:
-        self.jobs = self.manifest.default.sync_j
+      self._ReloadManifest(manifest_name, mp.manifest)
 
   def ValidateOptions(self, opt, args):
     if opt.force_broken:
@@ -874,22 +1030,26 @@ later is required to fix a server side protocol bug.
       if None in [opt.manifest_server_username, opt.manifest_server_password]:
         self.OptionParser.error('both -u and -p must be given')
 
+    if opt.prune is None:
+      opt.prune = True
+
   def Execute(self, opt, args):
-    if opt.jobs:
-      self.jobs = opt.jobs
-    if self.jobs > 1:
-      soft_limit, _ = _rlimit_nofile()
-      self.jobs = min(self.jobs, (soft_limit - 5) // 3)
+    manifest = self.outer_manifest
+    if not opt.outer_manifest:
+      manifest = self.manifest
 
     if opt.manifest_name:
-      self.manifest.Override(opt.manifest_name)
+      manifest.Override(opt.manifest_name)
 
     manifest_name = opt.manifest_name
     smart_sync_manifest_path = os.path.join(
-      self.manifest.manifestProject.worktree, 'smart_sync_override.xml')
+        manifest.manifestProject.worktree, 'smart_sync_override.xml')
+
+    if opt.clone_bundle is None:
+      opt.clone_bundle = manifest.CloneBundle
 
     if opt.smart_sync or opt.smart_tag:
-      manifest_name = self._SmartSyncSetup(opt, smart_sync_manifest_path)
+      manifest_name = self._SmartSyncSetup(opt, smart_sync_manifest_path, manifest)
     else:
       if os.path.isfile(smart_sync_manifest_path):
         try:
@@ -898,20 +1058,68 @@ later is required to fix a server side protocol bug.
           print('error: failed to remove existing smart sync override manifest: %s' %
                 e, file=sys.stderr)
 
-    rp = self.manifest.repoProject
+    err_event = multiprocessing.Event()
+
+    rp = manifest.repoProject
     rp.PreSync()
+    cb = rp.CurrentBranch
+    if cb:
+      base = rp.GetBranch(cb).merge
+      if not base or not base.startswith('refs/heads/'):
+        print('warning: repo is not tracking a remote branch, so it will not '
+              'receive updates; run `repo init --repo-rev=stable` to fix.',
+              file=sys.stderr)
 
-    mp = self.manifest.manifestProject
-    mp.PreSync()
+    for m in self.ManifestList(opt):
+      mp = m.manifestProject
+      is_standalone_manifest = bool(mp.standalone_manifest_url)
+      if not is_standalone_manifest:
+        mp.PreSync()
 
-    if opt.repo_upgraded:
-      _PostRepoUpgrade(self.manifest, quiet=opt.quiet)
+      if opt.repo_upgraded:
+        _PostRepoUpgrade(m, quiet=opt.quiet)
 
-    self._UpdateManifestProject(opt, mp, manifest_name)
+    if opt.mp_update:
+      self._UpdateAllManifestProjects(opt, mp, manifest_name)
+    else:
+      print('Skipping update of local manifest project.')
+
+    # Now that the manifests are up-to-date, setup the jobs value.
+    if opt.jobs is None:
+      # User has not made a choice, so use the manifest settings.
+      opt.jobs = mp.default.sync_j
+    if opt.jobs is not None:
+      # Neither user nor manifest have made a choice.
+      if opt.jobs_network is None:
+        opt.jobs_network = opt.jobs
+      if opt.jobs_checkout is None:
+        opt.jobs_checkout = opt.jobs
+    # Setup defaults if jobs==0.
+    if not opt.jobs:
+      if not opt.jobs_network:
+        opt.jobs_network = 1
+      if not opt.jobs_checkout:
+        opt.jobs_checkout = DEFAULT_LOCAL_JOBS
+      opt.jobs = os.cpu_count()
+
+    # Try to stay under user rlimit settings.
+    #
+    # Since each worker requires at 3 file descriptors to run `git fetch`, use
+    # that to scale down the number of jobs.  Unfortunately there isn't an easy
+    # way to determine this reliably as systems change, but it was last measured
+    # by hand in 2011.
+    soft_limit, _ = _rlimit_nofile()
+    jobs_soft_limit = max(1, (soft_limit - 5) // 3)
+    opt.jobs = min(opt.jobs, jobs_soft_limit)
+    opt.jobs_network = min(opt.jobs_network, jobs_soft_limit)
+    opt.jobs_checkout = min(opt.jobs_checkout, jobs_soft_limit)
+
+    superproject_logging_data = {}
+    self._UpdateProjectsRevisionId(opt, args, superproject_logging_data,
+                                   manifest)
 
     if self.gitc_manifest:
-      gitc_manifest_projects = self.GetProjects(args,
-                                                missing_ok=True)
+      gitc_manifest_projects = self.GetProjects(args, missing_ok=True)
       gitc_projects = []
       opened_projects = []
       for project in gitc_manifest_projects:
@@ -930,7 +1138,7 @@ later is required to fix a server side protocol bug.
         if manifest_name:
           manifest.Override(manifest_name)
         else:
-          manifest.Override(self.manifest.manifestFile)
+          manifest.Override(manifest.manifestFile)
         gitc_utils.generate_gitc_manifest(self.gitc_manifest,
                                           manifest,
                                           gitc_projects)
@@ -940,65 +1148,117 @@ later is required to fix a server side protocol bug.
       # generate a new args list to represent the opened projects.
       # TODO: make this more reliable -- if there's a project name/path overlap,
       # this may choose the wrong project.
-      args = [os.path.relpath(self.manifest.paths[path].worktree, os.getcwd())
+      args = [os.path.relpath(manifest.paths[path].worktree, os.getcwd())
               for path in opened_projects]
       if not args:
         return
+
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
-                                    submodules_ok=opt.fetch_submodules)
+                                    submodules_ok=opt.fetch_submodules,
+                                    manifest=manifest,
+                                    all_manifests=not opt.this_manifest_only)
 
-    self._fetch_times = _FetchTimes(self.manifest)
+    err_network_sync = False
+    err_update_projects = False
+
+    self._fetch_times = _FetchTimes(manifest)
     if not opt.local_only:
-      to_fetch = []
-      now = time.time()
-      if _ONE_DAY_S <= (now - rp.LastFetch):
-        to_fetch.append(rp)
-      to_fetch.extend(all_projects)
-      to_fetch.sort(key=self._fetch_times.Get, reverse=True)
+      with multiprocessing.Manager() as manager:
+        with ssh.ProxyManager(manager) as ssh_proxy:
+          # Initialize the socket dir once in the parent.
+          ssh_proxy.sock()
+          all_projects = self._FetchMain(opt, args, all_projects, err_event,
+                                         ssh_proxy, manifest)
 
-      fetched = self._Fetch(to_fetch, opt)
-      _PostRepoFetch(rp, opt.no_repo_verify)
       if opt.network_only:
-        # bail out now; the rest touches the working tree
         return
 
-      # Iteratively fetch missing and/or nested unregistered submodules
-      previously_missing_set = set()
-      while True:
-        self._ReloadManifest(manifest_name)
-        all_projects = self.GetProjects(args,
-                                        missing_ok=True,
-                                        submodules_ok=opt.fetch_submodules)
-        missing = []
-        for project in all_projects:
-          if project.gitdir not in fetched:
-            missing.append(project)
-        if not missing:
-          break
-        # Stop us from non-stopped fetching actually-missing repos: If set of
-        # missing repos has not been changed from last fetch, we break.
-        missing_set = set(p.name for p in missing)
-        if previously_missing_set == missing_set:
-          break
-        previously_missing_set = missing_set
-        fetched.update(self._Fetch(missing, opt))
+      # If we saw an error, exit with code 1 so that other scripts can check.
+      if err_event.is_set():
+        err_network_sync = True
+        if opt.fail_fast:
+          print('\nerror: Exited sync due to fetch errors.\n'
+                'Local checkouts *not* updated. Resolve network issues & '
+                'retry.\n'
+                '`repo sync -l` will update some local checkouts.',
+                file=sys.stderr)
+          sys.exit(1)
 
-    if self.manifest.IsMirror or self.manifest.IsArchive:
-      # bail out now, we have no working tree
-      return
+    for m in self.ManifestList(opt):
+      if m.IsMirror or m.IsArchive:
+        # bail out now, we have no working tree
+        continue
 
-    if self.UpdateProjectList(opt):
+      if self.UpdateProjectList(opt, m):
+        err_event.set()
+        err_update_projects = True
+        if opt.fail_fast:
+          print('\nerror: Local checkouts *not* updated.', file=sys.stderr)
+          sys.exit(1)
+
+      err_update_linkfiles = not self.UpdateCopyLinkfileList(m)
+      if err_update_linkfiles:
+        err_event.set()
+        if opt.fail_fast:
+          print('\nerror: Local update copyfile or linkfile failed.', file=sys.stderr)
+          sys.exit(1)
+
+    err_results = []
+    # NB: We don't exit here because this is the last step.
+    err_checkout = not self._Checkout(all_projects, opt, err_results)
+    if err_checkout:
+      err_event.set()
+
+    printed_notices = set()
+    # If there's a notice that's supposed to print at the end of the sync,
+    # print it now...  But avoid printing duplicate messages, and preserve
+    # order.
+    for m in sorted(self.ManifestList(opt), key=lambda x: x.path_prefix):
+      if m.notice and m.notice not in printed_notices:
+        print(m.notice)
+        printed_notices.add(m.notice)
+
+    # If we saw an error, exit with code 1 so that other scripts can check.
+    if err_event.is_set():
+      print('\nerror: Unable to fully sync the tree.', file=sys.stderr)
+      if err_network_sync:
+        print('error: Downloading network changes failed.', file=sys.stderr)
+      if err_update_projects:
+        print('error: Updating local project lists failed.', file=sys.stderr)
+      if err_update_linkfiles:
+        print('error: Updating copyfiles or linkfiles failed.', file=sys.stderr)
+      if err_checkout:
+        print('error: Checking out local projects failed.', file=sys.stderr)
+        if err_results:
+          print('Failing repos:\n%s' % '\n'.join(err_results), file=sys.stderr)
+      print('Try re-running with "-j1 --fail-fast" to exit at the first error.',
+            file=sys.stderr)
       sys.exit(1)
 
-    self._Checkout(all_projects, opt)
+    # Log the previous sync analysis state from the config.
+    self.git_event_log.LogDataConfigEvents(mp.config.GetSyncAnalysisStateData(),
+                                           'previous_sync_state')
 
-    # If there's a notice that's supposed to print at the end of the sync, print
-    # it now...
-    if self.manifest.notice:
-      print(self.manifest.notice)
+    # Update and log with the new sync analysis state.
+    mp.config.UpdateSyncAnalysisState(opt, superproject_logging_data)
+    self.git_event_log.LogDataConfigEvents(mp.config.GetSyncAnalysisStateData(),
+                                           'current_sync_state')
+
+    if not opt.quiet:
+      print('repo sync has finished successfully.')
+
 
 def _PostRepoUpgrade(manifest, quiet=False):
+  # Link the docs for the internal .repo/ layout for people
+  link = os.path.join(manifest.repodir, 'internal-fs-layout.md')
+  if not platform_utils.islink(link):
+    target = os.path.join('repo', 'docs', 'internal-fs-layout.md')
+    try:
+      platform_utils.symlink(target, link)
+    except Exception:
+      pass
+
   wrapper = Wrapper()
   if wrapper.NeedSetupGnuPG():
     wrapper.SetupGnuPG(quiet)
@@ -1006,15 +1266,29 @@ def _PostRepoUpgrade(manifest, quiet=False):
     if project.Exists:
       project.PostRepoUpgrade()
 
-def _PostRepoFetch(rp, no_repo_verify=False, verbose=False):
+
+def _PostRepoFetch(rp, repo_verify=True, verbose=False):
   if rp.HasChanges:
     print('info: A new version of repo is available', file=sys.stderr)
-    print(file=sys.stderr)
-    if no_repo_verify or _VerifyTag(rp):
-      syncbuf = SyncBuffer(rp.config)
-      rp.Sync_LocalHalf(syncbuf)
-      if not syncbuf.Finish():
-        sys.exit(1)
+    wrapper = Wrapper()
+    try:
+      rev = rp.bare_git.describe(rp.GetRevisionId())
+    except GitError:
+      rev = None
+    _, new_rev = wrapper.check_repo_rev(rp.gitdir, rev, repo_verify=repo_verify)
+    # See if we're held back due to missing signed tag.
+    current_revid = rp.bare_git.rev_parse('HEAD')
+    new_revid = rp.bare_git.rev_parse('--verify', new_rev)
+    if current_revid != new_revid:
+      # We want to switch to the new rev, but also not trash any uncommitted
+      # changes.  This helps with local testing/hacking.
+      # If a local change has been made, we will throw that away.
+      # We also have to make sure this will switch to an older commit if that's
+      # the latest tag in order to support release rollback.
+      try:
+        rp.work_git.reset('--keep', new_rev)
+      except GitError as e:
+        sys.exit(str(e))
       print('info: Restarting repo with latest version', file=sys.stderr)
       raise RepoChangedException(['--repo-upgraded'])
     else:
@@ -1023,53 +1297,6 @@ def _PostRepoFetch(rp, no_repo_verify=False, verbose=False):
     if verbose:
       print('repo version %s is current' % rp.work_git.describe(HEAD),
             file=sys.stderr)
-
-def _VerifyTag(project):
-  gpg_dir = os.path.expanduser('~/.repoconfig/gnupg')
-  if not os.path.exists(gpg_dir):
-    print('warning: GnuPG was not available during last "repo init"\n'
-          'warning: Cannot automatically authenticate repo."""',
-          file=sys.stderr)
-    return True
-
-  try:
-    cur = project.bare_git.describe(project.GetRevisionId())
-  except GitError:
-    cur = None
-
-  if not cur \
-     or re.compile(r'^.*-[0-9]{1,}-g[0-9a-f]{1,}$').match(cur):
-    rev = project.revisionExpr
-    if rev.startswith(R_HEADS):
-      rev = rev[len(R_HEADS):]
-
-    print(file=sys.stderr)
-    print("warning: project '%s' branch '%s' is not signed"
-          % (project.name, rev), file=sys.stderr)
-    return False
-
-  env = os.environ.copy()
-  env['GIT_DIR'] = project.gitdir.encode()
-  env['GNUPGHOME'] = gpg_dir.encode()
-
-  cmd = [GIT, 'tag', '-v', cur]
-  proc = subprocess.Popen(cmd,
-                          stdout = subprocess.PIPE,
-                          stderr = subprocess.PIPE,
-                          env = env)
-  out = proc.stdout.read()
-  proc.stdout.close()
-
-  err = proc.stderr.read()
-  proc.stderr.close()
-
-  if proc.wait() != 0:
-    print(file=sys.stderr)
-    print(out, file=sys.stderr)
-    print(err, file=sys.stderr)
-    print(file=sys.stderr)
-    return False
-  return True
 
 
 class _FetchTimes(object):
@@ -1090,7 +1317,7 @@ class _FetchTimes(object):
     old = self._times.get(name, t)
     self._seen.add(name)
     a = self._ALPHA
-    self._times[name] = (a*t) + ((1-a) * old)
+    self._times[name] = (a * t) + ((1 - a) * old)
 
   def _Load(self):
     if self._times is None:
@@ -1098,10 +1325,7 @@ class _FetchTimes(object):
         with open(self._path) as f:
           self._times = json.load(f)
       except (IOError, ValueError):
-        try:
-          platform_utils.remove(self._path)
-        except OSError:
-          pass
+        platform_utils.remove(self._path, missing_ok=True)
         self._times = {}
 
   def Save(self):
@@ -1119,15 +1343,14 @@ class _FetchTimes(object):
       with open(self._path, 'w') as f:
         json.dump(self._times, f, indent=2)
     except (IOError, TypeError):
-      try:
-        platform_utils.remove(self._path)
-      except OSError:
-        pass
+      platform_utils.remove(self._path, missing_ok=True)
 
 # This is a replacement for xmlrpc.client.Transport using urllib2
 # and supporting persistent-http[s]. It cannot change hosts from
 # request to request like the normal transport, the real url
 # is passed during initialization.
+
+
 class PersistentTransport(xmlrpc.client.Transport):
   def __init__(self, orig_host):
     self.orig_host = orig_host
@@ -1138,7 +1361,7 @@ class PersistentTransport(xmlrpc.client.Transport):
       # Since we're only using them for HTTP, copy the file temporarily,
       # stripping those prefixes away.
       if cookiefile:
-        tmpcookiefile = tempfile.NamedTemporaryFile()
+        tmpcookiefile = tempfile.NamedTemporaryFile(mode='w')
         tmpcookiefile.write("# HTTP Cookie File")
         try:
           with open(cookiefile) as f:
@@ -1162,7 +1385,7 @@ class PersistentTransport(xmlrpc.client.Transport):
       if proxy:
         proxyhandler = urllib.request.ProxyHandler({
             "http": proxy,
-            "https": proxy })
+            "https": proxy})
 
       opener = urllib.request.build_opener(
           urllib.request.HTTPCookieProcessor(cookiejar),
@@ -1209,14 +1432,18 @@ class PersistentTransport(xmlrpc.client.Transport):
           raise
 
       p, u = xmlrpc.client.getparser()
-      while 1:
-        data = response.read(1024)
-        if not data:
-          break
+      # Response should be fairly small, so read it all at once.
+      # This way we can show it to the user in case of error (e.g. HTML).
+      data = response.read()
+      try:
         p.feed(data)
+      except xml.parsers.expat.ExpatError as e:
+        raise IOError(
+            f'Parsing the manifest failed: {e}\n'
+            f'Please report this to your manifest server admin.\n'
+            f'Here is the full response:\n{data.decode("utf-8")}')
       p.close()
       return u.close()
 
   def close(self):
     pass
-

@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
 import errno
 import filecmp
 import glob
-import json
 import os
+import platform
 import random
 import re
 import shutil
@@ -29,36 +26,39 @@ import sys
 import tarfile
 import tempfile
 import time
-import traceback
+import urllib.parse
 
 from color import Coloring
+import fetch
 from git_command import GitCommand, git_require
 from git_config import GitConfig, IsId, GetSchemeFromUrl, GetUrlCookieFile, \
     ID_RE
-from error import GitError, HookError, UploadError, DownloadError
-from error import ManifestInvalidRevisionError
-from error import NoManifestException
+import git_superproject
+from git_trace2_event_log import EventLog
+from error import GitError, UploadError, DownloadError
+from error import ManifestInvalidRevisionError, ManifestInvalidPathError
+from error import NoManifestException, ManifestParseError
 import platform_utils
 import progress
 from repo_trace import IsTrace, Trace
 
-from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
+from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M, R_WORKTREE_M
 
-from pyversion import is_python3
-if is_python3():
-  import urllib.parse
-else:
-  import imp
-  import urlparse
-  urllib = imp.new_module('urllib')
-  urllib.parse = urlparse
-  input = raw_input
 
+# Maximum sleep time allowed during retries.
+MAXIMUM_RETRY_SLEEP_SEC = 3600.0
+# +-10% random jitter is added to each Fetches retry sleep duration.
+RETRY_JITTER_PERCENT = 0.1
+
+# Whether to use alternates.
+# TODO(vapier): Remove knob once behavior is verified.
+_ALTERNATES = os.environ.get('REPO_USE_ALTERNATES') == '1'
 
 def _lwrite(path, content):
   lock = '%s.lock' % path
 
-  with open(lock, 'w') as fd:
+  # Maintain Unix line endings on all OS's to match git behavior.
+  with open(lock, 'w', newline='\n') as fd:
     fd.write(content)
 
   try:
@@ -84,6 +84,7 @@ def not_rev(r):
 
 def sq(r):
   return "'" + r.replace("'", "'\''") + "'"
+
 
 _project_hook_list = None
 
@@ -197,21 +198,27 @@ class ReviewableBranch(object):
     return self._base_exists
 
   def UploadForReview(self, people,
+                      dryrun=False,
                       auto_topic=False,
-                      draft=False,
+                      hashtags=(),
+                      labels=(),
                       private=False,
                       notify=None,
                       wip=False,
+                      ready=False,
                       dest_branch=None,
                       validate_certs=True,
                       push_options=None):
-    self.project.UploadForReview(self.name,
-                                 people,
+    self.project.UploadForReview(branch=self.name,
+                                 people=people,
+                                 dryrun=dryrun,
                                  auto_topic=auto_topic,
-                                 draft=draft,
+                                 hashtags=hashtags,
+                                 labels=labels,
                                  private=private,
                                  notify=notify,
                                  wip=wip,
+                                 ready=ready,
                                  dest_branch=dest_branch,
                                  validate_certs=validate_certs,
                                  push_options=push_options)
@@ -234,7 +241,7 @@ class ReviewableBranch(object):
 class StatusColoring(Coloring):
 
   def __init__(self, config):
-    Coloring.__init__(self, config, 'status')
+    super().__init__(config, 'status')
     self.project = self.printer('header', attr='bold')
     self.branch = self.printer('header', attr='bold')
     self.nobranch = self.printer('nobranch', fg='red')
@@ -248,30 +255,104 @@ class StatusColoring(Coloring):
 class DiffColoring(Coloring):
 
   def __init__(self, config):
-    Coloring.__init__(self, config, 'diff')
+    super().__init__(config, 'diff')
     self.project = self.printer('header', attr='bold')
     self.fail = self.printer('fail', fg='red')
 
 
-class _Annotation(object):
+class Annotation(object):
 
   def __init__(self, name, value, keep):
     self.name = name
     self.value = value
     self.keep = keep
 
+  def __eq__(self, other):
+    if not isinstance(other, Annotation):
+      return False
+    return self.__dict__ == other.__dict__
+
+  def __lt__(self, other):
+    # This exists just so that lists of Annotation objects can be sorted, for
+    # use in comparisons.
+    if not isinstance(other, Annotation):
+      raise ValueError('comparison is not between two Annotation objects')
+    if self.name == other.name:
+      if self.value == other.value:
+        return self.keep < other.keep
+      return self.value < other.value
+    return self.name < other.name
+
+
+def _SafeExpandPath(base, subpath, skipfinal=False):
+  """Make sure |subpath| is completely safe under |base|.
+
+  We make sure no intermediate symlinks are traversed, and that the final path
+  is not a special file (e.g. not a socket or fifo).
+
+  NB: We rely on a number of paths already being filtered out while parsing the
+  manifest.  See the validation logic in manifest_xml.py for more details.
+  """
+  # Split up the path by its components.  We can't use os.path.sep exclusively
+  # as some platforms (like Windows) will convert / to \ and that bypasses all
+  # our constructed logic here.  Especially since manifest authors only use
+  # / in their paths.
+  resep = re.compile(r'[/%s]' % re.escape(os.path.sep))
+  components = resep.split(subpath)
+  if skipfinal:
+    # Whether the caller handles the final component itself.
+    finalpart = components.pop()
+
+  path = base
+  for part in components:
+    if part in {'.', '..'}:
+      raise ManifestInvalidPathError(
+          '%s: "%s" not allowed in paths' % (subpath, part))
+
+    path = os.path.join(path, part)
+    if platform_utils.islink(path):
+      raise ManifestInvalidPathError(
+          '%s: traversing symlinks not allow' % (path,))
+
+    if os.path.exists(path):
+      if not os.path.isfile(path) and not platform_utils.isdir(path):
+        raise ManifestInvalidPathError(
+            '%s: only regular files & directories allowed' % (path,))
+
+  if skipfinal:
+    path = os.path.join(path, finalpart)
+
+  return path
+
 
 class _CopyFile(object):
+  """Container for <copyfile> manifest element."""
 
-  def __init__(self, src, dest, abssrc, absdest):
+  def __init__(self, git_worktree, src, topdir, dest):
+    """Register a <copyfile> request.
+
+    Args:
+      git_worktree: Absolute path to the git project checkout.
+      src: Relative path under |git_worktree| of file to read.
+      topdir: Absolute path to the top of the repo client checkout.
+      dest: Relative path under |topdir| of file to write.
+    """
+    self.git_worktree = git_worktree
+    self.topdir = topdir
     self.src = src
     self.dest = dest
-    self.abs_src = abssrc
-    self.abs_dest = absdest
 
   def _Copy(self):
-    src = self.abs_src
-    dest = self.abs_dest
+    src = _SafeExpandPath(self.git_worktree, self.src)
+    dest = _SafeExpandPath(self.topdir, self.dest)
+
+    if platform_utils.isdir(src):
+      raise ManifestInvalidPathError(
+          '%s: copying from directory not supported' % (self.src,))
+    if platform_utils.isdir(dest):
+      raise ManifestInvalidPathError(
+          '%s: copying to directory not allowed' % (self.dest,))
+
     # copy file if it does not exist or is out of date
     if not os.path.exists(dest) or not filecmp.cmp(src, dest):
       try:
@@ -292,13 +373,21 @@ class _CopyFile(object):
 
 
 class _LinkFile(object):
+  """Container for <linkfile> manifest element."""
 
-  def __init__(self, git_worktree, src, dest, relsrc, absdest):
+  def __init__(self, git_worktree, src, topdir, dest):
+    """Register a <linkfile> request.
+
+    Args:
+      git_worktree: Absolute path to the git project checkout.
+      src: Target of symlink relative to path under |git_worktree|.
+      topdir: Absolute path to the top of the repo client checkout.
+      dest: Relative path under |topdir| of symlink to create.
+    """
     self.git_worktree = git_worktree
+    self.topdir = topdir
     self.src = src
     self.dest = dest
-    self.src_rel_to_dest = relsrc
-    self.abs_dest = absdest
 
   def __linkIt(self, relSrc, absDest):
     # link file if it does not exist or is out of date
@@ -316,35 +405,42 @@ class _LinkFile(object):
         _error('Cannot link file %s to %s', relSrc, absDest)
 
   def _Link(self):
-    """Link the self.rel_src_to_dest and self.abs_dest. Handles wild cards
-    on the src linking all of the files in the source in to the destination
-    directory.
+    """Link the self.src & self.dest paths.
+
+    Handles wild cards on the src linking all of the files in the source in to
+    the destination directory.
     """
-    # We use the absSrc to handle the situation where the current directory
-    # is not the root of the repo
-    absSrc = os.path.join(self.git_worktree, self.src)
-    if os.path.exists(absSrc):
-      # Entity exists so just a simple one to one link operation
-      self.__linkIt(self.src_rel_to_dest, self.abs_dest)
+    # Some people use src="." to create stable links to projects.  Lets allow
+    # that but reject all other uses of "." to keep things simple.
+    if self.src == '.':
+      src = self.git_worktree
     else:
-      # Entity doesn't exist assume there is a wild card
-      absDestDir = self.abs_dest
-      if os.path.exists(absDestDir) and not platform_utils.isdir(absDestDir):
-        _error('Link error: src with wildcard, %s must be a directory',
-               absDestDir)
+      src = _SafeExpandPath(self.git_worktree, self.src)
+
+    if not glob.has_magic(src):
+      # Entity does not contain a wild card so just a simple one to one link operation.
+      dest = _SafeExpandPath(self.topdir, self.dest, skipfinal=True)
+      # dest & src are absolute paths at this point.  Make sure the target of
+      # the symlink is relative in the context of the repo client checkout.
+      relpath = os.path.relpath(src, os.path.dirname(dest))
+      self.__linkIt(relpath, dest)
+    else:
+      dest = _SafeExpandPath(self.topdir, self.dest)
+      # Entity contains a wild card.
+      if os.path.exists(dest) and not platform_utils.isdir(dest):
+        _error('Link error: src with wildcard, %s must be a directory', dest)
       else:
-        absSrcFiles = glob.glob(absSrc)
-        for absSrcFile in absSrcFiles:
+        for absSrcFile in glob.glob(src):
           # Create a releative path from source dir to destination dir
           absSrcDir = os.path.dirname(absSrcFile)
-          relSrcDir = os.path.relpath(absSrcDir, absDestDir)
+          relSrcDir = os.path.relpath(absSrcDir, dest)
 
           # Get the source file name
           srcFile = os.path.basename(absSrcFile)
 
           # Now form the final full paths to srcFile. They will be
           # absolute for the desintaiton and relative for the srouce.
-          absDest = os.path.join(absDestDir, srcFile)
+          absDest = os.path.join(dest, srcFile)
           relSrc = os.path.join(relSrcDir, srcFile)
           self.__linkIt(relSrc, absDest)
 
@@ -368,412 +464,15 @@ class RemoteSpec(object):
     self.fetchUrl = fetchUrl
 
 
-class RepoHook(object):
-
-  """A RepoHook contains information about a script to run as a hook.
-
-  Hooks are used to run a python script before running an upload (for instance,
-  to run presubmit checks).  Eventually, we may have hooks for other actions.
-
-  This shouldn't be confused with files in the 'repo/hooks' directory.  Those
-  files are copied into each '.git/hooks' folder for each project.  Repo-level
-  hooks are associated instead with repo actions.
-
-  Hooks are always python.  When a hook is run, we will load the hook into the
-  interpreter and execute its main() function.
-  """
-
-  def __init__(self,
-               hook_type,
-               hooks_project,
-               topdir,
-               manifest_url,
-               abort_if_user_denies=False):
-    """RepoHook constructor.
-
-    Params:
-      hook_type: A string representing the type of hook.  This is also used
-          to figure out the name of the file containing the hook.  For
-          example: 'pre-upload'.
-      hooks_project: The project containing the repo hooks.  If you have a
-          manifest, this is manifest.repo_hooks_project.  OK if this is None,
-          which will make the hook a no-op.
-      topdir: Repo's top directory (the one containing the .repo directory).
-          Scripts will run with CWD as this directory.  If you have a manifest,
-          this is manifest.topdir
-      manifest_url: The URL to the manifest git repo.
-      abort_if_user_denies: If True, we'll throw a HookError() if the user
-          doesn't allow us to run the hook.
-    """
-    self._hook_type = hook_type
-    self._hooks_project = hooks_project
-    self._manifest_url = manifest_url
-    self._topdir = topdir
-    self._abort_if_user_denies = abort_if_user_denies
-
-    # Store the full path to the script for convenience.
-    if self._hooks_project:
-      self._script_fullpath = os.path.join(self._hooks_project.worktree,
-                                           self._hook_type + '.py')
-    else:
-      self._script_fullpath = None
-
-  def _GetHash(self):
-    """Return a hash of the contents of the hooks directory.
-
-    We'll just use git to do this.  This hash has the property that if anything
-    changes in the directory we will return a different has.
-
-    SECURITY CONSIDERATION:
-      This hash only represents the contents of files in the hook directory, not
-      any other files imported or called by hooks.  Changes to imported files
-      can change the script behavior without affecting the hash.
-
-    Returns:
-      A string representing the hash.  This will always be ASCII so that it can
-      be printed to the user easily.
-    """
-    assert self._hooks_project, "Must have hooks to calculate their hash."
-
-    # We will use the work_git object rather than just calling GetRevisionId().
-    # That gives us a hash of the latest checked in version of the files that
-    # the user will actually be executing.  Specifically, GetRevisionId()
-    # doesn't appear to change even if a user checks out a different version
-    # of the hooks repo (via git checkout) nor if a user commits their own revs.
-    #
-    # NOTE: Local (non-committed) changes will not be factored into this hash.
-    # I think this is OK, since we're really only worried about warning the user
-    # about upstream changes.
-    return self._hooks_project.work_git.rev_parse('HEAD')
-
-  def _GetMustVerb(self):
-    """Return 'must' if the hook is required; 'should' if not."""
-    if self._abort_if_user_denies:
-      return 'must'
-    else:
-      return 'should'
-
-  def _CheckForHookApproval(self):
-    """Check to see whether this hook has been approved.
-
-    We'll accept approval of manifest URLs if they're using secure transports.
-    This way the user can say they trust the manifest hoster.  For insecure
-    hosts, we fall back to checking the hash of the hooks repo.
-
-    Note that we ask permission for each individual hook even though we use
-    the hash of all hooks when detecting changes.  We'd like the user to be
-    able to approve / deny each hook individually.  We only use the hash of all
-    hooks because there is no other easy way to detect changes to local imports.
-
-    Returns:
-      True if this hook is approved to run; False otherwise.
-
-    Raises:
-      HookError: Raised if the user doesn't approve and abort_if_user_denies
-          was passed to the consturctor.
-    """
-    if self._ManifestUrlHasSecureScheme():
-      return self._CheckForHookApprovalManifest()
-    else:
-      return self._CheckForHookApprovalHash()
-
-  def _CheckForHookApprovalHelper(self, subkey, new_val, main_prompt,
-                                  changed_prompt):
-    """Check for approval for a particular attribute and hook.
-
-    Args:
-      subkey: The git config key under [repo.hooks.<hook_type>] to store the
-          last approved string.
-      new_val: The new value to compare against the last approved one.
-      main_prompt: Message to display to the user to ask for approval.
-      changed_prompt: Message explaining why we're re-asking for approval.
-
-    Returns:
-      True if this hook is approved to run; False otherwise.
-
-    Raises:
-      HookError: Raised if the user doesn't approve and abort_if_user_denies
-          was passed to the consturctor.
-    """
-    hooks_config = self._hooks_project.config
-    git_approval_key = 'repo.hooks.%s.%s' % (self._hook_type, subkey)
-
-    # Get the last value that the user approved for this hook; may be None.
-    old_val = hooks_config.GetString(git_approval_key)
-
-    if old_val is not None:
-      # User previously approved hook and asked not to be prompted again.
-      if new_val == old_val:
-        # Approval matched.  We're done.
-        return True
-      else:
-        # Give the user a reason why we're prompting, since they last told
-        # us to "never ask again".
-        prompt = 'WARNING: %s\n\n' % (changed_prompt,)
-    else:
-      prompt = ''
-
-    # Prompt the user if we're not on a tty; on a tty we'll assume "no".
-    if sys.stdout.isatty():
-      prompt += main_prompt + ' (yes/always/NO)? '
-      response = input(prompt).lower()
-      print()
-
-      # User is doing a one-time approval.
-      if response in ('y', 'yes'):
-        return True
-      elif response == 'always':
-        hooks_config.SetString(git_approval_key, new_val)
-        return True
-
-    # For anything else, we'll assume no approval.
-    if self._abort_if_user_denies:
-      raise HookError('You must allow the %s hook or use --no-verify.' %
-                      self._hook_type)
-
-    return False
-
-  def _ManifestUrlHasSecureScheme(self):
-    """Check if the URI for the manifest is a secure transport."""
-    secure_schemes = ('file', 'https', 'ssh', 'persistent-https', 'sso', 'rpc')
-    parse_results = urllib.parse.urlparse(self._manifest_url)
-    return parse_results.scheme in secure_schemes
-
-  def _CheckForHookApprovalManifest(self):
-    """Check whether the user has approved this manifest host.
-
-    Returns:
-      True if this hook is approved to run; False otherwise.
-    """
-    return self._CheckForHookApprovalHelper(
-        'approvedmanifest',
-        self._manifest_url,
-        'Run hook scripts from %s' % (self._manifest_url,),
-        'Manifest URL has changed since %s was allowed.' % (self._hook_type,))
-
-  def _CheckForHookApprovalHash(self):
-    """Check whether the user has approved the hooks repo.
-
-    Returns:
-      True if this hook is approved to run; False otherwise.
-    """
-    prompt = ('Repo %s run the script:\n'
-              '  %s\n'
-              '\n'
-              'Do you want to allow this script to run')
-    return self._CheckForHookApprovalHelper(
-        'approvedhash',
-        self._GetHash(),
-        prompt % (self._GetMustVerb(), self._script_fullpath),
-        'Scripts have changed since %s was allowed.' % (self._hook_type,))
-
-  @staticmethod
-  def _ExtractInterpFromShebang(data):
-    """Extract the interpreter used in the shebang.
-
-    Try to locate the interpreter the script is using (ignoring `env`).
-
-    Args:
-      data: The file content of the script.
-
-    Returns:
-      The basename of the main script interpreter, or None if a shebang is not
-      used or could not be parsed out.
-    """
-    firstline = data.splitlines()[:1]
-    if not firstline:
-      return None
-
-    # The format here can be tricky.
-    shebang = firstline[0].strip()
-    m = re.match(r'^#!\s*([^\s]+)(?:\s+([^\s]+))?', shebang)
-    if not m:
-      return None
-
-    # If the using `env`, find the target program.
-    interp = m.group(1)
-    if os.path.basename(interp) == 'env':
-      interp = m.group(2)
-
-    return interp
-
-  def _ExecuteHookViaReexec(self, interp, context, **kwargs):
-    """Execute the hook script through |interp|.
-
-    Note: Support for this feature should be dropped ~Jun 2021.
-
-    Args:
-      interp: The Python program to run.
-      context: Basic Python context to execute the hook inside.
-      kwargs: Arbitrary arguments to pass to the hook script.
-
-    Raises:
-      HookError: When the hooks failed for any reason.
-    """
-    # This logic needs to be kept in sync with _ExecuteHookViaImport below.
-    script = """
-import json, os, sys
-path = '''%(path)s'''
-kwargs = json.loads('''%(kwargs)s''')
-context = json.loads('''%(context)s''')
-sys.path.insert(0, os.path.dirname(path))
-data = open(path).read()
-exec(compile(data, path, 'exec'), context)
-context['main'](**kwargs)
-""" % {
-        'path': self._script_fullpath,
-        'kwargs': json.dumps(kwargs),
-        'context': json.dumps(context),
-    }
-
-    # We pass the script via stdin to avoid OS argv limits.  It also makes
-    # unhandled exception tracebacks less verbose/confusing for users.
-    cmd = [interp, '-c', 'import sys; exec(sys.stdin.read())']
-    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    proc.communicate(input=script.encode('utf-8'))
-    if proc.returncode:
-      raise HookError('Failed to run %s hook.' % (self._hook_type,))
-
-  def _ExecuteHookViaImport(self, data, context, **kwargs):
-    """Execute the hook code in |data| directly.
-
-    Args:
-      data: The code of the hook to execute.
-      context: Basic Python context to execute the hook inside.
-      kwargs: Arbitrary arguments to pass to the hook script.
-
-    Raises:
-      HookError: When the hooks failed for any reason.
-    """
-    # Exec, storing global context in the context dict.  We catch exceptions
-    # and convert to a HookError w/ just the failing traceback.
-    try:
-      exec(compile(data, self._script_fullpath, 'exec'), context)
-    except Exception:
-      raise HookError('%s\nFailed to import %s hook; see traceback above.' %
-                      (traceback.format_exc(), self._hook_type))
-
-    # Running the script should have defined a main() function.
-    if 'main' not in context:
-      raise HookError('Missing main() in: "%s"' % self._script_fullpath)
-
-    # Call the main function in the hook.  If the hook should cause the
-    # build to fail, it will raise an Exception.  We'll catch that convert
-    # to a HookError w/ just the failing traceback.
-    try:
-      context['main'](**kwargs)
-    except Exception:
-      raise HookError('%s\nFailed to run main() for %s hook; see traceback '
-                      'above.' % (traceback.format_exc(), self._hook_type))
-
-  def _ExecuteHook(self, **kwargs):
-    """Actually execute the given hook.
-
-    This will run the hook's 'main' function in our python interpreter.
-
-    Args:
-      kwargs: Keyword arguments to pass to the hook.  These are often specific
-          to the hook type.  For instance, pre-upload hooks will contain
-          a project_list.
-    """
-    # Keep sys.path and CWD stashed away so that we can always restore them
-    # upon function exit.
-    orig_path = os.getcwd()
-    orig_syspath = sys.path
-
-    try:
-      # Always run hooks with CWD as topdir.
-      os.chdir(self._topdir)
-
-      # Put the hook dir as the first item of sys.path so hooks can do
-      # relative imports.  We want to replace the repo dir as [0] so
-      # hooks can't import repo files.
-      sys.path = [os.path.dirname(self._script_fullpath)] + sys.path[1:]
-
-      # Initial global context for the hook to run within.
-      context = {'__file__': self._script_fullpath}
-
-      # Add 'hook_should_take_kwargs' to the arguments to be passed to main.
-      # We don't actually want hooks to define their main with this argument--
-      # it's there to remind them that their hook should always take **kwargs.
-      # For instance, a pre-upload hook should be defined like:
-      #   def main(project_list, **kwargs):
-      #
-      # This allows us to later expand the API without breaking old hooks.
-      kwargs = kwargs.copy()
-      kwargs['hook_should_take_kwargs'] = True
-
-      # See what version of python the hook has been written against.
-      data = open(self._script_fullpath).read()
-      interp = self._ExtractInterpFromShebang(data)
-      reexec = False
-      if interp:
-        prog = os.path.basename(interp)
-        if prog.startswith('python2') and sys.version_info.major != 2:
-          reexec = True
-        elif prog.startswith('python3') and sys.version_info.major == 2:
-          reexec = True
-
-      # Attempt to execute the hooks through the requested version of Python.
-      if reexec:
-        try:
-          self._ExecuteHookViaReexec(interp, context, **kwargs)
-        except OSError as e:
-          if e.errno == errno.ENOENT:
-            # We couldn't find the interpreter, so fallback to importing.
-            reexec = False
-          else:
-            raise
-
-      # Run the hook by importing directly.
-      if not reexec:
-        self._ExecuteHookViaImport(data, context, **kwargs)
-    finally:
-      # Restore sys.path and CWD.
-      sys.path = orig_syspath
-      os.chdir(orig_path)
-
-  def Run(self, user_allows_all_hooks, **kwargs):
-    """Run the hook.
-
-    If the hook doesn't exist (because there is no hooks project or because
-    this particular hook is not enabled), this is a no-op.
-
-    Args:
-      user_allows_all_hooks: If True, we will never prompt about running the
-          hook--we'll just assume it's OK to run it.
-      kwargs: Keyword arguments to pass to the hook.  These are often specific
-          to the hook type.  For instance, pre-upload hooks will contain
-          a project_list.
-
-    Raises:
-      HookError: If there was a problem finding the hook or the user declined
-          to run a required hook (from _CheckForHookApproval).
-    """
-    # No-op if there is no hooks project or if hook is disabled.
-    if ((not self._hooks_project) or (self._hook_type not in
-                                      self._hooks_project.enabled_repo_hooks)):
-      return
-
-    # Bail with a nice error if we can't find the hook.
-    if not os.path.isfile(self._script_fullpath):
-      raise HookError('Couldn\'t find repo hook: "%s"' % self._script_fullpath)
-
-    # Make sure the user is OK with running the hook.
-    if (not user_allows_all_hooks) and (not self._CheckForHookApproval()):
-      return
-
-    # Run the hook with the same version of python we're using.
-    self._ExecuteHook(**kwargs)
-
-
 class Project(object):
   # These objects can be shared between several working trees.
-  shareable_files = ['description', 'info']
-  shareable_dirs = ['hooks', 'objects', 'rr-cache', 'svn']
-  # These objects can only be used by a single working tree.
-  working_tree_files = ['config', 'packed-refs', 'shallow']
-  working_tree_dirs = ['logs', 'refs']
+  @property
+  def shareable_dirs(self):
+    """Return the shareable directories"""
+    if self.UseAlternates:
+      return ['hooks', 'rr-cache']
+    else:
+      return ['hooks', 'objects', 'rr-cache']
 
   def __init__(self,
                manifest,
@@ -793,9 +492,11 @@ class Project(object):
                clone_depth=None,
                upstream=None,
                parent=None,
+               use_git_worktrees=False,
                is_derived=False,
                dest_branch=None,
                optimized_fetch=False,
+               retry_fetches=0,
                old_revision=None):
     """Init a Project object.
 
@@ -816,31 +517,21 @@ class Project(object):
       sync_tags: The `sync-tags` attribute of manifest.xml's project element.
       upstream: The `upstream` attribute of manifest.xml's project element.
       parent: The parent Project object.
+      use_git_worktrees: Whether to use `git worktree` for this project.
       is_derived: False if the project was explicitly defined in the manifest;
                   True if the project is a discovered submodule.
       dest_branch: The branch to which to push changes for review by default.
       optimized_fetch: If True, when a project is set to a sha1 revision, only
                        fetch from the remote if the sha1 is not present locally.
+      retry_fetches: Retry remote fetches n times upon receiving transient error
+                     with exponential backoff and jitter.
       old_revision: saved git commit id for open GITC projects.
     """
-    self.manifest = manifest
+    self.client = self.manifest = manifest
     self.name = name
     self.remote = remote
-    self.gitdir = gitdir.replace('\\', '/')
-    self.objdir = objdir.replace('\\', '/')
-    if worktree:
-      self.worktree = os.path.normpath(worktree).replace('\\', '/')
-    else:
-      self.worktree = None
-    self.relpath = relpath
-    self.revisionExpr = revisionExpr
-
-    if revisionId is None \
-            and revisionExpr \
-            and IsId(revisionExpr):
-      self.revisionId = revisionExpr
-    else:
-      self.revisionId = revisionId
+    self.UpdatePaths(relpath, worktree, gitdir, objdir)
+    self.SetRevision(revisionExpr, revisionId=revisionId)
 
     self.rebase = rebase
     self.groups = groups
@@ -850,30 +541,74 @@ class Project(object):
     self.clone_depth = clone_depth
     self.upstream = upstream
     self.parent = parent
+    # NB: Do not use this setting in __init__ to change behavior so that the
+    # manifest.git checkout can inspect & change it after instantiating.  See
+    # the XmlManifest init code for more info.
+    self.use_git_worktrees = use_git_worktrees
     self.is_derived = is_derived
     self.optimized_fetch = optimized_fetch
+    self.retry_fetches = max(0, retry_fetches)
     self.subprojects = []
 
     self.snapshots = {}
     self.copyfiles = []
     self.linkfiles = []
     self.annotations = []
-    self.config = GitConfig.ForRepository(gitdir=self.gitdir,
-                                          defaults=self.manifest.globalConfig)
-
-    if self.worktree:
-      self.work_git = self._GitGetByExec(self, bare=False, gitdir=gitdir)
-    else:
-      self.work_git = None
-    self.bare_git = self._GitGetByExec(self, bare=True, gitdir=gitdir)
-    self.bare_ref = GitRefs(gitdir)
-    self.bare_objdir = self._GitGetByExec(self, bare=True, gitdir=objdir)
     self.dest_branch = dest_branch
     self.old_revision = old_revision
 
     # This will be filled in if a project is later identified to be the
     # project containing repo hooks.
     self.enabled_repo_hooks = []
+
+  def RelPath(self, local=True):
+    """Return the path for the project relative to a manifest.
+
+    Args:
+      local: a boolean, if True, the path is relative to the local
+             (sub)manifest.  If false, the path is relative to the
+             outermost manifest.
+    """
+    if local:
+      return self.relpath
+    return os.path.join(self.manifest.path_prefix, self.relpath)
+
+  def SetRevision(self, revisionExpr, revisionId=None):
+    """Set revisionId based on revision expression and id"""
+    self.revisionExpr = revisionExpr
+    if revisionId is None and revisionExpr and IsId(revisionExpr):
+      self.revisionId = self.revisionExpr
+    else:
+      self.revisionId = revisionId
+
+  def UpdatePaths(self, relpath, worktree, gitdir, objdir):
+    """Update paths used by this project"""
+    self.gitdir = gitdir.replace('\\', '/')
+    self.objdir = objdir.replace('\\', '/')
+    if worktree:
+      self.worktree = os.path.normpath(worktree).replace('\\', '/')
+    else:
+      self.worktree = None
+    self.relpath = relpath
+
+    self.config = GitConfig.ForRepository(gitdir=self.gitdir,
+                                          defaults=self.manifest.globalConfig)
+
+    if self.worktree:
+      self.work_git = self._GitGetByExec(self, bare=False, gitdir=self.gitdir)
+    else:
+      self.work_git = None
+    self.bare_git = self._GitGetByExec(self, bare=True, gitdir=self.gitdir)
+    self.bare_ref = GitRefs(self.gitdir)
+    self.bare_objdir = self._GitGetByExec(self, bare=True, gitdir=self.objdir)
+
+  @property
+  def UseAlternates(self):
+    """Whether git alternates are in use.
+
+    This will be removed once migration to alternates is complete.
+    """
+    return _ALTERNATES or self.manifest.is_multimanifest
 
   @property
   def Derived(self):
@@ -902,11 +637,9 @@ class Project(object):
     return None
 
   def IsRebaseInProgress(self):
-    w = self.worktree
-    g = os.path.join(w, '.git')
-    return os.path.exists(os.path.join(g, 'rebase-apply')) \
-        or os.path.exists(os.path.join(g, 'rebase-merge')) \
-        or os.path.exists(os.path.join(w, '.dotest'))
+    return (os.path.exists(self.work_git.GetDotgitPath('rebase-apply')) or
+            os.path.exists(self.work_git.GetDotgitPath('rebase-merge')) or
+            os.path.exists(os.path.join(self.worktree, '.dotest')))
 
   def IsDirty(self, consider_untracked=True):
     """Is the working directory modified in some way?
@@ -919,7 +652,7 @@ class Project(object):
       return True
     if self.work_git.DiffZ('diff-files'):
       return True
-    if consider_untracked and self.work_git.LsOthers():
+    if consider_untracked and self.UntrackedFiles():
       return True
     return False
 
@@ -953,9 +686,13 @@ class Project(object):
       self._userident_name = ''
       self._userident_email = ''
 
-  def GetRemote(self, name):
+  def GetRemote(self, name=None):
     """Get the configuration for a single remote.
+
+    Defaults to the current project's remote.
     """
+    if name is None:
+      name = self.remote.name
     return self.config.GetRemote(name)
 
   def GetBranch(self, name):
@@ -1002,7 +739,8 @@ class Project(object):
        The special manifest group "default" will match any project that
        does not have the special project group "notdefault"
     """
-    expanded_manifest_groups = manifest_groups or ['default']
+    default_groups = self.manifest.default_groups or ['default']
+    expanded_manifest_groups = manifest_groups or default_groups
     expanded_project_groups = ['all'] + (self.groups or [])
     if 'notdefault' not in expanded_project_groups:
       expanded_project_groups += ['default']
@@ -1047,33 +785,37 @@ class Project(object):
       if not get_all:
         return details
 
-    changes = self.work_git.LsOthers()
+    changes = self.UntrackedFiles()
     if changes:
       details.extend(changes)
 
     return details
 
+  def UntrackedFiles(self):
+    """Returns a list of strings, untracked files in the git tree."""
+    return self.work_git.LsOthers()
+
   def HasChanges(self):
     """Returns true if there are uncommitted changes.
     """
-    if self.UncommitedFiles(get_all=False):
-      return True
-    else:
-      return False
+    return bool(self.UncommitedFiles(get_all=False))
 
-  def PrintWorkTreeStatus(self, output_redir=None, quiet=False):
+  def PrintWorkTreeStatus(self, output_redir=None, quiet=False, local=False):
     """Prints the status of the repository to stdout.
 
     Args:
       output_redir: If specified, redirect the output to this object.
       quiet:  If True then only print the project name.  Do not print
               the modified files, branch name, etc.
+      local: a boolean, if True, the path is relative to the local
+             (sub)manifest.  If false, the path is relative to the
+             outermost manifest.
     """
     if not platform_utils.isdir(self.worktree):
       if output_redir is None:
         output_redir = sys.stdout
       print(file=output_redir)
-      print('project %s/' % self.relpath, file=output_redir)
+      print('project %s/' % self.RelPath(local), file=output_redir)
       print('  missing (run "repo sync")', file=output_redir)
       return
 
@@ -1091,7 +833,7 @@ class Project(object):
     out = StatusColoring(self.config)
     if output_redir is not None:
       out.redirect(output_redir)
-    out.project('project %-40s', self.relpath + '/ ')
+    out.project('project %-40s', self.RelPath(local) + '/ ')
 
     if quiet:
       out.nl()
@@ -1152,45 +894,42 @@ class Project(object):
 
     return 'DIRTY'
 
-  def PrintWorkTreeDiff(self, absolute_paths=False):
+  def PrintWorkTreeDiff(self, absolute_paths=False, output_redir=None,
+                        local=False):
     """Prints the status of the repository to stdout.
     """
     out = DiffColoring(self.config)
+    if output_redir:
+      out.redirect(output_redir)
     cmd = ['diff']
     if out.is_on:
       cmd.append('--color')
     cmd.append(HEAD)
     if absolute_paths:
-      cmd.append('--src-prefix=a/%s/' % self.relpath)
-      cmd.append('--dst-prefix=b/%s/' % self.relpath)
+      cmd.append('--src-prefix=a/%s/' % self.RelPath(local))
+      cmd.append('--dst-prefix=b/%s/' % self.RelPath(local))
     cmd.append('--')
     try:
       p = GitCommand(self,
                      cmd,
                      capture_stdout=True,
                      capture_stderr=True)
+      p.Wait()
     except GitError as e:
       out.nl()
-      out.project('project %s/' % self.relpath)
+      out.project('project %s/' % self.RelPath(local))
       out.nl()
       out.fail('%s', str(e))
       out.nl()
       return False
-    has_diff = False
-    for line in p.process.stdout:
-      if not hasattr(line, 'encode'):
-        line = line.decode()
-      if not has_diff:
-        out.nl()
-        out.project('project %s/' % self.relpath)
-        out.nl()
-        has_diff = True
-      print(line[:-1])
+    if p.stdout:
+      out.nl()
+      out.project('project %s/' % self.RelPath(local))
+      out.nl()
+      out.write('%s', p.stdout)
     return p.Wait() == 0
 
-
 # Publish / Upload ##
-
   def WasPublished(self, branch, all_refs=None):
     """Was the branch published (uploaded) for code review?
        If so, returns the SHA-1 hash of the last published
@@ -1263,11 +1002,14 @@ class Project(object):
 
   def UploadForReview(self, branch=None,
                       people=([], []),
+                      dryrun=False,
                       auto_topic=False,
-                      draft=False,
+                      hashtags=(),
+                      labels=(),
                       private=False,
                       notify=None,
                       wip=False,
+                      ready=False,
                       dest_branch=None,
                       validate_certs=True,
                       push_options=None):
@@ -1284,6 +1026,13 @@ class Project(object):
     if not branch.remote.review:
       raise GitError('remote %s has no review url' % branch.remote.name)
 
+    # Basic validity check on label syntax.
+    for label in labels:
+      if not re.match(r'^.+[+-][0-9]+$', label):
+        raise UploadError(
+            f'invalid label syntax "{label}": labels use forms like '
+            'CodeReview+1 or Verified-1')
+
     if dest_branch is None:
       dest_branch = self.dest_branch
     if dest_branch is None:
@@ -1299,6 +1048,8 @@ class Project(object):
     if url is None:
       raise UploadError('review not configured')
     cmd = ['push']
+    if dryrun:
+      cmd.append('-n')
 
     if url.startswith('ssh://'):
       cmd.append('--receive-pack=gerrit receive-pack')
@@ -1312,15 +1063,13 @@ class Project(object):
     if dest_branch.startswith(R_HEADS):
       dest_branch = dest_branch[len(R_HEADS):]
 
-    upload_type = 'for'
-    if draft:
-      upload_type = 'drafts'
-
-    ref_spec = '%s:refs/%s/%s' % (R_HEADS + branch.name, upload_type,
-                                  dest_branch)
+    ref_spec = '%s:refs/for/%s' % (R_HEADS + branch.name, dest_branch)
     opts = []
     if auto_topic:
       opts += ['topic=' + branch.name]
+    opts += ['t=%s' % p for p in hashtags]
+    # NB: No need to encode labels as they've been validated above.
+    opts += ['l=%s' % p for p in labels]
 
     opts += ['r=%s' % p for p in people[0]]
     opts += ['cc=%s' % p for p in people[1]]
@@ -1330,6 +1079,8 @@ class Project(object):
       opts += ['private']
     if wip:
       opts += ['wip']
+    if ready:
+      opts += ['ready']
     if opts:
       ref_spec = ref_spec + '%' + ','.join(opts)
     cmd.append(ref_spec)
@@ -1337,14 +1088,13 @@ class Project(object):
     if GitCommand(self, cmd, bare=True).Wait() != 0:
       raise UploadError('Upload failed')
 
-    msg = "posted to %s for %s" % (branch.remote.review, dest_branch)
-    self.bare_git.UpdateRef(R_PUB + branch.name,
-                            R_HEADS + branch.name,
-                            message=msg)
-
+    if not dryrun:
+      msg = "posted to %s for %s" % (branch.remote.review, dest_branch)
+      self.bare_git.UpdateRef(R_PUB + branch.name,
+                              R_HEADS + branch.name,
+                              message=msg)
 
 # Sync ##
-
   def _ExtractArchive(self, tarpath, path=None):
     """Extract the given tar on its current location
 
@@ -1354,7 +1104,26 @@ class Project(object):
     """
     try:
       with tarfile.open(tarpath, 'r') as tar:
-        tar.extractall(path=path)
+        def is_within_directory(directory, target):
+            
+            abs_directory = os.path.abspath(directory)
+            abs_target = os.path.abspath(target)
+        
+            prefix = os.path.commonprefix([abs_directory, abs_target])
+            
+            return prefix == abs_directory
+        
+        def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+        
+            for member in tar.getmembers():
+                member_path = os.path.join(path, member.name)
+                if not is_within_directory(path, member_path):
+                    raise Exception("Attempted Path Traversal in Tar File")
+        
+            tar.extractall(path, members, numeric_owner=numeric_owner) 
+            
+        
+        safe_extract(tar, path=path)
         return True
     except (IOError, tarfile.TarError) as e:
       _error("Cannot extract archive %s: %s", tarpath, str(e))
@@ -1362,16 +1131,21 @@ class Project(object):
 
   def Sync_NetworkHalf(self,
                        quiet=False,
+                       verbose=False,
+                       output_redir=None,
                        is_new=None,
-                       current_branch_only=False,
+                       current_branch_only=None,
                        force_sync=False,
                        clone_bundle=True,
-                       no_tags=False,
+                       tags=None,
                        archive=False,
                        optimized_fetch=False,
+                       retry_fetches=0,
                        prune=False,
                        submodules=False,
-                       clone_filter=None):
+                       ssh_proxy=None,
+                       clone_filter=None,
+                       partial_clone_exclude=set()):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
@@ -1402,16 +1176,37 @@ class Project(object):
         _warn("Cannot remove archive %s: %s", tarpath, str(e))
       self._CopyAndLinkFiles()
       return True
+
+    # If the shared object dir already exists, don't try to rebootstrap with a
+    # clone bundle download.  We should have the majority of objects already.
+    if clone_bundle and os.path.exists(self.objdir):
+      clone_bundle = False
+
+    if self.name in partial_clone_exclude:
+      clone_bundle = True
+      clone_filter = None
+
     if is_new is None:
       is_new = not self.Exists
     if is_new:
-      self._InitGitDir(force_sync=force_sync)
+      self._InitGitDir(force_sync=force_sync, quiet=quiet)
     else:
-      self._UpdateHooks()
+      self._UpdateHooks(quiet=quiet)
     self._InitRemote()
 
+    if self.UseAlternates:
+      # If gitdir/objects is a symlink, migrate it from the old layout.
+      gitdir_objects = os.path.join(self.gitdir, 'objects')
+      if platform_utils.islink(gitdir_objects):
+        platform_utils.remove(gitdir_objects, missing_ok=True)
+      gitdir_alt = os.path.join(self.gitdir, 'objects/info/alternates')
+      if not os.path.exists(gitdir_alt):
+        os.makedirs(os.path.dirname(gitdir_alt), exist_ok=True)
+        _lwrite(gitdir_alt, os.path.join(
+            os.path.relpath(self.objdir, gitdir_objects), 'objects') + '\n')
+
     if is_new:
-      alt = os.path.join(self.gitdir, 'objects/info/alternates')
+      alt = os.path.join(self.objdir, 'objects/info/alternates')
       try:
         with open(alt) as fd:
           # This works for both absolute and relative alternate directories.
@@ -1421,12 +1216,12 @@ class Project(object):
     else:
       alt_dir = None
 
-    if clone_bundle \
-            and alt_dir is None \
-            and self._ApplyCloneBundle(initial=is_new, quiet=quiet):
+    if (clone_bundle
+            and alt_dir is None
+            and self._ApplyCloneBundle(initial=is_new, quiet=quiet, verbose=verbose)):
       is_new = False
 
-    if not current_branch_only:
+    if current_branch_only is None:
       if self.sync_c:
         current_branch_only = True
       elif not self.manifest._loaded:
@@ -1435,33 +1230,39 @@ class Project(object):
       elif self.manifest.default.sync_c:
         current_branch_only = True
 
-    if not no_tags:
-      if not self.sync_tags:
-        no_tags = True
+    if tags is None:
+      tags = self.sync_tags
 
     if self.clone_depth:
       depth = self.clone_depth
     else:
-      depth = self.manifest.manifestProject.config.GetString('repo.depth')
+      depth = self.manifest.manifestProject.depth
 
-    need_to_fetch = not (optimized_fetch and
-                         (ID_RE.match(self.revisionExpr) and
-                          self._CheckForImmutableRevision()))
-    if (need_to_fetch and
-        not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
-                              current_branch_only=current_branch_only,
-                              no_tags=no_tags, prune=prune, depth=depth,
-                              submodules=submodules, force_sync=force_sync,
-                              clone_filter=clone_filter)):
-      return False
+    # See if we can skip the network fetch entirely.
+    if not (optimized_fetch and
+            (ID_RE.match(self.revisionExpr) and
+             self._CheckForImmutableRevision())):
+      if not self._RemoteFetch(
+              initial=is_new,
+              quiet=quiet, verbose=verbose, output_redir=output_redir,
+              alt_dir=alt_dir, current_branch_only=current_branch_only,
+              tags=tags, prune=prune, depth=depth,
+              submodules=submodules, force_sync=force_sync,
+              ssh_proxy=ssh_proxy,
+              clone_filter=clone_filter, retry_fetches=retry_fetches):
+        return False
 
     mp = self.manifest.manifestProject
-    dissociate = mp.config.GetBoolean('repo.dissociate')
+    dissociate = mp.dissociate
     if dissociate:
-      alternates_file = os.path.join(self.gitdir, 'objects/info/alternates')
+      alternates_file = os.path.join(self.objdir, 'objects/info/alternates')
       if os.path.exists(alternates_file):
         cmd = ['repack', '-a', '-d']
-        if GitCommand(self, cmd, bare=True).Wait() != 0:
+        p = GitCommand(self, cmd, bare=True, capture_stdout=bool(output_redir),
+                       merge_output=bool(output_redir))
+        if p.stdout and output_redir:
+          output_redir.write(p.stdout)
+        if p.Wait() != 0:
           return False
         platform_utils.remove(alternates_file)
 
@@ -1469,17 +1270,15 @@ class Project(object):
       self._InitMRef()
     else:
       self._InitMirrorHead()
-      try:
-        platform_utils.remove(os.path.join(self.gitdir, 'FETCH_HEAD'))
-      except OSError:
-        pass
+      platform_utils.remove(os.path.join(self.gitdir, 'FETCH_HEAD'),
+                            missing_ok=True)
     return True
 
   def PostRepoUpgrade(self):
     self._InitHooks()
 
   def _CopyAndLinkFiles(self):
-    if self.manifest.isGitcClient:
+    if self.client.isGitcClient:
       return
     for copyfile in self.copyfiles:
       copyfile._Copy()
@@ -1506,7 +1305,7 @@ class Project(object):
     if self.revisionId:
       return self.revisionId
 
-    rem = self.GetRemote(self.remote.name)
+    rem = self.GetRemote()
     rev = rem.ToLocal(self.revisionExpr)
 
     if all_refs is not None and rev in all_refs:
@@ -1517,6 +1316,12 @@ class Project(object):
     except GitError:
       raise ManifestInvalidRevisionError('revision %s in %s not found' %
                                          (self.revisionExpr, self.name))
+
+  def SetRevisionId(self, revisionId):
+    if self.revisionExpr:
+      self.upstream = self.revisionExpr
+
+    self.revisionId = revisionId
 
   def Sync_LocalHalf(self, syncbuf, force_sync=False, submodules=False):
     """Perform only the local IO portion of the sync process.
@@ -1533,6 +1338,18 @@ class Project(object):
     all_refs = self.bare_ref.all
     self.CleanPublishedCache(all_refs)
     revid = self.GetRevisionId(all_refs)
+
+    # Special case the root of the repo client checkout.  Make sure it doesn't
+    # contain files being checked out to dirs we don't allow.
+    if self.relpath == '.':
+      PROTECTED_PATHS = {'.repo'}
+      paths = set(self.work_git.ls_tree('-z', '--name-only', '--', revid).split('\0'))
+      bad_paths = paths & PROTECTED_PATHS
+      if bad_paths:
+        syncbuf.fail(self,
+                     'Refusing to checkout project that writes to protected '
+                     'paths: %s' % (', '.join(bad_paths),))
+        return
 
     def _doff():
       self._FastForward(revid)
@@ -1680,7 +1497,7 @@ class Project(object):
                    "discarding %d commits removed from upstream",
                    len(local_changes) - cnt_mine)
 
-    branch.remote = self.GetRemote(self.remote.name)
+    branch.remote = self.GetRemote()
     if not ID_RE.match(self.revisionExpr):
       # in case of manifest sync the revisionExpr might be a SHA1
       branch.merge = self.revisionExpr
@@ -1712,26 +1529,33 @@ class Project(object):
       if submodules:
         syncbuf.later1(self, _dosubmodules)
 
-  def AddCopyFile(self, src, dest, absdest):
-    # dest should already be an absolute path, but src is project relative
-    # make src an absolute path
-    abssrc = os.path.join(self.worktree, src)
-    self.copyfiles.append(_CopyFile(src, dest, abssrc, absdest))
+  def AddCopyFile(self, src, dest, topdir):
+    """Mark |src| for copying to |dest| (relative to |topdir|).
 
-  def AddLinkFile(self, src, dest, absdest):
-    # dest should already be an absolute path, but src is project relative
-    # make src relative path to dest
-    absdestdir = os.path.dirname(absdest)
-    relsrc = os.path.relpath(os.path.join(self.worktree, src), absdestdir)
-    self.linkfiles.append(_LinkFile(self.worktree, src, dest, relsrc, absdest))
+    No filesystem changes occur here.  Actual copying happens later on.
+
+    Paths should have basic validation run on them before being queued.
+    Further checking will be handled when the actual copy happens.
+    """
+    self.copyfiles.append(_CopyFile(self.worktree, src, topdir, dest))
+
+  def AddLinkFile(self, src, dest, topdir):
+    """Mark |dest| to create a symlink (relative to |topdir|) pointing to |src|.
+
+    No filesystem changes occur here.  Actual linking happens later on.
+
+    Paths should have basic validation run on them before being queued.
+    Further checking will be handled when the actual link happens.
+    """
+    self.linkfiles.append(_LinkFile(self.worktree, src, topdir, dest))
 
   def AddAnnotation(self, name, value, keep):
-    self.annotations.append(_Annotation(name, value, keep))
+    self.annotations.append(Annotation(name, value, keep))
 
   def DownloadPatchSet(self, change_id, patch_id):
     """Download a single patch set of a single change to FETCH_HEAD.
     """
-    remote = self.GetRemote(self.remote.name)
+    remote = self.GetRemote()
 
     cmd = ['fetch', remote.name]
     cmd.append('refs/changes/%2.2d/%d/%d'
@@ -1744,9 +1568,124 @@ class Project(object):
                             patch_id,
                             self.bare_git.rev_parse('FETCH_HEAD'))
 
+  def DeleteWorktree(self, quiet=False, force=False):
+    """Delete the source checkout and any other housekeeping tasks.
+
+    This currently leaves behind the internal .repo/ cache state.  This helps
+    when switching branches or manifest changes get reverted as we don't have
+    to redownload all the git objects.  But we should do some GC at some point.
+
+    Args:
+      quiet: Whether to hide normal messages.
+      force: Always delete tree even if dirty.
+
+    Returns:
+      True if the worktree was completely cleaned out.
+    """
+    if self.IsDirty():
+      if force:
+        print('warning: %s: Removing dirty project: uncommitted changes lost.' %
+              (self.RelPath(local=False),), file=sys.stderr)
+      else:
+        print('error: %s: Cannot remove project: uncommitted changes are '
+              'present.\n' % (self.RelPath(local=False),), file=sys.stderr)
+        return False
+
+    if not quiet:
+      print('%s: Deleting obsolete checkout.' % (self.RelPath(local=False),))
+
+    # Unlock and delink from the main worktree.  We don't use git's worktree
+    # remove because it will recursively delete projects -- we handle that
+    # ourselves below.  https://crbug.com/git/48
+    if self.use_git_worktrees:
+      needle = platform_utils.realpath(self.gitdir)
+      # Find the git worktree commondir under .repo/worktrees/.
+      output = self.bare_git.worktree('list', '--porcelain').splitlines()[0]
+      assert output.startswith('worktree '), output
+      commondir = output[9:]
+      # Walk each of the git worktrees to see where they point.
+      configs = os.path.join(commondir, 'worktrees')
+      for name in os.listdir(configs):
+        gitdir = os.path.join(configs, name, 'gitdir')
+        with open(gitdir) as fp:
+          relpath = fp.read().strip()
+        # Resolve the checkout path and see if it matches this project.
+        fullpath = platform_utils.realpath(os.path.join(configs, name, relpath))
+        if fullpath == needle:
+          platform_utils.rmtree(os.path.join(configs, name))
+
+    # Delete the .git directory first, so we're less likely to have a partially
+    # working git repository around. There shouldn't be any git projects here,
+    # so rmtree works.
+
+    # Try to remove plain files first in case of git worktrees.  If this fails
+    # for any reason, we'll fall back to rmtree, and that'll display errors if
+    # it can't remove things either.
+    try:
+      platform_utils.remove(self.gitdir)
+    except OSError:
+      pass
+    try:
+      platform_utils.rmtree(self.gitdir)
+    except OSError as e:
+      if e.errno != errno.ENOENT:
+        print('error: %s: %s' % (self.gitdir, e), file=sys.stderr)
+        print('error: %s: Failed to delete obsolete checkout; remove manually, '
+              'then run `repo sync -l`.' % (self.RelPath(local=False),),
+              file=sys.stderr)
+        return False
+
+    # Delete everything under the worktree, except for directories that contain
+    # another git project.
+    dirs_to_remove = []
+    failed = False
+    for root, dirs, files in platform_utils.walk(self.worktree):
+      for f in files:
+        path = os.path.join(root, f)
+        try:
+          platform_utils.remove(path)
+        except OSError as e:
+          if e.errno != errno.ENOENT:
+            print('error: %s: Failed to remove: %s' % (path, e), file=sys.stderr)
+            failed = True
+      dirs[:] = [d for d in dirs
+                 if not os.path.lexists(os.path.join(root, d, '.git'))]
+      dirs_to_remove += [os.path.join(root, d) for d in dirs
+                         if os.path.join(root, d) not in dirs_to_remove]
+    for d in reversed(dirs_to_remove):
+      if platform_utils.islink(d):
+        try:
+          platform_utils.remove(d)
+        except OSError as e:
+          if e.errno != errno.ENOENT:
+            print('error: %s: Failed to remove: %s' % (d, e), file=sys.stderr)
+            failed = True
+      elif not platform_utils.listdir(d):
+        try:
+          platform_utils.rmdir(d)
+        except OSError as e:
+          if e.errno != errno.ENOENT:
+            print('error: %s: Failed to remove: %s' % (d, e), file=sys.stderr)
+            failed = True
+    if failed:
+      print('error: %s: Failed to delete obsolete checkout.' % (self.RelPath(local=False),),
+            file=sys.stderr)
+      print('       Remove manually, then run `repo sync -l`.', file=sys.stderr)
+      return False
+
+    # Try deleting parent dirs if they are empty.
+    path = self.worktree
+    while path != self.manifest.topdir:
+      try:
+        platform_utils.rmdir(path)
+      except OSError as e:
+        if e.errno != errno.ENOENT:
+          break
+      path = os.path.dirname(path)
+
+    return True
 
 # Branch Management ##
-
   def StartBranch(self, name, branch_merge='', revision=None):
     """Create a new branch off the manifest's revision.
     """
@@ -1758,13 +1697,10 @@ class Project(object):
 
     all_refs = self.bare_ref.all
     if R_HEADS + name in all_refs:
-      return GitCommand(self,
-                        ['checkout', name, '--'],
-                        capture_stdout=True,
-                        capture_stderr=True).Wait() == 0
+      return GitCommand(self, ['checkout', '-q', name, '--']).Wait() == 0
 
     branch = self.GetBranch(name)
-    branch.remote = self.GetRemote(self.remote.name)
+    branch.remote = self.GetRemote()
     branch.merge = branch_merge
     if not branch.merge.startswith('refs/') and not ID_RE.match(branch_merge):
       branch.merge = R_HEADS + branch_merge
@@ -1780,21 +1716,13 @@ class Project(object):
       except KeyError:
         head = None
     if revid and head and revid == head:
-      ref = os.path.join(self.gitdir, R_HEADS + name)
-      try:
-        os.makedirs(os.path.dirname(ref))
-      except OSError:
-        pass
-      _lwrite(ref, '%s\n' % revid)
-      _lwrite(os.path.join(self.worktree, '.git', HEAD),
-              'ref: %s%s\n' % (R_HEADS, name))
+      ref = R_HEADS + name
+      self.work_git.update_ref(ref, revid)
+      self.work_git.symbolic_ref(HEAD, ref)
       branch.Save()
       return True
 
-    if GitCommand(self,
-                  ['checkout', '-b', branch.name, revid],
-                  capture_stdout=True,
-                  capture_stderr=True).Wait() == 0:
+    if GitCommand(self, ['checkout', '-q', '-b', branch.name, revid]).Wait() == 0:
       branch.Save()
       return True
     return False
@@ -1834,7 +1762,7 @@ class Project(object):
       # Same revision; just update HEAD to point to the new
       # target branch, but otherwise take no other action.
       #
-      _lwrite(os.path.join(self.worktree, '.git', HEAD),
+      _lwrite(self.work_git.GetDotgitPath(subpath=HEAD),
               'ref: %s%s\n' % (R_HEADS, name))
       return True
 
@@ -1868,8 +1796,7 @@ class Project(object):
 
       revid = self.GetRevisionId(all_refs)
       if head == revid:
-        _lwrite(os.path.join(self.worktree, '.git', HEAD),
-                '%s\n' % revid)
+        _lwrite(self.work_git.GetDotgitPath(subpath=HEAD), '%s\n' % revid)
       else:
         self._Checkout(revid, quiet=True)
 
@@ -1889,6 +1816,11 @@ class Project(object):
         name = name[len(R_HEADS):]
         if cb is None or name != cb:
           kill.append(name)
+
+    # Minor optimization: If there's nothing to prune, then don't try to read
+    # any project state.
+    if not kill and not cb:
+      return []
 
     rev = self.GetRevisionId(left)
     if cb is not None \
@@ -1935,9 +1867,7 @@ class Project(object):
         kept.append(ReviewableBranch(self, branch, base))
     return kept
 
-
 # Submodule Management ##
-
   def GetRegisteredSubprojects(self):
     result = []
 
@@ -2088,13 +2018,57 @@ class Project(object):
       result.extend(subproject.GetDerivedSubprojects())
     return result
 
-
 # Direct Git Commands ##
+  def EnableRepositoryExtension(self, key, value='true', version=1):
+    """Enable git repository extension |key| with |value|.
+
+    Args:
+      key: The extension to enabled.  Omit the "extensions." prefix.
+      value: The value to use for the extension.
+      version: The minimum git repository version needed.
+    """
+    # Make sure the git repo version is new enough already.
+    found_version = self.config.GetInt('core.repositoryFormatVersion')
+    if found_version is None:
+      found_version = 0
+    if found_version < version:
+      self.config.SetString('core.repositoryFormatVersion', str(version))
+
+    # Enable the extension!
+    self.config.SetString('extensions.%s' % (key,), value)
+
+  def ResolveRemoteHead(self, name=None):
+    """Find out what the default branch (HEAD) points to.
+
+    Normally this points to refs/heads/master, but projects are moving to main.
+    Support whatever the server uses rather than hardcoding "master" ourselves.
+    """
+    if name is None:
+      name = self.remote.name
+
+    # The output will look like (NB: tabs are separators):
+    # ref: refs/heads/master	HEAD
+    # 5f6803b100bb3cd0f534e96e88c91373e8ed1c44	HEAD
+    output = self.bare_git.ls_remote('-q', '--symref', '--exit-code', name, 'HEAD')
+
+    for line in output.splitlines():
+      lhs, rhs = line.split('\t', 1)
+      if rhs == 'HEAD' and lhs.startswith('ref:'):
+        return lhs[4:].strip()
+
+    return None
+
   def _CheckForImmutableRevision(self):
     try:
       # if revision (sha or tag) is not present then following function
       # throws an error.
-      self.bare_git.rev_parse('--verify', '%s^0' % self.revisionExpr)
+      self.bare_git.rev_list('-1', '--missing=allow-any',
+                             '%s^0' % self.revisionExpr, '--')
+      if self.upstream:
+        rev = self.GetRemote().ToLocal(self.upstream)
+        self.bare_git.rev_list('-1', '--missing=allow-any',
+                               '%s^0' % rev, '--')
+        self.bare_git.merge_base('--is-ancestor', self.revisionExpr, rev)
       return True
     except GitError:
       # There is no such persistent revision. We have to fetch it.
@@ -2103,7 +2077,7 @@ class Project(object):
   def _FetchArchive(self, tarpath, cwd=None):
     cmd = ['archive', '-v', '-o', tarpath]
     cmd.append('--remote=%s' % self.remote.url)
-    cmd.append('--prefix=%s/' % self.relpath)
+    cmd.append('--prefix=%s/' % self.RelPath(local=False))
     cmd.append(self.revisionExpr)
 
     command = GitCommand(self, cmd, cwd=cwd,
@@ -2117,14 +2091,19 @@ class Project(object):
                    current_branch_only=False,
                    initial=False,
                    quiet=False,
+                   verbose=False,
+                   output_redir=None,
                    alt_dir=None,
-                   no_tags=False,
+                   tags=True,
                    prune=False,
                    depth=None,
                    submodules=False,
+                   ssh_proxy=None,
                    force_sync=False,
-                   clone_filter=None):
-
+                   clone_filter=None,
+                   retry_fetches=2,
+                   retry_sleep_initial_sec=4.0,
+                   retry_exp_factor=2.0):
     is_sha1 = False
     tag_name = None
     # The depth should not be used when fetching to a mirror because
@@ -2142,12 +2121,15 @@ class Project(object):
 
     if current_branch_only:
       if self.revisionExpr.startswith(R_TAGS):
-        # this is a tag and its sha1 value should never change
+        # This is a tag and its commit id should never change.
         tag_name = self.revisionExpr[len(R_TAGS):]
+      elif self.upstream and self.upstream.startswith(R_TAGS):
+        # This is a tag and its commit id should never change.
+        tag_name = self.upstream[len(R_TAGS):]
 
       if is_sha1 or tag_name is not None:
         if self._CheckForImmutableRevision():
-          if not quiet:
+          if verbose:
             print('Skipped fetching project %s (already have persistent ref)'
                   % self.name)
           return True
@@ -2167,16 +2149,14 @@ class Project(object):
     if not name:
       name = self.remote.name
 
-    ssh_proxy = False
     remote = self.GetRemote(name)
-    if remote.PreConnectFetch():
-      ssh_proxy = True
+    if not remote.PreConnectFetch(ssh_proxy):
+      ssh_proxy = None
 
     if initial:
       if alt_dir and 'objects' == os.path.basename(alt_dir):
         ref_dir = os.path.dirname(alt_dir)
         packed_refs = os.path.join(self.gitdir, 'packed-refs')
-        remote = self.GetRemote(name)
 
         all_refs = self.bare_ref.all
         ids = set(all_refs.values())
@@ -2217,7 +2197,7 @@ class Project(object):
     if clone_filter:
       git_require((2, 19, 0), fail=True, msg='partial clones')
       cmd.append('--filter=%s' % clone_filter)
-      self.config.SetString('extensions.partialclone', self.remote.name)
+      self.EnableRepositoryExtension('partialclone', self.remote.name)
 
     if depth:
       cmd.append('--depth=%s' % depth)
@@ -2229,8 +2209,10 @@ class Project(object):
       if os.path.exists(os.path.join(self.gitdir, 'shallow')):
         cmd.append('--depth=2147483647')
 
-    if quiet:
+    if not verbose:
       cmd.append('--quiet')
+    if not quiet and sys.stdout.isatty():
+      cmd.append('--progress')
     if not self.worktree:
       cmd.append('--update-head-ok')
     cmd.append(name)
@@ -2241,8 +2223,9 @@ class Project(object):
     if prune:
       cmd.append('--prune')
 
-    if submodules:
-      cmd.append('--recurse-submodules=on-demand')
+    # Always pass something for --recurse-submodules, git with GIT_DIR behaves
+    # incorrectly when not given `--recurse-submodules=no`. (b/218891912)
+    cmd.append(f'--recurse-submodules={"on-demand" if submodules else "no"}')
 
     spec = []
     if not current_branch_only:
@@ -2257,10 +2240,12 @@ class Project(object):
     else:
       branch = self.revisionExpr
     if (not self.manifest.IsMirror and is_sha1 and depth
-        and git_require((1, 8, 3))):
+            and git_require((1, 8, 3))):
       # Shallow checkout of a specific commit, fetch from that commit and not
       # the heads only as the commit might be deeper in the history.
       spec.append(branch)
+      if self.upstream:
+        spec.append(self.upstream)
     else:
       if is_sha1:
         branch = self.upstream
@@ -2276,7 +2261,7 @@ class Project(object):
 
     # If using depth then we should not get all the tags since they may
     # be outside of the depth.
-    if no_tags or depth:
+    if not tags or depth:
       cmd.append('--no-tags')
     else:
       cmd.append('--tags')
@@ -2284,22 +2269,44 @@ class Project(object):
 
     cmd.extend(spec)
 
-    ok = False
-    for _i in range(2):
-      gitcmd = GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy)
+    # At least one retry minimum due to git remote prune.
+    retry_fetches = max(retry_fetches, 2)
+    retry_cur_sleep = retry_sleep_initial_sec
+    ok = prune_tried = False
+    for try_n in range(retry_fetches):
+      gitcmd = GitCommand(
+          self, cmd, bare=True, objdir=os.path.join(self.objdir, 'objects'),
+          ssh_proxy=ssh_proxy,
+          merge_output=True, capture_stdout=quiet or bool(output_redir))
+      if gitcmd.stdout and not quiet and output_redir:
+        output_redir.write(gitcmd.stdout)
       ret = gitcmd.Wait()
       if ret == 0:
         ok = True
         break
-      # If needed, run the 'git remote prune' the first time through the loop
-      elif (not _i and
-            "error:" in gitcmd.stderr and
-            "git remote prune" in gitcmd.stderr):
+
+      # Retry later due to HTTP 429 Too Many Requests.
+      elif (gitcmd.stdout and
+            'error:' in gitcmd.stdout and
+            'HTTP 429' in gitcmd.stdout):
+        # Fallthru to sleep+retry logic at the bottom.
+        pass
+
+      # Try to prune remote branches once in case there are conflicts.
+      # For example, if the remote had refs/heads/upstream, but deleted that and
+      # now has refs/heads/upstream/foo.
+      elif (gitcmd.stdout and
+            'error:' in gitcmd.stdout and
+            'git remote prune' in gitcmd.stdout and
+            not prune_tried):
+        prune_tried = True
         prunecmd = GitCommand(self, ['remote', 'prune', name], bare=True,
                               ssh_proxy=ssh_proxy)
         ret = prunecmd.Wait()
         if ret:
           break
+        print('retrying fetch after pruning remote branches', file=output_redir)
+        # Continue right away so we don't sleep as we shouldn't need to.
         continue
       elif current_branch_only and is_sha1 and ret == 128:
         # Exit code 128 means "couldn't find the ref you asked for"; if we're
@@ -2309,7 +2316,18 @@ class Project(object):
       elif ret < 0:
         # Git died with a signal, exit immediately
         break
-      time.sleep(random.randint(30, 45))
+
+      # Figure out how long to sleep before the next attempt, if there is one.
+      if not verbose and gitcmd.stdout:
+        print('\n%s:\n%s' % (self.name, gitcmd.stdout), end='', file=output_redir)
+      if try_n < retry_fetches - 1:
+        print('%s: sleeping %s seconds before retrying' % (self.name, retry_cur_sleep),
+              file=output_redir)
+        time.sleep(retry_cur_sleep)
+        retry_cur_sleep = min(retry_exp_factor * retry_cur_sleep,
+                              MAXIMUM_RETRY_SLEEP_SEC)
+        retry_cur_sleep *= (1 - random.uniform(-RETRY_JITTER_PERCENT,
+                                               RETRY_JITTER_PERCENT))
 
     if initial:
       if alt_dir:
@@ -2324,27 +2342,21 @@ class Project(object):
       # got what we wanted, else trigger a second run of all
       # refs.
       if not self._CheckForImmutableRevision():
-        if current_branch_only and depth:
-          # Sync the current branch only with depth set to None
-          return self._RemoteFetch(name=name,
-                                   current_branch_only=current_branch_only,
-                                   initial=False, quiet=quiet, alt_dir=alt_dir,
-                                   depth=None, clone_filter=clone_filter)
-        else:
-          # Avoid infinite recursion: sync all branches with depth set to None
-          return self._RemoteFetch(name=name, current_branch_only=False,
-                                   initial=False, quiet=quiet, alt_dir=alt_dir,
-                                   depth=None, clone_filter=clone_filter)
+        # Sync the current branch only with depth set to None.
+        # We always pass depth=None down to avoid infinite recursion.
+        return self._RemoteFetch(
+            name=name, quiet=quiet, verbose=verbose, output_redir=output_redir,
+            current_branch_only=current_branch_only and depth,
+            initial=False, alt_dir=alt_dir,
+            depth=None, ssh_proxy=ssh_proxy, clone_filter=clone_filter)
 
     return ok
 
-  def _ApplyCloneBundle(self, initial=False, quiet=False):
-    if initial and \
-        (self.manifest.manifestProject.config.GetString('repo.depth') or
-         self.clone_depth):
+  def _ApplyCloneBundle(self, initial=False, quiet=False, verbose=False):
+    if initial and (self.manifest.manifestProject.depth or self.clone_depth):
       return False
 
-    remote = self.GetRemote(self.remote.name)
+    remote = self.GetRemote()
     bundle_url = remote.url + '/clone.bundle'
     bundle_url = GitConfig.ForUser().UrlInsteadOf(bundle_url)
     if GetSchemeFromUrl(bundle_url) not in ('http', 'https',
@@ -2362,13 +2374,16 @@ class Project(object):
       return False
 
     if not exist_dst:
-      exist_dst = self._FetchBundle(bundle_url, bundle_tmp, bundle_dst, quiet)
+      exist_dst = self._FetchBundle(bundle_url, bundle_tmp, bundle_dst, quiet,
+                                    verbose)
     if not exist_dst:
       return False
 
     cmd = ['fetch']
-    if quiet:
+    if not verbose:
       cmd.append('--quiet')
+    if not quiet and sys.stdout.isatty():
+      cmd.append('--progress')
     if not self.worktree:
       cmd.append('--update-head-ok')
     cmd.append(bundle_dst)
@@ -2376,20 +2391,18 @@ class Project(object):
       cmd.append(str(f))
     cmd.append('+refs/tags/*:refs/tags/*')
 
-    ok = GitCommand(self, cmd, bare=True).Wait() == 0
-    if os.path.exists(bundle_dst):
-      platform_utils.remove(bundle_dst)
-    if os.path.exists(bundle_tmp):
-      platform_utils.remove(bundle_tmp)
+    ok = GitCommand(
+        self, cmd, bare=True, objdir=os.path.join(self.objdir, 'objects')).Wait() == 0
+    platform_utils.remove(bundle_dst, missing_ok=True)
+    platform_utils.remove(bundle_tmp, missing_ok=True)
     return ok
 
-  def _FetchBundle(self, srcUrl, tmpPath, dstPath, quiet):
-    if os.path.exists(dstPath):
-      platform_utils.remove(dstPath)
+  def _FetchBundle(self, srcUrl, tmpPath, dstPath, quiet, verbose):
+    platform_utils.remove(dstPath, missing_ok=True)
 
     cmd = ['curl', '--fail', '--output', tmpPath, '--netrc', '--location']
     if quiet:
-      cmd += ['--silent']
+      cmd += ['--silent', '--show-error']
     if os.path.exists(tmpPath):
       size = os.stat(tmpPath).st_size
       if size >= 1024:
@@ -2411,22 +2424,30 @@ class Project(object):
 
       if IsTrace():
         Trace('%s', ' '.join(cmd))
+      if verbose:
+        print('%s: Downloading bundle: %s' % (self.name, srcUrl))
+      stdout = None if verbose else subprocess.PIPE
+      stderr = None if verbose else subprocess.STDOUT
       try:
-        proc = subprocess.Popen(cmd)
+        proc = subprocess.Popen(cmd, stdout=stdout, stderr=stderr)
       except OSError:
         return False
 
-      curlret = proc.wait()
+      (output, _) = proc.communicate()
+      curlret = proc.returncode
 
       if curlret == 22:
         # From curl man page:
         # 22: HTTP page not retrieved. The requested url was not found or
         # returned another error with the HTTP error code being 400 or above.
         # This return code only appears if -f, --fail is used.
-        if not quiet:
-          print("Server does not provide clone.bundle; ignoring.",
-                file=sys.stderr)
+        if verbose:
+          print('%s: Unable to retrieve clone.bundle; ignoring.' % self.name)
+          if output:
+            print('Curl output:\n%s' % output)
         return False
+      elif curlret and not verbose and output:
+        print('%s' % output, file=sys.stderr)
 
     if os.path.exists(tmpPath):
       if curlret == 0 and self._IsValidBundle(tmpPath, quiet):
@@ -2460,8 +2481,12 @@ class Project(object):
       if self._allrefs:
         raise GitError('%s checkout %s ' % (self.name, rev))
 
-  def _CherryPick(self, rev):
+  def _CherryPick(self, rev, ffonly=False, record_origin=False):
     cmd = ['cherry-pick']
+    if ffonly:
+      cmd.append('--ff')
+    if record_origin:
+      cmd.append('-x')
     cmd.append(rev)
     cmd.append('--')
     if GitCommand(self, cmd).Wait() != 0:
@@ -2497,7 +2522,7 @@ class Project(object):
     if quiet:
       cmd.append('-q')
     if GitCommand(self, cmd).Wait() != 0:
-      raise GitError('%s submodule update --init --recursive %s ' % self.name)
+      raise GitError('%s submodule update --init --recursive ' % self.name)
 
   def _Rebase(self, upstream, onto=None):
     cmd = ['rebase']
@@ -2508,13 +2533,13 @@ class Project(object):
       raise GitError('%s rebase %s ' % (self.name, upstream))
 
   def _FastForward(self, head, ffonly=False):
-    cmd = ['merge', head]
+    cmd = ['merge', '--no-stat', head]
     if ffonly:
       cmd.append("--ff-only")
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s merge %s ' % (self.name, head))
 
-  def _InitGitDir(self, mirror_git=None, force_sync=False):
+  def _InitGitDir(self, mirror_git=None, force_sync=False, quiet=False):
     init_git_dir = not os.path.exists(self.gitdir)
     init_obj_dir = not os.path.exists(self.objdir)
     try:
@@ -2523,16 +2548,23 @@ class Project(object):
         os.makedirs(self.objdir)
         self.bare_objdir.init()
 
+        self._UpdateHooks(quiet=quiet)
+
+        if self.use_git_worktrees:
+          # Enable per-worktree config file support if possible.  This is more a
+          # nice-to-have feature for users rather than a hard requirement.
+          if git_require((2, 20, 0)):
+            self.EnableRepositoryExtension('worktreeConfig')
+
       # If we have a separate directory to hold refs, initialize it as well.
       if self.objdir != self.gitdir:
         if init_git_dir:
           os.makedirs(self.gitdir)
 
         if init_obj_dir or init_git_dir:
-          self._ReferenceGitDir(self.objdir, self.gitdir, share_refs=False,
-                                copy_all=True)
+          self._ReferenceGitDir(self.objdir, self.gitdir, copy_all=True)
         try:
-          self._CheckDirReference(self.objdir, self.gitdir, share_refs=False)
+          self._CheckDirReference(self.objdir, self.gitdir)
         except GitError as e:
           if force_sync:
             print("Retrying clone after deleting %s" %
@@ -2542,50 +2574,48 @@ class Project(object):
               if self.worktree and os.path.exists(platform_utils.realpath
                                                   (self.worktree)):
                 platform_utils.rmtree(platform_utils.realpath(self.worktree))
-              return self._InitGitDir(mirror_git=mirror_git, force_sync=False)
-            except:
+              return self._InitGitDir(mirror_git=mirror_git, force_sync=False,
+                                      quiet=quiet)
+            except Exception:
               raise e
           raise e
 
       if init_git_dir:
         mp = self.manifest.manifestProject
-        ref_dir = mp.config.GetString('repo.reference') or ''
+        ref_dir = mp.reference or ''
+
+        def _expanded_ref_dirs():
+          """Iterate through the possible git reference directory paths."""
+          name = self.name + '.git'
+          yield mirror_git or os.path.join(ref_dir, name)
+          for prefix in '', self.remote.name:
+            yield os.path.join(ref_dir, '.repo', 'project-objects', prefix, name)
+            yield os.path.join(ref_dir, '.repo', 'worktrees', prefix, name)
 
         if ref_dir or mirror_git:
-          if not mirror_git:
-            mirror_git = os.path.join(ref_dir, self.name + '.git')
-          repo_git = os.path.join(ref_dir, '.repo', 'projects',
-                                  self.relpath + '.git')
-
-          if os.path.exists(mirror_git):
-            ref_dir = mirror_git
-
-          elif os.path.exists(repo_git):
-            ref_dir = repo_git
-
-          else:
-            ref_dir = None
+          found_ref_dir = None
+          for path in _expanded_ref_dirs():
+            if os.path.exists(path):
+              found_ref_dir = path
+              break
+          ref_dir = found_ref_dir
 
           if ref_dir:
             if not os.path.isabs(ref_dir):
               # The alternate directory is relative to the object database.
               ref_dir = os.path.relpath(ref_dir,
                                         os.path.join(self.objdir, 'objects'))
-            _lwrite(os.path.join(self.gitdir, 'objects/info/alternates'),
+            _lwrite(os.path.join(self.objdir, 'objects/info/alternates'),
                     os.path.join(ref_dir, 'objects') + '\n')
-
-        self._UpdateHooks()
 
         m = self.manifest.manifestProject.config
         for key in ['user.name', 'user.email']:
           if m.Has(key, include_defaults=False):
             self.config.SetString(key, m.GetString(key))
-        self.config.SetString('filter.lfs.smudge', 'git-lfs smudge --skip -- %f')
-        self.config.SetString('filter.lfs.process', 'git-lfs filter-process --skip')
-        if self.manifest.IsMirror:
-          self.config.SetString('core.bare', 'true')
-        else:
-          self.config.SetString('core.bare', None)
+        if not self.manifest.EnableGitLfs:
+          self.config.SetString('filter.lfs.smudge', 'git-lfs smudge --skip -- %f')
+          self.config.SetString('filter.lfs.process', 'git-lfs filter-process --skip')
+        self.config.SetBoolean('core.bare', True if self.manifest.IsMirror else None)
     except Exception:
       if init_obj_dir and os.path.exists(self.objdir):
         platform_utils.rmtree(self.objdir)
@@ -2593,14 +2623,22 @@ class Project(object):
         platform_utils.rmtree(self.gitdir)
       raise
 
-  def _UpdateHooks(self):
-    if os.path.exists(self.gitdir):
-      self._InitHooks()
+  def _UpdateHooks(self, quiet=False):
+    if os.path.exists(self.objdir):
+      self._InitHooks(quiet=quiet)
 
-  def _InitHooks(self):
-    hooks = platform_utils.realpath(self._gitdir_path('hooks'))
+  def _InitHooks(self, quiet=False):
+    hooks = platform_utils.realpath(os.path.join(self.objdir, 'hooks'))
     if not os.path.exists(hooks):
       os.makedirs(hooks)
+
+    # Delete sample hooks.  They're noise.
+    for hook in glob.glob(os.path.join(hooks, '*.sample')):
+      try:
+        platform_utils.remove(hook, missing_ok=True)
+      except PermissionError:
+        pass
+
     for stock_hook in _ProjectHooks():
       name = os.path.basename(stock_hook)
 
@@ -2617,24 +2655,29 @@ class Project(object):
       if platform_utils.islink(dst):
         continue
       if os.path.exists(dst):
-        if filecmp.cmp(stock_hook, dst, shallow=False):
-          platform_utils.remove(dst)
-        else:
-          _warn("%s: Not replacing locally modified %s hook",
-                self.relpath, name)
-          continue
+        # If the files are the same, we'll leave it alone.  We create symlinks
+        # below by default but fallback to hardlinks if the OS blocks them.
+        # So if we're here, it's probably because we made a hardlink below.
+        if not filecmp.cmp(stock_hook, dst, shallow=False):
+          if not quiet:
+            _warn("%s: Not replacing locally modified %s hook",
+                  self.RelPath(local=False), name)
+        continue
       try:
         platform_utils.symlink(
             os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
       except OSError as e:
         if e.errno == errno.EPERM:
-          raise GitError(self._get_symlink_error_message())
+          try:
+            os.link(stock_hook, dst)
+          except OSError:
+            raise GitError(self._get_symlink_error_message())
         else:
           raise
 
   def _InitRemote(self):
     if self.remote.url:
-      remote = self.GetRemote(self.remote.name)
+      remote = self.GetRemote()
       remote.url = self.remote.url
       remote.pushUrl = self.remote.pushUrl
       remote.review = self.remote.review
@@ -2647,38 +2690,76 @@ class Project(object):
       remote.Save()
 
   def _InitMRef(self):
+    """Initialize the pseudo m/<manifest branch> ref."""
     if self.manifest.branch:
-      self._InitAnyMRef(R_M + self.manifest.branch)
+      if self.use_git_worktrees:
+        # Set up the m/ space to point to the worktree-specific ref space.
+        # We'll update the worktree-specific ref space on each checkout.
+        ref = R_M + self.manifest.branch
+        if not self.bare_ref.symref(ref):
+          self.bare_git.symbolic_ref(
+              '-m', 'redirecting to worktree scope',
+              ref, R_WORKTREE_M + self.manifest.branch)
+
+        # We can't update this ref with git worktrees until it exists.
+        # We'll wait until the initial checkout to set it.
+        if not os.path.exists(self.worktree):
+          return
+
+        base = R_WORKTREE_M
+        active_git = self.work_git
+
+        self._InitAnyMRef(HEAD, self.bare_git, detach=True)
+      else:
+        base = R_M
+        active_git = self.bare_git
+
+      self._InitAnyMRef(base + self.manifest.branch, active_git)
 
   def _InitMirrorHead(self):
-    self._InitAnyMRef(HEAD)
+    self._InitAnyMRef(HEAD, self.bare_git)
 
-  def _InitAnyMRef(self, ref):
+  def _InitAnyMRef(self, ref, active_git, detach=False):
+    """Initialize |ref| in |active_git| to the value in the manifest.
+
+    This points |ref| to the <project> setting in the manifest.
+
+    Args:
+      ref: The branch to update.
+      active_git: The git repository to make updates in.
+      detach: Whether to update target of symbolic refs, or overwrite the ref
+        directly (and thus make it non-symbolic).
+    """
     cur = self.bare_ref.symref(ref)
 
     if self.revisionId:
       if cur != '' or self.bare_ref.get(ref) != self.revisionId:
         msg = 'manifest set to %s' % self.revisionId
         dst = self.revisionId + '^0'
-        self.bare_git.UpdateRef(ref, dst, message=msg, detach=True)
+        active_git.UpdateRef(ref, dst, message=msg, detach=True)
     else:
-      remote = self.GetRemote(self.remote.name)
+      remote = self.GetRemote()
       dst = remote.ToLocal(self.revisionExpr)
       if cur != dst:
         msg = 'manifest set to %s' % self.revisionExpr
-        self.bare_git.symbolic_ref('-m', msg, ref, dst)
+        if detach:
+          active_git.UpdateRef(ref, dst, message=msg, detach=True)
+        else:
+          active_git.symbolic_ref('-m', msg, ref, dst)
 
-  def _CheckDirReference(self, srcdir, destdir, share_refs):
-    symlink_files = self.shareable_files[:]
-    symlink_dirs = self.shareable_dirs[:]
-    if share_refs:
-      symlink_files += self.working_tree_files
-      symlink_dirs += self.working_tree_dirs
-    to_symlink = symlink_files + symlink_dirs
-    for name in set(to_symlink):
-      dst = platform_utils.realpath(os.path.join(destdir, name))
+  def _CheckDirReference(self, srcdir, destdir):
+    # Git worktrees don't use symlinks to share at all.
+    if self.use_git_worktrees:
+      return
+
+    for name in self.shareable_dirs:
+      # Try to self-heal a bit in simple cases.
+      dst_path = os.path.join(destdir, name)
+      src_path = os.path.join(srcdir, name)
+
+      dst = platform_utils.realpath(dst_path)
       if os.path.lexists(dst):
-        src = platform_utils.realpath(os.path.join(srcdir, name))
+        src = platform_utils.realpath(src_path)
         # Fail if the links are pointing to the wrong place
         if src != dst:
           _error('%s is different in %s vs %s', name, destdir, srcdir)
@@ -2686,25 +2767,19 @@ class Project(object):
                          'work tree. If you\'re comfortable with the '
                          'possibility of losing the work tree\'s git metadata,'
                          ' use `repo sync --force-sync {0}` to '
-                         'proceed.'.format(self.relpath))
+                         'proceed.'.format(self.RelPath(local=False)))
 
-  def _ReferenceGitDir(self, gitdir, dotgit, share_refs, copy_all):
+  def _ReferenceGitDir(self, gitdir, dotgit, copy_all):
     """Update |dotgit| to reference |gitdir|, using symlinks where possible.
 
     Args:
       gitdir: The bare git repository. Must already be initialized.
       dotgit: The repository you would like to initialize.
-      share_refs: If true, |dotgit| will store its refs under |gitdir|.
-          Only one work tree can store refs under a given |gitdir|.
       copy_all: If true, copy all remaining files from |gitdir| -> |dotgit|.
           This saves you the effort of initializing |dotgit| yourself.
     """
-    symlink_files = self.shareable_files[:]
     symlink_dirs = self.shareable_dirs[:]
-    if share_refs:
-      symlink_files += self.working_tree_files
-      symlink_dirs += self.working_tree_dirs
-    to_symlink = symlink_files + symlink_dirs
+    to_symlink = symlink_dirs
 
     to_copy = []
     if copy_all:
@@ -2732,60 +2807,177 @@ class Project(object):
           elif os.path.isfile(src):
             shutil.copy(src, dst)
 
-        # If the source file doesn't exist, ensure the destination
-        # file doesn't either.
-        if name in symlink_files and not os.path.lexists(src):
-          try:
-            platform_utils.remove(dst)
-          except OSError:
-            pass
-
       except OSError as e:
         if e.errno == errno.EPERM:
           raise DownloadError(self._get_symlink_error_message())
         else:
           raise
 
+  def _InitialCheckoutStart(self):
+    """Called when checking out a project for the first time.
+
+    This will use temporary non-visible paths so we can be safely interrupted
+    without leaving incomplete state behind.
+    """
+    paths = [f'{x}.tmp' for x in (self.relpath, self.worktree, self.gitdir, self.objdir)]
+    for p in paths:
+      platform_utils.rmtree(p, ignore_errors=True)
+    self.UpdatePaths(*paths)
+
+  def _InitialCheckoutFinalizeNetworkHalf(self):
+    """Finalize the object dirs after network syncing works."""
+    # Once the network half finishes, we can move the objects into the right
+    # place by removing the ".tmp" suffix on the dirs.
+    platform_utils.rmtree(self.gitdir[:-4], ignore_errors=True)
+    os.rename(self.gitdir, self.gitdir[:-4])
+    self.UpdatePaths(self.relpath, self.worktree, self.gitdir[:-4], self.objdir[:-4])
+
+  def _InitialCheckoutFinalizeLocalHalf(self):
+    """Finalize the initial checkout and make it available."""
+    assert self.gitdir == self.objdir
+    # Once the local half finishes, we can move the manifest dir into the right
+    # place by removing the ".tmp" suffix on the dirs.
+    platform_utils.rmtree(self.worktree[:-4], ignore_errors=True)
+    os.rename(self.worktree, self.worktree[:-4])
+    self.UpdatePaths(
+        self.relpath[:-4], self.worktree[:-4], self.gitdir, self.objdir)
+
+  def _InitGitWorktree(self):
+    """Init the project using git worktrees."""
+    self.bare_git.worktree('prune')
+    self.bare_git.worktree('add', '-ff', '--checkout', '--detach', '--lock',
+                           self.worktree, self.GetRevisionId())
+
+    # Rewrite the internal state files to use relative paths between the
+    # checkouts & worktrees.
+    dotgit = os.path.join(self.worktree, '.git')
+    with open(dotgit, 'r') as fp:
+      # Figure out the checkout->worktree path.
+      setting = fp.read()
+      assert setting.startswith('gitdir:')
+      git_worktree_path = setting.split(':', 1)[1].strip()
+    # Some platforms (e.g. Windows) won't let us update dotgit in situ because
+    # of file permissions.  Delete it and recreate it from scratch to avoid.
+    platform_utils.remove(dotgit)
+    # Use relative path from checkout->worktree & maintain Unix line endings
+    # on all OS's to match git behavior.
+    with open(dotgit, 'w', newline='\n') as fp:
+      print('gitdir:', os.path.relpath(git_worktree_path, self.worktree),
+            file=fp)
+    # Use relative path from worktree->checkout & maintain Unix line endings
+    # on all OS's to match git behavior.
+    with open(os.path.join(git_worktree_path, 'gitdir'), 'w', newline='\n') as fp:
+      print(os.path.relpath(dotgit, git_worktree_path), file=fp)
+
+    self._InitMRef()
+
   def _InitWorkTree(self, force_sync=False, submodules=False):
-    realdotgit = os.path.join(self.worktree, '.git')
-    tmpdotgit = realdotgit + '.tmp'
-    init_dotgit = not os.path.exists(realdotgit)
-    if init_dotgit:
-      dotgit = tmpdotgit
-      platform_utils.rmtree(tmpdotgit, ignore_errors=True)
-      os.makedirs(tmpdotgit)
-      self._ReferenceGitDir(self.gitdir, tmpdotgit, share_refs=True,
-                            copy_all=False)
+    """Setup the worktree .git path.
+
+    This is the user-visible path like src/foo/.git/.
+
+    With non-git-worktrees, this will be a symlink to the .repo/projects/ path.
+    With git-worktrees, this will be a .git file using "gitdir: ..." syntax.
+
+    Older checkouts had .git/ directories.  If we see that, migrate it.
+
+    This also handles changes in the manifest.  Maybe this project was backed
+    by "foo/bar" on the server, but now it's "new/foo/bar".  We have to update
+    the path we point to under .repo/projects/ to match.
+    """
+    dotgit = os.path.join(self.worktree, '.git')
+
+    # If using an old layout style (a directory), migrate it.
+    if not platform_utils.islink(dotgit) and platform_utils.isdir(dotgit):
+      self._MigrateOldWorkTreeGitDir(dotgit)
+
+    init_dotgit = not os.path.exists(dotgit)
+    if self.use_git_worktrees:
+      if init_dotgit:
+        self._InitGitWorktree()
+        self._CopyAndLinkFiles()
     else:
-      dotgit = realdotgit
+      if not init_dotgit:
+        # See if the project has changed.
+        if platform_utils.realpath(self.gitdir) != platform_utils.realpath(dotgit):
+          platform_utils.remove(dotgit)
 
-    try:
-      self._CheckDirReference(self.gitdir, dotgit, share_refs=True)
-    except GitError as e:
-      if force_sync and not init_dotgit:
-        try:
-          platform_utils.rmtree(dotgit)
-          return self._InitWorkTree(force_sync=False, submodules=submodules)
-        except:
-          raise e
-      raise e
+      if init_dotgit or not os.path.exists(dotgit):
+        os.makedirs(self.worktree, exist_ok=True)
+        platform_utils.symlink(os.path.relpath(self.gitdir, self.worktree), dotgit)
 
-    if init_dotgit:
-      _lwrite(os.path.join(tmpdotgit, HEAD), '%s\n' % self.GetRevisionId())
+      if init_dotgit:
+        _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
 
-      # Now that the .git dir is fully set up, move it to its final home.
-      platform_utils.rename(tmpdotgit, realdotgit)
+        # Finish checking out the worktree.
+        cmd = ['read-tree', '--reset', '-u', '-v', HEAD]
+        if GitCommand(self, cmd).Wait() != 0:
+          raise GitError('Cannot initialize work tree for ' + self.name)
 
-      # Finish checking out the worktree.
-      cmd = ['read-tree', '--reset', '-u']
-      cmd.append('-v')
-      cmd.append(HEAD)
-      if GitCommand(self, cmd).Wait() != 0:
-        raise GitError('Cannot initialize work tree for ' + self.name)
+        if submodules:
+          self._SyncSubmodules(quiet=True)
+        self._CopyAndLinkFiles()
 
-      if submodules:
-        self._SyncSubmodules(quiet=True)
-      self._CopyAndLinkFiles()
+  @classmethod
+  def _MigrateOldWorkTreeGitDir(cls, dotgit):
+    """Migrate the old worktree .git/ dir style to a symlink.
+
+    This logic specifically only uses state from |dotgit| to figure out where to
+    move content and not |self|.  This way if the backing project also changed
+    places, we only do the .git/ dir to .git symlink migration here.  The path
+    updates will happen independently.
+    """
+    # Figure out where in .repo/projects/ it's pointing to.
+    if not os.path.islink(os.path.join(dotgit, 'refs')):
+      raise GitError(f'{dotgit}: unsupported checkout state')
+    gitdir = os.path.dirname(os.path.realpath(os.path.join(dotgit, 'refs')))
+
+    # Remove known symlink paths that exist in .repo/projects/.
+    KNOWN_LINKS = {
+        'config', 'description', 'hooks', 'info', 'logs', 'objects',
+        'packed-refs', 'refs', 'rr-cache', 'shallow', 'svn',
+    }
+    # Paths that we know will be in both, but are safe to clobber in .repo/projects/.
+    SAFE_TO_CLOBBER = {
+        'COMMIT_EDITMSG', 'FETCH_HEAD', 'HEAD', 'gc.log', 'gitk.cache', 'index',
+        'ORIG_HEAD',
+    }
+
+    # First see if we'd succeed before starting the migration.
+    unknown_paths = []
+    for name in platform_utils.listdir(dotgit):
+      # Ignore all temporary/backup names.  These are common with vim & emacs.
+      if name.endswith('~') or (name[0] == '#' and name[-1] == '#'):
+        continue
+
+      dotgit_path = os.path.join(dotgit, name)
+      if name in KNOWN_LINKS:
+        if not platform_utils.islink(dotgit_path):
+          unknown_paths.append(f'{dotgit_path}: should be a symlink')
+      else:
+        gitdir_path = os.path.join(gitdir, name)
+        if name not in SAFE_TO_CLOBBER and os.path.exists(gitdir_path):
+          unknown_paths.append(f'{dotgit_path}: unknown file; please file a bug')
+    if unknown_paths:
+      raise GitError('Aborting migration: ' + '\n'.join(unknown_paths))
+
+    # Now walk the paths and sync the .git/ to .repo/projects/.
+    for name in platform_utils.listdir(dotgit):
+      dotgit_path = os.path.join(dotgit, name)
+
+      # Ignore all temporary/backup names.  These are common with vim & emacs.
+      if name.endswith('~') or (name[0] == '#' and name[-1] == '#'):
+        platform_utils.remove(dotgit_path)
+      elif name in KNOWN_LINKS:
+        platform_utils.remove(dotgit_path)
+      else:
+        gitdir_path = os.path.join(gitdir, name)
+        platform_utils.remove(gitdir_path, missing_ok=True)
+        platform_utils.rename(dotgit_path, gitdir_path)
+
+    # Now that the dir should be empty, clear it out, and symlink it over.
+    platform_utils.rmdir(dotgit)
+    platform_utils.symlink(os.path.relpath(gitdir, os.path.dirname(dotgit)), dotgit)
 
   def _get_symlink_error_message(self):
     if platform_utils.isWindows():
@@ -2794,9 +2986,6 @@ class Project(object):
               'https://github.com/git-for-windows/git/wiki/Symbolic-Links '
               'for other options.')
     return 'filesystem must support symlinks'
-
-  def _gitdir_path(self, path):
-    return platform_utils.realpath(os.path.join(self.gitdir, path))
 
   def _revlist(self, *args, **kw):
     a = []
@@ -2857,6 +3046,13 @@ class Project(object):
       self._bare = bare
       self._gitdir = gitdir
 
+    # __getstate__ and __setstate__ are required for pickling because __getattr__ exists.
+    def __getstate__(self):
+      return (self._project, self._bare, self._gitdir)
+
+    def __setstate__(self, state):
+      self._project, self._bare, self._gitdir = state
+
     def LsOthers(self):
       p = GitCommand(self._project,
                      ['ls-files',
@@ -2885,54 +3081,67 @@ class Project(object):
                      bare=False,
                      capture_stdout=True,
                      capture_stderr=True)
-      try:
-        out = p.process.stdout.read()
-        if not hasattr(out, 'encode'):
-          out = out.decode()
-        r = {}
-        if out:
-          out = iter(out[:-1].split('\0'))
-          while out:
-            try:
-              info = next(out)
-              path = next(out)
-            except StopIteration:
-              break
+      p.Wait()
+      r = {}
+      out = p.stdout
+      if out:
+        out = iter(out[:-1].split('\0'))
+        while out:
+          try:
+            info = next(out)
+            path = next(out)
+          except StopIteration:
+            break
 
-            class _Info(object):
+          class _Info(object):
 
-              def __init__(self, path, omode, nmode, oid, nid, state):
-                self.path = path
-                self.src_path = None
-                self.old_mode = omode
-                self.new_mode = nmode
-                self.old_id = oid
-                self.new_id = nid
+            def __init__(self, path, omode, nmode, oid, nid, state):
+              self.path = path
+              self.src_path = None
+              self.old_mode = omode
+              self.new_mode = nmode
+              self.old_id = oid
+              self.new_id = nid
 
-                if len(state) == 1:
-                  self.status = state
-                  self.level = None
-                else:
-                  self.status = state[:1]
-                  self.level = state[1:]
-                  while self.level.startswith('0'):
-                    self.level = self.level[1:]
+              if len(state) == 1:
+                self.status = state
+                self.level = None
+              else:
+                self.status = state[:1]
+                self.level = state[1:]
+                while self.level.startswith('0'):
+                  self.level = self.level[1:]
 
-            info = info[1:].split(' ')
-            info = _Info(path, *info)
-            if info.status in ('R', 'C'):
-              info.src_path = info.path
-              info.path = next(out)
-            r[info.path] = info
-        return r
-      finally:
-        p.Wait()
+          info = info[1:].split(' ')
+          info = _Info(path, *info)
+          if info.status in ('R', 'C'):
+            info.src_path = info.path
+            info.path = next(out)
+          r[info.path] = info
+      return r
+
+    def GetDotgitPath(self, subpath=None):
+      """Return the full path to the .git dir.
+
+      As a convenience, append |subpath| if provided.
+      """
+      if self._bare:
+        dotgit = self._gitdir
+      else:
+        dotgit = os.path.join(self._project.worktree, '.git')
+        if os.path.isfile(dotgit):
+          # Git worktrees use a "gitdir:" syntax to point to the scratch space.
+          with open(dotgit) as fp:
+            setting = fp.read()
+          assert setting.startswith('gitdir:')
+          gitdir = setting.split(':', 1)[1].strip()
+          dotgit = os.path.normpath(os.path.join(self._project.worktree, gitdir))
+
+      return dotgit if subpath is None else os.path.join(dotgit, subpath)
 
     def GetHead(self):
-      if self._bare:
-        path = os.path.join(self._project.gitdir, HEAD)
-      else:
-        path = os.path.join(self._project.worktree, '.git', HEAD)
+      """Return the ref that HEAD points to."""
+      path = self.GetDotgitPath(subpath=HEAD)
       try:
         with open(path) as fd:
           line = fd.readline()
@@ -3027,9 +3236,6 @@ class Project(object):
           raise TypeError('%s() got an unexpected keyword argument %r'
                           % (name, k))
         if config is not None:
-          if not git_require((1, 7, 2)):
-            raise ValueError('cannot set config on command line for %s()'
-                             % name)
           for k, v in config.items():
             cmdv.append('-c')
             cmdv.append('%s=%s' % (k, v))
@@ -3070,7 +3276,7 @@ class _InfoMessage(object):
     self.text = text
 
   def Print(self, syncbuf):
-    syncbuf.out.info('%s/: %s', self.project.relpath, self.text)
+    syncbuf.out.info('%s/: %s', self.project.RelPath(local=False), self.text)
     syncbuf.out.nl()
 
 
@@ -3082,7 +3288,7 @@ class _Failure(object):
 
   def Print(self, syncbuf):
     syncbuf.out.fail('error: %s/: %s',
-                     self.project.relpath,
+                     self.project.RelPath(local=False),
                      str(self.why))
     syncbuf.out.nl()
 
@@ -3095,7 +3301,7 @@ class _Later(object):
 
   def Run(self, syncbuf):
     out = syncbuf.out
-    out.project('project %s/', self.project.relpath)
+    out.project('project %s/', self.project.RelPath(local=False))
     out.nl()
     try:
       self.action()
@@ -3109,7 +3315,7 @@ class _Later(object):
 class _SyncColoring(Coloring):
 
   def __init__(self, config):
-    Coloring.__init__(self, config, 'reposync')
+    super().__init__(config, 'reposync')
     self.project = self.printer('header', attr='bold')
     self.info = self.printer('info')
     self.fail = self.printer('fail', fg='red')
@@ -3187,9 +3393,7 @@ class SyncBuffer(object):
 
 
 class MetaProject(Project):
-
-  """A special project housed under .repo.
-  """
+  """A special project housed under .repo."""
 
   def __init__(self, manifest, name, gitdir, worktree):
     Project.__init__(self,
@@ -3213,33 +3417,9 @@ class MetaProject(Project):
           self.revisionExpr = base
           self.revisionId = None
 
-  def MetaBranchSwitch(self, submodules=False):
-    """ Prepare MetaProject for manifest branch switch
-    """
-
-    # detach and delete manifest branch, allowing a new
-    # branch to take over
-    syncbuf = SyncBuffer(self.config, detach_head=True)
-    self.Sync_LocalHalf(syncbuf, submodules=submodules)
-    syncbuf.Finish()
-
-    return GitCommand(self,
-                      ['update-ref', '-d', 'refs/heads/default'],
-                      capture_stdout=True,
-                      capture_stderr=True).Wait() == 0
-
-  @property
-  def LastFetch(self):
-    try:
-      fh = os.path.join(self.gitdir, 'FETCH_HEAD')
-      return os.path.getmtime(fh)
-    except OSError:
-      return 0
-
   @property
   def HasChanges(self):
-    """Has the remote received new commits not yet checked out?
-    """
+    """Has the remote received new commits not yet checked out?"""
     if not self.remote or not self.revisionExpr:
       return False
 
@@ -3257,3 +3437,561 @@ class MetaProject(Project):
     elif self._revlist(not_rev(HEAD), revid):
       return True
     return False
+
+
+class RepoProject(MetaProject):
+  """The MetaProject for repo itself."""
+
+  @property
+  def LastFetch(self):
+    try:
+      fh = os.path.join(self.gitdir, 'FETCH_HEAD')
+      return os.path.getmtime(fh)
+    except OSError:
+      return 0
+
+class ManifestProject(MetaProject):
+  """The MetaProject for manifests."""
+
+  def MetaBranchSwitch(self, submodules=False):
+    """Prepare for manifest branch switch."""
+
+    # detach and delete manifest branch, allowing a new
+    # branch to take over
+    syncbuf = SyncBuffer(self.config, detach_head=True)
+    self.Sync_LocalHalf(syncbuf, submodules=submodules)
+    syncbuf.Finish()
+
+    return GitCommand(self,
+                      ['update-ref', '-d', 'refs/heads/default'],
+                      capture_stdout=True,
+                      capture_stderr=True).Wait() == 0
+
+  @property
+  def standalone_manifest_url(self):
+    """The URL of the standalone manifest, or None."""
+    return self.config.GetString('manifest.standalone')
+
+  @property
+  def manifest_groups(self):
+    """The manifest groups string."""
+    return self.config.GetString('manifest.groups')
+
+  @property
+  def reference(self):
+    """The --reference for this manifest."""
+    return self.config.GetString('repo.reference')
+
+  @property
+  def dissociate(self):
+    """Whether to dissociate."""
+    return self.config.GetBoolean('repo.dissociate')
+
+  @property
+  def archive(self):
+    """Whether we use archive."""
+    return self.config.GetBoolean('repo.archive')
+
+  @property
+  def mirror(self):
+    """Whether we use mirror."""
+    return self.config.GetBoolean('repo.mirror')
+
+  @property
+  def use_worktree(self):
+    """Whether we use worktree."""
+    return self.config.GetBoolean('repo.worktree')
+
+  @property
+  def clone_bundle(self):
+    """Whether we use clone_bundle."""
+    return self.config.GetBoolean('repo.clonebundle')
+
+  @property
+  def submodules(self):
+    """Whether we use submodules."""
+    return self.config.GetBoolean('repo.submodules')
+
+  @property
+  def git_lfs(self):
+    """Whether we use git_lfs."""
+    return self.config.GetBoolean('repo.git-lfs')
+
+  @property
+  def use_superproject(self):
+    """Whether we use superproject."""
+    return self.config.GetBoolean('repo.superproject')
+
+  @property
+  def partial_clone(self):
+    """Whether this is a partial clone."""
+    return self.config.GetBoolean('repo.partialclone')
+
+  @property
+  def depth(self):
+    """Partial clone depth."""
+    return self.config.GetString('repo.depth')
+
+  @property
+  def clone_filter(self):
+    """The clone filter."""
+    return self.config.GetString('repo.clonefilter')
+
+  @property
+  def partial_clone_exclude(self):
+    """Partial clone exclude string"""
+    return self.config.GetBoolean('repo.partialcloneexclude')
+
+  @property
+  def manifest_platform(self):
+    """The --platform argument from `repo init`."""
+    return self.config.GetString('manifest.platform')
+
+  @property
+  def _platform_name(self):
+    """Return the name of the platform."""
+    return platform.system().lower()
+
+  def SyncWithPossibleInit(self, submanifest, verbose=False,
+                           current_branch_only=False, tags='', git_event_log=None):
+    """Sync a manifestProject, possibly for the first time.
+
+    Call Sync() with arguments from the most recent `repo init`.  If this is a
+    new sub manifest, then inherit options from the parent's manifestProject.
+
+    This is used by subcmds.Sync() to do an initial download of new sub
+    manifests.
+
+    Args:
+      submanifest: an XmlSubmanifest, the submanifest to re-sync.
+      verbose: a boolean, whether to show all output, rather than only errors.
+      current_branch_only: a boolean, whether to only fetch the current manifest
+          branch from the server.
+      tags: a boolean, whether to fetch tags.
+      git_event_log: an EventLog, for git tracing.
+    """
+    # TODO(lamontjones): when refactoring sync (and init?) consider how to
+    # better get the init options that we should use for new submanifests that
+    # are added when syncing an existing workspace.
+    git_event_log = git_event_log or EventLog()
+    spec = submanifest.ToSubmanifestSpec()
+    # Use the init options from the existing manifestProject, or the parent if
+    # it doesn't exist.
+    #
+    # Today, we only support changing manifest_groups on the sub-manifest, with
+    # no supported-for-the-user way to change the other arguments from those
+    # specified by the outermost manifest.
+    #
+    # TODO(lamontjones): determine which of these should come from the outermost
+    # manifest and which should come from the parent manifest.
+    mp = self if self.Exists else submanifest.parent.manifestProject
+    return self.Sync(
+        manifest_url=spec.manifestUrl,
+        manifest_branch=spec.revision,
+        standalone_manifest=mp.standalone_manifest_url,
+        groups=mp.manifest_groups,
+        platform=mp.manifest_platform,
+        mirror=mp.mirror,
+        dissociate=mp.dissociate,
+        reference=mp.reference,
+        worktree=mp.use_worktree,
+        submodules=mp.submodules,
+        archive=mp.archive,
+        partial_clone=mp.partial_clone,
+        clone_filter=mp.clone_filter,
+        partial_clone_exclude=mp.partial_clone_exclude,
+        clone_bundle=mp.clone_bundle,
+        git_lfs=mp.git_lfs,
+        use_superproject=mp.use_superproject,
+        verbose=verbose,
+        current_branch_only=current_branch_only,
+        tags=tags,
+        depth=mp.depth,
+        git_event_log=git_event_log,
+        manifest_name=spec.manifestName,
+        this_manifest_only=True,
+        outer_manifest=False,
+    )
+
+  def Sync(self, _kwargs_only=(), manifest_url='', manifest_branch=None,
+           standalone_manifest=False, groups='', mirror=False, reference='',
+           dissociate=False, worktree=False, submodules=False, archive=False,
+           partial_clone=None, depth=None, clone_filter='blob:none',
+           partial_clone_exclude=None, clone_bundle=None, git_lfs=None,
+           use_superproject=None, verbose=False, current_branch_only=False,
+           git_event_log=None, platform='', manifest_name='default.xml',
+           tags='', this_manifest_only=False, outer_manifest=True):
+    """Sync the manifest and all submanifests.
+
+    Args:
+      manifest_url: a string, the URL of the manifest project.
+      manifest_branch: a string, the manifest branch to use.
+      standalone_manifest: a boolean, whether to store the manifest as a static
+          file.
+      groups: a string, restricts the checkout to projects with the specified
+          groups.
+      mirror: a boolean, whether to create a mirror of the remote repository.
+      reference: a string, location of a repo instance to use as a reference.
+      dissociate: a boolean, whether to dissociate from reference mirrors after
+          clone.
+      worktree: a boolean, whether to use git-worktree to manage projects.
+      submodules: a boolean, whether sync submodules associated with the
+          manifest project.
+      archive: a boolean, whether to checkout each project as an archive.  See
+          git-archive.
+      partial_clone: a boolean, whether to perform a partial clone.
+      depth: an int, how deep of a shallow clone to create.
+      clone_filter: a string, filter to use with partial_clone.
+      partial_clone_exclude : a string, comma-delimeted list of project namess
+          to exclude from partial clone.
+      clone_bundle: a boolean, whether to enable /clone.bundle on HTTP/HTTPS.
+      git_lfs: a boolean, whether to enable git LFS support.
+      use_superproject: a boolean, whether to use the manifest superproject to
+          sync projects.
+      verbose: a boolean, whether to show all output, rather than only errors.
+      current_branch_only: a boolean, whether to only fetch the current manifest
+          branch from the server.
+      platform: a string, restrict the checkout to projects with the specified
+          platform group.
+      git_event_log: an EventLog, for git tracing.
+      tags: a boolean, whether to fetch tags.
+      manifest_name: a string, the name of the manifest file to use.
+      this_manifest_only: a boolean, whether to only operate on the current sub
+          manifest.
+      outer_manifest: a boolean, whether to start at the outermost manifest.
+
+    Returns:
+      a boolean, whether the sync was successful.
+    """
+    assert _kwargs_only == (), 'Sync only accepts keyword arguments.'
+
+    groups = groups or self.manifest.GetDefaultGroupsStr(with_platform=False)
+    platform = platform or 'auto'
+    git_event_log = git_event_log or EventLog()
+    if outer_manifest and self.manifest.is_submanifest:
+      # In a multi-manifest checkout, use the outer manifest unless we are told
+      # not to.
+      return self.client.outer_manifest.manifestProject.Sync(
+          manifest_url=manifest_url,
+          manifest_branch=manifest_branch,
+          standalone_manifest=standalone_manifest,
+          groups=groups,
+          platform=platform,
+          mirror=mirror,
+          dissociate=dissociate,
+          reference=reference,
+          worktree=worktree,
+          submodules=submodules,
+          archive=archive,
+          partial_clone=partial_clone,
+          clone_filter=clone_filter,
+          partial_clone_exclude=partial_clone_exclude,
+          clone_bundle=clone_bundle,
+          git_lfs=git_lfs,
+          use_superproject=use_superproject,
+          verbose=verbose,
+          current_branch_only=current_branch_only,
+          tags=tags,
+          depth=depth,
+          git_event_log=git_event_log,
+          manifest_name=manifest_name,
+          this_manifest_only=this_manifest_only,
+          outer_manifest=False)
+
+    # If repo has already been initialized, we take -u with the absence of
+    # --standalone-manifest to mean "transition to a standard repo set up",
+    # which necessitates starting fresh.
+    # If --standalone-manifest is set, we always tear everything down and start
+    # anew.
+    if self.Exists:
+      was_standalone_manifest = self.config.GetString('manifest.standalone')
+      if was_standalone_manifest and not manifest_url:
+        print('fatal: repo was initialized with a standlone manifest, '
+              'cannot be re-initialized without --manifest-url/-u')
+        return False
+
+      if standalone_manifest or (was_standalone_manifest and manifest_url):
+        self.config.ClearCache()
+        if self.gitdir and os.path.exists(self.gitdir):
+          platform_utils.rmtree(self.gitdir)
+        if self.worktree and os.path.exists(self.worktree):
+          platform_utils.rmtree(self.worktree)
+
+    is_new = not self.Exists
+    if is_new:
+      if not manifest_url:
+        print('fatal: manifest url is required.', file=sys.stderr)
+        return False
+
+      if verbose:
+        print('Downloading manifest from %s' %
+              (GitConfig.ForUser().UrlInsteadOf(manifest_url),),
+              file=sys.stderr)
+
+      self._InitialCheckoutStart()
+
+      # The manifest project object doesn't keep track of the path on the
+      # server where this git is located, so let's save that here.
+      mirrored_manifest_git = None
+      if reference:
+        manifest_git_path = urllib.parse.urlparse(manifest_url).path[1:]
+        mirrored_manifest_git = os.path.join(reference, manifest_git_path)
+        if not mirrored_manifest_git.endswith(".git"):
+          mirrored_manifest_git += ".git"
+        if not os.path.exists(mirrored_manifest_git):
+          mirrored_manifest_git = os.path.join(reference,
+                                               '.repo/manifests.git')
+
+      self._InitGitDir(mirror_git=mirrored_manifest_git)
+
+    # If standalone_manifest is set, mark the project as "standalone" -- we'll
+    # still do much of the manifests.git set up, but will avoid actual syncs to
+    # a remote.
+    if standalone_manifest:
+      self.config.SetString('manifest.standalone', manifest_url)
+    elif not manifest_url and not manifest_branch:
+      # If -u is set and --standalone-manifest is not, then we're not in
+      # standalone mode. Otherwise, use config to infer what we were in the last
+      # init.
+      standalone_manifest = bool(self.config.GetString('manifest.standalone'))
+    if not standalone_manifest:
+      self.config.SetString('manifest.standalone', None)
+
+    self._ConfigureDepth(depth)
+
+    # Set the remote URL before the remote branch as we might need it below.
+    if manifest_url:
+      r = self.GetRemote()
+      r.url = manifest_url
+      r.ResetFetch()
+      r.Save()
+
+    if not standalone_manifest:
+      if manifest_branch:
+        if manifest_branch == 'HEAD':
+          manifest_branch = self.ResolveRemoteHead()
+          if manifest_branch is None:
+            print('fatal: unable to resolve HEAD', file=sys.stderr)
+            return False
+        self.revisionExpr = manifest_branch
+      else:
+        if is_new:
+          default_branch = self.ResolveRemoteHead()
+          if default_branch is None:
+            # If the remote doesn't have HEAD configured, default to master.
+            default_branch = 'refs/heads/master'
+          self.revisionExpr = default_branch
+        else:
+          self.PreSync()
+
+    groups = re.split(r'[,\s]+', groups or '')
+    all_platforms = ['linux', 'darwin', 'windows']
+    platformize = lambda x: 'platform-' + x
+    if platform == 'auto':
+      if not mirror and not self.mirror:
+        groups.append(platformize(self._platform_name))
+    elif platform == 'all':
+      groups.extend(map(platformize, all_platforms))
+    elif platform in all_platforms:
+      groups.append(platformize(platform))
+    elif platform != 'none':
+      print('fatal: invalid platform flag', file=sys.stderr)
+      return False
+    self.config.SetString('manifest.platform', platform)
+
+    groups = [x for x in groups if x]
+    groupstr = ','.join(groups)
+    if platform == 'auto' and groupstr == self.manifest.GetDefaultGroupsStr():
+      groupstr = None
+    self.config.SetString('manifest.groups', groupstr)
+
+    if reference:
+      self.config.SetString('repo.reference', reference)
+
+    if dissociate:
+      self.config.SetBoolean('repo.dissociate', dissociate)
+
+    if worktree:
+      if mirror:
+        print('fatal: --mirror and --worktree are incompatible',
+              file=sys.stderr)
+        return False
+      if submodules:
+        print('fatal: --submodules and --worktree are incompatible',
+              file=sys.stderr)
+        return False
+      self.config.SetBoolean('repo.worktree', worktree)
+      if is_new:
+        self.use_git_worktrees = True
+      print('warning: --worktree is experimental!', file=sys.stderr)
+
+    if archive:
+      if is_new:
+        self.config.SetBoolean('repo.archive', archive)
+      else:
+        print('fatal: --archive is only supported when initializing a new '
+              'workspace.', file=sys.stderr)
+        print('Either delete the .repo folder in this workspace, or initialize '
+              'in another location.', file=sys.stderr)
+        return False
+
+    if mirror:
+      if is_new:
+        self.config.SetBoolean('repo.mirror', mirror)
+      else:
+        print('fatal: --mirror is only supported when initializing a new '
+              'workspace.', file=sys.stderr)
+        print('Either delete the .repo folder in this workspace, or initialize '
+              'in another location.', file=sys.stderr)
+        return False
+
+    if partial_clone is not None:
+      if mirror:
+        print('fatal: --mirror and --partial-clone are mutually exclusive',
+              file=sys.stderr)
+        return False
+      self.config.SetBoolean('repo.partialclone', partial_clone)
+      if clone_filter:
+        self.config.SetString('repo.clonefilter', clone_filter)
+    elif self.partial_clone:
+      clone_filter = self.clone_filter
+    else:
+      clone_filter = None
+
+    if partial_clone_exclude is not None:
+      self.config.SetString('repo.partialcloneexclude', partial_clone_exclude)
+
+    if clone_bundle is None:
+      clone_bundle = False if partial_clone else True
+    else:
+      self.config.SetBoolean('repo.clonebundle', clone_bundle)
+
+    if submodules:
+      self.config.SetBoolean('repo.submodules', submodules)
+
+    if git_lfs is not None:
+      if git_lfs:
+        git_require((2, 17, 0), fail=True, msg='Git LFS support')
+
+      self.config.SetBoolean('repo.git-lfs', git_lfs)
+      if not is_new:
+        print('warning: Changing --git-lfs settings will only affect new project checkouts.\n'
+              '         Existing projects will require manual updates.\n', file=sys.stderr)
+
+    if use_superproject is not None:
+      self.config.SetBoolean('repo.superproject', use_superproject)
+
+    if not standalone_manifest:
+      if not self.Sync_NetworkHalf(
+          is_new=is_new, quiet=not verbose, verbose=verbose,
+          clone_bundle=clone_bundle, current_branch_only=current_branch_only,
+          tags=tags, submodules=submodules, clone_filter=clone_filter,
+          partial_clone_exclude=self.manifest.PartialCloneExclude):
+        r = self.GetRemote()
+        print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
+        return False
+
+      if manifest_branch:
+        self.MetaBranchSwitch(submodules=submodules)
+
+      if is_new:
+        self._InitialCheckoutFinalizeNetworkHalf()
+
+      syncbuf = SyncBuffer(self.config)
+      self.Sync_LocalHalf(syncbuf, submodules=submodules)
+      syncbuf.Finish()
+
+      if is_new or self.CurrentBranch is None:
+        if not self.StartBranch('default'):
+          print('fatal: cannot create default in manifest', file=sys.stderr)
+          return False
+
+      if not manifest_name:
+        print('fatal: manifest name (-m) is required.', file=sys.stderr)
+        return False
+
+    elif is_new:
+      # This is a new standalone manifest.
+      manifest_name = 'default.xml'
+      manifest_data = fetch.fetch_file(manifest_url, verbose=verbose)
+      dest = os.path.join(self.worktree, manifest_name)
+      os.makedirs(os.path.dirname(dest), exist_ok=True)
+      with open(dest, 'wb') as f:
+        f.write(manifest_data)
+
+    if is_new:
+      self._InitialCheckoutFinalizeLocalHalf()
+
+    try:
+      self.manifest.Link(manifest_name)
+    except ManifestParseError as e:
+      print("fatal: manifest '%s' not available" % manifest_name,
+            file=sys.stderr)
+      print('fatal: %s' % str(e), file=sys.stderr)
+      return False
+
+    if not this_manifest_only:
+      for submanifest in self.manifest.submanifests.values():
+        spec = submanifest.ToSubmanifestSpec()
+        submanifest.repo_client.manifestProject.Sync(
+            manifest_url=spec.manifestUrl,
+            manifest_branch=spec.revision,
+            standalone_manifest=standalone_manifest,
+            groups=self.manifest_groups,
+            platform=platform,
+            mirror=mirror,
+            dissociate=dissociate,
+            reference=reference,
+            worktree=worktree,
+            submodules=submodules,
+            archive=archive,
+            partial_clone=partial_clone,
+            clone_filter=clone_filter,
+            partial_clone_exclude=partial_clone_exclude,
+            clone_bundle=clone_bundle,
+            git_lfs=git_lfs,
+            use_superproject=use_superproject,
+            verbose=verbose,
+            current_branch_only=current_branch_only,
+            tags=tags,
+            depth=depth,
+            git_event_log=git_event_log,
+            manifest_name=spec.manifestName,
+            this_manifest_only=False,
+            outer_manifest=False,
+        )
+
+    # Lastly, if the manifest has a <superproject> then have the superproject
+    # sync it (if it will be used).
+    if git_superproject.UseSuperproject(use_superproject, self.manifest):
+      sync_result = self.manifest.superproject.Sync(git_event_log)
+      if not sync_result.success:
+        print('warning: git update of superproject for '
+              f'{self.manifest.path_prefix} failed, repo sync will not use '
+              'superproject to fetch source; while this error is not fatal, '
+              'and you can continue to run repo sync, please run repo init '
+              'with the --no-use-superproject option to stop seeing this '
+              'warning', file=sys.stderr)
+        if sync_result.fatal and use_superproject is not None:
+          return False
+
+    return True
+
+  def _ConfigureDepth(self, depth):
+    """Configure the depth we'll sync down.
+
+    Args:
+      depth: an int, how deep of a partial clone to create.
+    """
+    # Opt.depth will be non-None if user actually passed --depth to repo init.
+    if depth is not None:
+      if depth > 0:
+        # Positive values will set the depth.
+        depth = str(depth)
+      else:
+        # Negative numbers will clear the depth; passing None to SetString
+        # will do that.
+        depth = None
+
+      # We store the depth in the main manifest project.
+      self.config.SetString('repo.depth', depth)

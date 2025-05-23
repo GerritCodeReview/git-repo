@@ -19,7 +19,33 @@ also due to most developers not using Windows.
 We will never add code specific to older versions of Windows.
 It might work, but it most likely won't, so please don't bother asking.
 
-## Symlinks
+## Git worktrees
+
+*** note
+**Warning**: Repo's support for Git worktrees is new & experimental.
+Please report any bugs and be sure to maintain backups!
+***
+
+The Repo 2.4 release introduced support for [Git worktrees][git-worktree].
+You don't have to worry about or understand this particular feature, so don't
+worry if this section of the Git manual is particularly impenetrable.
+
+The salient point is that Git worktrees allow Repo to create repo client
+checkouts that do not require symlinks at all under Windows.
+This means users no longer need Administrator access to sync code.
+
+Simply use `--worktree` when running `repo init` to opt in.
+
+This does not effect specific Git repositories that use symlinks themselves.
+
+[git-worktree]: https://git-scm.com/docs/git-worktree
+
+## Symlinks by default
+
+*** note
+**NB**: This section applies to the default Repo behavior which does not use
+Git worktrees (see the previous section for more info).
+***
 
 Repo will use symlinks heavily internally.
 On *NIX platforms, this isn't an issue, but Windows makes it a bit difficult.
@@ -62,9 +88,8 @@ This also helps `tar` unpack symlinks, so that's nice.
 
 ## Python
 
-You should make sure to be running Python 3.6 or newer under Windows.
-Python 2 might work, but due to already limited platform testing, you should
-only run newer Python versions.
+Python 3.6 or newer is required.
+Python 2 is known to be broken when running under Windows.
 See our [Python Support](./python-support.md) document for more details.
 
 You can grab the latest Windows installer here:<br>

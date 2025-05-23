@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2012 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import optparse
+
 from command import PagedCommand
 from color import Coloring
-from git_refs import R_M
+from git_refs import R_M, R_HEADS
+
 
 class _Coloring(Coloring):
   def __init__(self, config):
     Coloring.__init__(self, config, "status")
 
+
 class Info(PagedCommand):
-  common = True
+  COMMON = True
   helpSummary = "Get info on the manifest branch, current branch or unmerged branches"
-  helpUsage = "%prog [-dl] [-o [-b]] [<project>...]"
+  helpUsage = "%prog [-dl] [-o [-c]] [<project>...]"
 
   def _Options(self, p):
     p.add_option('-d', '--diff',
@@ -34,29 +36,36 @@ class Info(PagedCommand):
     p.add_option('-o', '--overview',
                  dest='overview', action='store_true',
                  help='show overview of all local commits')
-    p.add_option('-b', '--current-branch',
+    p.add_option('-c', '--current-branch',
                  dest="current_branch", action="store_true",
                  help="consider only checked out branches")
+    p.add_option('--no-current-branch',
+                 dest='current_branch', action='store_false',
+                 help='consider all local branches')
+    # Turn this into a warning & remove this someday.
+    p.add_option('-b',
+                 dest='current_branch', action='store_true',
+                 help=optparse.SUPPRESS_HELP)
     p.add_option('-l', '--local-only',
                  dest="local", action="store_true",
-                 help="Disable all remote operations")
-
+                 help="disable all remote operations")
 
   def Execute(self, opt, args):
-    self.out = _Coloring(self.manifest.globalConfig)
-    self.heading = self.out.printer('heading', attr = 'bold')
-    self.headtext = self.out.nofmt_printer('headtext', fg = 'yellow')
-    self.redtext = self.out.printer('redtext', fg = 'red')
-    self.sha = self.out.printer("sha", fg = 'yellow')
+    self.out = _Coloring(self.client.globalConfig)
+    self.heading = self.out.printer('heading', attr='bold')
+    self.headtext = self.out.nofmt_printer('headtext', fg='yellow')
+    self.redtext = self.out.printer('redtext', fg='red')
+    self.sha = self.out.printer("sha", fg='yellow')
     self.text = self.out.nofmt_printer('text')
-    self.dimtext = self.out.printer('dimtext', attr = 'dim')
+    self.dimtext = self.out.printer('dimtext', attr='dim')
 
     self.opt = opt
 
+    if not opt.this_manifest_only:
+      self.manifest = self.manifest.outer_client
     manifestConfig = self.manifest.manifestProject.config
     mergeBranch = manifestConfig.GetBranch("default").merge
-    manifestGroups = (manifestConfig.GetString('manifest.groups')
-                      or 'all,-notdefault')
+    manifestGroups = self.manifest.GetGroupsStr()
 
     self.heading("Manifest branch: ")
     if self.manifest.default.revisionExpr:
@@ -72,17 +81,17 @@ class Info(PagedCommand):
     self.printSeparator()
 
     if not opt.overview:
-      self.printDiffInfo(args)
+      self._printDiffInfo(opt, args)
     else:
-      self.printCommitOverview(args)
+      self._printCommitOverview(opt, args)
 
   def printSeparator(self):
     self.text("----------------------------")
     self.out.nl()
 
-  def printDiffInfo(self, args):
+  def _printDiffInfo(self, opt, args):
     # We let exceptions bubble up to main as they'll be well structured.
-    projs = self.GetProjects(args)
+    projs = self.GetProjects(args, all_manifests=not opt.this_manifest_only)
 
     for p in projs:
       self.heading("Project: ")
@@ -122,11 +131,14 @@ class Info(PagedCommand):
       self.printSeparator()
 
   def findRemoteLocalDiff(self, project):
-    #Fetch all the latest commits
+    # Fetch all the latest commits.
     if not self.opt.local:
       project.Sync_NetworkHalf(quiet=True, current_branch_only=True)
 
-    logTarget = R_M + self.manifest.manifestProject.config.GetBranch("default").merge
+    branch = self.manifest.manifestProject.config.GetBranch('default').merge
+    if branch.startswith(R_HEADS):
+      branch = branch[len(R_HEADS):]
+    logTarget = R_M + branch
 
     bareTmp = project.bare_git._bare
     project.bare_git._bare = False
@@ -168,9 +180,9 @@ class Info(PagedCommand):
       self.text(" ".join(split[1:]))
       self.out.nl()
 
-  def printCommitOverview(self, args):
+  def _printCommitOverview(self, opt, args):
     all_branches = []
-    for project in self.GetProjects(args):
+    for project in self.GetProjects(args, all_manifests=not opt.this_manifest_only):
       br = [project.GetUploadableBranch(x)
             for x in project.GetBranches()]
       br = [x for x in br if x]
@@ -189,22 +201,22 @@ class Info(PagedCommand):
       if project != branch.project:
         project = branch.project
         self.out.nl()
-        self.headtext(project.relpath)
+        self.headtext(project.RelPath(local=opt.this_manifest_only))
         self.out.nl()
 
       commits = branch.commits
       date = branch.date
       self.text('%s %-33s (%2d commit%s, %s)' % (
-        branch.name == project.CurrentBranch and '*' or ' ',
-        branch.name,
-        len(commits),
-        len(commits) != 1 and 's' or '',
-        date))
+          branch.name == project.CurrentBranch and '*' or ' ',
+          branch.name,
+          len(commits),
+          len(commits) != 1 and 's' or '',
+          date))
       self.out.nl()
 
       for commit in commits:
         split = commit.split()
-        self.text('{0:38}{1} '.format('','-'))
+        self.text('{0:38}{1} '.format('', '-'))
         self.sha(split[0] + " ")
         self.text(" ".join(split[1:]))
         self.out.nl()

@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,34 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
 import os
 import platform
 import re
 import sys
-
-from pyversion import is_python3
-if is_python3():
-  import urllib.parse
-else:
-  import imp
-  import urlparse
-  urllib = imp.new_module('urllib')
-  urllib.parse = urlparse
+import urllib.parse
 
 from color import Coloring
 from command import InteractiveCommand, MirrorSafeCommand
 from error import ManifestParseError
 from project import SyncBuffer
 from git_config import GitConfig
-from git_command import git_require, MIN_GIT_VERSION
-import platform_utils
+from git_command import git_require, MIN_GIT_VERSION_SOFT, MIN_GIT_VERSION_HARD
+from wrapper import Wrapper
+
 
 class Init(InteractiveCommand, MirrorSafeCommand):
-  common = True
-  helpSummary = "Initialize repo in the current directory"
+  COMMON = True
+  MULTI_MANIFEST_SUPPORT = True
+  helpSummary = "Initialize a repo client checkout in the current directory"
   helpUsage = """
-%prog [options]
+%prog [options] [manifest url]
 """
   helpDescription = """
 The '%prog' command is run once to install and initialize repo.
@@ -49,12 +40,23 @@ The latest repo source code and manifest collection is downloaded
 from the server and is installed in the .repo/ directory in the
 current working directory.
 
+When creating a new checkout, the manifest URL is the only required setting.
+It may be specified using the --manifest-url option, or as the first optional
+argument.
+
 The optional -b argument can be used to select the manifest branch
-to checkout and use.  If no branch is specified, master is assumed.
+to checkout and use.  If no branch is specified, the remote's default
+branch is used.  This is equivalent to using -b HEAD.
 
 The optional -m argument can be used to specify an alternate manifest
 to be used. If no manifest is specified, the manifest default.xml
 will be used.
+
+If the --standalone-manifest argument is set, the manifest will be downloaded
+directly from the specified --manifest-url as a static file (rather than
+setting up a manifest git checkout). With --standalone-manifest, the manifest
+will be fully static and will not be re-downloaded during subsesquent
+`repo init` and `repo sync` calls.
 
 The --reference option can be used to point to a directory that
 has the content of a --mirror sync. This will make the working
@@ -81,240 +83,60 @@ manifest, a subsequent `repo sync` (or `repo sync -d`) is necessary
 to update the working directory files.
 """
 
+  def _CommonOptions(self, p):
+    """Disable due to re-use of Wrapper()."""
+
   def _Options(self, p, gitc_init=False):
-    # Logging
-    g = p.add_option_group('Logging options')
-    g.add_option('-q', '--quiet',
-                 dest="quiet", action="store_true", default=False,
-                 help="be quiet")
-
-    # Manifest
-    g = p.add_option_group('Manifest options')
-    g.add_option('-u', '--manifest-url',
-                 dest='manifest_url',
-                 help='manifest repository location', metavar='URL')
-    g.add_option('-b', '--manifest-branch',
-                 dest='manifest_branch',
-                 help='manifest branch or revision', metavar='REVISION')
-    cbr_opts = ['--current-branch']
-    # The gitc-init subcommand allocates -c itself, but a lot of init users
-    # want -c, so try to satisfy both as best we can.
-    if not gitc_init:
-      cbr_opts += ['-c']
-    g.add_option(*cbr_opts,
-                 dest='current_branch_only', action='store_true',
-                 help='fetch only current manifest branch from server')
-    g.add_option('-m', '--manifest-name',
-                 dest='manifest_name', default='default.xml',
-                 help='initial manifest file', metavar='NAME.xml')
-    g.add_option('--mirror',
-                 dest='mirror', action='store_true',
-                 help='create a replica of the remote repositories '
-                      'rather than a client working directory')
-    g.add_option('--reference',
-                 dest='reference',
-                 help='location of mirror directory', metavar='DIR')
-    g.add_option('--dissociate',
-                 dest='dissociate', action='store_true',
-                 help='dissociate from reference mirrors after clone')
-    g.add_option('--depth', type='int', default=None,
-                 dest='depth',
-                 help='create a shallow clone with given depth; see git clone')
-    g.add_option('--partial-clone', action='store_true',
-                 dest='partial_clone',
-                 help='perform partial clone (https://git-scm.com/'
-                 'docs/gitrepository-layout#_code_partialclone_code)')
-    g.add_option('--clone-filter', action='store', default='blob:none',
-                 dest='clone_filter',
-                 help='filter for use with --partial-clone [default: %default]')
-    g.add_option('--archive',
-                 dest='archive', action='store_true',
-                 help='checkout an archive instead of a git repository for '
-                      'each project. See git archive.')
-    g.add_option('--submodules',
-                 dest='submodules', action='store_true',
-                 help='sync any submodules associated with the manifest repo')
-    g.add_option('-g', '--groups',
-                 dest='groups', default='default',
-                 help='restrict manifest projects to ones with specified '
-                      'group(s) [default|all|G1,G2,G3|G4,-G5,-G6]',
-                 metavar='GROUP')
-    g.add_option('-p', '--platform',
-                 dest='platform', default='auto',
-                 help='restrict manifest projects to ones with a specified '
-                      'platform group [auto|all|none|linux|darwin|...]',
-                 metavar='PLATFORM')
-    g.add_option('--no-clone-bundle',
-                 dest='no_clone_bundle', action='store_true',
-                 help='disable use of /clone.bundle on HTTP/HTTPS')
-    g.add_option('--no-tags',
-                 dest='no_tags', action='store_true',
-                 help="don't fetch tags in the manifest")
-
-    # Tool
-    g = p.add_option_group('repo Version options')
-    g.add_option('--repo-url',
-                 dest='repo_url',
-                 help='repo repository location', metavar='URL')
-    g.add_option('--repo-branch',
-                 dest='repo_branch',
-                 help='repo branch or revision', metavar='REVISION')
-    g.add_option('--no-repo-verify',
-                 dest='no_repo_verify', action='store_true',
-                 help='do not verify repo source code')
-
-    # Other
-    g = p.add_option_group('Other options')
-    g.add_option('--config-name',
-                 dest='config_name', action="store_true", default=False,
-                 help='Always prompt for name/e-mail')
+    Wrapper().InitParser(p, gitc_init=gitc_init)
+    m = p.add_option_group('Multi-manifest')
+    m.add_option('--outer-manifest', action='store_true', default=True,
+                 help='operate starting at the outermost manifest')
+    m.add_option('--no-outer-manifest', dest='outer_manifest',
+                 action='store_false', help='do not operate on outer manifests')
+    m.add_option('--this-manifest-only', action='store_true', default=None,
+                 help='only operate on this (sub)manifest')
+    m.add_option('--no-this-manifest-only', '--all-manifests',
+                 dest='this_manifest_only', action='store_false',
+                 help='operate on this manifest and its submanifests')
 
   def _RegisteredEnvironmentOptions(self):
     return {'REPO_MANIFEST_URL': 'manifest_url',
             'REPO_MIRROR_LOCATION': 'reference'}
 
   def _SyncManifest(self, opt):
-    m = self.manifest.manifestProject
-    is_new = not m.Exists
+    """Call manifestProject.Sync with arguments from opt.
 
-    if is_new:
-      if not opt.manifest_url:
-        print('fatal: manifest url (-u) is required.', file=sys.stderr)
-        sys.exit(1)
-
-      if not opt.quiet:
-        print('Get %s' % GitConfig.ForUser().UrlInsteadOf(opt.manifest_url),
-              file=sys.stderr)
-
-      # The manifest project object doesn't keep track of the path on the
-      # server where this git is located, so let's save that here.
-      mirrored_manifest_git = None
-      if opt.reference:
-        manifest_git_path = urllib.parse.urlparse(opt.manifest_url).path[1:]
-        mirrored_manifest_git = os.path.join(opt.reference, manifest_git_path)
-        if not mirrored_manifest_git.endswith(".git"):
-          mirrored_manifest_git += ".git"
-        if not os.path.exists(mirrored_manifest_git):
-          mirrored_manifest_git = os.path.join(opt.reference,
-                                               '.repo/manifests.git')
-
-      m._InitGitDir(mirror_git=mirrored_manifest_git)
-
-      if opt.manifest_branch:
-        m.revisionExpr = opt.manifest_branch
-      else:
-        m.revisionExpr = 'refs/heads/master'
-    else:
-      if opt.manifest_branch:
-        m.revisionExpr = opt.manifest_branch
-      else:
-        m.PreSync()
-
-    self._ConfigureDepth(opt)
-
-    if opt.manifest_url:
-      r = m.GetRemote(m.remote.name)
-      r.url = opt.manifest_url
-      r.ResetFetch()
-      r.Save()
-
-    groups = re.split(r'[,\s]+', opt.groups)
-    all_platforms = ['linux', 'darwin', 'windows']
-    platformize = lambda x: 'platform-' + x
-    if opt.platform == 'auto':
-      if (not opt.mirror and
-          not m.config.GetString('repo.mirror') == 'true'):
-        groups.append(platformize(platform.system().lower()))
-    elif opt.platform == 'all':
-      groups.extend(map(platformize, all_platforms))
-    elif opt.platform in all_platforms:
-      groups.append(platformize(opt.platform))
-    elif opt.platform != 'none':
-      print('fatal: invalid platform flag', file=sys.stderr)
-      sys.exit(1)
-
-    groups = [x for x in groups if x]
-    groupstr = ','.join(groups)
-    if opt.platform == 'auto' and groupstr == 'default,platform-' + platform.system().lower():
-      groupstr = None
-    m.config.SetString('manifest.groups', groupstr)
-
-    if opt.reference:
-      m.config.SetString('repo.reference', opt.reference)
-
-    if opt.dissociate:
-      m.config.SetString('repo.dissociate', 'true')
-
-    if opt.archive:
-      if is_new:
-        m.config.SetString('repo.archive', 'true')
-      else:
-        print('fatal: --archive is only supported when initializing a new '
-              'workspace.', file=sys.stderr)
-        print('Either delete the .repo folder in this workspace, or initialize '
-              'in another location.', file=sys.stderr)
-        sys.exit(1)
-
-    if opt.mirror:
-      if is_new:
-        m.config.SetString('repo.mirror', 'true')
-      else:
-        print('fatal: --mirror is only supported when initializing a new '
-              'workspace.', file=sys.stderr)
-        print('Either delete the .repo folder in this workspace, or initialize '
-              'in another location.', file=sys.stderr)
-        sys.exit(1)
-
-    if opt.partial_clone:
-      if opt.mirror:
-        print('fatal: --mirror and --partial-clone are mutually exclusive',
-              file=sys.stderr)
-        sys.exit(1)
-      m.config.SetString('repo.partialclone', 'true')
-      if opt.clone_filter:
-        m.config.SetString('repo.clonefilter', opt.clone_filter)
-    else:
-      opt.clone_filter = None
-
-    if opt.submodules:
-      m.config.SetString('repo.submodules', 'true')
-
-    if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet,
-        clone_bundle=not opt.no_clone_bundle,
+    Args:
+      opt: options from optparse.
+    """
+    # Normally this value is set when instantiating the project, but the
+    # manifest project is special and is created when instantiating the
+    # manifest which happens before we parse options.
+    self.manifest.manifestProject.clone_depth = opt.manifest_depth
+    if not self.manifest.manifestProject.Sync(
+        manifest_url=opt.manifest_url,
+        manifest_branch=opt.manifest_branch,
+        standalone_manifest=opt.standalone_manifest,
+        groups=opt.groups,
+        platform=opt.platform,
+        mirror=opt.mirror,
+        dissociate=opt.dissociate,
+        reference=opt.reference,
+        worktree=opt.worktree,
+        submodules=opt.submodules,
+        archive=opt.archive,
+        partial_clone=opt.partial_clone,
+        clone_filter=opt.clone_filter,
+        partial_clone_exclude=opt.partial_clone_exclude,
+        clone_bundle=opt.clone_bundle,
+        git_lfs=opt.git_lfs,
+        use_superproject=opt.use_superproject,
+        verbose=opt.verbose,
         current_branch_only=opt.current_branch_only,
-        no_tags=opt.no_tags, submodules=opt.submodules,
-        clone_filter=opt.clone_filter):
-      r = m.GetRemote(m.remote.name)
-      print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
-
-      # Better delete the manifest git dir if we created it; otherwise next
-      # time (when user fixes problems) we won't go through the "is_new" logic.
-      if is_new:
-        platform_utils.rmtree(m.gitdir)
-      sys.exit(1)
-
-    if opt.manifest_branch:
-      m.MetaBranchSwitch(submodules=opt.submodules)
-
-    syncbuf = SyncBuffer(m.config)
-    m.Sync_LocalHalf(syncbuf, submodules=opt.submodules)
-    syncbuf.Finish()
-
-    if is_new or m.CurrentBranch is None:
-      if not m.StartBranch('default'):
-        print('fatal: cannot create default in manifest', file=sys.stderr)
-        sys.exit(1)
-
-  def _LinkManifest(self, name):
-    if not name:
-      print('fatal: manifest name (-m) is required.', file=sys.stderr)
-      sys.exit(1)
-
-    try:
-      self.manifest.Link(name)
-    except ManifestParseError as e:
-      print("fatal: manifest '%s' not available" % name, file=sys.stderr)
-      print('fatal: %s' % str(e), file=sys.stderr)
+        tags=opt.tags,
+        depth=opt.depth,
+        git_event_log=self.git_event_log,
+        manifest_name=opt.manifest_name):
       sys.exit(1)
 
   def _Prompt(self, prompt, value):
@@ -326,8 +148,8 @@ to update the working directory files.
       return value
     return a
 
-  def _ShouldConfigureUser(self):
-    gc = self.manifest.globalConfig
+  def _ShouldConfigureUser(self, opt, existing_checkout):
+    gc = self.client.globalConfig
     mp = self.manifest.manifestProject
 
     # If we don't have local settings, get from global.
@@ -338,21 +160,24 @@ to update the working directory files.
       mp.config.SetString('user.name', gc.GetString('user.name'))
       mp.config.SetString('user.email', gc.GetString('user.email'))
 
-    print()
-    print('Your identity is: %s <%s>' % (mp.config.GetString('user.name'),
-                                         mp.config.GetString('user.email')))
-    print('If you want to change this, please re-run \'repo init\' with --config-name')
+    if not opt.quiet and not existing_checkout or opt.verbose:
+      print()
+      print('Your identity is: %s <%s>' % (mp.config.GetString('user.name'),
+                                           mp.config.GetString('user.email')))
+      print("If you want to change this, please re-run 'repo init' with --config-name")
     return False
 
-  def _ConfigureUser(self):
+  def _ConfigureUser(self, opt):
     mp = self.manifest.manifestProject
 
     while True:
-      print()
-      name  = self._Prompt('Your Name', mp.UserName)
+      if not opt.quiet:
+        print()
+      name = self._Prompt('Your Name', mp.UserName)
       email = self._Prompt('Your Email', mp.UserEmail)
 
-      print()
+      if not opt.quiet:
+        print()
       print('Your identity is: %s <%s>' % (name, email))
       print('is this correct [y/N]? ', end='')
       # TODO: When we require Python 3, use flush=True w/print above.
@@ -373,7 +198,7 @@ to update the working directory files.
     return False
 
   def _ConfigureColor(self):
-    gc = self.manifest.globalConfig
+    gc = self.client.globalConfig
     if self._HasColorSet(gc):
       return
 
@@ -405,40 +230,22 @@ to update the working directory files.
     if a in ('y', 'yes', 't', 'true', 'on'):
       gc.SetString('color.ui', 'auto')
 
-  def _ConfigureDepth(self, opt):
-    """Configure the depth we'll sync down.
-
-    Args:
-      opt: Options from optparse.  We care about opt.depth.
-    """
-    # Opt.depth will be non-None if user actually passed --depth to repo init.
-    if opt.depth is not None:
-      if opt.depth > 0:
-        # Positive values will set the depth.
-        depth = str(opt.depth)
-      else:
-        # Negative numbers will clear the depth; passing None to SetString
-        # will do that.
-        depth = None
-
-      # We store the depth in the main manifest project.
-      self.manifest.manifestProject.config.SetString('repo.depth', depth)
-
-  def _DisplayResult(self):
+  def _DisplayResult(self, opt):
     if self.manifest.IsMirror:
       init_type = 'mirror '
     else:
       init_type = ''
 
-    print()
-    print('repo %shas been initialized in %s'
-          % (init_type, self.manifest.topdir))
+    if not opt.quiet:
+      print()
+      print('repo %shas been initialized in %s' %
+            (init_type, self.manifest.topdir))
 
     current_dir = os.getcwd()
     if current_dir != self.manifest.topdir:
       print('If this is not the directory in which you want to initialize '
             'repo, please run:')
-      print('   rm -r %s/.repo' % self.manifest.topdir)
+      print('   rm -r %s' % os.path.join(self.manifest.topdir, '.repo'))
       print('and try again.')
 
   def ValidateOptions(self, opt, args):
@@ -447,18 +254,79 @@ to update the working directory files.
 
     # Check this here, else manifest will be tagged "not new" and init won't be
     # possible anymore without removing the .repo/manifests directory.
-    if opt.archive and opt.mirror:
-      self.OptionParser.error('--mirror and --archive cannot be used together.')
+    if opt.mirror:
+      if opt.archive:
+        self.OptionParser.error('--mirror and --archive cannot be used '
+                                'together.')
+      if opt.use_superproject is not None:
+        self.OptionParser.error('--mirror and --use-superproject cannot be '
+                                'used together.')
+    if opt.archive and opt.use_superproject is not None:
+      self.OptionParser.error('--archive and --use-superproject cannot be used '
+                              'together.')
+
+    if opt.standalone_manifest and (opt.manifest_branch or
+                                    opt.manifest_name != 'default.xml'):
+      self.OptionParser.error('--manifest-branch and --manifest-name cannot'
+                              ' be used with --standalone-manifest.')
+
+    if args:
+      if opt.manifest_url:
+        self.OptionParser.error(
+            '--manifest-url option and URL argument both specified: only use '
+            'one to select the manifest URL.')
+
+      opt.manifest_url = args.pop(0)
+
+      if args:
+        self.OptionParser.error('too many arguments to init')
 
   def Execute(self, opt, args):
-    git_require(MIN_GIT_VERSION, fail=True)
+    git_require(MIN_GIT_VERSION_HARD, fail=True)
+    if not git_require(MIN_GIT_VERSION_SOFT):
+      print('repo: warning: git-%s+ will soon be required; please upgrade your '
+            'version of git to maintain support.'
+            % ('.'.join(str(x) for x in MIN_GIT_VERSION_SOFT),),
+            file=sys.stderr)
+
+    rp = self.manifest.repoProject
+
+    # Handle new --repo-url requests.
+    if opt.repo_url:
+      remote = rp.GetRemote('origin')
+      remote.url = opt.repo_url
+      remote.Save()
+
+    # Handle new --repo-rev requests.
+    if opt.repo_rev:
+      wrapper = Wrapper()
+      try:
+        remote_ref, rev = wrapper.check_repo_rev(
+            rp.gitdir, opt.repo_rev, repo_verify=opt.repo_verify, quiet=opt.quiet)
+      except wrapper.CloneFailure:
+        print('fatal: double check your --repo-rev setting.', file=sys.stderr)
+        sys.exit(1)
+      branch = rp.GetBranch('default')
+      branch.merge = remote_ref
+      rp.work_git.reset('--hard', rev)
+      branch.Save()
+
+    if opt.worktree:
+      # Older versions of git supported worktree, but had dangerous gc bugs.
+      git_require((2, 15, 0), fail=True, msg='git gc worktree corruption')
+
+    # Provide a short notice that we're reinitializing an existing checkout.
+    # Sometimes developers might not realize that they're in one, or that
+    # repo doesn't do nested checkouts.
+    existing_checkout = self.manifest.manifestProject.Exists
+    if not opt.quiet and existing_checkout:
+      print('repo: reusing existing repo client checkout in', self.manifest.topdir)
 
     self._SyncManifest(opt)
-    self._LinkManifest(opt.manifest_name)
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
-      if opt.config_name or self._ShouldConfigureUser():
-        self._ConfigureUser()
+      if opt.config_name or self._ShouldConfigureUser(opt, existing_checkout):
+        self._ConfigureUser(opt)
       self._ConfigureColor()
 
-    self._DisplayResult()
+    self._DisplayResult(opt)

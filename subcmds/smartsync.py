@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2010 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +14,9 @@
 
 from subcmds.sync import Sync
 
+
 class Smartsync(Sync):
-  common = True
+  COMMON = True
   helpSummary = "Update working tree to the latest known good revision"
   helpUsage = """
 %prog [<project>...]

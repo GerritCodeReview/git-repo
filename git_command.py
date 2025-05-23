@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
+import functools
 import os
 import sys
 import subprocess
-import tempfile
-from signal import SIGTERM
 
 from error import GitError
 from git_refs import HEAD
@@ -28,75 +24,42 @@ from repo_trace import REPO_TRACE, IsTrace, Trace
 from wrapper import Wrapper
 
 GIT = 'git'
-MIN_GIT_VERSION = (1, 5, 4)
+# NB: These do not need to be kept in sync with the repo launcher script.
+# These may be much newer as it allows the repo launcher to roll between
+# different repo releases while source versions might require a newer git.
+#
+# The soft version is when we start warning users that the version is old and
+# we'll be dropping support for it.  We'll refuse to work with versions older
+# than the hard version.
+#
+# git-1.7 is in (EOL) Ubuntu Precise.  git-1.9 is in Ubuntu Trusty.
+MIN_GIT_VERSION_SOFT = (1, 9, 1)
+MIN_GIT_VERSION_HARD = (1, 7, 2)
 GIT_DIR = 'GIT_DIR'
 
 LAST_GITDIR = None
 LAST_CWD = None
 
-_ssh_proxy_path = None
-_ssh_sock_path = None
-_ssh_clients = []
-
-def ssh_sock(create=True):
-  global _ssh_sock_path
-  if _ssh_sock_path is None:
-    if not create:
-      return None
-    tmp_dir = '/tmp'
-    if not os.path.exists(tmp_dir):
-      tmp_dir = tempfile.gettempdir()
-    _ssh_sock_path = os.path.join(
-      tempfile.mkdtemp('', 'ssh-', tmp_dir),
-      'master-%r@%h:%p')
-  return _ssh_sock_path
-
-def _ssh_proxy():
-  global _ssh_proxy_path
-  if _ssh_proxy_path is None:
-    _ssh_proxy_path = os.path.join(
-      os.path.dirname(__file__),
-      'git_ssh')
-  return _ssh_proxy_path
-
-def _add_ssh_client(p):
-  _ssh_clients.append(p)
-
-def _remove_ssh_client(p):
-  try:
-    _ssh_clients.remove(p)
-  except ValueError:
-    pass
-
-def terminate_ssh_clients():
-  global _ssh_clients
-  for p in _ssh_clients:
-    try:
-      os.kill(p.pid, SIGTERM)
-      p.wait()
-    except OSError:
-      pass
-  _ssh_clients = []
-
-_git_version = None
 
 class _GitCall(object):
+  @functools.lru_cache(maxsize=None)
   def version_tuple(self):
-    global _git_version
-    if _git_version is None:
-      _git_version = Wrapper().ParseGitVersion()
-      if _git_version is None:
-        print('fatal: unable to detect git version', file=sys.stderr)
-        sys.exit(1)
-    return _git_version
+    ret = Wrapper().ParseGitVersion()
+    if ret is None:
+      print('fatal: unable to detect git version', file=sys.stderr)
+      sys.exit(1)
+    return ret
 
   def __getattr__(self, name):
-    name = name.replace('_','-')
+    name = name.replace('_', '-')
+
     def fun(*cmdv):
       command = [name]
       command.extend(cmdv)
       return GitCommand(None, command).Wait() == 0
     return fun
+
+
 git = _GitCall()
 
 
@@ -111,11 +74,11 @@ def RepoSourceVersion():
 
     proj = os.path.dirname(os.path.abspath(__file__))
     env[GIT_DIR] = os.path.join(proj, '.git')
-
-    p = subprocess.Popen([GIT, 'describe', HEAD], stdout=subprocess.PIPE,
-                         env=env)
-    if p.wait() == 0:
-      ver = p.stdout.read().strip().decode('utf-8')
+    result = subprocess.run([GIT, 'describe', HEAD], stdout=subprocess.PIPE,
+                            stderr=subprocess.DEVNULL, encoding='utf-8',
+                            env=env, check=False)
+    if result.returncode == 0:
+      ver = result.stdout.strip()
       if ver.startswith('v'):
         ver = ver[1:]
     else:
@@ -177,7 +140,9 @@ class UserAgent(object):
 
     return self._git_ua
 
+
 user_agent = UserAgent()
+
 
 def git_require(min_version, fail=False, msg=''):
   git_version = git.version_tuple()
@@ -191,53 +156,66 @@ def git_require(min_version, fail=False, msg=''):
     sys.exit(1)
   return False
 
-def _setenv(env, name, value):
-  env[name] = value.encode()
 
 class GitCommand(object):
+  """Wrapper around a single git invocation."""
+
   def __init__(self,
                project,
                cmdv,
-               bare = False,
-               provide_stdin = False,
-               capture_stdout = False,
-               capture_stderr = False,
-               disable_editor = False,
-               ssh_proxy = False,
-               cwd = None,
-               gitdir = None):
+               bare=False,
+               input=None,
+               capture_stdout=False,
+               capture_stderr=False,
+               merge_output=False,
+               disable_editor=False,
+               ssh_proxy=None,
+               cwd=None,
+               gitdir=None,
+               objdir=None):
     env = self._GetBasicEnv()
 
-    # If we are not capturing std* then need to print it.
-    self.tee = {'stdout': not capture_stdout, 'stderr': not capture_stderr}
-
     if disable_editor:
-      _setenv(env, 'GIT_EDITOR', ':')
+      env['GIT_EDITOR'] = ':'
     if ssh_proxy:
-      _setenv(env, 'REPO_SSH_SOCK', ssh_sock())
-      _setenv(env, 'GIT_SSH', _ssh_proxy())
-      _setenv(env, 'GIT_SSH_VARIANT', 'ssh')
+      env['REPO_SSH_SOCK'] = ssh_proxy.sock()
+      env['GIT_SSH'] = ssh_proxy.proxy
+      env['GIT_SSH_VARIANT'] = 'ssh'
     if 'http_proxy' in env and 'darwin' == sys.platform:
       s = "'http.proxy=%s'" % (env['http_proxy'],)
       p = env.get('GIT_CONFIG_PARAMETERS')
       if p is not None:
         s = p + ' ' + s
-      _setenv(env, 'GIT_CONFIG_PARAMETERS', s)
+      env['GIT_CONFIG_PARAMETERS'] = s
     if 'GIT_ALLOW_PROTOCOL' not in env:
-      _setenv(env, 'GIT_ALLOW_PROTOCOL',
-              'file:git:http:https:ssh:persistent-http:persistent-https:sso:rpc')
-    _setenv(env, 'GIT_HTTP_USER_AGENT', user_agent.git)
+      env['GIT_ALLOW_PROTOCOL'] = (
+          'file:git:http:https:ssh:persistent-http:persistent-https:sso:rpc')
+    env['GIT_HTTP_USER_AGENT'] = user_agent.git
 
     if project:
       if not cwd:
         cwd = project.worktree
       if not gitdir:
         gitdir = project.gitdir
+    # Git on Windows wants its paths only using / for reliability.
+    if platform_utils.isWindows():
+      if objdir:
+        objdir = objdir.replace('\\', '/')
+      if gitdir:
+        gitdir = gitdir.replace('\\', '/')
+
+    if objdir:
+      # Set to the place we want to save the objects.
+      env['GIT_OBJECT_DIRECTORY'] = objdir
+      if gitdir:
+        # Allow git to search the original place in case of local or unique refs
+        # that git will attempt to resolve even if we aren't fetching them.
+        env['GIT_ALTERNATE_OBJECT_DIRECTORIES'] = gitdir + '/objects'
 
     command = [GIT]
     if bare:
       if gitdir:
-        _setenv(env, GIT_DIR, gitdir)
+        env[GIT_DIR] = gitdir
       cwd = None
     command.append(cmdv[0])
     # Need to use the --progress flag for fetch/clone so output will be
@@ -247,13 +225,10 @@ class GitCommand(object):
         command.append('--progress')
     command.extend(cmdv[1:])
 
-    if provide_stdin:
-      stdin = subprocess.PIPE
-    else:
-      stdin = None
-
-    stdout = subprocess.PIPE
-    stderr = subprocess.PIPE
+    stdin = subprocess.PIPE if input else None
+    stdout = subprocess.PIPE if capture_stdout else None
+    stderr = (subprocess.STDOUT if merge_output else
+              (subprocess.PIPE if capture_stderr else None))
 
     if IsTrace():
       global LAST_CWD
@@ -273,6 +248,11 @@ class GitCommand(object):
         dbg += ': export GIT_DIR=%s\n' % env[GIT_DIR]
         LAST_GITDIR = env[GIT_DIR]
 
+      if 'GIT_OBJECT_DIRECTORY' in env:
+        dbg += ': export GIT_OBJECT_DIRECTORY=%s\n' % env['GIT_OBJECT_DIRECTORY']
+      if 'GIT_ALTERNATE_OBJECT_DIRECTORIES' in env:
+        dbg += ': export GIT_ALTERNATE_OBJECT_DIRECTORIES=%s\n' % env['GIT_ALTERNATE_OBJECT_DIRECTORIES']
+
       dbg += ': '
       dbg += ' '.join(command)
       if stdin == subprocess.PIPE:
@@ -281,23 +261,33 @@ class GitCommand(object):
         dbg += ' 1>|'
       if stderr == subprocess.PIPE:
         dbg += ' 2>|'
+      elif stderr == subprocess.STDOUT:
+        dbg += ' 2>&1'
       Trace('%s', dbg)
 
     try:
       p = subprocess.Popen(command,
-                           cwd = cwd,
-                           env = env,
-                           stdin = stdin,
-                           stdout = stdout,
-                           stderr = stderr)
+                           cwd=cwd,
+                           env=env,
+                           encoding='utf-8',
+                           errors='backslashreplace',
+                           stdin=stdin,
+                           stdout=stdout,
+                           stderr=stderr)
     except Exception as e:
       raise GitError('%s: %s' % (command[1], e))
 
     if ssh_proxy:
-      _add_ssh_client(p)
+      ssh_proxy.add_client(p)
 
     self.process = p
-    self.stdin = p.stdin
+
+    try:
+      self.stdout, self.stderr = p.communicate(input=input)
+    finally:
+      if ssh_proxy:
+        ssh_proxy.remove_client(p)
+    self.rc = p.wait()
 
   @staticmethod
   def _GetBasicEnv():
@@ -317,35 +307,4 @@ class GitCommand(object):
     return env
 
   def Wait(self):
-    try:
-      p = self.process
-      rc = self._CaptureOutput()
-    finally:
-      _remove_ssh_client(p)
-    return rc
-
-  def _CaptureOutput(self):
-    p = self.process
-    s_in = platform_utils.FileDescriptorStreams.create()
-    s_in.add(p.stdout, sys.stdout, 'stdout')
-    s_in.add(p.stderr, sys.stderr, 'stderr')
-    self.stdout = ''
-    self.stderr = ''
-
-    while not s_in.is_done:
-      in_ready = s_in.select()
-      for s in in_ready:
-        buf = s.read()
-        if not buf:
-          s_in.remove(s)
-          continue
-        if not hasattr(buf, 'encode'):
-          buf = buf.decode()
-        if s.std_name == 'stdout':
-          self.stdout += buf
-        else:
-          self.stderr += buf
-        if self.tee[s.std_name]:
-          s.dest.write(buf)
-          s.dest.flush()
-    return p.wait()
+    return self.rc

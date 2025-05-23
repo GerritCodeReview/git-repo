@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
+#!/usr/bin/env python3
 # Copyright 2019 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the 'License");
@@ -15,8 +14,6 @@
 # limitations under the License.
 
 """Python packaging for repo."""
-
-from __future__ import print_function
 
 import os
 import setuptools
@@ -35,7 +32,7 @@ with open(os.path.join(TOPDIR, 'README.md')) as fp:
 # https://packaging.python.org/tutorials/packaging-projects/
 setuptools.setup(
     name='repo',
-    version='1.13.8',
+    version='2',
     maintainer='Various',
     maintainer_email='repo-discuss@googlegroups.com',
     description='Repo helps manage many Git repositories',
@@ -55,9 +52,10 @@ setuptools.setup(
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: Microsoft :: Windows :: Windows 10',
         'Operating System :: POSIX :: Linux',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
         'Topic :: Software Development :: Version Control :: Git',
     ],
-    # We support Python 2.7 and Python 3.6+.
-    python_requires='>=2.7, ' + ', '.join('!=3.%i.*' % x for x in range(0, 6)),
+    python_requires='>=3.6',
     packages=['subcmds'],
 )

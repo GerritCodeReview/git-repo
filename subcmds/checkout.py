@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2009 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
+import functools
 import sys
-from command import Command
+
+from command import Command, DEFAULT_LOCAL_JOBS
 from progress import Progress
 
+
 class Checkout(Command):
-  common = True
+  COMMON = True
   helpSummary = "Checkout a branch for development"
   helpUsage = """
 %prog <branchname> [<project>...]
@@ -33,28 +33,37 @@ The command is equivalent to:
 
   repo forall [<project>...] -c git checkout <branchname>
 """
+  PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
   def ValidateOptions(self, opt, args):
     if not args:
       self.Usage()
 
+  def _ExecuteOne(self, nb, project):
+    """Checkout one project."""
+    return (project.CheckoutBranch(nb), project)
+
   def Execute(self, opt, args):
     nb = args[0]
     err = []
     success = []
-    all_projects = self.GetProjects(args[1:])
+    all_projects = self.GetProjects(args[1:], all_manifests=not opt.this_manifest_only)
 
-    pm = Progress('Checkout %s' % nb, len(all_projects))
-    for project in all_projects:
-      pm.update()
+    def _ProcessResults(_pool, pm, results):
+      for status, project in results:
+        if status is not None:
+          if status:
+            success.append(project)
+          else:
+            err.append(project)
+        pm.update()
 
-      status = project.CheckoutBranch(nb)
-      if status is not None:
-        if status:
-          success.append(project)
-        else:
-          err.append(project)
-    pm.end()
+    self.ExecuteInParallel(
+        opt.jobs,
+        functools.partial(self._ExecuteOne, nb),
+        all_projects,
+        callback=_ProcessResults,
+        output=Progress('Checkout %s' % (nb,), len(all_projects), quiet=opt.quiet))
 
     if err:
       for p in err:
