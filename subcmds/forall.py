@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,45 +12,55 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
 import errno
-import multiprocessing
-import re
+import functools
+import io
 import os
+import re
 import signal
-import sys
 import subprocess
+import sys
 
 from color import Coloring
-from command import Command, MirrorSafeCommand
-import platform_utils
+from command import Command
+from command import DEFAULT_LOCAL_JOBS
+from command import MirrorSafeCommand
+from error import ManifestInvalidRevisionError
+from repo_logging import RepoLogger
 
+
+logger = RepoLogger(__file__)
 _CAN_COLOR = [
-  'branch',
-  'diff',
-  'grep',
-  'log',
+    "branch",
+    "diff",
+    "grep",
+    "log",
 ]
 
 
 class ForallColoring(Coloring):
-  def __init__(self, config):
-    Coloring.__init__(self, config, 'forall')
-    self.project = self.printer('project', attr='bold')
+    def __init__(self, config):
+        Coloring.__init__(self, config, "forall")
+        self.project = self.printer("project", attr="bold")
 
 
 class Forall(Command, MirrorSafeCommand):
-  common = False
-  helpSummary = "Run a shell command in each project"
-  helpUsage = """
+    COMMON = False
+    helpSummary = "Run a shell command in each project"
+    helpUsage = """
 %prog [<project>...] -c <command> [<arg>...]
-%prog -r str1 [str2] ... -c <command> [<arg>...]"
+%prog -r str1 [str2] ... -c <command> [<arg>...]
 """
-  helpDescription = """
+    helpDescription = """
 Executes the same shell command in each project.
 
 The -r option allows running the command only on projects matching
 regex or wildcard expression.
+
+By default, projects are processed non-interactively in parallel.  If you want
+to run interactive commands, make sure to pass --interactive to force --jobs 1.
+While the processing order of projects is not guaranteed, the order of project
+output is stable.
 
 # Output Formatting
 
@@ -79,6 +87,11 @@ a mirror client, then pwd is the Git repository.
 REPO_PROJECT is set to the unique name of the project.
 
 REPO_PATH is the path relative the the root of the client.
+
+REPO_OUTERPATH is the path of the sub manifest's root relative to the root of
+the client.
+
+REPO_INNERPATH is the path relative to the root of the sub manifest.
 
 REPO_REMOTE is the name of the remote system from the manifest.
 
@@ -116,286 +129,293 @@ terminal and are not redirected.
 If -e is used, when a command exits unsuccessfully, '%prog' will abort
 without iterating through the remaining projects.
 """
+    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
-  def _Options(self, p):
-    def cmd(option, opt_str, value, parser):
-      setattr(parser.values, option.dest, list(parser.rargs))
-      while parser.rargs:
-        del parser.rargs[0]
-    p.add_option('-r', '--regex',
-                 dest='regex', action='store_true',
-                 help="Execute the command only on projects matching regex or wildcard expression")
-    p.add_option('-i', '--inverse-regex',
-                 dest='inverse_regex', action='store_true',
-                 help="Execute the command only on projects not matching regex or wildcard expression")
-    p.add_option('-g', '--groups',
-                 dest='groups',
-                 help="Execute the command only on projects matching the specified groups")
-    p.add_option('-c', '--command',
-                 help='Command (and arguments) to execute',
-                 dest='command',
-                 action='callback',
-                 callback=cmd)
-    p.add_option('-e', '--abort-on-errors',
-                 dest='abort_on_errors', action='store_true',
-                 help='Abort if a command exits unsuccessfully')
-    p.add_option('--ignore-missing', action='store_true',
-                 help='Silently skip & do not exit non-zero due missing '
-                      'checkouts')
+    @staticmethod
+    def _cmd_option(option, _opt_str, _value, parser):
+        setattr(parser.values, option.dest, list(parser.rargs))
+        while parser.rargs:
+            del parser.rargs[0]
 
-    g = p.add_option_group('Output')
-    g.add_option('-p',
-                 dest='project_header', action='store_true',
-                 help='Show project headers before output')
-    g.add_option('-v', '--verbose',
-                 dest='verbose', action='store_true',
-                 help='Show command error messages')
-    g.add_option('-j', '--jobs',
-                 dest='jobs', action='store', type='int', default=1,
-                 help='number of commands to execute simultaneously')
+    def _Options(self, p):
+        p.add_option(
+            "-r",
+            "--regex",
+            dest="regex",
+            action="store_true",
+            help="execute the command only on projects matching regex or "
+            "wildcard expression",
+        )
+        p.add_option(
+            "-i",
+            "--inverse-regex",
+            dest="inverse_regex",
+            action="store_true",
+            help="execute the command only on projects not matching regex or "
+            "wildcard expression",
+        )
+        p.add_option(
+            "-g",
+            "--groups",
+            dest="groups",
+            help="execute the command only on projects matching the specified "
+            "groups",
+        )
+        p.add_option(
+            "-c",
+            "--command",
+            help="command (and arguments) to execute",
+            dest="command",
+            action="callback",
+            callback=self._cmd_option,
+        )
+        p.add_option(
+            "-e",
+            "--abort-on-errors",
+            dest="abort_on_errors",
+            action="store_true",
+            help="abort if a command exits unsuccessfully",
+        )
+        p.add_option(
+            "--ignore-missing",
+            action="store_true",
+            help="silently skip & do not exit non-zero due missing "
+            "checkouts",
+        )
 
-  def WantPager(self, opt):
-    return opt.project_header and opt.jobs == 1
+        g = p.get_option_group("--quiet")
+        g.add_option(
+            "-p",
+            dest="project_header",
+            action="store_true",
+            help="show project headers before output",
+        )
+        p.add_option(
+            "--interactive", action="store_true", help="force interactive usage"
+        )
 
-  def _SerializeProject(self, project):
-    """ Serialize a project._GitGetByExec instance.
+    def WantPager(self, opt):
+        return opt.project_header and opt.jobs == 1
 
-    project._GitGetByExec is not pickle-able. Instead of trying to pass it
-    around between processes, make a dict ourselves containing only the
-    attributes that we need.
+    def ValidateOptions(self, opt, args):
+        if not opt.command:
+            self.Usage()
 
-    """
-    if not self.manifest.IsMirror:
-      lrev = project.GetRevisionId()
-    else:
-      lrev = None
-    return {
-      'name': project.name,
-      'relpath': project.relpath,
-      'remote_name': project.remote.name,
-      'lrev': lrev,
-      'rrev': project.revisionExpr,
-      'annotations': dict((a.name, a.value) for a in project.annotations),
-      'gitdir': project.gitdir,
-      'worktree': project.worktree,
-    }
+    def Execute(self, opt, args):
+        cmd = [opt.command[0]]
+        all_trees = not opt.this_manifest_only
 
-  def ValidateOptions(self, opt, args):
-    if not opt.command:
-      self.Usage()
+        shell = True
+        if re.compile(r"^[a-z0-9A-Z_/\.-]+$").match(cmd[0]):
+            shell = False
 
-  def Execute(self, opt, args):
-    cmd = [opt.command[0]]
+        if shell:
+            cmd.append(cmd[0])
+        cmd.extend(opt.command[1:])
 
-    shell = True
-    if re.compile(r'^[a-z0-9A-Z_/\.-]+$').match(cmd[0]):
-      shell = False
+        # Historically, forall operated interactively, and in serial.  If the
+        # user has selected 1 job, then default to interacive mode.
+        if opt.jobs == 1:
+            opt.interactive = True
 
-    if shell:
-      cmd.append(cmd[0])
-    cmd.extend(opt.command[1:])
+        if opt.project_header and not shell and cmd[0] == "git":
+            # If this is a direct git command that can enable colorized
+            # output and the user prefers coloring, add --color into the
+            # command line because we are going to wrap the command into
+            # a pipe and git won't know coloring should activate.
+            #
+            for cn in cmd[1:]:
+                if not cn.startswith("-"):
+                    break
+            else:
+                cn = None
+            if cn and cn in _CAN_COLOR:
 
-    if  opt.project_header \
-    and not shell \
-    and cmd[0] == 'git':
-      # If this is a direct git command that can enable colorized
-      # output and the user prefers coloring, add --color into the
-      # command line because we are going to wrap the command into
-      # a pipe and git won't know coloring should activate.
-      #
-      for cn in cmd[1:]:
-        if not cn.startswith('-'):
-          break
-      else:
-        cn = None
-      if cn and cn in _CAN_COLOR:
-        class ColorCmd(Coloring):
-          def __init__(self, config, cmd):
-            Coloring.__init__(self, config, cmd)
-        if ColorCmd(self.manifest.manifestProject.config, cn).is_on:
-          cmd.insert(cmd.index(cn) + 1, '--color')
+                class ColorCmd(Coloring):
+                    def __init__(self, config, cmd):
+                        Coloring.__init__(self, config, cmd)
 
-    mirror = self.manifest.IsMirror
-    rc = 0
+                if ColorCmd(self.manifest.manifestProject.config, cn).is_on:
+                    cmd.insert(cmd.index(cn) + 1, "--color")
 
-    smart_sync_manifest_name = "smart_sync_override.xml"
-    smart_sync_manifest_path = os.path.join(
-      self.manifest.manifestProject.worktree, smart_sync_manifest_name)
+        mirror = self.manifest.IsMirror
 
-    if os.path.isfile(smart_sync_manifest_path):
-      self.manifest.Override(smart_sync_manifest_path)
+        smart_sync_manifest_name = "smart_sync_override.xml"
+        smart_sync_manifest_path = os.path.join(
+            self.manifest.manifestProject.worktree, smart_sync_manifest_name
+        )
 
-    if opt.regex:
-      projects = self.FindProjects(args)
-    elif opt.inverse_regex:
-      projects = self.FindProjects(args, inverse=True)
-    else:
-      projects = self.GetProjects(args, groups=opt.groups)
+        if os.path.isfile(smart_sync_manifest_path):
+            self.manifest.Override(smart_sync_manifest_path)
 
-    os.environ['REPO_COUNT'] = str(len(projects))
+        if opt.regex:
+            projects = self.FindProjects(args, all_manifests=all_trees)
+        elif opt.inverse_regex:
+            projects = self.FindProjects(
+                args, inverse=True, all_manifests=all_trees
+            )
+        else:
+            projects = self.GetProjects(
+                args, groups=opt.groups, all_manifests=all_trees
+            )
 
-    pool = multiprocessing.Pool(opt.jobs, InitWorker)
-    try:
-      config = self.manifest.manifestProject.config
-      results_it = pool.imap(
-         DoWorkWrapper,
-         self.ProjectArgs(projects, mirror, opt, cmd, shell, config))
-      pool.close()
-      for r in results_it:
-        rc = rc or r
-        if r != 0 and opt.abort_on_errors:
-          raise Exception('Aborting due to previous error')
-    except (KeyboardInterrupt, WorkerKeyboardInterrupt):
-      # Catch KeyboardInterrupt raised inside and outside of workers
-      print('Interrupted - terminating the pool')
-      pool.terminate()
-      rc = rc or errno.EINTR
-    except Exception as e:
-      # Catch any other exceptions raised
-      print('Got an error, terminating the pool: %s: %s' %
-              (type(e).__name__, e),
-            file=sys.stderr)
-      pool.terminate()
-      rc = rc or getattr(e, 'errno', 1)
-    finally:
-      pool.join()
-    if rc != 0:
-      sys.exit(rc)
+        os.environ["REPO_COUNT"] = str(len(projects))
 
-  def ProjectArgs(self, projects, mirror, opt, cmd, shell, config):
-    for cnt, p in enumerate(projects):
-      try:
-        project = self._SerializeProject(p)
-      except Exception as e:
-        print('Project list error on project %s: %s: %s' %
-                (p.name, type(e).__name__, e),
-              file=sys.stderr)
-        return
-      except KeyboardInterrupt:
-        print('Project list interrupted',
-              file=sys.stderr)
-        return
-      yield [mirror, opt, cmd, shell, cnt, config, project]
+        def _ProcessResults(_pool, _output, results):
+            rc = 0
+            first = True
+            for r, output in results:
+                if output:
+                    if first:
+                        first = False
+                    elif opt.project_header:
+                        print()
+                    # To simplify the DoWorkWrapper, take care of automatic
+                    # newlines.
+                    end = "\n"
+                    if output[-1] == "\n":
+                        end = ""
+                    print(output, end=end)
+                rc = rc or r
+                if r != 0 and opt.abort_on_errors:
+                    raise Exception("Aborting due to previous error")
+            return rc
+
+        try:
+            config = self.manifest.manifestProject.config
+            with self.ParallelContext():
+                self.get_parallel_context()["projects"] = projects
+                rc = self.ExecuteInParallel(
+                    opt.jobs,
+                    functools.partial(
+                        self.DoWorkWrapper, mirror, opt, cmd, shell, config
+                    ),
+                    range(len(projects)),
+                    callback=_ProcessResults,
+                    ordered=True,
+                    initializer=self.InitWorker,
+                    chunksize=1,
+                )
+        except (KeyboardInterrupt, WorkerKeyboardInterrupt):
+            # Catch KeyboardInterrupt raised inside and outside of workers
+            rc = errno.EINTR
+        except Exception as e:
+            # Catch any other exceptions raised
+            logger.error(
+                "forall: unhandled error, terminating the pool: %s: %s",
+                type(e).__name__,
+                e,
+            )
+            rc = getattr(e, "errno", 1)
+        if rc != 0:
+            sys.exit(rc)
+
+    @classmethod
+    def InitWorker(cls):
+        signal.signal(signal.SIGINT, signal.SIG_IGN)
+
+    @classmethod
+    def DoWorkWrapper(cls, mirror, opt, cmd, shell, config, project_idx):
+        """A wrapper around the DoWork() method.
+
+        Catch the KeyboardInterrupt exceptions here and re-raise them as a
+        different, ``Exception``-based exception to stop it flooding the console
+        with stacktraces and making the parent hang indefinitely.
+
+        """
+        project = cls.get_parallel_context()["projects"][project_idx]
+        try:
+            return DoWork(project, mirror, opt, cmd, shell, project_idx, config)
+        except KeyboardInterrupt:
+            print("%s: Worker interrupted" % project.name)
+            raise WorkerKeyboardInterrupt()
+
 
 class WorkerKeyboardInterrupt(Exception):
-  """ Keyboard interrupt exception for worker processes. """
-  pass
-
-
-def InitWorker():
-  signal.signal(signal.SIGINT, signal.SIG_IGN)
-
-def DoWorkWrapper(args):
-  """ A wrapper around the DoWork() method.
-
-  Catch the KeyboardInterrupt exceptions here and re-raise them as a different,
-  ``Exception``-based exception to stop it flooding the console with stacktraces
-  and making the parent hang indefinitely.
-
-  """
-  project = args.pop()
-  try:
-    return DoWork(project, *args)
-  except KeyboardInterrupt:
-    print('%s: Worker interrupted' % project['name'])
-    raise WorkerKeyboardInterrupt()
+    """Keyboard interrupt exception for worker processes."""
 
 
 def DoWork(project, mirror, opt, cmd, shell, cnt, config):
-  env = os.environ.copy()
-  def setenv(name, val):
-    if val is None:
-      val = ''
-    if hasattr(val, 'encode'):
-      val = val.encode()
-    env[name] = val
+    env = os.environ.copy()
 
-  setenv('REPO_PROJECT', project['name'])
-  setenv('REPO_PATH', project['relpath'])
-  setenv('REPO_REMOTE', project['remote_name'])
-  setenv('REPO_LREV', project['lrev'])
-  setenv('REPO_RREV', project['rrev'])
-  setenv('REPO_I', str(cnt + 1))
-  for name in project['annotations']:
-    setenv("REPO__%s" % (name), project['annotations'][name])
+    def setenv(name, val):
+        if val is None:
+            val = ""
+        env[name] = val
 
-  if mirror:
-    setenv('GIT_DIR', project['gitdir'])
-    cwd = project['gitdir']
-  else:
-    cwd = project['worktree']
+    setenv("REPO_PROJECT", project.name)
+    setenv("REPO_OUTERPATH", project.manifest.path_prefix)
+    setenv("REPO_INNERPATH", project.relpath)
+    setenv("REPO_PATH", project.RelPath(local=opt.this_manifest_only))
+    setenv("REPO_REMOTE", project.remote.name)
+    try:
+        # If we aren't in a fully synced state and we don't have the ref the
+        # manifest wants, then this will fail.  Ignore it for the purposes of
+        # this code.
+        lrev = "" if mirror else project.GetRevisionId()
+    except ManifestInvalidRevisionError:
+        lrev = ""
+    setenv("REPO_LREV", lrev)
+    setenv("REPO_RREV", project.revisionExpr)
+    setenv("REPO_UPSTREAM", project.upstream)
+    setenv("REPO_DEST_BRANCH", project.dest_branch)
+    setenv("REPO_I", str(cnt + 1))
+    for annotation in project.annotations:
+        setenv("REPO__%s" % (annotation.name), annotation.value)
 
-  if not os.path.exists(cwd):
-    # Allow the user to silently ignore missing checkouts so they can run on
-    # partial checkouts (good for infra recovery tools).
-    if opt.ignore_missing:
-      return 0
-    if ((opt.project_header and opt.verbose)
-        or not opt.project_header):
-      print('skipping %s/' % project['relpath'], file=sys.stderr)
-    return 1
+    if mirror:
+        setenv("GIT_DIR", project.gitdir)
+        cwd = project.gitdir
+    else:
+        cwd = project.worktree
 
-  if opt.project_header:
-    stdin = subprocess.PIPE
-    stdout = subprocess.PIPE
-    stderr = subprocess.PIPE
-  else:
-    stdin = None
-    stdout = None
-    stderr = None
+    if not os.path.exists(cwd):
+        # Allow the user to silently ignore missing checkouts so they can run on
+        # partial checkouts (good for infra recovery tools).
+        if opt.ignore_missing:
+            return (0, "")
 
-  p = subprocess.Popen(cmd,
-                       cwd=cwd,
-                       shell=shell,
-                       env=env,
-                       stdin=stdin,
-                       stdout=stdout,
-                       stderr=stderr)
+        output = ""
+        if (opt.project_header and opt.verbose) or not opt.project_header:
+            output = "skipping %s/" % project.RelPath(
+                local=opt.this_manifest_only
+            )
+        return (1, output)
 
-  if opt.project_header:
-    out = ForallColoring(config)
-    out.redirect(sys.stdout)
-    empty = True
-    errbuf = ''
+    if opt.verbose:
+        stderr = subprocess.STDOUT
+    else:
+        stderr = subprocess.DEVNULL
 
-    p.stdin.close()
-    s_in = platform_utils.FileDescriptorStreams.create()
-    s_in.add(p.stdout, sys.stdout, 'stdout')
-    s_in.add(p.stderr, sys.stderr, 'stderr')
+    stdin = None if opt.interactive else subprocess.DEVNULL
 
-    while not s_in.is_done:
-      in_ready = s_in.select()
-      for s in in_ready:
-        buf = s.read().decode()
-        if not buf:
-          s.close()
-          s_in.remove(s)
-          continue
+    result = subprocess.run(
+        cmd,
+        cwd=cwd,
+        shell=shell,
+        env=env,
+        check=False,
+        encoding="utf-8",
+        errors="replace",
+        stdin=stdin,
+        stdout=subprocess.PIPE,
+        stderr=stderr,
+    )
 
-        if not opt.verbose:
-          if s.std_name == 'stderr':
-            errbuf += buf
-            continue
-
-        if empty and out:
-          if not cnt == 0:
+    output = result.stdout
+    if opt.project_header:
+        if output:
+            buf = io.StringIO()
+            out = ForallColoring(config)
+            out.redirect(buf)
+            if mirror:
+                project_header_path = project.name
+            else:
+                project_header_path = project.RelPath(
+                    local=opt.this_manifest_only
+                )
+            out.project("project %s/" % project_header_path)
             out.nl()
-
-          if mirror:
-            project_header_path = project['name']
-          else:
-            project_header_path = project['relpath']
-          out.project('project %s/', project_header_path)
-          out.nl()
-          out.flush()
-          if errbuf:
-            sys.stderr.write(errbuf)
-            sys.stderr.flush()
-            errbuf = ''
-          empty = False
-
-        s.dest.write(buf)
-        s.dest.flush()
-
-  r = p.wait()
-  return r
+            buf.write(output)
+            output = buf.getvalue()
+    return (result.returncode, output)

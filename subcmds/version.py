@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2009 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,40 +12,58 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
+import platform
 import sys
-from command import Command, MirrorSafeCommand
-from git_command import git, RepoSourceVersion, user_agent
+
+from command import Command
+from command import MirrorSafeCommand
+from git_command import git
+from git_command import RepoSourceVersion
+from git_command import user_agent
 from git_refs import HEAD
+from wrapper import Wrapper
+
 
 class Version(Command, MirrorSafeCommand):
-  wrapper_version = None
-  wrapper_path = None
+    wrapper_version = None
+    wrapper_path = None
 
-  common = False
-  helpSummary = "Display the version of repo"
-  helpUsage = """
+    COMMON = False
+    helpSummary = "Display the version of repo"
+    helpUsage = """
 %prog
 """
 
-  def Execute(self, opt, args):
-    rp = self.manifest.repoProject
-    rem = rp.GetRemote(rp.remote.name)
+    def Execute(self, opt, args):
+        rp = self.manifest.repoProject
+        rem = rp.GetRemote()
+        branch = rp.GetBranch("default")
 
-    # These might not be the same.  Report them both.
-    src_ver = RepoSourceVersion()
-    rp_ver = rp.bare_git.describe(HEAD)
-    print('repo version %s' % rp_ver)
-    print('       (from %s)' % rem.url)
+        # These might not be the same.  Report them both.
+        src_ver = RepoSourceVersion()
+        rp_ver = rp.bare_git.describe(HEAD)
+        print(f"repo version {rp_ver}")
+        print(f"       (from {rem.url})")
+        print(f"       (tracking {branch.merge})")
+        print(f"       ({rp.bare_git.log('-1', '--format=%cD', HEAD)})")
 
-    if Version.wrapper_path is not None:
-      print('repo launcher version %s' % Version.wrapper_version)
-      print('       (from %s)' % Version.wrapper_path)
+        if self.wrapper_path is not None:
+            print(f"repo launcher version {self.wrapper_version}")
+            print(f"       (from {self.wrapper_path})")
 
-      if src_ver != rp_ver:
-        print('       (currently at %s)' % src_ver)
+            if src_ver != rp_ver:
+                print(f"       (currently at {src_ver})")
 
-    print('repo User-Agent %s' % user_agent.repo)
-    print('git %s' % git.version_tuple().full)
-    print('git User-Agent %s' % user_agent.git)
-    print('Python %s' % sys.version)
+        print(f"repo User-Agent {user_agent.repo}")
+        print(f"git {git.version_tuple().full}")
+        print(f"git User-Agent {user_agent.git}")
+        print(f"Python {sys.version}")
+        uname = platform.uname()
+        if sys.version_info.major < 3:
+            # Python 3 returns a named tuple, but Python 2 is simpler.
+            print(uname)
+        else:
+            print(f"OS {uname.system} {uname.release} ({uname.version})")
+            processor = uname.processor if uname.processor else "unknown"
+            print(f"CPU {uname.machine} ({processor})")
+        print("Bug reports:", Wrapper().BUG_URL)

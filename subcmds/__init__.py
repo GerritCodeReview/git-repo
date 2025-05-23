@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,35 +14,35 @@
 
 import os
 
+
+# A mapping of the subcommand name to the class that implements it.
 all_commands = {}
+all_modules = []
 
 my_dir = os.path.dirname(__file__)
 for py in os.listdir(my_dir):
-  if py == '__init__.py':
-    continue
+    if py == "__init__.py":
+        continue
 
-  if py.endswith('.py'):
-    name = py[:-3]
+    if py.endswith(".py"):
+        name = py[:-3]
 
-    clsn = name.capitalize()
-    while clsn.find('_') > 0:
-      h = clsn.index('_')
-      clsn = clsn[0:h] + clsn[h + 1:].capitalize()
+        clsn = name.capitalize()
+        while clsn.find("_") > 0:
+            h = clsn.index("_")
+            clsn = clsn[0:h] + clsn[h + 1 :].capitalize()
 
-    mod = __import__(__name__,
-                     globals(),
-                     locals(),
-                     ['%s' % name])
-    mod = getattr(mod, name)
-    try:
-      cmd = getattr(mod, clsn)()
-    except AttributeError:
-      raise SyntaxError('%s/%s does not define class %s' % (
-                         __name__, py, clsn))
+        mod = __import__(__name__, globals(), locals(), ["%s" % name])
+        mod = getattr(mod, name)
+        try:
+            cmd = getattr(mod, clsn)
+        except AttributeError:
+            raise SyntaxError(f"{__name__}/{py} does not define class {clsn}")
 
-    name = name.replace('_', '-')
-    cmd.NAME = name
-    all_commands[name] = cmd
+        name = name.replace("_", "-")
+        cmd.NAME = name
+        all_commands[name] = cmd
+        all_modules.append(mod)
 
-if 'help' in all_commands:
-  all_commands['help'].commands = all_commands
+# Add 'branch' as an alias for 'branches'.
+all_commands["branch"] = all_commands["branches"]

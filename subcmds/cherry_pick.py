@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2010 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,104 +12,134 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
 import re
 import sys
-from command import Command
-from git_command import GitCommand
 
-CHANGE_ID_RE = re.compile(r'^\s*Change-Id: I([0-9a-f]{40})\s*$')
+from command import Command
+from error import GitError
+from git_command import GitCommand
+from repo_logging import RepoLogger
+
+
+CHANGE_ID_RE = re.compile(r"^\s*Change-Id: I([0-9a-f]{40})\s*$")
+logger = RepoLogger(__file__)
+
 
 class CherryPick(Command):
-  common = True
-  helpSummary = "Cherry-pick a change."
-  helpUsage = """
+    COMMON = True
+    helpSummary = "Cherry-pick a change."
+    helpUsage = """
 %prog <sha1>
 """
-  helpDescription = """
+    helpDescription = """
 '%prog' cherry-picks a change from one branch to another.
 The change id will be updated, and a reference to the old
 change id will be added.
 """
 
-  def _Options(self, p):
-    pass
+    def ValidateOptions(self, opt, args):
+        if len(args) != 1:
+            self.Usage()
 
-  def ValidateOptions(self, opt, args):
-    if len(args) != 1:
-      self.Usage()
+    def Execute(self, opt, args):
+        reference = args[0]
 
-  def Execute(self, opt, args):
-    reference = args[0]
+        p = GitCommand(
+            None,
+            ["rev-parse", "--verify", reference],
+            capture_stdout=True,
+            capture_stderr=True,
+            verify_command=True,
+        )
+        try:
+            p.Wait()
+        except GitError:
+            logger.error(p.stderr)
+            raise
 
-    p = GitCommand(None,
-                   ['rev-parse', '--verify', reference],
-                   capture_stdout = True,
-                   capture_stderr = True)
-    if p.Wait() != 0:
-      print(p.stderr, file=sys.stderr)
-      sys.exit(1)
-    sha1 = p.stdout.strip()
+        sha1 = p.stdout.strip()
 
-    p = GitCommand(None, ['cat-file', 'commit', sha1], capture_stdout=True)
-    if p.Wait() != 0:
-      print("error: Failed to retrieve old commit message", file=sys.stderr)
-      sys.exit(1)
-    old_msg = self._StripHeader(p.stdout)
+        p = GitCommand(
+            None,
+            ["cat-file", "commit", sha1],
+            capture_stdout=True,
+            verify_command=True,
+        )
 
-    p = GitCommand(None,
-                   ['cherry-pick', sha1],
-                   capture_stdout = True,
-                   capture_stderr = True)
-    status = p.Wait()
+        try:
+            p.Wait()
+        except GitError:
+            logger.error("error: Failed to retrieve old commit message")
+            raise
 
-    print(p.stdout, file=sys.stdout)
-    print(p.stderr, file=sys.stderr)
+        old_msg = self._StripHeader(p.stdout)
 
-    if status == 0:
-      # The cherry-pick was applied correctly. We just need to edit the
-      # commit message.
-      new_msg = self._Reformat(old_msg, sha1)
+        p = GitCommand(
+            None,
+            ["cherry-pick", sha1],
+            capture_stdout=True,
+            capture_stderr=True,
+            verify_command=True,
+        )
 
-      p = GitCommand(None, ['commit', '--amend', '-F', '-'],
-                     provide_stdin = True,
-                     capture_stdout = True,
-                     capture_stderr = True)
-      p.stdin.write(new_msg)
-      p.stdin.close()
-      if p.Wait() != 0:
-        print("error: Failed to update commit message", file=sys.stderr)
-        sys.exit(1)
+        try:
+            p.Wait()
+        except GitError as e:
+            logger.error(e)
+            logger.warning(
+                "NOTE: When committing (please see above) and editing the "
+                "commit message, please remove the old Change-Id-line and "
+                "add:\n%s",
+                self._GetReference(sha1),
+            )
+            raise
 
-    else:
-      print('NOTE: When committing (please see above) and editing the commit '
-            'message, please remove the old Change-Id-line and add:')
-      print(self._GetReference(sha1), file=sys.stderr)
-      print(file=sys.stderr)
+        if p.stdout:
+            print(p.stdout.strip(), file=sys.stdout)
+        if p.stderr:
+            print(p.stderr.strip(), file=sys.stderr)
 
-  def _IsChangeId(self, line):
-    return CHANGE_ID_RE.match(line)
+        # The cherry-pick was applied correctly. We just need to edit
+        # the commit message.
+        new_msg = self._Reformat(old_msg, sha1)
 
-  def _GetReference(self, sha1):
-    return "(cherry picked from commit %s)" % sha1
+        p = GitCommand(
+            None,
+            ["commit", "--amend", "-F", "-"],
+            input=new_msg,
+            capture_stdout=True,
+            capture_stderr=True,
+            verify_command=True,
+        )
+        try:
+            p.Wait()
+        except GitError:
+            logger.error("error: Failed to update commit message")
+            raise
 
-  def _StripHeader(self, commit_msg):
-    lines = commit_msg.splitlines()
-    return "\n".join(lines[lines.index("")+1:])
+    def _IsChangeId(self, line):
+        return CHANGE_ID_RE.match(line)
 
-  def _Reformat(self, old_msg, sha1):
-    new_msg = []
+    def _GetReference(self, sha1):
+        return "(cherry picked from commit %s)" % sha1
 
-    for line in old_msg.splitlines():
-      if not self._IsChangeId(line):
-        new_msg.append(line)
+    def _StripHeader(self, commit_msg):
+        lines = commit_msg.splitlines()
+        return "\n".join(lines[lines.index("") + 1 :])
 
-    # Add a blank line between the message and the change id/reference
-    try:
-      if new_msg[-1].strip() != "":
-        new_msg.append("")
-    except IndexError:
-      pass
+    def _Reformat(self, old_msg, sha1):
+        new_msg = []
 
-    new_msg.append(self._GetReference(sha1))
-    return "\n".join(new_msg)
+        for line in old_msg.splitlines():
+            if not self._IsChangeId(line):
+                new_msg.append(line)
+
+        # Add a blank line between the message and the change id/reference.
+        try:
+            if new_msg[-1].strip() != "":
+                new_msg.append("")
+        except IndexError:
+            pass
+
+        new_msg.append(self._GetReference(sha1))
+        return "\n".join(new_msg)

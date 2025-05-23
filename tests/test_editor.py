@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2019 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,45 +14,43 @@
 
 """Unittests for the editor.py module."""
 
-from __future__ import print_function
-
 import unittest
 
 from editor import Editor
 
 
 class EditorTestCase(unittest.TestCase):
-  """Take care of resetting Editor state across tests."""
+    """Take care of resetting Editor state across tests."""
 
-  def setUp(self):
-    self.setEditor(None)
+    def setUp(self):
+        self.setEditor(None)
 
-  def tearDown(self):
-    self.setEditor(None)
+    def tearDown(self):
+        self.setEditor(None)
 
-  @staticmethod
-  def setEditor(editor):
-    Editor._editor = editor
+    @staticmethod
+    def setEditor(editor):
+        Editor._editor = editor
 
 
 class GetEditor(EditorTestCase):
-  """Check GetEditor behavior."""
+    """Check GetEditor behavior."""
 
-  def test_basic(self):
-    """Basic checking of _GetEditor."""
-    self.setEditor(':')
-    self.assertEqual(':', Editor._GetEditor())
+    def test_basic(self):
+        """Basic checking of _GetEditor."""
+        self.setEditor(":")
+        self.assertEqual(":", Editor._GetEditor())
 
 
 class EditString(EditorTestCase):
-  """Check EditString behavior."""
+    """Check EditString behavior."""
 
-  def test_no_editor(self):
-    """Check behavior when no editor is available."""
-    self.setEditor(':')
-    self.assertEqual('foo', Editor.EditString('foo'))
+    def test_no_editor(self):
+        """Check behavior when no editor is available."""
+        self.setEditor(":")
+        self.assertEqual("foo", Editor.EditString("foo"))
 
-  def test_cat_editor(self):
-    """Check behavior when editor is `cat`."""
-    self.setEditor('cat')
-    self.assertEqual('foo', Editor.EditString('foo'))
+    def test_cat_editor(self):
+        """Check behavior when editor is `cat`."""
+        self.setEditor("cat")
+        self.assertEqual("foo", Editor.EditString("foo"))

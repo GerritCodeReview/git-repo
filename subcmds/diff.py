@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,31 +12,76 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
+import io
+
+from command import DEFAULT_LOCAL_JOBS
 from command import PagedCommand
 
+
 class Diff(PagedCommand):
-  common = True
-  helpSummary = "Show changes between commit and working tree"
-  helpUsage = """
+    COMMON = True
+    helpSummary = "Show changes between commit and working tree"
+    helpUsage = """
 %prog [<project>...]
 
 The -u option causes '%prog' to generate diff output with file paths
 relative to the repository root, so the output can be applied
 to the Unix 'patch' command.
 """
+    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
-  def _Options(self, p):
-    def cmd(option, opt_str, value, parser):
-      setattr(parser.values, option.dest, list(parser.rargs))
-      while parser.rargs:
-        del parser.rargs[0]
-    p.add_option('-u', '--absolute',
-                 dest='absolute', action='store_true',
-                 help='Paths are relative to the repository root')
+    def _Options(self, p):
+        p.add_option(
+            "-u",
+            "--absolute",
+            dest="absolute",
+            action="store_true",
+            help="paths are relative to the repository root",
+        )
 
-  def Execute(self, opt, args):
-    ret = 0
-    for project in self.GetProjects(args):
-      if not project.PrintWorkTreeDiff(opt.absolute):
-        ret = 1
-    return ret
+    @classmethod
+    def _ExecuteOne(cls, absolute, local, project_idx):
+        """Obtains the diff for a specific project.
+
+        Args:
+            absolute: Paths are relative to the root.
+            local: a boolean, if True, the path is relative to the local
+                (sub)manifest.  If false, the path is relative to the outermost
+                manifest.
+            project_idx: Project index to get status of.
+
+        Returns:
+            The status of the project.
+        """
+        buf = io.StringIO()
+        project = cls.get_parallel_context()["projects"][project_idx]
+        ret = project.PrintWorkTreeDiff(absolute, output_redir=buf, local=local)
+        return (ret, buf.getvalue())
+
+    def Execute(self, opt, args):
+        all_projects = self.GetProjects(
+            args, all_manifests=not opt.this_manifest_only
+        )
+
+        def _ProcessResults(_pool, _output, results):
+            ret = 0
+            for state, output in results:
+                if output:
+                    print(output, end="")
+                if not state:
+                    ret = 1
+            return ret
+
+        with self.ParallelContext():
+            self.get_parallel_context()["projects"] = all_projects
+            return self.ExecuteInParallel(
+                opt.jobs,
+                functools.partial(
+                    self._ExecuteOne, opt.absolute, opt.this_manifest_only
+                ),
+                range(len(all_projects)),
+                callback=_ProcessResults,
+                ordered=True,
+                chunksize=1,
+            )

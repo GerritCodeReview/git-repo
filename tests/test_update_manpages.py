@@ -1,6 +1,4 @@
-# -*- coding:utf-8 -*-
-#
-# Copyright (C) 2013 The Android Open Source Project
+# Copyright 2022 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
+"""Unittests for the update_manpages module."""
 
-def is_python3():
-  return sys.version_info[0] == 3
+import unittest
+
+from release import update_manpages
+
+
+class UpdateManpagesTest(unittest.TestCase):
+    """Tests the update-manpages code."""
+
+    def test_replace_regex(self):
+        """Check that replace_regex works."""
+        data = "\n\033[1mSummary\033[m\n"
+        self.assertEqual(update_manpages.replace_regex(data), "\nSummary\n")
