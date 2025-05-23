@@ -14,7 +14,7 @@
 
 """Unittests for the update_manpages module."""
 
-import unittest
+import gerrit
 
 from release import update_manpages
 
