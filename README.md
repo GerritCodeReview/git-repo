@@ -1,23 +1,3 @@
-# repo
-
-Repo is a tool built on top of Git.  Repo helps manage many Git repositories,
-does the uploads to revision control systems, and automates parts of the
-development workflow.  Repo is not meant to replace Git, only to make it
-easier to work with Git.  The repo command is an executable Python script
-that you can put anywhere in your path.
-
-* Homepage: <https://gerrit.googlesource.com/git-repo/>
-* Mailing list: [repo-discuss on Google Groups][repo-discuss]
-* Bug reports: <https://issues.gerritcodereview.com/issues?q=is:open%20componentid:1370071>
-* Source: <https://gerrit.googlesource.com/git-repo/>
-* Overview: <https://source.android.com/source/developing.html>
-* Docs: <https://source.android.com/source/using-repo.html>
-* [repo Manifest Format](./docs/manifest-format.md)
-* [repo Hooks](./docs/repo-hooks.md)
-* [Submitting patches](./SUBMITTING_PATCHES.md)
-* Running Repo in [Microsoft Windows](./docs/windows.md)
-* GitHub mirror: <https://github.com/GerritCodeReview/git-repo>
-* Postsubmit tests: <https://github.com/GerritCodeReview/git-repo/actions>
 
 ## Contact
 
