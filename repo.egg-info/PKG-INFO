@@ -1,0 +1,33 @@
+Metadata-Version: 2.2
+Name: repo
+Version: 2
+Summary: Repo helps manage many Git repositories
+Home-page: https://gerrit.googlesource.com/git-repo/
+Maintainer: Various
+Maintainer-email: repo-discuss@googlegroups.com
+Project-URL: Bug Tracker, https://issues.gerritcodereview.com/issues?q=is:open%20componentid:1370071
+Classifier: Development Status :: 6 - Mature
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Software Development :: Version Control :: Git
+Requires-Python: >=3.6
+Description-Content-Type: text/plain
+License-File: LICENSE
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: maintainer
+Dynamic: maintainer-email
+Dynamic: project-url
+Dynamic: requires-python
+Dynamic: summary
+
+Repo is a tool built on top of Git.  Repo helps manage many Git repositories, does the uploads to revision control systems, and automates parts of the development workflow.  Repo is not meant to replace Git, only to make it easier to work with Git.  The repo command is an executable Python script that you can put anywhere in your path.
