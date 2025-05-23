@@ -13,8 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-"""Repo launcher.
+NGA launcher.
 
 This is a standalone tool that people may copy to anywhere in their system.
 It is used to get an initial repo client checkout, and after that it runs the
