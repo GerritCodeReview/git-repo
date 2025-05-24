@@ -27,7 +27,7 @@ repohooks project is updated and a hook is triggered.
 For the full syntax, see the [repo manifest format](./manifest-format.md).
 
 Here's a short example from
-[Android](https://android.googlesource.com/platform/manifest/+/master/default.xml).
+[Android](https://android.googlesource.com/platform/manifest/+/HEAD/default.xml).
 The `<project>` line checks out the repohooks git repo to the local
 `tools/repohooks/` path.  The `<repo-hooks>` line says to look in the project
 with the name `platform/tools/repohooks` for hooks to run during the

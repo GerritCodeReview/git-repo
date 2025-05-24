@@ -1,3 +1,17 @@
 [flake8]
-max-line-length=80
-ignore=E111,E114,E402
+max-line-length = 80
+per-file-ignores =
+    # E501: line too long
+    tests/test_git_superproject.py: E501
+extend-ignore =
+    # E203: Whitespace before ':'
+    # See https://github.com/PyCQA/pycodestyle/issues/373
+    E203,
+    # E402: Module level import not at top of file
+    E402,
+    # E731: do not assign a lambda expression, use a def
+    E731,
+exclude =
+    .venv,
+    venv,
+    .tox,

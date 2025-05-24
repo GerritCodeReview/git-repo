@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
+#!/usr/bin/env python3
 # Copyright 2019 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,40 +13,123 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Wrapper to run pytest with the right settings."""
+"""Wrapper to run linters and pytest with the right settings."""
 
-from __future__ import print_function
-
-import errno
+import functools
 import os
+import shutil
 import subprocess
 import sys
+from typing import List
 
 
-def run_pytest(cmd, argv):
-  """Run the unittests via |cmd|."""
-  try:
-    return subprocess.call([cmd] + argv)
-  except OSError as e:
-    if e.errno == errno.ENOENT:
-      print('%s: unable to run `%s`: %s' % (__file__, cmd, e), file=sys.stderr)
-      print('%s: Try installing pytest: sudo apt-get install python-pytest' %
-            (__file__,), file=sys.stderr)
-      return 127
-    else:
-      raise
+ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+
+@functools.lru_cache()
+def is_ci() -> bool:
+    """Whether we're running in our CI system."""
+    return os.getenv("LUCI_CQ") == "yes"
+
+
+def run_pytest(argv: List[str]) -> int:
+    """Returns the exit code from pytest."""
+    if is_ci():
+        argv = ["-m", "not skip_cq"] + argv
+
+    return subprocess.run(
+        [sys.executable, "-m", "pytest"] + argv,
+        check=False,
+        cwd=ROOT_DIR,
+    ).returncode
+
+
+def run_pytest_py38(argv: List[str]) -> int:
+    """Returns the exit code from pytest under Python 3.8."""
+    if is_ci():
+        argv = ["-m", "not skip_cq"] + argv
+
+    try:
+        return subprocess.run(
+            [
+                "vpython3",
+                "-vpython-spec",
+                "run_tests.vpython3.8",
+                "-m",
+                "pytest",
+            ]
+            + argv,
+            check=False,
+            cwd=ROOT_DIR,
+        ).returncode
+    except FileNotFoundError:
+        # Skip if the user doesn't have vpython from depot_tools.
+        return 0
+
+
+def run_black():
+    """Returns the exit code from black."""
+    # Black by default only matches .py files.  We have to list standalone
+    # scripts manually.
+    extra_programs = [
+        "repo",
+        "run_tests",
+        "release/update-hooks",
+        "release/update-manpages",
+    ]
+    return subprocess.run(
+        [sys.executable, "-m", "black", "--check", ROOT_DIR] + extra_programs,
+        check=False,
+        cwd=ROOT_DIR,
+    ).returncode
+
+
+def run_flake8():
+    """Returns the exit code from flake8."""
+    return subprocess.run(
+        [sys.executable, "-m", "flake8", ROOT_DIR],
+        check=False,
+        cwd=ROOT_DIR,
+    ).returncode
+
+
+def run_isort():
+    """Returns the exit code from isort."""
+    return subprocess.run(
+        [sys.executable, "-m", "isort", "--check", ROOT_DIR],
+        check=False,
+        cwd=ROOT_DIR,
+    ).returncode
+
+
+def run_update_manpages() -> int:
+    """Returns the exit code from release/update-manpages."""
+    # Allow this to fail on CI, but not local devs.
+    if is_ci() and not shutil.which("help2man"):
+        print("update-manpages: help2man not found; skipping test")
+        return 0
+
+    return subprocess.run(
+        [sys.executable, "release/update-manpages", "--check"],
+        check=False,
+        cwd=ROOT_DIR,
+    ).returncode
 
 
 def main(argv):
-  """The main entry."""
-  # Add the repo tree to PYTHONPATH as the tests expect to be able to import
-  # modules directly.
-  topdir = os.path.dirname(os.path.realpath(__file__))
-  pythonpath = os.environ.get('PYTHONPATH', '')
-  os.environ['PYTHONPATH'] = '%s:%s' % (topdir, pythonpath)
+    """The main entry."""
+    checks = (
+        functools.partial(run_pytest, argv),
+        functools.partial(run_pytest_py38, argv),
+        run_black,
+        run_flake8,
+        run_isort,
+        run_update_manpages,
+    )
+    # Run all the tests all the time to get full feedback.  Don't exit on the
+    # first error as that makes it more difficult to iterate in the CQ.
+    return 1 if sum(c() for c in checks) else 0
 
-  return run_pytest('pytest', argv)
 
-
-if __name__ == '__main__':
-  sys.exit(main(sys.argv[1:]))
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2017 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,164 +12,181 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
-
 import json
 import multiprocessing
 
-TASK_COMMAND = 'command'
-TASK_SYNC_NETWORK = 'sync-network'
-TASK_SYNC_LOCAL = 'sync-local'
 
-class EventLog(object):
-  """Event log that records events that occurred during a repo invocation.
+TASK_COMMAND = "command"
+TASK_SYNC_NETWORK = "sync-network"
+TASK_SYNC_LOCAL = "sync-local"
 
-  Events are written to the log as a consecutive JSON entries, one per line.
-  Each entry contains the following keys:
-  - id: A ('RepoOp', ID) tuple, suitable for storing in a datastore.
-        The ID is only unique for the invocation of the repo command.
-  - name: Name of the object being operated upon.
-  - task_name: The task that was performed.
-  - start: Timestamp of when the operation started.
-  - finish: Timestamp of when the operation finished.
-  - success: Boolean indicating if the operation was successful.
-  - try_count: A counter indicating the try count of this task.
 
-  Optionally:
-  - parent: A ('RepoOp', ID) tuple indicating the parent event for nested
-            events.
+class EventLog:
+    """Event log that records events that occurred during a repo invocation.
 
-  Valid task_names include:
-  - command: The invocation of a subcommand.
-  - sync-network: The network component of a sync command.
-  - sync-local: The local component of a sync command.
+    Events are written to the log as a consecutive JSON entries, one per line.
+    Each entry contains the following keys:
+    - id: A ('RepoOp', ID) tuple, suitable for storing in a datastore.
+          The ID is only unique for the invocation of the repo command.
+    - name: Name of the object being operated upon.
+    - task_name: The task that was performed.
+    - start: Timestamp of when the operation started.
+    - finish: Timestamp of when the operation finished.
+    - success: Boolean indicating if the operation was successful.
+    - try_count: A counter indicating the try count of this task.
 
-  Specific tasks may include additional informational properties.
-  """
+    Optionally:
+    - parent: A ('RepoOp', ID) tuple indicating the parent event for nested
+        events.
 
-  def __init__(self):
-    """Initializes the event log."""
-    self._log = []
-    self._parent = None
+    Valid task_names include:
+    - command: The invocation of a subcommand.
+    - sync-network: The network component of a sync command.
+    - sync-local: The local component of a sync command.
 
-  def Add(self, name, task_name, start, finish=None, success=None,
-          try_count=1, kind='RepoOp'):
-    """Add an event to the log.
-
-    Args:
-      name: Name of the object being operated upon.
-      task_name: A sub-task that was performed for name.
-      start: Timestamp of when the operation started.
-      finish: Timestamp of when the operation finished.
-      success: Boolean indicating if the operation was successful.
-      try_count: A counter indicating the try count of this task.
-      kind: The kind of the object for the unique identifier.
-
-    Returns:
-      A dictionary of the event added to the log.
+    Specific tasks may include additional informational properties.
     """
-    event = {
-        'id': (kind, _NextEventId()),
-        'name': name,
-        'task_name': task_name,
-        'start_time': start,
-        'try': try_count,
-    }
 
-    if self._parent:
-      event['parent'] = self._parent['id']
+    def __init__(self):
+        """Initializes the event log."""
+        self._log = []
+        self._parent = None
 
-    if success is not None or finish is not None:
-        self.FinishEvent(event, finish, success)
+    def Add(
+        self,
+        name,
+        task_name,
+        start,
+        finish=None,
+        success=None,
+        try_count=1,
+        kind="RepoOp",
+    ):
+        """Add an event to the log.
 
-    self._log.append(event)
-    return event
+        Args:
+            name: Name of the object being operated upon.
+            task_name: A sub-task that was performed for name.
+            start: Timestamp of when the operation started.
+            finish: Timestamp of when the operation finished.
+            success: Boolean indicating if the operation was successful.
+            try_count: A counter indicating the try count of this task.
+            kind: The kind of the object for the unique identifier.
 
-  def AddSync(self, project, task_name, start, finish, success):
-    """Add a event to the log for a sync command.
+        Returns:
+            A dictionary of the event added to the log.
+        """
+        event = {
+            "id": (kind, _NextEventId()),
+            "name": name,
+            "task_name": task_name,
+            "start_time": start,
+            "try": try_count,
+        }
 
-    Args:
-      project: Project being synced.
-      task_name: A sub-task that was performed for name.
-                 One of (TASK_SYNC_NETWORK, TASK_SYNC_LOCAL)
-      start: Timestamp of when the operation started.
-      finish: Timestamp of when the operation finished.
-      success: Boolean indicating if the operation was successful.
+        if self._parent:
+            event["parent"] = self._parent["id"]
 
-    Returns:
-      A dictionary of the event added to the log.
-    """
-    event = self.Add(project.relpath, task_name, start, finish, success)
-    if event is not None:
-      event['project'] = project.name
-      if project.revisionExpr:
-        event['revision'] = project.revisionExpr
-      if project.remote.url:
-        event['project_url'] = project.remote.url
-      if project.remote.fetchUrl:
-        event['remote_url'] = project.remote.fetchUrl
-      try:
-        event['git_hash'] = project.GetCommitRevisionId()
-      except Exception:
-        pass
-    return event
+        if success is not None or finish is not None:
+            self.FinishEvent(event, finish, success)
 
-  def GetStatusString(self, success):
-    """Converst a boolean success to a status string.
+        self._log.append(event)
+        return event
 
-    Args:
-      success: Boolean indicating if the operation was successful.
+    def AddSync(self, project, task_name, start, finish, success):
+        """Add a event to the log for a sync command.
 
-    Returns:
-      status string.
-    """
-    return 'pass' if success else 'fail'
+        Args:
+            project: Project being synced.
+            task_name: A sub-task that was performed for name.
+                One of (TASK_SYNC_NETWORK, TASK_SYNC_LOCAL)
+            start: Timestamp of when the operation started.
+            finish: Timestamp of when the operation finished.
+            success: Boolean indicating if the operation was successful.
 
-  def FinishEvent(self, event, finish, success):
-    """Finishes an incomplete event.
+        Returns:
+            A dictionary of the event added to the log.
+        """
+        event = self.Add(project.relpath, task_name, start, finish, success)
+        if event is not None:
+            event["project"] = project.name
+            if project.revisionExpr:
+                event["revision"] = project.revisionExpr
+            if project.remote.url:
+                event["project_url"] = project.remote.url
+            if project.remote.fetchUrl:
+                event["remote_url"] = project.remote.fetchUrl
+            try:
+                event["git_hash"] = project.GetCommitRevisionId()
+            except Exception:
+                pass
+        return event
 
-    Args:
-      event: An event that has been added to the log.
-      finish: Timestamp of when the operation finished.
-      success: Boolean indicating if the operation was successful.
+    def GetStatusString(self, success):
+        """Converst a boolean success to a status string.
 
-    Returns:
-      A dictionary of the event added to the log.
-    """
-    event['status'] =  self.GetStatusString(success)
-    event['finish_time'] = finish
-    return event
+        Args:
+            success: Boolean indicating if the operation was successful.
 
-  def SetParent(self, event):
-    """Set a parent event for all new entities.
+        Returns:
+            status string.
+        """
+        return "pass" if success else "fail"
 
-    Args:
-      event: The event to use as a parent.
-    """
-    self._parent = event
+    def FinishEvent(self, event, finish, success):
+        """Finishes an incomplete event.
 
-  def Write(self, filename):
-    """Writes the log out to a file.
+        Args:
+            event: An event that has been added to the log.
+            finish: Timestamp of when the operation finished.
+            success: Boolean indicating if the operation was successful.
 
-    Args:
-      filename: The file to write the log to.
-    """
-    with open(filename, 'w+') as f:
-      for e in self._log:
-        json.dump(e, f, sort_keys=True)
-        f.write('\n')
+        Returns:
+            A dictionary of the event added to the log.
+        """
+        event["status"] = self.GetStatusString(success)
+        event["finish_time"] = finish
+        return event
+
+    def SetParent(self, event):
+        """Set a parent event for all new entities.
+
+        Args:
+            event: The event to use as a parent.
+        """
+        self._parent = event
+
+    def Write(self, filename):
+        """Writes the log out to a file.
+
+        Args:
+            filename: The file to write the log to.
+        """
+        with open(filename, "w+") as f:
+            for e in self._log:
+                json.dump(e, f, sort_keys=True)
+                f.write("\n")
 
 
-# An integer id that is unique across this invocation of the program.
-_EVENT_ID = multiprocessing.Value('i', 1)
+# An integer id that is unique across this invocation of the program, to be set
+# by the first Add event. We can't set it here since it results in leaked
+# resources (see: https://issues.gerritcodereview.com/353656374).
+_EVENT_ID = None
+
 
 def _NextEventId():
-  """Helper function for grabbing the next unique id.
+    """Helper function for grabbing the next unique id.
 
-  Returns:
-    A unique, to this invocation of the program, integer id.
-  """
-  with _EVENT_ID.get_lock():
-    val = _EVENT_ID.value
-    _EVENT_ID.value += 1
-  return val
+    Returns:
+        A unique, to this invocation of the program, integer id.
+    """
+    global _EVENT_ID
+    if _EVENT_ID is None:
+        # There is a small chance of race condition - two parallel processes
+        # setting up _EVENT_ID. However, we expect TASK_COMMAND to happen before
+        # mp kicks in.
+        _EVENT_ID = multiprocessing.Value("i", 1)
+    with _EVENT_ID.get_lock():
+        val = _EVENT_ID.value
+        _EVENT_ID.value += 1
+    return val

@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2014 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import print_function
-try:
-  from importlib.machinery import SourceFileLoader
-  _loader = lambda *args: SourceFileLoader(*args).load_module()
-except ImportError:
-  import imp
-  _loader = lambda *args: imp.load_source(*args)
+import functools
+import importlib.machinery
+import importlib.util
 import os
 
 
-def WrapperPath():
-  return os.path.join(os.path.dirname(__file__), 'repo')
+def WrapperDir():
+    return os.path.dirname(__file__)
 
-_wrapper_module = None
+
+def WrapperPath():
+    return os.path.join(WrapperDir(), "repo")
+
+
+@functools.lru_cache(maxsize=None)
 def Wrapper():
-  global _wrapper_module
-  if not _wrapper_module:
-    _wrapper_module = _loader('wrapper', WrapperPath())
-  return _wrapper_module
+    modname = "wrapper"
+    loader = importlib.machinery.SourceFileLoader(modname, WrapperPath())
+    spec = importlib.util.spec_from_loader(modname, loader)
+    module = importlib.util.module_from_spec(spec)
+    loader.exec_module(module)
+    return module

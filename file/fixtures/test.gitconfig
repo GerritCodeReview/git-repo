@@ -1,0 +1,21 @@
+[section]
+	empty
+	nonempty = true
+	boolinvalid = oops
+	booltrue = true
+	boolfalse = false
+	intinvalid = oops
+	inthex = 0x10
+	inthexk = 0x10k
+	int = 10
+	intk = 10k
+	intm = 10m
+	intg = 10g
+
+[color "status"]
+	one = yellow
+	two = magenta cyan
+	three = black red ul
+	reset = reset
+	none
+	empty =
