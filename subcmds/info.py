@@ -102,6 +102,10 @@ class Info(PagedCommand):
         self.heading("Manifest groups: ")
         self.headtext(manifestGroups)
         self.out.nl()
+        sp = self.manifest.superproject
+        srev = sp.commit_id if sp and sp.commit_id else "None"
+        self.heading("Superproject revision: ")
+        self.headtext(srev)
 
         self.printSeparator()
 

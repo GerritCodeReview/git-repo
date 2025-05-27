@@ -130,6 +130,29 @@ class Superproject:
         self._print_messages = value
 
     @property
+    def commit_id(self):
+        """Returns the commit ID of the superproject checkout."""
+        cmd = ["rev-parse", self.revision]
+        p = GitCommand(
+            None,  # project
+            cmd,
+            gitdir=self._work_git,
+            bare=True,
+            capture_stdout=True,
+            capture_stderr=True,
+        )
+        retval = p.Wait()
+        if retval != 0:
+            self._LogWarning(
+                "git rev-parse call failed, command: git {}, "
+                "return code: {}, stderr: {}",
+                cmd,
+                p.stdwerr,
+            )
+            return None
+        return p.stdout
+
+    @property
     def project_commit_ids(self):
         """Returns a dictionary of projects and their commit ids."""
         return self._project_commit_ids
@@ -276,7 +299,7 @@ class Superproject:
         Works only in git repositories.
 
         Returns:
-            data: data returned from 'git ls-tree ...' instead of None.
+            data: data returned from 'git ls-tree ...'. None on error.
         """
         if not os.path.exists(self._work_git):
             self._LogWarning(
@@ -306,6 +329,7 @@ class Superproject:
                 retval,
                 p.stderr,
             )
+            return None
         return data
 
     def Sync(self, git_event_log):
