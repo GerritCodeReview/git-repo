@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6096df7c_03c4d64e",
+        "filename": "tests/test_subcmds.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-27T16:05:15Z",
+      "side": 1,
+      "message": "👍",
+      "range": {
+        "startLine": 93,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 28
+      },
+      "revId": "a2368c2b2911f1794f79a54885da761ee8dee6d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
