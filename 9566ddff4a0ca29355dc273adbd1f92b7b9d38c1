@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5e57b47_667f9106",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-27T18:36:10Z",
+      "side": 1,
+      "message": "PTAL.\n\n```\n$ repo info\nManifest branch: main\nManifest merge branch: refs/heads/aosp-main-with-phones\nManifest groups: default,platform-linux\nSuperproject Revision: cc89a6821ae620d4b9f027306994b56a3244b48f\n----------------------------\nProject: platform/art\n...\n```",
+      "revId": "9566ddff4a0ca29355dc273adbd1f92b7b9d38c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

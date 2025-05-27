@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3887e15_e0a9d279",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-27T18:36:10Z",
+      "side": 1,
+      "message": "done with `info:`",
+      "parentUuid": "50f5881f_094f5963",
+      "revId": "b8d8cf98d45668dee4363c0cdd39fa8d5be35afa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33788578_8c05cb5d",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-05-22T18:33:51Z",
       "side": 1,
       "message": "Change-Id footer should be last",
+      "revId": "b8d8cf98d45668dee4363c0cdd39fa8d5be35afa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfafbd88_d2a64f0c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-27T18:36:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33788578_8c05cb5d",
       "revId": "b8d8cf98d45668dee4363c0cdd39fa8d5be35afa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5455891_a0922e54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-27T18:36:10Z",
+      "side": 1,
+      "message": "that\u0027s a good idea. `repo info` makes sense, and I don\u0027t find it necessary to add an option, either; done",
+      "parentUuid": "3c6eae58_32d1aea2",
+      "revId": "b8d8cf98d45668dee4363c0cdd39fa8d5be35afa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97158d56_7c044fcf",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-05-22T18:33:51Z",
       "side": 1,
       "message": "`data` isn\u0027t defined in this code path which will cause an exception below when it tries to return",
+      "revId": "b8d8cf98d45668dee4363c0cdd39fa8d5be35afa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "712cec2a_d30af0b4",
+        "filename": "git_superproject.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-27T18:36:10Z",
+      "side": 1,
+      "message": "nice catch; made a fix in the origin of the code as well",
+      "parentUuid": "97158d56_7c044fcf",
       "revId": "b8d8cf98d45668dee4363c0cdd39fa8d5be35afa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
