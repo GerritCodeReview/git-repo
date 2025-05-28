@@ -16,6 +16,29 @@
       "message": "tested by uploading ag/33781308: http://shortn/_S4nnJa0h8z",
       "revId": "aabb45afe2ca28e831564ec319a28efea223174c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb3935a2_caca5700",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-28T17:44:41Z",
+      "side": 1,
+      "message": "can you explain how this change is related to the requested feature?\n\nThe bug title says \"Set custom_keyed_value for superproject\".",
+      "range": {
+        "startLine": 159,
+        "startChar": 16,
+        "endLine": 159,
+        "endChar": 50
+      },
+      "revId": "aabb45afe2ca28e831564ec319a28efea223174c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
