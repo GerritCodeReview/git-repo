@@ -39,6 +39,30 @@
       },
       "revId": "aabb45afe2ca28e831564ec319a28efea223174c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92a030df_d54026a2",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-05-28T17:47:47Z",
+      "side": 1,
+      "message": "`custom_keyed_value` is a push option that lets you set a custom key/value. repo uses it like this: `-o custom_keyed_value\u003drootRepo:{superproject.repo_id}`. this change adds the rootRepo commit to `repo_id`",
+      "parentUuid": "fb3935a2_caca5700",
+      "range": {
+        "startLine": 159,
+        "startChar": 16,
+        "endLine": 159,
+        "endChar": 50
+      },
+      "revId": "aabb45afe2ca28e831564ec319a28efea223174c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
