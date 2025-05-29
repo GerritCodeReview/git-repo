@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91e7e34c_d1860278",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-29T02:58:08Z",
+      "side": 1,
+      "message": "\"The\" for full sentence",
+      "fixSuggestions": [
+        {
+          "fixId": "41843e79_c0941c7d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1079,
+                "startChar": 0,
+                "endLine": 1080,
+                "endChar": 0
+              },
+              "replacement": "            # The manifest is probably created in --standalone-manifest mode.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2ad4329ea98a99b32578a8fd2b46f053e3b80aff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6da556a7_6991887c",
+        "filename": "subcmds/info.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-29T02:58:08Z",
+      "side": 1,
+      "message": "`self.manifest.manifestProject` is the `project.py:ManifestProject` which is a `Project` object which has access to the git state which i think GetRevisionId has what you want\n\nplus that way you don\u0027t need to hardcode `manifests.git` in more places.",
+      "revId": "2ad4329ea98a99b32578a8fd2b46f053e3b80aff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
