@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef8ed0b5_1cc9496e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-29T03:27:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91e7e34c_d1860278",
+      "revId": "2ad4329ea98a99b32578a8fd2b46f053e3b80aff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6da556a7_6991887c",
@@ -49,6 +67,24 @@
       "writtenOn": "2025-05-29T02:58:08Z",
       "side": 1,
       "message": "`self.manifest.manifestProject` is the `project.py:ManifestProject` which is a `Project` object which has access to the git state which i think GetRevisionId has what you want\n\nplus that way you don\u0027t need to hardcode `manifests.git` in more places.",
+      "revId": "2ad4329ea98a99b32578a8fd2b46f053e3b80aff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b234f5e2_c7816459",
+        "filename": "subcmds/info.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-29T03:27:32Z",
+      "side": 1,
+      "message": "Thanks for the suggestion. That makes sense. PTAL",
+      "parentUuid": "6da556a7_6991887c",
       "revId": "2ad4329ea98a99b32578a8fd2b46f053e3b80aff",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
