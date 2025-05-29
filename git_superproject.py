@@ -150,7 +150,7 @@ class Superproject:
                 p.stdwerr,
             )
             return None
-        return p.stdout
+        return p.stdout.rstrip()  # remove the trailing blank lines.
 
     @property
     def project_commit_ids(self):
