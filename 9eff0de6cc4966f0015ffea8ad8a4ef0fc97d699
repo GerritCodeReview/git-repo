@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f633d998_a4bcb09c",
+        "filename": "subcmds/info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-29T02:02:15Z",
+      "side": 1,
+      "message": "```\n$ repo info\nManifest branch: main\nManifest merge branch: refs/heads/aosp-main-with-phones\nManifest revision: 8e8fa973ac5c8d8848f28c1e16011d2e4abaae1c\nManifest groups: default,platform-linux\nSuperproject revision: cc89a6821ae620d4b9f027306994b56a3244b48f\n```",
+      "range": {
+        "startLine": 102,
+        "startChar": 7,
+        "endLine": 104,
+        "endChar": 21
+      },
+      "revId": "9eff0de6cc4966f0015ffea8ad8a4ef0fc97d699",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
