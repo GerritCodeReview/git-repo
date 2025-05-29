@@ -1,0 +1,111 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaa46533_ca4e3988",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 4271,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-29T03:44:19Z",
+      "side": 1,
+      "message": "i don\u0027t think you need to specify the branch.  just use `HEAD`.  if anything, it\u0027d make it more reliable.",
+      "fixSuggestions": [
+        {
+          "fixId": "cd48bc92_246def86",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 4271,
+                "startChar": 0,
+                "endLine": 4272,
+                "endChar": 0
+              },
+              "replacement": "    def commit_id(self):\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 4277,
+                "startChar": 0,
+                "endLine": 4278,
+                "endChar": 0
+              },
+              "replacement": "        cmd \u003d [\"rev-parse\", \"HEAD\"]\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b59460912e424b70df81def7f09b5c165870009a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60e0d995_1f8e30d8",
+        "filename": "subcmds/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-29T03:44:19Z",
+      "side": 1,
+      "message": "for better or worse, we\u0027ve often used `mp` as the local varname.\n\nif you want to leave this as-is, that\u0027s fine.",
+      "fixSuggestions": [
+        {
+          "fixId": "03d6271a_e6a9c9bd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/info.py",
+              "range": {
+                "startLine": 89,
+                "startChar": 0,
+                "endLine": 91,
+                "endChar": 0
+              },
+              "replacement": "        mp \u003d self.manifest.manifestProject\n        manifestConfig \u003d mp.config\n"
+            },
+            {
+              "path": "subcmds/info.py",
+              "range": {
+                "startLine": 104,
+                "startChar": 0,
+                "endLine": 105,
+                "endChar": 0
+              },
+              "replacement": "        self.headtext(mp.commit_id(\"default\") or \"\")\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b59460912e424b70df81def7f09b5c165870009a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a6ab40f_9bdbbe2c",
+        "filename": "subcmds/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-29T03:44:19Z",
+      "side": 1,
+      "message": "does `GetRevisionId` not work here?\n\ni grok you might have to handle standalone here yourself, but maybe that\u0027s better for clarity ?\n\n```\nstandalone_url \u003d mp.standalone_manifest_url\nif standalone_url:\n  \u003cprint url\u003e\nelse:\n  \u003cprint revision id\u003e\n```",
+      "revId": "b59460912e424b70df81def7f09b5c165870009a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
