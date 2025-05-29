@@ -86,7 +86,8 @@ class Info(PagedCommand):
 
         if not opt.this_manifest_only:
             self.manifest = self.manifest.outer_client
-        manifestConfig = self.manifest.manifestProject.config
+        manifestProject = self.manifest.manifestProject
+        manifestConfig = manifestProject.config
         mergeBranch = manifestConfig.GetBranch("default").merge
         manifestGroups = self.manifest.GetGroupsStr()
 
@@ -99,13 +100,17 @@ class Info(PagedCommand):
         # e.g. if `repo init --standalone-manifest` is used.
         self.headtext(mergeBranch or "")
         self.out.nl()
+        self.heading("Manifest revision: ")
+        self.headtext(manifestProject.commit_id("default") or "")
+        self.out.nl()
         self.heading("Manifest groups: ")
         self.headtext(manifestGroups)
         self.out.nl()
         sp = self.manifest.superproject
-        srev = sp.commit_id if sp and sp.commit_id else "None"
+        srev = sp.commit_id if sp and sp.commit_id else ""
         self.heading("Superproject revision: ")
         self.headtext(srev)
+        self.out.nl()
 
         self.printSeparator()
 

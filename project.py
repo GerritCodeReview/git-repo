@@ -4268,6 +4268,32 @@ class ManifestProject(MetaProject):
         """The --platform argument from `repo init`."""
         return self.config.GetString("manifest.platform")
 
+    def commit_id(self, branch):
+        """Returns the commit ID of the manifest branch checked out."""
+        if not self.gitdir:
+            # the manifest is probably created in --standalone-manifest mode.
+            return ""
+
+        cmd = ["rev-parse", branch]
+        p = GitCommand(
+            self,
+            cmd,
+            bare=True,
+            capture_stdout=True,
+            capture_stderr=True,
+        )
+        retval = p.Wait()
+        if retval != 0:
+            self._LogWarning(
+                "git rev-parse call failed, command: git {}, "
+                "return code: {}, stderr: {}",
+                cmd,
+                retval,
+                p.stderr,
+            )
+            return None
+        return p.stdout.rstrip()
+
     @property
     def _platform_name(self):
         """Return the name of the platform."""
