@@ -1,0 +1,91 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3460891d_8bf60d2c",
+        "filename": "git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-29T02:29:20Z",
+      "side": 1,
+      "message": "don\u0027t think the comment is necessary.  deleting avoids inline comments too.",
+      "fixSuggestions": [
+        {
+          "fixId": "48ad9c3c_5c798d9d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "git_superproject.py",
+              "range": {
+                "startLine": 153,
+                "startChar": 0,
+                "endLine": 154,
+                "endChar": 0
+              },
+              "replacement": "        return p.stdout.rstrip()\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fb442c41fb5f95c251f02663f01022b2c964dd1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f655c10b_68374036",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1087,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-29T02:29:20Z",
+      "side": 1,
+      "message": "i think in `--standalone-manifest` mode, it\u0027s normal for the mp to not be a git repo.  which means we shouldn\u0027t warn about it.",
+      "revId": "fb442c41fb5f95c251f02663f01022b2c964dd1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f79e3e2_2f5c735e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1089,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-29T02:29:20Z",
+      "side": 1,
+      "message": "there are 3 `{}` but you only pass 2 arguments below",
+      "fixSuggestions": [
+        {
+          "fixId": "18bc514f_2cf09aef",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1091,
+                "startChar": 0,
+                "endLine": 1091,
+                "endChar": 0
+              },
+              "replacement": "                retval,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fb442c41fb5f95c251f02663f01022b2c964dd1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
