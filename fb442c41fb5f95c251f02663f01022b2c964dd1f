@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2593bf43_9d45abb0",
+        "filename": "git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-29T02:36:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3460891d_8bf60d2c",
+      "revId": "fb442c41fb5f95c251f02663f01022b2c964dd1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f655c10b_68374036",
@@ -49,6 +67,24 @@
       "writtenOn": "2025-05-29T02:29:20Z",
       "side": 1,
       "message": "i think in `--standalone-manifest` mode, it\u0027s normal for the mp to not be a git repo.  which means we shouldn\u0027t warn about it.",
+      "revId": "fb442c41fb5f95c251f02663f01022b2c964dd1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2a7d37b_5ed23263",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1087,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-29T02:36:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f655c10b_68374036",
       "revId": "fb442c41fb5f95c251f02663f01022b2c964dd1f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -84,6 +120,24 @@
           ]
         }
       ],
+      "revId": "fb442c41fb5f95c251f02663f01022b2c964dd1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8e5d63d_c3bc56a9",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1089,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-29T02:36:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f79e3e2_2f5c735e",
       "revId": "fb442c41fb5f95c251f02663f01022b2c964dd1f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
