@@ -93,6 +93,8 @@ class Info(PagedCommand):
         self.heading("Manifest branch: ")
         if self.manifest.default.revisionExpr:
             self.headtext(self.manifest.default.revisionExpr)
+        self.heading("Manifest Commit ID: ")
+        self.headtext(self.manifest.commit_id)
         self.out.nl()
         self.heading("Manifest merge branch: ")
         # The manifest might not have a merge branch if it isn't in a git repo,
