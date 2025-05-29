@@ -99,6 +99,9 @@ class Info(PagedCommand):
         # e.g. if `repo init --standalone-manifest` is used.
         self.headtext(mergeBranch or "")
         self.out.nl()
+        self.heading("Manifest revision: ")
+        self.headtext(self.manifest.commit_id or "None")
+        self.out.nl()
         self.heading("Manifest groups: ")
         self.headtext(manifestGroups)
         self.out.nl()
@@ -106,6 +109,7 @@ class Info(PagedCommand):
         srev = sp.commit_id if sp and sp.commit_id else "None"
         self.heading("Superproject revision: ")
         self.headtext(srev)
+        self.out.nl()
 
         self.printSeparator()
 
