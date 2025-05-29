@@ -24,6 +24,7 @@ import xml.dom.minidom
 from error import ManifestInvalidPathError
 from error import ManifestInvalidRevisionError
 from error import ManifestParseError
+from git_command import GitCommand
 from git_config import GitConfig
 from git_refs import HEAD
 from git_refs import R_HEADS
@@ -1068,6 +1069,35 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     manifest = tree.repo_client
                     break
         return manifest
+
+    @property
+    def commit_id(self):
+        """Returns the commit ID of the manifest checkout."""
+        cmd = ["rev-parse", "default"]
+        manifests_git_path = os.path.join(self.repodir, "manifests.git")
+        if not os.path.exists(manifests_git_path):
+            # the manifest is probably created in --standalone-manifest mode.
+            return ""
+
+        p = GitCommand(
+            None,  # project
+            cmd,
+            gitdir=manifests_git_path,
+            bare=True,
+            capture_stdout=True,
+            capture_stderr=True,
+        )
+        retval = p.Wait()
+        if retval != 0:
+            self._LogWarning(
+                "git rev-parse call failed, command: git {}, "
+                "return code: {}, stderr: {}",
+                cmd,
+                retval,
+                p.stdwerr,
+            )
+            return None
+        return p.stdout.rstrip()
 
     @property
     def subdir(self):
