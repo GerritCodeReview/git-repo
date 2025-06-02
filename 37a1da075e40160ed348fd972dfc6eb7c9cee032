@@ -16,6 +16,23 @@
       "message": "https://www.tiktok.com/@nrruu1?_t\u003dZS-8ws5cYfRsue\u0026_r\u003d1",
       "revId": "37a1da075e40160ed348fd972dfc6eb7c9cee032",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "454da80b_2bfe9214",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-06-02T16:26:45Z",
+      "side": 1,
+      "message": "There have been 3 prior attempts at this, oldest to newest:\n1. 277563: Add repo-hook support for post-sync actions | https://gerrit-review.googlesource.com/c/git-repo/+/277563\n2. 394714: sync: Add call to repo hook after sync is done | https://gerrit-review.googlesource.com/c/git-repo/+/394714\n3. 406677: sync: Add ability to run post-sync hook after successful sync | https://gerrit-review.googlesource.com/c/git-repo/+/406677\n\nThe first one has several comments on it that you probably want to read through and compare your approach to theirs.",
+      "revId": "37a1da075e40160ed348fd972dfc6eb7c9cee032",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
