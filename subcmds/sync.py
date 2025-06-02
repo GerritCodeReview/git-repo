@@ -79,6 +79,7 @@ from repo_logging import RepoLogger
 from repo_trace import Trace
 import ssh
 from wrapper import Wrapper
+from hooks import RepoHook
 
 
 _ONE_DAY_S = 24 * 60 * 60
@@ -1736,10 +1737,35 @@ later is required to fix a server side protocol bug.
         errors = []
         try:
             self._ExecuteHelper(opt, args, errors)
+            self._RunPostSyncHook(opt)
+
         except (RepoExitError, RepoChangedException):
             raise
         except (KeyboardInterrupt, Exception) as e:
             raise RepoUnhandledExceptionError(e, aggregate_errors=errors)
+
+    def _RunPostSyncHook(self, opt):
+        """Run post-sync hook if configured in manifest <repo-hooks>."""
+
+        # Inject required flags into opt if missing
+        for attr in ("bypass_hooks", "allow_all_hooks", "ignore_hooks"):
+            if not hasattr(opt, attr):
+                if attr == "bypass_hooks":
+                    setattr(opt, attr, False)
+                else:
+                    setattr(opt, attr, True)
+
+        try:
+            post_sync_hook = RepoHook.FromSubcmd(
+                hook_type="post-sync",
+                manifest=self.manifest,
+                opt=opt,
+                abort_if_user_denies=False,
+            )
+            post_sync_hook.Run()
+
+        except Exception as e:
+            print(f"Warning: post-sync hook failed: {e}")
 
     def _ExecuteHelper(self, opt, args, errors):
         manifest = self.outer_manifest
