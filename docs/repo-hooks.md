@@ -133,3 +133,30 @@ def main(project_list, worktree_list=None, **kwargs):
       kwargs: Leave this here for forward-compatibility.
     """
 ```
+
+### Hook: post-sync
+
+The `post-sync` hook allows you to execute a script automatically after a
+successful `repo sync`. This is useful for post-processing tasks such as
+setting up git hooks, bootstrapping configuration files, or running project
+initialization logic.
+
+The hook is defined using the existing `<repo-hooks>` manifest block and is
+optional. If the hook script fails or is missing, `repo sync` will still
+complete successfully, and the error will be printed as a warning.
+
+Example:
+
+```xml
+<project name="myorg/dev-tools" path="tools" revision="main" />
+<repo-hooks in-project="myorg/dev-tools" enabled-list="post-sync">
+  <hook name="post-sync" />
+</repo-hooks>
+```
+
+The `post-sync.py` file should be defined like:
+
+```py
+def main(**kwargs):
+    print("Running post-sync tasks...")
+```
