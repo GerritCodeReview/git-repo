@@ -33,6 +33,24 @@
       "message": "There have been 3 prior attempts at this, oldest to newest:\n1. 277563: Add repo-hook support for post-sync actions | https://gerrit-review.googlesource.com/c/git-repo/+/277563\n2. 394714: sync: Add call to repo hook after sync is done | https://gerrit-review.googlesource.com/c/git-repo/+/394714\n3. 406677: sync: Add ability to run post-sync hook after successful sync | https://gerrit-review.googlesource.com/c/git-repo/+/406677\n\nThe first one has several comments on it that you probably want to read through and compare your approach to theirs.",
       "revId": "37a1da075e40160ed348fd972dfc6eb7c9cee032",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a26f40cc_543eef53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-03T06:59:11Z",
+      "side": 1,
+      "message": "Hi Nasser,\n\nThanks for the feedback!\n\nI reviewed prior CLs (277563, 394714, 406677, etc.) and ensured:\n\nThis integrates with the hook framework (RepoHook)\nSync behavior is unchanged unless the hook is explicitly defined\nTested locally with real manifest + hook project setup\nLet me know if further changes are needed!\n\nMotivation\nRun post-sync scripts for setting up local Git hooks, environments, etc.\nAvoids wrapping repo sync in external scripts\nBased on manifest config, non-blocking on failure\n\nIn many projects, commit hooks (e.g., commit-msg) are critical for enforcing conventions like Change-Id, formatting, or linting. While pre-upload hooks can help, they only trigger when using repo upload.\n\nHowever, developers who push directly via git push bypass pre-upload entirely. By using post-sync, we can install those hooks proactively, ensuring consistency regardless of the upload method.",
+      "parentUuid": "454da80b_2bfe9214",
+      "revId": "37a1da075e40160ed348fd972dfc6eb7c9cee032",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
