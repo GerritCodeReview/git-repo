@@ -1,0 +1,135 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9af7686a_c2d7f0d8",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1343,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-03T14:15:31Z",
+      "side": 1,
+      "message": "this `else` case is just this one check, so merge it",
+      "fixSuggestions": [
+        {
+          "fixId": "389f6941_9c910cf0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1342,
+                "startChar": 0,
+                "endLine": 1351,
+                "endChar": 0
+              },
+              "replacement": "            elif node.nodeName \u003d\u003d \"project\":\n                if parent_groups:\n                    nodeGroups \u003d parent_groups\n                    if node.hasAttribute(\"groups\"):\n                        nodeGroups \u003d (\n                            node.getAttribute(\"groups\") + \",\" + nodeGroups\n                        )\n                    node.setAttribute(\"groups\", nodeGroups)\n\n                if self.default_groups:\n                    project_groups_attr \u003d node.getAttribute(\"groups\")\n                    project_groups \u003d set(\n                        g.strip()\n                        for g in project_groups_attr.split(\",\")\n                        if g.strip()\n                    )\n"
+            },
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1352,
+                "startChar": 0,
+                "endLine": 1358,
+                "endChar": 0
+              },
+              "replacement": "                    if not project_groups.intersection(self.default_groups):\n                        project_groups.add(\"notdefault\")\n                        node.setAttribute(\n                            \"groups\", \",\".join(sorted(project_groups))\n"
+            },
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1359,
+                "startChar": 0,
+                "endLine": 1365,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "59a3495400471a0af56bcf513c699fb795bd14dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4dd0552_6bcbde10",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1358,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-03T14:15:31Z",
+      "side": 1,
+      "message": "don\u0027t reimplement the parsing logic",
+      "range": {
+        "startLine": 1354,
+        "startChar": 0,
+        "endLine": 1358,
+        "endChar": 25
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "2d391e4d_f8dd5b29",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1355,
+                "startChar": 0,
+                "endLine": 1358,
+                "endChar": 0
+              },
+              "replacement": "                            self._ParseList(project_groups_attr)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "59a3495400471a0af56bcf513c699fb795bd14dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07a5a0b1_ac6a5e8a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1360,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-03T14:15:31Z",
+      "side": 1,
+      "message": "use `\u0026` operator instead",
+      "fixSuggestions": [
+        {
+          "fixId": "b0490229_7db7de5a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1360,
+                "startChar": 0,
+                "endLine": 1361,
+                "endChar": 0
+              },
+              "replacement": "                        if not project_groups \u0026 self.default_groups:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "59a3495400471a0af56bcf513c699fb795bd14dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
