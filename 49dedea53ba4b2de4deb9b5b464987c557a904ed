@@ -1,0 +1,347 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbbbb4ba_be592f44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-03T14:18:22Z",
+      "side": 1,
+      "message": "can we hoist this to the top of the stack so we have more confidence in changes you\u0027re making ?",
+      "revId": "49dedea53ba4b2de4deb9b5b464987c557a904ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c7d576d_5ab5a1d8",
+        "filename": "tests/test_submanifest_groups.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-03T14:18:22Z",
+      "side": 1,
+      "message": "these should be docstrings, not comments above the funcs",
+      "revId": "49dedea53ba4b2de4deb9b5b464987c557a904ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0da8b3c6_7ffa3304",
+        "filename": "tests/test_submanifest_groups.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-03T14:18:22Z",
+      "side": 1,
+      "message": "use the manifest_xml APIs rather than implementing your own",
+      "revId": "49dedea53ba4b2de4deb9b5b464987c557a904ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "508f2df6_4a33d601",
+        "filename": "tests/test_submanifest_groups.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-03T14:18:22Z",
+      "side": 1,
+      "message": "please see this styleguide for how to write the docstring:\nhttps://www.chromium.org/chromium-os/developer-library/reference/style-guides/python/#describing-arguments-in-docstrings",
+      "revId": "49dedea53ba4b2de4deb9b5b464987c557a904ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67dfc3ea_1a808546",
+        "filename": "tests/test_submanifest_groups.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-03T14:18:22Z",
+      "side": 1,
+      "message": "use Path objects instead of os.path APIs",
+      "fixSuggestions": [
+        {
+          "fixId": "1e73265d_ad0666e6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 26,
+                "startChar": 0,
+                "endLine": 26,
+                "endChar": 0
+              },
+              "replacement": "from path import Path\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 78,
+                "startChar": 0,
+                "endLine": 81,
+                "endChar": 0
+              },
+              "replacement": "    dot_repo \u003d Path(repo_root) / \".repo\"\n    manifests_git \u003d dot_repo / \"manifests.git\"\n    submanifest_dir \u003d dot_repo / \"submanifests\" / \"submanifest_dir\"\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 82,
+                "startChar": 0,
+                "endLine": 84,
+                "endChar": 0
+              },
+              "replacement": "    manifests_git.makedirs(exist_ok\u003dTrue)\n    submanifest_dir.makedirs(exist_ok\u003dTrue)\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 86,
+                "startChar": 0,
+                "endLine": 87,
+                "endChar": 0
+              },
+              "replacement": "    with open(manifests_git / \"config\", \"w\") as f:\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 101,
+                "startChar": 0,
+                "endLine": 102,
+                "endChar": 0
+              },
+              "replacement": "    manifest_path \u003d dot_repo / \"manifest.xml\"\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 107,
+                "startChar": 0,
+                "endLine": 108,
+                "endChar": 0
+              },
+              "replacement": "        \"repodir\": str(dot_repo),\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 109,
+                "startChar": 0,
+                "endLine": 110,
+                "endChar": 0
+              },
+              "replacement": "        \"submanifest_dir\": str(submanifest_dir),\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 134,
+                "startChar": 0,
+                "endLine": 135,
+                "endChar": 0
+              },
+              "replacement": "        subm_dir \u003d Path(rs[\"submanifest_dir\"])\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 145,
+                "startChar": 0,
+                "endLine": 147,
+                "endChar": 0
+              },
+              "replacement": "        submanifest_git \u003d subm_dir / \"manifests.git\"\n        submanifest_git.makedirs(exist_ok\u003dTrue)\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 148,
+                "startChar": 0,
+                "endLine": 149,
+                "endChar": 0
+              },
+              "replacement": "            submanifest_git / \"config\",\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 158,
+                "startChar": 0,
+                "endLine": 160,
+                "endChar": 0
+              },
+              "replacement": "        submanifest_manifests_dir \u003d subm_dir / \"manifests\"\n        submanifest_manifests_dir.makedirs(exist_ok\u003dTrue)\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 166,
+                "startChar": 0,
+                "endLine": 169,
+                "endChar": 0
+              },
+              "replacement": "        submanifest_file \u003d submanifest_manifests_dir / \"default.xml\"\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 173,
+                "startChar": 0,
+                "endLine": 174,
+                "endChar": 0
+              },
+              "replacement": "        link_file \u003d subm_dir / \"manifest.xml\"\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 218,
+                "startChar": 0,
+                "endLine": 219,
+                "endChar": 0
+              },
+              "replacement": "        subm_dir \u003d Path(rs[\"submanifest_dir\"])\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 229,
+                "startChar": 0,
+                "endLine": 231,
+                "endChar": 0
+              },
+              "replacement": "        submanifest_git \u003d subm_dir / \"manifests.git\"\n        submanifest_git.makedirs(exist_ok\u003dTrue)\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 232,
+                "startChar": 0,
+                "endLine": 233,
+                "endChar": 0
+              },
+              "replacement": "            submanifest_git / \"config\",\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 241,
+                "startChar": 0,
+                "endLine": 243,
+                "endChar": 0
+              },
+              "replacement": "        submanifest_manifests_dir \u003d subm_dir / \"manifests\"\n        submanifest_manifests_dir.makedirs(exist_ok\u003dTrue)\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 249,
+                "startChar": 0,
+                "endLine": 253,
+                "endChar": 0
+              },
+              "replacement": "        submanifest_file \u003d subm_dir / \"manifests\" / \"default.xml\"\n        with open(submanifest_file, \"w\", encoding\u003d\"utf-8\") as f:\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 254,
+                "startChar": 0,
+                "endLine": 255,
+                "endChar": 0
+              },
+              "replacement": "        link_file \u003d subm_dir / \"manifest.xml\"\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 289,
+                "startChar": 0,
+                "endLine": 290,
+                "endChar": 0
+              },
+              "replacement": "        subm_dir \u003d Path(rs[\"submanifest_dir\"])\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 304,
+                "startChar": 0,
+                "endLine": 306,
+                "endChar": 0
+              },
+              "replacement": "        submanifest_git \u003d subm_dir / \"manifests.git\"\n        submanifest_git.makedirs(exist_ok\u003dTrue)\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 307,
+                "startChar": 0,
+                "endLine": 308,
+                "endChar": 0
+              },
+              "replacement": "            submanifest_git / \"config\",\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 318,
+                "startChar": 0,
+                "endLine": 320,
+                "endChar": 0
+              },
+              "replacement": "        submanifest_manifests_dir \u003d subm_dir / \"manifests\"\n        submanifest_manifests_dir.makedirs(exist_ok\u003dTrue)\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 327,
+                "startChar": 0,
+                "endLine": 328,
+                "endChar": 0
+              },
+              "replacement": "        submanifest_file \u003d subm_dir / \"manifests\" / \"default.xml\"\n"
+            },
+            {
+              "path": "tests/test_submanifest_groups.py",
+              "range": {
+                "startLine": 330,
+                "startChar": 0,
+                "endLine": 331,
+                "endChar": 0
+              },
+              "replacement": "        link_file \u003d subm_dir / \"manifest.xml\"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "49dedea53ba4b2de4deb9b5b464987c557a904ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
