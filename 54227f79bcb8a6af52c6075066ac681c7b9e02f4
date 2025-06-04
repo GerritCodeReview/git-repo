@@ -16,6 +16,24 @@
       "message": "I think you should be using the `RepoHook.FromSubcmd()` static method to populate most of the constructor args. Check the usage in `subcmds/upload.py`.",
       "revId": "54227f79bcb8a6af52c6075066ac681c7b9e02f4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb8f03d1_0b40ea3c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1753,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-04T03:15:57Z",
+      "side": 1,
+      "message": "Thanks for the suggestion! Addressed in patchset 7.\n\n- Switched to `RepoHook.FromSubcmd()` for hook construction (same pattern as in `upload.py`)\n- Since `sync` doesn\u0027t have a native `opt` object, I introduced a minimal `DummyOpt` with the required attributes:\n  - `bypass_hooks`\n  - `allow_all_hooks`\n  - `ignore_hooks`\n\nThis keeps the change self-contained without modifying `RepoHook` itself. Let me know if you\u0027d prefer an alternative (e.g., fallback handling inside `FromSubcmd()`).",
+      "parentUuid": "39f7fbc6_e71028de",
+      "revId": "54227f79bcb8a6af52c6075066ac681c7b9e02f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
