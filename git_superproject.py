@@ -173,9 +173,11 @@ class Superproject:
         Then the repo_id would be:
             android/platform/superproject
         """
-        if review_url := self.remote.review:
+        review_url = self.remote.review
+        if review_url:
             parsed_url = urllib.parse.urlparse(review_url)
-            if netloc := parsed_url.netloc:
+            netloc = parsed_url.netloc
+            if netloc:
                 parts = netloc.split("-review", 1)
                 host = parts[0]
                 rev = GitRefs(self._work_git).get("HEAD")
