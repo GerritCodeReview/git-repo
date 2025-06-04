@@ -34,6 +34,24 @@
       "parentUuid": "39f7fbc6_e71028de",
       "revId": "54227f79bcb8a6af52c6075066ac681c7b9e02f4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39848544_2c387cf8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1753,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-06-04T22:53:22Z",
+      "side": 1,
+      "message": "\u003e Thanks for the suggestion! Addressed in patchset 7.\n\u003e \n\u003e - Switched to `RepoHook.FromSubcmd()` for hook construction (same pattern as in `upload.py`)\n\u003e - Since `sync` doesn\u0027t have a native `opt` object, I introduced a minimal `DummyOpt` with the required attributes:\n\u003e   - `bypass_hooks`\n\u003e   - `allow_all_hooks`\n\u003e   - `ignore_hooks`\n\nI think you need solve that by doing something like `RepoHook.AddOptionGroup(p, \u0027post-sync\u0027)` (probably at L568). That\u0027s what was done in upload.py when the hook code was [moved to RepoHook](https://gerrit.googlesource.com/git-repo/+/7f7acfe9fd93cfd4a697f2bc851d1b8182f6336e%5E%21/#F0).",
+      "parentUuid": "eb8f03d1_0b40ea3c",
+      "revId": "54227f79bcb8a6af52c6075066ac681c7b9e02f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
