@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d860e6c2_56cd5edf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-05T23:28:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59c9c9c4_89d60e08",
+      "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07cb7682_677369b6",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-06-05T19:44:07Z",
       "side": 1,
       "message": "this text is leaving a ton unspecified\n\nthe hook, as written, runs whenever `repo sync ...` finishes without errors.  that does not mean every project was downloaded \u0026 checked out.\n\nif someone runs `repo sync -n` to only download from the network, then nothing in the checkout will be touched.  so it might be completely empty.\n\nif someone runs `repo sync foo` to only download \u0026 checkout the `foo` project, then nothing else in the checkout will be touched.\n\nhttp://gerrit-review.googlesource.com/c/277563/ gets into this nuance too.",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 24
+      },
+      "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2125c86f_a658b237",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-05T23:28:47Z",
+      "side": 1,
+      "message": "Thanks again — I updated the doc to clarify that `post-sync` runs after a successful `repo sync`, but doesn’t imply all projects were synced or checked out.\n\nIncluded examples like `repo sync -n` and single-project sync to make that nuance clear.\n\nLet me know if the new wording looks better!",
+      "parentUuid": "07cb7682_677369b6",
       "range": {
         "startLine": 139,
         "startChar": 0,
@@ -76,6 +118,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "502e4435_bea92ca6",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-05T23:28:47Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "85743790_92615476",
+      "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be0623aa_860ab365",
@@ -89,6 +149,24 @@
       "writtenOn": "2025-06-05T19:44:07Z",
       "side": 1,
       "message": "this shouldn\u0027t be in the try block",
+      "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78f3ab22_7858f073",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1741,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-05T23:28:47Z",
+      "side": 1,
+      "message": "- Removed outer try/except around `_RunPostSyncHook()`\n- Relying on `RepoHook.Run()` return value to detect failure, as suggested\n- Confirmed `post-sync` only runs after successful sync, and doesn\u0027t affect error flow\n\nThanks again for the detailed feedback — let me know if anything else needs tweaking!",
+      "parentUuid": "be0623aa_860ab365",
       "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -138,6 +216,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e676db7_07d3153b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1751,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-05T23:28:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e25d6a19_bf3fb817",
+      "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eecc2f74_eec94755",
@@ -151,6 +247,24 @@
       "writtenOn": "2025-06-05T19:44:07Z",
       "side": 1,
       "message": "this try/except block is useless as the Run method already catches everything it should.  the only thing the caller should look at is the bool return value.",
+      "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18d49a7b_61fd0b3c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1759,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-05T23:28:47Z",
+      "side": 1,
+      "message": "Thanks — good point.\n\nI removed the outer try/except from `_RunPostSyncHook()`, and now rely on the boolean return value from `Run()` to detect failure, as `RepoHook` already handles exceptions internally.",
+      "parentUuid": "eecc2f74_eec94755",
       "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
