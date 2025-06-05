@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9514166_933048e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-05T19:40:44Z",
+      "side": 1,
+      "message": "idea moved to https://issues.gerritcodereview.com/421694721",
+      "revId": "0c8b7d9cc4d66f2ba53360dac74e6ed9af23e0bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
