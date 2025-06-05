@@ -58,6 +58,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98a1ed94_2f65d2f5",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1345,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-05T17:43:59Z",
+      "side": 1,
+      "message": "`node_groups`, not `nodeGroups`",
+      "range": {
+        "startLine": 1345,
+        "startChar": 24,
+        "endLine": 1345,
+        "endChar": 34
+      },
+      "revId": "59a3495400471a0af56bcf513c699fb795bd14dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f4dd0552_6bcbde10",
         "filename": "manifest_xml.py",
         "patchSetId": 1
