@@ -52,6 +52,24 @@
       "parentUuid": "eb8f03d1_0b40ea3c",
       "revId": "54227f79bcb8a6af52c6075066ac681c7b9e02f4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac5f2971_628712d1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1753,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-05T07:52:25Z",
+      "side": 1,
+      "message": "Thanks! In patchset 10, I added `RepoHook.AddOptionGroup(p, \u0027post-sync\u0027)` to `_Options()` in `sync.py`, consistent with how `upload.py` does it for `pre-upload`.\n\nThis allows `opt` to include the expected flags (`bypass_hooks`, `allow_all_hooks`, `ignore_hooks`) without needing to manually inject them.\n\nPreviously, I had assumed `opt` didn’t exist or was missing those attributes — I’ve corrected that understanding and aligned this patch with the standard hook integration pattern.\n\nLet me know if there’s anything else to adjust!",
+      "parentUuid": "39848544_2c387cf8",
+      "revId": "54227f79bcb8a6af52c6075066ac681c7b9e02f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
