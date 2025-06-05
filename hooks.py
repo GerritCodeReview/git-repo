@@ -22,6 +22,12 @@ from error import HookError
 from git_refs import HEAD
 
 
+# The API we've documented to hook authors.  Keep in sync with repo-hooks.md.
+_API_ARGS = {
+    "pre-upload": {"project_list", "worktree_list"},
+}
+
+
 class RepoHook:
     """A RepoHook contains information about a script to run as a hook.
 
@@ -56,6 +62,7 @@ class RepoHook:
         hooks_project,
         repo_topdir,
         manifest_url,
+        bug_url=None,
         bypass_hooks=False,
         allow_all_hooks=False,
         ignore_hooks=False,
@@ -75,6 +82,7 @@ class RepoHook:
                 run with CWD as this directory.
                 If you have a manifest, this is manifest.topdir.
             manifest_url: The URL to the manifest git repo.
+            bug_url: The URL to report issues.
             bypass_hooks: If True, then 'Do not run the hook'.
             allow_all_hooks: If True, then 'Run the hook without prompting'.
             ignore_hooks: If True, then 'Do not abort action if hooks fail'.
@@ -85,6 +93,7 @@ class RepoHook:
         self._hooks_project = hooks_project
         self._repo_topdir = repo_topdir
         self._manifest_url = manifest_url
+        self._bug_url = bug_url
         self._bypass_hooks = bypass_hooks
         self._allow_all_hooks = allow_all_hooks
         self._ignore_hooks = ignore_hooks
@@ -414,6 +423,20 @@ class RepoHook:
                 ignore the result through the option combinations as listed in
                 AddHookOptionGroup().
         """
+        # Make sure our own callers use the documented API.
+        exp_kwargs = _API_ARGS.get(self._hook_type, set())
+        got_kwargs = set(kwargs.keys())
+        if exp_kwargs != got_kwargs:
+            print(
+                "repo internal error: "
+                f"hook '{self._hook_type}' called incorrectly\n"
+                f"  got:      {sorted(got_kwargs)}\n"
+                f"  expected: {sorted(exp_kwargs)}\n"
+                f"Please file a bug: {self._bug_url}",
+                file=sys.stderr,
+            )
+            return False
+
         # Do not do anything in case bypass_hooks is set, or
         # no-op if there is no hooks project or if hook is disabled.
         if (
@@ -472,6 +495,7 @@ class RepoHook:
                 "manifest_url": manifest.manifestProject.GetRemote(
                     "origin"
                 ).url,
+                "bug_url": manifest.contactinfo.bugurl,
             }
         )
         return cls(*args, **kwargs)
