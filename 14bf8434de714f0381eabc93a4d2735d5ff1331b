@@ -1,0 +1,158 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59c9c9c4_89d60e08",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-05T19:44:07Z",
+      "side": 1,
+      "message": "missing `Bug: 421694721` tag",
+      "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07cb7682_677369b6",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-05T19:44:07Z",
+      "side": 1,
+      "message": "this text is leaving a ton unspecified\n\nthe hook, as written, runs whenever `repo sync ...` finishes without errors.  that does not mean every project was downloaded \u0026 checked out.\n\nif someone runs `repo sync -n` to only download from the network, then nothing in the checkout will be touched.  so it might be completely empty.\n\nif someone runs `repo sync foo` to only download \u0026 checkout the `foo` project, then nothing else in the checkout will be touched.\n\nhttp://gerrit-review.googlesource.com/c/277563/ gets into this nuance too.",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 24
+      },
+      "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85743790_92615476",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-05T19:44:07Z",
+      "side": 1,
+      "message": "please copy the docstring over from pre-upload",
+      "fixSuggestions": [
+        {
+          "fixId": "16d51b36_ffc2cb28",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "docs/repo-hooks.md",
+              "range": {
+                "startLine": 161,
+                "startChar": 0,
+                "endLine": 161,
+                "endChar": 0
+              },
+              "replacement": "    \"\"\"Main function invoked directly by repo.\n\n    We must use the name \"main\" as that is what repo requires.\n\n    Args:\n      kwargs: Leave this here for forward-compatibility.\n    \"\"\"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be0623aa_860ab365",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1741,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-05T19:44:07Z",
+      "side": 1,
+      "message": "this shouldn\u0027t be in the try block",
+      "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e25d6a19_bf3fb817",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1751,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-05T19:44:07Z",
+      "side": 1,
+      "message": "just call it `hook`",
+      "fixSuggestions": [
+        {
+          "fixId": "29ae4efd_6be4016d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 1751,
+                "startChar": 0,
+                "endLine": 1752,
+                "endChar": 0
+              },
+              "replacement": "            hook \u003d RepoHook.FromSubcmd(\n"
+            },
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 1757,
+                "startChar": 0,
+                "endLine": 1758,
+                "endChar": 0
+              },
+              "replacement": "            hook.Run()\n"
+            }
+          ]
+        }
+      ],
+      "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eecc2f74_eec94755",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1759,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-05T19:44:07Z",
+      "side": 1,
+      "message": "this try/except block is useless as the Run method already catches everything it should.  the only thing the caller should look at is the bool return value.",
+      "revId": "14bf8434de714f0381eabc93a4d2735d5ff1331b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
