@@ -16,6 +16,24 @@
       "message": "Is this edit related to the internal check?",
       "revId": "982838ff143212f918975e8f0295b475828ae98d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b8555f9_74fe8257",
+        "filename": "hooks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-06T18:10:01Z",
+      "side": 1,
+      "message": "you can see the bug_url included in the new error message below",
+      "parentUuid": "59f88089_b9abf5cf",
+      "revId": "982838ff143212f918975e8f0295b475828ae98d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
