@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59f88089_b9abf5cf",
+        "filename": "hooks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-06-06T17:49:46Z",
+      "side": 1,
+      "message": "Is this edit related to the internal check?",
+      "revId": "982838ff143212f918975e8f0295b475828ae98d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
