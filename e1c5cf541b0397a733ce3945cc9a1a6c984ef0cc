@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a822600a_4cc1cc3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-09T02:21:46Z",
+      "side": 1,
+      "message": "Synced with CL 481721 — `repo_topdir` is now explicitly listed in `_API_ARGS` and documented in the post-sync example.",
+      "revId": "e1c5cf541b0397a733ce3945cc9a1a6c984ef0cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
