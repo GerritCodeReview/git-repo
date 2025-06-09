@@ -16,6 +16,64 @@
       "message": "Synced with CL 481721 — `repo_topdir` is now explicitly listed in `_API_ARGS` and documented in the post-sync example.",
       "revId": "e1c5cf541b0397a733ce3945cc9a1a6c984ef0cc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9f3bf23_82546b4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-09T23:10:37Z",
+      "side": 1,
+      "message": "please format the change to fix the `Verify git-repo CL` errors",
+      "revId": "e1c5cf541b0397a733ce3945cc9a1a6c984ef0cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c694b46_f4e61548",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1757,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-09T23:10:37Z",
+      "side": 1,
+      "message": "if this hook uses `repo_topdir`, should we pass it here?",
+      "range": {
+        "startLine": 1757,
+        "startChar": 0,
+        "endLine": 1757,
+        "endChar": 28
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "4c37e6d3_b4184da2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 1755,
+                "startChar": 0,
+                "endLine": 1755,
+                "endChar": 0
+              },
+              "replacement": "            repo_topdir\u003dself.client.topdir,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e1c5cf541b0397a733ce3945cc9a1a6c984ef0cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
