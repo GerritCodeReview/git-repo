@@ -146,8 +146,7 @@ class Superproject:
             self._LogWarning(
                 "git rev-parse call failed, command: git {}, "
                 "return code: {}, stderr: {}",
-                cmd,
-                p.stdwerr,
+                cmd, retval, p.stderr,
             )
             return None
         return p.stdout
