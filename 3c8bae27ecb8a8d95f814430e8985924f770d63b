@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07cb2491_4d8b0cb3",
+        "filename": "git_superproject.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 4142341
+      },
+      "writtenOn": "2025-06-10T19:22:37Z",
+      "side": 1,
+      "message": "Is this supposed to be `stderr`?\n\nOn my system, I get the following error message:\n\n```\nAttributeError: \u0027GitCommand\u0027 object has no attribute \u0027stdwerr\u0027. Did you mean: \u0027stderr\u0027?\n```",
+      "range": {
+        "startLine": 150,
+        "startChar": 18,
+        "endLine": 150,
+        "endChar": 25
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b758b2d0_de64c238",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "git_superproject.py",
+              "range": {
+                "startLine": 150,
+                "startChar": 0,
+                "endLine": 151,
+                "endChar": 0
+              },
+              "replacement": "                p.stderr,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3c8bae27ecb8a8d95f814430e8985924f770d63b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
