@@ -147,7 +147,8 @@ class Superproject:
                 "git rev-parse call failed, command: git {}, "
                 "return code: {}, stderr: {}",
                 cmd,
-                p.stdwerr,
+                retval,
+                p.stderr,
             )
             return None
         return p.stdout
