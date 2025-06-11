@@ -22,6 +22,30 @@
       },
       "revId": "75c814fa466d4eca6de680ae15dd5679ab46541d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b206746b_cc91ebd4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1861,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-11T17:33:35Z",
+      "side": 1,
+      "message": "yep, https://crbug.com/gerrit/271507654 was the bug that motivated this warning which was added in https://gerrit-review.googlesource.com/c/git-repo/+/382154",
+      "parentUuid": "bb6ec917_0299349c",
+      "range": {
+        "startLine": 1860,
+        "startChar": 16,
+        "endLine": 1861,
+        "endChar": 49
+      },
+      "revId": "75c814fa466d4eca6de680ae15dd5679ab46541d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
