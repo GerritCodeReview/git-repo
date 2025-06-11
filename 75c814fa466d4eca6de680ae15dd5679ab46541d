@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb6ec917_0299349c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1861,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-11T17:28:02Z",
+      "side": 1,
+      "message": "It sounds like this message implies that the user chose to run partial syncs but it\u0027s not supported, so this is asking the user to sync the entire tree. Is that correct?",
+      "range": {
+        "startLine": 1860,
+        "startChar": 16,
+        "endLine": 1861,
+        "endChar": 49
+      },
+      "revId": "75c814fa466d4eca6de680ae15dd5679ab46541d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
