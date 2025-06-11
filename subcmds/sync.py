@@ -424,6 +424,11 @@ later is required to fix a server side protocol bug.
             "(do not update to the latest revision)",
         )
         p.add_option(
+            "--interleaved",
+            action="store_true",
+            help="fetch and checkout projects in parallel (experimental)",
+        )
+        p.add_option(
             "-n",
             "--network-only",
             action="store_true",
@@ -1772,8 +1777,6 @@ later is required to fix a server side protocol bug.
                         e,
                     )
 
-        err_event = multiprocessing.Event()
-
         rp = manifest.repoProject
         rp.PreSync()
         cb = rp.CurrentBranch
@@ -1825,6 +1828,64 @@ later is required to fix a server side protocol bug.
             all_manifests=not opt.this_manifest_only,
         )
 
+        if opt.interleaved:
+            sync_method = self._SyncInterleaved
+        else:
+            sync_method = self._SyncPhased
+
+        sync_method(
+            opt,
+            args,
+            errors,
+            manifest,
+            mp,
+            all_projects,
+            superproject_logging_data,
+        )
+
+        # Log the previous sync analysis state from the config.
+        self.git_event_log.LogDataConfigEvents(
+            mp.config.GetSyncAnalysisStateData(), "previous_sync_state"
+        )
+
+        # Update and log with the new sync analysis state.
+        mp.config.UpdateSyncAnalysisState(opt, superproject_logging_data)
+        self.git_event_log.LogDataConfigEvents(
+            mp.config.GetSyncAnalysisStateData(), "current_sync_state"
+        )
+
+        self._local_sync_state.PruneRemovedProjects()
+        if self._local_sync_state.IsPartiallySynced():
+            logger.warning(
+                "warning: Partial syncs are not supported. For the best "
+                "experience, sync the entire tree."
+            )
+
+        if not opt.quiet:
+            print("repo sync has finished successfully.")
+
+    def _SyncPhased(
+        self,
+        opt,
+        args,
+        errors,
+        manifest,
+        mp,
+        all_projects,
+        superproject_logging_data,
+    ):
+        """Sync projects by separating network and local operations.
+
+        This method performs sync in two distinct, sequential phases:
+        1.  Network Phase: Fetches updates for all projects from their remotes.
+        2.  Local Phase: Checks out the updated revisions into the local
+            worktrees for all projects.
+
+        This approach ensures that the local work-tree is not modified until
+        all network operations are complete, providing a transactional-like
+        safety net for the checkout state.
+        """
+        err_event = multiprocessing.Event()
         err_network_sync = False
         err_update_projects = False
         err_update_linkfiles = False
@@ -1942,26 +2003,30 @@ later is required to fix a server side protocol bug.
             )
             raise SyncError(aggregate_errors=errors)
 
-        # Log the previous sync analysis state from the config.
-        self.git_event_log.LogDataConfigEvents(
-            mp.config.GetSyncAnalysisStateData(), "previous_sync_state"
-        )
+    def _SyncInterleaved(
+        self,
+        opt,
+        args,
+        errors,
+        manifest,
+        mp,
+        all_projects,
+        superproject_logging_data,
+    ):
+        """Sync projects by performing network and local operations in parallel.
 
-        # Update and log with the new sync analysis state.
-        mp.config.UpdateSyncAnalysisState(opt, superproject_logging_data)
-        self.git_event_log.LogDataConfigEvents(
-            mp.config.GetSyncAnalysisStateData(), "current_sync_state"
-        )
+        This method processes each project (or groups of projects that share git
+        objects) independently. For each project, it performs the fetch and
+        checkout operations back-to-back. These independent tasks are run in
+        parallel.
 
-        self._local_sync_state.PruneRemovedProjects()
-        if self._local_sync_state.IsPartiallySynced():
-            logger.warning(
-                "warning: Partial syncs are not supported. For the best "
-                "experience, sync the entire tree."
-            )
-
-        if not opt.quiet:
-            print("repo sync has finished successfully.")
+        It respects two constraints for correctness:
+        1.  Projects in nested directories (e.g. 'foo' and 'foo/bar') are
+            processed in hierarchical order.
+        2.  Projects that share git objects are processed serially to prevent
+            race conditions.
+        """
+        raise NotImplementedError("Interleaved sync is not implemented yet.")
 
 
 def _PostRepoUpgrade(manifest, quiet=False):
