@@ -195,6 +195,21 @@ class Progress:
                 )
             )
 
+    def display_message(self, msg):
+        """Clears the current progress line and prints a message above it.
+
+        The progress bar is then redrawn on the next line.
+        """
+        if not _TTY or IsTraceToStderr() or self._quiet:
+            return
+
+        # Erase the current line, print the message with a newline,
+        # and then immediately redraw the progress bar on the new line.
+        sys.stderr.write("\r" + CSI_ERASE_LINE)
+        sys.stderr.write(msg + "\n")
+        sys.stderr.flush()
+        self.update(inc=0)
+
     def end(self):
         self._update_event.set()
         if not _TTY or IsTraceToStderr() or self._quiet:
