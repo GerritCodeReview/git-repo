@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b909802_2bf8f450",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-13T05:32:07Z",
+      "side": 1,
+      "message": "Hi @vapier@google.com, gentle ping — this is ready for final approval when you have time. Appreciate the review!",
+      "revId": "9fdf1e71c377c3671ea93ad2cc4e07d72edbe31f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
