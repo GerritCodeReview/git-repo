@@ -310,6 +310,16 @@ class FakeProject:
         self.name = name or relpath
         self.objdir = objdir or relpath
 
+        self.use_git_worktrees = False
+        self.UseAlternates = False
+        self.manifest = mock.MagicMock()
+        self.manifest.GetProjectsWithName.return_value = [self]
+        self.config = mock.MagicMock()
+        self.EnableRepositoryExtension = mock.MagicMock()
+
+    def RelPath(self, local=None):
+        return self.relpath
+
     def __str__(self):
         return f"project: {self.relpath}"
 
@@ -531,7 +541,11 @@ class InterleavedSyncTest(unittest.TestCase):
         self.manifest.CloneBundle = False
         self.manifest.default.sync_j = 1
 
-        self.cmd = sync.Sync(manifest=self.manifest)
+        self.outer_client = mock.MagicMock()
+        self.outer_client.manifest.IsArchive = False
+        self.cmd = sync.Sync(
+            manifest=self.manifest, outer_client=self.outer_client
+        )
         self.cmd.outer_manifest = self.manifest
 
         # Mock projects.
@@ -548,6 +562,21 @@ class InterleavedSyncTest(unittest.TestCase):
         mock.patch.object(self.cmd, "_ValidateOptionsWithManifest").start()
         mock.patch.object(sync, "_PostRepoUpgrade").start()
         mock.patch.object(sync, "_PostRepoFetch").start()
+
+        # Mock parallel context for worker tests.
+        self.parallel_context_patcher = mock.patch(
+            "subcmds.sync.Sync.get_parallel_context"
+        )
+        self.mock_get_parallel_context = self.parallel_context_patcher.start()
+        self.sync_dict = {}
+        self.mock_context = {
+            "projects": [],
+            "sync_dict": self.sync_dict,
+        }
+        self.mock_get_parallel_context.return_value = self.mock_context
+
+        # Mock _GetCurrentBranchOnly for worker tests.
+        mock.patch.object(sync.Sync, "_GetCurrentBranchOnly").start()
 
     def tearDown(self):
         """Clean up resources."""
@@ -635,3 +664,153 @@ class InterleavedSyncTest(unittest.TestCase):
         work_items_sets = {frozenset(item) for item in work_items}
         expected_sets = {frozenset([0, 2]), frozenset([1])}
         self.assertEqual(work_items_sets, expected_sets)
+
+    def _get_opts(self, args=None):
+        """Helper to get default options for worker tests."""
+        if args is None:
+            args = ["--interleaved"]
+        opt, _ = self.cmd.OptionParser.parse_args(args)
+        # Set defaults for options used by the worker.
+        opt.quiet = True
+        opt.verbose = False
+        opt.force_sync = False
+        opt.clone_bundle = False
+        opt.tags = False
+        opt.optimized_fetch = False
+        opt.retry_fetches = 0
+        opt.prune = False
+        opt.detach_head = False
+        opt.force_checkout = False
+        opt.rebase = False
+        return opt
+
+    def test_worker_successful_sync(self):
+        """Test _SyncProjectList with a successful fetch and checkout."""
+        opt = self._get_opts()
+        project = self.projA
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        project.manifest.manifestProject.config = mock.MagicMock()
+        self.mock_context["projects"] = [project]
+
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buf_instance = mock.MagicMock()
+            mock_sync_buf_instance.Finish.return_value = True
+            mock_sync_buffer.return_value = mock_sync_buf_instance
+
+            result_obj = self.cmd._SyncProjectList(opt, [0])
+
+            self.assertEqual(len(result_obj.results), 1)
+            result = result_obj.results[0]
+            self.assertTrue(result.fetch_success)
+            self.assertTrue(result.checkout_success)
+            self.assertIsNone(result.fetch_error)
+            self.assertIsNone(result.checkout_error)
+            project.Sync_NetworkHalf.assert_called_once()
+            project.Sync_LocalHalf.assert_called_once()
+
+    def test_worker_fetch_fails(self):
+        """Test _SyncProjectList with a failed fetch."""
+        opt = self._get_opts()
+        project = self.projA
+        fetch_error = GitError("Fetch failed")
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(
+                error=fetch_error, remote_fetched=False
+            )
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        self.mock_context["projects"] = [project]
+
+        result_obj = self.cmd._SyncProjectList(opt, [0])
+        result = result_obj.results[0]
+
+        self.assertFalse(result.fetch_success)
+        self.assertFalse(result.checkout_success)
+        self.assertEqual(result.fetch_error, fetch_error)
+        self.assertIsNone(result.checkout_error)
+        project.Sync_NetworkHalf.assert_called_once()
+        project.Sync_LocalHalf.assert_not_called()
+
+    def test_worker_fetch_fails_exception(self):
+        """Test _SyncProjectList with an exception during fetch."""
+        opt = self._get_opts()
+        project = self.projA
+        fetch_error = GitError("Fetch failed")
+        project.Sync_NetworkHalf = mock.Mock(side_effect=fetch_error)
+        project.Sync_LocalHalf = mock.Mock()
+        self.mock_context["projects"] = [project]
+
+        result_obj = self.cmd._SyncProjectList(opt, [0])
+        result = result_obj.results[0]
+
+        self.assertFalse(result.fetch_success)
+        self.assertFalse(result.checkout_success)
+        self.assertEqual(result.fetch_error, fetch_error)
+        project.Sync_NetworkHalf.assert_called_once()
+        project.Sync_LocalHalf.assert_not_called()
+
+    def test_worker_checkout_fails(self):
+        """Test _SyncProjectList with an exception during checkout."""
+        opt = self._get_opts()
+        project = self.projA
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        checkout_error = GitError("Checkout failed")
+        project.Sync_LocalHalf = mock.Mock(side_effect=checkout_error)
+        project.manifest.manifestProject.config = mock.MagicMock()
+        self.mock_context["projects"] = [project]
+
+        with mock.patch("subcmds.sync.SyncBuffer"):
+            result_obj = self.cmd._SyncProjectList(opt, [0])
+            result = result_obj.results[0]
+
+            self.assertTrue(result.fetch_success)
+            self.assertFalse(result.checkout_success)
+            self.assertIsNone(result.fetch_error)
+            self.assertEqual(result.checkout_error, checkout_error)
+            project.Sync_NetworkHalf.assert_called_once()
+            project.Sync_LocalHalf.assert_called_once()
+
+    def test_worker_local_only(self):
+        """Test _SyncProjectList with --local-only."""
+        opt = self._get_opts(["--interleaved", "--local-only"])
+        project = self.projA
+        project.Sync_NetworkHalf = mock.Mock()
+        project.Sync_LocalHalf = mock.Mock()
+        project.manifest.manifestProject.config = mock.MagicMock()
+        self.mock_context["projects"] = [project]
+
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buf_instance = mock.MagicMock()
+            mock_sync_buf_instance.Finish.return_value = True
+            mock_sync_buffer.return_value = mock_sync_buf_instance
+
+            result_obj = self.cmd._SyncProjectList(opt, [0])
+            result = result_obj.results[0]
+
+            self.assertTrue(result.fetch_success)
+            self.assertTrue(result.checkout_success)
+            project.Sync_NetworkHalf.assert_not_called()
+            project.Sync_LocalHalf.assert_called_once()
+
+    def test_worker_network_only(self):
+        """Test _SyncProjectList with --network-only."""
+        opt = self._get_opts(["--interleaved", "--network-only"])
+        project = self.projA
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        self.mock_context["projects"] = [project]
+
+        result_obj = self.cmd._SyncProjectList(opt, [0])
+        result = result_obj.results[0]
+
+        self.assertTrue(result.fetch_success)
+        self.assertTrue(result.checkout_success)
+        project.Sync_NetworkHalf.assert_called_once()
+        project.Sync_LocalHalf.assert_not_called()
