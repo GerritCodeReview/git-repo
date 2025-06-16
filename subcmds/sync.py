@@ -993,26 +993,16 @@ later is required to fix a server side protocol bug.
         Returns:
             List of all projects that should be checked out.
         """
-        rp = manifest.repoProject
-
         to_fetch = []
-        now = time.time()
-        if _ONE_DAY_S <= (now - rp.LastFetch):
-            to_fetch.append(rp)
         to_fetch.extend(all_projects)
         to_fetch.sort(key=self._fetch_times.Get, reverse=True)
 
         result = self._Fetch(to_fetch, opt, err_event, ssh_proxy, errors)
         success = result.success
         fetched = result.projects
-
         if not success:
             err_event.set()
 
-        # Call self update, unless requested not to
-        # TODO(b/42193561): Extract repo update logic to ExecuteHelper.
-        if os.environ.get("REPO_SKIP_SELF_UPDATE", "0") == "0":
-            _PostRepoFetch(rp, opt.repo_verify)
         if opt.network_only:
             # Bail out now; the rest touches the working tree.
             if err_event.is_set():
@@ -1372,6 +1362,61 @@ later is required to fix a server side protocol bug.
         for t in threads:
             t.join()
         pm.end()
+
+    def _UpdateRepoProject(self, opt, manifest, errors):
+        """Fetch the repo project and check for updates."""
+        if opt.local_only:
+            return
+
+        rp = manifest.repoProject
+        now = time.time()
+        # If we've fetched in the last day, don't bother fetching again.
+        if _ONE_DAY_S <= (now - rp.LastFetch):
+            with multiprocessing.Manager() as manager:
+                with ssh.ProxyManager(manager) as ssh_proxy:
+                    ssh_proxy.sock()
+                    start = time.time()
+                    buf = TeeStringIO(sys.stdout if opt.verbose else None)
+                    sync_result = rp.Sync_NetworkHalf(
+                        quiet=opt.quiet,
+                        verbose=opt.verbose,
+                        output_redir=buf,
+                        current_branch_only=self._GetCurrentBranchOnly(
+                            opt, manifest
+                        ),
+                        force_sync=opt.force_sync,
+                        clone_bundle=opt.clone_bundle,
+                        tags=opt.tags,
+                        archive=manifest.IsArchive,
+                        optimized_fetch=opt.optimized_fetch,
+                        retry_fetches=opt.retry_fetches,
+                        prune=opt.prune,
+                        ssh_proxy=ssh_proxy,
+                        clone_filter=manifest.CloneFilter,
+                        partial_clone_exclude=manifest.PartialCloneExclude,
+                        clone_filter_for_depth=manifest.CloneFilterForDepth,
+                    )
+                    if sync_result.error:
+                        errors.append(sync_result.error)
+
+                    finish = time.time()
+                    self.event_log.AddSync(
+                        rp,
+                        event_log.TASK_SYNC_NETWORK,
+                        start,
+                        finish,
+                        sync_result.success,
+                    )
+                    if not sync_result.success:
+                        logger.error(
+                            "error: Cannot fetch repo tool %s", rp.name
+                        )
+                        return
+
+        # After fetching, check if a new version of repo is available and
+        # restart. This is only done if the user hasn't explicitly disabled it.
+        if os.environ.get("REPO_SKIP_SELF_UPDATE", "0") == "0":
+            _PostRepoFetch(rp, opt.repo_verify)
 
     def _ReloadManifest(self, manifest_name, manifest):
         """Reload the manfiest from the file specified by the |manifest_name|.
@@ -1870,6 +1915,9 @@ later is required to fix a server side protocol bug.
             self._UpdateAllManifestProjects(opt, mp, manifest_name, errors)
         else:
             print("Skipping update of local manifest project.")
+
+        # Update the repo project and check for new versions of repo.
+        self._UpdateRepoProject(opt, manifest, errors)
 
         # Now that the manifests are up-to-date, setup options whose defaults
         # might be in the manifest.
