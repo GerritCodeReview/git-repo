@@ -527,6 +527,110 @@ class SyncCommand(unittest.TestCase):
             self.assertIn(self.sync_network_half_error, e.aggregate_errors)
 
 
+class SyncUpdateRepoProject(unittest.TestCase):
+    """Tests for Sync._UpdateRepoProject."""
+
+    def setUp(self):
+        """Common setup."""
+        self.repodir = tempfile.mkdtemp(".repo")
+        self.manifest = manifest = mock.MagicMock(repodir=self.repodir)
+        # Create a repoProject with a mock Sync_NetworkHalf.
+        repoProject = mock.MagicMock(name="repo")
+        repoProject.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(True, None)
+        )
+        manifest.repoProject = repoProject
+        manifest.IsArchive = False
+        manifest.CloneFilter = None
+        manifest.PartialCloneExclude = None
+        manifest.CloneFilterForDepth = None
+
+        git_event_log = mock.MagicMock(ErrorEvent=mock.Mock(return_value=None))
+        self.cmd = sync.Sync(manifest=manifest, git_event_log=git_event_log)
+
+        opt, _ = self.cmd.OptionParser.parse_args([])
+        # Set defaults that might affect _UpdateRepoProject
+        opt.local_only = False
+        opt.repo_verify = False
+        opt.verbose = False
+        opt.quiet = True
+        opt.force_sync = False
+        opt.clone_bundle = False
+        opt.tags = False
+        opt.optimized_fetch = False
+        opt.retry_fetches = 0
+        opt.prune = False
+        self.opt = opt
+        self.errors = []
+
+        mock.patch.object(sync.Sync, "_GetCurrentBranchOnly").start()
+
+    def tearDown(self):
+        shutil.rmtree(self.repodir)
+        mock.patch.stopall()
+
+    def test_fetches_when_stale(self):
+        """Test it fetches when the repo project is stale."""
+        self.manifest.repoProject.LastFetch = time.time() - (
+            sync._ONE_DAY_S + 1
+        )
+
+        with mock.patch.object(sync, "_PostRepoFetch") as mock_post_fetch:
+            self.cmd._UpdateRepoProject(self.opt, self.manifest, self.errors)
+            self.manifest.repoProject.Sync_NetworkHalf.assert_called_once()
+            mock_post_fetch.assert_called_once()
+            self.assertEqual(self.errors, [])
+
+    def test_skips_when_fresh(self):
+        """Test it skips fetch when repo project is fresh."""
+        self.manifest.repoProject.LastFetch = time.time()
+
+        with mock.patch.object(sync, "_PostRepoFetch") as mock_post_fetch:
+            self.cmd._UpdateRepoProject(self.opt, self.manifest, self.errors)
+            self.manifest.repoProject.Sync_NetworkHalf.assert_not_called()
+            mock_post_fetch.assert_called_once()
+
+    def test_skips_local_only(self):
+        """Test it does nothing with --local-only."""
+        self.opt.local_only = True
+        self.manifest.repoProject.LastFetch = time.time() - (
+            sync._ONE_DAY_S + 1
+        )
+
+        with mock.patch.object(sync, "_PostRepoFetch") as mock_post_fetch:
+            self.cmd._UpdateRepoProject(self.opt, self.manifest, self.errors)
+            self.manifest.repoProject.Sync_NetworkHalf.assert_not_called()
+            mock_post_fetch.assert_not_called()
+
+    def test_post_repo_fetch_skipped_on_env_var(self):
+        """Test _PostRepoFetch is skipped when REPO_SKIP_SELF_UPDATE is set."""
+        self.manifest.repoProject.LastFetch = time.time()
+
+        with mock.patch.dict(os.environ, {"REPO_SKIP_SELF_UPDATE": "1"}):
+            with mock.patch.object(sync, "_PostRepoFetch") as mock_post_fetch:
+                self.cmd._UpdateRepoProject(
+                    self.opt, self.manifest, self.errors
+                )
+                mock_post_fetch.assert_not_called()
+
+    def test_fetch_failure_is_handled(self):
+        """Test that a fetch failure is recorded and doesn't crash."""
+        self.manifest.repoProject.LastFetch = time.time() - (
+            sync._ONE_DAY_S + 1
+        )
+        fetch_error = GitError("Fetch failed")
+        self.manifest.repoProject.Sync_NetworkHalf.return_value = (
+            SyncNetworkHalfResult(False, fetch_error)
+        )
+
+        with mock.patch.object(sync, "_PostRepoFetch") as mock_post_fetch:
+            self.cmd._UpdateRepoProject(self.opt, self.manifest, self.errors)
+            self.manifest.repoProject.Sync_NetworkHalf.assert_called_once()
+            # If fetch fails, we can't do a sane upgrade.
+            mock_post_fetch.assert_not_called()
+            self.assertEqual(self.errors, [fetch_error])
+
+
 class InterleavedSyncTest(unittest.TestCase):
     """Tests for interleaved sync."""
 
