@@ -1,0 +1,293 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7bd6762_f9f43bf7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-16T22:26:23Z",
+      "side": 1,
+      "message": "To follow the same pattern used in other doc strings, such as L186.\n\n```\nfetch_start (float): The starting time.time() of the fetch operation.\n```",
+      "range": {
+        "startLine": 206,
+        "startChar": 19,
+        "endLine": 206,
+        "endChar": 69
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c71e9bf_519ec48a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-16T22:26:23Z",
+      "side": 1,
+      "message": "I\u0027d remove, as this is the result of the sync work that the worker performed.",
+      "range": {
+        "startLine": 226,
+        "startChar": 41,
+        "endLine": 226,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "43ed0d0f_0bbb20a7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 226,
+                "startChar": 0,
+                "endLine": 227,
+                "endChar": 0
+              },
+              "replacement": "    \"\"\"The result of an interleaved sync.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2621492_be2015eb",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-16T22:26:23Z",
+      "side": 1,
+      "message": "By convention, Python doc strings tend to omit the leading \"the\" or \"a\" to make doc strings more compact and concise. I see that most of the doc-strings in this file adds a leading \"the\" and \"a\" in the arg section. However, for the class-level doc-strings, it seems that it tends to omit the leading \"the\"?\n\nSo...I\u0027d remove this `the`.",
+      "range": {
+        "startLine": 226,
+        "startChar": 4,
+        "endLine": 226,
+        "endChar": 11
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "472eb640_ff6e38b2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2051,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-16T22:26:23Z",
+      "side": 1,
+      "message": "It looks like this function is to perform the sync, and doesn\u0027t model a worker. Also, the doc strings at L2053 sounds that this isn\u0027t a worker function, but sync function.\n\nCan this function be renamed to `_InterlevedSync()`, similar to `_SyncPhased()`?",
+      "range": {
+        "startLine": 2051,
+        "startChar": 11,
+        "endLine": 2051,
+        "endChar": 17
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f265299_a1b6bd55",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2057,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-16T22:26:23Z",
+      "side": 1,
+      "message": "I\u0027d just copy the entire doc-string sentence for this arg. \n\n```\nopt: Program options returned from optparse.  See _Options().\n```",
+      "range": {
+        "startLine": 2057,
+        "startChar": 12,
+        "endLine": 2057,
+        "endChar": 56
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a41eba5b_70a0a06a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2070,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-16T22:26:23Z",
+      "side": 1,
+      "message": "maybe, it\u0027s good to add a check with `len(project_indices) \u003e 0` and return an empty result immediately. (or raise an exception if it must be a bug)\n\nOr, I\u0027d consider adding a check for `len(projects\") \u003d\u003d len(project_indices)` just to catch bugs in case.",
+      "range": {
+        "startLine": 2070,
+        "startChar": 33,
+        "endLine": 2070,
+        "endChar": 48
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2f4f504_eef9808f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2094,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-16T22:26:23Z",
+      "side": 1,
+      "message": "This sync_dict is used to share the event start_time with the progress monitor thread. It already uses threading.Event to catch the events. I think it\u0027d be easier to debug and maintain the codes with multiplecess.Queue.\n\nFor instance, this worker would enqueue an item to notify the start event.\n```\ndef _InterleavedSyncWorker(..., progress_queue, ...):\n\n   ...\n   # notify the start to the monitor\n   progress_queue.put({\n       \"project\": first_project.name,\n       \"relpath\": ...,\n       \"start_time\": ..,\n   })\n   \n   ...\n```",
+      "range": {
+        "startLine": 2094,
+        "startChar": 12,
+        "endLine": 2094,
+        "endChar": 30
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af68054b_cbd3b574",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2173,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-16T22:26:23Z",
+      "side": 1,
+      "message": "I think it\u0027d be good to combine this logic and _GetSyncProgressMessasge() into a separate function. Then, _SyncInterleaved() can be shorter.\n\ne.g.,\n```\ndef _StartSyncProgressMonitor(wakeup_event: threading.Event) -\u003e _threading.Thread:\n    pm \u003d Progress(\"Synching\", ...)\n    \n    def _progress_msg():\n        ...\n        \n    def _loop():\n        while True:\n            pm.update(incr\u003d0, msg\u003d_progress_msg())\n            if wakeup_event.wait(..):\n                ...\n         \n    return _threading.Thread(target\u003d..., daemon\u003dTrue)\n```",
+      "range": {
+        "startLine": 2155,
+        "startChar": 7,
+        "endLine": 2173,
+        "endChar": 42
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99404e77_c0300858",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2195,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-16T22:26:23Z",
+      "side": 1,
+      "message": "shoudln\u0027t this be an error log, as this is the error failed the sync?",
+      "range": {
+        "startLine": 2195,
+        "startChar": 31,
+        "endLine": 2195,
+        "endChar": 38
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "317b65d2_738dc744",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2232,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-16T22:26:23Z",
+      "side": 1,
+      "message": "_ProcessSyncInterleavedResults have fields for errors. Can this logic iterate the results to catch the error, instead of using `err_event` to signal the main process that there was an error?",
+      "range": {
+        "startLine": 2232,
+        "startChar": 28,
+        "endLine": 2232,
+        "endChar": 37
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6df57efe_66fa40da",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2244,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-16T22:26:23Z",
+      "side": 1,
+      "message": "I think this is an optimization. Instead of looping the results to find the",
+      "range": {
+        "startLine": 2244,
+        "startChar": 28,
+        "endLine": 2244,
+        "endChar": 43
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "57047c7e_b88eab30",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 2244,
+                "startChar": 0,
+                "endLine": 2244,
+                "endChar": 0
+              },
+              "replacement": "                            # Set the error event immediately so that we don\u0027t\n                            # continue processing more projects. This avoids\n                            # unnecessary work if a failure has already occurred.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
