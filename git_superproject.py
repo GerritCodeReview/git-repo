@@ -174,15 +174,18 @@ class Superproject:
         Then the repo_id would be:
             android/platform/superproject
         """
-        review_url = self.remote.review
-        if review_url:
-            parsed_url = urllib.parse.urlparse(review_url)
-            netloc = parsed_url.netloc
-            if netloc:
-                parts = netloc.split("-review", 1)
-                host = parts[0]
-                rev = GitRefs(self._work_git).get("HEAD")
-                return f"{host}/{self.name}@{rev}"
+        try:
+            review_url = self.remote.review
+            if review_url:
+                parsed_url = urllib.parse.urlparse(review_url)
+                netloc = parsed_url.netloc
+                if netloc:
+                    parts = netloc.split("-review", 1)
+                    host = parts[0]
+                    rev = GitRefs(self._work_git).get("HEAD")
+                    return f"{host}/{self.name}@{rev}"
+        except FileNotFoundError:
+            return None
         return None
 
     def _LogMessage(self, fmt, *inputs):
