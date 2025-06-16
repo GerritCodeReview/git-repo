@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b541417e_9c9532a6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 2340,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-16T19:29:31Z",
+      "side": 1,
+      "message": "this seems like a big diff, but it\u0027s mainly indentation since I added this with block.",
+      "range": {
+        "startLine": 2337,
+        "startChar": 0,
+        "endLine": 2340,
+        "endChar": 28
+      },
+      "revId": "ca698bc1e03fb5a0f88838167a910294b5013e85",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
