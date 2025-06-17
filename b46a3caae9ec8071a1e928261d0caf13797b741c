@@ -1,0 +1,114 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "667cb7e3_0b4e79c4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2122,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-17T19:13:24Z",
+      "side": 1,
+      "message": "Can this be just `fetch_error \u003d sync_result.error` without the if statement?",
+      "range": {
+        "startLine": 2121,
+        "startChar": 16,
+        "endLine": 2122,
+        "endChar": 51
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5c0ccf26_c04cd7f8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 2121,
+                "startChar": 0,
+                "endLine": 2123,
+                "endChar": 0
+              },
+              "replacement": "                fetch_error \u003d sync_result.error\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b46a3caae9ec8071a1e928261d0caf13797b741c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f790fa60_a6383ce2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2137,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-17T19:13:24Z",
+      "side": 1,
+      "message": "I believe that the exception messages are informative enough and no custom log prefix is necessary. Also, it wouldn\u0027t be necessary to print the class name of the exception. How about below? \n\n```\ntry:\n   ....\nexcept Exception as e:\n   fetch_error \u003d e\n   logger.error(\"fetch failed (%s): %s\", project.name, e)\nfinally:\n   fetch_finish \u003d time.time()\n   fetch_success \u003d fetch_error is None   # Or, not(fetch_error)  \n```\n\ne.g.,\n```\nfetch failed (\"android/cts\"): KeyboardInterrupt\nfetch failed (\"android/cts\"): not current on a branch\nfetch failed (\"android/cts\"): branch xxx does not track a remote\n```",
+      "range": {
+        "startLine": 2123,
+        "startChar": 12,
+        "endLine": 2137,
+        "endChar": 17
+      },
+      "revId": "b46a3caae9ec8071a1e928261d0caf13797b741c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9796afa_c36d8115",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2188,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-17T19:13:24Z",
+      "side": 1,
+      "message": "same. one exception block would be enough",
+      "range": {
+        "startLine": 2171,
+        "startChar": 10,
+        "endLine": 2188,
+        "endChar": 20
+      },
+      "revId": "b46a3caae9ec8071a1e928261d0caf13797b741c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9120fbe8_a4f67c1b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2358,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-17T19:13:24Z",
+      "side": 1,
+      "message": "I feel that self.ParallelContext() should yield the context, so that this can be as follows.\n\n```\nwith self.ParallelContext() as context:\n    context[\"ssh_proxy\"] ssh_proxy\n```",
+      "range": {
+        "startLine": 2357,
+        "startChar": 12,
+        "endLine": 2358,
+        "endChar": 44
+      },
+      "revId": "b46a3caae9ec8071a1e928261d0caf13797b741c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
