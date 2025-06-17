@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "68b72d45_337770da",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 4166729
+      },
+      "writtenOn": "2025-06-17T08:32:26Z",
+      "side": 1,
+      "message": "\u003e To follow the same pattern used in other doc strings, such as L186.\n\u003e \n\u003e ```\n\u003e fetch_start (float): The starting time.time() of the fetch operation.\n\u003e ```",
+      "parentUuid": "a7bd6762_f9f43bf7",
+      "range": {
+        "startLine": 206,
+        "startChar": 19,
+        "endLine": 206,
+        "endChar": 69
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c71e9bf_519ec48a",
         "filename": "subcmds/sync.py",
         "patchSetId": 9
@@ -111,6 +135,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0142119_c06077a9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2051,
+      "author": {
+        "id": 4166729
+      },
+      "writtenOn": "2025-06-17T08:32:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "472eb640_ff6e38b2",
+      "range": {
+        "startLine": 2051,
+        "startChar": 11,
+        "endLine": 2051,
+        "endChar": 17
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f265299_a1b6bd55",
@@ -124,6 +172,30 @@
       "writtenOn": "2025-06-16T22:26:23Z",
       "side": 1,
       "message": "I\u0027d just copy the entire doc-string sentence for this arg. \n\n```\nopt: Program options returned from optparse.  See _Options().\n```",
+      "range": {
+        "startLine": 2057,
+        "startChar": 12,
+        "endLine": 2057,
+        "endChar": 56
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9b4f98f_4c4edaa6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2057,
+      "author": {
+        "id": 4166729
+      },
+      "writtenOn": "2025-06-17T08:32:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f265299_a1b6bd55",
       "range": {
         "startLine": 2057,
         "startChar": 12,
@@ -157,6 +229,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8805c63_ffeba49d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2070,
+      "author": {
+        "id": 4166729
+      },
+      "writtenOn": "2025-06-17T08:32:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a41eba5b_70a0a06a",
+      "range": {
+        "startLine": 2070,
+        "startChar": 33,
+        "endLine": 2070,
+        "endChar": 48
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2f4f504_eef9808f",
@@ -170,6 +266,30 @@
       "writtenOn": "2025-06-16T22:26:23Z",
       "side": 1,
       "message": "This sync_dict is used to share the event start_time with the progress monitor thread. It already uses threading.Event to catch the events. I think it\u0027d be easier to debug and maintain the codes with multiplecess.Queue.\n\nFor instance, this worker would enqueue an item to notify the start event.\n```\ndef _InterleavedSyncWorker(..., progress_queue, ...):\n\n   ...\n   # notify the start to the monitor\n   progress_queue.put({\n       \"project\": first_project.name,\n       \"relpath\": ...,\n       \"start_time\": ..,\n   })\n   \n   ...\n```",
+      "range": {
+        "startLine": 2094,
+        "startChar": 12,
+        "endLine": 2094,
+        "endChar": 30
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b945fe5a_ff357ddd",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2094,
+      "author": {
+        "id": 4166729
+      },
+      "writtenOn": "2025-06-17T08:32:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2f4f504_eef9808f",
       "range": {
         "startLine": 2094,
         "startChar": 12,
@@ -203,6 +323,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "482d7f99_98b47895",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2173,
+      "author": {
+        "id": 4166729
+      },
+      "writtenOn": "2025-06-17T08:32:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af68054b_cbd3b574",
+      "range": {
+        "startLine": 2155,
+        "startChar": 7,
+        "endLine": 2173,
+        "endChar": 42
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99404e77_c0300858",
@@ -216,6 +360,30 @@
       "writtenOn": "2025-06-16T22:26:23Z",
       "side": 1,
       "message": "shoudln\u0027t this be an error log, as this is the error failed the sync?",
+      "range": {
+        "startLine": 2195,
+        "startChar": 31,
+        "endLine": 2195,
+        "endChar": 38
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fe97f7d_fa6f1ae1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2195,
+      "author": {
+        "id": 4166729
+      },
+      "writtenOn": "2025-06-17T08:32:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99404e77_c0300858",
       "range": {
         "startLine": 2195,
         "startChar": 31,
@@ -286,6 +454,30 @@
           ]
         }
       ],
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5310ab21_a036045f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2244,
+      "author": {
+        "id": 4166729
+      },
+      "writtenOn": "2025-06-17T08:32:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6df57efe_66fa40da",
+      "range": {
+        "startLine": 2244,
+        "startChar": 28,
+        "endLine": 2244,
+        "endChar": 43
+      },
       "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
