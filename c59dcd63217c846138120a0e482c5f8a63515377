@@ -16,6 +16,24 @@
       "message": "please post the actual error you\u0027re seeing",
       "revId": "c59dcd63217c846138120a0e482c5f8a63515377",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94c0ea4e_d530d1d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4157134
+      },
+      "writtenOn": "2025-06-17T16:59:06Z",
+      "side": 1,
+      "message": "Sure! Here it is:\n\n```\nTraceback (most recent call last):\n  File \"/home/someuser/aosp/upstream/.repo/repo/main.py\", line 869, in \u003cmodule\u003e\n    _Main(sys.argv[1:])\n  File \"/home/someuser/aosp/upstream/.repo/repo/main.py\", line 845, in _Main\n    result \u003d repo._Run(name, gopts, argv) or 0\n  File \"/home/someuser/aosp/upstream/.repo/repo/main.py\", line 293, in _Run\n    result \u003d run()\n  File \"/home/someuser/aosp/upstream/.repo/repo/main.py\", line 274, in \u003clambda\u003e\n    lambda: self._RunLong(name, gopts, argv, git_trace2_event_log) or 0\n  File \"/home/someuser/aosp/upstream/.repo/repo/main.py\", line 437, in _RunLong\n    execute_command()\n  File \"/home/someuser/aosp/upstream/.repo/repo/main.py\", line 403, in execute_command\n    execute_command_helper()\n  File \"/home/someuser/aosp/upstream/.repo/repo/main.py\", line 369, in execute_command_helper\n    result \u003d cmd.Execute(copts, cargs)\n  File \"/home/someuser/aosp/upstream/.repo/repo/subcmds/upload.py\", line 817, in Execute\n    self._MultipleBranches(opt, pending, people)\n  File \"/home/someuser/aosp/upstream/.repo/repo/subcmds/upload.py\", line 515, in _MultipleBranches\n    self._UploadAndReport(opt, todo, people)\n  File \"/home/someuser/aosp/upstream/.repo/repo/subcmds/upload.py\", line 657, in _UploadAndReport\n    self._UploadBranch(opt, branch, people)\n  File \"/home/someuser/aosp/upstream/.repo/repo/subcmds/upload.py\", line 631, in _UploadBranch\n    if sp and sp.repo_id and manifest.manifestProject.use_superproject:\n  File \"/home/someuser/aosp/upstream/.repo/repo/git_superproject.py\", line 184, in repo_id\n    rev \u003d GitRefs(self._work_git).get(\"HEAD\")\n  File \"/home/someuser/aosp/upstream/.repo/repo/git_refs.py\", line 45, in get\n    return self.all[name]\n  File \"/home/someuser/aosp/upstream/.repo/repo/git_refs.py\", line 40, in all\n    self._EnsureLoaded()\n  File \"/home/someuser/aosp/upstream/.repo/repo/git_refs.py\", line 69, in _EnsureLoaded\n    self._LoadAll()\n  File \"/home/someuser/aosp/upstream/.repo/repo/git_refs.py\", line 90, in _LoadAll\n    self._ReadLoose(\"refs/\")\n  File \"/home/someuser/aosp/upstream/.repo/repo/git_refs.py\", line 132, in _ReadLoose\n    for name in platform_utils.listdir(base):\n  File \"/home/someuser/aosp/upstream/.repo/repo/platform_utils.py\", line 214, in listdir\n    return os.listdir(_makelongpath(path))\nFileNotFoundError: [Errno 2] No such file or directory: \u0027/home/someuser/aosp/upstream/.repo/exp-superproject/925043f706ba64db713e9bf3b55987e2-superproject.git/refs/\u0027\n```",
+      "parentUuid": "1cd582e5_8504152b",
+      "revId": "c59dcd63217c846138120a0e482c5f8a63515377",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
