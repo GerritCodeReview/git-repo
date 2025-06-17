@@ -627,9 +627,12 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         # If using superproject, add the root repo as a push option.
         manifest = branch.project.manifest
         push_options = list(opt.push_options)
-        sp = manifest.superproject
-        if sp and sp.repo_id and manifest.manifestProject.use_superproject:
-            push_options.append(f"custom-keyed-value=rootRepo:{sp.repo_id}")
+        if manifest.manifestProject.use_superproject:
+            sp = manifest.superproject
+            if sp:
+                r_id = sp.repo_id
+                if r_id:
+                    push_options.append(f"custom-keyed-value=rootRepo:{r_id}")
 
         branch.UploadForReview(
             people,
