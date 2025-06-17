@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86aae95b_e12f72b6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-17T03:52:15Z",
+      "side": 1,
+      "message": "add `superproject:` as a prefix since it\u0027s just about that module/area",
+      "revId": "34f14d0350aa76c06f23881f14c464ee6e02c04f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
