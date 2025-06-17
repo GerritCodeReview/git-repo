@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c31fb4da_67357bdf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1167047
+      },
+      "writtenOn": "2025-06-17T04:28:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bf969f0_1b80284d",
+      "revId": "d3d775fb64dd53be421a007088f8494163bb52e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95f87eb5_6603cbe1",
@@ -59,6 +77,24 @@
           ]
         }
       ],
+      "revId": "d3d775fb64dd53be421a007088f8494163bb52e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b8f775e_e368aee0",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1167047
+      },
+      "writtenOn": "2025-06-17T04:28:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95f87eb5_6603cbe1",
       "revId": "d3d775fb64dd53be421a007088f8494163bb52e4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
