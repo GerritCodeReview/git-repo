@@ -26,7 +26,7 @@ from pathlib import Path
 import sys
 import tempfile
 import time
-from typing import List, NamedTuple, Optional, Set, Union
+from typing import List, NamedTuple, Optional, Set, Tuple, Union
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -988,16 +988,26 @@ later is required to fix a server side protocol bug.
         Returns:
             List of all projects that should be checked out.
         """
+        rp = manifest.repoProject
+
         to_fetch = []
+        now = time.time()
+        if _ONE_DAY_S <= (now - rp.LastFetch):
+            to_fetch.append(rp)
         to_fetch.extend(all_projects)
         to_fetch.sort(key=self._fetch_times.Get, reverse=True)
 
         result = self._Fetch(to_fetch, opt, err_event, ssh_proxy, errors)
         success = result.success
         fetched = result.projects
+
         if not success:
             err_event.set()
 
+        # Call self update, unless requested not to
+        # TODO(b/42193561): Extract repo update logic to ExecuteHelper.
+        if os.environ.get("REPO_SKIP_SELF_UPDATE", "0") == "0":
+            _PostRepoFetch(rp, opt.repo_verify)
         if opt.network_only:
             # Bail out now; the rest touches the working tree.
             if err_event.is_set():
@@ -1357,61 +1367,6 @@ later is required to fix a server side protocol bug.
         for t in threads:
             t.join()
         pm.end()
-
-    def _UpdateRepoProject(self, opt, manifest, errors):
-        """Fetch the repo project and check for updates."""
-        if opt.local_only:
-            return
-
-        rp = manifest.repoProject
-        now = time.time()
-        # If we've fetched in the last day, don't bother fetching again.
-        if _ONE_DAY_S <= (now - rp.LastFetch):
-            with multiprocessing.Manager() as manager:
-                with ssh.ProxyManager(manager) as ssh_proxy:
-                    ssh_proxy.sock()
-                    start = time.time()
-                    buf = TeeStringIO(sys.stdout if opt.verbose else None)
-                    sync_result = rp.Sync_NetworkHalf(
-                        quiet=opt.quiet,
-                        verbose=opt.verbose,
-                        output_redir=buf,
-                        current_branch_only=self._GetCurrentBranchOnly(
-                            opt, manifest
-                        ),
-                        force_sync=opt.force_sync,
-                        clone_bundle=opt.clone_bundle,
-                        tags=opt.tags,
-                        archive=manifest.IsArchive,
-                        optimized_fetch=opt.optimized_fetch,
-                        retry_fetches=opt.retry_fetches,
-                        prune=opt.prune,
-                        ssh_proxy=ssh_proxy,
-                        clone_filter=manifest.CloneFilter,
-                        partial_clone_exclude=manifest.PartialCloneExclude,
-                        clone_filter_for_depth=manifest.CloneFilterForDepth,
-                    )
-                    if sync_result.error:
-                        errors.append(sync_result.error)
-
-                    finish = time.time()
-                    self.event_log.AddSync(
-                        rp,
-                        event_log.TASK_SYNC_NETWORK,
-                        start,
-                        finish,
-                        sync_result.success,
-                    )
-                    if not sync_result.success:
-                        logger.error(
-                            "error: Cannot fetch repo tool %s", rp.name
-                        )
-                        return
-
-        # After fetching, check if a new version of repo is available and
-        # restart. This is only done if the user hasn't explicitly disabled it.
-        if os.environ.get("REPO_SKIP_SELF_UPDATE", "0") == "0":
-            _PostRepoFetch(rp, opt.repo_verify)
 
     def _ReloadManifest(self, manifest_name, manifest):
         """Reload the manfiest from the file specified by the |manifest_name|.
@@ -1915,9 +1870,6 @@ later is required to fix a server side protocol bug.
         # might be in the manifest.
         self._ValidateOptionsWithManifest(opt, mp)
 
-        # Update the repo project and check for new versions of repo.
-        self._UpdateRepoProject(opt, manifest, errors)
-
         superproject_logging_data = {}
         self._UpdateProjectsRevisionId(
             opt, args, superproject_logging_data, manifest
@@ -2005,6 +1957,54 @@ later is required to fix a server side protocol bug.
 
         return _threading.Thread(target=_monitor_loop, daemon=True)
 
+    def _UpdateManifestLists(
+        self,
+        opt: optparse.Values,
+        errors: List[Exception],
+        err_event: multiprocessing.Event,
+    ) -> Tuple[bool, bool]:
+        """Updates project, copy, and linkfile lists for all manifests.
+
+        Args:
+            opt: Program options from optparse.
+            errors: A list to append any encountered exceptions to.
+            err_event: An event to set if any error occurs.
+
+        Returns:
+            A tuple (projects_ok, copylink_ok) indicating success for each task.
+        """
+        projects_ok = True
+        copylink_ok = True
+        for m in self.ManifestList(opt):
+            if m.IsMirror or m.IsArchive:
+                # No working tree to update.
+                continue
+
+            try:
+                self.UpdateProjectList(opt, m)
+            except Exception as e:
+                projects_ok = False
+                err_event.set()
+                errors.append(e)
+                if isinstance(e, DeleteWorktreeError):
+                    errors.extend(e.aggregate_errors)
+                if opt.fail_fast:
+                    logger.error("error: Local checkouts *not* updated.")
+                    raise SyncFailFastError(aggregate_errors=errors)
+
+            try:
+                self.UpdateCopyLinkfileList(m)
+            except Exception as e:
+                copylink_ok = False
+                err_event.set()
+                errors.append(e)
+                if opt.fail_fast:
+                    logger.error(
+                        "error: Local update copyfile or linkfile failed."
+                    )
+                    raise SyncFailFastError(aggregate_errors=errors)
+        return projects_ok, copylink_ok
+
     def _SyncPhased(
         self,
         opt,
@@ -2063,35 +2063,13 @@ later is required to fix a server side protocol bug.
                     )
                     raise SyncFailFastError(aggregate_errors=errors)
 
-        for m in self.ManifestList(opt):
-            if m.IsMirror or m.IsArchive:
-                # Bail out now, we have no working tree.
-                continue
-
-            try:
-                self.UpdateProjectList(opt, m)
-            except Exception as e:
-                err_event.set()
-                err_update_projects = True
-                errors.append(e)
-                if isinstance(e, DeleteWorktreeError):
-                    errors.extend(e.aggregate_errors)
-                if opt.fail_fast:
-                    logger.error("error: Local checkouts *not* updated.")
-                    raise SyncFailFastError(aggregate_errors=errors)
-
-            try:
-                self.UpdateCopyLinkfileList(m)
-            except Exception as e:
-                err_update_linkfiles = True
-                errors.append(e)
-                err_event.set()
-                if opt.fail_fast:
-                    logger.error(
-                        "error: Local update copyfile or linkfile failed."
-                    )
-                    raise SyncFailFastError(aggregate_errors=errors)
-
+        projects_ok, copylink_ok = self._UpdateManifestLists(
+            opt, errors, err_event
+        )
+        if not projects_ok:
+            err_update_projects = True
+        if not copylink_ok:
+            err_update_linkfiles = True
         err_results = []
         # NB: We don't exit here because this is the last step.
         err_checkout = not self._Checkout(
@@ -2166,7 +2144,8 @@ later is required to fix a server side protocol bug.
                 )
                 fetch_success = sync_result.success
                 remote_fetched = sync_result.remote_fetched
-                fetch_error = sync_result.error
+                if sync_result.error:
+                    fetch_error = sync_result.error
             except KeyboardInterrupt:
                 logger.error(
                     "Keyboard interrupt while processing %s", project.name
@@ -2494,7 +2473,7 @@ later is required to fix a server side protocol bug.
 
         pm.end()
 
-        # TODO(b/421935613): Add the manifest loop block from PhasedSync.
+        self._UpdateManifestLists(opt, errors, err_event)
         if not self.outer_client.manifest.IsArchive:
             self._GCProjects(project_list, opt, err_event)
 
