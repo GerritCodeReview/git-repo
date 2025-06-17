@@ -42,6 +42,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba153857_1433c39c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2122,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T22:05:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "667cb7e3_0b4e79c4",
+      "range": {
+        "startLine": 2121,
+        "startChar": 16,
+        "endLine": 2122,
+        "endChar": 51
+      },
+      "revId": "b46a3caae9ec8071a1e928261d0caf13797b741c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f790fa60_a6383ce2",
@@ -67,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "07484f1b_4e46da35",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2137,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T22:05:23Z",
+      "side": 1,
+      "message": "a lot of this error handling is copied directly from\n\n_FetchOne: https://gerrit.googlesource.com/git-repo/+/f91f4462e6365b5545b39be597dab23619b8d291/subcmds/sync.py#774\n\nand _CheckoutOne: https://gerrit.googlesource.com/git-repo/+/f91f4462e6365b5545b39be597dab23619b8d291/subcmds/sync.py#1052\n\nbased on https://gerrit-review.googlesource.com/c/git-repo/+/303544 which added the `error.GitError: ` logging. WDYT about overhauling this for both sync modes in a followup CL?",
+      "parentUuid": "f790fa60_a6383ce2",
+      "range": {
+        "startLine": 2123,
+        "startChar": 12,
+        "endLine": 2137,
+        "endChar": 17
+      },
+      "revId": "b46a3caae9ec8071a1e928261d0caf13797b741c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9796afa_c36d8115",
         "filename": "subcmds/sync.py",
         "patchSetId": 15
@@ -78,6 +126,30 @@
       "writtenOn": "2025-06-17T19:13:24Z",
       "side": 1,
       "message": "same. one exception block would be enough",
+      "range": {
+        "startLine": 2171,
+        "startChar": 10,
+        "endLine": 2188,
+        "endChar": 20
+      },
+      "revId": "b46a3caae9ec8071a1e928261d0caf13797b741c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83908b98_b344633e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2188,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T22:05:23Z",
+      "side": 1,
+      "message": "see thread above for discussion",
+      "parentUuid": "b9796afa_c36d8115",
       "range": {
         "startLine": 2171,
         "startChar": 10,
