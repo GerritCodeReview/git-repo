@@ -190,7 +190,8 @@ class Superproject:
         message = f"{self._LogMessagePrefix()} {fmt.format(*inputs)}"
         if self._print_messages:
             print(message, file=sys.stderr)
-        self._git_event_log.ErrorEvent(message, fmt)
+        if self._git_event_log:
+            self._git_event_log.ErrorEvent(message, fmt)
 
     def _LogMessagePrefix(self):
         """Returns the prefix string to be logged in each log message"""
