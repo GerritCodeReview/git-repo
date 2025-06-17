@@ -52,6 +52,24 @@
       "parentUuid": "94c0ea4e_d530d1d8",
       "revId": "c59dcd63217c846138120a0e482c5f8a63515377",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3e2f41c_f47ce859",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T19:11:24Z",
+      "side": 1,
+      "message": "Thanks for the report. The root cause is this line: https://gerrit.googlesource.com/git-repo/+/refs/heads/main/subcmds/upload.py#631\n\nI wrote https://gerrit-review.googlesource.com/c/git-repo/+/484401 to fix this and added you to the change",
+      "parentUuid": "c6bf46e3_a20bd828",
+      "revId": "c59dcd63217c846138120a0e482c5f8a63515377",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
