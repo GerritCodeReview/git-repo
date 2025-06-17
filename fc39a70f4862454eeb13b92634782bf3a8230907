@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e88b0fe_0e717c3a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T17:25:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68b72d45_337770da",
+      "range": {
+        "startLine": 206,
+        "startChar": 19,
+        "endLine": 206,
+        "endChar": 69
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c71e9bf_519ec48a",
@@ -112,6 +136,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5deac2c1_9a36a2ce",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T17:25:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c71e9bf_519ec48a",
+      "range": {
+        "startLine": 226,
+        "startChar": 41,
+        "endLine": 226,
+        "endChar": 47
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8911e85b_6e18d408",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T17:25:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2621492_be2015eb",
+      "range": {
+        "startLine": 226,
+        "startChar": 4,
+        "endLine": 226,
+        "endChar": 11
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "472eb640_ff6e38b2",
@@ -149,6 +221,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "472eb640_ff6e38b2",
+      "range": {
+        "startLine": 2051,
+        "startChar": 11,
+        "endLine": 2051,
+        "endChar": 17
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7edadae4_d078f63c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2051,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T17:25:52Z",
+      "side": 1,
+      "message": "`_InterleavedSync` doesn\u0027t feel like the right naming since we have `_SyncInterleaved`. I renamed this to `_SyncProjectList` to match `_FetchProjectList`.",
+      "parentUuid": "f0142119_c06077a9",
       "range": {
         "startLine": 2051,
         "startChar": 11,
@@ -206,6 +302,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aacd2c9d_ef9885d4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2057,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T17:25:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9b4f98f_4c4edaa6",
+      "range": {
+        "startLine": 2057,
+        "startChar": 12,
+        "endLine": 2057,
+        "endChar": 56
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a41eba5b_70a0a06a",
@@ -243,6 +363,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "a41eba5b_70a0a06a",
+      "range": {
+        "startLine": 2070,
+        "startChar": 33,
+        "endLine": 2070,
+        "endChar": 48
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c688562_71928bab",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2070,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T17:25:52Z",
+      "side": 1,
+      "message": "Added an assert above. BTW we shouldn\u0027t be asserting `len(projects) \u003d\u003d len(project_indices)` since this worker is not guaranteed to process all the projects",
+      "parentUuid": "a8805c63_ffeba49d",
       "range": {
         "startLine": 2070,
         "startChar": 33,
@@ -300,6 +444,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66b2968d_cff33a9a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2094,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T17:25:52Z",
+      "side": 1,
+      "message": "I agree that using a Queue would improve long term maintainability, but it adds complexity to an already-working implementation. Added a TODO",
+      "parentUuid": "b945fe5a_ff357ddd",
+      "range": {
+        "startLine": 2094,
+        "startChar": 12,
+        "endLine": 2094,
+        "endChar": 30
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af68054b_cbd3b574",
@@ -337,6 +505,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "af68054b_cbd3b574",
+      "range": {
+        "startLine": 2155,
+        "startChar": 7,
+        "endLine": 2173,
+        "endChar": 42
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "baf0df71_c0b4868b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2173,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T17:25:52Z",
+      "side": 1,
+      "message": "Deduped some logic into a new `_StartSyncProgressMonitor`.",
+      "parentUuid": "482d7f99_98b47895",
       "range": {
         "startLine": 2155,
         "startChar": 7,
@@ -394,6 +586,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45730479_74674214",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2195,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T17:25:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8fe97f7d_fa6f1ae1",
+      "range": {
+        "startLine": 2195,
+        "startChar": 31,
+        "endLine": 2195,
+        "endChar": 38
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "317b65d2_738dc744",
@@ -407,6 +623,30 @@
       "writtenOn": "2025-06-16T22:26:23Z",
       "side": 1,
       "message": "_ProcessSyncInterleavedResults have fields for errors. Can this logic iterate the results to catch the error, instead of using `err_event` to signal the main process that there was an error?",
+      "range": {
+        "startLine": 2232,
+        "startChar": 28,
+        "endLine": 2232,
+        "endChar": 37
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9f811d4_a948054a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2232,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T17:25:52Z",
+      "side": 1,
+      "message": "`errors` are for data aggregation and are used in the final `SyncError` but `err_event` is for signaling/control flow, especially for --fail-fast. (this pattern is also used in _SyncPhased)",
+      "parentUuid": "317b65d2_738dc744",
       "range": {
         "startLine": 2232,
         "startChar": 28,
@@ -472,6 +712,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "6df57efe_66fa40da",
+      "range": {
+        "startLine": 2244,
+        "startChar": 28,
+        "endLine": 2244,
+        "endChar": 43
+      },
+      "revId": "fc39a70f4862454eeb13b92634782bf3a8230907",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "550c41a1_59a4e40e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2244,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-17T17:25:52Z",
+      "side": 1,
+      "message": "I\u0027m assuming this is a leftover draft from the above comment: https://gerrit-review.git.corp.google.com/c/git-repo/+/483281/comment/317b65d2_738dc744/",
+      "parentUuid": "5310ab21_a036045f",
       "range": {
         "startLine": 2244,
         "startChar": 28,
