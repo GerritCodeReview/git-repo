@@ -34,6 +34,24 @@
       "parentUuid": "1cd582e5_8504152b",
       "revId": "c59dcd63217c846138120a0e482c5f8a63515377",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6bf46e3_a20bd828",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-17T18:37:02Z",
+      "side": 1,
+      "message": "probably related to b/401147338 \u0026 https://gerrit-review.googlesource.com/c/git-repo/+/472601",
+      "parentUuid": "94c0ea4e_d530d1d8",
+      "revId": "c59dcd63217c846138120a0e482c5f8a63515377",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
