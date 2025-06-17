@@ -1,0 +1,66 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bf969f0_1b80284d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-17T03:48:57Z",
+      "side": 1,
+      "message": "when changing a specific command, better to prefix the commit like `info:`",
+      "revId": "d3d775fb64dd53be421a007088f8494163bb52e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95f87eb5_6603cbe1",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-06-17T03:48:57Z",
+      "side": 1,
+      "message": "if `commit_id` has a trailing newline, we should fix that in its definition\n\nif we want to add a newline to the output, we should use the helper instead of embedding it in",
+      "fixSuggestions": [
+        {
+          "fixId": "492cd2a7_3ec7944e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/info.py",
+              "range": {
+                "startLine": 106,
+                "startChar": 0,
+                "endLine": 107,
+                "endChar": 0
+              },
+              "replacement": "        srev \u003d sp.commit_id if sp and sp.commit_id else \"None\"\n"
+            },
+            {
+              "path": "subcmds/info.py",
+              "range": {
+                "startLine": 109,
+                "startChar": 0,
+                "endLine": 109,
+                "endChar": 0
+              },
+              "replacement": "        self.out.nl()\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d3d775fb64dd53be421a007088f8494163bb52e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
