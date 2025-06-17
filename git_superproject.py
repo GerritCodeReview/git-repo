@@ -151,7 +151,7 @@ class Superproject:
                 p.stderr,
             )
             return None
-        return p.stdout
+        return p.stdout.strip()
 
     @property
     def project_commit_ids(self):
