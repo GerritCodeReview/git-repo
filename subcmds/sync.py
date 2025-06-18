@@ -26,7 +26,7 @@ from pathlib import Path
 import sys
 import tempfile
 import time
-from typing import List, NamedTuple, Optional, Set, Union
+from typing import List, NamedTuple, Optional, Set, Tuple, Union
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -2005,6 +2005,54 @@ later is required to fix a server side protocol bug.
 
         return _threading.Thread(target=_monitor_loop, daemon=True)
 
+    def _UpdateManifestLists(
+        self,
+        opt: optparse.Values,
+        err_event: multiprocessing.Event,
+        errors: List[Exception],
+    ) -> Tuple[bool, bool]:
+        """Updates project lists and copy/link files for all manifests.
+
+        Args:
+            opt: Program options from optparse.
+            err_event: An event to set if any error occurs.
+            errors: A list to append any encountered exceptions to.
+
+        Returns:
+            A tuple (err_update_projects, err_update_linkfiles) indicating
+                an error for each task.
+        """
+        err_update_projects = False
+        err_update_linkfiles = False
+        for m in self.ManifestList(opt):
+            if m.IsMirror or m.IsArchive:
+                continue
+
+            try:
+                self.UpdateProjectList(opt, m)
+            except Exception as e:
+                err_event.set()
+                err_update_projects = True
+                errors.append(e)
+                if isinstance(e, DeleteWorktreeError):
+                    errors.extend(e.aggregate_errors)
+                if opt.fail_fast:
+                    logger.error("error: Local checkouts *not* updated.")
+                    raise SyncFailFastError(aggregate_errors=errors)
+
+            try:
+                self.UpdateCopyLinkfileList(m)
+            except Exception as e:
+                err_event.set()
+                err_update_linkfiles = True
+                errors.append(e)
+                if opt.fail_fast:
+                    logger.error(
+                        "error: Local update copyfile or linkfile failed."
+                    )
+                    raise SyncFailFastError(aggregate_errors=errors)
+        return err_update_projects, err_update_linkfiles
+
     def _SyncPhased(
         self,
         opt,
@@ -2063,34 +2111,11 @@ later is required to fix a server side protocol bug.
                     )
                     raise SyncFailFastError(aggregate_errors=errors)
 
-        for m in self.ManifestList(opt):
-            if m.IsMirror or m.IsArchive:
-                # Bail out now, we have no working tree.
-                continue
-
-            try:
-                self.UpdateProjectList(opt, m)
-            except Exception as e:
-                err_event.set()
-                err_update_projects = True
-                errors.append(e)
-                if isinstance(e, DeleteWorktreeError):
-                    errors.extend(e.aggregate_errors)
-                if opt.fail_fast:
-                    logger.error("error: Local checkouts *not* updated.")
-                    raise SyncFailFastError(aggregate_errors=errors)
-
-            try:
-                self.UpdateCopyLinkfileList(m)
-            except Exception as e:
-                err_update_linkfiles = True
-                errors.append(e)
-                err_event.set()
-                if opt.fail_fast:
-                    logger.error(
-                        "error: Local update copyfile or linkfile failed."
-                    )
-                    raise SyncFailFastError(aggregate_errors=errors)
+        err_update_projects, err_update_linkfiles = self._UpdateManifestLists(
+            opt,
+            err_event,
+            errors,
+        )
 
         err_results = []
         # NB: We don't exit here because this is the last step.
@@ -2494,7 +2519,7 @@ later is required to fix a server side protocol bug.
 
         pm.end()
 
-        # TODO(b/421935613): Add the manifest loop block from PhasedSync.
+        self._UpdateManifestLists(opt, err_event, errors)
         if not self.outer_client.manifest.IsArchive:
             self._GCProjects(project_list, opt, err_event)
 
