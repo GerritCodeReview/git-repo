@@ -411,7 +411,7 @@ later is required to fix a server side protocol bug.
             type=int,
             metavar="JOBS",
             help="number of network jobs to run in parallel (defaults to "
-            "--jobs or 1)",
+            "--jobs or 1). Ignored when --interleaved is set",
         )
         p.add_option(
             "--jobs-checkout",
@@ -419,7 +419,8 @@ later is required to fix a server side protocol bug.
             type=int,
             metavar="JOBS",
             help="number of local checkout jobs to run in parallel (defaults "
-            f"to --jobs or {DEFAULT_LOCAL_JOBS})",
+            f"to --jobs or {DEFAULT_LOCAL_JOBS}). Ignored when --interleaved "
+            "is set",
         )
 
         p.add_option(
