@@ -2053,6 +2053,46 @@ later is required to fix a server side protocol bug.
                     raise SyncFailFastError(aggregate_errors=errors)
         return err_update_projects, err_update_linkfiles
 
+    def _ReportErrors(
+        self,
+        errors,
+        err_network_sync=False,
+        failing_network_repos=None,
+        err_checkout=False,
+        failing_checkout_repos=None,
+        err_update_projects=False,
+        err_update_linkfiles=False,
+    ):
+        """Logs detailed error messages and raises a SyncError."""
+
+        def print_and_log(err_msg):
+            self.git_event_log.ErrorEvent(err_msg)
+            logger.error("%s", err_msg)
+
+        print_and_log("error: Unable to fully sync the tree")
+        if err_network_sync:
+            print_and_log("error: Downloading network changes failed.")
+            if failing_network_repos:
+                logger.error(
+                    "Failing repos (network):\n%s",
+                    "\n".join(sorted(failing_network_repos)),
+                )
+        if err_update_projects:
+            print_and_log("error: Updating local project lists failed.")
+        if err_update_linkfiles:
+            print_and_log("error: Updating copyfiles or linkfiles failed.")
+        if err_checkout:
+            print_and_log("error: Checking out local projects failed.")
+            if failing_checkout_repos:
+                logger.error(
+                    "Failing repos (checkout):\n%s",
+                    "\n".join(sorted(failing_checkout_repos)),
+                )
+        logger.error(
+            'Try re-running with "-j1 --fail-fast" to exit at the first error.'
+        )
+        raise SyncError(aggregate_errors=errors)
+
     def _SyncPhased(
         self,
         opt,
@@ -2129,29 +2169,14 @@ later is required to fix a server side protocol bug.
 
         # If we saw an error, exit with code 1 so that other scripts can check.
         if err_event.is_set():
-
-            def print_and_log(err_msg):
-                self.git_event_log.ErrorEvent(err_msg)
-                logger.error("%s", err_msg)
-
-            print_and_log("error: Unable to fully sync the tree")
-            if err_network_sync:
-                print_and_log("error: Downloading network changes failed.")
-            if err_update_projects:
-                print_and_log("error: Updating local project lists failed.")
-            if err_update_linkfiles:
-                print_and_log("error: Updating copyfiles or linkfiles failed.")
-            if err_checkout:
-                print_and_log("error: Checking out local projects failed.")
-                if err_results:
-                    # Don't log repositories, as it may contain sensitive info.
-                    logger.error("Failing repos:\n%s", "\n".join(err_results))
-            # Not useful to log.
-            logger.error(
-                'Try re-running with "-j1 --fail-fast" to exit at the first '
-                "error."
+            self._ReportErrors(
+                errors,
+                err_network_sync=err_network_sync,
+                err_checkout=err_checkout,
+                failing_checkout_repos=err_results,
+                err_update_projects=err_update_projects,
+                err_update_linkfiles=err_update_linkfiles,
             )
-            raise SyncError(aggregate_errors=errors)
 
     @classmethod
     def _SyncOneProject(cls, opt, project_index, project) -> _SyncResult:
@@ -2374,8 +2399,16 @@ later is required to fix a server side protocol bug.
                     err_event.set()
                     if result.fetch_error:
                         errors.append(result.fetch_error)
+                        self._interleaved_err_network = True
+                        self._interleaved_err_network_results.append(
+                            result.relpath
+                        )
                     if result.checkout_error:
                         errors.append(result.checkout_error)
+                        self._interleaved_err_checkout = True
+                        self._interleaved_err_checkout_results.append(
+                            result.relpath
+                        )
 
             if not ret and opt.fail_fast:
                 if pool:
@@ -2406,6 +2439,12 @@ later is required to fix a server side protocol bug.
         2.  Projects that share git objects are processed serially to prevent
             race conditions.
         """
+        # Temporary state for tracking errors in interleaved mode.
+        self._interleaved_err_network = False
+        self._interleaved_err_network_results = []
+        self._interleaved_err_checkout = False
+        self._interleaved_err_checkout_results = []
+
         err_event = multiprocessing.Event()
         synced_relpaths = set()
         project_list = list(all_projects)
@@ -2519,17 +2558,23 @@ later is required to fix a server side protocol bug.
 
         pm.end()
 
-        self._UpdateManifestLists(opt, err_event, errors)
+        err_update_projects, err_update_linkfiles = self._UpdateManifestLists(
+            opt, err_event, errors
+        )
         if not self.outer_client.manifest.IsArchive:
             self._GCProjects(project_list, opt, err_event)
 
         self._PrintManifestNotices(opt)
         if err_event.is_set():
-            # TODO(b/421935613): Log errors better like SyncPhased.
-            logger.error(
-                "error: Unable to fully sync the tree in interleaved mode."
+            self._ReportErrors(
+                errors,
+                err_network_sync=self._interleaved_err_network,
+                failing_network_repos=self._interleaved_err_network_results,
+                err_checkout=self._interleaved_err_checkout,
+                failing_checkout_repos=self._interleaved_err_checkout_results,
+                err_update_projects=err_update_projects,
+                err_update_linkfiles=err_update_linkfiles,
             )
-            raise SyncError(aggregate_errors=errors)
 
 
 def _PostRepoUpgrade(manifest, quiet=False):
