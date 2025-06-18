@@ -205,6 +205,30 @@
       },
       "revId": "b46a3caae9ec8071a1e928261d0caf13797b741c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5ffe058_23f5d7b4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2358,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-18T02:34:49Z",
+      "side": 1,
+      "message": "Missed this from last time, but:\n```\n            with self.ParallelContext() as context:\n\u003e               context[\"ssh_proxy\"] \u003d ssh_proxy\n                ^^^^^^^^^^^^^^^^^^^^\nE               TypeError: \u0027NoneType\u0027 object does not support item assignment\n```",
+      "parentUuid": "9120fbe8_a4f67c1b",
+      "range": {
+        "startLine": 2357,
+        "startChar": 12,
+        "endLine": 2358,
+        "endChar": 44
+      },
+      "revId": "b46a3caae9ec8071a1e928261d0caf13797b741c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
