@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3854edc4_432dbbd1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-18T21:45:25Z",
+      "side": 1,
+      "message": "Question for the context.\n\nIf repo supports options for parallel fetches and checkouts, what was the motivation to add a new option, --interleaved?",
+      "range": {
+        "startLine": 414,
+        "startChar": 27,
+        "endLine": 414,
+        "endChar": 60
+      },
+      "revId": "94300b7c04ebfb5423c0c19d5e090049f8af98db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
