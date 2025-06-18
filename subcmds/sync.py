@@ -2127,29 +2127,48 @@ later is required to fix a server side protocol bug.
 
         # If we saw an error, exit with code 1 so that other scripts can check.
         if err_event.is_set():
+            self._ReportSyncErrors(
+                errors,
+                err_network=err_network_sync,
+                err_checkout=err_checkout,
+                err_update_projects=err_update_projects,
+                err_update_linkfiles=err_update_linkfiles,
+                failing_checkout_projects=err_results,
+             )
 
-            def print_and_log(err_msg):
-                self.git_event_log.ErrorEvent(err_msg)
-                logger.error("%s", err_msg)
+    def _ReportSyncErrors(
+        self,
+        errors: List[Exception],
+        err_network: bool,
+        err_checkout: bool,
+        err_update_projects: bool,
+        err_update_linkfiles: bool,
+        failing_checkout_projects: List[str],
+    ):
+        """Common error reporting for sync failures."""
+        def print_and_log(err_msg):
+            self.git_event_log.ErrorEvent(err_msg)
+            logger.error("%s", err_msg)
 
-            print_and_log("error: Unable to fully sync the tree")
-            if err_network_sync:
-                print_and_log("error: Downloading network changes failed.")
-            if err_update_projects:
-                print_and_log("error: Updating local project lists failed.")
-            if err_update_linkfiles:
-                print_and_log("error: Updating copyfiles or linkfiles failed.")
-            if err_checkout:
-                print_and_log("error: Checking out local projects failed.")
-                if err_results:
-                    # Don't log repositories, as it may contain sensitive info.
-                    logger.error("Failing repos:\n%s", "\n".join(err_results))
-            # Not useful to log.
-            logger.error(
-                'Try re-running with "-j1 --fail-fast" to exit at the first '
-                "error."
-            )
-            raise SyncError(aggregate_errors=errors)
+        print_and_log("error: Unable to fully sync the tree")
+        if err_network:
+            print_and_log("error: Downloading network changes failed.")
+        if err_update_projects:
+            print_and_log("error: Updating local project lists failed.")
+        if err_update_linkfiles:
+            print_and_log("error: Updating copyfiles or linkfiles failed.")
+        if err_checkout:
+            print_and_log("error: Checking out local projects failed.")
+            if failing_checkout_projects:
+                # Don't log repositories, as it may contain sensitive info.
+                logger.error(
+                    "Failing repos:\n%s", "\n".join(failing_checkout_projects)
+                )
+        # Not useful to log.
+        logger.error(
+            'Try re-running with "-j1 --fail-fast" to exit at the first error.'
+        )
+        raise SyncError(aggregate_errors=errors)
 
     @classmethod
     def _SyncOneProject(cls, opt, project_index, project) -> _SyncResult:
