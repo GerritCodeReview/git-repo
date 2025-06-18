@@ -113,6 +113,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acb1639e_d8f05b73",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2137,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-18T01:43:58Z",
+      "side": 1,
+      "message": "sgtm",
+      "parentUuid": "07484f1b_4e46da35",
+      "range": {
+        "startLine": 2123,
+        "startChar": 12,
+        "endLine": 2137,
+        "endChar": 17
+      },
+      "revId": "b46a3caae9ec8071a1e928261d0caf13797b741c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9796afa_c36d8115",
