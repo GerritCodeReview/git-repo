@@ -229,6 +229,30 @@
       },
       "revId": "b46a3caae9ec8071a1e928261d0caf13797b741c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d5fd7e0_127e75fe",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2358,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-18T05:10:44Z",
+      "side": 1,
+      "message": "that\u0027s what I meant. The following line could yield the context.\n- https://gerrit.googlesource.com/git-repo/+/refs/tags/v2.55.2/command.py#266\n\n```\ndef ParallelContext(cls):\n    cls._parallel_context \u003d {}\n    try:\n        yield cls._parallel_context\n    finally:\n        cls._parallel_context \u003d None\n```\n```suggestion\n            with self.ParallelContext():\n                self.get_parallel_context()[\"ssh_proxy\"] \u003d ssh_proxy\n```\n\njust to be clear, I didn\u0027t mean to suggest making the change in this CL.",
+      "parentUuid": "e5ffe058_23f5d7b4",
+      "range": {
+        "startLine": 2357,
+        "startChar": 12,
+        "endLine": 2358,
+        "endChar": 44
+      },
+      "revId": "b46a3caae9ec8071a1e928261d0caf13797b741c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
