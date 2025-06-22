@@ -659,7 +659,10 @@ class InterleavedSyncTest(unittest.TestCase):
         )
 
         execute_mock.assert_called_once()
-        jobs_arg, _, work_items = execute_mock.call_args.args
+        call_args = execute_mock.call_args
+        if isinstance(call_args, mock._Call):
+            call_args = call_args[0]
+        jobs_arg, _, work_items = call_args
         self.assertEqual(jobs_arg, 2)
         work_items_sets = {frozenset(item) for item in work_items}
         expected_sets = {frozenset([0, 2]), frozenset([1])}
