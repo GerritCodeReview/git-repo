@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c629127_d182c626",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1369,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-23T15:50:28Z",
+      "side": 1,
+      "message": "Should L1413 also be skipped if no fetches were done, like L1363 immediately returns if local_only is specified.\n\nIf then, I\u0027d move this block out and have the below block one level indent out.\n```\ndef _UpdateRepoProject(..):\n   if opt.local_only:\n       return\n   ...\n   # if .., don\u0027t bother fetching it again. \n   if (now - rp.LastFetch) \u003c _ONE_DAY_S:\n       return\n       \n   ...\n```",
+      "range": {
+        "startLine": 1368,
+        "startChar": 8,
+        "endLine": 1369,
+        "endChar": 46
+      },
+      "revId": "95ee617a1c1114af7781bbeaaabb5528d33b42f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
