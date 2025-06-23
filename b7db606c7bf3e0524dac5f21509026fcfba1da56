@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92f5c9e2_bc10ee1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-06-23T22:34:59Z",
+      "side": 1,
+      "message": "@ddoman@google.com PTAL, I\u0027d like to release --interleaved early this week and this should be the last change it needs",
+      "revId": "b7db606c7bf3e0524dac5f21509026fcfba1da56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
