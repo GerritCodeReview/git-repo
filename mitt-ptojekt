@@ -1,0 +1,6 @@
+git init
+git add .
+got commt -m"första commit"
+
+git remote add origin https//github.com/trxsh123/mitt-projekt.git
+git push -u origin master
