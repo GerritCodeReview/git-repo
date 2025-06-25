@@ -16,6 +16,23 @@
       "message": "Marked as unresolved.",
       "revId": "b262d0e4619c406a2708856ed312091d21c5bf39",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d6e3fa2_0811c99b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4184636
+      },
+      "writtenOn": "2025-06-25T03:11:43Z",
+      "side": 1,
+      "message": "You can paste this prompt in an AI Model if your project code can be shared with AI. We recommend a thinking model. You can also use it for an AI Agent as context (a reference to a git change).",
+      "revId": "b262d0e4619c406a2708856ed312091d21c5bf39",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
