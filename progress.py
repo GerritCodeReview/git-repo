@@ -101,6 +101,7 @@ class Progress:
         self._units = units
         self._elide = elide and _TTY
         self._quiet = quiet
+        self._ended = False
 
         # Only show the active jobs section if we run more than one in parallel.
         self._show_jobs = False
@@ -211,6 +212,10 @@ class Progress:
         self.update(inc=0)
 
     def end(self):
+        if self._ended:
+            return
+        self._ended = True
+
         self._update_event.set()
         if not _TTY or IsTraceToStderr() or self._quiet:
             return
