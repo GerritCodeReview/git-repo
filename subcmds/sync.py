@@ -2557,8 +2557,6 @@ later is required to fix a server side protocol bug.
                     sync_event.set()
                     sync_progress_thread.join()
 
-        pm.end()
-
         err_update_projects, err_update_linkfiles = self._UpdateManifestLists(
             opt, err_event, errors
         )
