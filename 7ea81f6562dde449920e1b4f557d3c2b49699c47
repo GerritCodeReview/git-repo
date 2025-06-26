@@ -101,6 +101,24 @@
       "message": "437661: init: Add environment variable for git-lfs | https://gerrit-review.googlesource.com/c/git-repo/+/437661",
       "revId": "7ea81f6562dde449920e1b4f557d3c2b49699c47",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82e41ac4_3d65c430",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1098266
+      },
+      "writtenOn": "2025-06-26T03:03:57Z",
+      "side": 1,
+      "message": "@fatahillahwkwk@gmail.com What\u0027s your opinion? Do you have any other concerns?",
+      "parentUuid": "bf84eb1e_45fe594b",
+      "revId": "7ea81f6562dde449920e1b4f557d3c2b49699c47",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
