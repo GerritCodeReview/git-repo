@@ -33,6 +33,23 @@
       "message": "Hi @vapier@google.com, gentle ping, please help review this patch",
       "revId": "9fdf1e71c377c3671ea93ad2cc4e07d72edbe31f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4f236d0_e219f99c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-27T07:23:10Z",
+      "side": 1,
+      "message": "Hi @vapier@google.com\n\nThis CL has been reviewed (+1), verified, and doc updated. Just waiting on a final +2 for merge. Let me know if there’s anything you\u0027d like to see changed — happy to revise!\n\nThanks in advance!",
+      "revId": "9fdf1e71c377c3671ea93ad2cc4e07d72edbe31f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
