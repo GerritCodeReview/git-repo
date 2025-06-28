@@ -50,6 +50,52 @@
       "message": "Hi @vapier@google.com\n\nThis CL has been reviewed (+1), verified, and doc updated. Just waiting on a final +2 for merge. Let me know if there’s anything you\u0027d like to see changed — happy to revise!\n\nThanks in advance!",
       "revId": "9fdf1e71c377c3671ea93ad2cc4e07d72edbe31f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ae303f9_7d0bf858",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-28T00:24:09Z",
+      "side": 1,
+      "message": "Do the hooks run in the case of L143 and L144? They are not errors. If the new hooks should run in the cases as well, I\u0027d remove L143 and L144.",
+      "range": {
+        "startLine": 139,
+        "startChar": 20,
+        "endLine": 139,
+        "endChar": 57
+      },
+      "revId": "9fdf1e71c377c3671ea93ad2cc4e07d72edbe31f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47506231_09e74daf",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-28T00:24:09Z",
+      "side": 1,
+      "message": "Would you be able to add more info to connect the paragraphs.\n- L143, L144, and L145 lists `what repo sync` does, but it\u0027s missing to explain how they become an issue, and how this hook solves the issues.\n- L147-L152 describes what the new hooks do, but does not describe what problems it tries to tackle and how it resolves the issues.\n\nIIUC, you\u0027d like to run certain hooks automatically when `repo sync` fully succeeds successfully without `-n` or positional args, right? Then, I\u0027d just remove L141-L145, and updates L147 to describe what it does without what problems it tries to solve, as the problem is not clear.\n\n```\nThis hook is to install post-processing tasks for successful full checkouts. It will be run if `repo sync` runs successfully without -n and positional arguments.\n```",
+      "range": {
+        "startLine": 139,
+        "startChar": 1,
+        "endLine": 153,
+        "endChar": 0
+      },
+      "revId": "9fdf1e71c377c3671ea93ad2cc4e07d72edbe31f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
