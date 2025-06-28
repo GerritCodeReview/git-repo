@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15044263_846e2ad0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4127492
+      },
+      "writtenOn": "2025-06-28T00:57:46Z",
+      "side": 1,
+      "message": "I reworded the sentence to clarify that the hook still runs even if no checkout happens (e.g. `-n`, partial sync).",
+      "revId": "795e9803efbf5d38ee20276c35f2e2671dabfb08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
