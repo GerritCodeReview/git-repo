@@ -206,6 +206,24 @@
       "message": "@ddoman@google.com, pls review and give your advices..",
       "revId": "7ea81f6562dde449920e1b4f557d3c2b49699c47",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dc10c9a_d0082d89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-06-30T22:26:38Z",
+      "side": 1,
+      "message": "sorry for delays in review. LGTM",
+      "parentUuid": "bb8fe57c_4d819f2c",
+      "revId": "7ea81f6562dde449920e1b4f557d3c2b49699c47",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
