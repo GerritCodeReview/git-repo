@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6feafb09_2c5bc434",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3614203
+      },
+      "writtenOn": "2025-07-01T20:25:50Z",
+      "side": 1,
+      "message": "@gavinmak@google.com @ddoman@google.com thanks for the reviews. I had almost given up on this patch.\n\nI\u0027m curious what\u0027s the \"right\" way to get reviewers assigned. I was following along with SUBMITTING_PATCHES.md with no issues until this step.",
+      "revId": "21269c3eedc428610a5cab1494b2459a7e939fc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
