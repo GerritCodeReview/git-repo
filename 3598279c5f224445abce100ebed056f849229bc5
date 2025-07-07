@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2880507_79dcd28a",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-07-07T16:40:05Z",
+      "side": 1,
+      "message": "please leave a comment indicating when we can clean this up\n\n```\n# TODO: Drop when we require Python 3.8+.\n```",
+      "revId": "3598279c5f224445abce100ebed056f849229bc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
