@@ -51,6 +51,24 @@
       "message": "i don\u0027t think we should do this.  arguably the existing env options shouldn\u0027t exist either.\n\nif you want to setup global defaults on your system, this is what `~/.repoconfig/config` is intended for.\n\nso unless there\u0027s a strong reason we can\u0027t go that route, let\u0027s pull this out \u0026 start again.",
       "revId": "21269c3eedc428610a5cab1494b2459a7e939fc7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69b6b86d_76986ed5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-07-10T16:35:56Z",
+      "side": 1,
+      "message": "should the next repo release be blocked on reworking env options and/or reverting the `git_lfs` change?",
+      "parentUuid": "f498b3ca_d2e0c96c",
+      "revId": "21269c3eedc428610a5cab1494b2459a7e939fc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
