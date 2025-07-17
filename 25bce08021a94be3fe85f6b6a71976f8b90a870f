@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7a3830a_5bde557e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 2521,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-07-17T21:22:57Z",
+      "side": 1,
+      "message": "shouldn\u0027t there be a break?",
+      "range": {
+        "startLine": 2520,
+        "startChar": 27,
+        "endLine": 2521,
+        "endChar": 29
+      },
+      "revId": "25bce08021a94be3fe85f6b6a71976f8b90a870f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
