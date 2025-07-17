@@ -2505,11 +2505,22 @@ later is required to fix a server side protocol bug.
 
                         pending_relpaths = {p.relpath for p in projects_to_sync}
                         if previously_pending_relpaths == pending_relpaths:
+                            stalled_projects_str = "\n".join(
+                                f" - {path}"
+                                for path in sorted(list(pending_relpaths))
+                            )
                             logger.error(
-                                "Stall detected in interleaved sync, not all "
-                                "projects could be synced."
+                                "The following projects failed and could not "
+                                "be synced:\n%s",
+                                stalled_projects_str,
                             )
                             err_event.set()
+
+                            # Include these in the final error report.
+                            self._interleaved_err_checkout = True
+                            self._interleaved_err_checkout_results.extend(
+                                list(pending_relpaths)
+                            )
                             break
                         previously_pending_relpaths = pending_relpaths
 
@@ -2570,6 +2581,7 @@ later is required to fix a server side protocol bug.
                             manifest=manifest,
                             all_manifests=not opt.this_manifest_only,
                         )
+                        pm.update_total(len(project_list))
                 finally:
                     sync_event.set()
                     sync_progress_thread.join()
