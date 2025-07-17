@@ -2061,10 +2061,7 @@ class Project:
         if head == revid:
             # Same revision; just update HEAD to point to the new
             # target branch, but otherwise take no other action.
-            _lwrite(
-                self.work_git.GetDotgitPath(subpath=HEAD),
-                f"ref: {R_HEADS}{name}\n",
-            )
+            self.work_git.SetHead(R_HEADS + name)
             return True
 
         GitCommand(
@@ -2100,9 +2097,7 @@ class Project:
 
             revid = self.GetRevisionId(all_refs)
             if head == revid:
-                _lwrite(
-                    self.work_git.GetDotgitPath(subpath=HEAD), "%s\n" % revid
-                )
+                self.work_git.DetachHead(revid)
             else:
                 self._Checkout(revid, quiet=True)
         GitCommand(
@@ -3492,8 +3487,8 @@ class Project:
                 self._createDotGit(dotgit)
 
             if init_dotgit:
-                _lwrite(
-                    os.path.join(self.gitdir, HEAD), f"{self.GetRevisionId()}\n"
+                self.work_git.UpdateRef(
+                    HEAD, self.GetRevisionId(), detach=True
                 )
 
                 # Finish checking out the worktree.
