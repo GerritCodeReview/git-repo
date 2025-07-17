@@ -119,6 +119,11 @@ class Progress:
         if not quiet and show_elapsed:
             self._update_thread.start()
 
+    def update_total(self, new_total):
+        """Updates the total if the new total is larger."""
+        if new_total > self._total:
+            self._total = new_total
+
     def _update_loop(self):
         while True:
             self.update(inc=0)
