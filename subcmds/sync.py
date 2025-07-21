@@ -412,16 +412,18 @@ later is required to fix a server side protocol bug.
             type=int,
             metavar="JOBS",
             help="number of network jobs to run in parallel (defaults to "
-            "--jobs or 1). Ignored when --interleaved is set",
+            "--jobs or 1). Ignored unless --no-interleaved is set",
         )
         p.add_option(
             "--jobs-checkout",
             default=None,
             type=int,
             metavar="JOBS",
-            help="number of local checkout jobs to run in parallel (defaults "
-            f"to --jobs or {DEFAULT_LOCAL_JOBS}). Ignored when --interleaved "
-            "is set",
+            help=(
+                "number of local checkout jobs to run in parallel (defaults "
+                f"to --jobs or {DEFAULT_LOCAL_JOBS}). Ignored unless "
+                "--no-interleaved is set"
+            ),
         )
 
         p.add_option(
@@ -480,7 +482,14 @@ later is required to fix a server side protocol bug.
         p.add_option(
             "--interleaved",
             action="store_true",
-            help="fetch and checkout projects in parallel (experimental)",
+            default=True,
+            help="fetch and checkout projects in parallel (default)",
+        )
+        p.add_option(
+            "--no-interleaved",
+            dest="interleaved",
+            action="store_false",
+            help="fetch and checkout projects in phases",
         )
         p.add_option(
             "-n",
