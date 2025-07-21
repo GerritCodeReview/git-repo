@@ -3834,19 +3834,11 @@ class Project:
 
         def GetHead(self):
             """Return the ref that HEAD points to."""
-            path = self.GetDotgitPath(subpath=HEAD)
             try:
-                with open(path) as fd:
-                    line = fd.readline()
-            except OSError as e:
+                return self.rev_parse("--symbolic-full-name", "HEAD")
+            except GitError as e:
+                path = self.GetDotgitPath(subpath=HEAD)
                 raise NoManifestException(path, str(e))
-            try:
-                line = line.decode()
-            except AttributeError:
-                pass
-            if line.startswith("ref: "):
-                return line[5:-1]
-            return line[:-1]
 
         def SetHead(self, ref, message=None):
             cmdv = []
