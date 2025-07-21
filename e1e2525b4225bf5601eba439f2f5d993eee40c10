@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d986c552_3457da0f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-07-21T19:07:30Z",
+      "side": 1,
+      "message": "🎉🎉",
+      "range": {
+        "startLine": 7,
+        "startChar": 6,
+        "endLine": 7,
+        "endChar": 33
+      },
+      "revId": "e1e2525b4225bf5601eba439f2f5d993eee40c10",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cfe7ef0_3a9eac12",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-07-21T19:07:30Z",
+      "side": 1,
+      "message": "nit; I personally found the following a bit more intuitive.\n\n`Ignored unless --no-interleaved is set`",
+      "range": {
+        "startLine": 415,
+        "startChar": 27,
+        "endLine": 415,
+        "endChar": 60
+      },
+      "revId": "e1e2525b4225bf5601eba439f2f5d993eee40c10",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
