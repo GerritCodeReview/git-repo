@@ -16,6 +16,23 @@
       "message": "Yw",
       "revId": "25858c8b16264beca64bf22b91588fa6694b2b07",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0919fe1_6b48b940",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1015122
+      },
+      "writtenOn": "2025-07-23T21:20:05Z",
+      "side": 1,
+      "message": "FYI this breaks mirror syncing (for example AOSP mirror), all projects fail to sync with the following error:\n\n```\nerror: Cannot checkout \u003cproject\u003e: TypeError: expected str, bytes or os.PathLike object, not NoneType\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\nRepo command failed due to the following `SyncFailFastError` errors:\nexpected str, bytes or os.PathLike object, not NoneType\n```",
+      "revId": "25858c8b16264beca64bf22b91588fa6694b2b07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
