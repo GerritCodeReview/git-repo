@@ -2269,49 +2269,57 @@ later is required to fix a server side protocol bug.
         checkout_finish = None
         checkout_stderr = ""
 
-        if fetch_success and not opt.network_only:
-            checkout_start = time.time()
-            stderr_capture = io.StringIO()
-            try:
-                with contextlib.redirect_stderr(stderr_capture):
-                    syncbuf = SyncBuffer(
-                        project.manifest.manifestProject.config,
-                        detach_head=opt.detach_head,
-                    )
-                    local_half_errors = []
-                    project.Sync_LocalHalf(
-                        syncbuf,
-                        force_sync=opt.force_sync,
-                        force_checkout=opt.force_checkout,
-                        force_rebase=opt.rebase,
-                        errors=local_half_errors,
-                        verbose=opt.verbose,
-                    )
-                    checkout_success = syncbuf.Finish()
-                    if local_half_errors:
-                        checkout_error = SyncError(
-                            aggregate_errors=local_half_errors
+        if fetch_success:
+            # We skip checkout if it's network-only or if the project has no
+            # working tree (e.g., a mirror).
+            if opt.network_only or not project.worktree:
+                checkout_success = True
+            else:
+                # This is a normal project that needs a checkout.
+                checkout_start = time.time()
+                stderr_capture = io.StringIO()
+                try:
+                    with contextlib.redirect_stderr(stderr_capture):
+                        syncbuf = SyncBuffer(
+                            project.manifest.manifestProject.config,
+                            detach_head=opt.detach_head,
                         )
-            except KeyboardInterrupt:
-                logger.error(
-                    "Keyboard interrupt while processing %s", project.name
-                )
-            except GitError as e:
-                checkout_error = e
-                logger.error(
-                    "error.GitError: Cannot checkout %s: %s", project.name, e
-                )
-            except Exception as e:
-                checkout_error = e
-                logger.error(
-                    "error: Cannot checkout %s: %s: %s",
-                    project.name,
-                    type(e).__name__,
-                    e,
-                )
-            finally:
-                checkout_finish = time.time()
-                checkout_stderr = stderr_capture.getvalue()
+                        local_half_errors = []
+                        project.Sync_LocalHalf(
+                            syncbuf,
+                            force_sync=opt.force_sync,
+                            force_checkout=opt.force_checkout,
+                            force_rebase=opt.rebase,
+                            errors=local_half_errors,
+                            verbose=opt.verbose,
+                        )
+                        checkout_success = syncbuf.Finish()
+                        if local_half_errors:
+                            checkout_error = SyncError(
+                                aggregate_errors=local_half_errors
+                            )
+                except KeyboardInterrupt:
+                    logger.error(
+                        "Keyboard interrupt while processing %s", project.name
+                    )
+                except GitError as e:
+                    checkout_error = e
+                    logger.error(
+                        "error.GitError: Cannot checkout %s: %s",
+                        project.name,
+                        e,
+                    )
+                except Exception as e:
+                    checkout_error = e
+                    logger.error(
+                        "error: Cannot checkout %s: %s: %s",
+                        project.name,
+                        type(e).__name__,
+                        e,
+                    )
+                finally:
+                    checkout_finish = time.time()
+                    checkout_stderr = stderr_capture.getvalue()
         elif fetch_success:
             checkout_success = True
 
