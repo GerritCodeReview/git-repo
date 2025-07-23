@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cb76250_35221190",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1076056
+      },
+      "writtenOn": "2025-07-23T13:32:43Z",
+      "side": 1,
+      "message": "I would love to know if this is correct fix for our issue, or you (fore)see so many problems by using shallow clones + upstream that we should just change manifest.",
+      "revId": "07125524897da2c069285e5a7d5e6da2e1c9ddf0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
