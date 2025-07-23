@@ -51,6 +51,24 @@
       "parentUuid": "f0919fe1_6b48b940",
       "revId": "25858c8b16264beca64bf22b91588fa6694b2b07",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "761030aa_77d7bd22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-07-23T21:27:54Z",
+      "side": 1,
+      "message": "sorry, please use https://g-issues.gerritcodereview.com/issues/new?component\u003d1370071\u0026pli\u003d1\u0026authuser\u003d0 to report a repo bug.",
+      "parentUuid": "278257cf_5acd461f",
+      "revId": "25858c8b16264beca64bf22b91588fa6694b2b07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
