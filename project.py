@@ -2415,7 +2415,9 @@ class Project:
             # throws an error.
             revs = [f"{self.revisionExpr}^0"]
             upstream_rev = None
-            if self.upstream:
+
+            # Only check upstream when using superproject.
+            if self.upstream and self.use_superproject:
                 upstream_rev = self.GetRemote().ToLocal(self.upstream)
                 revs.append(upstream_rev)
 
@@ -2427,7 +2429,9 @@ class Project:
                 log_as_error=False,
             )
 
-            if self.upstream:
+            # Only verify upstream relationship for superproject scenarios
+            # without affecting plain usage.
+            if self.upstream and self.use_superproject:
                 self.bare_git.merge_base(
                     "--is-ancestor",
                     self.revisionExpr,
