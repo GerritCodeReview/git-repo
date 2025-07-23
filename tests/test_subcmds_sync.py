@@ -309,6 +309,7 @@ class FakeProject:
         self.relpath = relpath
         self.name = name or relpath
         self.objdir = objdir or relpath
+        self.worktree = relpath
 
         self.use_git_worktrees = False
         self.UseAlternates = False
@@ -833,6 +834,25 @@ class InterleavedSyncTest(unittest.TestCase):
         self.assertFalse(result.checkout_success)
         self.assertEqual(result.fetch_error, fetch_error)
         self.assertIsNone(result.checkout_error)
+        project.Sync_NetworkHalf.assert_called_once()
+        project.Sync_LocalHalf.assert_not_called()
+
+    def test_worker_no_worktree(self):
+        """Test interleaved sync does not checkout a project with no worktree."""
+        opt = self._get_opts()
+        project = self.projA
+        project.worktree = None
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        self.mock_context["projects"] = [project]
+
+        result_obj = self.cmd._SyncProjectList(opt, [0])
+        result = result_obj.results[0]
+
+        self.assertTrue(result.fetch_success)
+        self.assertTrue(result.checkout_success)
         project.Sync_NetworkHalf.assert_called_once()
         project.Sync_LocalHalf.assert_not_called()
 
