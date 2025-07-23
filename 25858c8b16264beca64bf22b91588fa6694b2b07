@@ -69,6 +69,24 @@
       "parentUuid": "278257cf_5acd461f",
       "revId": "25858c8b16264beca64bf22b91588fa6694b2b07",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1b3c8c7_d1bccdbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-07-23T22:36:40Z",
+      "side": 1,
+      "message": "I have https://gerrit-review.googlesource.com/c/git-repo/+/492942 to fix your issue. can you verify if this change fixes your issue (without --no-interleaved)?",
+      "parentUuid": "761030aa_77d7bd22",
+      "revId": "25858c8b16264beca64bf22b91588fa6694b2b07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
