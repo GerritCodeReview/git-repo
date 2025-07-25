@@ -3835,7 +3835,11 @@ class Project:
         def GetHead(self):
             """Return the ref that HEAD points to."""
             try:
-                return self.rev_parse("--symbolic-full-name", HEAD)
+                symbolic_head = self.rev_parse("--symbolic-full-name", HEAD)
+                if symbolic_head == HEAD:
+                    # Detached HEAD. Return the commit SHA instead.
+                    return self.rev_parse(HEAD)
+                return symbolic_head
             except GitError as e:
                 path = self.GetDotgitPath(subpath=HEAD)
                 raise NoManifestException(path, str(e))
