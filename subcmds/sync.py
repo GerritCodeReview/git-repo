@@ -2576,6 +2576,7 @@ later is required to fix a server side protocol bug.
                                 callback=callback,
                                 output=pm,
                                 chunksize=1,
+                                initializer=self.InitWorker,
                             ):
                                 err_event.set()
 
