@@ -101,12 +101,11 @@ class RepoHook:
         self._abort_if_user_denies = abort_if_user_denies
 
         # Store the full path to the script for convenience.
-        if self._hooks_project:
+        self._script_fullpath = None
+        if self._hooks_project and self._hooks_project.worktree:
             self._script_fullpath = os.path.join(
                 self._hooks_project.worktree, self._hook_type + ".py"
             )
-        else:
-            self._script_fullpath = None
 
     def _GetHash(self):
         """Return a hash of the contents of the hooks directory.
@@ -443,6 +442,7 @@ class RepoHook:
         if (
             self._bypass_hooks
             or not self._hooks_project
+            or not self._script_fullpath
             or self._hook_type not in self._hooks_project.enabled_repo_hooks
         ):
             return True
