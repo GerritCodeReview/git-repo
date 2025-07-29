@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39e72fb5_09ea30d9",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2419,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-07-29T14:31:19Z",
+      "side": 1,
+      "message": "period at the end of sentences in comments",
+      "revId": "06e1e02364a311ef566d1a94786ecade886a0daa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc1d7ce5_0eb71ea7",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2421,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-07-29T14:31:19Z",
+      "side": 1,
+      "message": "i don\u0027t think this adds value.  we don\u0027t maintain changelogs in the source code itself.  delete it.",
+      "range": {
+        "startLine": 2420,
+        "startChar": 0,
+        "endLine": 2421,
+        "endChar": 69
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "70ad8c7e_b428166b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 2420,
+                "startChar": 0,
+                "endLine": 2422,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "06e1e02364a311ef566d1a94786ecade886a0daa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
