@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c422fbf_7192489d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-07-29T14:32:50Z",
+      "side": 1,
+      "message": "tags should be at the bottom (see Change-Id)",
+      "revId": "b825057512dacb46768328227e450f1956cc1197",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79b32c78_802c40f7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-07-29T14:32:50Z",
+      "side": 1,
+      "message": "commit messages shouldn\u0027t be changelogs.  that\u0027s what the diff is for.\n\nhttps://cbea.ms/git-commit/",
+      "revId": "b825057512dacb46768328227e450f1956cc1197",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
