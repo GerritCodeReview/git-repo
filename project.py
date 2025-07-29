@@ -1907,69 +1907,59 @@ class Project:
                 )
                 raise DeleteWorktreeError(aggregate_errors=[e])
 
-        # Delete everything under the worktree, except for directories that
-        # contain another git project.
-        dirs_to_remove = []
-        failed = False
-        errors = []
-        for root, dirs, files in platform_utils.walk(self.worktree):
-            for f in files:
-                path = os.path.join(root, f)
+        # Delete tracked files using git ls-files, then clean up empty dirs
+        # Use git ls-files to get all tracked files in the worktree
+        try:
+            files_output = self.bare_git.ls_files(
+                "-z", _cwd=self.worktree
+            ).split("\0")
+            tracked_files = [
+                f for f in files_output if f
+            ]  # Filter out empty strings
+
+            # Remove all tracked files
+            for rel_path in tracked_files:
+                abs_path = os.path.join(self.worktree, rel_path)
                 try:
-                    platform_utils.remove(path)
+                    platform_utils.remove(abs_path)
                 except OSError as e:
                     if e.errno != errno.ENOENT:
-                        logger.warning("%s: Failed to remove: %s", path, e)
-                        failed = True
-                        errors.append(e)
-            dirs[:] = [
-                d
-                for d in dirs
-                if not os.path.lexists(os.path.join(root, d, ".git"))
-            ]
-            dirs_to_remove += [
-                os.path.join(root, d)
-                for d in dirs
-                if os.path.join(root, d) not in dirs_to_remove
-            ]
-        for d in reversed(dirs_to_remove):
-            if platform_utils.islink(d):
-                try:
-                    platform_utils.remove(d)
-                except OSError as e:
-                    if e.errno != errno.ENOENT:
-                        logger.warning("%s: Failed to remove: %s", d, e)
-                        failed = True
-                        errors.append(e)
-            elif not platform_utils.listdir(d):
-                try:
-                    platform_utils.rmdir(d)
-                except OSError as e:
-                    if e.errno != errno.ENOENT:
-                        logger.warning("%s: Failed to remove: %s", d, e)
-                        failed = True
-                        errors.append(e)
-        if failed:
-            rename_path = (
-                f"{self.worktree}_repo_to_be_deleted_{int(time.time())}"
-            )
-            try:
-                platform_utils.rename(self.worktree, rename_path)
-                logger.warning(
-                    "warning: renamed %s to %s. You can delete it, but you "
-                    "might need elevated permissions (e.g. root)",
-                    self.worktree,
-                    rename_path,
-                )
-                # Rename successful! Clear the errors.
-                errors = []
-            except OSError:
-                logger.error(
-                    "%s: Failed to delete obsolete checkout.\n",
-                    "       Remove manually, then run `repo sync -l`.",
-                    self.RelPath(local=False),
-                )
-                raise DeleteWorktreeError(aggregate_errors=errors)
+                        logger.error("%s: Failed to remove: %s", abs_path, e)
+                        raise DeleteWorktreeError(aggregate_errors=[e])
+
+            # Collect and remove empty directories (excluding those with .git)
+            dirs_to_remove = set()
+            for rel_path in tracked_files:
+                # Add all parent directories of this file
+                dir_path = os.path.dirname(rel_path)
+                while dir_path and dir_path != ".":
+                    dirs_to_remove.add(os.path.join(self.worktree, dir_path))
+                    dir_path = os.path.dirname(dir_path)
+
+            # Remove empty directories in reverse order (deepest first)
+            for d in sorted(dirs_to_remove, key=len, reverse=True):
+                # Skip directories that contain another git project
+                if os.path.lexists(os.path.join(d, ".git")):
+                    continue
+
+                if platform_utils.islink(d):
+                    try:
+                        platform_utils.remove(d)
+                    except OSError as e:
+                        if e.errno != errno.ENOENT:
+                            logger.error("%s: Failed to remove: %s", d, e)
+                            raise DeleteWorktreeError(aggregate_errors=[e])
+                elif not platform_utils.listdir(d):
+                    try:
+                        platform_utils.rmdir(d)
+                    except OSError as e:
+                        if e.errno != errno.ENOENT:
+                            logger.error("%s: Failed to remove: %s", d, e)
+                            raise DeleteWorktreeError(aggregate_errors=[e])
+
+        except GitError as e:
+            logger.error("Failed to get tracked files with git ls-files: %s", e)
+            raise DeleteWorktreeError(aggregate_errors=[e])
 
         # Try deleting parent dirs if they are empty.
         path = self.worktree
