@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68959b94_5c2ba51d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-07-30T03:28:27Z",
+      "side": 1,
+      "message": "I haven\u0027t been able to reproduce the bug, could you try patching this change and seeing if this fixes it?",
+      "revId": "a1191405b0324193a644316eb1077e8c014896b1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a2bc925_598bee9b",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3844,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-07-30T03:28:27Z",
+      "side": 1,
+      "message": "v2.56 GetHead() for reference: https://gerrit.googlesource.com/git-repo/+/99b5a17f2c951fe5979100c36e7e1dbb4c61b36c/project.py#3842",
+      "range": {
+        "startLine": 3844,
+        "startChar": 18,
+        "endLine": 3844,
+        "endChar": 49
+      },
+      "revId": "a1191405b0324193a644316eb1077e8c014896b1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
