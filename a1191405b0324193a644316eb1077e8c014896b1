@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c7780cd5_793f3a48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-08-04T19:17:34Z",
+      "side": 1,
+      "message": "Resolving this thread, I believe this should fix your issue since it reverts to the old parsing method which you verified works from v2.56",
+      "parentUuid": "c5535dce_d9c82617",
+      "revId": "a1191405b0324193a644316eb1077e8c014896b1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "0a2bc925_598bee9b",
         "filename": "project.py",
         "patchSetId": 3
@@ -72,6 +90,30 @@
       "writtenOn": "2025-08-04T18:45:55Z",
       "side": 1,
       "message": "it\u0027d be good to log the GitError exception so that users may identify and fix the broken HEAD.",
+      "range": {
+        "startLine": 3845,
+        "startChar": 16,
+        "endLine": 3845,
+        "endChar": 65
+      },
+      "revId": "a1191405b0324193a644316eb1077e8c014896b1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aabb8fe0_edbaeb40",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3845,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-08-04T19:17:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a963924_a2dacf13",
       "range": {
         "startLine": 3845,
         "startChar": 16,
