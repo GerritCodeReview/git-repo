@@ -57,6 +57,29 @@
       },
       "revId": "a1191405b0324193a644316eb1077e8c014896b1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a963924_a2dacf13",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3845,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-08-04T18:45:55Z",
+      "side": 1,
+      "message": "it\u0027d be good to log the GitError exception so that users may identify and fix the broken HEAD.",
+      "range": {
+        "startLine": 3845,
+        "startChar": 16,
+        "endLine": 3845,
+        "endChar": 65
+      },
+      "revId": "a1191405b0324193a644316eb1077e8c014896b1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
