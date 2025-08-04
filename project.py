@@ -3841,8 +3841,29 @@ class Project:
                     return self.rev_parse(HEAD)
                 return symbolic_head
             except GitError as e:
+                logger.warning(
+                    "project %s: unparseable HEAD; trying to recover.\n"
+                    "Check that HEAD ref in .git/HEAD is valid. The error "
+                    "was: %s",
+                    self._project.RelPath(local=False),
+                    e,
+                )
+
+                # Fallback to direct file reading for compatibility with broken
+                # repos, e.g. if HEAD points to an unborn branch.
                 path = self.GetDotgitPath(subpath=HEAD)
-                raise NoManifestException(path, str(e))
+                try:
+                    with open(path) as fd:
+                        line = fd.readline()
+                except OSError:
+                    raise NoManifestException(path, str(e))
+                try:
+                    line = line.decode()
+                except AttributeError:
+                    pass
+                if line.startswith("ref: "):
+                    return line[5:-1]
+                return line[:-1]
 
         def SetHead(self, ref, message=None):
             cmdv = []
