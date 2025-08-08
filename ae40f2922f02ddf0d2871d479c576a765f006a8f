@@ -16,6 +16,24 @@
       "message": "Is this fixed now by 493883: Fix shallow clones when upstream attribute is present | https://gerrit-review.googlesource.com/c/git-repo/+/493883 ?",
       "revId": "ae40f2922f02ddf0d2871d479c576a765f006a8f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0f860a3_da88994e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-08-08T18:09:52Z",
+      "side": 1,
+      "message": "i was just thinking the same thing",
+      "parentUuid": "225582b8_f6975d29",
+      "revId": "ae40f2922f02ddf0d2871d479c576a765f006a8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
