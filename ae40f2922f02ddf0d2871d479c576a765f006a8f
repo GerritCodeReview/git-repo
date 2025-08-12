@@ -52,6 +52,24 @@
       "parentUuid": "f0f860a3_da88994e",
       "revId": "ae40f2922f02ddf0d2871d479c576a765f006a8f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9ff7dc2_9655f222",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-08-12T19:14:24Z",
+      "side": 1,
+      "message": "that\u0027s a new bug.  please file one for us to check.",
+      "parentUuid": "33a0a24c_8590e787",
+      "revId": "ae40f2922f02ddf0d2871d479c576a765f006a8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
