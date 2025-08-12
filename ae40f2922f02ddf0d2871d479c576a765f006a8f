@@ -34,6 +34,24 @@
       "parentUuid": "225582b8_f6975d29",
       "revId": "ae40f2922f02ddf0d2871d479c576a765f006a8f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33a0a24c_8590e787",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-08-12T18:23:23Z",
+      "side": 1,
+      "message": "I tried checking if it did fix the issue, but I ran into an error `AttributeError: \u0027Project\u0027 object has no attribute \u0027use_superproject\u0027`. Did that change use the correct attr name?\n\n(I can look closely at that change when I have some time)",
+      "parentUuid": "f0f860a3_da88994e",
+      "revId": "ae40f2922f02ddf0d2871d479c576a765f006a8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
