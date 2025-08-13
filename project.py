@@ -4031,7 +4031,8 @@ class _Later:
             if not self.quiet:
                 out.nl()
             return True
-        except GitError:
+        except GitError as e:
+            syncbuf.fail(self.project, e)
             out.nl()
             return False
 
@@ -4081,6 +4082,11 @@ class SyncBuffer:
         recent_clean = self.recent_clean
         self.recent_clean = True
         return recent_clean
+
+    @property
+    def errors(self):
+        """Returns a list of exceptions accumulated in the buffer."""
+        return [f.why for f in self._failures if f.why]
 
     def _MarkUnclean(self):
         self.clean = False

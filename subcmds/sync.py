@@ -1096,6 +1096,7 @@ later is required to fix a server side protocol bug.
                 verbose=verbose,
             )
             success = syncbuf.Finish()
+            errors.extend(syncbuf.errors)
         except KeyboardInterrupt:
             logger.error("Keyboard interrupt while processing %s", project.name)
         except GitError as e:
@@ -1757,6 +1758,7 @@ later is required to fix a server side protocol bug.
                 verbose=opt.verbose,
             )
             clean = syncbuf.Finish()
+            errors.extend(syncbuf.errors)
             self.event_log.AddSync(
                 mp, event_log.TASK_SYNC_LOCAL, start, time.time(), clean
             )
@@ -2294,6 +2296,7 @@ later is required to fix a server side protocol bug.
                             verbose=opt.verbose,
                         )
                         checkout_success = syncbuf.Finish()
+                        local_half_errors.extend(syncbuf.errors)
                         if local_half_errors:
                             checkout_error = SyncError(
                                 aggregate_errors=local_half_errors
