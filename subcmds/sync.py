@@ -2398,7 +2398,8 @@ later is required to fix a server side protocol bug.
                 pm.update()
                 project = projects[result.project_index]
 
-                if opt.verbose and result.stderr_text:
+                success = result.fetch_success and result.checkout_success
+                if result.stderr_text and (opt.verbose or not success):
                     pm.display_message(result.stderr_text)
 
                 if result.fetch_start:
