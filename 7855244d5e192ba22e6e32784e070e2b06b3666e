@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9253ff12_66aa45ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-08-13T22:26:36Z",
+      "side": 1,
+      "message": "I believe that File.fileno() is thread-safe, as it just returns the fileno of the file object. The corresponding function in libc,`fileno()`, is also thread-safe.\n\nIIUC, this description states that the original sys.stderr.fileno() is thread-safe and can be call simultaneously by multiple background threads. However, the fileno() method of the File class instance that overrides sys.stderr is not implemented in a thread-safe way so that this CL updates business logic to write logs to the original sys.stderr even if it is overridden for redirection.\n\nI wonder it\u0027d be better to fix the race bug in the File object that overrides sys.stderr.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 262
+      },
+      "revId": "7855244d5e192ba22e6e32784e070e2b06b3666e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
