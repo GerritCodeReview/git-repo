@@ -2530,12 +2530,6 @@ later is required to fix a server side protocol bug.
                                 stalled_projects_str,
                             )
                             err_event.set()
-
-                            # Include these in the final error report.
-                            self._interleaved_err_checkout = True
-                            self._interleaved_err_checkout_results.extend(
-                                list(pending_relpaths)
-                            )
                             break
                         previously_pending_relpaths = pending_relpaths
 
