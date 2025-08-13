@@ -25,7 +25,10 @@ except ImportError:
 from repo_trace import IsTraceToStderr
 
 
-_TTY = sys.stderr.isatty()
+# Capture the original stderr stream. We use this exclusively for progress
+# updates to ensure we talk to the terminal even if stderr is redirected.
+_STDERR = sys.stderr
+_TTY = _STDERR.isatty()
 
 # This will erase all content in the current line (wherever the cursor is).
 # It does not move the cursor, so this is usually followed by \r to move to
@@ -133,11 +136,11 @@ class Progress:
     def _write(self, s):
         s = "\r" + s
         if self._elide:
-            col = os.get_terminal_size(sys.stderr.fileno()).columns
+            col = os.get_terminal_size(_STDERR.fileno()).columns
             if len(s) > col:
                 s = s[: col - 1] + ".."
-        sys.stderr.write(s)
-        sys.stderr.flush()
+        _STDERR.write(s)
+        _STDERR.flush()
 
     def start(self, name):
         self._active += 1
@@ -211,9 +214,9 @@ class Progress:
 
         # Erase the current line, print the message with a newline,
         # and then immediately redraw the progress bar on the new line.
-        sys.stderr.write("\r" + CSI_ERASE_LINE)
-        sys.stderr.write(msg + "\n")
-        sys.stderr.flush()
+        _STDERR.write("\r" + CSI_ERASE_LINE)
+        _STDERR.write(msg + "\n")
+        _STDERR.flush()
         self.update(inc=0)
 
     def end(self):
