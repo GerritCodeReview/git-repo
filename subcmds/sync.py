@@ -2382,7 +2382,7 @@ later is required to fix a server side protocol bug.
 
     def _ProcessSyncInterleavedResults(
         self,
-        synced_relpaths: Set[str],
+        finished_relpaths: Set[str],
         err_event: _threading.Event,
         errors: List[Exception],
         opt: optparse.Values,
@@ -2426,9 +2426,9 @@ later is required to fix a server side protocol bug.
                         result.checkout_success,
                     )
 
-                if result.fetch_success and result.checkout_success:
-                    synced_relpaths.add(result.relpath)
-                else:
+                finished_relpaths.add(result.relpath)
+
+                if not success:
                     ret = False
                     err_event.set()
                     if result.fetch_error:
@@ -2480,7 +2480,7 @@ later is required to fix a server side protocol bug.
         self._interleaved_err_checkout_results = []
 
         err_event = multiprocessing.Event()
-        synced_relpaths = set()
+        finished_relpaths = set()
         project_list = list(all_projects)
         pm = Progress(
             "Syncing",
@@ -2514,7 +2514,7 @@ later is required to fix a server side protocol bug.
                         projects_to_sync = [
                             p
                             for p in project_list
-                            if p.relpath not in synced_relpaths
+                            if p.relpath not in finished_relpaths
                         ]
                         if not projects_to_sync:
                             break
@@ -2531,12 +2531,6 @@ later is required to fix a server side protocol bug.
                                 stalled_projects_str,
                             )
                             err_event.set()
-
-                            # Include these in the final error report.
-                            self._interleaved_err_checkout = True
-                            self._interleaved_err_checkout_results.extend(
-                                list(pending_relpaths)
-                            )
                             break
                         previously_pending_relpaths = pending_relpaths
 
@@ -2571,7 +2565,7 @@ later is required to fix a server side protocol bug.
                             jobs = max(1, min(opt.jobs, len(work_items)))
                             callback = functools.partial(
                                 self._ProcessSyncInterleavedResults,
-                                synced_relpaths,
+                                finished_relpaths,
                                 err_event,
                                 errors,
                                 opt,
