@@ -748,6 +748,10 @@ later is required to fix a server side protocol bug.
             manifest_path = update_result.manifest_path
             superproject_logging_data["updatedrevisionid"] = bool(manifest_path)
             if manifest_path:
+                # Superproject update succeeded. Flag the projects accordingly.
+                current_manifest_projects = per_manifest[m.path_prefix]
+                for p in current_manifest_projects:
+                    p.use_superproject = True
                 m.SetManifestOverride(manifest_path)
                 need_unload = True
             else:

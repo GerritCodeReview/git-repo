@@ -630,6 +630,9 @@ class Project:
         self.is_derived = is_derived
         self.optimized_fetch = optimized_fetch
         self.retry_fetches = max(0, retry_fetches)
+
+        # This will be updated later if the project revision is updated by superproject.
+        self.use_superproject = False
         self.subprojects = []
 
         self.snapshots = {}
