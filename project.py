@@ -1539,18 +1539,14 @@ class Project:
         force_checkout=False,
         force_rebase=False,
         submodules=False,
-        errors=None,
         verbose=False,
     ):
         """Perform only the local IO portion of the sync process.
 
         Network access is not required.
         """
-        if errors is None:
-            errors = []
 
         def fail(error: Exception):
-            errors.append(error)
             syncbuf.fail(self, error)
 
         if not os.path.exists(self.gitdir):
@@ -4031,7 +4027,8 @@ class _Later:
             if not self.quiet:
                 out.nl()
             return True
-        except GitError:
+        except GitError as e:
+            syncbuf.fail(self.project, e)
             out.nl()
             return False
 
@@ -4081,6 +4078,11 @@ class SyncBuffer:
         recent_clean = self.recent_clean
         self.recent_clean = True
         return recent_clean
+
+    @property
+    def errors(self):
+        """Returns a list of exceptions accumulated in the buffer."""
+        return [f.why for f in self._failures if f.why]
 
     def _MarkUnclean(self):
         self.clean = False

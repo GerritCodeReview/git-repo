@@ -801,6 +801,7 @@ class InterleavedSyncTest(unittest.TestCase):
         with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
             mock_sync_buf_instance = mock.MagicMock()
             mock_sync_buf_instance.Finish.return_value = True
+            mock_sync_buf_instance.errors = []
             mock_sync_buffer.return_value = mock_sync_buf_instance
 
             result_obj = self.cmd._SyncProjectList(opt, [0])
@@ -909,6 +910,7 @@ class InterleavedSyncTest(unittest.TestCase):
         with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
             mock_sync_buf_instance = mock.MagicMock()
             mock_sync_buf_instance.Finish.return_value = True
+            mock_sync_buf_instance.errors = []
             mock_sync_buffer.return_value = mock_sync_buf_instance
 
             result_obj = self.cmd._SyncProjectList(opt, [0])

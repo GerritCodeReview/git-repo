@@ -1092,10 +1092,10 @@ later is required to fix a server side protocol bug.
                 force_sync=force_sync,
                 force_checkout=force_checkout,
                 force_rebase=force_rebase,
-                errors=errors,
                 verbose=verbose,
             )
             success = syncbuf.Finish()
+            errors.extend(syncbuf.errors)
         except KeyboardInterrupt:
             logger.error("Keyboard interrupt while processing %s", project.name)
         except GitError as e:
@@ -1753,10 +1753,10 @@ later is required to fix a server side protocol bug.
             mp.Sync_LocalHalf(
                 syncbuf,
                 submodules=mp.manifest.HasSubmodules,
-                errors=errors,
                 verbose=opt.verbose,
             )
             clean = syncbuf.Finish()
+            errors.extend(syncbuf.errors)
             self.event_log.AddSync(
                 mp, event_log.TASK_SYNC_LOCAL, start, time.time(), clean
             )
@@ -2284,19 +2284,17 @@ later is required to fix a server side protocol bug.
                             project.manifest.manifestProject.config,
                             detach_head=opt.detach_head,
                         )
-                        local_half_errors = []
                         project.Sync_LocalHalf(
                             syncbuf,
                             force_sync=opt.force_sync,
                             force_checkout=opt.force_checkout,
                             force_rebase=opt.rebase,
-                            errors=local_half_errors,
                             verbose=opt.verbose,
                         )
                         checkout_success = syncbuf.Finish()
-                        if local_half_errors:
+                        if syncbuf.errors:
                             checkout_error = SyncError(
-                                aggregate_errors=local_half_errors
+                                aggregate_errors=syncbuf.errors
                             )
                 except KeyboardInterrupt:
                     logger.error(
