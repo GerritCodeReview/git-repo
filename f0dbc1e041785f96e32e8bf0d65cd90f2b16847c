@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51d133c1_c822e39c",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 4087,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-08-14T01:07:54Z",
+      "side": 1,
+      "message": "this method returns `List[Exception]`, so I think `errors` fits better here",
+      "parentUuid": "482eddca_fe58215b",
+      "range": {
+        "startLine": 4087,
+        "startChar": 8,
+        "endLine": 4087,
+        "endChar": 14
+      },
+      "revId": "f0dbc1e041785f96e32e8bf0d65cd90f2b16847c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9f2a20c_ddff270b",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eaf80c5_3c767a97",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 4089,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-08-14T01:07:54Z",
+      "side": 1,
+      "message": "from L4065: `def fail(self, project, err\u003dNone):`, err is optional. I think it\u0027d be cleaner if err was required but it feels outside the scope of this change",
+      "parentUuid": "a9f2a20c_ddff270b",
+      "range": {
+        "startLine": 4089,
+        "startChar": 49,
+        "endLine": 4089,
+        "endChar": 54
+      },
+      "revId": "f0dbc1e041785f96e32e8bf0d65cd90f2b16847c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62fc487f_869fe4f9",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-08-13T22:16:29Z",
       "side": 1,
       "message": "It seems concerning that project.Sync_LocalHalf() populates errors into two different vars. I wonder if you could avoid adding `errors()` to `SyncBuffer` and update Sync_LocalHalf() to populate the missed Git error into `errors` instead.\n\n```\nerrors \u003d []\ntry:\n    project.Sync_LocalHalf(\n        # Sync_LocalHalf() will add errors to syncbuf, if it finds\n        # any errors in syncbuf?\n        syncbuf,\n        # `errors` is always [] here.\n        # so...the intent of passing errors to Sync_LocalHalf() is to\n        # ask Sync_LocalHalf() to add all the errors to `errors`, if\n        # it finds any during the processing?\n        #\n        # In other words, it will classify errors to syncbuf errors and\n        # any other types of errors, and then store the errors into\n        # syncbuf.errors and errors.\n        errors,\n    )\n    \n    # the below looks like it\u0027s using syncbuf to determine the success\n    # of the call. ok..\n    success \u003d syncbuf.Finish()\n    \n    # this looks confusing.\n    # syncbuf solely determines the success status of the Sync_LocalHalf().\n    # I expect that syncbuf.errors would be set if syncbuf.Finish()\n    # returns False.\n    #\n    # However, the below just add syncbuf.errors to errors, which implies\n    # that Sync_LocalHalf() could add other errors to `errors` while adding\n    # sync errors  to `syncbuf.errors`?\n    #\n    # what does it mean if errors !\u003d [], but syncbuf.Finish() \u003d\u003d True? \n    errors.extend(syncbuf.errors)\n```",
+      "range": {
+        "startLine": 1088,
+        "startChar": 8,
+        "endLine": 1106,
+        "endChar": 28
+      },
+      "revId": "f0dbc1e041785f96e32e8bf0d65cd90f2b16847c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e974cc6_32fba76b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1106,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-08-14T01:07:54Z",
+      "side": 1,
+      "message": "with the current SyncBuffer/_Later (e.g. https://cs.opensource.google/gerrit/gerrit/git-repo/+/main:project.py;l\u003d1771-1774;drc\u003dd9cc0a15265299b6dcfc1d65f192fd14cfb17b02) Sync_LocalHalf returns before the queued/deferred actions are run which happens in syncbuf.Finish(). I do think we should dedupe where we add errors, so I removed the errors arg from Sync_LocalHalf and put all errs into syncbuf. PTAL",
+      "parentUuid": "62fc487f_869fe4f9",
       "range": {
         "startLine": 1088,
         "startChar": 8,
