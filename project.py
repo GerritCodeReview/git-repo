@@ -1539,18 +1539,14 @@ class Project:
         force_checkout=False,
         force_rebase=False,
         submodules=False,
-        errors=None,
         verbose=False,
     ):
         """Perform only the local IO portion of the sync process.
 
         Network access is not required.
         """
-        if errors is None:
-            errors = []
 
         def fail(error: Exception):
-            errors.append(error)
             syncbuf.fail(self, error)
 
         if not os.path.exists(self.gitdir):
@@ -4031,7 +4027,8 @@ class _Later:
             if not self.quiet:
                 out.nl()
             return True
-        except GitError:
+        except GitError as e:
+            syncbuf.fail(self.project, e)
             out.nl()
             return False
 
@@ -4047,7 +4044,12 @@ class _SyncColoring(Coloring):
 class SyncBuffer:
     def __init__(self, config, detach_head=False):
         self._messages = []
-        self._failures = []
+
+        # Failures that have not yet been printed. Cleared after printing.
+        self._pending_failures = []
+        # A persistent record of all failures during the buffer's lifetime.
+        self._all_failures = []
+
         self._later_queue1 = []
         self._later_queue2 = []
 
@@ -4062,7 +4064,9 @@ class SyncBuffer:
         self._messages.append(_InfoMessage(project, fmt % args))
 
     def fail(self, project, err=None):
-        self._failures.append(_Failure(project, err))
+        failure = _Failure(project, err)
+        self._pending_failures.append(failure)
+        self._all_failures.append(failure)
         self._MarkUnclean()
 
     def later1(self, project, what, quiet):
@@ -4082,6 +4086,11 @@ class SyncBuffer:
         self.recent_clean = True
         return recent_clean
 
+    @property
+    def errors(self):
+        """Returns a list of all exceptions accumulated in the buffer."""
+        return [f.why for f in self._all_failures if f.why]
+
     def _MarkUnclean(self):
         self.clean = False
         self.recent_clean = False
@@ -4100,18 +4109,18 @@ class SyncBuffer:
         return True
 
     def _PrintMessages(self):
-        if self._messages or self._failures:
+        if self._messages or self._pending_failures:
             if os.isatty(2):
                 self.out.write(progress.CSI_ERASE_LINE)
             self.out.write("\r")
 
         for m in self._messages:
             m.Print(self)
-        for m in self._failures:
+        for m in self._pending_failures:
             m.Print(self)
 
         self._messages = []
-        self._failures = []
+        self._pending_failures = []
 
 
 class MetaProject(Project):
