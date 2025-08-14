@@ -140,6 +140,30 @@
       },
       "revId": "f0dbc1e041785f96e32e8bf0d65cd90f2b16847c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0225be8b_70851cdc",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1106,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-08-14T02:04:37Z",
+      "side": 1,
+      "message": "Looks good 👍",
+      "parentUuid": "0e974cc6_32fba76b",
+      "range": {
+        "startLine": 1088,
+        "startChar": 8,
+        "endLine": 1106,
+        "endChar": 28
+      },
+      "revId": "f0dbc1e041785f96e32e8bf0d65cd90f2b16847c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
