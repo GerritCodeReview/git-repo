@@ -22,6 +22,30 @@
       },
       "revId": "7855244d5e192ba22e6e32784e070e2b06b3666e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95485ed4_212ccbf9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-08-14T00:01:20Z",
+      "side": 1,
+      "message": "this was the error for context:\n```\n$ ~/git-repo/repo sync -c -j1 --fail-fast \u003cproject\u003e\n...\nException in thread Thread-1 (_update_loop):\nTraceback (most recent call last):\n  File \"/usr/lib/python3.12/threading.py\", line 1075, in _bootstrap_inner\n    self.run()\n  File \"/usr/lib/python3.12/threading.py\", line 1012, in run\n    self._target(*self._args, **self._kwargs)\n  File \"/usr/local/google/home/gavinmak/git-repo/progress.py\", line 129, in _update_loop\n    self.update(inc\u003d0)\n  File \"/usr/local/google/home/gavinmak/git-repo/progress.py\", line 188, in update\n    self._write(\n  File \"/usr/local/google/home/gavinmak/git-repo/progress.py\", line 136, in _write\n    col \u003d os.get_terminal_size(sys.stderr.fileno()).columns\n                               ^^^^^^^^^^^^^^^^^^^\nio.UnsupportedOperation: fileno\nException in thread Thread-2 (_monitor_loop):\nTraceback (most recent call last):\n  File \"/usr/lib/python3.12/threading.py\", line 1075, in _bootstrap_inner\n    self.run()\n  File \"/usr/lib/python3.12/threading.py\", line 1012, in run\n    self._target(*self._args, **self._kwargs)\n  File \"/usr/local/google/home/gavinmak/git-repo/subcmds/sync.py\", line 2028, in _monitor_loop\n    pm.update(inc\u003d0, msg\u003dself._GetSyncProgressMessage())\n  File \"/usr/local/google/home/gavinmak/git-repo/progress.py\", line 188, in update\n    self._write(\n  File \"/usr/local/google/home/gavinmak/git-repo/progress.py\", line 136, in _write\n    col \u003d os.get_terminal_size(sys.stderr.fileno()).columns\n                               ^^^^^^^^^^^^^^^^^^^\nio.UnsupportedOperation: fileno\n...\n```\n\n\u003e the fileno() method of the File class instance that overrides sys.stderr is not implemented in a thread-safe way.\n\nthe crash isn\u0027t due to non-thread-safe behavior, it\u0027s that the object that temporarily overrides sys.stderr doesn\u0027t support `fileno()` at all: https://cs.opensource.google/gerrit/gerrit/git-repo/+/main:subcmds/sync.py;l\u003d2282;drc\u003dd3eec0acdd856e54747494465a33ebf72f321cb1\n\n`stderr_capture` is a `io.StringIO()` that doesn\u0027t have a `fileno()` since it\u0027s in-memory. also the progress bar needs the terminal\u0027s file descriptor to calculate width and should always write to the terminal",
+      "parentUuid": "9253ff12_66aa45ac",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 262
+      },
+      "revId": "7855244d5e192ba22e6e32784e070e2b06b3666e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
