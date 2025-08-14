@@ -810,8 +810,8 @@ class InterleavedSyncTest(unittest.TestCase):
             result = result_obj.results[0]
             self.assertTrue(result.fetch_success)
             self.assertTrue(result.checkout_success)
-            self.assertIsNone(result.fetch_error)
-            self.assertIsNone(result.checkout_error)
+            self.assertEqual(result.fetch_errors, [])
+            self.assertEqual(result.checkout_errors, [])
             project.Sync_NetworkHalf.assert_called_once()
             project.Sync_LocalHalf.assert_called_once()
 
@@ -833,8 +833,8 @@ class InterleavedSyncTest(unittest.TestCase):
 
         self.assertFalse(result.fetch_success)
         self.assertFalse(result.checkout_success)
-        self.assertEqual(result.fetch_error, fetch_error)
-        self.assertIsNone(result.checkout_error)
+        self.assertEqual(result.fetch_errors, [fetch_error])
+        self.assertEqual(result.checkout_errors, [])
         project.Sync_NetworkHalf.assert_called_once()
         project.Sync_LocalHalf.assert_not_called()
 
@@ -871,7 +871,7 @@ class InterleavedSyncTest(unittest.TestCase):
 
         self.assertFalse(result.fetch_success)
         self.assertFalse(result.checkout_success)
-        self.assertEqual(result.fetch_error, fetch_error)
+        self.assertEqual(result.fetch_errors, [fetch_error])
         project.Sync_NetworkHalf.assert_called_once()
         project.Sync_LocalHalf.assert_not_called()
 
@@ -893,8 +893,8 @@ class InterleavedSyncTest(unittest.TestCase):
 
             self.assertTrue(result.fetch_success)
             self.assertFalse(result.checkout_success)
-            self.assertIsNone(result.fetch_error)
-            self.assertEqual(result.checkout_error, checkout_error)
+            self.assertEqual(result.fetch_errors, [])
+            self.assertEqual(result.checkout_errors, [checkout_error])
             project.Sync_NetworkHalf.assert_called_once()
             project.Sync_LocalHalf.assert_called_once()
 
