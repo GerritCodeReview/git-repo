@@ -204,14 +204,13 @@ class _SyncResult(NamedTuple):
       relpath (str): The project's relative path from the repo client top.
       remote_fetched (bool): True if the remote was actually queried.
       fetch_success (bool): True if the fetch operation was successful.
-      fetch_error (Optional[Exception]): The Exception from a failed fetch,
-          or None.
+      fetch_errors (List[Exception]): The Exceptions from a failed fetch.
       fetch_start (Optional[float]): The time.time() when fetch started.
       fetch_finish (Optional[float]): The time.time() when fetch finished.
       checkout_success (bool): True if the checkout operation was
           successful.
-      checkout_error (Optional[Exception]): The Exception from a failed
-          checkout, or None.
+      checkout_errors (List[Exception]): The Exceptions from a failed
+          checkout.
       checkout_start (Optional[float]): The time.time() when checkout
           started.
       checkout_finish (Optional[float]): The time.time() when checkout
@@ -224,12 +223,12 @@ class _SyncResult(NamedTuple):
 
     remote_fetched: bool
     fetch_success: bool
-    fetch_error: Optional[Exception]
+    fetch_errors: List[Exception]
     fetch_start: Optional[float]
     fetch_finish: Optional[float]
 
     checkout_success: bool
-    checkout_error: Optional[Exception]
+    checkout_errors: List[Exception]
     checkout_start: Optional[float]
     checkout_finish: Optional[float]
 
@@ -2210,7 +2209,7 @@ later is required to fix a server side protocol bug.
         """Syncs a single project for interleaved sync."""
         fetch_success = False
         remote_fetched = False
-        fetch_error = None
+        fetch_errors = []
         fetch_start = None
         fetch_finish = None
         network_output = ""
@@ -2243,16 +2242,17 @@ later is required to fix a server side protocol bug.
                 )
                 fetch_success = sync_result.success
                 remote_fetched = sync_result.remote_fetched
-                fetch_error = sync_result.error
+                if sync_result.error:
+                    fetch_errors.append(sync_result.error)
             except KeyboardInterrupt:
                 logger.error(
                     "Keyboard interrupt while processing %s", project.name
                 )
             except GitError as e:
-                fetch_error = e
+                fetch_errors.append(e)
                 logger.error("error.GitError: Cannot fetch %s", e)
             except Exception as e:
-                fetch_error = e
+                fetch_errors.append(e)
                 logger.error(
                     "error: Cannot fetch %s (%s: %s)",
                     project.name,
@@ -2264,7 +2264,7 @@ later is required to fix a server side protocol bug.
                 network_output = network_output_capture.getvalue()
 
         checkout_success = False
-        checkout_error = None
+        checkout_errors = []
         checkout_start = None
         checkout_finish = None
         checkout_stderr = ""
@@ -2293,22 +2293,20 @@ later is required to fix a server side protocol bug.
                         )
                         checkout_success = syncbuf.Finish()
                         if syncbuf.errors:
-                            checkout_error = SyncError(
-                                aggregate_errors=syncbuf.errors
-                            )
+                            checkout_errors.extend(syncbuf.errors)
                 except KeyboardInterrupt:
                     logger.error(
                         "Keyboard interrupt while processing %s", project.name
                     )
                 except GitError as e:
-                    checkout_error = e
+                    checkout_errors.append(e)
                     logger.error(
                         "error.GitError: Cannot checkout %s: %s",
                         project.name,
                         e,
                     )
                 except Exception as e:
-                    checkout_error = e
+                    checkout_errors.append(e)
                     logger.error(
                         "error: Cannot checkout %s: %s: %s",
                         project.name,
@@ -2333,8 +2331,8 @@ later is required to fix a server side protocol bug.
             fetch_success=fetch_success,
             remote_fetched=remote_fetched,
             checkout_success=checkout_success,
-            fetch_error=fetch_error,
-            checkout_error=checkout_error,
+            fetch_errors=fetch_errors,
+            checkout_errors=checkout_errors,
             stderr_text=stderr_text.strip(),
             fetch_start=fetch_start,
             fetch_finish=fetch_finish,
@@ -2380,7 +2378,7 @@ later is required to fix a server side protocol bug.
 
     def _ProcessSyncInterleavedResults(
         self,
-        synced_relpaths: Set[str],
+        finished_relpaths: Set[str],
         err_event: _threading.Event,
         errors: List[Exception],
         opt: optparse.Values,
@@ -2396,7 +2394,8 @@ later is required to fix a server side protocol bug.
                 pm.update()
                 project = projects[result.project_index]
 
-                if opt.verbose and result.stderr_text:
+                success = result.fetch_success and result.checkout_success
+                if result.stderr_text and (opt.verbose or not success):
                     pm.display_message(result.stderr_text)
 
                 if result.fetch_start:
@@ -2423,19 +2422,19 @@ later is required to fix a server side protocol bug.
                         result.checkout_success,
                     )
 
-                if result.fetch_success and result.checkout_success:
-                    synced_relpaths.add(result.relpath)
-                else:
+                finished_relpaths.add(result.relpath)
+
+                if not success:
                     ret = False
                     err_event.set()
-                    if result.fetch_error:
-                        errors.append(result.fetch_error)
+                    if result.fetch_errors:
+                        errors.extend(result.fetch_errors)
                         self._interleaved_err_network = True
                         self._interleaved_err_network_results.append(
                             result.relpath
                         )
-                    if result.checkout_error:
-                        errors.append(result.checkout_error)
+                    if result.checkout_errors:
+                        errors.extend(result.checkout_errors)
                         self._interleaved_err_checkout = True
                         self._interleaved_err_checkout_results.append(
                             result.relpath
@@ -2477,7 +2476,7 @@ later is required to fix a server side protocol bug.
         self._interleaved_err_checkout_results = []
 
         err_event = multiprocessing.Event()
-        synced_relpaths = set()
+        finished_relpaths = set()
         project_list = list(all_projects)
         pm = Progress(
             "Syncing",
@@ -2511,7 +2510,7 @@ later is required to fix a server side protocol bug.
                         projects_to_sync = [
                             p
                             for p in project_list
-                            if p.relpath not in synced_relpaths
+                            if p.relpath not in finished_relpaths
                         ]
                         if not projects_to_sync:
                             break
@@ -2528,12 +2527,6 @@ later is required to fix a server side protocol bug.
                                 stalled_projects_str,
                             )
                             err_event.set()
-
-                            # Include these in the final error report.
-                            self._interleaved_err_checkout = True
-                            self._interleaved_err_checkout_results.extend(
-                                list(pending_relpaths)
-                            )
                             break
                         previously_pending_relpaths = pending_relpaths
 
@@ -2568,7 +2561,7 @@ later is required to fix a server side protocol bug.
                             jobs = max(1, min(opt.jobs, len(work_items)))
                             callback = functools.partial(
                                 self._ProcessSyncInterleavedResults,
-                                synced_relpaths,
+                                finished_relpaths,
                                 err_event,
                                 errors,
                                 opt,
