@@ -2640,6 +2640,11 @@ class Project:
             cmd.append("--tags")
             spec.append(str(("+refs/tags/*:") + remote.ToLocal("refs/tags/*")))
 
+        # If the revisionExpr is sha1, ensure we fetch it explicitly in case it is not
+        # in the history of any remote branch or tag
+        if is_sha1:
+            spec.append(self.revisionExpr)
+
         cmd.extend(spec)
 
         # At least one retry minimum due to git remote prune.
