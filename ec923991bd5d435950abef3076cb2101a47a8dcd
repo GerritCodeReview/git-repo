@@ -22,6 +22,30 @@
       },
       "revId": "ec923991bd5d435950abef3076cb2101a47a8dcd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60320395_eb0b76ce",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-08-21T18:04:32Z",
+      "side": 1,
+      "message": "2020 should be fine since that was author+initial publication (on Gerrit)",
+      "parentUuid": "8d445478_0dc33530",
+      "range": {
+        "startLine": 1,
+        "startChar": 16,
+        "endLine": 1,
+        "endChar": 20
+      },
+      "revId": "ec923991bd5d435950abef3076cb2101a47a8dcd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
