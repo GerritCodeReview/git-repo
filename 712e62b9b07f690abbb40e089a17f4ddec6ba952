@@ -16,6 +16,24 @@
       "message": "you cannot delete copyright/licensing information from files",
       "revId": "712e62b9b07f690abbb40e089a17f4ddec6ba952",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bcde200_0b17274e",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-08-21T14:44:19Z",
+      "side": 0,
+      "message": "posted http://gerrit-review.googlesource.com/c/500102 to fix",
+      "parentUuid": "adc59a19_14368aff",
+      "revId": "712e62b9b07f690abbb40e089a17f4ddec6ba952",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
