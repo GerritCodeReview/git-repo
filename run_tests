@@ -102,6 +102,15 @@ def run_isort():
     ).returncode
 
 
+def run_check_metadata():
+    """Returns the exit code from check-metadata."""
+    return subprocess.run(
+        [sys.executable, "release/check-metadata.py"],
+        check=False,
+        cwd=ROOT_DIR,
+    ).returncode
+
+
 def run_update_manpages() -> int:
     """Returns the exit code from release/update-manpages."""
     # Allow this to fail on CI, but not local devs.
@@ -124,6 +133,7 @@ def main(argv):
         run_black,
         run_flake8,
         run_isort,
+        run_check_metadata,
         run_update_manpages,
     )
     # Run all the tests all the time to get full feedback.  Don't exit on the

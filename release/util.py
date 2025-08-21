@@ -14,7 +14,7 @@
 
 """Random utility code for release tools."""
 
-import os
+from pathlib import Path
 import re
 import shlex
 import subprocess
@@ -24,8 +24,9 @@ import sys
 assert sys.version_info >= (3, 6), "This module requires Python 3.6+"
 
 
-TOPDIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-HOMEDIR = os.path.expanduser("~")
+THIS_FILE = Path(__file__).resolve()
+TOPDIR = THIS_FILE.parent.parent
+HOMEDIR = Path("~").expanduser()
 
 
 # These are the release keys we sign with.
@@ -54,7 +55,7 @@ def run(opts, cmd, check=True, **kwargs):
 def import_release_key(opts):
     """Import the public key of the official release repo signing key."""
     # Extract the key from our repo launcher.
-    launcher = getattr(opts, "launcher", os.path.join(TOPDIR, "repo"))
+    launcher = getattr(opts, "launcher", TOPDIR / "repo")
     print(f'Importing keys from "{launcher}" launcher script')
     with open(launcher, encoding="utf-8") as fp:
         data = fp.read()
