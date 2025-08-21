@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d445478_0dc33530",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-08-21T18:01:00Z",
+      "side": 1,
+      "message": "https://gerrit.googlesource.com/git-repo/+/30bc354e25cb5ccfbbb276a93ec54195e6b966a4 was authored in 2020 but submitted in 2021, do you know if this should this be 2021?",
+      "range": {
+        "startLine": 1,
+        "startChar": 16,
+        "endLine": 1,
+        "endChar": 20
+      },
+      "revId": "ec923991bd5d435950abef3076cb2101a47a8dcd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
