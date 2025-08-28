@@ -1,25 +1,12 @@
-# Copyright (C) 2008 The Android Open Source Project
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import collections
+import io
 import itertools
 import os
 import platform
 import re
 import sys
 import urllib.parse
-import xml.dom.minidom
+import xml.etree.ElementTree as ET
 
 from error import ManifestInvalidPathError
 from error import ManifestInvalidRevisionError
@@ -60,8 +47,11 @@ urllib.parse.uses_netloc.extend(
     ["ssh", "git", "persistent-https", "sso", "rpc"]
 )
 
+def add_significant_whitespace(node: ET.Element) -> None:
+    # TODO: Placeholder for significant whitespace handling.
+    pass
 
-def XmlBool(node, attr, default=None):
+def XmlBool(node: ET.Element, attr: str, default: bool=None) -> bool:
     """Determine boolean value of |node|'s |attr|.
 
     Invalid values will issue a non-fatal warning.
@@ -76,11 +66,11 @@ def XmlBool(node, attr, default=None):
         False if the attribute is a valid string representing false.
         |default| otherwise.
     """
-    value = node.getAttribute(attr)
-    s = value.lower()
-    if s == "":
+    value = node.get(attr) or None
+    if value is None:
         return default
-    elif s in {"yes", "true", "1"}:
+    s = value.lower()
+    if s in {"yes", "true", "1"}:
         return True
     elif s in {"no", "false", "0"}:
         return False
@@ -93,7 +83,7 @@ def XmlBool(node, attr, default=None):
         return default
 
 
-def XmlInt(node, attr, default=None):
+def XmlInt(node: ET.Element, attr: str, default: int=None) -> int:
     """Determine integer value of |node|'s |attr|.
 
     Args:
@@ -107,7 +97,7 @@ def XmlInt(node, attr, default=None):
     Raises:
         ManifestParseError: The number is invalid.
     """
-    value = node.getAttribute(attr)
+    value = node.get(attr)
     if not value:
         return default
 
@@ -511,55 +501,54 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 % (name,)
             )
 
-    def _RemoteToXml(self, r, doc, root):
-        e = doc.createElement("remote")
-        root.appendChild(e)
-        e.setAttribute("name", r.name)
-        e.setAttribute("fetch", r.fetchUrl)
+    def _RemoteToXml(self, r: _XmlRemote, root: ET.Element):
+        e = ET.SubElement(root, "remote")
+        e.set("name", r.name)
+        e.set("fetch", r.fetchUrl)
         if r.pushUrl is not None:
-            e.setAttribute("pushurl", r.pushUrl)
+            e.set("pushurl", r.pushUrl)
         if r.remoteAlias is not None:
-            e.setAttribute("alias", r.remoteAlias)
+            e.set("alias", r.remoteAlias)
         if r.reviewUrl is not None:
-            e.setAttribute("review", r.reviewUrl)
+            e.set("review", r.reviewUrl)
         if r.revision is not None:
-            e.setAttribute("revision", r.revision)
+            e.set("revision", r.revision)
 
         for a in r.annotations:
             if a.keep == "true":
-                ae = doc.createElement("annotation")
-                ae.setAttribute("name", a.name)
-                ae.setAttribute("value", a.value)
-                e.appendChild(ae)
+                ET.SubElement(e, "annotation",
+                                   {
+                                       "name": a.name,
+                                       "value": a.value
+                })
 
-    def _SubmanifestToXml(self, r, doc, root):
+    def _SubmanifestToXml(self, r: _XmlSubmanifest, root: ET.Element) -> None:
         """Generate XML <submanifest/> node."""
-        e = doc.createElement("submanifest")
-        root.appendChild(e)
-        e.setAttribute("name", r.name)
+        e = ET.SubElement(root, "submanifest")
+        e.set("name", r.name)
         if r.remote is not None:
-            e.setAttribute("remote", r.remote)
+            e.set("remote", r.remote)
         if r.project is not None:
-            e.setAttribute("project", r.project)
+            e.set("project", r.project)
         if r.manifestName is not None:
-            e.setAttribute("manifest-name", r.manifestName)
+            e.set("manifest-name", r.manifestName)
         if r.revision is not None:
-            e.setAttribute("revision", r.revision)
+            e.set("revision", r.revision)
         if r.path is not None:
-            e.setAttribute("path", r.path)
+            e.set("path", r.path)
         if r.groups:
-            e.setAttribute("groups", r.GetGroupsStr())
+            e.set("groups", r.GetGroupsStr())
         if r.default_groups:
-            e.setAttribute("default-groups", r.GetDefaultGroupsStr())
+            e.set("default-groups", r.GetDefaultGroupsStr())
 
         for a in r.annotations:
             if a.keep == "true":
-                ae = doc.createElement("annotation")
-                ae.setAttribute("name", a.name)
-                ae.setAttribute("value", a.value)
-                e.appendChild(ae)
+                ae = ET.SubElement(e, "annotation", {
+                    "name": a.name,
+                    "value": a.value
+                })
 
-    def _ParseList(self, field):
+    def _ParseList(self, field: str) -> list[str]:
         """Parse fields that contain flattened lists.
 
         These are whitespace & comma separated.  Empty elements will be
@@ -574,7 +563,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         peg_rev_dest_branch=True,
         groups=None,
         omit_local=False,
-    ):
+    ) -> ET.Element:
         """Return the current manifest XML."""
         mp = self.manifestProject
 
@@ -583,77 +572,74 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if groups:
             groups = self._ParseList(groups)
 
-        doc = xml.dom.minidom.Document()
-        root = doc.createElement("manifest")
+        root = ET.Element("manifest")
         if self.is_submanifest:
-            root.setAttribute("path", self.path_prefix)
-        doc.appendChild(root)
+            root.set("path", self.path_prefix)
 
         # Save out the notice.  There's a little bit of work here to give it the
         # right whitespace, which assumes that the notice is automatically
         # indented by 4 by minidom.
         if self.notice:
-            notice_element = root.appendChild(doc.createElement("notice"))
+            notice_element = ET.SubElement(root, "notice")
             notice_lines = self.notice.splitlines()
             indented_notice = (
                 "\n".join(" " * 4 + line for line in notice_lines)
             )[4:]
-            notice_element.appendChild(doc.createTextNode(indented_notice))
+            notice_element.text = indented_notice
 
         d = self.default
 
         for r in sorted(self.remotes):
-            self._RemoteToXml(self.remotes[r], doc, root)
+            self._RemoteToXml(self.remotes[r], root)
         if self.remotes:
-            root.appendChild(doc.createTextNode(""))
+            add_significant_whitespace(root)
 
         have_default = False
-        e = doc.createElement("default")
+        e = ET.Element("default")
         if d.remote:
             have_default = True
-            e.setAttribute("remote", d.remote.name)
+            e.set("remote", d.remote.name)
         if d.revisionExpr:
             have_default = True
-            e.setAttribute("revision", d.revisionExpr)
+            e.set("revision", d.revisionExpr)
         if d.destBranchExpr:
             have_default = True
-            e.setAttribute("dest-branch", d.destBranchExpr)
+            e.set("dest-branch", d.destBranchExpr)
         if d.upstreamExpr:
             have_default = True
-            e.setAttribute("upstream", d.upstreamExpr)
+            e.set("upstream", d.upstreamExpr)
         if d.sync_j is not None:
             have_default = True
-            e.setAttribute("sync-j", "%d" % d.sync_j)
+            e.set("sync-j", "%d" % d.sync_j)
         if d.sync_c:
             have_default = True
-            e.setAttribute("sync-c", "true")
+            e.set("sync-c", "true")
         if d.sync_s:
             have_default = True
-            e.setAttribute("sync-s", "true")
+            e.set("sync-s", "true")
         if not d.sync_tags:
             have_default = True
-            e.setAttribute("sync-tags", "false")
+            e.set("sync-tags", "false")
         if have_default:
-            root.appendChild(e)
-            root.appendChild(doc.createTextNode(""))
+            root.append(e)
+            add_significant_whitespace(root)
 
         if self._manifest_server:
-            e = doc.createElement("manifest-server")
-            e.setAttribute("url", self._manifest_server)
-            root.appendChild(e)
-            root.appendChild(doc.createTextNode(""))
+            e = ET.SubElement(root, "manifest-server")
+            e.set("url", self._manifest_server)
+            add_significant_whitespace(root)
 
         for r in sorted(self.submanifests):
-            self._SubmanifestToXml(self.submanifests[r], doc, root)
+            self._SubmanifestToXml(self.submanifests[r], root)
         if self.submanifests:
-            root.appendChild(doc.createTextNode(""))
+            add_significant_whitespace(root)
 
-        def output_projects(parent, parent_node, projects):
+        def output_projects(parent: Project | None, parent_node: ET.Element, projects: list[str]):
             for project_name in projects:
                 for project in self._projects[project_name]:
                     output_project(parent, parent_node, project)
 
-        def output_project(parent, parent_node, p):
+        def output_project(parent: Project | None, parent_node: ET.Element, p: Project):
             if not p.MatchesGroups(groups):
                 return
 
@@ -666,88 +652,88 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 name = self._UnjoinName(parent.name, name)
                 relpath = self._UnjoinRelpath(parent.relpath, relpath)
 
-            e = doc.createElement("project")
-            parent_node.appendChild(e)
-            e.setAttribute("name", name)
+            e = ET.SubElement(parent_node, "project")
+            e.set("name", name)
             if relpath != name:
-                e.setAttribute("path", relpath)
+                e.set("path", relpath)
             remoteName = None
             if d.remote:
                 remoteName = d.remote.name
             if not d.remote or p.remote.orig_name != remoteName:
                 remoteName = p.remote.orig_name
-                e.setAttribute("remote", remoteName)
+                e.set("remote", remoteName)
             if peg_rev:
                 if self.IsMirror:
                     value = p.bare_git.rev_parse(p.revisionExpr + "^0")
                 else:
                     value = p.work_git.rev_parse(HEAD + "^0")
-                e.setAttribute("revision", value)
+                e.set("revision", value)
                 if peg_rev_upstream:
                     if p.upstream:
-                        e.setAttribute("upstream", p.upstream)
+                        e.set("upstream", p.upstream)
                     elif value != p.revisionExpr:
                         # Only save the origin if the origin is not a sha1, and
                         # the default isn't our value
-                        e.setAttribute("upstream", p.revisionExpr)
+                        e.set("upstream", p.revisionExpr)
 
                 if peg_rev_dest_branch:
                     if p.dest_branch:
-                        e.setAttribute("dest-branch", p.dest_branch)
+                        e.set("dest-branch", p.dest_branch)
                     elif value != p.revisionExpr:
-                        e.setAttribute("dest-branch", p.revisionExpr)
+                        e.set("dest-branch", p.revisionExpr)
 
             else:
                 revision = (
                     self.remotes[p.remote.orig_name].revision or d.revisionExpr
                 )
                 if not revision or revision != p.revisionExpr:
-                    e.setAttribute("revision", p.revisionExpr)
+                    e.set("revision", p.revisionExpr)
                 elif p.revisionId:
-                    e.setAttribute("revision", p.revisionId)
+                    e.set("revision", p.revisionId)
                 if p.upstream and (
                     p.upstream != p.revisionExpr or p.upstream != d.upstreamExpr
                 ):
-                    e.setAttribute("upstream", p.upstream)
+                    e.set("upstream", p.upstream)
 
             if p.dest_branch and p.dest_branch != d.destBranchExpr:
-                e.setAttribute("dest-branch", p.dest_branch)
+                e.set("dest-branch", p.dest_branch)
 
             for c in p.copyfiles:
-                ce = doc.createElement("copyfile")
-                ce.setAttribute("src", c.src)
-                ce.setAttribute("dest", c.dest)
-                e.appendChild(ce)
+                ET.SubElement(e, "copyfile",
+                                   {
+                                       "src": c.src,
+                                       "dest": c.dest
+                                   })
 
             for lf in p.linkfiles:
-                le = doc.createElement("linkfile")
-                le.setAttribute("src", lf.src)
-                le.setAttribute("dest", lf.dest)
-                e.appendChild(le)
+                ET.SubElement(e, "linkfile", {
+                    "src": lf.src,
+                    "dest": lf.dest
+                })
 
             default_groups = ["all", "name:%s" % p.name, "path:%s" % p.relpath]
             egroups = [g for g in p.groups if g not in default_groups]
             if egroups:
-                e.setAttribute("groups", ",".join(egroups))
+                e.set("groups", ",".join(egroups))
 
             for a in p.annotations:
                 if a.keep == "true":
-                    ae = doc.createElement("annotation")
-                    ae.setAttribute("name", a.name)
-                    ae.setAttribute("value", a.value)
-                    e.appendChild(ae)
+                    ET.SubElement(e, "annotation", {
+                        "name": a.name,
+                        "value": a.value
+                    })
 
             if p.sync_c:
-                e.setAttribute("sync-c", "true")
+                e.set("sync-c", "true")
 
             if p.sync_s:
-                e.setAttribute("sync-s", "true")
+                e.set("sync-s", "true")
 
             if not p.sync_tags:
-                e.setAttribute("sync-tags", "false")
+                e.set("sync-tags", "false")
 
             if p.clone_depth:
-                e.setAttribute("clone-depth", str(p.clone_depth))
+                e.set("clone-depth", str(p.clone_depth))
 
             self._output_manifest_project_extras(p, e)
 
@@ -759,40 +745,38 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         output_projects(None, root, list(sorted(projects)))
 
         if self._repo_hooks_project:
-            root.appendChild(doc.createTextNode(""))
-            e = doc.createElement("repo-hooks")
-            e.setAttribute("in-project", self._repo_hooks_project.name)
-            e.setAttribute(
+            ET.SubElement(root, "") # TODO: Significant whitespace
+            e = ET.SubElement(e, "repo-hooks")
+            e.set("in-project", self._repo_hooks_project.name)
+            e.set(
                 "enabled-list",
                 " ".join(self._repo_hooks_project.enabled_repo_hooks),
             )
-            root.appendChild(e)
 
         if self._superproject:
-            root.appendChild(doc.createTextNode(""))
-            e = doc.createElement("superproject")
-            e.setAttribute("name", self._superproject.name)
+            add_significant_whitespace(root)
+            e = ET.SubElement(root, "superproject")
+            e.set("name", self._superproject.name)
             remoteName = None
             if d.remote:
                 remoteName = d.remote.name
             remote = self._superproject.remote
             if not d.remote or remote.orig_name != remoteName:
                 remoteName = remote.orig_name
-                e.setAttribute("remote", remoteName)
+                e.set("remote", remoteName)
             revision = remote.revision or d.revisionExpr
             if not revision or revision != self._superproject.revision:
-                e.setAttribute("revision", self._superproject.revision)
-            root.appendChild(e)
+                e.set("revision", self._superproject.revision)
 
         if self._contactinfo.bugurl != Wrapper().BUG_URL:
-            root.appendChild(doc.createTextNode(""))
-            e = doc.createElement("contactinfo")
-            e.setAttribute("bugurl", self._contactinfo.bugurl)
-            root.appendChild(e)
+            add_significant_whitespace(root)
+            ET.SubElement(root, "contactinfo", {
+                "bugurl": self._contactinfo.bugurl
+            })
 
-        return doc
+        return root
 
-    def ToDict(self, **kwargs):
+    def ToDict(self, **kwargs) -> dict:
         """Return the current manifest as a dictionary."""
         # Elements that may only appear once.
         SINGLE_ELEMENTS = {
@@ -821,33 +805,33 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         doc = self.ToXml(**kwargs)
         ret = {}
 
-        def append_children(ret, node):
-            for child in node.childNodes:
-                if child.nodeType == xml.dom.Node.ELEMENT_NODE:
-                    attrs = child.attributes
-                    element = {
-                        attrs.item(i).localName: attrs.item(i).value
-                        for i in range(attrs.length)
-                    }
-                    if child.nodeName in SINGLE_ELEMENTS:
-                        ret[child.nodeName] = element
-                    elif child.nodeName in MULTI_ELEMENTS:
-                        ret.setdefault(child.nodeName, []).append(element)
-                    else:
-                        raise ManifestParseError(
-                            f'Unhandled element "{child.nodeName}"'
-                        )
+        def append_children(ret, node: ET.Element):
+            for child in node:
+                if False: # TODO: child.nodeType == xml.dom.Node.ELEMENT_NODE:
+                    # Related to add_significant_whitespace()
+                    continue
+                element = child.attrib
+                if child.tag in SINGLE_ELEMENTS:
+                    ret[child.tag] = element
+                elif child.tag in MULTI_ELEMENTS:
+                    ret.setdefault(child.tag, []).append(element)
+                else:
+                    raise ManifestParseError(
+                        f'Unhandled element "{child.tag}"'
+                    )
 
-                    append_children(element, child)
+                append_children(element, child)
 
-        append_children(ret, doc.firstChild)
+        append_children(ret, doc)
 
         return ret
 
-    def Save(self, fd, **kwargs):
+    def Save(self, fd: io.FileIO, **kwargs) -> None:
         """Write the current manifest out to the given file descriptor."""
         doc = self.ToXml(**kwargs)
-        doc.writexml(fd, "", "  ", "\n", "UTF-8")
+        et = ET.ElementTree(doc)
+        ET.indent(et)
+        et.write(fd, encoding="unicode")
 
     def _output_manifest_project_extras(self, p, e):
         """Manifests can modify e if they support extra project attributes."""
@@ -945,7 +929,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         return list(self._paths.values())
 
     @property
-    def remotes(self):
+    def remotes(self) -> dict[str, _XmlRemote]:
         """Return a list of remotes for this manifest."""
         self._Load()
         return self._remotes
@@ -957,7 +941,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         return self._default
 
     @property
-    def submanifests(self):
+    def submanifests(self) -> dict[str, _XmlSubmanifest]:
         """All submanifests in this manifest."""
         self._Load()
         return self._submanifests
@@ -1130,11 +1114,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         """
         self._loaded = False
-        self._projects = {}
+        self._projects: dict[str, list[Project]] = {}
         self._paths = {}
-        self._remotes = {}
+        self._remotes: dict[str, _XmlRemote] = {}
         self._default = None
-        self._submanifests = {}
+        self._submanifests: dict[str, _XmlSubmanifest] = {}
         self._repo_hooks_project = None
         self._superproject = None
         self._contactinfo = ContactInfo(Wrapper().BUG_URL)
@@ -1180,7 +1164,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
                 # The manifestFile was specified by the user which is why we
                 # allow include paths to point anywhere.
-                nodes = []
+                nodes: list[list[ET.Element]] = []
                 nodes.append(
                     self._ParseManifestXml(
                         self.manifestFile,
@@ -1264,8 +1248,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         include_root,
         parent_groups="",
         restrict_includes=True,
-        parent_node=None,
-    ):
+        parent_node: ET.Element=None,
+    ) -> list[ET.Element]:
         """Parse a manifest XML and return the computed nodes.
 
         Args:
@@ -1281,25 +1265,20 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             List of XML nodes.
         """
         try:
-            root = xml.dom.minidom.parse(path)
-        except (OSError, xml.parsers.expat.ExpatError) as e:
+            root = ET.parse(path)
+        except (OSError, ET.ParseError) as e:
             raise ManifestParseError(f"error parsing manifest {path}: {e}")
 
-        if not root or not root.childNodes:
+        if not root or not root:
             raise ManifestParseError(f"no root node in {path}")
 
-        for manifest in root.childNodes:
-            if (
-                manifest.nodeType == manifest.ELEMENT_NODE
-                and manifest.nodeName == "manifest"
-            ):
-                break
-        else:
+        manifest = root.getroot()
+        if manifest.tag != "manifest":
             raise ManifestParseError(f"no <manifest> in {path}")
 
         nodes = []
-        for node in manifest.childNodes:
-            if node.nodeName == "include":
+        for node in manifest:
+            if node.tag == "include":
                 name = self._reqatt(node, "name")
                 if restrict_includes:
                     msg = self._CheckLocalPath(name)
@@ -1307,13 +1286,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         raise ManifestInvalidPathError(
                             f'<include> invalid "name": {name}: {msg}'
                         )
-                include_groups = ""
-                if parent_groups:
-                    include_groups = parent_groups
-                if node.hasAttribute("groups"):
-                    include_groups = (
-                        node.getAttribute("groups") + "," + include_groups
-                    )
+
+                include_groups = parent_groups or ""
+                if groups_attr := node.get("groups"):
+                    include_groups = groups_attr + "," + include_groups
                 fp = os.path.join(include_root, name)
                 if not os.path.isfile(fp):
                     raise ManifestParseError(
@@ -1335,27 +1311,25 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         f"failed parsing included manifest {name}: {e}"
                     )
             else:
-                if parent_groups and node.nodeName == "project":
+                if parent_groups and node.tag == "project":
                     nodeGroups = parent_groups
-                    if node.hasAttribute("groups"):
-                        nodeGroups = (
-                            node.getAttribute("groups") + "," + nodeGroups
-                        )
-                    node.setAttribute("groups", nodeGroups)
+                    if groups_attr := node.get("groups"):
+                        nodeGroups = groups_attr + "," + nodeGroups
+                    node.set("groups", nodeGroups)
                 if (
                     parent_node
-                    and node.nodeName == "project"
-                    and not node.hasAttribute("revision")
+                    and node.tag == "project"
+                    and node.get("revision") is None
                 ):
-                    node.setAttribute(
-                        "revision", parent_node.getAttribute("revision")
+                    node.set(
+                        "revision", parent_node.get("revision")
                     )
                 nodes.append(node)
         return nodes
 
-    def _ParseManifest(self, node_list):
+    def _ParseManifest(self, node_list: list[list[ET.Element]]) -> None:
         for node in itertools.chain(*node_list):
-            if node.nodeName == "remote":
+            if node.tag == "remote":
                 remote = self._ParseRemote(node)
                 if remote:
                     if remote.name in self._remotes:
@@ -1368,10 +1342,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         self._remotes[remote.name] = remote
 
         for node in itertools.chain(*node_list):
-            if node.nodeName == "default":
+            if node.tag == "default":
                 new_default = self._ParseDefault(node)
                 emptyDefault = (
-                    not node.hasAttributes() and not node.hasChildNodes()
+                    not node.attrib and not node.children
                 )
                 if self._default is None:
                     self._default = new_default
@@ -1385,7 +1359,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         submanifest_paths = set()
         for node in itertools.chain(*node_list):
-            if node.nodeName == "submanifest":
+            if node.tag == "submanifest":
                 submanifest = self._ParseSubmanifest(node)
                 if submanifest:
                     if submanifest.name in self._submanifests:
@@ -1399,7 +1373,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         submanifest_paths.add(submanifest.relpath)
 
         for node in itertools.chain(*node_list):
-            if node.nodeName == "notice":
+            if node.tag == "notice":
                 if self._notice is not None:
                     raise ManifestParseError(
                         "duplicate notice in %s" % (self.manifestFile)
@@ -1407,7 +1381,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 self._notice = self._ParseNotice(node)
 
         for node in itertools.chain(*node_list):
-            if node.nodeName == "manifest-server":
+            if node.tag == "manifest-server":
                 url = self._reqatt(node, "url")
                 if self._manifest_server is not None:
                     raise ManifestParseError(
@@ -1415,7 +1389,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     )
                 self._manifest_server = url
 
-        def recursively_add_projects(project):
+        def recursively_add_projects(project: Project) -> None:
             projects = self._projects.setdefault(project.name, [])
             if project.relpath is None:
                 raise ManifestParseError(
@@ -1442,10 +1416,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         enabled_repo_hooks = None
         failed_revision_changes = []
         for node in itertools.chain(*node_list):
-            if node.nodeName == "project":
+            if node.tag == "project":
                 project = self._ParseProject(node)
                 recursively_add_projects(project)
-            if node.nodeName == "extend-project":
+            if node.tag == "extend-project":
                 name = self._reqatt(node, "name")
 
                 if name not in self._projects:
@@ -1454,20 +1428,20 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         "project: %s" % name
                     )
 
-                path = node.getAttribute("path")
-                dest_path = node.getAttribute("dest-path")
-                groups = node.getAttribute("groups")
+                path = node.get("path")
+                dest_path = node.get("dest-path")
+                groups = node.get("groups")
                 if groups:
                     groups = self._ParseList(groups)
-                revision = node.getAttribute("revision")
-                remote_name = node.getAttribute("remote")
+                revision = node.get("revision")
+                remote_name = node.get("remote")
                 if not remote_name:
                     remote = self._default.remote
                 else:
                     remote = self._get_remote(node)
-                dest_branch = node.getAttribute("dest-branch")
-                upstream = node.getAttribute("upstream")
-                base_revision = node.getAttribute("base-rev")
+                dest_branch = node.get("dest-branch")
+                upstream = node.get("upstream")
+                base_revision = node.get("base-rev")
 
                 named_projects = self._projects[name]
                 if dest_path and not path and len(named_projects) > 1:
@@ -1509,7 +1483,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         p.UpdatePaths(relpath, worktree, gitdir, objdir)
                         self._paths[p.relpath] = p
 
-            if node.nodeName == "repo-hooks":
+            if node.tag == "repo-hooks":
                 # Only one project can be the hooks project
                 if repo_hooks_project is not None:
                     raise ManifestParseError(
@@ -1522,14 +1496,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 enabled_repo_hooks = self._ParseList(
                     self._reqatt(node, "enabled-list")
                 )
-            if node.nodeName == "superproject":
+            if node.tag == "superproject":
                 name = self._reqatt(node, "name")
                 # There can only be one superproject.
                 if self._superproject:
                     raise ManifestParseError(
                         "duplicate superproject in %s" % (self.manifestFile)
                     )
-                remote_name = node.getAttribute("remote")
+                remote_name = node.get("remote")
                 if not remote_name:
                     remote = self._default.remote
                 else:
@@ -1539,7 +1513,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         "no remote for superproject %s within %s"
                         % (name, self.manifestFile)
                     )
-                revision = node.getAttribute("revision") or remote.revision
+                revision = node.get("revision") or remote.revision
                 if not revision:
                     revision = self._default.revisionExpr
                 if not revision:
@@ -1553,16 +1527,16 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     remote=remote.ToRemoteSpec(name),
                     revision=revision,
                 )
-            if node.nodeName == "contactinfo":
+            if node.tag == "contactinfo":
                 bugurl = self._reqatt(node, "bugurl")
                 # This element can be repeated, later entries will clobber
                 # earlier ones.
                 self._contactinfo = ContactInfo(bugurl)
 
-            if node.nodeName == "remove-project":
-                name = node.getAttribute("name")
-                path = node.getAttribute("path")
-                base_revision = node.getAttribute("base-rev")
+            if node.tag == "remove-project":
+                name = node.get("name")
+                path = node.get("path")
+                base_revision = node.get("base-rev")
 
                 # Name or path needed.
                 if not name and not path:
@@ -1690,48 +1664,37 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             self._projects[project.name] = [project]
             self._paths[project.relpath] = project
 
-    def _ParseRemote(self, node):
+    def _ParseRemote(self, node: ET.Element) -> _XmlRemote:
         """
         reads a <remote> element from the manifest file
         """
         name = self._reqatt(node, "name")
-        alias = node.getAttribute("alias")
-        if alias == "":
-            alias = None
+        alias = node.get("alias") or None
         fetch = self._reqatt(node, "fetch")
-        pushUrl = node.getAttribute("pushurl")
-        if pushUrl == "":
-            pushUrl = None
-        review = node.getAttribute("review")
-        if review == "":
-            review = None
-        revision = node.getAttribute("revision")
-        if revision == "":
-            revision = None
+        pushUrl = node.get("pushurl") or None
+        review = node.get("review") or None
+        revision = node.get("revision") or None
         manifestUrl = self.manifestProject.config.GetString("remote.origin.url")
 
         remote = _XmlRemote(
             name, alias, fetch, pushUrl, manifestUrl, review, revision
         )
 
-        for n in node.childNodes:
-            if n.nodeName == "annotation":
-                self._ParseAnnotation(remote, n)
+        for n in node.findall("annotation"):
+            self._ParseAnnotation(remote, n)
 
         return remote
 
-    def _ParseDefault(self, node):
+    def _ParseDefault(self, node: ET.Element) -> _Default:
         """
         reads a <default> element from the manifest file
         """
         d = _Default()
         d.remote = self._get_remote(node)
-        d.revisionExpr = node.getAttribute("revision")
-        if d.revisionExpr == "":
-            d.revisionExpr = None
+        d.revisionExpr = node.get("revision", None)
 
-        d.destBranchExpr = node.getAttribute("dest-branch") or None
-        d.upstreamExpr = node.getAttribute("upstream") or None
+        d.destBranchExpr = node.get("dest-branch") or None
+        d.upstreamExpr = node.get("upstream") or None
 
         d.sync_j = XmlInt(node, "sync-j", None)
         if d.sync_j is not None and d.sync_j <= 0:
@@ -1745,7 +1708,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         d.sync_tags = XmlBool(node, "sync-tags", True)
         return d
 
-    def _ParseNotice(self, node):
+    def _ParseNotice(self, node: ET.Element) -> str:
         """
         reads a <notice> element from the manifest file
 
@@ -1759,7 +1722,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
           http://www.python.org/dev/peps/pep-0257/
         """
         # Get the data out of the node...
-        notice = node.childNodes[0].data
+        notice = node.text
 
         # Figure out minimum indentation, skipping the first line (the same line
         # as the <notice> tag)...
@@ -1784,27 +1747,16 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         return "\n".join(cleanLines)
 
-    def _ParseSubmanifest(self, node):
+    def _ParseSubmanifest(self, node: ET.Element) -> _XmlSubmanifest:
         """Reads a <submanifest> element from the manifest file."""
         name = self._reqatt(node, "name")
-        remote = node.getAttribute("remote")
-        if remote == "":
-            remote = None
-        project = node.getAttribute("project")
-        if project == "":
-            project = None
-        revision = node.getAttribute("revision")
-        if revision == "":
-            revision = None
-        manifestName = node.getAttribute("manifest-name")
-        if manifestName == "":
-            manifestName = None
-        groups = ""
-        if node.hasAttribute("groups"):
-            groups = node.getAttribute("groups")
-        groups = self._ParseList(groups)
-        default_groups = self._ParseList(node.getAttribute("default-groups"))
-        path = node.getAttribute("path")
+        remote = node.get("remote") or None
+        project = node.get("project") or None
+        revision = node.get("revision") or None
+        manifestName = node.get("manifest-name") or None
+        groups = self._ParseList(node.get("groups", ""))
+        default_groups = self._ParseList(node.get("default-groups"))
+        path = node.get("path")
         if path == "":
             path = None
             if revision:
@@ -1839,9 +1791,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             self,
         )
 
-        for n in node.childNodes:
-            if n.nodeName == "annotation":
-                self._ParseAnnotation(submanifest, n)
+        for n in node.findall("annotation"):
+            self._ParseAnnotation(submanifest, n)
 
         return submanifest
 
@@ -1851,7 +1802,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     def _UnjoinName(self, parent_name, name):
         return os.path.relpath(name, parent_name)
 
-    def _ParseProject(self, node, parent=None, **extra_proj_attrs):
+    def _ParseProject(self, node: ET.Element, parent=None, **extra_proj_attrs) -> Project:
         """
         reads a <project> element from the manifest file
         """
@@ -1872,7 +1823,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 f"no remote for project {name} within {self.manifestFile}"
             )
 
-        revisionExpr = node.getAttribute("revision") or remote.revision
+        revisionExpr = node.get("revision") or remote.revision
         if not revisionExpr:
             revisionExpr = self._default.revisionExpr
         if not revisionExpr:
@@ -1881,7 +1832,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 % (name, self.manifestFile)
             )
 
-        path = node.getAttribute("path")
+        path = node.get("path")
         if not path:
             path = name
         else:
@@ -1906,15 +1857,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             )
 
         dest_branch = (
-            node.getAttribute("dest-branch") or self._default.destBranchExpr
+            node.get("dest-branch") or self._default.destBranchExpr
         )
 
-        upstream = node.getAttribute("upstream") or self._default.upstreamExpr
+        upstream = node.get("upstream") or self._default.upstreamExpr
 
-        groups = ""
-        if node.hasAttribute("groups"):
-            groups = node.getAttribute("groups")
-        groups = self._ParseList(groups)
+        groups = self._ParseList(node.get("groups", ""))
 
         if parent is None:
             (
@@ -1933,9 +1881,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         default_groups = ["all", "name:%s" % name, "path:%s" % relpath]
         groups.extend(set(default_groups).difference(groups))
 
-        if self.IsMirror and node.hasAttribute("force-path"):
-            if XmlBool(node, "force-path", False):
-                gitdir = os.path.join(self.topdir, "%s.git" % path)
+        if self.IsMirror and XmlBool(node, "force-path", False):
+            gitdir = os.path.join(self.topdir, "%s.git" % path)
 
         project = Project(
             manifest=self,
@@ -1960,14 +1907,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             **extra_proj_attrs,
         )
 
-        for n in node.childNodes:
-            if n.nodeName == "copyfile":
+        for n in node:
+            if n.tag == "copyfile":
                 self._ParseCopyFile(project, n)
-            if n.nodeName == "linkfile":
+            if n.tag == "linkfile":
                 self._ParseLinkFile(project, n)
-            if n.nodeName == "annotation":
+            if n.tag == "annotation":
                 self._ParseAnnotation(project, n)
-            if n.nodeName == "project":
+            if n.tag == "project":
                 project.subprojects.append(
                     self._ParseProject(n, parent=project)
                 )
@@ -2008,7 +1955,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             gitdir = os.path.join(self.subdir, "projects", "%s.git" % path)
             # We allow people to mix git worktrees & non-git worktrees for now.
             # This allows for in situ migration of repo clients.
-            if os.path.exists(gitdir) or not self.UseGitWorktrees:
+            if not self.UseGitWorktrees or os.path.exists(gitdir):
                 objdir = os.path.join(self.repodir, "project-objects", namepath)
             else:
                 use_git_worktrees = True
@@ -2173,7 +2120,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             return "path cannot be outside"
 
     @classmethod
-    def _ValidateFilePaths(cls, element, src, dest):
+    def _ValidateFilePaths(cls, element: str, src: str, dest: str) -> None:
         """Verify |src| & |dest| are reasonable for <copyfile> & <linkfile>.
 
         We verify the path independent of any filesystem state as we won't have
@@ -2202,7 +2149,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 f'<{element}> invalid "src": {src}: {msg}'
             )
 
-    def _ParseCopyFile(self, project, node):
+    def _ParseCopyFile(self, project: Project, node: ET.Element) -> None:
         src = self._reqatt(node, "src")
         dest = self._reqatt(node, "dest")
         if not self.IsMirror:
@@ -2212,7 +2159,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             self._ValidateFilePaths("copyfile", src, dest)
             project.AddCopyFile(src, dest, self.topdir)
 
-    def _ParseLinkFile(self, project, node):
+    def _ParseLinkFile(self, project: Project, node: ET.Element) -> None:
         src = self._reqatt(node, "src")
         dest = self._reqatt(node, "dest")
         if not self.IsMirror:
@@ -2222,7 +2169,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             self._ValidateFilePaths("linkfile", src, dest)
             project.AddLinkFile(src, dest, self.topdir)
 
-    def _ParseAnnotation(self, element, node):
+    def _ParseAnnotation(self, element: _XmlRemote | Project | _XmlSubmanifest, node: ET.Element) -> None:
         name = self._reqatt(node, "name")
         value = self._reqatt(node, "value")
         try:
@@ -2235,8 +2182,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             )
         element.AddAnnotation(name, value, keep)
 
-    def _get_remote(self, node):
-        name = node.getAttribute("remote")
+    def _get_remote(self, node: ET.Element) -> str | None:
+        name = node.get("remote")
         if not name:
             return None
 
@@ -2247,15 +2194,15 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             )
         return v
 
-    def _reqatt(self, node, attname):
+    def _reqatt(self, node: ET.Element, attname: str) -> str:
         """
         reads a required attribute from the node.
         """
-        v = node.getAttribute(attname)
+        v = node.get(attname)
         if not v:
             raise ManifestParseError(
                 "no %s in <%s> within %s"
-                % (attname, node.nodeName, self.manifestFile)
+                % (attname, node.tag, self.manifestFile)
             )
         return v
 
