@@ -789,6 +789,11 @@ class Project:
             self._LoadUserIdentity()
         return self._userident_email
 
+    @property
+    def use_manifest_superproject(self):
+        """Whether manifest superproject is used."""
+        return self.manifest.manifestProject.use_superproject
+
     def _LoadUserIdentity(self):
         u = self.bare_git.var("GIT_COMMITTER_IDENT")
         m = re.compile("^(.*) <([^>]*)> ").match(u)
@@ -2420,7 +2425,9 @@ class Project:
             # throws an error.
             revs = [f"{self.revisionExpr}^0"]
             upstream_rev = None
-            if self.upstream:
+
+            # Only check upstream when using superproject.
+            if self.upstream and self.use_manifest_superproject:
                 upstream_rev = self.GetRemote().ToLocal(self.upstream)
                 revs.append(upstream_rev)
 
@@ -2432,7 +2439,9 @@ class Project:
                 log_as_error=False,
             )
 
-            if self.upstream:
+            # Only verify upstream relationship for superproject scenarios
+            # without affecting plain usage.
+            if self.upstream and self.use_manifest_superproject:
                 self.bare_git.merge_base(
                     "--is-ancestor",
                     self.revisionExpr,
