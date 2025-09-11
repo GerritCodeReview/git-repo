@@ -642,10 +642,6 @@ class Project:
         # project containing repo hooks.
         self.enabled_repo_hooks = []
 
-        # This will be updated later if the project has submodules and
-        # if they will be synced.
-        self.has_subprojects = False
-
     def RelPath(self, local=True):
         """Return the path for the project relative to a manifest.
 
@@ -1563,8 +1559,8 @@ class Project:
         # TODO(https://git-scm.com/docs/git-worktree#_bugs): Re-evaluate if
         # submodules can be init when using worktrees once its support is
         # complete.
-        if self.has_subprojects and not self.use_git_worktrees:
-            self._InitSubmodules()
+        if self.parent and not self.use_git_worktrees:
+            self._InitSubmodule()
         all_refs = self.bare_ref.all
         self.CleanPublishedCache(all_refs)
         revid = self.GetRevisionId(all_refs)
@@ -2359,8 +2355,6 @@ class Project:
             )
             result.append(subproject)
             result.extend(subproject.GetDerivedSubprojects())
-        if result:
-            self.has_subprojects = True
         return result
 
     def EnableRepositoryExtension(self, key, value="true", version=1):
@@ -3026,14 +3020,22 @@ class Project:
                 project=self.name,
             )
 
-    def _InitSubmodules(self, quiet=True):
-        """Initialize the submodules for the project."""
+    def _InitSubmodule(self, quiet=True):
+        """Initialize the submodule."""
         cmd = ["submodule", "init"]
         if quiet:
             cmd.append("-q")
-        if GitCommand(self, cmd).Wait() != 0:
+        cmd.append(self.worktree)
+        if (
+            GitCommand(
+                None,
+                cmd,
+                cwd=self.parent.worktree,
+            ).Wait()
+            != 0
+        ):
             raise GitError(
-                f"{self.name} submodule init",
+                f"{self.parent.name} submodule init {self.worktree}",
                 project=self.name,
             )
 
