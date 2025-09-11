@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29eac610_c18c48e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-09-11T19:21:32Z",
+      "side": 1,
+      "message": "thank you!",
+      "revId": "ce40ff3f397ac458e3ae17ac4daddf16d3cd0ae1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d02fdad_98b1b75a",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3036,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-09-11T19:21:32Z",
+      "side": 1,
+      "message": "with `git submodule init \u003cpath\u003e` now concurrently modifying `.git/config`, I\u0027m a little wary of lock contention issues like `error: could not lock config file /path/to/.git/config: File exists`, especially w/ high j values\n\nWDYT about having some exponential retry logic w/ some jitter here?",
+      "range": {
+        "startLine": 3029,
+        "startChar": 8,
+        "endLine": 3036,
+        "endChar": 10
+      },
+      "revId": "ce40ff3f397ac458e3ae17ac4daddf16d3cd0ae1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
