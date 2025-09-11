@@ -39,6 +39,30 @@
       },
       "revId": "ce40ff3f397ac458e3ae17ac4daddf16d3cd0ae1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eac1c11b_fc523d91",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3036,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-09-11T19:27:19Z",
+      "side": 1,
+      "message": "Good point. Let me look into doing that.",
+      "parentUuid": "3d02fdad_98b1b75a",
+      "range": {
+        "startLine": 3029,
+        "startChar": 8,
+        "endLine": 3036,
+        "endChar": 10
+      },
+      "revId": "ce40ff3f397ac458e3ae17ac4daddf16d3cd0ae1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
