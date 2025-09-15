@@ -94,7 +94,12 @@ class AllCommands(unittest.TestCase):
         """Block redundant dest= arguments."""
 
         def _check_dest(opt):
-            if opt.dest is None or not opt._long_opts:
+            """Check the dest= setting."""
+            # If the destination is not set, nothing to check.
+            # If long options are not set, then there's no implicit destination.
+            # If callback is used, then a destination might be needed because
+            # optparse cannot assume a value is always stored.
+            if opt.dest is None or not opt._long_opts or opt.callback:
                 return
 
             long = opt._long_opts[0]
