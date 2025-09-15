@@ -133,7 +133,7 @@ without iterating through the remaining projects.
 
     @staticmethod
     def _cmd_option(option, _opt_str, _value, parser):
-        setattr(parser.values, option.dest or "command", list(parser.rargs))
+        setattr(parser.values, option.dest, list(parser.rargs))
         while parser.rargs:
             del parser.rargs[0]
 
@@ -161,6 +161,7 @@ without iterating through the remaining projects.
         p.add_option(
             "-c",
             "--command",
+            dest="command",
             help="command (and arguments) to execute",
             action="callback",
             callback=self._cmd_option,
