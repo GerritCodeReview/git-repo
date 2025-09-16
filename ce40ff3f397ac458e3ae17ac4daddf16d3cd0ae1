@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b757c913_5f857f33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4335726
+      },
+      "writtenOn": "2025-09-16T03:13:09Z",
+      "side": 1,
+      "message": "https://gerrit.googlesource.com/plugins/rename-project",
+      "revId": "ce40ff3f397ac458e3ae17ac4daddf16d3cd0ae1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d02fdad_98b1b75a",
