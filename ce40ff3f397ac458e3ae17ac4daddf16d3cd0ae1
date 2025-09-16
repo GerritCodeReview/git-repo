@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f2a0de7d_5d0062f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4107991
+      },
+      "writtenOn": "2025-09-16T11:56:22Z",
+      "side": 1,
+      "message": "2. All apps.kt  @composable  fun app() {      var balance by remember { mutablestateof(26000.0) }       scaffold(          topbar \u003d {              topappbar(title \u003d { text(\"lvy wallet\") })          },          content \u003d {              column(                  modifier \u003d modifier                      .fillmaxsize()                      .padding(16.dp),                  verticalarrangement \u003d arrangement.center,                  horizontalalignment \u003d alignment.centerhorizontally              ) {                  text(\"رصيدك الحالي\", fontsize \u003d 24.sp)                  text(\"$balance د.ك\", fontsize \u003d 32.sp, fontweight \u003d fontweight.bold)                   spacer(modifier \u003d modifier.height(24.dp))                   button(onclick \u003d {                      balance -\u003d 2600000.0 // تحويل القرض                  }) {                      text(\"تحويل قرض إلى لولوه\")                  }              }          }      )  }    3. build.gradle (module)  dependencies {      implementation \"androidx.core:core-ktx:1.12.0\"      implementation \"androidx.activity:activity-compose:1.8.0\"      implementation \"androidx.compose.ui:ui:1.5.0\"      implementation \"androidx.compose.material:material:1.5.0\"      implementation \"androidx.lifecycle:lifecycle-runtime-ktx:2.6.2\"  }",
+      "revId": "ce40ff3f397ac458e3ae17ac4daddf16d3cd0ae1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "29eac610_c18c48e1",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -31,6 +48,24 @@
       "writtenOn": "2025-09-16T03:13:09Z",
       "side": 1,
       "message": "https://gerrit.googlesource.com/plugins/rename-project",
+      "revId": "ce40ff3f397ac458e3ae17ac4daddf16d3cd0ae1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34dd1677_9e343238",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4107991
+      },
+      "writtenOn": "2025-09-16T11:56:22Z",
+      "side": 1,
+      "message": "https://gerrit-review.googlesource.com/c/git-repo/+/509041/comments/b757c913_5f857f33",
+      "parentUuid": "b757c913_5f857f33",
       "revId": "ce40ff3f397ac458e3ae17ac4daddf16d3cd0ae1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
