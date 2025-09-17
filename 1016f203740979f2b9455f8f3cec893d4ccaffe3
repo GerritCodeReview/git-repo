@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38ff154b_a5c406fc",
+        "filename": "tests/test_subcmds.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-09-17T17:08:13Z",
+      "side": 1,
+      "message": "please fix `Common typo found: \"not not\"`",
+      "range": {
+        "startLine": 99,
+        "startChar": 34,
+        "endLine": 99,
+        "endChar": 41
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "d4d67ace_27d5d4bc",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds.py",
+              "range": {
+                "startLine": 99,
+                "startChar": 0,
+                "endLine": 100,
+                "endChar": 0
+              },
+              "replacement": "            # If long options are not set, then there\u0027s no implicit destination.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1016f203740979f2b9455f8f3cec893d4ccaffe3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
