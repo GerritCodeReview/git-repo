@@ -16,6 +16,111 @@
       "message": "@gavinmak@google.com @vapier@google.com Please review this change when you have some time.",
       "revId": "7a0b2dc631094e82df4a7df5c95e19018bf4a9c1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d036296_6d0aa772",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3037,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-09-29T21:29:34Z",
+      "side": 1,
+      "message": "we should add `capture_stdout\u003dTrue, capture_stderr\u003dTrue` since we\u0027re manually printing this out and `verify_command\u003dFalse` checking the return code",
+      "range": {
+        "startLine": 3037,
+        "startChar": 44,
+        "endLine": 3037,
+        "endChar": 68
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e8046f28_c79eb219",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3037,
+                "startChar": 0,
+                "endLine": 3038,
+                "endChar": 0
+              },
+              "replacement": "            git_cmd \u003d GitCommand(\n                None,\n                cmd,\n                cwd\u003dself.parent.worktree,\n                capture_stdout\u003dTrue,\n                capture_stderr\u003dTrue,\n            )\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7a0b2dc631094e82df4a7df5c95e19018bf4a9c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "686ec67d_4efbfc68",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3044,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-09-29T21:29:34Z",
+      "side": 1,
+      "message": "use logger.warning instead of print",
+      "range": {
+        "startLine": 3044,
+        "startChar": 16,
+        "endLine": 3044,
+        "endChar": 21
+      },
+      "revId": "7a0b2dc631094e82df4a7df5c95e19018bf4a9c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38ad7ae5_7db9e801",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3053,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-09-29T21:29:34Z",
+      "side": 1,
+      "message": "we lose some data by raising GitError. maybe raise a GitCommandError by calling `git_cmd.VerifyCommand()` after the loop fails?",
+      "range": {
+        "startLine": 3053,
+        "startChar": 14,
+        "endLine": 3053,
+        "endChar": 22
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a33b55d6_9af3fca6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3053,
+                "startChar": 0,
+                "endLine": 3057,
+                "endChar": 0
+              },
+              "replacement": "        git_cmd.VerifyCommand()\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7a0b2dc631094e82df4a7df5c95e19018bf4a9c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
