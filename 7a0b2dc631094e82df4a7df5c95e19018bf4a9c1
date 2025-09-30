@@ -59,6 +59,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbc6f7f9_16e0d841",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3037,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-09-30T17:53:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d036296_6d0aa772",
+      "range": {
+        "startLine": 3037,
+        "startChar": 44,
+        "endLine": 3037,
+        "endChar": 68
+      },
+      "revId": "7a0b2dc631094e82df4a7df5c95e19018bf4a9c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "686ec67d_4efbfc68",
@@ -72,6 +96,30 @@
       "writtenOn": "2025-09-29T21:29:34Z",
       "side": 1,
       "message": "use logger.warning instead of print",
+      "range": {
+        "startLine": 3044,
+        "startChar": 16,
+        "endLine": 3044,
+        "endChar": 21
+      },
+      "revId": "7a0b2dc631094e82df4a7df5c95e19018bf4a9c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27f38035_f2c691be",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3044,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-09-30T17:53:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "686ec67d_4efbfc68",
       "range": {
         "startLine": 3044,
         "startChar": 16,
@@ -119,6 +167,30 @@
           ]
         }
       ],
+      "revId": "7a0b2dc631094e82df4a7df5c95e19018bf4a9c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "029e9291_0952a7b0",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3053,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-09-30T17:53:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38ad7ae5_7db9e801",
+      "range": {
+        "startLine": 3053,
+        "startChar": 14,
+        "endLine": 3053,
+        "endChar": 22
+      },
       "revId": "7a0b2dc631094e82df4a7df5c95e19018bf4a9c1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
