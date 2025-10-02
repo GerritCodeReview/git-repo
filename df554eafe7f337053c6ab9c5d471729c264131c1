@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "565d4b53_1ba994ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-10-02T18:40:23Z",
+      "side": 1,
+      "message": "i don\u0027t have an opinion at this point as to which XML backend we use.  afaik, both modules are generally available in Python\u0027s stdlib, so there\u0027s no backwards compat concern.\n\nif it\u0027s faster, and we don\u0027t need repo to rework its architecture (glancing at the CL, doesn\u0027t seem like it), then sure.  get the tests passing, and add some more for edge cases you find.",
+      "revId": "df554eafe7f337053c6ab9c5d471729c264131c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
