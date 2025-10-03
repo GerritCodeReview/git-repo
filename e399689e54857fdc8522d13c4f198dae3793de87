@@ -16,6 +16,24 @@
       "message": "Mention that you also introduced retries for submodule init?",
       "revId": "e399689e54857fdc8522d13c4f198dae3793de87",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86d81592_d735a810",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-10-03T16:14:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72b0666c_7dd4eeb0",
+      "revId": "e399689e54857fdc8522d13c4f198dae3793de87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
