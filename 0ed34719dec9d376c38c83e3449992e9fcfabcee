@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c85e71c_844fe02d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-10-03T17:20:20Z",
+      "side": 1,
+      "message": "@gavinmak@google.com @vapier@google.com is the Review-Enforcement requirement correct (and setup correctly) for this repo? The linked ReAuth doc doesn\u0027t seem to have the complete info for non-Googlers. I don\u0027t think we\u0027re being prompted to do the reauth steps to upload changes to this repo and I\u0027m definitely not seeing any pop ups in the Gerrit UI for it.",
+      "revId": "0ed34719dec9d376c38c83e3449992e9fcfabcee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
