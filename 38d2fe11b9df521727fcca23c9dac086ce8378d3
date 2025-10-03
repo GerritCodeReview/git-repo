@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb3b2a40_fd884c1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4392635
+      },
+      "writtenOn": "2025-10-03T22:06:19Z",
+      "side": 1,
+      "message": "https://gerrit-review.googlesource.com/c/git-repo/+/508821/comments/51362c05_60da8216",
+      "revId": "38d2fe11b9df521727fcca23c9dac086ce8378d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
