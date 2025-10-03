@@ -87,6 +87,24 @@
       "parentUuid": "5321106f_4342faee",
       "revId": "0ed34719dec9d376c38c83e3449992e9fcfabcee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f27c7892_483c7fea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1073170
+      },
+      "writtenOn": "2025-10-03T22:50:20Z",
+      "side": 1,
+      "message": "There are currently no trusted non-Google contributors, though we are in the process of setting that up for some chromium repositories (not this one).\n\nSo for better or worse the description is right, you just aren\u0027t trusted (as far as this requirement is concerned).  In theory the admins of each repo should be managing the trusted lists and communicating that to the relevant contributors, but I\u0027m not sure of the status of this repo.",
+      "parentUuid": "532a3460_24e7a00b",
+      "revId": "0ed34719dec9d376c38c83e3449992e9fcfabcee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
