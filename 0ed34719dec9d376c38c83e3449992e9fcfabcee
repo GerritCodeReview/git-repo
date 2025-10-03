@@ -33,6 +33,24 @@
       "message": "https://support.google.com/googleplay/thread/272908392?hl\u003den",
       "revId": "0ed34719dec9d376c38c83e3449992e9fcfabcee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea35f132_02b0537a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-10-03T21:57:41Z",
+      "side": 1,
+      "message": "Not sure, @ayatane@google.com any ideas? `nasser.grainawi@oss.qualcomm.com` is already in the repo-contributor group: http://go/grev/admin/groups/66e2d1d3d40162bd52e828b19c7de7dfcbe4cc54,members. Do we have to do anything else to get the Review-Enforcement working (besides another googler voting on this)?",
+      "parentUuid": "9c85e71c_844fe02d",
+      "revId": "0ed34719dec9d376c38c83e3449992e9fcfabcee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
