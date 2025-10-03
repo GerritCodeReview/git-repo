@@ -69,6 +69,24 @@
       "parentUuid": "ea35f132_02b0537a",
       "revId": "0ed34719dec9d376c38c83e3449992e9fcfabcee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "532a3460_24e7a00b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-10-03T22:24:04Z",
+      "side": 1,
+      "message": "\u003e Two googler review is required for Review-Enforcement\n\nI don\u0027t know if that\u0027s accurate or not, but it contradicts what the submit requirement says:\n\u003e Two trusted contributors must approve the change. [snip] For non-Google employees, [ReAuth](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/gerrit_reauth.md) is required.",
+      "parentUuid": "5321106f_4342faee",
+      "revId": "0ed34719dec9d376c38c83e3449992e9fcfabcee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
