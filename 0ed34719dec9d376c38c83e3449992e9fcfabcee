@@ -105,6 +105,24 @@
       "parentUuid": "532a3460_24e7a00b",
       "revId": "0ed34719dec9d376c38c83e3449992e9fcfabcee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86aca487_67687dd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-10-04T02:27:33Z",
+      "side": 1,
+      "message": "Ok. And am I interpreting it correctly that the trusted lists are only visible to Googlers? Are all Googlers trusted?",
+      "parentUuid": "f27c7892_483c7fea",
+      "revId": "0ed34719dec9d376c38c83e3449992e9fcfabcee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
