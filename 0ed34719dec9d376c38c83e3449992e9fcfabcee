@@ -123,6 +123,24 @@
       "parentUuid": "f27c7892_483c7fea",
       "revId": "0ed34719dec9d376c38c83e3449992e9fcfabcee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3f1bb2d_56d36f8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1073170
+      },
+      "writtenOn": "2025-10-06T21:07:28Z",
+      "side": 1,
+      "message": "That depends on the repository.  For example for chromium/src, the chromium-committers group is (will be) trusted.",
+      "parentUuid": "86aca487_67687dd2",
+      "revId": "0ed34719dec9d376c38c83e3449992e9fcfabcee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
