@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6597bdf9_1c9d55ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-10-14T17:44:20Z",
+      "side": 1,
+      "message": "since this only impacts the sync subcommand, scope it accordingly\n\n```suggestion\nsync: Use \u0027git rebase\u0027 during \u0027repo sync --rebase\u0027\n```",
+      "revId": "46d2792b383d79aadf59d0e746e791dd96541936",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12ee3692_99f17b55",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-10-14T17:44:20Z",
+      "side": 1,
+      "message": "don\u0027t use go/ links in public code.  refer to the commit, or at worst, the Gerrit change number.\n\n```suggestion\nThis was broken by commit b577444a90e29558 (\"project: Copy and link files even with local branches\"), which caused this to execute\n```",
+      "revId": "46d2792b383d79aadf59d0e746e791dd96541936",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aab9291f_a736146e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-10-14T17:44:20Z",
+      "side": 1,
+      "message": "seems fine.  some nits, and you\u0027ll need to fix the unittest failures.",
+      "revId": "46d2792b383d79aadf59d0e746e791dd96541936",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
