@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cccd1444_01694a93",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1694,
+      "author": {
+        "id": 3592256
+      },
+      "writtenOn": "2025-10-14T08:00:33Z",
+      "side": 1,
+      "message": "A fair warning, I am not an expert in the \u0027repo\u0027 codebase, but I tried to isolate my change as much as possible to only impact the codepath used by \u0027repo sync --rebase\u0027.\n\nFurthermore, I used this myself for a while and it works (in my use-cases).",
+      "range": {
+        "startLine": 1694,
+        "startChar": 0,
+        "endLine": 1694,
+        "endChar": 68
+      },
+      "revId": "c49bbb631fc5b500af3512871a0ee274f5dd3e0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
