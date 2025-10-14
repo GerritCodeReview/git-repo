@@ -1593,6 +1593,9 @@ class Project:
             self._FastForward(revid)
             self._CopyAndLinkFiles()
 
+        def _dorebase():
+            self._Rebase(upstream='@{upstream}')
+
         def _dosubmodules():
             self._SyncSubmodules(quiet=True)
 
@@ -1684,19 +1687,25 @@ class Project:
         if pub:
             not_merged = self._revlist(not_rev(revid), pub)
             if not_merged:
-                if upstream_gain and not force_rebase:
-                    # The user has published this branch and some of those
-                    # commits are not yet merged upstream.  We do not want
-                    # to rewrite the published commits so we punt.
-                    fail(
-                        LocalSyncFail(
-                            "branch %s is published (but not merged) and is "
-                            "now %d commits behind. Fix this manually or rerun "
-                            "with the --rebase option to force a rebase."
-                            % (branch.name, len(upstream_gain)),
-                            project=self.name,
+                if upstream_gain:
+                    if force_rebase:
+                        # Try to rebase local published but not merged changes
+                        # on top of the upstream changes.
+                        syncbuf.later1(self, _dorebase, not verbose)
+                    else:
+                        # The user has published this branch and some of those
+                        # commits are not yet merged upstream.  We do not want
+                        # to rewrite the published commits so we punt.
+                        fail(
+                            LocalSyncFail(
+                                "branch %s is published (but not merged) and "
+                                "is now %d commits behind. Fix this manually "
+                                "or rerun with the --rebase option to force a "
+                                "rebase."
+                                % (branch.name, len(upstream_gain)),
+                                project=self.name,
+                            )
                         )
-                    )
                     return
                 syncbuf.later1(self, _doff, not verbose)
                 return
