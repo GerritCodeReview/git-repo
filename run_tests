@@ -17,6 +17,7 @@
 
 import functools
 import os
+import shlex
 import shutil
 import subprocess
 import sys
@@ -24,6 +25,11 @@ from typing import List
 
 
 ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+
+def log_cmd(cmd: str, argv: list[str]) -> None:
+    """Log a debug message to make history easier to track."""
+    print("+", cmd, shlex.join(argv), file=sys.stderr)
 
 
 @functools.lru_cache()
@@ -37,6 +43,7 @@ def run_pytest(argv: List[str]) -> int:
     if is_ci():
         argv = ["-m", "not skip_cq"] + argv
 
+    log_cmd("pytest", argv)
     return subprocess.run(
         [sys.executable, "-m", "pytest"] + argv,
         check=False,
@@ -49,6 +56,7 @@ def run_pytest_py38(argv: List[str]) -> int:
     if is_ci():
         argv = ["-m", "not skip_cq"] + argv
 
+    log_cmd("[vpython 3.8] pytest", argv)
     try:
         return subprocess.run(
             [
@@ -77,8 +85,10 @@ def run_black():
         "release/update-hooks",
         "release/update-manpages",
     ]
+    argv = ["--diff", "--check", ROOT_DIR] + extra_programs
+    log_cmd("black", argv)
     return subprocess.run(
-        [sys.executable, "-m", "black", "--check", ROOT_DIR] + extra_programs,
+        [sys.executable, "-m", "black"] + argv,
         check=False,
         cwd=ROOT_DIR,
     ).returncode
@@ -86,8 +96,10 @@ def run_black():
 
 def run_flake8():
     """Returns the exit code from flake8."""
+    argv = [ROOT_DIR]
+    log_cmd("flake8", argv)
     return subprocess.run(
-        [sys.executable, "-m", "flake8", ROOT_DIR],
+        [sys.executable, "-m", "flake8"] + argv,
         check=False,
         cwd=ROOT_DIR,
     ).returncode
@@ -95,8 +107,10 @@ def run_flake8():
 
 def run_isort():
     """Returns the exit code from isort."""
+    argv = ["--check", ROOT_DIR]
+    log_cmd("isort", argv)
     return subprocess.run(
-        [sys.executable, "-m", "isort", "--check", ROOT_DIR],
+        [sys.executable, "-m", "isort"] + argv,
         check=False,
         cwd=ROOT_DIR,
     ).returncode
@@ -104,8 +118,10 @@ def run_isort():
 
 def run_check_metadata():
     """Returns the exit code from check-metadata."""
+    argv = []
+    log_cmd("release/check-metadata.py", argv)
     return subprocess.run(
-        [sys.executable, "release/check-metadata.py"],
+        [sys.executable, "release/check-metadata.py"] + argv,
         check=False,
         cwd=ROOT_DIR,
     ).returncode
@@ -118,8 +134,10 @@ def run_update_manpages() -> int:
         print("update-manpages: help2man not found; skipping test")
         return 0
 
+    argv = ["--check"]
+    log_cmd("release/update-manpages", argv)
     return subprocess.run(
-        [sys.executable, "release/update-manpages", "--check"],
+        [sys.executable, "release/update-manpages"] + argv,
         check=False,
         cwd=ROOT_DIR,
     ).returncode
