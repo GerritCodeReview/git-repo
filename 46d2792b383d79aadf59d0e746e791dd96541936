@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a9fe0d4_587459c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3592256
+      },
+      "writtenOn": "2025-10-15T09:12:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6597bdf9_1c9d55ff",
+      "revId": "46d2792b383d79aadf59d0e746e791dd96541936",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12ee3692_99f17b55",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-10-14T17:44:20Z",
       "side": 1,
       "message": "don\u0027t use go/ links in public code.  refer to the commit, or at worst, the Gerrit change number.\n\n```suggestion\nThis was broken by commit b577444a90e29558 (\"project: Copy and link files even with local branches\"), which caused this to execute\n```",
+      "revId": "46d2792b383d79aadf59d0e746e791dd96541936",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "720ac5b2_854fdadb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3592256
+      },
+      "writtenOn": "2025-10-15T09:12:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12ee3692_99f17b55",
       "revId": "46d2792b383d79aadf59d0e746e791dd96541936",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
