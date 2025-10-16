@@ -1214,6 +1214,96 @@ class ExtendProjectElementTests(ManifestParseTestCase):
         self.assertEqual(len(manifest.projects), 1)
         self.assertEqual(manifest.projects[0].upstream, "bar")
 
+    def test_extend_project_copyfiles(self):
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="myproject" />
+  <extend-project name="myproject">
+    <copyfile src="foo" dest="bar" />
+  </extend-project>
+</manifest>
+"""
+        )
+        self.assertEqual(
+            manifest.projects[0].copyfiles[0].src, "foo"
+        )
+        self.assertEqual(
+            manifest.projects[0].copyfiles[0].dest, "bar"
+        )
+        self.assertEqual(
+            sort_attributes(manifest.ToXml().toxml()),
+            '<?xml version="1.0" ?><manifest>'
+            '<remote fetch="http://localhost" name="default-remote"/>'
+            '<default remote="default-remote" revision="refs/heads/main"/>'
+            '<project name="myproject">'
+            '<copyfile dest="bar" src="foo"/>'
+            "</project>"
+            "</manifest>",
+        )
+
+    def test_extend_project_linkfiles(self):
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="myproject" />
+  <extend-project name="myproject">
+    <linkfile src="foo" dest="bar" />
+  </extend-project>
+</manifest>
+"""
+        )
+        self.assertEqual(
+            manifest.projects[0].linkfiles[0].src, "foo"
+        )
+        self.assertEqual(
+            manifest.projects[0].linkfiles[0].dest, "bar"
+        )
+        self.assertEqual(
+            sort_attributes(manifest.ToXml().toxml()),
+            '<?xml version="1.0" ?><manifest>'
+            '<remote fetch="http://localhost" name="default-remote"/>'
+            '<default remote="default-remote" revision="refs/heads/main"/>'
+            '<project name="myproject">'
+            '<linkfile dest="bar" src="foo"/>'
+            "</project>"
+            "</manifest>",
+        )
+
+    def test_extend_project_annotations(self):
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="myproject" />
+  <extend-project name="myproject">
+    <annotation name="foo" value="bar" />
+  </extend-project>
+</manifest>
+"""
+        )
+        self.assertEqual(
+            manifest.projects[0].annotations[0].name, "foo"
+        )
+        self.assertEqual(
+            manifest.projects[0].annotations[0].value, "bar"
+        )
+        self.assertEqual(
+            sort_attributes(manifest.ToXml().toxml()),
+            '<?xml version="1.0" ?><manifest>'
+            '<remote fetch="http://localhost" name="default-remote"/>'
+            '<default remote="default-remote" revision="refs/heads/main"/>'
+            '<project name="myproject">'
+            '<annotation name="foo" value="bar"/>'
+            "</project>"
+            "</manifest>",
+        )
+
 
 class NormalizeUrlTests(ManifestParseTestCase):
     """Tests for normalize_url() in manifest_xml.py"""
