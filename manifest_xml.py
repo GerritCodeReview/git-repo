@@ -1509,6 +1509,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         p.UpdatePaths(relpath, worktree, gitdir, objdir)
                         self._paths[p.relpath] = p
 
+                    for n in node.childNodes:
+                        if n.nodeName == "copyfile":
+                            self._ParseCopyFile(p, n)
+                        elif n.nodeName == "linkfile":
+                            self._ParseLinkFile(p, n)
+                        elif n.nodeName == "annotation":
+                            self._ParseAnnotation(p, n)
+
             if node.nodeName == "repo-hooks":
                 # Only one project can be the hooks project
                 if repo_hooks_project is not None:
@@ -1963,11 +1971,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         for n in node.childNodes:
             if n.nodeName == "copyfile":
                 self._ParseCopyFile(project, n)
-            if n.nodeName == "linkfile":
+            elif n.nodeName == "linkfile":
                 self._ParseLinkFile(project, n)
-            if n.nodeName == "annotation":
+            elif n.nodeName == "annotation":
                 self._ParseAnnotation(project, n)
-            if n.nodeName == "project":
+            elif n.nodeName == "project":
                 project.subprojects.append(
                     self._ParseProject(n, parent=project)
                 )

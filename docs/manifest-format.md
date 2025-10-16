@@ -98,7 +98,9 @@ following DTD:
   <!ATTLIST linkfile src CDATA #REQUIRED>
   <!ATTLIST linkfile dest CDATA #REQUIRED>
 
-  <!ELEMENT extend-project EMPTY>
+  <!ELEMENT extend-project (annotation*,
+                            copyfile*,
+                            linkfile*)>
   <!ATTLIST extend-project name CDATA #REQUIRED>
   <!ATTLIST extend-project path CDATA #IMPLIED>
   <!ATTLIST extend-project dest-path CDATA #IMPLIED>
@@ -427,19 +429,20 @@ Same syntax as the corresponding element of `project`.
 ### Element annotation
 
 Zero or more annotation elements may be specified as children of a
-project or remote element. Each element describes a name-value pair.
-For projects, this name-value pair will be exported into each project's
-environment during a 'forall' command, prefixed with `REPO__`.  In addition,
-there is an optional attribute "keep" which accepts the case insensitive values
-"true" (default) or "false".  This attribute determines whether or not the
+project element, an extend-project element, or a remote element. Each
+element describes a name-value pair. For projects, this name-value pair
+will be exported into each project's environment during a 'forall'
+command, prefixed with `REPO__`.  In addition, there is an optional
+attribute "keep" which accepts the case insensitive values "true"
+(default) or "false". This attribute determines whether or not the
 annotation will be kept when exported with the manifest subcommand.
 
 ### Element copyfile
 
 Zero or more copyfile elements may be specified as children of a
-project element. Each element describes a src-dest pair of files;
-the "src" file will be copied to the "dest" place during `repo sync`
-command.
+project element, or an extend-project element. Each element describes a
+src-dest pair of files; the "src" file will be copied to the "dest"
+place during `repo sync` command.
 
 "src" is project relative, "dest" is relative to the top of the tree.
 Copying from paths outside of the project or to paths outside of the repo
