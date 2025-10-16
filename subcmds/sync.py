@@ -975,9 +975,6 @@ later is required to fix a server side protocol bug.
                 sync_event.set()
                 sync_progress_thread.join()
 
-        self._fetch_times.Save()
-        self._local_sync_state.Save()
-
         if not self.outer_client.manifest.IsArchive:
             self._GCProjects(projects, opt, err_event)
 
@@ -1050,6 +1047,9 @@ later is required to fix a server side protocol bug.
             if not success:
                 err_event.set()
             fetched.update(new_fetched)
+
+        self._fetch_times.Save()
+        self._local_sync_state.Save()
 
         return _FetchMainResult(all_projects)
 
@@ -2595,6 +2595,9 @@ later is required to fix a server side protocol bug.
 
         pm.end()
 
+        self._fetch_times.Save()
+        self._local_sync_state.Save()
+
         err_update_projects, err_update_linkfiles = self._UpdateManifestLists(
             opt, err_event, errors
         )
@@ -2695,17 +2698,19 @@ class _FetchTimes:
                 self._saved = {}
 
     def Save(self):
-        if self._saved is None:
+        if not self._seen:
             return
+
+        self._Load()
 
         for name, t in self._seen.items():
             # Keep a moving average across the previous/current sync runs.
             old = self._saved.get(name, t)
-            self._seen[name] = (self._ALPHA * t) + ((1 - self._ALPHA) * old)
+            self._saved[name] = (self._ALPHA * t) + ((1 - self._ALPHA) * old)
 
         try:
             with open(self._path, "w") as f:
-                json.dump(self._seen, f, indent=2)
+                json.dump(self._saved, f, indent=2)
         except (OSError, TypeError):
             platform_utils.remove(self._path, missing_ok=True)
 
