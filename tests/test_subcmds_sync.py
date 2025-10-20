@@ -681,6 +681,9 @@ class InterleavedSyncTest(unittest.TestCase):
         # Mock _GetCurrentBranchOnly for worker tests.
         mock.patch.object(sync.Sync, "_GetCurrentBranchOnly").start()
 
+        self.cmd._fetch_times = mock.Mock()
+        self.cmd._local_sync_state = mock.Mock()
+
     def tearDown(self):
         """Clean up resources."""
         shutil.rmtree(self.repodir)
