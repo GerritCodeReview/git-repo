@@ -1,0 +1,66 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cb91d86_e4f901b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-10-20T23:10:58Z",
+      "side": 1,
+      "message": "was going to ask for unittests but you already wrote them :P",
+      "revId": "e5e1e45a9d4ada464f06f886d405350a13eb0757",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75bfadd6_ac7f3c97",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1515,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-10-20T23:10:58Z",
+      "side": 1,
+      "message": "use `elif` here and below",
+      "fixSuggestions": [
+        {
+          "fixId": "d2d6ed4f_d111a7b4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1515,
+                "startChar": 0,
+                "endLine": 1516,
+                "endChar": 0
+              },
+              "replacement": "                        elif n.nodeName \u003d\u003d \"linkfile\":\n"
+            },
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1517,
+                "startChar": 0,
+                "endLine": 1518,
+                "endChar": 0
+              },
+              "replacement": "                        elif n.nodeName \u003d\u003d \"annotation\":\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e5e1e45a9d4ada464f06f886d405350a13eb0757",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
