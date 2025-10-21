@@ -61,6 +61,24 @@
       ],
       "revId": "e5e1e45a9d4ada464f06f886d405350a13eb0757",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a536383_fb93e1b0",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1515,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-10-21T10:19:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75bfadd6_ac7f3c97",
+      "revId": "e5e1e45a9d4ada464f06f886d405350a13eb0757",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
