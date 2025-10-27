@@ -16,6 +16,24 @@
       "message": "I believe everything is ready for integrating this. So if either of you can submit it, it would be appreciated. 😊",
       "revId": "1577e0253640f8890972ee2fb1ccd52adf769e58",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62ae0537_d78c8260",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-10-27T18:59:08Z",
+      "side": 1,
+      "message": "we don\u0027t really direct submit.  you should have been able to do CQ+2 to have the change tested \u0026 merged for you.",
+      "parentUuid": "93b1c832_dd44ac6d",
+      "revId": "1577e0253640f8890972ee2fb1ccd52adf769e58",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ],
   "submitRequirementResults": [
