@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3881f2f_7da714bf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-10-30T21:08:37Z",
+      "side": 1,
+      "message": "I think using `url.\u003curl\u003e.insteadOf` configs would make it possible, but it\u0027s not very easy to configure for large groups of users and a changing set of repositories.",
+      "revId": "800393d4e661ccb00194e5c249a44179169499a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
