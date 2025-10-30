@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7c7734fb_d15d11db",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-10-30T21:13:12Z",
+      "side": 1,
+      "message": "@vapier@google.com @gavinmak@google.com Could you please share your thoughts on this? I want to make sure you’re okay with it before I spend time implementing it.",
+      "revId": "800393d4e661ccb00194e5c249a44179169499a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b3881f2f_7da714bf",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
