@@ -71,7 +71,8 @@ following DTD:
   <!ELEMENT project (annotation*,
                      project*,
                      copyfile*,
-                     linkfile*)>
+                     linkfile*,
+                     submodule-override*)>
   <!ATTLIST project name        CDATA #REQUIRED>
   <!ATTLIST project path        CDATA #IMPLIED>
   <!ATTLIST project remote      IDREF #IMPLIED>
@@ -97,6 +98,10 @@ following DTD:
   <!ELEMENT linkfile EMPTY>
   <!ATTLIST linkfile src CDATA #REQUIRED>
   <!ATTLIST linkfile dest CDATA #REQUIRED>
+
+  <!ELEMENT submodule-override EMPTY>
+  <!ATTLIST submodule-override path CDATA #REQUIRED>
+  <!ATTLIST submodule-override url CDATA #REQUIRED>
 
   <!ELEMENT extend-project (annotation*,
                             copyfile*,
@@ -465,6 +470,14 @@ Parent directories of "dest" will be automatically created if missing.
 
 The symlink target may be a file or directory, but it may not point outside
 of the repo client.
+
+### Element submodule-override
+
+Zero or more submodule-override elements may be specified as children of a
+project element; the "path" and "url" will be used to override the url that
+will be used to fetch a submodule with the provided "path".
+
+"path" must match exactly one configured submodule of the project.
 
 ### Element remove-project
 
