@@ -3086,6 +3086,9 @@ class Project:
     def _InitGitDir(self, mirror_git=None, force_sync=False, quiet=False):
         init_git_dir = not os.path.exists(self.gitdir)
         init_obj_dir = not os.path.exists(self.objdir)
+        tmp_gitdir = None
+        curr_gitdir = self.gitdir
+        curr_config = self.config
         try:
             # Initialize the bare repository, which contains all of the objects.
             if init_obj_dir:
@@ -3105,27 +3108,46 @@ class Project:
             # well.
             if self.objdir != self.gitdir:
                 if init_git_dir:
-                    os.makedirs(self.gitdir)
+                    random_suffix = "".join(
+                        random.choices(
+                            string.ascii_letters + string.digits, k=5
+                        )
+                    )
+                    tmp_gitdir = os.path.join(
+                        os.path.dirname(self.gitdir),
+                        f".tmp-{os.path.basename(self.gitdir)}-{random_suffix}",
+                    )
+                    os.makedirs(tmp_gitdir)
+                    curr_config = GitConfig.ForRepository(
+                        gitdir=tmp_gitdir, defaults=self.manifest.globalConfig
+                    )
+                    curr_gitdir = tmp_gitdir
 
                 if init_obj_dir or init_git_dir:
                     self._ReferenceGitDir(
-                        self.objdir, self.gitdir, copy_all=True
+                        self.objdir, curr_gitdir, copy_all=True
                     )
                 try:
-                    self._CheckDirReference(self.objdir, self.gitdir)
+                    self._CheckDirReference(self.objdir, curr_gitdir)
                 except GitError as e:
                     if force_sync:
-                        logger.error(
-                            "Retrying clone after deleting %s", self.gitdir
-                        )
                         try:
-                            platform_utils.rmtree(os.path.realpath(self.gitdir))
+                            rm_dirs = []
+                            if tmp_gitdir and os.path.exists(tmp_gitdir):
+                                rm_dirs.append(tmp_gitdir)
+                            if os.path.exists(self.gitdir):
+                                rm_dirs.append(os.path.realpath(self.gitdir))
                             if self.worktree and os.path.exists(
                                 os.path.realpath(self.worktree)
                             ):
-                                platform_utils.rmtree(
-                                    os.path.realpath(self.worktree)
+                                rm_dirs.append(os.path.realpath(self.worktree))
+                            if rm_dirs:
+                                logger.error(
+                                    "Retrying clone after deleting: %s",
+                                    ", ".join(rm_dirs),
                                 )
+                                for d in rm_dirs:
+                                    platform_utils.rmtree(d)
                             return self._InitGitDir(
                                 mirror_git=mirror_git,
                                 force_sync=False,
@@ -3176,18 +3198,20 @@ class Project:
                 m = self.manifest.manifestProject.config
                 for key in ["user.name", "user.email"]:
                     if m.Has(key, include_defaults=False):
-                        self.config.SetString(key, m.GetString(key))
+                        curr_config.SetString(key, m.GetString(key))
                 if not self.manifest.EnableGitLfs:
-                    self.config.SetString(
+                    curr_config.SetString(
                         "filter.lfs.smudge", "git-lfs smudge --skip -- %f"
                     )
-                    self.config.SetString(
+                    curr_config.SetString(
                         "filter.lfs.process", "git-lfs filter-process --skip"
                     )
-                self.config.SetBoolean(
+                curr_config.SetBoolean(
                     "core.bare", True if self.manifest.IsMirror else None
                 )
 
+                if tmp_gitdir:
+                    platform_utils.rename(tmp_gitdir, self.gitdir)
             if not init_obj_dir:
                 # The project might be shared (obj_dir already initialized), but
                 # such information is not available here. Instead of passing it,
@@ -3196,7 +3220,7 @@ class Project:
                 if git_require((2, 7, 0)):
                     self.EnableRepositoryExtension("preciousObjects")
                 else:
-                    self.config.SetString("gc.pruneExpire", "never")
+                    curr_config.SetString("gc.pruneExpire", "never")
 
         except Exception:
             if init_obj_dir and os.path.exists(self.objdir):
@@ -3204,6 +3228,14 @@ class Project:
             if init_git_dir and os.path.exists(self.gitdir):
                 platform_utils.rmtree(self.gitdir)
             raise
+        finally:
+            for tmp_dir in glob.glob(
+                os.path.join(
+                    os.path.dirname(self.gitdir),
+                    f".tmp-{os.path.basename(self.gitdir)}-*",
+                )
+            ):
+                platform_utils.rmtree(tmp_dir)
 
     def _UpdateHooks(self, quiet=False):
         if os.path.exists(self.objdir):
