@@ -1324,6 +1324,16 @@ class Project:
             clone_filter = None
 
         if is_new is None:
+            # Handle potential leftover bare gitdir from a failed sync
+            if (
+                os.path.exists(self.gitdir)
+                and not self.manifest.IsMirror
+                and self.config.GetBoolean("core.bare")
+            ):
+                platform_utils.rmtree(os.path.realpath(self.gitdir))
+                self.config = GitConfig.ForRepository(
+                    gitdir=self.gitdir, defaults=self.manifest.globalConfig
+                )
             is_new = not self.Exists
         if is_new:
             self._InitGitDir(force_sync=force_sync, quiet=quiet)
