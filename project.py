@@ -3077,6 +3077,9 @@ class Project:
     def _InitGitDir(self, mirror_git=None, force_sync=False, quiet=False):
         init_git_dir = not os.path.exists(self.gitdir)
         init_obj_dir = not os.path.exists(self.objdir)
+        tmp_gitdir = None
+        curr_gitdir = self.gitdir
+        curr_config = self.config
         try:
             # Initialize the bare repository, which contains all of the objects.
             if init_obj_dir:
@@ -3096,27 +3099,33 @@ class Project:
             # well.
             if self.objdir != self.gitdir:
                 if init_git_dir:
-                    os.makedirs(self.gitdir)
+                    os.makedirs(os.path.dirname(self.gitdir), exist_ok=True)
+                    tmp_gitdir = tempfile.mkdtemp(
+                        prefix=".tmp-prj-initgitdir-",
+                        dir=os.path.dirname(self.gitdir),
+                    )
+                    curr_config = GitConfig.ForRepository(
+                        gitdir=tmp_gitdir, defaults=self.manifest.globalConfig
+                    )
+                    curr_gitdir = tmp_gitdir
 
                 if init_obj_dir or init_git_dir:
                     self._ReferenceGitDir(
-                        self.objdir, self.gitdir, copy_all=True
+                        self.objdir, curr_gitdir, copy_all=True
                     )
                 try:
-                    self._CheckDirReference(self.objdir, self.gitdir)
+                    self._CheckDirReference(self.objdir, curr_gitdir)
                 except GitError as e:
                     if force_sync:
-                        logger.error(
-                            "Retrying clone after deleting %s", self.gitdir
-                        )
                         try:
-                            platform_utils.rmtree(os.path.realpath(self.gitdir))
-                            if self.worktree and os.path.exists(
-                                os.path.realpath(self.worktree)
-                            ):
-                                platform_utils.rmtree(
-                                    os.path.realpath(self.worktree)
-                                )
+                            rm_dirs = (
+                                tmp_gitdir,
+                                self.gitdir,
+                                self.worktree,
+                            )
+                            for d in rm_dirs:
+                                if d and os.path.exists(d):
+                                    platform_utils.rmtree(os.path.realpath(d))
                             return self._InitGitDir(
                                 mirror_git=mirror_git,
                                 force_sync=False,
@@ -3167,18 +3176,20 @@ class Project:
                 m = self.manifest.manifestProject.config
                 for key in ["user.name", "user.email"]:
                     if m.Has(key, include_defaults=False):
-                        self.config.SetString(key, m.GetString(key))
+                        curr_config.SetString(key, m.GetString(key))
                 if not self.manifest.EnableGitLfs:
-                    self.config.SetString(
+                    curr_config.SetString(
                         "filter.lfs.smudge", "git-lfs smudge --skip -- %f"
                     )
-                    self.config.SetString(
+                    curr_config.SetString(
                         "filter.lfs.process", "git-lfs filter-process --skip"
                     )
-                self.config.SetBoolean(
+                curr_config.SetBoolean(
                     "core.bare", True if self.manifest.IsMirror else None
                 )
 
+                if tmp_gitdir:
+                    platform_utils.rename(tmp_gitdir, self.gitdir)
             if not init_obj_dir:
                 # The project might be shared (obj_dir already initialized), but
                 # such information is not available here. Instead of passing it,
@@ -3195,6 +3206,9 @@ class Project:
             if init_git_dir and os.path.exists(self.gitdir):
                 platform_utils.rmtree(self.gitdir)
             raise
+        finally:
+            if tmp_gitdir and os.path.exists(tmp_gitdir):
+                platform_utils.rmtree(tmp_gitdir)
 
     def _UpdateHooks(self, quiet=False):
         if os.path.exists(self.objdir):
