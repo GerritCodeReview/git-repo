@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c56fc28_2a5905b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-05T19:12:10Z",
+      "side": 1,
+      "message": "this logic seems to basically be a recovery for when _InitGitDir failed (i.e. was interrupted), but the Exception block wasn\u0027t run for whatever reason (where it deletes the gitdir).  and it relies on the current _InitGitDir implementation where it assumes the last thing it did was toggle core.bare, and it doesn\u0027t handle partial mirror init.\n\ni think this is a bandaid over the actual bug ... we shouldn\u0027t init the real directory in-situ.  _InitGitDir should initialize a temp dir, and only once it\u0027s finished, rename it to the final dir.",
+      "revId": "7e63a543e40fbb01348f52805dc232b471b3b163",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
