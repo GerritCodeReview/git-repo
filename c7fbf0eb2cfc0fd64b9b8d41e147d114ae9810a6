@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87001111_e88d4b7d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-11-06T21:12:56Z",
+      "side": 1,
+      "message": "Your solution is more generic than this now, so you probably want to update the subject.",
+      "revId": "c7fbf0eb2cfc0fd64b9b8d41e147d114ae9810a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45832d90_6367cf46",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 3132,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-11-06T21:12:56Z",
+      "side": 1,
+      "message": "Update this log message to include tmp_gitdir (if non-None).",
+      "revId": "c7fbf0eb2cfc0fd64b9b8d41e147d114ae9810a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71c372ca_23d20e84",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 3231,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-11-06T21:12:56Z",
+      "side": 1,
+      "message": "I think we want a removal of any older temp dirs too. I don\u0027t know if it should go here, but I think it would be ok.\n\n```suggestion\n            for tmp_gitdir in glob.glob(os.path.join(os.path.dirname(self.gitdir), f\".tmp-{os.path.basename(self.gitdir)}-*\"):\n                platform_utils.rmtree(tmp_gitdir)\n```",
+      "range": {
+        "startLine": 3230,
+        "startChar": 0,
+        "endLine": 3231,
+        "endChar": 49
+      },
+      "revId": "c7fbf0eb2cfc0fd64b9b8d41e147d114ae9810a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
