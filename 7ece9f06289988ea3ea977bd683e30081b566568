@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "378462af_6e0bdce3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-06T21:33:35Z",
+      "side": 1,
+      "message": "Apparently I forgot to update the manual pages when I updated `manifest_xml.py`...",
+      "revId": "7ece9f06289988ea3ea977bd683e30081b566568",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
