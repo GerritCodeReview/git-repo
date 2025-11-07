@@ -407,6 +407,14 @@ class _CopyFile:
         self.src = src
         self.dest = dest
 
+    def __eq__(self, other):
+        if not isinstance(other, _CopyFile):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __hash__(self):
+        return hash(repr(sorted(self.__dict__.items())))
+
     def _Copy(self):
         src = _SafeExpandPath(self.git_worktree, self.src)
         dest = _SafeExpandPath(self.topdir, self.dest)
@@ -455,6 +463,14 @@ class _LinkFile:
         self.topdir = topdir
         self.src = src
         self.dest = dest
+
+    def __eq__(self, other):
+        if not isinstance(other, _LinkFile):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __hash__(self):
+        return hash(repr(sorted(self.__dict__.items())))
 
     def __linkIt(self, relSrc, absDest):
         # Link file if it does not exist or is out of date.
@@ -633,8 +649,8 @@ class Project:
         self.subprojects = []
 
         self.snapshots = {}
-        self.copyfiles = []
-        self.linkfiles = []
+        self.copyfiles = set()
+        self.linkfiles = set()
         self.annotations = []
         self.dest_branch = dest_branch
 
@@ -1794,7 +1810,7 @@ class Project:
         Paths should have basic validation run on them before being queued.
         Further checking will be handled when the actual copy happens.
         """
-        self.copyfiles.append(_CopyFile(self.worktree, src, topdir, dest))
+        self.copyfiles.add(_CopyFile(self.worktree, src, topdir, dest))
 
     def AddLinkFile(self, src, dest, topdir):
         """Mark |dest| to create a symlink (relative to |topdir|) pointing to
@@ -1805,7 +1821,7 @@ class Project:
         Paths should have basic validation run on them before being queued.
         Further checking will be handled when the actual link happens.
         """
-        self.linkfiles.append(_LinkFile(self.worktree, src, topdir, dest))
+        self.linkfiles.add(_LinkFile(self.worktree, src, topdir, dest))
 
     def AddAnnotation(self, name, value, keep):
         self.annotations.append(Annotation(name, value, keep))
