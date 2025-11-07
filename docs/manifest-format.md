@@ -566,6 +566,7 @@ These restrictions are not enforced for [Local Manifests].
 Attribute `groups`: List of additional groups to which all projects
 in the included manifest belong. This appends and recurses, meaning
 all projects in included manifests carry all parent include groups.
+This also applies to all extend-project elements in the included manifests.
 Same syntax as the corresponding element of `project`.
 
 Attribute `revision`: Name of a Git branch (e.g. `main` or `refs/heads/main`)
