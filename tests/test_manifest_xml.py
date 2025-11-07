@@ -492,6 +492,44 @@ class IncludeElementTests(ManifestParseTestCase):
                 # Check level2 proj group not removed.
                 self.assertIn("l2g1", proj.groups)
 
+    def test_group_levels_with_extend_project(self):
+        root_m = os.path.join(self.manifest_dir, "root.xml")
+        with open(root_m, "w") as fp:
+            fp.write(
+                """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <include name="man1.xml" groups="top-group1" />
+  <include name="man2.xml" groups="top-group2" />
+</manifest>
+"""
+            )
+        with open(os.path.join(self.manifest_dir, "man1.xml"), "w") as fp:
+            fp.write(
+                """
+<manifest>
+  <project name="project1" path="project1" />
+</manifest>
+"""
+            )
+        with open(os.path.join(self.manifest_dir, "man2.xml"), "w") as fp:
+            fp.write(
+                """
+<manifest>
+  <extend-project name="project1" groups="eg1" />
+</manifest>
+"""
+            )
+        include_m = manifest_xml.XmlManifest(self.repodir, root_m)
+        proj = include_m.projects[0]
+        # Check project has inherited group via project element.
+        self.assertIn("top-group1", proj.groups)
+        # Check project has inherited group via extend-project element.
+        self.assertIn("top-group2", proj.groups)
+        # Check project has set group via extend-project element.
+        self.assertIn("eg1", proj.groups)
+
     def test_allow_bad_name_from_user(self):
         """Check handling of bad name attribute from the user's input."""
 

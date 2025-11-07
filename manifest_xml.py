@@ -1335,7 +1335,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         f"failed parsing included manifest {name}: {e}"
                     )
             else:
-                if parent_groups and node.nodeName == "project":
+                if parent_groups and (
+                    node.nodeName == "project"
+                    or node.nodeName == "extend-project"
+                ):
                     nodeGroups = parent_groups
                     if node.hasAttribute("groups"):
                         nodeGroups = (
