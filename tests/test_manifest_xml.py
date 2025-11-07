@@ -1254,8 +1254,12 @@ class ExtendProjectElementTests(ManifestParseTestCase):
 </manifest>
 """
         )
-        self.assertEqual(manifest.projects[0].copyfiles[0].src, "foo")
-        self.assertEqual(manifest.projects[0].copyfiles[0].dest, "bar")
+        self.assertEqual(
+            list(manifest.projects[0].copyfiles.keys())[0].src, "foo"
+        )
+        self.assertEqual(
+            list(manifest.projects[0].copyfiles.keys())[0].dest, "bar"
+        )
         self.assertEqual(
             sort_attributes(manifest.ToXml().toxml()),
             '<?xml version="1.0" ?><manifest>'
@@ -1265,6 +1269,51 @@ class ExtendProjectElementTests(ManifestParseTestCase):
             '<copyfile dest="bar" src="foo"/>'
             "</project>"
             "</manifest>",
+        )
+
+    def test_extend_project_duplicate_copyfiles(self):
+        root_m = self.manifest_dir / "root.xml"
+        root_m.write_text(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="myproject" />
+  <include name="man1.xml" />
+  <include name="man2.xml" />
+</manifest>
+"""
+        )
+        (self.manifest_dir / "man1.xml").write_text(
+            """
+<manifest>
+  <include name="common.xml" />
+</manifest>
+"""
+        )
+        (self.manifest_dir / "man2.xml").write_text(
+            """
+<manifest>
+  <include name="common.xml" />
+</manifest>
+"""
+        )
+        (self.manifest_dir / "common.xml").write_text(
+            """
+<manifest>
+  <extend-project name="myproject">
+    <copyfile dest="bar" src="foo"/>
+  </extend-project>
+</manifest>
+"""
+        )
+        manifest = manifest_xml.XmlManifest(str(self.repodir), str(root_m))
+        self.assertEqual(len(manifest.projects[0].copyfiles.keys()), 1)
+        self.assertEqual(
+            list(manifest.projects[0].copyfiles.keys())[0].src, "foo"
+        )
+        self.assertEqual(
+            list(manifest.projects[0].copyfiles.keys())[0].dest, "bar"
         )
 
     def test_extend_project_linkfiles(self):
@@ -1280,8 +1329,12 @@ class ExtendProjectElementTests(ManifestParseTestCase):
 </manifest>
 """
         )
-        self.assertEqual(manifest.projects[0].linkfiles[0].src, "foo")
-        self.assertEqual(manifest.projects[0].linkfiles[0].dest, "bar")
+        self.assertEqual(
+            list(manifest.projects[0].linkfiles.keys())[0].src, "foo"
+        )
+        self.assertEqual(
+            list(manifest.projects[0].linkfiles.keys())[0].dest, "bar"
+        )
         self.assertEqual(
             sort_attributes(manifest.ToXml().toxml()),
             '<?xml version="1.0" ?><manifest>'
@@ -1291,6 +1344,51 @@ class ExtendProjectElementTests(ManifestParseTestCase):
             '<linkfile dest="bar" src="foo"/>'
             "</project>"
             "</manifest>",
+        )
+
+    def test_extend_project_duplicate_linkfiles(self):
+        root_m = self.manifest_dir / "root.xml"
+        root_m.write_text(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="myproject" />
+  <include name="man1.xml" />
+  <include name="man2.xml" />
+</manifest>
+"""
+        )
+        (self.manifest_dir / "man1.xml").write_text(
+            """
+<manifest>
+  <include name="common.xml" />
+</manifest>
+"""
+        )
+        (self.manifest_dir / "man2.xml").write_text(
+            """
+<manifest>
+  <include name="common.xml" />
+</manifest>
+"""
+        )
+        (self.manifest_dir / "common.xml").write_text(
+            """
+<manifest>
+  <extend-project name="myproject">
+    <linkfile dest="bar" src="foo"/>
+  </extend-project>
+</manifest>
+"""
+        )
+        manifest = manifest_xml.XmlManifest(str(self.repodir), str(root_m))
+        self.assertEqual(len(manifest.projects[0].linkfiles.keys()), 1)
+        self.assertEqual(
+            list(manifest.projects[0].linkfiles.keys())[0].src, "foo"
+        )
+        self.assertEqual(
+            list(manifest.projects[0].linkfiles.keys())[0].dest, "bar"
         )
 
     def test_extend_project_annotations(self):

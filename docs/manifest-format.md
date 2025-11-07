@@ -453,10 +453,14 @@ Intermediate paths must not be symlinks either.
 
 Parent directories of "dest" will be automatically created if missing.
 
+The files are copied in the order they are specified in the manifests.
+If multiple elements specify the same source and destination, they will
+only be copiend once, based on the first occurence. Files are copied
+beforeq any links specified via linkfile elements are created.
+
 ### Element linkfile
 
-It's just like copyfile and runs at the same time as copyfile but
-instead of copying it creates a symlink.
+It's just like copyfile, but instead of copying it creates a symlink.
 
 The symlink is created at "dest" (relative to the top of the tree) and
 points to the path specified by "src" which is a path in the project.
@@ -465,6 +469,11 @@ Parent directories of "dest" will be automatically created if missing.
 
 The symlink target may be a file or directory, but it may not point outside
 of the repo client.
+
+The links are created in the order they are specified in the manifests.
+If multiple elements specify the same source and destination, they will
+only be created once, based on the first occurence. Links are created after
+any files specified via copyfile elements are copied.
 
 ### Element remove-project
 
