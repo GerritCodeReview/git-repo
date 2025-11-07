@@ -390,22 +390,17 @@ def _SafeExpandPath(base, subpath, skipfinal=False):
     return path
 
 
-class _CopyFile:
+class _CopyFile(NamedTuple):
     """Container for <copyfile> manifest element."""
 
-    def __init__(self, git_worktree, src, topdir, dest):
-        """Register a <copyfile> request.
-
-        Args:
-            git_worktree: Absolute path to the git project checkout.
-            src: Relative path under |git_worktree| of file to read.
-            topdir: Absolute path to the top of the repo client checkout.
-            dest: Relative path under |topdir| of file to write.
-        """
-        self.git_worktree = git_worktree
-        self.topdir = topdir
-        self.src = src
-        self.dest = dest
+    # Absolute path to the git project checkout.
+    git_worktree: str
+    # Relative path under |git_worktree| of file to read.
+    src: str
+    # Absolute path to the top of the repo client checkout.
+    topdir: str
+    # Relative path under |topdir| of file to write.
+    dest: str
 
     def _Copy(self):
         src = _SafeExpandPath(self.git_worktree, self.src)
@@ -439,22 +434,17 @@ class _CopyFile:
                 logger.error("error: Cannot copy file %s to %s", src, dest)
 
 
-class _LinkFile:
+class _LinkFile(NamedTuple):
     """Container for <linkfile> manifest element."""
 
-    def __init__(self, git_worktree, src, topdir, dest):
-        """Register a <linkfile> request.
-
-        Args:
-            git_worktree: Absolute path to the git project checkout.
-            src: Target of symlink relative to path under |git_worktree|.
-            topdir: Absolute path to the top of the repo client checkout.
-            dest: Relative path under |topdir| of symlink to create.
-        """
-        self.git_worktree = git_worktree
-        self.topdir = topdir
-        self.src = src
-        self.dest = dest
+    # Absolute path to the git project checkout.
+    git_worktree: str
+    # Target of symlink relative to path under |git_worktree|.
+    src: str
+    # Absolute path to the top of the repo client checkout.
+    topdir: str
+    # Relative path under |topdir| of symlink to create.
+    dest: str
 
     def __linkIt(self, relSrc, absDest):
         # Link file if it does not exist or is out of date.
@@ -633,8 +623,9 @@ class Project:
         self.subprojects = []
 
         self.snapshots = {}
-        self.copyfiles = []
-        self.linkfiles = []
+        # Use dicts to dedupe while maintaining declared order.
+        self.copyfiles = {}
+        self.linkfiles = {}
         self.annotations = []
         self.dest_branch = dest_branch
 
@@ -1481,9 +1472,9 @@ class Project:
         self._InitHooks()
 
     def _CopyAndLinkFiles(self):
-        for copyfile in self.copyfiles:
+        for copyfile in self.copyfiles.keys():
             copyfile._Copy()
-        for linkfile in self.linkfiles:
+        for linkfile in self.linkfiles.keys():
             linkfile._Link()
 
     def GetCommitRevisionId(self):
@@ -1794,7 +1785,7 @@ class Project:
         Paths should have basic validation run on them before being queued.
         Further checking will be handled when the actual copy happens.
         """
-        self.copyfiles.append(_CopyFile(self.worktree, src, topdir, dest))
+        self.copyfiles[_CopyFile(self.worktree, src, topdir, dest)] = True
 
     def AddLinkFile(self, src, dest, topdir):
         """Mark |dest| to create a symlink (relative to |topdir|) pointing to
@@ -1805,7 +1796,7 @@ class Project:
         Paths should have basic validation run on them before being queued.
         Further checking will be handled when the actual link happens.
         """
-        self.linkfiles.append(_LinkFile(self.worktree, src, topdir, dest))
+        self.linkfiles[_LinkFile(self.worktree, src, topdir, dest)] = True
 
     def AddAnnotation(self, name, value, keep):
         self.annotations.append(Annotation(name, value, keep))
