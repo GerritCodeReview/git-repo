@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8fe7e69_1be7970f",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 3132,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-11-07T05:56:22Z",
+      "side": 1,
+      "message": "I don\u0027t think it would be harmful, but it looks like we don\u0027t currently log about `self.worktree`, so maybe this doesn\u0027t need to be verbose. However, `self.gitdir` might not even exist when we log this.\n\nI think we should be logging about whichever dirs we expect to remove. This is already in an exception case and I think users expect logs then.",
+      "parentUuid": "e44bba4f_715c1fef",
+      "revId": "c7fbf0eb2cfc0fd64b9b8d41e147d114ae9810a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "71c372ca_23d20e84",
         "filename": "project.py",
         "patchSetId": 4
