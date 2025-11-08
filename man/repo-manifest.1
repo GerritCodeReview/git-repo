@@ -365,7 +365,7 @@ supplied, `revision` is used.
 .PP
 `path` may not be an absolute path or use "." or ".." path components.
 .PP
-Attribute `groups`: List of additional groups to which all projects in the
+Attribute `groups`: Set of additional groups to which all projects in the
 included submanifest belong. This appends and recurses, meaning all projects in
 submanifests carry all parent submanifest groups. Same syntax as the
 corresponding element of `project`.
@@ -427,7 +427,7 @@ Attribute `dest\-branch`: Name of a Git branch (e.g. `main`). When using `repo
 upload`, changes will be submitted for code review on this branch. If
 unspecified both here and in the default element, `revision` is used instead.
 .PP
-Attribute `groups`: List of groups to which this project belongs, whitespace or
+Attribute `groups`: Set of groups to which this project belongs, whitespace or
 comma separated. All projects belong to the group "all", and each project
 automatically belongs to a group of its name:`name` and path:`path`. E.g. for
 `<project name="monkeys" path="barrel\-of"/>`, that project definition is
@@ -471,8 +471,8 @@ repo client where the Git working directory for this project should be placed.
 This is used to move a project in the checkout by overriding the existing `path`
 setting.
 .PP
-Attribute `groups`: List of additional groups to which this project belongs.
-Same syntax as the corresponding element of `project`.
+Attribute `groups`: Set of additional groups to which this project belongs. Same
+syntax as the corresponding element of `project`.
 .PP
 Attribute `revision`: If specified, overrides the revision of the original
 project. Same syntax as the corresponding element of `project`.
@@ -634,7 +634,7 @@ repository's root.
 "name" may not be an absolute path or use "." or ".." path components. These
 restrictions are not enforced for [Local Manifests].
 .PP
-Attribute `groups`: List of additional groups to which all projects in the
+Attribute `groups`: Set of additional groups to which all projects in the
 included manifest belong. This appends and recurses, meaning all projects in
 included manifests carry all parent include groups. This also applies to all
 extend\-project elements in the included manifests. Same syntax as the
