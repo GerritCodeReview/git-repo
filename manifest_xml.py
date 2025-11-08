@@ -725,10 +725,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 le.setAttribute("dest", lf.dest)
                 e.appendChild(le)
 
-            default_groups = ["all", "name:%s" % p.name, "path:%s" % p.relpath]
-            egroups = [g for g in p.groups if g not in default_groups]
+            egroups = p.groups - {"all", f"name:{p.name}", f"path:{p.relpath}"}
             if egroups:
-                e.setAttribute("groups", ",".join(egroups))
+                e.setAttribute("groups", ",".join(sorted(egroups)))
 
             for a in p.annotations:
                 if a.keep == "true":
@@ -1461,7 +1460,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 dest_path = node.getAttribute("dest-path")
                 groups = node.getAttribute("groups")
                 if groups:
-                    groups = self._ParseList(groups)
+                    groups = set(self._ParseList(groups))
                 revision = node.getAttribute("revision")
                 remote_name = node.getAttribute("remote")
                 if not remote_name:
@@ -1482,7 +1481,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     if path and p.relpath != path:
                         continue
                     if groups:
-                        p.groups.extend(groups)
+                        p.groups |= groups
                     if revision:
                         if base_revision:
                             if p.revisionExpr != base_revision:
@@ -1922,11 +1921,6 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         upstream = node.getAttribute("upstream") or self._default.upstreamExpr
 
-        groups = ""
-        if node.hasAttribute("groups"):
-            groups = node.getAttribute("groups")
-        groups = self._ParseList(groups)
-
         if parent is None:
             (
                 relpath,
@@ -1941,8 +1935,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 parent, name, path
             )
 
-        default_groups = ["all", "name:%s" % name, "path:%s" % relpath]
-        groups.extend(set(default_groups).difference(groups))
+        groups = ""
+        if node.hasAttribute("groups"):
+            groups = node.getAttribute("groups")
+        groups = set(self._ParseList(groups))
+        groups |= {"all", f"name:{name}", f"path:{relpath}"}
 
         if self.IsMirror and node.hasAttribute("force-path"):
             if XmlBool(node, "force-path", False):

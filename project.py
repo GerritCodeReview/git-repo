@@ -864,9 +864,9 @@ class Project:
         """
         default_groups = self.manifest.default_groups or ["default"]
         expanded_manifest_groups = manifest_groups or default_groups
-        expanded_project_groups = ["all"] + (self.groups or [])
+        expanded_project_groups = {"all"} | (self.groups or {})
         if "notdefault" not in expanded_project_groups:
-            expanded_project_groups += ["default"]
+            expanded_project_groups |= {"default"}
 
         matched = False
         for group in expanded_manifest_groups:

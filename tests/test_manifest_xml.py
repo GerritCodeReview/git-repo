@@ -616,12 +616,12 @@ class ProjectElementTests(ManifestParseTestCase):
             manifest.projects[0].name: manifest.projects[0].groups,
             manifest.projects[1].name: manifest.projects[1].groups,
         }
-        self.assertCountEqual(
-            result["test-name"], ["name:test-name", "all", "path:test-path"]
+        self.assertEqual(
+            result["test-name"], {"name:test-name", "all", "path:test-path"}
         )
-        self.assertCountEqual(
+        self.assertEqual(
             result["extras"],
-            ["g1", "g2", "g1", "name:extras", "all", "path:path"],
+            {"g1", "g2", "name:extras", "all", "path:path"},
         )
         groupstr = "default,platform-" + platform.system().lower()
         self.assertEqual(groupstr, manifest.GetGroupsStr())
