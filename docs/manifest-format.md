@@ -287,7 +287,7 @@ should be placed.  If not supplied, `revision` is used.
 
 `path` may not be an absolute path or use "." or ".." path components.
 
-Attribute `groups`: List of additional groups to which all projects
+Attribute `groups`: Set of additional groups to which all projects
 in the included submanifest belong. This appends and recurses, meaning
 all projects in submanifests carry all parent submanifest groups.
 Same syntax as the corresponding element of `project`.
@@ -355,7 +355,7 @@ When using `repo upload`, changes will be submitted for code
 review on this branch. If unspecified both here and in the
 default element, `revision` is used instead.
 
-Attribute `groups`: List of groups to which this project belongs,
+Attribute `groups`: Set of groups to which this project belongs,
 whitespace or comma separated.  All projects belong to the group
 "all", and each project automatically belongs to a group of
 its name:`name` and path:`path`.  E.g. for
@@ -403,7 +403,7 @@ of the repo client where the Git working directory for this project
 should be placed.  This is used to move a project in the checkout by
 overriding the existing `path` setting.
 
-Attribute `groups`: List of additional groups to which this project
+Attribute `groups`: Set of additional groups to which this project
 belongs.  Same syntax as the corresponding element of `project`.
 
 Attribute `revision`: If specified, overrides the revision of the original
@@ -572,7 +572,7 @@ the manifest repository's root.
 "name" may not be an absolute path or use "." or ".." path components.
 These restrictions are not enforced for [Local Manifests].
 
-Attribute `groups`: List of additional groups to which all projects
+Attribute `groups`: Set of additional groups to which all projects
 in the included manifest belong. This appends and recurses, meaning
 all projects in included manifests carry all parent include groups.
 This also applies to all extend-project elements in the included manifests.
