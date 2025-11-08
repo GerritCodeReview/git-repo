@@ -1273,7 +1273,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             parent_groups: The groups to apply to this projects.
             restrict_includes: Whether to constrain the "name" attribute of
                 includes.
-            parent_node: The parent include node, to apply attribute to this
+            parent_node: The parent include node, to apply attributes to this
                 projects.
 
         Returns:
@@ -1298,6 +1298,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         nodes = []
         for node in manifest.childNodes:
+            if (
+                parent_node
+                and node.nodeName in ("include", "project")
+                and not node.hasAttribute("revision")
+            ):
+                node.setAttribute(
+                    "revision", parent_node.getAttribute("revision")
+                )
             if node.nodeName == "include":
                 name = self._reqatt(node, "name")
                 if restrict_includes:
@@ -1344,14 +1352,6 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                             node.getAttribute("groups") + "," + nodeGroups
                         )
                     node.setAttribute("groups", nodeGroups)
-                if (
-                    parent_node
-                    and node.nodeName == "project"
-                    and not node.hasAttribute("revision")
-                ):
-                    node.setAttribute(
-                        "revision", parent_node.getAttribute("revision")
-                    )
                 nodes.append(node)
         return nodes
 
