@@ -423,8 +423,28 @@ class IncludeElementTests(ManifestParseTestCase):
             fp.write(
                 """
 <manifest>
+  <include name="man1.xml" />
+  <include name="man2.xml" revision="stable-branch2" />
   <project name="stable-name1" path="stable-path1" />
   <project name="stable-name2" path="stable-path2" revision="stable-branch2" />
+</manifest>
+"""
+            )
+        with open(os.path.join(self.manifest_dir, "man1.xml"), "w") as fp:
+            fp.write(
+                """
+<manifest>
+  <project name="man1-name1" />
+  <project name="man1-name2" revision="stable-branch3" />
+</manifest>
+"""
+            )
+        with open(os.path.join(self.manifest_dir, "man2.xml"), "w") as fp:
+            fp.write(
+                """
+<manifest>
+  <project name="man2-name1" />
+  <project name="man2-name2" revision="stable-branch3" />
 </manifest>
 """
             )
@@ -442,6 +462,14 @@ class IncludeElementTests(ManifestParseTestCase):
             if proj.name == "stable-name2":
                 # Check stable proj revision can override include node.
                 self.assertEqual("stable-branch2", proj.revisionExpr)
+            if proj.name == "man1-name1":
+                self.assertEqual("stable-branch", proj.revisionExpr)
+            if proj.name == "man1-name2":
+                self.assertEqual("stable-branch3", proj.revisionExpr)
+            if proj.name == "man2-name1":
+                self.assertEqual("stable-branch2", proj.revisionExpr)
+            if proj.name == "man2-name2":
+                self.assertEqual("stable-branch3", proj.revisionExpr)
 
     def test_group_levels(self):
         root_m = os.path.join(self.manifest_dir, "root.xml")
