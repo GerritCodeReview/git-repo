@@ -579,7 +579,9 @@ This also applies to all extend-project elements in the included manifests.
 Same syntax as the corresponding element of `project`.
 
 Attribute `revision`: Name of a Git branch (e.g. `main` or `refs/heads/main`)
-default to which all projects in the included manifest belong.
+default to which all projects in the included manifest belong. This recurses,
+meaning it will apply to all projects in all manifests included as a result of
+this element.
 
 ## Local Manifests {#local-manifests}
 
