@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e8b7311_90c1c7b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-10T17:11:46Z",
+      "side": 1,
+      "message": "so at a high level, i agree using sets makes sense, especially because that\u0027s how they\u0027re treated\n\nmy only semi-reservation is in emitting them in `ToXml`.  i\u0027m a fan of being as \"pass-thru\" as possible, so if someone was maintaining the group order for their own purposes, i\u0027d like to not change it (how this change switches to sorted()).  i think we do that already for project order ?  although i don\u0027t think we do that for attribute order.\n\nnow, if `ToXml` is already significantly transforming the output, i won\u0027t push on this point.",
+      "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
