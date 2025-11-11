@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3722717_ee3abbdf",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-11T20:00:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "64b2effc_81a53f20",
+      "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94e76495_4ef93d93",
@@ -172,6 +190,24 @@
       "side": 1,
       "message": "If you submit this change (it seems ready), I will update my changes to use `pathlib`.",
       "parentUuid": "b90afb7b_1f1cf244",
+      "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dc62d32_87ea3be0",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1353,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-11T20:00:38Z",
+      "side": 1,
+      "message": "it\u0027s merged",
+      "parentUuid": "61cabb14_2f47144b",
       "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
