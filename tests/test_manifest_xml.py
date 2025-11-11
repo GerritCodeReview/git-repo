@@ -15,6 +15,7 @@
 """Unittests for the manifest_xml.py module."""
 
 import os
+from pathlib import Path
 import platform
 import re
 import tempfile
@@ -97,36 +98,34 @@ class ManifestParseTestCase(unittest.TestCase):
 
     def setUp(self):
         self.tempdirobj = tempfile.TemporaryDirectory(prefix="repo_tests")
-        self.tempdir = self.tempdirobj.name
-        self.repodir = os.path.join(self.tempdir, ".repo")
-        self.manifest_dir = os.path.join(self.repodir, "manifests")
-        self.manifest_file = os.path.join(
-            self.repodir, manifest_xml.MANIFEST_FILE_NAME
+        self.tempdir = Path(self.tempdirobj.name)
+        self.repodir = self.tempdir / ".repo"
+        self.manifest_dir = self.repodir / "manifests"
+        self.manifest_file = self.repodir / manifest_xml.MANIFEST_FILE_NAME
+        self.local_manifest_dir = (
+            self.repodir / manifest_xml.LOCAL_MANIFESTS_DIR_NAME
         )
-        self.local_manifest_dir = os.path.join(
-            self.repodir, manifest_xml.LOCAL_MANIFESTS_DIR_NAME
-        )
-        os.mkdir(self.repodir)
-        os.mkdir(self.manifest_dir)
+        self.repodir.mkdir()
+        self.manifest_dir.mkdir()
 
         # The manifest parsing really wants a git repo currently.
-        gitdir = os.path.join(self.repodir, "manifests.git")
-        os.mkdir(gitdir)
-        with open(os.path.join(gitdir, "config"), "w") as fp:
-            fp.write(
-                """[remote "origin"]
+        gitdir = self.repodir / "manifests.git"
+        gitdir.mkdir()
+        (gitdir / "config").write_text(
+            """[remote "origin"]
         url = https://localhost:0/manifest
 """
-            )
+        )
 
     def tearDown(self):
         self.tempdirobj.cleanup()
 
     def getXmlManifest(self, data):
         """Helper to initialize a manifest for testing."""
-        with open(self.manifest_file, "w", encoding="utf-8") as fp:
-            fp.write(data)
-        return manifest_xml.XmlManifest(self.repodir, self.manifest_file)
+        self.manifest_file.write_text(data, encoding="utf-8")
+        return manifest_xml.XmlManifest(
+            str(self.repodir), str(self.manifest_file)
+        )
 
     @staticmethod
     def encodeXmlAttr(attr):
@@ -243,12 +242,14 @@ class XmlManifestTests(ManifestParseTestCase):
 
     def test_link(self):
         """Verify Link handling with new names."""
-        manifest = manifest_xml.XmlManifest(self.repodir, self.manifest_file)
-        with open(os.path.join(self.manifest_dir, "foo.xml"), "w") as fp:
-            fp.write("<manifest></manifest>")
+        manifest = manifest_xml.XmlManifest(
+            str(self.repodir), str(self.manifest_file)
+        )
+        (self.manifest_dir / "foo.xml").write_text("<manifest></manifest>")
         manifest.Link("foo.xml")
-        with open(self.manifest_file) as fp:
-            self.assertIn('<include name="foo.xml" />', fp.read())
+        self.assertIn(
+            '<include name="foo.xml" />', self.manifest_file.read_text()
+        )
 
     def test_toxml_empty(self):
         """Verify the ToXml() helper."""
@@ -406,10 +407,9 @@ class IncludeElementTests(ManifestParseTestCase):
 
     def test_revision_default(self):
         """Check handling of revision attribute."""
-        root_m = os.path.join(self.manifest_dir, "root.xml")
-        with open(root_m, "w") as fp:
-            fp.write(
-                """
+        root_m = self.manifest_dir / "root.xml"
+        root_m.write_text(
+            """
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
@@ -418,17 +418,16 @@ class IncludeElementTests(ManifestParseTestCase):
   <project name="root-name2" path="root-path2" />
 </manifest>
 """
-            )
-        with open(os.path.join(self.manifest_dir, "stable.xml"), "w") as fp:
-            fp.write(
-                """
+        )
+        (self.manifest_dir / "stable.xml").write_text(
+            """
 <manifest>
   <project name="stable-name1" path="stable-path1" />
   <project name="stable-name2" path="stable-path2" revision="stable-branch2" />
 </manifest>
 """
-            )
-        include_m = manifest_xml.XmlManifest(self.repodir, root_m)
+        )
+        include_m = manifest_xml.XmlManifest(str(self.repodir), str(root_m))
         for proj in include_m.projects:
             if proj.name == "root-name1":
                 # Check include revision not set on root level proj.
@@ -444,10 +443,9 @@ class IncludeElementTests(ManifestParseTestCase):
                 self.assertEqual("stable-branch2", proj.revisionExpr)
 
     def test_group_levels(self):
-        root_m = os.path.join(self.manifest_dir, "root.xml")
-        with open(root_m, "w") as fp:
-            fp.write(
-                """
+        root_m = self.manifest_dir / "root.xml"
+        root_m.write_text(
+            """
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
@@ -456,25 +454,23 @@ class IncludeElementTests(ManifestParseTestCase):
   <project name="root-name2" path="root-path2" groups="r2g1,r2g2" />
 </manifest>
 """
-            )
-        with open(os.path.join(self.manifest_dir, "level1.xml"), "w") as fp:
-            fp.write(
-                """
+        )
+        (self.manifest_dir / "level1.xml").write_text(
+            """
 <manifest>
   <include name="level2.xml" groups="level2-group" />
   <project name="level1-name1" path="level1-path1" />
 </manifest>
 """
-            )
-        with open(os.path.join(self.manifest_dir, "level2.xml"), "w") as fp:
-            fp.write(
-                """
+        )
+        (self.manifest_dir / "level2.xml").write_text(
+            """
 <manifest>
   <project name="level2-name1" path="level2-path1" groups="l2g1,l2g2" />
 </manifest>
 """
-            )
-        include_m = manifest_xml.XmlManifest(self.repodir, root_m)
+        )
+        include_m = manifest_xml.XmlManifest(str(self.repodir), str(root_m))
         for proj in include_m.projects:
             if proj.name == "root-name1":
                 # Check include group not set on root level proj.
@@ -510,9 +506,8 @@ class IncludeElementTests(ManifestParseTestCase):
             manifest.ToXml()
 
         # Setup target of the include.
-        target = os.path.join(self.tempdir, "target.xml")
-        with open(target, "w") as fp:
-            fp.write("<manifest></manifest>")
+        target = self.tempdir / "target.xml"
+        target.write_text("<manifest></manifest>")
 
         # Include with absolute path.
         parse(os.path.abspath(target))
@@ -526,12 +521,9 @@ class IncludeElementTests(ManifestParseTestCase):
         def parse(name):
             name = self.encodeXmlAttr(name)
             # Setup target of the include.
-            with open(
-                os.path.join(self.manifest_dir, "target.xml"),
-                "w",
-                encoding="utf-8",
-            ) as fp:
-                fp.write(f'<manifest><include name="{name}"/></manifest>')
+            (self.manifest_dir / "target.xml").write_text(
+                f'<manifest><include name="{name}"/></manifest>'
+            )
 
             manifest = self.getXmlManifest(
                 """
