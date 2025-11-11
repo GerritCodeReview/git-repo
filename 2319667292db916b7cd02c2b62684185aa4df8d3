@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "740d7f34_acdf235c",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-11T08:42:25Z",
+      "side": 1,
+      "message": "i\u0027m inclined to switch this to a `NamedTuple`.  the reason you have to implement `__eq__` \u0026 `__hash__` is because it\u0027s an arbitrary object.  but implementing those methods hides the reason they aren\u0027t already available: if the state mutates and the hash changes, then you can run into very subtle misbehavior.\n\nbut if you switch this class to a NamedTuple, it guarantees immutability of the properties, so we get those methods for free, and we don\u0027t have to worry about landminds in the future.\n\nfor example:\n\n```\nclass Foo:\n  def __init__(self, v):\n    self.v \u003d v\n  def __eq__(self, other):\n    if not isinstance(other, Foo):\n      return False\n    return self.__dict__ \u003d\u003d other.__dict__\n  def __hash__(self):\n    return hash(repr(sorted(self.__dict__.items())))\n  def __str__(self):\n    return f\"Foo(v\u003d{self.v})\"\n  def __repr__(self):\n    return f\"Foo(v\u003d{self.v})\"\n\nf1 \u003d Foo(1)\nf2 \u003d Foo(2)\ns \u003d {f1}\nprint(f\"is {f2} in {s}?\", f2 in s)\nf1.v \u003d 2\nprint(f\"is {f2} in {s}?\", f2 in s)\nprint(f\"{f1} \u003d\u003d {f2}?\", f1 \u003d\u003d f2)\n```\n```\nis Foo(v\u003d2) in {Foo(v\u003d1)}? False\nis Foo(v\u003d2) in {Foo(v\u003d2)}? False\nFoo(v\u003d2) \u003d\u003d Foo(v\u003d2)? True\n```",
+      "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94e76495_4ef93d93",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-11T08:42:25Z",
+      "side": 1,
+      "message": "please leave a comment here about `__eq__` implications\n\n```suggestion\n        # NB: All properties are included in __eq__ \u0026 __hash__.\n        self.git_worktree \u003d git_worktree\n```",
+      "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d3853d6_8330b063",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-11T08:42:25Z",
+      "side": 1,
+      "message": "i\u0027m guessing you\u0027re using `repr` because you can\u0027t `hash()` a list (because it\u0027s mutable).  repr just serializes it into a string which is immutable which can be hashed.  a tuple accomplishes the same thing.\n\ni think `sorted()` is needed because we still support Python 3.6 and insertion order stability for dicts is new to Python 3.7.  at which point we wouldn\u0027t need it.  although i didn\u0027t spot check `__dict__` implementation details and its relationship with the object model ...\n\nthat said, i don\u0027t expect this code to be critical path in any way, so it\u0027s prob fine to leave sorted() than it\u0027s strictly needed.\n\n```suggestion\n        # We need sorted() for ordering stability at least on Python 3.6.\n        return hash(tuple(sorted(self.__dict__.items())))\n```",
+      "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98ee908a_54889b11",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-11T08:42:25Z",
+      "side": 1,
+      "message": "same feedback for the link class as the copy class above",
+      "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b90afb7b_1f1cf244",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1353,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-11T08:42:25Z",
+      "side": 1,
+      "message": "posted http://gerrit-review.googlesource.com/c/525881 to change this file to pathlib",
+      "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
