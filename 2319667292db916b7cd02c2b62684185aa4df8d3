@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64b2effc_81a53f20",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-11T19:53:42Z",
+      "side": 1,
+      "message": "I have changed `_CopyFile` and `_LinkFile` to inherit `NamedTuple`. It works fine and should address this and the comments below.",
+      "parentUuid": "740d7f34_acdf235c",
+      "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94e76495_4ef93d93",
         "filename": "project.py",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2025-11-11T08:42:25Z",
       "side": 1,
       "message": "please leave a comment here about `__eq__` implications\n\n```suggestion\n        # NB: All properties are included in __eq__ \u0026 __hash__.\n        self.git_worktree \u003d git_worktree\n```",
+      "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f43c4c37_31549abb",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-11T19:53:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94e76495_4ef93d93",
       "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fefa4b08_cce01428",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-11T19:53:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d3853d6_8330b063",
+      "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98ee908a_54889b11",
@@ -69,6 +123,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df8f84d6_d81ddeb8",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-11T19:53:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98ee908a_54889b11",
+      "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b90afb7b_1f1cf244",
@@ -82,6 +154,24 @@
       "writtenOn": "2025-11-11T08:42:25Z",
       "side": 1,
       "message": "posted http://gerrit-review.googlesource.com/c/525881 to change this file to pathlib",
+      "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61cabb14_2f47144b",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1353,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-11T19:53:42Z",
+      "side": 1,
+      "message": "If you submit this change (it seems ready), I will update my changes to use `pathlib`.",
+      "parentUuid": "b90afb7b_1f1cf244",
       "revId": "2319667292db916b7cd02c2b62684185aa4df8d3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
