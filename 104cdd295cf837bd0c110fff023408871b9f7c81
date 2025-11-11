@@ -16,6 +16,24 @@
       "message": "please update docs/manifest-format.md",
       "revId": "104cdd295cf837bd0c110fff023408871b9f7c81",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2bd4d38_18632db4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-11T20:53:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b49d4636_1c72e39f",
+      "revId": "104cdd295cf837bd0c110fff023408871b9f7c81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
