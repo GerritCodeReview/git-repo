@@ -34,6 +34,24 @@
       "parentUuid": "9e8b7311_90c1c7b7",
       "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a1d8e4c_afe9a6e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-11T18:38:06Z",
+      "side": 1,
+      "message": "\"readable\" is very subjective as to what level things should be processed.  `repo manifest` is the sort of tool that should be a \"pass-thru\" as much as possible (\"reasonable\" effort).  it shouldn\u0027t be considered a formatter tool.  but these are general principles, and i wouldn\u0027t require a lot of extra or expensive code just to maintain that.\n\nto your example, i would think the \"correct\" output would be deduping while maintaining order.\n\nalong those lines, double check the processing order.  iirc, we don\u0027t run these in parallel.  we collect them into a list that matches the order they were declared, and then we process them in the same order.  someone could write a linkfile/copyfile where one step depends on the previous one.  sorting would break that.\n\nglancing at the manifest spec, we don\u0027t state one way or the other.  so we should nail that down in the docs to avoid ambiguity.",
+      "parentUuid": "8742fa42_7358f09a",
+      "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
