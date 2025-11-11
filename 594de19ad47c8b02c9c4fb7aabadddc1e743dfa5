@@ -52,6 +52,24 @@
       "parentUuid": "8742fa42_7358f09a",
       "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2359c8cc_7716bb8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-11T20:53:37Z",
+      "side": 1,
+      "message": "I have changed the code to use dicts rather than sets to store the `copyfile` and `linkfile` elements. That should maintain the order they are specified in the manifest.",
+      "parentUuid": "8a1d8e4c_afe9a6e6",
+      "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
