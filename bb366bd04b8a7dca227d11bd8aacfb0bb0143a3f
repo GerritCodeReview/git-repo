@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c7ec454_743d5b37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-11T08:45:42Z",
+      "side": 1,
+      "message": "should clarify nested include behavior in docs/manifest-format.md",
+      "revId": "bb366bd04b8a7dca227d11bd8aacfb0bb0143a3f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94220e67_684d3828",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1303,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-11T08:45:42Z",
+      "side": 1,
+      "message": "use a tuple",
+      "fixSuggestions": [
+        {
+          "fixId": "a303075b_7ee9b5d9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1303,
+                "startChar": 0,
+                "endLine": 1304,
+                "endChar": 0
+              },
+              "replacement": "                and node.nodeName in (\"include\", \"project\")\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bb366bd04b8a7dca227d11bd8aacfb0bb0143a3f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
