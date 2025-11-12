@@ -1,0 +1,181 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b7ec268_f4f67f0a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-12T15:32:36Z",
+      "side": 1,
+      "message": "for the folks not steeped in Python, i would add a note that this Python 3.7+ guarantees this, and Python 3.6 happens to support it while not being a formal guarantee.",
+      "revId": "f99092c23cdafefd9ba175d95e0c2a5e9db639dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2ac2b26_52e6a112",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-12T15:32:36Z",
+      "side": 1,
+      "message": "i don\u0027t think you need this in the docstring anymore -- it can be moved to comments above the fields itself.  you certainly don\u0027t need the typing info since it\u0027s declared explicitly with newer python versions.",
+      "fixSuggestions": [
+        {
+          "fixId": "f7da71db_bfa563e8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 394,
+                "startChar": 0,
+                "endLine": 395,
+                "endChar": 0
+              },
+              "replacement": "    \"\"\"Container for \u003ccopyfile\u003e manifest element.\"\"\"\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 396,
+                "startChar": 0,
+                "endLine": 403,
+                "endChar": 0
+              },
+              "replacement": "    # Absolute path to the git project checkout.\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 404,
+                "startChar": 0,
+                "endLine": 404,
+                "endChar": 0
+              },
+              "replacement": "    # Relative path under |git_worktree| of file to read.\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 405,
+                "startChar": 0,
+                "endLine": 405,
+                "endChar": 0
+              },
+              "replacement": "    # Absolute path to the top of the repo client checkout.\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 406,
+                "startChar": 0,
+                "endLine": 406,
+                "endChar": 0
+              },
+              "replacement": "    # Relative path under |topdir| of file to write.\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 441,
+                "startChar": 0,
+                "endLine": 449,
+                "endChar": 0
+              },
+              "replacement": "    \"\"\"Container for \u003clinkfile\u003e manifest element.\"\"\"\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 450,
+                "startChar": 0,
+                "endLine": 450,
+                "endChar": 0
+              },
+              "replacement": "    # Absolute path to the git project checkout.\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 451,
+                "startChar": 0,
+                "endLine": 451,
+                "endChar": 0
+              },
+              "replacement": "    # Target of symlink relative to path under |git_worktree|.\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 452,
+                "startChar": 0,
+                "endLine": 452,
+                "endChar": 0
+              },
+              "replacement": "    # Absolute path to the top of the repo client checkout.\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 453,
+                "startChar": 0,
+                "endLine": 453,
+                "endChar": 0
+              },
+              "replacement": "    # Relative path under |topdir| of symlink to create.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f99092c23cdafefd9ba175d95e0c2a5e9db639dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15af735d_857f21a1",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-12T15:32:36Z",
+      "side": 1,
+      "message": "leave a comment that we\u0027re using dicts to dedupe while maintaining declared order",
+      "fixSuggestions": [
+        {
+          "fixId": "b94f445e_22004c14",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 632,
+                "startChar": 0,
+                "endLine": 632,
+                "endChar": 0
+              },
+              "replacement": "        # Use dicts to dedupe while maintaining declared order.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f99092c23cdafefd9ba175d95e0c2a5e9db639dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
