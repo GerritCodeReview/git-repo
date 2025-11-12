@@ -124,6 +124,24 @@
       "parentUuid": "495ecc3c_87db7fb9",
       "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92ee35e8_b4e588e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-12T16:41:42Z",
+      "side": 1,
+      "message": "I think being able to use the set operators like `|` and `-` to add to and remove from the sets improves the code. Whereas having to use `keys()` to access the groups does not. Since there is no technical reason for using dicts to store the groups, I definitely think it is better to use sets.",
+      "parentUuid": "5bb77670_c36c5df7",
+      "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
