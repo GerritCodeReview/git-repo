@@ -70,6 +70,24 @@
       "parentUuid": "8a1d8e4c_afe9a6e6",
       "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db495cac_515951ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-12T15:43:24Z",
+      "side": 1,
+      "message": "is using a dict for manifest groups too onerous ?  i grok it\u0027s not as clean when it comes to insertion/update as sets, but the test/\"is member\" operations are the same.",
+      "parentUuid": "2359c8cc_7716bb8c",
+      "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
