@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ed9164c_36aa6919",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1341,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-12T15:33:44Z",
+      "side": 1,
+      "message": "use `in`",
+      "range": {
+        "startLine": 1338,
+        "startChar": 0,
+        "endLine": 1341,
+        "endChar": 18
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "766edbf4_d1c63f9b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1338,
+                "startChar": 0,
+                "endLine": 1342,
+                "endChar": 0
+              },
+              "replacement": "                if parent_groups and node.nodeName in {\n                    \"project\",\n                    \"extend-project\",\n                }:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "07933bd3bab35aeec53986d4b413673dbca7fa99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
