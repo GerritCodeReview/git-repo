@@ -142,6 +142,24 @@
       "parentUuid": "5bb77670_c36c5df7",
       "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "871b9040_29d1cdfb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-14T16:21:30Z",
+      "side": 1,
+      "message": "you don\u0027t have to use `keys()` explicitly as it\u0027s the default for things like iteration or `in`.  so syntax is exactly the same.\n\n`|` is an `.update()` or `x \u003d {..., **x}`.  slightly worse.\n\n`-` is unwieldy ... either it\u0027s `for k in ...; d.pop(k, None)` or a terse/funky `all(d.pop(k, None) for k in ...)`.  we seem to use `-` only once, so at least it\u0027s not something that gets repeated.\n\nor we define a custom `OrderedSet` class which provides set-like operations on top of a dict.\n\nor we do nothing and call it a day.",
+      "parentUuid": "92ee35e8_b4e588e5",
+      "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
