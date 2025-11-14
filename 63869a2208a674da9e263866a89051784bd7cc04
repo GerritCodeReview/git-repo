@@ -16,6 +16,29 @@
       "message": "change it to return a set so you don\u0027t need to convert all the callers",
       "revId": "63869a2208a674da9e263866a89051784bd7cc04",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b09f4672_f908b454",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-14T22:46:54Z",
+      "side": 1,
+      "message": "`{}` is a dict and will throw a TypeError on union",
+      "range": {
+        "startLine": 842,
+        "startChar": 60,
+        "endLine": 842,
+        "endChar": 62
+      },
+      "revId": "63869a2208a674da9e263866a89051784bd7cc04",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
