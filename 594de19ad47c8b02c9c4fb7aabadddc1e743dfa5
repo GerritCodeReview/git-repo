@@ -160,6 +160,24 @@
       "parentUuid": "92ee35e8_b4e588e5",
       "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5b98154_783cfdf6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-14T23:30:08Z",
+      "side": 1,
+      "message": "That comment made me realize that I could simplify the preceding patch a bit by not having to call `keys()` in a couple of places.",
+      "parentUuid": "871b9040_29d1cdfb",
+      "revId": "594de19ad47c8b02c9c4fb7aabadddc1e743dfa5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

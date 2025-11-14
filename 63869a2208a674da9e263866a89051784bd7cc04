@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b9b5d1e7_ffdc6ccb",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-14T23:30:08Z",
+      "side": 1,
+      "message": "I am not comfortable with doing that. I have only changed two of the callers of `_ParseList()` to use sets. Changing the other four would affect superprojects, submanifests and enabled-lists for hooks. enabled-lists is easy enough, it would just require to sort them when outputting the XML. However, I cannot tell how superprojects and submanifests would be affected by changing from lists to sets. We do not use either, and AFAICT, there are no unit tests for submanifests.",
+      "parentUuid": "b7f2415a_8d572e0d",
+      "revId": "63869a2208a674da9e263866a89051784bd7cc04",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b09f4672_f908b454",
         "filename": "project.py",
         "patchSetId": 3
@@ -31,6 +49,30 @@
       "writtenOn": "2025-11-14T22:46:54Z",
       "side": 1,
       "message": "`{}` is a dict and will throw a TypeError on union",
+      "range": {
+        "startLine": 842,
+        "startChar": 60,
+        "endLine": 842,
+        "endChar": 62
+      },
+      "revId": "63869a2208a674da9e263866a89051784bd7cc04",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c9e299c_31db6364",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-14T23:30:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b09f4672_f908b454",
       "range": {
         "startLine": 842,
         "startChar": 60,
