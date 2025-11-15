@@ -43,6 +43,7 @@ from error import UploadError
 import fetch
 from git_command import git_require
 from git_command import GitCommand
+from git_command import GitCommandError
 from git_config import GetSchemeFromUrl
 from git_config import GetUrlCookieFile
 from git_config import GitConfig
@@ -786,14 +787,16 @@ class Project:
         return self._userident_email
 
     def _LoadUserIdentity(self):
-        u = self.bare_git.var("GIT_COMMITTER_IDENT")
-        m = re.compile("^(.*) <([^>]*)> ").match(u)
-        if m:
-            self._userident_name = m.group(1)
-            self._userident_email = m.group(2)
-        else:
-            self._userident_name = ""
-            self._userident_email = ""
+        self._userident_name = ""
+        self._userident_email = ""
+        try:
+            u = self.bare_git.var("GIT_COMMITTER_IDENT")
+            m = re.compile("^(.*) <([^>]*)> ").match(u)
+            if m:
+                self._userident_name = m.group(1)
+                self._userident_email = m.group(2)
+        except GitCommandError:
+            pass
 
     def GetRemote(self, name=None):
         """Get the configuration for a single remote.
