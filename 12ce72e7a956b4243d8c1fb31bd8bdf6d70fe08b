@@ -68,6 +68,75 @@
       "message": "@gavinmak@google.com Can you please help review this change?\n@vapier@google.com PTAL when possible.",
       "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26275fa6_9c671f80",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3090,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-18T00:46:33Z",
+      "side": 1,
+      "message": "nit: `gitdir` feels too similar to `self.gitdir` and IMO makes it harder to follow. can we rename this?",
+      "range": {
+        "startLine": 3090,
+        "startChar": 8,
+        "endLine": 3090,
+        "endChar": 14
+      },
+      "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95f40a9f_124a29a7",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3122,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-18T00:46:33Z",
+      "side": 1,
+      "message": "swapping `self.config` to point to the tmpdir and later swapping it back seems fragile. should we instead use a tmp config and use it to set initial config values  before assigning `self.config` once dir rename is successful?",
+      "range": {
+        "startLine": 3120,
+        "startChar": 20,
+        "endLine": 3122,
+        "endChar": 21
+      },
+      "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a09a4cf2_d0a1400d",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3231,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-18T00:46:33Z",
+      "side": 1,
+      "message": "this runs on every call, regardless of `init_git_dir`. can we try to cleanup the specific `tmp_gitdir` only if it exists?",
+      "range": {
+        "startLine": 3231,
+        "startChar": 12,
+        "endLine": 3231,
+        "endChar": 37
+      },
+      "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
