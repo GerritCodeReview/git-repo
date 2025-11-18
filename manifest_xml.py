@@ -1122,7 +1122,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             groups += f",platform-{platform.system().lower()}"
         return groups
 
-    def GetGroupsStr(self):
+    def GetManifestGroupsStr(self):
         """Returns the manifest group string that should be synced."""
         return (
             self.manifestProject.manifest_groups or self.GetDefaultGroupsStr()

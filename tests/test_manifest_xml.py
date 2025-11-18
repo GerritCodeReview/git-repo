@@ -639,10 +639,10 @@ class ProjectElementTests(ManifestParseTestCase):
             {"g1", "g2", "name:extras", "all", "path:path"},
         )
         groupstr = "default,platform-" + platform.system().lower()
-        self.assertEqual(groupstr, manifest.GetGroupsStr())
+        self.assertEqual(groupstr, manifest.GetManifestGroupsStr())
         groupstr = "g1,g2,g1"
         manifest.manifestProject.config.SetString("manifest.groups", groupstr)
-        self.assertEqual(groupstr, manifest.GetGroupsStr())
+        self.assertEqual(groupstr, manifest.GetManifestGroupsStr())
 
     def test_set_revision_id(self):
         """Check setting of project's revisionId."""
