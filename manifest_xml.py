@@ -579,16 +579,16 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         peg_rev=False,
         peg_rev_upstream=True,
         peg_rev_dest_branch=True,
-        groups=None,
+        filter_groups=None,
         omit_local=False,
     ):
         """Return the current manifest XML."""
         mp = self.manifestProject
 
-        if groups is None:
-            groups = mp.manifest_groups
-        if groups:
-            groups = self._ParseList(groups)
+        if filter_groups is None:
+            filter_groups = mp.manifest_groups
+        if filter_groups:
+            filter_groups = self._ParseList(filter_groups)
 
         doc = xml.dom.minidom.Document()
         root = doc.createElement("manifest")
@@ -661,7 +661,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     output_project(parent, parent_node, project)
 
         def output_project(parent, parent_node, p):
-            if not p.MatchesGroups(groups):
+            if not p.MatchesGroups(filter_groups):
                 return
 
             if omit_local and self.IsFromLocalManifest(p):
@@ -732,9 +732,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 le.setAttribute("dest", lf.dest)
                 e.appendChild(le)
 
-            egroups = p.groups - {"all", f"name:{p.name}", f"path:{p.relpath}"}
-            if egroups:
-                e.setAttribute("groups", ",".join(sorted(egroups)))
+            groups = p.groups - {"all", f"name:{p.name}", f"path:{p.relpath}"}
+            if groups:
+                e.setAttribute("groups", ",".join(sorted(groups)))
 
             for a in p.annotations:
                 if a.keep == "true":
