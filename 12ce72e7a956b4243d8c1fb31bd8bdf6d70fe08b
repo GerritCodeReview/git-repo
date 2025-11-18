@@ -137,6 +137,30 @@
       },
       "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9aa6e1d_a2205b30",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3231,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-11-18T21:01:20Z",
+      "side": 1,
+      "message": "If you see [my comment on PS4](https://gerrit-review.googlesource.com/c/git-repo/+/524203/comment/45832d90_6367cf46/), I suggested this to help ensure any older failed cleanups wouldn\u0027t leave tmp dirs around forever. If you think it\u0027s too much here, maybe we can go back to what Kaushik had in PS4 and do another change later to add cleanups for any tmp dirs that were missed. Would you prefer that?",
+      "parentUuid": "a09a4cf2_d0a1400d",
+      "range": {
+        "startLine": 3231,
+        "startChar": 12,
+        "endLine": 3231,
+        "endChar": 37
+      },
+      "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
