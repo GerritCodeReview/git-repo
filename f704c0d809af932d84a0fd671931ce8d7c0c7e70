@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b59508c8_e600f8b6",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-18T16:03:37Z",
+      "side": 1,
+      "message": "let\u0027s hoist this logic to `__init__` so we can assume `self.groups` is always a set.  pretty sure we don\u0027t change behavior based on it being None, just whether it\u0027s a non-empty set.",
+      "range": {
+        "startLine": 842,
+        "startChar": 45,
+        "endLine": 842,
+        "endChar": 65
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6d65931d_6f947176",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 609,
+                "startChar": 0,
+                "endLine": 610,
+                "endChar": 0
+              },
+              "replacement": "        self.groups \u003d groups or set()\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 842,
+                "startChar": 0,
+                "endLine": 843,
+                "endChar": 0
+              },
+              "replacement": "        expanded_project_groups \u003d {\"all\"} | self.groups\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f704c0d809af932d84a0fd671931ce8d7c0c7e70",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

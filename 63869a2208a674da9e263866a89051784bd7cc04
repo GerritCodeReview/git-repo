@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cd7c67f0_1b47c93e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-18T16:03:37Z",
+      "side": 1,
+      "message": "there is a lot of code that is, unfortunately, not unittested.  that should not be used as an excuse to only touch parts that have clear unittest coverage.  we don\u0027t want partial migrations that never complete.\n\ni agree that `_ParseList()` should stay as-is because it\u0027s used by more than just groups (e.g. hooks), although all users currently should also be sets.\n\nif we\u0027re converting project groups to be a set, it needs to ripple out to all places where project groups are managed, and that includes the submanifest parts.  if it breaks, we\u0027ll fix it.  if it\u0027s broken and no one complains, that\u0027ll be a good reason to delete the code entirely.",
+      "parentUuid": "b9b5d1e7_ffdc6ccb",
+      "revId": "63869a2208a674da9e263866a89051784bd7cc04",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b09f4672_f908b454",
         "filename": "project.py",
         "patchSetId": 3
