@@ -422,7 +422,7 @@ class Superproject:
             )
             return None
         manifest_str = self._manifest.ToXml(
-            groups=self._manifest.GetGroupsStr(), omit_local=True
+            manifest_groups=self._manifest.GetGroupsStr(), omit_local=True
         ).toxml()
         manifest_path = self._manifest_path
         try:
