@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf2773c8_693c6b54",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-18T20:20:15Z",
+      "side": 1,
+      "message": "Understood. I have gone through the code again, and I think I now have enough understanding of the parts I did not dare to touch before so that I could adapt them as well. I introduced a `_ParseSet()` method (which simply calls `set(self._ParseList(fields))`) to make it more obvious where sets are expected. I also added two new commits to rename a couple of references to \"groups\" to make it more obvious what kind of groups are being referred. At least they made it a lot easier for me to untangle this.",
+      "parentUuid": "cd7c67f0_1b47c93e",
+      "revId": "63869a2208a674da9e263866a89051784bd7cc04",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b09f4672_f908b454",
         "filename": "project.py",
         "patchSetId": 3
