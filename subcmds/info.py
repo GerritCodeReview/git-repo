@@ -106,6 +106,7 @@ class Info(PagedCommand):
         srev = sp.commit_id if sp and sp.commit_id else "None"
         self.heading("Superproject revision: ")
         self.headtext(srev)
+        self.out.nl()
 
         self.printSeparator()
 
