@@ -93,6 +93,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca7ad3d5_f4afed4d",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3090,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-11-18T23:13:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26275fa6_9c671f80",
+      "range": {
+        "startLine": 3090,
+        "startChar": 8,
+        "endLine": 3090,
+        "endChar": 14
+      },
+      "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95f40a9f_124a29a7",
@@ -106,6 +130,30 @@
       "writtenOn": "2025-11-18T00:46:33Z",
       "side": 1,
       "message": "swapping `self.config` to point to the tmpdir and later swapping it back seems fragile. should we instead use a tmp config and use it to set initial config values  before assigning `self.config` once dir rename is successful?",
+      "range": {
+        "startLine": 3120,
+        "startChar": 20,
+        "endLine": 3122,
+        "endChar": 21
+      },
+      "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b47242b_e7fb9ae9",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3122,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-11-18T23:13:27Z",
+      "side": 1,
+      "message": "Done.\n\nI had originally used `self.config` because there might be some methods (for example `_ReferenceGitDir`, `_CheckDirReference`) that rely on it. Looks like they don\u0027t, so it should be ok to use a tmp config.",
+      "parentUuid": "95f40a9f_124a29a7",
       "range": {
         "startLine": 3120,
         "startChar": 20,
