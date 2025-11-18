@@ -399,7 +399,7 @@ class Command:
         result = []
 
         if not groups:
-            groups = manifest.GetGroupsStr()
+            groups = manifest.GetManifestGroupsStr()
         groups = [x for x in re.split(r"[,\s]+", groups) if x]
 
         if not args:
