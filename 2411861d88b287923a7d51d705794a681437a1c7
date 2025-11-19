@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84d5548e_65bc856c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-19T18:45:53Z",
+      "side": 1,
+      "message": "aren\u0027t they all manifest groups ?\n\ni think in this case, the groups field is being used to filter out which projects are actually included in the output, with the default being \"use whatever groups were passed to `repo init`\".  so maybe we rename it to like \"filter_groups\" ?  feel free to bikeshed the name.",
+      "revId": "2411861d88b287923a7d51d705794a681437a1c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
