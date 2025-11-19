@@ -2570,7 +2570,6 @@ class Project:
         if clone_filter:
             git_require((2, 19, 0), fail=True, msg="partial clones")
             cmd.append("--filter=%s" % clone_filter)
-            self.EnableRepositoryExtension("partialclone", self.remote.name)
 
         if depth:
             cmd.append("--depth=%s" % depth)
