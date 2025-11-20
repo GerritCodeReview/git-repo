@@ -34,6 +34,24 @@
       "parentUuid": "e81490bb_a7154851",
       "revId": "e573d5ebe17282248c33ad4a2efaaea6e284e4b5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1e0249b_55153c2c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1316,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T17:26:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a131e275_69e6c434",
+      "revId": "e573d5ebe17282248c33ad4a2efaaea6e284e4b5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
