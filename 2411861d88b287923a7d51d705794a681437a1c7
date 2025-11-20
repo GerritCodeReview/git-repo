@@ -16,6 +16,24 @@
       "message": "aren\u0027t they all manifest groups ?\n\ni think in this case, the groups field is being used to filter out which projects are actually included in the output, with the default being \"use whatever groups were passed to `repo init`\".  so maybe we rename it to like \"filter_groups\" ?  feel free to bikeshed the name.",
       "revId": "2411861d88b287923a7d51d705794a681437a1c7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f315473c_a7a5bbc4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-20T16:41:30Z",
+      "side": 1,
+      "message": "While I can certainly rename them to `filter_groups`, I think `manifest_groups` is the established name for these groups, going back to the `manifest.groups` setting (from `docs/internal-fs-layout.md`).",
+      "parentUuid": "84d5548e_65bc856c",
+      "revId": "2411861d88b287923a7d51d705794a681437a1c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
