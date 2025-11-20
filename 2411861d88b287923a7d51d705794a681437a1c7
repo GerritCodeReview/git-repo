@@ -70,6 +70,24 @@
       "parentUuid": "bc2820aa_7546d388",
       "revId": "2411861d88b287923a7d51d705794a681437a1c7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91b2636b_8c56d7fd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2025-11-20T17:37:57Z",
+      "side": 1,
+      "message": "And what about the `manifest_groups` argument to `Project.MatchesGroups()`, should it also be renamed to `filter_groups`?",
+      "parentUuid": "bc8dc965_8ae2b084",
+      "revId": "2411861d88b287923a7d51d705794a681437a1c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
