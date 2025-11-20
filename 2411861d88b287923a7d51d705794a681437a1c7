@@ -34,6 +34,24 @@
       "parentUuid": "84d5548e_65bc856c",
       "revId": "2411861d88b287923a7d51d705794a681437a1c7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc2820aa_7546d388",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T17:22:47Z",
+      "side": 1,
+      "message": "generically we refer to the groups used in the manifest as manifest groups.  this specific code path is about the set of manifest groups that have been selected by `repo init`.  so they\u0027re all \"manifest groups\".\n\nin this context, the groups are used to filter projects out of the resulting manifest.  the projects themselves will have groups\u003d defined on them (aka \"manifest groups\").\n\nso my gripe here is that, from the API/func signature, it\u0027s not obvious how these manifest groups are being used.  are they used for filtering ?  are they used to override groups written in the output ?  compare this to the `peg_` arguments which convey specific intention to each instead of merely calling them e.g. `rev`.\n\ncertainly the lack of a docstring to clarify doesn\u0027t help (not that i\u0027m asking you to backfill the atrocious gap in the codebase).",
+      "parentUuid": "f315473c_a7a5bbc4",
+      "revId": "2411861d88b287923a7d51d705794a681437a1c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
