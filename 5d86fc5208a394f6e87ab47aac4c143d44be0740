@@ -1,0 +1,440 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be2d7bc2_3f3e3bdb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "would be nice if there was an \"\u003d\u003dbroken\" option so people didn\u0027t have to manually enumerate, but that could wait as a followup",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "701b7453_7b89f5d2",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "hmm we seem to be inconsistent on this, but style guide says this should be `Error` since this is the `wipe` module\n\n```suggestion\nclass Error(RepoExitError):\n```",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a53e5843_c2408394",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "i think we should provide some examples in here as most people won\u0027t confidently know what \"worktree\" is referring to since it\u0027s also a git term",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abe848a4_4a1ed3e7",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "imo we should separate uncommitted changes from shared projects\n\nfor shared projects, maybe i misread the code, but i think this means it deletes the .repo/ state, but not the actual source checkout ?  so it could leave other projects broken ?  it should purge all ...",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94393eb4_344b3afb",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "this check should be in `ValidateOptions`",
+      "fixSuggestions": [
+        {
+          "fixId": "9bd76799_41830b74",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/wipe.py",
+              "range": {
+                "startLine": 54,
+                "startChar": 0,
+                "endLine": 55,
+                "endChar": 0
+              },
+              "replacement": "    def ValidateOptions(self, opt, args):\n"
+            },
+            {
+              "path": "subcmds/wipe.py",
+              "range": {
+                "startLine": 58,
+                "startChar": 0,
+                "endLine": 58,
+                "endChar": 0
+              },
+              "replacement": "    def Execute(self, opt, args: List[str]):\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c8da1a0_3bc5508e",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "you don\u0027t need the `+` to merge 2 string constants",
+      "fixSuggestions": [
+        {
+          "fixId": "faf5b952_4b90f8d6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/wipe.py",
+              "range": {
+                "startLine": 96,
+                "startChar": 0,
+                "endLine": 97,
+                "endChar": 0
+              },
+              "replacement": "                    \"corrupted:\\n\"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0386f201_3c836d58",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "use a generator",
+      "fixSuggestions": [
+        {
+          "fixId": "5f3ffe59_c926cc9b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/wipe.py",
+              "range": {
+                "startLine": 98,
+                "startChar": 0,
+                "endLine": 99,
+                "endChar": 0
+              },
+              "replacement": "                        f\" - {p}\" for p in sorted(uncommitted_projects)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71ae1c1a_0a15f819",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "pretty sure you don\u0027t need `list()` here or next line",
+      "fixSuggestions": [
+        {
+          "fixId": "1f0f2ac5_4a009970",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/wipe.py",
+              "range": {
+                "startLine": 107,
+                "startChar": 0,
+                "endLine": 109,
+                "endChar": 0
+              },
+              "replacement": "  Projects to be wiped: {\u0027, \u0027.join(sorted(projects_to_wipe_in_dir))}\n  Projects not to be wiped: {\u0027, \u0027.join(sorted(other_users))}\"\"\"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04a672f8_121a2701",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "`verbose\u003dFalse` by default which means i think it\u0027s silent.  you should pass along `opts.verbose`, and you should respect that with the `print()` below i think.",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "282f2010_4124ae28",
+        "filename": "tests/test_subcmds_wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "import `mock` per the style guide, not classes out of it",
+      "fixSuggestions": [
+        {
+          "fixId": "d18a94ec_263927c3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_wipe.py",
+              "range": {
+                "startLine": 19,
+                "startChar": 0,
+                "endLine": 20,
+                "endChar": 0
+              },
+              "replacement": "from unittest import mock\n"
+            },
+            {
+              "path": "tests/test_subcmds_wipe.py",
+              "range": {
+                "startLine": 34,
+                "startChar": 0,
+                "endLine": 35,
+                "endChar": 0
+              },
+              "replacement": "        proj \u003d mock.MagicMock()\n"
+            },
+            {
+              "path": "tests/test_subcmds_wipe.py",
+              "range": {
+                "startLine": 37,
+                "startChar": 0,
+                "endLine": 38,
+                "endChar": 0
+              },
+              "replacement": "        proj.HasChanges \u003d mock.MagicMock(return_value\u003dhas_changes)\n"
+            },
+            {
+              "path": "tests/test_subcmds_wipe.py",
+              "range": {
+                "startLine": 67,
+                "startChar": 0,
+                "endLine": 68,
+                "endChar": 0
+              },
+              "replacement": "        cmd.manifest \u003d mock.MagicMock()\n"
+            },
+            {
+              "path": "tests/test_subcmds_wipe.py",
+              "range": {
+                "startLine": 75,
+                "startChar": 0,
+                "endLine": 76,
+                "endChar": 0
+              },
+              "replacement": "        cmd.GetProjects \u003d mock.MagicMock(side_effect\u003dget_projects_mock)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a99efaca_862e6687",
+        "filename": "tests/test_subcmds_wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "let\u0027s import `wipe` as a module to match the style guide.  i know existing code is terrible, but it\u0027s easy enough to make this module bad too from the start.",
+      "fixSuggestions": [
+        {
+          "fixId": "b7325fd9_155bb954",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_wipe.py",
+              "range": {
+                "startLine": 21,
+                "startChar": 0,
+                "endLine": 23,
+                "endChar": 0
+              },
+              "replacement": "import subcmds.wipe as wipe\n"
+            },
+            {
+              "path": "tests/test_subcmds_wipe.py",
+              "range": {
+                "startLine": 66,
+                "startChar": 0,
+                "endLine": 67,
+                "endChar": 0
+              },
+              "replacement": "        cmd \u003d wipe.Wipe()\n"
+            },
+            {
+              "path": "tests/test_subcmds_wipe.py",
+              "range": {
+                "startLine": 113,
+                "startChar": 0,
+                "endLine": 114,
+                "endChar": 0
+              },
+              "replacement": "        with self.assertRaises(wipe.WipeError) as e:\n"
+            },
+            {
+              "path": "tests/test_subcmds_wipe.py",
+              "range": {
+                "startLine": 162,
+                "startChar": 0,
+                "endLine": 163,
+                "endChar": 0
+              },
+              "replacement": "        with self.assertRaises(wipe.WipeError) as e:\n"
+            },
+            {
+              "path": "tests/test_subcmds_wipe.py",
+              "range": {
+                "startLine": 191,
+                "startChar": 0,
+                "endLine": 192,
+                "endChar": 0
+              },
+              "replacement": "        with self.assertRaises(wipe.WipeError) as e:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eac2b70_c6ad0224",
+        "filename": "tests/test_subcmds_wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "i\u0027m kind of inclined to write new unittest modules with pytest unless there\u0027s a compelling reason to use unittest\n\ntest_subcmds_manifest.py is already written with pytest as an example",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "890d51b6_f46fcd97",
+        "filename": "tests/test_subcmds_wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "i\u0027m not a fan of magic mock as it\u0027s easy to write bad code that passes tests\n\nis it difficult to use Project class directly ?  i don\u0027t recall if it has side-effects still purely from an init pov.",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fd98e07_927ea256",
+        "filename": "tests/test_subcmds_wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-20T20:02:17Z",
+      "side": 1,
+      "message": "delete this -- we use pytest now which doesn\u0027t need it",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
