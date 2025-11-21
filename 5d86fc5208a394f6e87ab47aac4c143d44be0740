@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99f107ae_5cbf5859",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "701b7453_7b89f5d2",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a53e5843_c2408394",
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71c389f3_707dc16e",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a53e5843_c2408394",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "abe848a4_4a1ed3e7",
@@ -65,6 +101,24 @@
       "writtenOn": "2025-11-20T20:02:17Z",
       "side": 1,
       "message": "imo we should separate uncommitted changes from shared projects\n\nfor shared projects, maybe i misread the code, but i think this means it deletes the .repo/ state, but not the actual source checkout ?  so it could leave other projects broken ?  it should purge all ...",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e2e1dc9_0ebdf001",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "added `--force-uncommitted` and `--force-shared` flags. for shared projects, the code avoids deleting an objdir unless every project using that objdir is being wiped. `DeleteWorktree` removes `self.gitdir` and walks through `self.worktree` to the worktree\u0027s files/dirs",
+      "parentUuid": "abe848a4_4a1ed3e7",
       "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -114,6 +168,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a55d59bb_32dbd9f5",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94393eb4_344b3afb",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c8da1a0_3bc5508e",
@@ -145,6 +217,24 @@
           ]
         }
       ],
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84140540_1c89299a",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c8da1a0_3bc5508e",
       "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -184,6 +274,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bd86c66_e8b098e3",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0386f201_3c836d58",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71ae1c1a_0a15f819",
@@ -219,6 +327,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9136bcc7_e03934fa",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71ae1c1a_0a15f819",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04a672f8_121a2701",
@@ -232,6 +358,24 @@
       "writtenOn": "2025-11-20T20:02:17Z",
       "side": 1,
       "message": "`verbose\u003dFalse` by default which means i think it\u0027s silent.  you should pass along `opts.verbose`, and you should respect that with the `print()` below i think.",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b375640b_5d83ceba",
+        "filename": "subcmds/wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04a672f8_121a2701",
       "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -311,6 +455,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cab5635_9cc09066",
+        "filename": "tests/test_subcmds_wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "282f2010_4124ae28",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a99efaca_862e6687",
@@ -386,6 +548,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0ef9f99_ac3dda5f",
+        "filename": "tests/test_subcmds_wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a99efaca_862e6687",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1eac2b70_c6ad0224",
@@ -399,6 +579,24 @@
       "writtenOn": "2025-11-20T20:02:17Z",
       "side": 1,
       "message": "i\u0027m kind of inclined to write new unittest modules with pytest unless there\u0027s a compelling reason to use unittest\n\ntest_subcmds_manifest.py is already written with pytest as an example",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "761a8d2d_3b00e8bb",
+        "filename": "tests/test_subcmds_wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1eac2b70_c6ad0224",
       "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -420,6 +618,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48d45caf_18dacb34",
+        "filename": "tests/test_subcmds_wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "890d51b6_f46fcd97",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fd98e07_927ea256",
@@ -433,6 +649,24 @@
       "writtenOn": "2025-11-20T20:02:17Z",
       "side": 1,
       "message": "delete this -- we use pytest now which doesn\u0027t need it",
+      "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5042c45f_ce42ffcb",
+        "filename": "tests/test_subcmds_wipe.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-11-21T00:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fd98e07_927ea256",
       "revId": "5d86fc5208a394f6e87ab47aac4c143d44be0740",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
