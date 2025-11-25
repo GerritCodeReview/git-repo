@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19258d26_d14d5064",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 3120,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-11-25T18:32:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5c63360_ccb8a580",
+      "range": {
+        "startLine": 3111,
+        "startChar": 20,
+        "endLine": 3120,
+        "endChar": 43
+      },
+      "revId": "863f798219ddf8b10b1ebb5df8b0c33b36b85a64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86c354ff_f895a6e5",
@@ -84,6 +108,30 @@
       "writtenOn": "2025-11-21T21:00:37Z",
       "side": 1,
       "message": "`EnableRepositoryExtension` uses `self.config`. will this be an issue with how method uses `self.config` and `curr_config`?",
+      "range": {
+        "startLine": 3221,
+        "startChar": 25,
+        "endLine": 3221,
+        "endChar": 50
+      },
+      "revId": "863f798219ddf8b10b1ebb5df8b0c33b36b85a64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b0bb5a6_da6e7807",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 3221,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-11-25T18:32:34Z",
+      "side": 1,
+      "message": "The rename should be done here so `self.config` should work as expected.",
+      "parentUuid": "bb384dc9_ea98216b",
       "range": {
         "startLine": 3221,
         "startChar": 25,
@@ -131,6 +179,30 @@
           ]
         }
       ],
+      "revId": "863f798219ddf8b10b1ebb5df8b0c33b36b85a64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00431899_314d88b6",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 3223,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-11-25T18:32:34Z",
+      "side": 1,
+      "message": "The rename is done at this point so we can use either.\n\nDone.",
+      "parentUuid": "c2d88fba_a003dc90",
+      "range": {
+        "startLine": 3223,
+        "startChar": 20,
+        "endLine": 3223,
+        "endChar": 68
+      },
       "revId": "863f798219ddf8b10b1ebb5df8b0c33b36b85a64",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
