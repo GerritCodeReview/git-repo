@@ -88,6 +88,24 @@
       "parentUuid": "bc8dc965_8ae2b084",
       "revId": "2411861d88b287923a7d51d705794a681437a1c7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "146a8c37_20921c4f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-25T16:38:08Z",
+      "side": 1,
+      "message": "i think `GetManifestGroupsStr()` is fine.  that is exposing a property that\u0027s been set by the user, not dictating its use exactly.",
+      "parentUuid": "91b2636b_8c56d7fd",
+      "revId": "2411861d88b287923a7d51d705794a681437a1c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
