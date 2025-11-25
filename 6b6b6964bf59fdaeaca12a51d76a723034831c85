@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3828a23a_5dee5bdd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-25T16:35:42Z",
+      "side": 1,
+      "message": "btw, i\u0027m not sure if you\u0027re waiting on something, but you can start landing the initial CLs if you\u0027re happy with them and don\u0027t think they\u0027ll change.  we\u0027d land them one-by-one regardless.",
+      "revId": "6b6b6964bf59fdaeaca12a51d76a723034831c85",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
