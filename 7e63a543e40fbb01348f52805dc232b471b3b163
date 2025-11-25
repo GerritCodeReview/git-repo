@@ -52,6 +52,24 @@
       "parentUuid": "032ccf45_454f39d5",
       "revId": "7e63a543e40fbb01348f52805dc232b471b3b163",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79fef828_b462974e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-25T18:19:29Z",
+      "side": 1,
+      "message": "\u003e Yes. There\u0027s a lot of cases that could cause failures that aren\u0027t helped by this change and I don\u0027t love that.\n\ncertainly.  i wouldn\u0027t expect you to fix all of them, but if we\u0027re going to focus on one, we should actually fix it :).\n\n\u003e I think we\u0027d want that temp dir in roughly the same location (i.e. don\u0027t use $TMPDIR)\n\ncorrect, it needs to be in the same dir tree as where it ends up so we can do an atomic rename() on the dir itself and not worry about perms/owners/disk space/copying/etc... to drag out.\n\n\u003e Should we do something like .repo/projects/path/to/.tempXXXX-project (XXXX replaced with random characters)? Then we can also do automatic cleanup of dirs under /projects/ named like .tempXXXX-.\n\n(i\u0027ll rename your examples slightly to avoid confusion)\n\nif the final path is `.repo/projects/path/to/foobar.git`, then let\u0027s use `.repo/projects/path/to/.tmpXXXXXX-\u003cname for repo step\u003e/foobar.git`.  so we could use like `project-initgitdir` since this is `project.py:InitGitDir` setting things up.\n\ni don\u0027t think we\u0027d want to use something like `.tmpXXXXXX-foobar.git` because it could cause filename length issues.  if `project` were actually a very long name that is just short of filesystem limits, adding `.tmpXXXXXX-` takes away more from that space.  certainly an edge case, but i don\u0027t think it provides any advantages over a name we know would never hit the limits.\n\nin terms of cleanup, i don\u0027t think a `glob.glob(\u0027.tmp*-project-initgitdir/foo.bar\u0027)` is expensive at all.  there shouldn\u0027t be that many orphaned `.tmp` dirs, and if there are none, the glob should basically be a noop.",
+      "parentUuid": "c104bf61_e78b6930",
+      "revId": "7e63a543e40fbb01348f52805dc232b471b3b163",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

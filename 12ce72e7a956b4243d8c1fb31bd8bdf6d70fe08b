@@ -233,6 +233,30 @@
       },
       "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28722db9_aca789f9",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3231,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-25T18:19:29Z",
+      "side": 1,
+      "message": "an empty glob should be pretty cheap",
+      "parentUuid": "bfc4c63d_a9402b88",
+      "range": {
+        "startLine": 3231,
+        "startChar": 12,
+        "endLine": 3231,
+        "endChar": 37
+      },
+      "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
