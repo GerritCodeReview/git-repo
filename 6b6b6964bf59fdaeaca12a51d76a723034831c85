@@ -34,6 +34,24 @@
       "parentUuid": "3828a23a_5dee5bdd",
       "revId": "6b6b6964bf59fdaeaca12a51d76a723034831c85",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f41a7d33_4def3429",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-11-26T15:58:19Z",
+      "side": 1,
+      "message": "work never ends.  changes should be usable in isolation (e.g. for bisection), so if we think earlier ones are useful even if \"all\" aren\u0027t merged, then let\u0027s do that.  gives them more time to bake and check for regressions in the wild.",
+      "parentUuid": "5d869c81_573508b9",
+      "revId": "6b6b6964bf59fdaeaca12a51d76a723034831c85",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
