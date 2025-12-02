@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42fbe65b_8ed25491",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-02T20:35:34Z",
+      "side": 1,
+      "message": "```suggestion\n                logger.error(\"error: Cannot symlink %s to %s\", absDest, relSrc)\n```",
+      "revId": "a9c39902d9bb4ec82666924f964075788975a172",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
