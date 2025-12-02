@@ -461,9 +461,7 @@ class _LinkFile(NamedTuple):
                         os.makedirs(dest_dir)
                 platform_utils.symlink(relSrc, absDest)
             except OSError:
-                logger.error(
-                    "error: Cannot link file %s to %s", relSrc, absDest
-                )
+                logger.error("error: Cannot link %s to %s", absDest, relSrc)
 
     def _Link(self):
         """Link the self.src & self.dest paths.
