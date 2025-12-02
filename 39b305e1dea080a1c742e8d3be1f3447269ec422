@@ -16,6 +16,24 @@
       "message": "@vapier@google.com I would really appreciate if you could approve the two remaining reviews. I also do not know the process for when or how you make new releases, but I would really like to see these changes in an official release so that I can take them into production.",
       "revId": "39b305e1dea080a1c742e8d3be1f3447269ec422",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ea40165_b2320b37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-02T19:14:54Z",
+      "side": 1,
+      "message": "our release process is documented here:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/docs/release-process.md\n\nup to Gavin whether we want to cut a new release now.  should be fine to start it this week before the xmas freeze.  he prob wants to too for the new `wipe` cmd and before the GC changes.",
+      "parentUuid": "7d6ebb52_8f0963db",
+      "revId": "39b305e1dea080a1c742e8d3be1f3447269ec422",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
