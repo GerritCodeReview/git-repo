@@ -81,9 +81,9 @@ following DTD:
   <!ATTLIST project sync-c      CDATA #IMPLIED>
   <!ATTLIST project sync-s      CDATA #IMPLIED>
   <!ATTLIST project sync-tags   CDATA #IMPLIED>
-  <!ATTLIST project upstream CDATA #IMPLIED>
+  <!ATTLIST project upstream    CDATA #IMPLIED>
   <!ATTLIST project clone-depth CDATA #IMPLIED>
-  <!ATTLIST project force-path CDATA #IMPLIED>
+  <!ATTLIST project force-path  CDATA #IMPLIED>
 
   <!ELEMENT annotation EMPTY>
   <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -95,21 +95,21 @@ following DTD:
   <!ATTLIST copyfile dest CDATA #REQUIRED>
 
   <!ELEMENT linkfile EMPTY>
-  <!ATTLIST linkfile src CDATA #REQUIRED>
+  <!ATTLIST linkfile src  CDATA #REQUIRED>
   <!ATTLIST linkfile dest CDATA #REQUIRED>
 
   <!ELEMENT extend-project (annotation*,
                             copyfile*,
                             linkfile*)>
-  <!ATTLIST extend-project name CDATA #REQUIRED>
-  <!ATTLIST extend-project path CDATA #IMPLIED>
-  <!ATTLIST extend-project dest-path CDATA #IMPLIED>
-  <!ATTLIST extend-project groups CDATA #IMPLIED>
-  <!ATTLIST extend-project revision CDATA #IMPLIED>
-  <!ATTLIST extend-project remote CDATA #IMPLIED>
+  <!ATTLIST extend-project name        CDATA #REQUIRED>
+  <!ATTLIST extend-project path        CDATA #IMPLIED>
+  <!ATTLIST extend-project dest-path   CDATA #IMPLIED>
+  <!ATTLIST extend-project groups      CDATA #IMPLIED>
+  <!ATTLIST extend-project revision    CDATA #IMPLIED>
+  <!ATTLIST extend-project remote      CDATA #IMPLIED>
   <!ATTLIST extend-project dest-branch CDATA #IMPLIED>
-  <!ATTLIST extend-project upstream CDATA #IMPLIED>
-  <!ATTLIST extend-project base-rev CDATA #IMPLIED>
+  <!ATTLIST extend-project upstream    CDATA #IMPLIED>
+  <!ATTLIST extend-project base-rev    CDATA #IMPLIED>
 
   <!ELEMENT remove-project EMPTY>
   <!ATTLIST remove-project name     CDATA #IMPLIED>
@@ -118,7 +118,7 @@ following DTD:
   <!ATTLIST remove-project base-rev CDATA #IMPLIED>
 
   <!ELEMENT repo-hooks EMPTY>
-  <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
+  <!ATTLIST repo-hooks in-project   CDATA #REQUIRED>
   <!ATTLIST repo-hooks enabled-list CDATA #REQUIRED>
 
   <!ELEMENT superproject EMPTY>
@@ -127,7 +127,7 @@ following DTD:
   <!ATTLIST superproject revision CDATA #IMPLIED>
 
   <!ELEMENT contactinfo EMPTY>
-  <!ATTLIST contactinfo bugurl  CDATA #REQUIRED>
+  <!ATTLIST contactinfo bugurl CDATA #REQUIRED>
 
   <!ELEMENT include EMPTY>
   <!ATTLIST include name     CDATA #REQUIRED>
