@@ -106,6 +106,24 @@
       "parentUuid": "e78bdd85_f4c05349",
       "revId": "7e63a543e40fbb01348f52805dc232b471b3b163",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e686b9a2_a6aec177",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-03T15:45:36Z",
+      "side": 1,
+      "message": "\u003e This will be somewhat painful because we can’t simply rename .repo/projects/path/to/.tmpXXXXXX-\u003cname for repo step\u003e/foobar.git to .repo/projects/path/to/foobar.git because the symlinks (objects, hooks, etc.) will break after the rename, as they were created using the tmp-gitdir path\n\nok, then let\u0027s use a janky name without the project in it.  we can have the cleanup steps check the mtime and have it purge if it finds anything older than a day.",
+      "parentUuid": "c6764b0c_115c471d",
+      "revId": "7e63a543e40fbb01348f52805dc232b471b3b163",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

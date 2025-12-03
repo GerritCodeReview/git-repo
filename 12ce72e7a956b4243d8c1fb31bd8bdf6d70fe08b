@@ -329,6 +329,30 @@
       },
       "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72d03cda_05d311ca",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3231,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-03T15:45:36Z",
+      "side": 1,
+      "message": "yes, glob based on the prefix, and delete any whose mtime is older than a day",
+      "parentUuid": "277d55b3_3056a4b8",
+      "range": {
+        "startLine": 3231,
+        "startChar": 12,
+        "endLine": 3231,
+        "endChar": 37
+      },
+      "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
