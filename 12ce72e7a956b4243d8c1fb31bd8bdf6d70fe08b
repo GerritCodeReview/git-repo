@@ -305,6 +305,30 @@
       },
       "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "277d55b3_3056a4b8",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3231,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-12-03T00:33:03Z",
+      "side": 1,
+      "message": "Now that the tmp dir does not have the prj name, using a glob is not safe. If we want to use a glob we will have to maybe add some logic to only cleanup dirs that are maybe older than a day.",
+      "parentUuid": "9d208ad3_dea18d8d",
+      "range": {
+        "startLine": 3231,
+        "startChar": 12,
+        "endLine": 3231,
+        "endChar": 37
+      },
+      "revId": "12ce72e7a956b4243d8c1fb31bd8bdf6d70fe08b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
