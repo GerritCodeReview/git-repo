@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b82d70de_642668de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-12-04T20:34:50Z",
+      "side": 1,
+      "message": "Thanks @vapier@google.com for the review! @gavinmak@google.com Can you please review as well? We need another +2 from a trusted contributor.",
+      "revId": "88ec105f7887f3804c7760f1f181857de1622959",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
