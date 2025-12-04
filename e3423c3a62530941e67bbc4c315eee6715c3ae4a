@@ -1,0 +1,226 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2a9bee2_241f7651",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-04T15:32:02Z",
+      "side": 1,
+      "message": "just a few nits",
+      "revId": "e3423c3a62530941e67bbc4c315eee6715c3ae4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aac02394_99df5fec",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-04T15:32:02Z",
+      "side": 1,
+      "message": "only import the datetime module, not members\n\ni know repo is bad at this rule, but let\u0027s not keep adding more to it that we (someday) would clean up",
+      "fixSuggestions": [
+        {
+          "fixId": "b11743de_65cc38ff",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 15,
+                "startChar": 0,
+                "endLine": 17,
+                "endChar": 0
+              },
+              "replacement": "import datetime\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e3423c3a62530941e67bbc4c315eee6715c3ae4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8943181e_fba4c4a3",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 3081,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-04T15:32:02Z",
+      "side": 1,
+      "message": "move to the top of the func and give it uppercase name to indicate it\u0027s a constant, and leave a short comment explaining what it\u0027s for",
+      "fixSuggestions": [
+        {
+          "fixId": "01731a9d_0cf931b2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3078,
+                "startChar": 0,
+                "endLine": 3078,
+                "endChar": 0
+              },
+              "replacement": "        # Prefix for temporary directories created during gitdir initialization.\n        TMP_GITDIR_PREFIX \u003d \".tmp-project-initgitdir-\"\n\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3081,
+                "startChar": 0,
+                "endLine": 3082,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3105,
+                "startChar": 0,
+                "endLine": 3106,
+                "endChar": 0
+              },
+              "replacement": "                        prefix\u003dTMP_GITDIR_PREFIX,\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3218,
+                "startChar": 0,
+                "endLine": 3219,
+                "endChar": 0
+              },
+              "replacement": "                    os.path.dirname(self.gitdir), f\"{TMP_GITDIR_PREFIX}*\"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e3423c3a62530941e67bbc4c315eee6715c3ae4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6199384_564930bc",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 3193,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-04T15:32:02Z",
+      "side": 1,
+      "message": "clear tmp_gitdir here\n\nit\u0027s extremely unlikely, but it\u0027s completely valid for another job to create the same tempdir once we released it (by the rename), and we wouldn\u0027t want the cleanup below to nuke it since it\u0027s no longer \"ours\"",
+      "fixSuggestions": [
+        {
+          "fixId": "3281922f_ab62dd90",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3194,
+                "startChar": 0,
+                "endLine": 3194,
+                "endChar": 0
+              },
+              "replacement": "                    tmp_gitdir \u003d None\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e3423c3a62530941e67bbc4c315eee6715c3ae4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e3ae539_52c672e9",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 3211,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-04T15:32:02Z",
+      "side": 1,
+      "message": "add a short comment to the finally block.  makes it easier to scan the code rather than having to digest what these ~15 lines of filesystem logic is doing.",
+      "fixSuggestions": [
+        {
+          "fixId": "1ed73543_9c74affb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3211,
+                "startChar": 0,
+                "endLine": 3211,
+                "endChar": 0
+              },
+              "replacement": "            # Clean up any temporary directories created during the process.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e3423c3a62530941e67bbc4c315eee6715c3ae4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a757b52_9f3b134f",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 3225,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-04T15:32:02Z",
+      "side": 1,
+      "message": "we should rarely catch `Exception`.  i know repo has plenty of bad examples here.",
+      "fixSuggestions": [
+        {
+          "fixId": "080f6ba3_3cf619a2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3225,
+                "startChar": 0,
+                "endLine": 3226,
+                "endChar": 0
+              },
+              "replacement": "                except OSError:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e3423c3a62530941e67bbc4c315eee6715c3ae4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
