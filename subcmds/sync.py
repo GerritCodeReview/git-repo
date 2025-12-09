@@ -87,6 +87,10 @@ _ONE_DAY_S = 24 * 60 * 60
 
 _REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
 
+_BLOAT_PACK_COUNT_THRESHOLD = 10
+_BLOAT_SIZE_PACK_THRESHOLD_KB = 10 * 1024 * 1024  # 10 GiB in KiB
+_BLOAT_SIZE_GARBAGE_THRESHOLD_KB = 1 * 1024 * 1024  # 1 GiB in KiB
+
 logger = RepoLogger(__file__)
 
 
@@ -1371,6 +1375,106 @@ later is required to fix a server side protocol bug.
             t.join()
         pm.end()
 
+    @classmethod
+    def _CheckOneBloatedProject(cls, project_index):
+        """Checks if a single project is bloated.
+
+        Args:
+            project_index (int): The index of the project in the parallel
+                context.
+
+        Returns:
+            Optional[str]: The name of the project if it is bloated, else None.
+        """
+        project = cls.get_parallel_context()["projects"][project_index]
+
+        if not project.Exists or not project.worktree:
+            return None
+
+        # Only check dirty or locally modified projects. These can't be
+        # freshly cloned and will accumulate garbage.
+        try:
+            is_dirty = project.IsDirty(consider_untracked=True)
+
+            manifest_rev = project.GetRevisionId(project.bare_ref.all)
+            head_rev = project.work_git.rev_parse(HEAD)
+            has_local_commits = manifest_rev != head_rev
+
+            if not (is_dirty or has_local_commits):
+                return None
+
+            output = project.bare_git.count_objects("-v")
+        except Exception:
+            return None
+
+        stats = {}
+        for line in output.splitlines():
+            if ": " in line:
+                key, value = line.split(": ", 1)
+                try:
+                    stats[key.strip()] = int(value.strip())
+                except ValueError:
+                    pass
+
+        pack_count = stats.get("packs", 0)
+        size_pack_kb = stats.get("size-pack", 0)
+        size_garbage_kb = stats.get("size-garbage", 0)
+
+        is_fragmented = (
+            pack_count > _BLOAT_PACK_COUNT_THRESHOLD
+            and size_pack_kb > _BLOAT_SIZE_PACK_THRESHOLD_KB
+        )
+        has_excessive_garbage = (
+            size_garbage_kb > _BLOAT_SIZE_GARBAGE_THRESHOLD_KB
+        )
+
+        if is_fragmented or has_excessive_garbage:
+            return project.name
+        return None
+
+    def _CheckForBloatedProjects(self, projects, opt):
+        """Check for shallow projects that are accumulating unoptimized data.
+
+        For projects with clone-depth="1" that are dirty (have local changes),
+        run 'git count-objects -v' and warn if the repository is accumulating
+        excessive pack files or garbage.
+        """
+        projects = [p for p in projects if p.clone_depth]
+        if not projects:
+            return
+
+        bloated_projects = []
+        pm = Progress(
+            "Checking for bloat", len(projects), delay=False, quiet=opt.quiet
+        )
+
+        def _ProcessResults(pool, pm, results):
+            for result in results:
+                if result:
+                    bloated_projects.append(result)
+                pm.update(msg="")
+
+        with self.ParallelContext():
+            self.get_parallel_context()["projects"] = projects
+            self.ExecuteInParallel(
+                opt.jobs,
+                self._CheckOneBloatedProject,
+                range(len(projects)),
+                callback=_ProcessResults,
+                output=pm,
+                chunksize=1,
+            )
+        pm.end()
+
+        for project_name in bloated_projects:
+            warn_msg = (
+                f'warning: Project "{project_name}" is accumulating '
+                'unoptimized data. Please run "repo sync --auto-gc" or '
+                '"repo gc --repack" to clean up.'
+            )
+            self.git_event_log.ErrorEvent(warn_msg)
+            logger.warning(warn_msg)
+
     def _UpdateRepoProject(self, opt, manifest, errors):
         """Fetch the repo project and check for updates."""
         if opt.local_only:
@@ -2001,6 +2105,8 @@ later is required to fix a server side protocol bug.
                 "warning: Partial syncs are not supported. For the best "
                 "experience, sync the entire tree."
             )
+
+        self._CheckForBloatedProjects(all_projects, opt)
 
         if not opt.quiet:
             print("repo sync has finished successfully.")
