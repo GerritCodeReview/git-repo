@@ -833,6 +833,30 @@ class ProjectElementTests(ManifestParseTestCase):
                 with self.assertRaises(error.ManifestInvalidPathError):
                     parse("ok", path)
 
+    def test_sparse_checkout(self):
+        """Check sparse-checkout settings."""
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="test-name" path="test-path" sparse-checkout="true">
+    <sparse-path path="src/main" />
+    <sparse-path path="docs" />
+  </project>
+  <project name="no-sparse" path="no-sparse-path" />
+</manifest>
+"""
+        )
+        self.assertEqual(len(manifest.projects), 2)
+        result = {p.name: p for p in manifest.projects}
+
+        self.assertTrue(result["test-name"].sparse_checkout)
+        self.assertEqual(result["test-name"].sparse_paths, ["src/main", "docs"])
+
+        self.assertFalse(result["no-sparse"].sparse_checkout)
+        self.assertEqual(result["no-sparse"].sparse_paths, [])
+
 
 class SuperProjectElementTests(ManifestParseTestCase):
     """Tests for <superproject>."""
