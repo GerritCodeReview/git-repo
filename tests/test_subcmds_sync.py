@@ -448,6 +448,42 @@ class GetPreciousObjectsState(unittest.TestCase):
         )
 
 
+class SparseCheckoutOptions(unittest.TestCase):
+    """Tests for sparse-checkout CLI options."""
+
+    def setUp(self):
+        """Common setup."""
+        self.cmd = sync.Sync()
+
+    def test_sparse_checkout_options(self):
+        """Check sparse-checkout command line options."""
+        # Test --sparse-checkout
+        opts, args = self.cmd.OptionParser.parse_args(["--sparse-checkout"])
+        self.assertTrue(opts.sparse_checkout)
+
+        # Test --no-sparse-checkout
+        opts, args = self.cmd.OptionParser.parse_args(["--no-sparse-checkout"])
+        self.assertFalse(opts.sparse_checkout)
+
+        # Test --sparse-paths
+        opts, args = self.cmd.OptionParser.parse_args(
+            ["--sparse-paths", "src/main,src/tests,docs"]
+        )
+        self.assertEqual(opts.sparse_paths, "src/main,src/tests,docs")
+
+        # Test combination of options
+        opts, args = self.cmd.OptionParser.parse_args(
+            ["--sparse-checkout", "--sparse-paths", "src/backend,src/frontend"]
+        )
+        self.assertTrue(opts.sparse_checkout)
+        self.assertEqual(opts.sparse_paths, "src/backend,src/frontend")
+
+        # Test that default is None (not set)
+        opts, args = self.cmd.OptionParser.parse_args([])
+        self.assertIsNone(opts.sparse_checkout)
+        self.assertIsNone(opts.sparse_paths)
+
+
 class SyncCommand(unittest.TestCase):
     """Tests for cmd.Execute."""
 

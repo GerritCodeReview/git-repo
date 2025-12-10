@@ -608,6 +608,26 @@ later is required to fix a server side protocol bug.
             action="store_false",
             help="do not run garbage collection on any projects (default)",
         )
+        p.add_option(
+            "--sparse-checkout",
+            action="store_true",
+            default=None,
+            help="enable sparse-checkout for projects",
+        )
+        p.add_option(
+            "--no-sparse-checkout",
+            dest="sparse_checkout",
+            action="store_false",
+            help="disable sparse-checkout for projects",
+        )
+        p.add_option(
+            "--sparse-paths",
+            action="store",
+            help=(
+                "comma-separated list of paths for sparse-checkout "
+                "(e.g., 'path/to/dir1,path/to/dir2')"
+            ),
+        )
         if show_smart:
             p.add_option(
                 "-s",
@@ -822,6 +842,10 @@ later is required to fix a server side protocol bug.
                 clone_filter=project.manifest.CloneFilter,
                 partial_clone_exclude=project.manifest.PartialCloneExclude,
                 clone_filter_for_depth=project.manifest.CloneFilterForDepth,
+                sparse_checkout=(
+                    project.manifest.manifestProject.sparse_checkout
+                ),
+                sparse_paths=project.manifest.manifestProject.sparse_paths,
             )
             success = sync_result.success
             remote_fetched = sync_result.remote_fetched

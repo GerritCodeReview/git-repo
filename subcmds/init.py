@@ -163,6 +163,8 @@ to update the working directory files.
             clone_bundle=opt.clone_bundle,
             git_lfs=opt.git_lfs,
             use_superproject=opt.use_superproject,
+            sparse_checkout=opt.sparse_checkout,
+            sparse_paths=opt.sparse_paths,
             verbose=opt.verbose,
             current_branch_only=opt.current_branch_only,
             tags=opt.tags,
