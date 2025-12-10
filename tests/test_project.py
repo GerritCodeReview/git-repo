@@ -794,3 +794,69 @@ class SyncOptimizationTests(unittest.TestCase):
 
                 self.assertTrue(res)
                 mock_git_cmd.assert_not_called()
+
+
+class SparseCheckoutTests(unittest.TestCase):
+    """Check sparse-checkout handling."""
+
+    def test_configure_sparse_checkout_with_list(self):
+        """Test configuring sparse-checkout with list of paths."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = FakeProject(tempdir)
+
+            if not utils_for_test.git_command.git_require((2, 25, 0)):
+                self.skipTest("Git 2.25.0+ required for sparse-checkout")
+
+            sparse_paths = ["src/backend", "src/shared"]
+            fakeproj._ConfigureSparseCheckout = (
+                project.Project._ConfigureSparseCheckout.__get__(
+                    fakeproj, FakeProject
+                )
+            )
+            fakeproj._ConfigureSparseCheckout(sparse_paths)
+
+            result = fakeproj.work_git.sparse_checkout("list")
+            paths = result.strip().split("\n")
+            self.assertIn("src/backend", paths)
+            self.assertIn("src/shared", paths)
+
+    def test_sparse_checkout_filters_worktree(self):
+        """Test that sparse-checkout filters files from worktree."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = FakeProject(tempdir)
+
+            if not utils_for_test.git_command.git_require((2, 25, 0)):
+                self.skipTest("Git 2.25.0+ required for sparse-checkout")
+
+            os.makedirs(os.path.join(tempdir, "src/main"))
+            os.makedirs(os.path.join(tempdir, "src/tests"))
+            os.makedirs(os.path.join(tempdir, "docs"))
+
+            with open(os.path.join(tempdir, "src/main/app.py"), "w") as f:
+                f.write("print('Hello')\n")
+            with open(os.path.join(tempdir, "src/tests/test.py"), "w") as f:
+                f.write("def test(): pass\n")
+            with open(os.path.join(tempdir, "docs/guide.md"), "w") as f:
+                f.write("# Guide\n")
+
+            fakeproj.work_git.add(".")
+            fakeproj.work_git.commit("-mInitial commit")
+
+            fakeproj._ConfigureSparseCheckout = (
+                project.Project._ConfigureSparseCheckout.__get__(
+                    fakeproj, FakeProject
+                )
+            )
+            fakeproj._ConfigureSparseCheckout(["src/main", "docs"])
+
+            fakeproj.work_git.read_tree("-mu", "HEAD")
+
+            self.assertTrue(
+                os.path.exists(os.path.join(tempdir, "src/main/app.py"))
+            )
+            self.assertTrue(
+                os.path.exists(os.path.join(tempdir, "docs/guide.md"))
+            )
+            self.assertFalse(
+                os.path.exists(os.path.join(tempdir, "src/tests/test.py"))
+            )
