@@ -857,6 +857,30 @@ class TestProjectElement:
                 with pytest.raises(error.ManifestInvalidPathError):
                     parse("ok", path)
 
+    def test_sparse_checkout(self, repo_client: RepoClient) -> None:
+        """Check sparse-checkout settings."""
+        manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="test-name" path="test-path" sparse-checkout="true">
+    <sparse-path path="src/main" />
+    <sparse-path path="docs" />
+  </project>
+  <project name="no-sparse" path="no-sparse-path" />
+</manifest>
+"""
+        )
+        assert len(manifest.projects) == 2
+        result = {p.name: p for p in manifest.projects}
+
+        assert result["test-name"].sparse_checkout
+        assert result["test-name"].sparse_paths == ["src/main", "docs"]
+
+        assert not result["no-sparse"].sparse_checkout
+        assert result["no-sparse"].sparse_paths == []
+
 
 class TestSuperProjectElement:
     """Tests for <superproject>."""

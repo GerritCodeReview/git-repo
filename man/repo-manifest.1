@@ -152,7 +152,8 @@ include*)>
 <!ELEMENT project (annotation*,
 project*,
 copyfile*,
-linkfile*)>
+linkfile*,
+sparse\-path*)>
 .TP
 <!ATTLIST project name
 CDATA #REQUIRED>
@@ -189,8 +190,12 @@ CDATA #IMPLIED>
 .TP
 <!ATTLIST project force\-path
 CDATA #IMPLIED>
-.IP
-<!ATTLIST project sync\-strategy CDATA #IMPLIED>
+.TP
+<!ATTLIST project sync\-strategy
+CDATA #IMPLIED>
+.TP
+<!ATTLIST project sparse\-checkout
+CDATA #IMPLIED>
 .IP
 <!ELEMENT annotation EMPTY>
 <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -204,10 +209,14 @@ CDATA #IMPLIED>
 <!ELEMENT linkfile EMPTY>
 <!ATTLIST linkfile src  CDATA #REQUIRED>
 <!ATTLIST linkfile dest CDATA #REQUIRED>
+.IP
+<!ELEMENT sparse\-path EMPTY>
+<!ATTLIST sparse\-path path CDATA #REQUIRED>
 .TP
 <!ELEMENT extend\-project (annotation*,
 copyfile*,
-linkfile*)>
+linkfile*,
+sparse\-path*)>
 .TP
 <!ATTLIST extend\-project name
 CDATA #REQUIRED>
@@ -230,6 +239,7 @@ CDATA #IMPLIED>
 <!ATTLIST extend\-project dest\-branch CDATA #IMPLIED>
 <!ATTLIST extend\-project upstream    CDATA #IMPLIED>
 <!ATTLIST extend\-project base\-rev    CDATA #IMPLIED>
+<!ATTLIST extend\-project sparse\-checkout CDATA #IMPLIED>
 .IP
 <!ELEMENT remove\-project EMPTY>
 <!ATTLIST remove\-project name     CDATA #IMPLIED>
@@ -501,6 +511,10 @@ unpushed local commits. 4. There is no Git stash.
 If any of these conditions are not met, repo falls back to a standard sync
 without garbage collection.
 .PP
+Attribute `sparse\-checkout`: Set to true to enable Git sparse\-checkout for this
+project. When enabled, only the paths specified via `sparse\-path` child elements
+will be checked out in the working directory. Requires Git 2.25.0 or later.
+.PP
 Element extend\-project
 .PP
 Modify the attributes of the named project.
@@ -556,6 +570,15 @@ addition, there is an optional attribute "keep" which accepts the case
 insensitive values "true" (default) or "false". This attribute determines
 whether or not the annotation will be kept when exported with the manifest
 subcommand.
+.PP
+Element sparse\-path
+.PP
+Zero or more sparse\-path elements may be specified as children of a project
+element or an extend\-project element. Each element specifies a path to include
+in the sparse\-checkout when `sparse\-checkout` is enabled.
+.PP
+Attribute `path`: A path relative to the project root to include in the
+sparse\-checkout. Uses cone mode for better performance.
 .PP
 Element copyfile
 .PP
