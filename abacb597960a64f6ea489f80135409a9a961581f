@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7969e72_2af33d45",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1383,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-10T15:29:49Z",
+      "side": 1,
+      "message": "put the typing into the func signature, not the docstring",
+      "revId": "abacb597960a64f6ea489f80135409a9a961581f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e1c1315_832c4340",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1413,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-10T15:29:49Z",
+      "side": 1,
+      "message": "if the `split()` doesn\u0027t yield 2 values, it will also throw ValueError, so you could move this into the try block below and drop the if check.",
+      "range": {
+        "startLine": 1412,
+        "startChar": 0,
+        "endLine": 1413,
+        "endChar": 48
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "72598f8f_0a9b8405",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 1412,
+                "startChar": 0,
+                "endLine": 1413,
+                "endChar": 0
+              },
+              "replacement": "            try:\n"
+            },
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 1414,
+                "startChar": 0,
+                "endLine": 1418,
+                "endChar": 0
+              },
+              "replacement": "                stats[key.strip()] \u003d int(value.strip())\n            except ValueError:\n                pass\n"
+            }
+          ]
+        }
+      ],
+      "revId": "abacb597960a64f6ea489f80135409a9a961581f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
