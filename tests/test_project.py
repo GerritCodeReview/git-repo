@@ -534,3 +534,9 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
 
             fakeproj.config.SetString("manifest.platform", "auto")
             self.assertEqual(fakeproj.manifest_platform, "auto")
+
+            fakeproj.config.SetBoolean("repo.sparsecheckout", True)
+            self.assertTrue(fakeproj.sparse_checkout)
+
+            fakeproj.config.SetString("repo.sparsepaths", "src/main,src/tests")
+            self.assertEqual(fakeproj.sparse_paths, "src/main,src/tests")

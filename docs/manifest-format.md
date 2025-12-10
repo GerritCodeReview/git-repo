@@ -84,6 +84,8 @@ following DTD:
   <!ATTLIST project upstream CDATA #IMPLIED>
   <!ATTLIST project clone-depth CDATA #IMPLIED>
   <!ATTLIST project force-path CDATA #IMPLIED>
+  <!ATTLIST project sparse-checkout CDATA #IMPLIED>
+  <!ATTLIST project sparse-paths CDATA #IMPLIED>
 
   <!ELEMENT annotation EMPTY>
   <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -383,6 +385,15 @@ local mirror repository according to its `path` attribute (if supplied)
 rather than the `name` attribute.  This attribute only applies to the
 local mirrors syncing, it will be ignored when syncing the projects in a
 client working directory.
+
+Attribute `sparse-checkout`: Set to true to enable Git sparse-checkout for
+this project. When enabled, only the paths specified in `sparse-paths` will
+be checked out in the working directory. Requires Git 2.25.0 or later.
+
+Attribute `sparse-paths`: Comma-separated list of paths to include when
+sparse-checkout is enabled (e.g., `src/main,src/tests,docs`). This attribute
+is only used when `sparse-checkout` is set to true. Paths are relative to
+the project root and use cone mode for better performance.
 
 ### Element extend-project
 

@@ -1272,6 +1272,8 @@ class Project:
         clone_filter=None,
         partial_clone_exclude=set(),
         clone_filter_for_depth=None,
+        sparse_checkout=False,
+        sparse_paths=None,
     ):
         """Perform only the network IO portion of the sync process.
         Local working directory/branch state is not affected.
@@ -1432,6 +1434,7 @@ class Project:
                     ssh_proxy=ssh_proxy,
                     clone_filter=clone_filter,
                     retry_fetches=retry_fetches,
+                    sparse_checkout=sparse_checkout,
                 ):
                     return SyncNetworkHalfResult(
                         remote_fetched,
@@ -2479,6 +2482,7 @@ class Project:
         retry_fetches=2,
         retry_sleep_initial_sec=4.0,
         retry_exp_factor=2.0,
+        sparse_checkout=False,
     ) -> bool:
         tag_name = None
         # The depth should not be used when fetching to a mirror because
@@ -2569,6 +2573,10 @@ class Project:
                 alt_dir = None
 
         cmd = ["fetch"]
+
+        # When sparse checkout is enabled, automatically use blob:none filter if no filter is set
+        if sparse_checkout and not clone_filter:
+            clone_filter = "blob:none"
 
         if clone_filter:
             git_require((2, 19, 0), fail=True, msg="partial clones")
@@ -3033,6 +3041,44 @@ class Project:
             raise GitError(
                 "%s submodule update --init --recursive " % self.name,
                 project=self.name,
+            )
+
+    def _ConfigureSparseCheckout(self, sparse_paths):
+        """Configure sparse-checkout for the project.
+
+        Args:
+            sparse_paths: String of comma-separated paths or list of paths.
+        """
+        if not sparse_paths:
+            return
+
+        # Parse paths
+        if isinstance(sparse_paths, str):
+            paths = [p.strip() for p in sparse_paths.split(',') if p.strip()]
+        else:
+            paths = sparse_paths
+
+        if not paths:
+            return
+
+        try:
+            # Initialize sparse-checkout
+            git_require((2, 25, 0), fail=True, msg="sparse-checkout")
+            self.work_git.sparse_checkout("init", "--cone")
+
+            # Set the paths
+            self.work_git.sparse_checkout("set", *paths)
+
+            logger.info(
+                "%s: Configured sparse-checkout for paths: %s",
+                self.name,
+                ", ".join(paths)
+            )
+        except GitError as e:
+            logger.warning(
+                "%s: Failed to configure sparse-checkout: %s",
+                self.name,
+                str(e)
             )
 
     def _InitSubmodules(self, quiet=True):
@@ -3513,6 +3559,12 @@ class Project:
 
                 if submodules:
                     self._SyncSubmodules(quiet=True)
+
+                # Configure sparse-checkout if enabled
+                mp = self.manifest.manifestProject
+                if mp.sparse_checkout and mp.sparse_paths:
+                    self._ConfigureSparseCheckout(mp.sparse_paths)
+
                 self._CopyAndLinkFiles()
 
     def _createDotGit(self, dotgit):
@@ -4264,6 +4316,16 @@ class ManifestProject(MetaProject):
         return self.config.GetString("repo.clonefilterfordepth")
 
     @property
+    def sparse_checkout(self):
+        """Whether we use sparse-checkout."""
+        return self.config.GetBoolean("repo.sparsecheckout")
+
+    @property
+    def sparse_paths(self):
+        """Sparse-checkout paths."""
+        return self.config.GetString("repo.sparsepaths")
+
+    @property
     def manifest_platform(self):
         """The --platform argument from `repo init`."""
         return self.config.GetString("manifest.platform")
@@ -4372,6 +4434,8 @@ class ManifestProject(MetaProject):
         this_manifest_only=False,
         outer_manifest=True,
         clone_filter_for_depth=None,
+        sparse_checkout=None,
+        sparse_paths=None,
     ):
         """Sync the manifest and all submanifests.
 
@@ -4458,6 +4522,8 @@ class ManifestProject(MetaProject):
                 manifest_name=manifest_name,
                 this_manifest_only=this_manifest_only,
                 outer_manifest=False,
+                sparse_checkout=sparse_checkout,
+                sparse_paths=sparse_paths,
             )
 
         # If repo has already been initialized, we take -u with the absence of
@@ -4670,6 +4736,12 @@ class ManifestProject(MetaProject):
                     "         Existing projects will require manual updates.\n"
                 )
 
+        if sparse_checkout is not None:
+            self.config.SetBoolean("repo.sparsecheckout", sparse_checkout)
+
+        if sparse_paths is not None:
+            self.config.SetString("repo.sparsepaths", sparse_paths)
+
         if clone_filter_for_depth is not None:
             self.ConfigureCloneFilterForDepth(clone_filter_for_depth)
 
@@ -4688,6 +4760,8 @@ class ManifestProject(MetaProject):
                 clone_filter=clone_filter,
                 partial_clone_exclude=self.manifest.PartialCloneExclude,
                 clone_filter_for_depth=self.manifest.CloneFilterForDepth,
+                sparse_checkout=sparse_checkout,
+                sparse_paths=sparse_paths,
             ).success
             if not success:
                 r = self.GetRemote()
@@ -4766,6 +4840,8 @@ class ManifestProject(MetaProject):
                     manifest_name=spec.manifestName,
                     this_manifest_only=False,
                     outer_manifest=False,
+                    sparse_checkout=sparse_checkout,
+                    sparse_paths=sparse_paths,
                 )
 
         # Lastly, if the manifest has a <superproject> then have the
