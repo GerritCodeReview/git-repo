@@ -72,7 +72,8 @@ following DTD:
   <!ELEMENT project (annotation*,
                      project*,
                      copyfile*,
-                     linkfile*)>
+                     linkfile*,
+                     sparse-path*)>
   <!ATTLIST project name        CDATA #REQUIRED>
   <!ATTLIST project path        CDATA #IMPLIED>
   <!ATTLIST project remote      IDREF #IMPLIED>
@@ -85,6 +86,7 @@ following DTD:
   <!ATTLIST project upstream    CDATA #IMPLIED>
   <!ATTLIST project clone-depth CDATA #IMPLIED>
   <!ATTLIST project force-path  CDATA #IMPLIED>
+  <!ATTLIST project sparse-checkout CDATA #IMPLIED>
 
   <!ELEMENT annotation EMPTY>
   <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -99,9 +101,13 @@ following DTD:
   <!ATTLIST linkfile src  CDATA #REQUIRED>
   <!ATTLIST linkfile dest CDATA #REQUIRED>
 
+  <!ELEMENT sparse-path EMPTY>
+  <!ATTLIST sparse-path path CDATA #REQUIRED>
+
   <!ELEMENT extend-project (annotation*,
                             copyfile*,
-                            linkfile*)>
+                            linkfile*,
+                            sparse-path*)>
   <!ATTLIST extend-project name        CDATA #REQUIRED>
   <!ATTLIST extend-project path        CDATA #IMPLIED>
   <!ATTLIST extend-project dest-path   CDATA #IMPLIED>
@@ -111,6 +117,7 @@ following DTD:
   <!ATTLIST extend-project dest-branch CDATA #IMPLIED>
   <!ATTLIST extend-project upstream    CDATA #IMPLIED>
   <!ATTLIST extend-project base-rev    CDATA #IMPLIED>
+  <!ATTLIST extend-project sparse-checkout CDATA #IMPLIED>
 
   <!ELEMENT remove-project EMPTY>
   <!ATTLIST remove-project name     CDATA #IMPLIED>
@@ -389,6 +396,11 @@ rather than the `name` attribute.  This attribute only applies to the
 local mirrors syncing, it will be ignored when syncing the projects in a
 client working directory.
 
+Attribute `sparse-checkout`: Set to true to enable Git sparse-checkout for
+this project. When enabled, only the paths specified via `sparse-path` child
+elements will be checked out in the working directory. Requires Git 2.25.0
+or later.
+
 ### Element extend-project
 
 Modify the attributes of the named project.
@@ -444,6 +456,17 @@ command, prefixed with `REPO__`.  In addition, there is an optional
 attribute "keep" which accepts the case insensitive values "true"
 (default) or "false". This attribute determines whether or not the
 annotation will be kept when exported with the manifest subcommand.
+
+### Element sparse-path
+
+Zero or more sparse-path elements may be specified as children of a
+project element or an extend-project element. Each element specifies a
+path to include in the sparse-checkout when `sparse-checkout` is enabled.
+
+Attribute `path`: A path relative to the project root to include in the
+sparse-checkout. Uses [cone mode](https://git-scm.com/docs/git-sparse-checkout#_internalscone_mode_handling)
+for better performance. This means only directory paths are supported. Individual
+files and globs are not.
 
 ### Element copyfile
 
