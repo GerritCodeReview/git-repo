@@ -571,6 +571,7 @@ class Project:
         dest_branch=None,
         optimized_fetch=False,
         retry_fetches=0,
+        sparse_paths=None,
     ):
         """Init a Project object.
 
@@ -603,6 +604,8 @@ class Project:
                 only fetch from the remote if the sha1 is not present locally.
             retry_fetches: Retry remote fetches n times upon receiving transient
                 error with exponential backoff and jitter.
+            sparse_paths: List of paths from manifest.xml's `sparse-path` child
+                elements.  A non-empty list enables sparse checkout.
         """
         self.client = self.manifest = manifest
         self.name = name
@@ -626,6 +629,7 @@ class Project:
         self.is_derived = is_derived
         self.optimized_fetch = optimized_fetch
         self.retry_fetches = max(0, retry_fetches)
+        self.sparse_paths = sparse_paths if sparse_paths is not None else []
         self.subprojects = []
 
         self.snapshots = {}
@@ -2991,6 +2995,11 @@ class Project:
 
         cmd = ["fetch"]
 
+        # When sparse checkout is enabled, automatically use blob:none filter
+        # if no filter is set.
+        if self.sparse_paths and not clone_filter:
+            clone_filter = "blob:none"
+
         if clone_filter:
             git_require((2, 19, 0), fail=True, msg="partial clones")
             cmd.append("--filter=%s" % clone_filter)
@@ -4012,6 +4021,10 @@ class Project:
             if init_dotgit:
                 self.work_git.UpdateRef(HEAD, self.GetRevisionId(), detach=True)
 
+                # Configure sparse-checkout before checking out the worktree.
+                if self.sparse_paths:
+                    self._ConfigureSparseCheckout(self.sparse_paths)
+
                 # Finish checking out the worktree.
                 cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
                 try:
@@ -4030,6 +4043,19 @@ class Project:
                 if submodules:
                     self._SyncSubmodules(quiet=True)
                 self._CopyAndLinkFiles()
+
+    def _ConfigureSparseCheckout(self, sparse_paths: List[str]) -> None:
+        """Configure sparse-checkout for the project.
+
+        Args:
+            sparse_paths: List of paths to include in sparse-checkout.
+        """
+        if not sparse_paths:
+            return
+
+        git_require((2, 25, 0), fail=True, msg="Sparse Checkout")
+        self.work_git.sparse_checkout("init", "--cone")
+        self.work_git.sparse_checkout("set", *sparse_paths)
 
     def _createDotGit(self, dotgit):
         """Initialize .git path.

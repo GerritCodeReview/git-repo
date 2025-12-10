@@ -877,6 +877,70 @@ class TestProjectElement:
                 with pytest.raises(error.ManifestInvalidPathError):
                     parse("ok", path)
 
+    def test_sparse_checkout(self, repo_client: RepoClient) -> None:
+        """Check sparse-checkout settings."""
+        manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="test-name" path="test-path">
+    <sparse-path path="src/main" />
+    <sparse-path path="docs" />
+  </project>
+  <project name="no-sparse" path="no-sparse-path" />
+</manifest>
+"""
+        )
+        assert len(manifest.projects) == 2
+        result = {p.name: p for p in manifest.projects}
+
+        assert result["test-name"].sparse_paths == ["src/main", "docs"]
+        assert result["no-sparse"].sparse_paths == []
+
+    def test_sparse_checkout_extend_project(
+        self, repo_client: RepoClient
+    ) -> None:
+        """Check sparse-path elements added via extend-project."""
+        manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="test-name" path="test-path">
+    <sparse-path path="src/main" />
+  </project>
+  <extend-project name="test-name">
+    <sparse-path path="docs" />
+  </extend-project>
+</manifest>
+"""
+        )
+        assert len(manifest.projects) == 1
+        assert manifest.projects[0].sparse_paths == ["src/main", "docs"]
+
+    def test_sparse_checkout_roundtrip(self, repo_client: RepoClient) -> None:
+        """Check sparse-path elements survive a manifest round-trip."""
+        manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="test-name" path="test-path">
+    <sparse-path path="src/main" />
+    <sparse-path path="docs" />
+  </project>
+</manifest>
+"""
+        )
+        roundtrip = repo_client.get_xml_manifest(manifest.ToXml().toxml())
+        assert roundtrip.projects[0].sparse_paths == ["src/main", "docs"]
+
+        assert manifest.ToDict()["project"][0]["sparse-path"] == [
+            {"path": "src/main"},
+            {"path": "docs"},
+        ]
+
 
 class TestSuperProjectElement:
     """Tests for <superproject>."""
