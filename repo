@@ -454,6 +454,23 @@ def InitParser(parser):
         action="store_false",
         help="disable Git LFS support",
     )
+    group.add_option(
+        "--sparse-checkout",
+        action="store_true",
+        default=None,
+        help="enable sparse-checkout for projects",
+    )
+    group.add_option(
+        "--no-sparse-checkout",
+        dest="sparse_checkout",
+        action="store_false",
+        help="disable sparse-checkout for projects",
+    )
+    group.add_option(
+        "--sparse-paths",
+        action="store",
+        help="comma-separated list of paths for sparse-checkout (e.g., 'path/to/dir1,path/to/dir2')",
+    )
 
     # Tool.
     group = parser.add_option_group("repo Version options")
