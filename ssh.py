@@ -52,12 +52,12 @@ def _parse_ssh_version(ver_str=None):
 
 @functools.lru_cache(maxsize=None)
 def version():
-    """return ssh version as a tuple"""
+    """Return ssh version as a tuple.
+
+    If ssh is not available, a FileNotFoundError will be raised.
+    """
     try:
         return _parse_ssh_version()
-    except FileNotFoundError:
-        print("fatal: ssh not installed", file=sys.stderr)
-        sys.exit(1)
     except subprocess.CalledProcessError as e:
         print(
             "fatal: unable to detect ssh version"
@@ -102,9 +102,18 @@ class ProxyManager:
         self._clients = manager.list()
         # Path to directory for holding master sockets.
         self._sock_path = None
+        # See if ssh is usable.
+        self._ssh_installed = False
 
     def __enter__(self):
         """Enter a new context."""
+        # Check which version of ssh is available.
+        try:
+            version()
+            self._ssh_installed = True
+        except FileNotFoundError:
+            self._ssh_installed = False
+
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -282,6 +291,9 @@ class ProxyManager:
 
     def preconnect(self, url):
         """If |uri| will create a ssh connection, setup the ssh master for it."""  # noqa: E501
+        if not self._ssh_installed:
+            return False
+
         m = URI_ALL.match(url)
         if m:
             scheme = m.group(1)
@@ -306,6 +318,9 @@ class ProxyManager:
 
         This has all the master sockets so clients can talk to them.
         """
+        if not self._ssh_installed:
+            return None
+
         if self._sock_path is None:
             if not create:
                 return None
