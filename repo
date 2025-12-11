@@ -129,7 +129,7 @@ if not REPO_REV:
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 54)
+VERSION = (2, 61)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -325,7 +325,7 @@ def InitParser(parser):
     group.add_option(
         "--manifest-depth",
         type="int",
-        default=0,
+        default=1,
         metavar="DEPTH",
         help="create a shallow clone of the manifest repo with "
         "given depth (0 for full clone); see git clone "
