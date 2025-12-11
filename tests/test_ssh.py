@@ -45,6 +45,7 @@ class SshTests(unittest.TestCase):
     def test_version(self):
         """Check version() handling."""
         with mock.patch("ssh._run_ssh_version", return_value="OpenSSH_1.2\n"):
+            ssh.version.cache_clear()
             self.assertEqual(ssh.version(), (1, 2))
 
     def test_context_manager_empty(self):
@@ -56,11 +57,12 @@ class SshTests(unittest.TestCase):
     def test_context_manager_child_cleanup(self):
         """Verify orphaned clients & masters get cleaned up."""
         with multiprocessing.Manager() as manager:
-            with ssh.ProxyManager(manager) as ssh_proxy:
-                client = subprocess.Popen(["sleep", "964853320"])
-                ssh_proxy.add_client(client)
-                master = subprocess.Popen(["sleep", "964853321"])
-                ssh_proxy.add_master(master)
+            with mock.patch("ssh.version", return_value=(1, 2)):
+                with ssh.ProxyManager(manager) as ssh_proxy:
+                    client = subprocess.Popen(["sleep", "964853320"])
+                    ssh_proxy.add_client(client)
+                    master = subprocess.Popen(["sleep", "964853321"])
+                    ssh_proxy.add_master(master)
         # If the process still exists, these will throw timeout errors.
         client.wait(0)
         master.wait(0)
@@ -72,9 +74,11 @@ class SshTests(unittest.TestCase):
         with mock.patch("tempfile.mkdtemp", return_value="/tmp/foo"):
             # Old ssh version uses port.
             with mock.patch("ssh.version", return_value=(6, 6)):
-                self.assertTrue(proxy.sock().endswith("%p"))
+                with proxy as ssh_proxy:
+                    self.assertTrue(ssh_proxy.sock().endswith("%p"))
 
             proxy._sock_path = None
             # New ssh version uses hash.
             with mock.patch("ssh.version", return_value=(6, 7)):
-                self.assertTrue(proxy.sock().endswith("%C"))
+                with proxy as ssh_proxy:
+                    self.assertTrue(ssh_proxy.sock().endswith("%C"))
