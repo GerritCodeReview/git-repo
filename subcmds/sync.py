@@ -23,6 +23,7 @@ import netrc
 import optparse
 import os
 from pathlib import Path
+import re
 import sys
 import tempfile
 import time
@@ -64,6 +65,7 @@ from error import SyncError
 from error import UpdateManifestError
 import event_log
 from git_command import git_require
+from git_command import GitCommand
 from git_config import GetUrlCookieFile
 from git_refs import HEAD
 from git_refs import R_HEADS
@@ -1486,7 +1488,11 @@ later is required to fix a server side protocol bug.
 
         with multiprocessing.Manager() as manager:
             with ssh.ProxyManager(manager) as ssh_proxy:
-                ssh_proxy.sock()
+                env = GitCommand._GetBasicEnv()
+                if "GIT_ALLOW_PROTOCOL" not in env or re.match(
+                    r":?ssh:?", env["GIT_ALLOW_PROTOCOL"]
+                ):
+                    ssh_proxy.sock()
                 start = time.time()
                 buf = TeeStringIO(sys.stdout if opt.verbose else None)
                 sync_result = rp.Sync_NetworkHalf(
@@ -2255,7 +2261,11 @@ later is required to fix a server side protocol bug.
             with multiprocessing.Manager() as manager:
                 with ssh.ProxyManager(manager) as ssh_proxy:
                     # Initialize the socket dir once in the parent.
-                    ssh_proxy.sock()
+                    env = GitCommand._GetBasicEnv()
+                    if "GIT_ALLOW_PROTOCOL" not in env or re.match(
+                        r":?ssh:?", env["GIT_ALLOW_PROTOCOL"]
+                    ):
+                        ssh_proxy.sock()
                     result = self._FetchMain(
                         opt,
                         args,
@@ -2601,7 +2611,11 @@ later is required to fix a server side protocol bug.
             with multiprocessing.Manager() as manager, ssh.ProxyManager(
                 manager
             ) as ssh_proxy:
-                ssh_proxy.sock()
+                env = GitCommand._GetBasicEnv()
+                if "GIT_ALLOW_PROTOCOL" not in env or re.match(
+                    r":?ssh:?", env["GIT_ALLOW_PROTOCOL"]
+                ):
+                    ssh_proxy.sock()
                 with self.ParallelContext():
                     self.get_parallel_context()["ssh_proxy"] = ssh_proxy
                     # TODO(gavinmak): Use multprocessing.Queue instead of dict.
