@@ -55,9 +55,11 @@ def version():
     """return ssh version as a tuple"""
     try:
         return _parse_ssh_version()
-    except FileNotFoundError:
-        print("fatal: ssh not installed", file=sys.stderr)
-        sys.exit(1)
+    except FileNotFoundError as e:
+        # Don't exit here, raise an exception so the caller can gracefully
+        # handle the case where ssh is not available
+        print("warn: ssh not installed", file=sys.stderr)
+        raise e
     except subprocess.CalledProcessError as e:
         print(
             "fatal: unable to detect ssh version"
@@ -243,6 +245,10 @@ class ProxyManager:
         try:
             with Trace("Call to ssh: %s", " ".join(command)):
                 p = subprocess.Popen(command)
+        except FileNotFoundError:
+            self._master_broken.value = True
+            print("\nwarn: ssh not installed", file=sys.stderr)
+            return False
         except Exception as e:
             self._master_broken.value = True
             print(
@@ -312,10 +318,16 @@ class ProxyManager:
             tmp_dir = "/tmp"
             if not os.path.exists(tmp_dir):
                 tmp_dir = tempfile.gettempdir()
-            if version() < (6, 7):
-                tokens = "%r@%h:%p"
-            else:
-                tokens = "%C"  # hash of %l%h%p%r
+
+            try:
+                if version() < (6, 7):
+                    tokens = "%r@%h:%p"
+                else:
+                    tokens = "%C"  # hash of %l%h%p%r
+            except FileNotFoundError:
+                # ssh is not installed, there is no path to the socket dir
+                return None
+
             self._sock_path = os.path.join(
                 tempfile.mkdtemp("", "ssh-", tmp_dir), "master-" + tokens
             )
