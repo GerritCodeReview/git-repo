@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c526fa18_c5a063e4",
+        "filename": "ssh.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-12T16:06:55Z",
+      "side": 1,
+      "message": "let\u0027s delete the block and let the exception bubble up to the caller.  we don\u0027t need to warn at all i think.  if the user isn\u0027t using git-over-ssh, the warning is noise.  if they are trying to use git-over-ssh, the sync will fail later with normal errors.\n\nyou can leave the comment behind that we\u0027re letting `FileNotFoundError` bubble up.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 15
+      },
+      "revId": "739338ba1755e388b5f098657ce1c054a93508e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a93beadf_58bc2da2",
+        "filename": "ssh.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-12T16:06:55Z",
+      "side": 1,
+      "message": "how about we unify the checks here instead of trying to enumerate every place that runs ssh in the class\n\n```\n# See if ssh is usable, and cache the version at the same time.\ntry:\n    version()\n    self._ssh_installed \u003d True\nexcept FieNotFoundError:\n    self._ssh_installed \u003d False\n```\n\nthen check that variable in preconnect \u0026 sock.",
+      "revId": "739338ba1755e388b5f098657ce1c054a93508e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
