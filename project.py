@@ -2572,16 +2572,6 @@ class Project:
             if os.path.exists(os.path.join(self.gitdir, "shallow")):
                 cmd.append("--depth=2147483647")
 
-        # Use clone-depth="1" as a heuristic for repositories containing
-        # large binaries and disable auto GC to prevent potential hangs.
-        # Check the configured depth because the `depth` argument might be None
-        # if REPO_ALLOW_SHALLOW=0 converted it to a partial clone.
-        effective_depth = (
-            self.clone_depth or self.manifest.manifestProject.depth
-        )
-        if effective_depth == 1:
-            cmd.append("--no-auto-gc")
-
         if not verbose:
             cmd.append("--quiet")
         if not quiet and sys.stdout.isatty():
