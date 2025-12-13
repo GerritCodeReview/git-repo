@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09e924e3_b6bdd4eb",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2583,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-12-13T19:46:03Z",
+      "side": 1,
+      "message": "This option doesn\u0027t exist with the [min git version](https://gerrit.googlesource.com/git-repo/+/main/repo#218) of 1.7.9 or the versions specified in [`requirements.json`](https://gerrit.googlesource.com/git-repo/+/main/requirements.json#47).",
+      "revId": "7f87c54043ce9a35a5bb60a09ee846f9d7070352",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
