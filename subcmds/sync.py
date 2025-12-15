@@ -2110,7 +2110,8 @@ later is required to fix a server side protocol bug.
                 "experience, sync the entire tree."
             )
 
-        self._CheckForBloatedProjects(all_projects, opt)
+        if existing:
+            self._CheckForBloatedProjects(all_projects, opt)
 
         if not opt.quiet:
             print("repo sync has finished successfully.")
