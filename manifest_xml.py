@@ -1519,8 +1519,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         if base_revision:
                             if p.revisionExpr != base_revision:
                                 failed_revision_changes.append(
-                                    "extend-project name %s mismatch base "
-                                    "%s vs revision %s"
+                                    "extend-project name %s:\n %s vs %s"
                                     % (name, base_revision, p.revisionExpr)
                                 )
                         p.SetRevision(revision)
@@ -1622,8 +1621,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                             if base_revision:
                                 if p.revisionExpr != base_revision:
                                     failed_revision_changes.append(
-                                        "remove-project name %s mismatch base "
-                                        "%s vs revision %s"
+                                        "remove-project name %s:\n %s vs %s"
                                         % (name, base_revision, p.revisionExpr)
                                     )
                             del self._paths[p.relpath]
@@ -1636,8 +1634,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                             if base_revision:
                                 if p.revisionExpr != base_revision:
                                     failed_revision_changes.append(
-                                        "remove-project path %s mismatch base "
-                                        "%s vs revision %s"
+                                        "remove-project path %s:\n %s vs %s"
                                         % (
                                             p.relpath,
                                             base_revision,
@@ -1664,10 +1661,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     )
 
         if failed_revision_changes:
+            print("detected revision base mismatch", file=sys.stderr)
+            for failed in failed_revision_changes:
+                print(f"{failed}", file=sys.stderr)
             raise ManifestParseError(
-                "revision base check failed, rebase patches and update "
-                "base revs for: ",
-                failed_revision_changes,
+                "rebase patches and update base revs",
             )
 
         # Store repo hooks project information.
