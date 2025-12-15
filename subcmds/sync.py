@@ -1437,6 +1437,12 @@ later is required to fix a server side protocol bug.
         run 'git count-objects -v' and warn if the repository is accumulating
         excessive pack files or garbage.
         """
+        # We only care about bloated projects if we have a git version that
+        # supports --no-auto-gc (2.23.0+) since what we use to disable auto-gc
+        # in Project._RemoteFetch.
+        if not git_require((2, 23, 0)):
+            return
+
         projects = [p for p in projects if p.clone_depth]
         if not projects:
             return
