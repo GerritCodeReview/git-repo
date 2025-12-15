@@ -1519,9 +1519,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         if base_revision:
                             if p.revisionExpr != base_revision:
                                 failed_revision_changes.append(
-                                    "extend-project name %s mismatch base "
-                                    "%s vs revision %s"
-                                    % (name, base_revision, p.revisionExpr)
+                                    f"extend-project name {name}:\n"
+                                    f" {base_revision} vs {p.revisionExpr}"
                                 )
                         p.SetRevision(revision)
 
@@ -1622,9 +1621,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                             if base_revision:
                                 if p.revisionExpr != base_revision:
                                     failed_revision_changes.append(
-                                        "remove-project name %s mismatch base "
-                                        "%s vs revision %s"
-                                        % (name, base_revision, p.revisionExpr)
+                                        f"remove-project name {name}:\n"
+                                        f" {base_revision} vs {p.revisionExpr}"
                                     )
                             del self._paths[p.relpath]
                             if not removed_project:
@@ -1636,13 +1634,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                             if base_revision:
                                 if p.revisionExpr != base_revision:
                                     failed_revision_changes.append(
-                                        "remove-project path %s mismatch base "
-                                        "%s vs revision %s"
-                                        % (
-                                            p.relpath,
-                                            base_revision,
-                                            p.revisionExpr,
-                                        )
+                                        f"remove-project path {p.relpath}:\n"
+                                        f" {base_revision} vs {p.revisionExpr}"
                                     )
                             self._projects[projname].remove(p)
                             del self._paths[p.relpath]
@@ -1664,10 +1657,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     )
 
         if failed_revision_changes:
+            fail_string = ""
+            for failed in failed_revision_changes:
+                fail_string += f"{failed}\n"
             raise ManifestParseError(
-                "revision base check failed, rebase patches and update "
-                "base revs for: ",
-                failed_revision_changes,
+                f"detected base-revision mismatch, updates needed:\n"
+                f"{fail_string}",
             )
 
         # Store repo hooks project information.
