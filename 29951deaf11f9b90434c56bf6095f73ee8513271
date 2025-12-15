@@ -16,6 +16,24 @@
       "message": "i don\u0027t think we need to revert.  i rolled stable back to v2.59 so people should unbreak automatically.  then we can forward fix \u0026 cut a new release.",
       "revId": "29951deaf11f9b90434c56bf6095f73ee8513271",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f56faf46_873bfd39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2025-12-15T18:56:16Z",
+      "side": 1,
+      "message": "Ack. Looks like Gavin has a fix in https://gerrit-review.googlesource.com/c/git-repo/+/536082",
+      "parentUuid": "83555fd9_5f9bf66f",
+      "revId": "29951deaf11f9b90434c56bf6095f73ee8513271",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
