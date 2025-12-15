@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65349825_ada0c342",
+        "filename": "ssh.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 4529801
+      },
+      "writtenOn": "2025-12-15T22:31:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c526fa18_c5a063e4",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 15
+      },
+      "revId": "739338ba1755e388b5f098657ce1c054a93508e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a93beadf_58bc2da2",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-12-12T16:06:55Z",
       "side": 1,
       "message": "how about we unify the checks here instead of trying to enumerate every place that runs ssh in the class\n\n```\n# See if ssh is usable, and cache the version at the same time.\ntry:\n    version()\n    self._ssh_installed \u003d True\nexcept FieNotFoundError:\n    self._ssh_installed \u003d False\n```\n\nthen check that variable in preconnect \u0026 sock.",
+      "revId": "739338ba1755e388b5f098657ce1c054a93508e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20a80d41_01dbc0fd",
+        "filename": "ssh.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 4529801
+      },
+      "writtenOn": "2025-12-15T22:31:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a93beadf_58bc2da2",
       "revId": "739338ba1755e388b5f098657ce1c054a93508e9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
