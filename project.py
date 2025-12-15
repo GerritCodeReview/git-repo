@@ -2579,7 +2579,7 @@ class Project:
         effective_depth = (
             self.clone_depth or self.manifest.manifestProject.depth
         )
-        if effective_depth == 1:
+        if effective_depth == 1 and git_require((2, 23, 0)):
             cmd.append("--no-auto-gc")
 
         if not verbose:
