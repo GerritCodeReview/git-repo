@@ -1,0 +1,150 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c36ebfb_058d142d",
+        "filename": "ssh.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-16T01:28:31Z",
+      "side": 1,
+      "message": "you don\u0027t need to cache it yourself.  the version function has functools.lru_cache already.",
+      "fixSuggestions": [
+        {
+          "fixId": "b49b2324_17f05369",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "ssh.py",
+              "range": {
+                "startLine": 107,
+                "startChar": 0,
+                "endLine": 108,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "ee061e326b625ab0e045114da720b0687f5afb94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57f72acc_995f586e",
+        "filename": "ssh.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-16T01:28:31Z",
+      "side": 1,
+      "message": "i don\u0027t think we need this check anymore with the high level _ssh_installed protection",
+      "fixSuggestions": [
+        {
+          "fixId": "457c1958_c41cc2da",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "ssh.py",
+              "range": {
+                "startLine": 257,
+                "startChar": 0,
+                "endLine": 261,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "ee061e326b625ab0e045114da720b0687f5afb94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "162051d3_7b993c84",
+        "filename": "ssh.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-16T01:28:31Z",
+      "side": 1,
+      "message": "you can undo this as the check above should cover it",
+      "range": {
+        "startLine": 335,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "2a3a0daa_cfde85b1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "ssh.py",
+              "range": {
+                "startLine": 335,
+                "startChar": 0,
+                "endLine": 343,
+                "endChar": 0
+              },
+              "replacement": "            if self._ssh_version \u003c (6, 7):\n                tokens \u003d \"%r@%h:%p\"\n            else:\n                tokens \u003d \"%C\"  # hash of %l%h%p%r\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ee061e326b625ab0e045114da720b0687f5afb94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c93507a_21de538f",
+        "filename": "tests/test_ssh.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-16T01:28:31Z",
+      "side": 1,
+      "message": "i don\u0027t think we need to mock this low level.  can we mock ssh.version like all the rest ?",
+      "fixSuggestions": [
+        {
+          "fixId": "39401a53_ef68f183",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_ssh.py",
+              "range": {
+                "startLine": 59,
+                "startChar": 0,
+                "endLine": 62,
+                "endChar": 0
+              },
+              "replacement": "            with mock.patch(\"ssh.version\", return_value\u003d(1, 2)):\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ee061e326b625ab0e045114da720b0687f5afb94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
