@@ -1,0 +1,171 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "980b86cf_1dc4d070",
+        "filename": "ssh.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-17T16:07:01Z",
+      "side": 1,
+      "message": "nit: blank line after this",
+      "fixSuggestions": [
+        {
+          "fixId": "b0aaefac_32e2e238",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "ssh.py",
+              "range": {
+                "startLine": 116,
+                "startChar": 0,
+                "endLine": 116,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            }
+          ]
+        }
+      ],
+      "revId": "264f9d3c75bb39cdca9e10c2cbd4b9ee0a7cf7dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a91f979d_f5bffd62",
+        "filename": "ssh.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-17T16:07:01Z",
+      "side": 1,
+      "message": "nit: blank line after this",
+      "fixSuggestions": [
+        {
+          "fixId": "959bd327_5c95ff2d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "ssh.py",
+              "range": {
+                "startLine": 295,
+                "startChar": 0,
+                "endLine": 295,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            }
+          ]
+        }
+      ],
+      "revId": "264f9d3c75bb39cdca9e10c2cbd4b9ee0a7cf7dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72501a06_9e8ba7b2",
+        "filename": "ssh.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-17T16:07:01Z",
+      "side": 1,
+      "message": "nit: blank line after this",
+      "fixSuggestions": [
+        {
+          "fixId": "f2812c4a_add291a5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "ssh.py",
+              "range": {
+                "startLine": 321,
+                "startChar": 0,
+                "endLine": 321,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            }
+          ]
+        }
+      ],
+      "revId": "264f9d3c75bb39cdca9e10c2cbd4b9ee0a7cf7dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35027e55_a51306fb",
+        "filename": "ssh.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-17T16:07:01Z",
+      "side": 1,
+      "message": "let\u0027s leave style changes alone when they\u0027re in blocks we aren\u0027t modifying\n\n(also delete the new blank line below)",
+      "revId": "264f9d3c75bb39cdca9e10c2cbd4b9ee0a7cf7dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e73d1637_b6a4286d",
+        "filename": "tests/test_ssh.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-12-17T16:07:01Z",
+      "side": 1,
+      "message": "move this to setUp so it clears before every test",
+      "fixSuggestions": [
+        {
+          "fixId": "79aaad1c_a4272bff",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_ssh.py",
+              "range": {
+                "startLine": 28,
+                "startChar": 0,
+                "endLine": 28,
+                "endChar": 0
+              },
+              "replacement": "    def setUp(self):\n        \"\"\"Set up test environment.\"\"\"\n        super().setUp()\n        ssh.version.cache_clear()\n\n"
+            },
+            {
+              "path": "tests/test_ssh.py",
+              "range": {
+                "startLine": 48,
+                "startChar": 0,
+                "endLine": 49,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "264f9d3c75bb39cdca9e10c2cbd4b9ee0a7cf7dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
