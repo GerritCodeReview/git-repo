@@ -1399,7 +1399,7 @@ class Project:
         if not (
             optimized_fetch
             and IsId(self.revisionExpr)
-            and self._CheckForImmutableRevision()
+            and self._CheckForImmutableRevision(depth)
         ):
             remote_fetched = True
             try:
@@ -2397,15 +2397,14 @@ class Project:
 
         return None
 
-    def _CheckForImmutableRevision(self):
+    def _CheckForImmutableRevision(self, depth):
         try:
             # if revision (sha or tag) is not present then following function
             # throws an error.
             revs = [f"{self.revisionExpr}^0"]
             upstream_rev = None
 
-            # Only check upstream when using superproject.
-            if self.upstream and self.manifest.manifestProject.use_superproject:
+            if self.upstream:
                 upstream_rev = self.GetRemote().ToLocal(self.upstream)
                 revs.append(upstream_rev)
 
@@ -2417,9 +2416,9 @@ class Project:
                 log_as_error=False,
             )
 
-            # Only verify upstream relationship for superproject scenarios
-            # without affecting plain usage.
-            if self.upstream and self.manifest.manifestProject.use_superproject:
+            # Only verify upstream relationship when doing full sync without
+            # depth.
+            if self.upstream and not depth:
                 self.bare_git.merge_base(
                     "--is-ancestor",
                     self.revisionExpr,
@@ -2489,7 +2488,7 @@ class Project:
                 tag_name = self.upstream[len(R_TAGS) :]
 
             if is_sha1 or tag_name is not None:
-                if self._CheckForImmutableRevision():
+                if self._CheckForImmutableRevision(depth):
                     if verbose:
                         print(
                             "Skipped fetching project %s (already have "
@@ -2798,7 +2797,7 @@ class Project:
             # We just synced the upstream given branch; verify we
             # got what we wanted, else trigger a second run of all
             # refs.
-            if not self._CheckForImmutableRevision():
+            if not self._CheckForImmutableRevision(depth):
                 # Sync the current branch only with depth set to None.
                 # We always pass depth=None down to avoid infinite recursion.
                 return self._RemoteFetch(
