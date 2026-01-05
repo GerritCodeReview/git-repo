@@ -66,7 +66,8 @@ class AllCommands(unittest.TestCase):
                 fp.write("ref: refs/heads/main\n")
             cmd += ["--template", templatedir]
         cmd += [git_dir]
-        subprocess.check_call(cmd)
+        # Pass down the env to make sure git is in PATH (needed on macOS)
+        subprocess.check_call(cmd, env=os.environ.copy())
 
     def getXmlManifestWith8Projects(self):
         """Create and return a setup of 8 projects with enough dummy
@@ -131,6 +132,10 @@ class AllCommands(unittest.TestCase):
         # Use echo project names as the test of forall
         opts, args = cmd.OptionParser.parse_args(["-c", "echo $REPO_PROJECT"])
         opts.verbose = False
+        # Force single job to make mock of "GetRevisionId" work correctly on
+        # macOS and Windows where multiprocessing is not forked and thus the
+        # mock doesn't apply to the subprocesses
+        opts.jobs = 1
 
         # Mock to not have the Execute fail on remote check
         with mock.patch.object(
