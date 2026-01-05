@@ -30,6 +30,9 @@ import sys
 import util
 
 
+assert sys.version_info >= (3, 9), "Release framework requires Python 3.9+"
+
+
 # We currently sign with the old DSA key as it's been around the longest.
 # We should transition to RSA by Jun 2020, and ECC by Jun 2021.
 KEYID = util.KEYID_DSA
