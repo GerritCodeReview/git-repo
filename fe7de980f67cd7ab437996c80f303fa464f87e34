@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2db638c0_445cc4ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-05T19:45:07Z",
+      "side": 1,
+      "message": "while we support Python 3.6 with `repo`, i don\u0027t think we\u0027re keeping that restriction in the test framework.  so we expect `run_tests` to be run in an environment at least Python 3.9.  that covers the `List` changes.",
+      "revId": "fe7de980f67cd7ab437996c80f303fa464f87e34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
