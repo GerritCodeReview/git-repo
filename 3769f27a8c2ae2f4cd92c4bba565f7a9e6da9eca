@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a4aaab2_f7538177",
+        "filename": "CONTRIBUTING.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 4561864
+      },
+      "writtenOn": "2026-01-05T20:17:27Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "cf1b563e_1a414378",
+      "revId": "3769f27a8c2ae2f4cd92c4bba565f7a9e6da9eca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db28b631_f0f5fe0f",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-01-05T19:55:21Z",
       "side": 1,
       "message": "this is mentioned in the README.md among other places.  i don\u0027t think we need to require anyone sign up to that group in order to contribute.",
+      "revId": "3769f27a8c2ae2f4cd92c4bba565f7a9e6da9eca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72efb088_f9dd52ed",
+        "filename": "CONTRIBUTING.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 4561864
+      },
+      "writtenOn": "2026-01-05T20:17:27Z",
+      "side": 1,
+      "message": "I spent hours debugging git push failing with permission error until I found https://gerrit-review.googlesource.com/Documentation/dev-contributing.html, where the mailing list membership is mentioned as another pre-requisite. The readme does not say that \"repo-discuss\" is mandatory for contribution (which it is).",
+      "parentUuid": "db28b631_f0f5fe0f",
       "revId": "3769f27a8c2ae2f4cd92c4bba565f7a9e6da9eca",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
