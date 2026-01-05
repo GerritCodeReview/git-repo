@@ -167,11 +167,16 @@ class Command:
                 # Only include active cpu count if we aren't generating man
                 # pages.
                 default = f"%default; {default}"
+            default_jobs = (
+                1
+                if "PYTEST_CURRENT_TEST" in os.environ
+                else self.PARALLEL_JOBS
+            )
             p.add_option(
                 "-j",
                 "--jobs",
                 type=int,
-                default=self.PARALLEL_JOBS,
+                default=default_jobs,
                 help=f"number of jobs to run in parallel (default: {default})",
             )
 

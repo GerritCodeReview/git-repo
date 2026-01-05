@@ -66,7 +66,8 @@ class AllCommands(unittest.TestCase):
                 fp.write("ref: refs/heads/main\n")
             cmd += ["--template", templatedir]
         cmd += [git_dir]
-        subprocess.check_call(cmd)
+        # Pass down the env to make sure git is in PATH (needed on macOS)
+        subprocess.check_call(cmd, env=os.environ.copy())
 
     def getXmlManifestWith8Projects(self):
         """Create and return a setup of 8 projects with enough dummy
