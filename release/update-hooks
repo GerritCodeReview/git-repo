@@ -24,7 +24,7 @@ from typing import List, Optional
 import urllib.request
 
 
-assert sys.version_info >= (3, 8), "Python 3.8+ required"
+assert sys.version_info >= (3, 9), "Release framework requires Python 3.9+"
 
 
 TOPDIR = Path(__file__).resolve().parent.parent

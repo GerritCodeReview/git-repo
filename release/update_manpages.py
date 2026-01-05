@@ -30,6 +30,10 @@ import tempfile
 from typing import List
 
 
+# NB: This script is currently imported by tests/ to unittest some logic.
+assert sys.version_info >= (3, 6), "Python 3.6+ required"
+
+
 THIS_FILE = Path(__file__).resolve()
 TOPDIR = THIS_FILE.parent.parent
 MANDIR = TOPDIR.joinpath("man")
