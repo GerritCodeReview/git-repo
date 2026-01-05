@@ -143,7 +143,11 @@ they have right to redistribute your work under the Apache License:
 
 Ensure you have obtained an HTTP password to authenticate:
 
-  https://gerrit-review.googlesource.com/new-password
+  https://www.googlesource.com/new-password
+
+Ensure you have subscribed to the repo-discuss mailing list:
+
+  https://groups.google.com/d/forum/repo-discuss
 
 Ensure that you have the local commit hook installed to automatically
 add a ChangeId to your commits:
