@@ -27,6 +27,9 @@ import sys
 import util
 
 
+assert sys.version_info >= (3, 9), "Release framework requires Python 3.9+"
+
+
 def sign(opts):
     """Sign the launcher!"""
     output = ""
