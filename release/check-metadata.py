@@ -19,6 +19,7 @@ import argparse
 from pathlib import Path
 import re
 import sys
+from typing import List
 
 import util
 
@@ -41,7 +42,7 @@ _FILE_HEADER_RE = re.compile(
 )
 
 
-def check_license(path: Path, lines: list[str]) -> bool:
+def check_license(path: Path, lines: List[str]) -> bool:
     """Check license header."""
     # Enforce licensing on configs & scripts.
     if not (
@@ -100,13 +101,13 @@ def check_path(opts: argparse.Namespace, path: Path) -> bool:
     )
 
 
-def check_paths(opts: argparse.Namespace, paths: list[Path]) -> bool:
+def check_paths(opts: argparse.Namespace, paths: List[Path]) -> bool:
     """Check all the paths."""
     # NB: Use list comprehension and not a generator so we check all paths.
     return all([check_path(opts, x) for x in paths])
 
 
-def find_files(opts: argparse.Namespace) -> list[Path]:
+def find_files(opts: argparse.Namespace) -> List[Path]:
     """Find all the files in the source tree."""
     result = util.run(
         opts,
@@ -136,7 +137,7 @@ def get_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv: list[str]) -> int:
+def main(argv: List[str]) -> int:
     """The main func!"""
     parser = get_parser()
     opts = parser.parse_args(argv)

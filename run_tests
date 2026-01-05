@@ -27,7 +27,7 @@ from typing import List
 ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
-def log_cmd(cmd: str, argv: list[str]) -> None:
+def log_cmd(cmd: str, argv: List[str]) -> None:
     """Log a debug message to make history easier to track."""
     print("+", cmd, shlex.join(argv), file=sys.stderr)
 
