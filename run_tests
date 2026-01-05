@@ -21,7 +21,11 @@ import shlex
 import shutil
 import subprocess
 import sys
-from typing import List
+
+
+# NB: While tests/* support Python >=3.6 to match requirements.json for `repo`,
+# the higher level runner logic does not need to be held back.
+assert sys.version_info >= (3, 9), "Test/release framework requires Python 3.9+"
 
 
 ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -38,7 +42,7 @@ def is_ci() -> bool:
     return os.getenv("LUCI_CQ") == "yes"
 
 
-def run_pytest(argv: List[str]) -> int:
+def run_pytest(argv: list[str]) -> int:
     """Returns the exit code from pytest."""
     if is_ci():
         argv = ["-m", "not skip_cq"] + argv
@@ -51,7 +55,7 @@ def run_pytest(argv: List[str]) -> int:
     ).returncode
 
 
-def run_pytest_py38(argv: List[str]) -> int:
+def run_pytest_py38(argv: list[str]) -> int:
     """Returns the exit code from pytest under Python 3.8."""
     if is_ci():
         argv = ["-m", "not skip_cq"] + argv

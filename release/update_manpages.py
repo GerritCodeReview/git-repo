@@ -27,7 +27,9 @@ import shutil
 import subprocess
 import sys
 import tempfile
-from typing import List
+
+
+assert sys.version_info >= (3, 9), "Release framework requires Python 3.9+"
 
 
 THIS_FILE = Path(__file__).resolve()
@@ -58,7 +60,7 @@ def get_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv: List[str]) -> int:
+def main(argv: list[str]) -> int:
     parser = get_parser()
     opts = parser.parse_args(argv)
 
