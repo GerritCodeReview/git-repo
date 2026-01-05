@@ -371,6 +371,10 @@ class TestNeedSetupGnuPG:
 class TestSetupGnuPG:
     """Check SetupGnuPG behavior."""
 
+    @pytest.mark.skipif(
+        sys.platform == "darwin",
+        reason="gpg-agent fails on macOS temp paths with 'File name too long'",
+    )
     def test_full(self, tmp_path, repo_wrapper: wrapper.Wrapper) -> None:
         """Make sure it works completely."""
         repo_wrapper.home_dot_repo = str(tmp_path)

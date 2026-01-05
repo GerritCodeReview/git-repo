@@ -18,9 +18,16 @@
 This is intended to be run before every official Repo release.
 """
 
+import multiprocessing
 import sys
 
 import update_manpages
 
 
-sys.exit(update_manpages.main(sys.argv[1:]))
+if __name__ == "__main__":
+    p = multiprocessing.Process(
+        target=update_manpages.main, args=(sys.argv[1:],)
+    )
+    p.start()
+    p.join()
+    sys.exit(p.exitcode)
