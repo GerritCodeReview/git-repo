@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf1b563e_1a414378",
+        "filename": "CONTRIBUTING.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-05T19:55:21Z",
+      "side": 1,
+      "message": "```suggestion\n  https://www.googlesource.com/new-password\n```",
+      "revId": "3769f27a8c2ae2f4cd92c4bba565f7a9e6da9eca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db28b631_f0f5fe0f",
+        "filename": "CONTRIBUTING.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-05T19:55:21Z",
+      "side": 1,
+      "message": "this is mentioned in the README.md among other places.  i don\u0027t think we need to require anyone sign up to that group in order to contribute.",
+      "revId": "3769f27a8c2ae2f4cd92c4bba565f7a9e6da9eca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
