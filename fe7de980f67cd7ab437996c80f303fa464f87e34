@@ -16,6 +16,24 @@
       "message": "while we support Python 3.6 with `repo`, i don\u0027t think we\u0027re keeping that restriction in the test framework.  so we expect `run_tests` to be run in an environment at least Python 3.9.  that covers the `List` changes.",
       "revId": "fe7de980f67cd7ab437996c80f303fa464f87e34",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5630dbc_6594b599",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4561864
+      },
+      "writtenOn": "2026-01-05T20:05:15Z",
+      "side": 1,
+      "message": "I\u0027m using python3.14 but w/o this change \"tox\" comes back with error:\npy38: commands[0]\u003e .tox/py38/bin/python run_tests\nTraceback (most recent call last):\n  File \"run_tests\", line 30, in \u003cmodule\u003e\n    def log_cmd(cmd: str, argv: list[str]) -\u003e None:\nTypeError: \u0027type\u0027 object is not subscriptable",
+      "parentUuid": "2db638c0_445cc4ee",
+      "revId": "fe7de980f67cd7ab437996c80f303fa464f87e34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
