@@ -70,6 +70,24 @@
       "parentUuid": "f8af3acb_ca2e5edb",
       "revId": "fe7de980f67cd7ab437996c80f303fa464f87e34",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93f70490_a34101e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-06T19:37:14Z",
+      "side": 1,
+      "message": "i\u0027ve merged all my work to drop tox \u0026 require newer Python 3.9 in most infra places.  please rebase and see what is still necessary.\n\nto run tests locally, you can use `python -m pytest` or `./run_tests`.",
+      "parentUuid": "3b7415f7_d686382d",
+      "revId": "fe7de980f67cd7ab437996c80f303fa464f87e34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
