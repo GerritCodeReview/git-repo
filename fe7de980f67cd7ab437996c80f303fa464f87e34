@@ -34,6 +34,24 @@
       "parentUuid": "2db638c0_445cc4ee",
       "revId": "fe7de980f67cd7ab437996c80f303fa464f87e34",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8af3acb_ca2e5edb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-06T02:33:27Z",
+      "side": 1,
+      "message": "hmm, i see.  i don\u0027t think tox is really working out for us.  it relies on the system having multiple versions installed, and any versions not installed don\u0027t actually get tested.\n\nat this point, our CI here runs Python 3.8 \u0026 3.11 all the time with known stable versions.  developers run locally whatever default version they have (which is likely python 3.13 atm).  that is prob good enough.\n\nso i\u0027ll drop tox and people should just run `./run_tests` directly.",
+      "parentUuid": "b5630dbc_6594b599",
+      "revId": "fe7de980f67cd7ab437996c80f303fa464f87e34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
