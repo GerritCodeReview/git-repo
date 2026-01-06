@@ -43,17 +43,12 @@ probably need to split up your commit to finer grained pieces.
 
 Lint any changes by running:
 ```sh
-$ tox -e lint -- file.py
+$ flake8
 ```
 
 And format with:
 ```sh
-$ tox -e format -- file.py
-```
-
-Or format everything:
-```sh
-$ tox -e format
+$ black file.py
 ```
 
 Repo uses [black](https://black.readthedocs.io/) with line length of 80 as its
@@ -73,15 +68,11 @@ the entire project in the included `.flake8` file.
 [PEP 8]: https://www.python.org/dev/peps/pep-0008/
 [flake8 documentation]: https://flake8.pycqa.org/en/3.1.1/user/ignoring-errors.html#in-line-ignoring-errors
 
+
 ## Running tests
 
-We use [pytest](https://pytest.org/) and [tox](https://tox.readthedocs.io/) for
-running tests.  You should make sure to install those first.
-
-To run the full suite against all supported Python versions, simply execute:
-```sh
-$ tox -p auto
-```
+We use [pytest](https://pytest.org/) for running tests.  You should make sure to
+install that first.
 
 We have [`./run_tests`](./run_tests) which is a simple wrapper around `pytest`:
 ```sh
