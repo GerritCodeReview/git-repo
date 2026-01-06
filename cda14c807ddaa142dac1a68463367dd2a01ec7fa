@@ -39,6 +39,30 @@
       },
       "revId": "cda14c807ddaa142dac1a68463367dd2a01ec7fa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feca05b2_8c4f7135",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2421,
+      "author": {
+        "id": 1092396
+      },
+      "writtenOn": "2026-01-06T03:58:00Z",
+      "side": 1,
+      "message": "About the comment. I think rebasing a local change in a shallow cloned project is not expected to work by its nature. And I think people who use shallow clones should know that. It should not be `repo` secretly pull the whole history of a shallow cloned project, which against the user\u0027s will. @vapier@google.com WDYT?",
+      "parentUuid": "75aca37c_870a87e5",
+      "range": {
+        "startLine": 2421,
+        "startChar": 0,
+        "endLine": 2421,
+        "endChar": 43
+      },
+      "revId": "cda14c807ddaa142dac1a68463367dd2a01ec7fa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
