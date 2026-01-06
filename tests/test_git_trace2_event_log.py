@@ -368,6 +368,7 @@ class EventLogTestCase(unittest.TestCase):
         with self.assertRaises(TypeError):
             self._event_log_module.Write(path=1234)
 
+    @unittest.skipIf(not hasattr(socket, "AF_UNIX"), "Requires AF_UNIX sockets")
     def test_write_socket(self):
         """Test Write() with Unix domain socket for |path| and validate received
         traces."""
