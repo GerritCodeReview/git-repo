@@ -1,0 +1,16 @@
+# GitHub actions workflow.
+# https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
+# https://black.readthedocs.io/en/stable/integrations/github_actions.html
+
+name: Format
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: psf/black@stable
