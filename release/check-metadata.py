@@ -90,7 +90,10 @@ def check_license(path: Path, lines: list[str]) -> bool:
 
 def check_path(opts: argparse.Namespace, path: Path) -> bool:
     """Check a single path."""
-    data = path.read_text(encoding="utf-8")
+    try:
+        data = path.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        return True
     lines = data.splitlines()
     # NB: Use list comprehension and not a generator so we run all the checks.
     return all(
