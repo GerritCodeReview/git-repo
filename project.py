@@ -3316,6 +3316,15 @@ class Project:
                 remote.ResetFetch(mirror=True)
             remote.Save()
 
+        # Disable auto-gc for depth=1 to prevent hangs during lazy fetches
+        # inside git checkout for partial clones.
+        effective_depth = (
+            self.clone_depth or self.manifest.manifestProject.depth
+        )
+        if effective_depth == 1:
+            self.config.SetBoolean("maintenance.auto", False)
+            self.config.SetInt("gc.auto", 0)
+
     def _InitMRef(self):
         """Initialize the pseudo m/<manifest branch> ref."""
         if self.manifest.branch:
