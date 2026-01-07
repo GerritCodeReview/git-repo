@@ -166,6 +166,30 @@ class GitConfigReadWriteTests(unittest.TestCase):
         config = self.get_config()
         self.assertIsNone(config.GetBoolean("foo.bar"))
 
+    def test_SetInt(self):
+        """Test SetInt behavior."""
+        # Set a value.
+        self.assertIsNone(self.config.GetInt("foo.bar"))
+        self.config.SetInt("foo.bar", 10)
+        self.assertEqual(10, self.config.GetInt("foo.bar"))
+
+        # Make sure the value was actually written out.
+        config = self.get_config()
+        self.assertEqual(10, config.GetInt("foo.bar"))
+        self.assertEqual("10", config.GetString("foo.bar"))
+
+        # Update the value.
+        self.config.SetInt("foo.bar", 20)
+        self.assertEqual(20, self.config.GetInt("foo.bar"))
+        config = self.get_config()
+        self.assertEqual(20, config.GetInt("foo.bar"))
+
+        # Delete the value.
+        self.config.SetInt("foo.bar", None)
+        self.assertIsNone(self.config.GetInt("foo.bar"))
+        config = self.get_config()
+        self.assertIsNone(config.GetInt("foo.bar"))
+
     def test_GetSyncAnalysisStateData(self):
         """Test config entries with a sync state analysis data."""
         superproject_logging_data = {}
