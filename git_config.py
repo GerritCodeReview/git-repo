@@ -222,6 +222,12 @@ class GitConfig:
             value = "true" if value else "false"
         self.SetString(name, value)
 
+    def SetInt(self, name: str, value: int) -> None:
+        """Set an integer value for a key."""
+        if value is not None:
+            value = str(value)
+        self.SetString(name, value)
+
     def GetString(self, name: str, all_keys: bool = False) -> Union[str, None]:
         """Get the first value for a key, or None if it is not defined.
 
