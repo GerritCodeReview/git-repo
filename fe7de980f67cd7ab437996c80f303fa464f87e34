@@ -88,6 +88,24 @@
       "parentUuid": "3b7415f7_d686382d",
       "revId": "fe7de980f67cd7ab437996c80f303fa464f87e34",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f000c197_6659512c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4561864
+      },
+      "writtenOn": "2026-01-08T20:03:44Z",
+      "side": 1,
+      "message": "Thank you. Patch set 2 contains the remaining changes.",
+      "parentUuid": "93f70490_a34101e1",
+      "revId": "fe7de980f67cd7ab437996c80f303fa464f87e34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
