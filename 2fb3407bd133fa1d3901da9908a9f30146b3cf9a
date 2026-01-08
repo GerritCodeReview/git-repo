@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c35fafa6_4a539cee",
+        "filename": "release/update-manpages",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-08T20:45:31Z",
+      "side": 1,
+      "message": "i don\u0027t understand the changes to this file at all.  this file is not imported by tests/ which means it isn\u0027t included in `pytest`.  `./run_tests` will run it, but that\u0027s the same as doing `./release/update-manpages`.  are you saying that doesn\u0027t work for you with Python 3.14 unrelated to `./run_tests` ?",
+      "revId": "2fb3407bd133fa1d3901da9908a9f30146b3cf9a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c561dc2_80fe8733",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-08T20:45:31Z",
+      "side": 1,
+      "message": "i think forcing jobs to 1 for commands all the time makes sense.  it\u0027ll make things more reliable \u0026 consistent across developer systems.  if we have code that we want to make sure to test against multiple threads, then we should do that explicitly (opt-in).\n\nwith that in mind, we should set this in setUp so all forall tests behave this way.  i think you can do it by mocking PARALLEL_JOBS to 1.\n\nmaybe in setUp do:\n\n```\n  # Run tests single threaded by default for stability.\n  self._parallel_jobs_mock \u003d mock.patch.object(subcmds.forall.Forall, \"PARALLEL_JOBS\", 1)\n  self._parallel_jobs_mock.start()\n```\n\nthen in tearDown do:\n\n```\n  self._parallel_jobs_mock.stop()\n```\n\ni haven\u0027t tested this directly",
+      "revId": "2fb3407bd133fa1d3901da9908a9f30146b3cf9a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
