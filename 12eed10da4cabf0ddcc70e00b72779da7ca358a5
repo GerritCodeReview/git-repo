@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "716b5041_4e4531d1",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3326,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-08T01:48:56Z",
+      "side": 1,
+      "message": "gc.auto is a number, not a bool",
+      "fixSuggestions": [
+        {
+          "fixId": "c3fc02c7_1dc4631a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3326,
+                "startChar": 0,
+                "endLine": 3327,
+                "endChar": 0
+              },
+              "replacement": "            self.config.SetInt(\"gc.auto\", 0)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "12eed10da4cabf0ddcc70e00b72779da7ca358a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
