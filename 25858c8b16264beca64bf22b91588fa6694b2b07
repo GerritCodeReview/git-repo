@@ -156,6 +156,23 @@
       "message": "489681: sync: Default to interleaved mode | https://gerrit-review.googlesource.com/c/git-repo/+/489681",
       "revId": "25858c8b16264beca64bf22b91588fa6694b2b07",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94455186_d44614c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4510515
+      },
+      "writtenOn": "2026-01-09T09:13:00Z",
+      "side": 1,
+      "message": "https://chromewebstore.google.com/detail/hbibebchddoeboinjbmlknaepikanpll?utm_source\u003ditem-share-cb",
+      "revId": "25858c8b16264beca64bf22b91588fa6694b2b07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
