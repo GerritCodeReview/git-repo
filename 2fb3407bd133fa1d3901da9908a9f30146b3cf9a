@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "988c18fb_d5255a68",
+        "filename": "release/update-manpages",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4561864
+      },
+      "writtenOn": "2026-01-09T14:42:47Z",
+      "side": 1,
+      "message": "yes, w/o this change ./release/update-manpages throws:\nRuntimeError: \n        An attempt has been made to start a new process before the\n        current process has finished its bootstrapping phase.\n\n        This probably means that you are not using fork to start your\n        child processes and you have forgotten to use the proper idiom\n        in the main module:\n\n            if __name__ \u003d\u003d \u0027__main__\u0027:\n                freeze_support()\n                ...\n\n        The \"freeze_support()\" line can be omitted if the program\n        is not going to be frozen to produce an executable.\n\n        To fix this issue, refer to the \"Safe importing of main module\"\n        section in https://docs.python.org/3/library/multiprocessing.html",
+      "parentUuid": "c35fafa6_4a539cee",
+      "revId": "2fb3407bd133fa1d3901da9908a9f30146b3cf9a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c561dc2_80fe8733",
         "filename": "tests/test_subcmds_forall.py",
         "patchSetId": 2
