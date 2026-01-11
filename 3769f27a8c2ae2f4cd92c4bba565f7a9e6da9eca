@@ -141,6 +141,24 @@
       "parentUuid": "97c54724_782f53ef",
       "revId": "3769f27a8c2ae2f4cd92c4bba565f7a9e6da9eca",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04923810_468c4fa7",
+        "filename": "CONTRIBUTING.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-11T04:51:41Z",
+      "side": 1,
+      "message": "settings should be updated, so please update this change accordingly",
+      "parentUuid": "b3f353b6_6a89d6fb",
+      "revId": "3769f27a8c2ae2f4cd92c4bba565f7a9e6da9eca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
