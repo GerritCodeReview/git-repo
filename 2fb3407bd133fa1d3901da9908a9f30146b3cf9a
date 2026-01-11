@@ -51,6 +51,24 @@
       "message": "i think forcing jobs to 1 for commands all the time makes sense.  it\u0027ll make things more reliable \u0026 consistent across developer systems.  if we have code that we want to make sure to test against multiple threads, then we should do that explicitly (opt-in).\n\nwith that in mind, we should set this in setUp so all forall tests behave this way.  i think you can do it by mocking PARALLEL_JOBS to 1.\n\nmaybe in setUp do:\n\n```\n  # Run tests single threaded by default for stability.\n  self._parallel_jobs_mock \u003d mock.patch.object(subcmds.forall.Forall, \"PARALLEL_JOBS\", 1)\n  self._parallel_jobs_mock.start()\n```\n\nthen in tearDown do:\n\n```\n  self._parallel_jobs_mock.stop()\n```\n\ni haven\u0027t tested this directly",
       "revId": "2fb3407bd133fa1d3901da9908a9f30146b3cf9a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6693d0c4_8be1e0fb",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 4561864
+      },
+      "writtenOn": "2026-01-11T17:53:52Z",
+      "side": 1,
+      "message": "From my point of view there is no general problem with parallel test execution. The problem with this test is though, that it mocks \"GetRevisionId\" and then spawns subprocesses. While this works on Linux, it does not work on macOS and Windows -- because the mock does not transition into the subprocesses. The solution I propose in patch 1 is to not spawn any subprocesses in this specific test case by limiting the parallel jobs to \"1\".",
+      "parentUuid": "8c561dc2_80fe8733",
+      "revId": "2fb3407bd133fa1d3901da9908a9f30146b3cf9a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
