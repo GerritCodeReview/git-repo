@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3ceb603_44469094",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4573810
+      },
+      "writtenOn": "2026-01-14T18:25:28Z",
+      "side": 1,
+      "message": "Self-review for practicing Gerrit patch sets and review flow.",
+      "revId": "71c65c91f24964949cd38b93bf6e44d1b90d0428",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
