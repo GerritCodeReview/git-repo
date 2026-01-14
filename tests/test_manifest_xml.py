@@ -549,6 +549,33 @@ class IncludeElementTests(ManifestParseTestCase):
         # Check project has set group via extend-project element.
         self.assertIn("eg1", proj.groups)
 
+    def test_extend_project_does_not_inherit_local_groups(self):
+        """Check that extend-project does not inherit local groups."""
+        root_m = self.manifest_dir / "root.xml"
+        root_m.write_text(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="project1" path="project1" />
+  <include name="man1.xml" groups="g1,local:g2" />
+</manifest>
+"""
+        )
+        (self.manifest_dir / "man1.xml").write_text(
+            """
+<manifest>
+  <extend-project name="project1" groups="g3" />
+</manifest>
+"""
+        )
+        include_m = manifest_xml.XmlManifest(str(self.repodir), str(root_m))
+        proj = include_m.projects[0]
+
+        self.assertIn("g1", proj.groups)
+        self.assertNotIn("local:g2", proj.groups)
+        self.assertIn("g3", proj.groups)
+
     def test_allow_bad_name_from_user(self):
         """Check handling of bad name attribute from the user's input."""
 
