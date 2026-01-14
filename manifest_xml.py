@@ -1487,6 +1487,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         continue
                     if groups:
                         p.groups |= groups
+                    # Drop local groups so we don't mistakenly omit this
+                    # project from the superproject override manifest.
+                    p.groups = {
+                        g
+                        for g in p.groups
+                        if not g.startswith(LOCAL_MANIFEST_GROUP_PREFIX)
+                    }
+
                     if revision:
                         if base_revision:
                             if p.revisionExpr != base_revision:
