@@ -67,6 +67,23 @@
       "message": "Uploaded https://gerrit-review.googlesource.com/c/git-repo/+/308862 which just reverts superproject changes.",
       "revId": "68ed1ef053256430fcc0c32204a46626c6aea5d9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0e4499d_d875dcc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4588855
+      },
+      "writtenOn": "2026-01-19T21:24:58Z",
+      "side": 1,
+      "message": "0963368565",
+      "revId": "68ed1ef053256430fcc0c32204a46626c6aea5d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
