@@ -910,6 +910,8 @@ def init_http():
 def _Main(argv):
     result = 0
 
+    os.environ["REPO_SKIP_SELF_UPDATE"] = "1"
+
     opt = optparse.OptionParser(usage="repo wrapperinfo -- ...")
     opt.add_option("--repo-dir", dest="repodir", help="path to .repo/")
     opt.add_option(

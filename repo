@@ -567,11 +567,20 @@ def check_repo_verify(repo_verify, quiet=False):
             file=sys.stderr,
         )
         return False
+    else:
+        print(
+            "abfs-repo: warning: repo auto update is disable;\n"
+            "abfs-repo is patching you repo for speedup, some git operations "
+            "might be replaced;\n"
+            "please contact abfs team if abfs-repo is not work as intended;\n",
+            file=sys.stderr,
+        )
+        return False
 
-    if NeedSetupGnuPG():
-        return SetupGnuPG(quiet)
+    # if NeedSetupGnuPG():
+    #    return SetupGnuPG(quiet)
 
-    return True
+    # return True
 
 
 def check_repo_rev(dst, rev, repo_verify=True, quiet=False):

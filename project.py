@@ -32,6 +32,7 @@ import time
 from typing import Dict, List, NamedTuple, Optional
 import urllib.parse
 
+import abfs
 from color import Coloring
 from error import DownloadError
 from error import GitAuthError
@@ -1546,6 +1547,16 @@ class Project:
 
         if is_new is None:
             is_new = not self.Exists
+
+        if is_new:
+            try:
+                if not os.environ.get(abfs.NO_ABFS_ENV):
+                    abfs.Abfs(topdir=self.manifest.topdir).createProject(self)
+                    is_new = False
+                    return SyncNetworkHalfResult(True)
+            except Exception as e:
+                logger.error("abfs createProject failed: %s", e)
+
         if is_new:
             self._InitGitDir(force_sync=force_sync, quiet=quiet)
         else:
