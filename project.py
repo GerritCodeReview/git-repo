@@ -1658,6 +1658,16 @@ class Project:
             # FETCH_HEAD.
             remote_fetched = True
             try:
+              if not (
+                  isinstance(self, ManifestProject)
+                  or isinstance(self, RepoProject)
+              ) and not os.environ.get(abfs.NO_ABFS_ENV):
+                    abfs.Abfs(topdir=self.manifest.topdir).checkout(self)
+                    return SyncNetworkHalfResult(True)
+            except Exception as e:
+                logger.error("abfs checkout failed: %s", e)
+
+            try:
                 if not self._CustomFetch(verbose=verbose):
                     return SyncNetworkHalfResult(
                         remote_fetched,

@@ -100,6 +100,7 @@ class Abfs:
         check: bool = True,
         input_data: Optional[str] = None,
         env: Optional[Dict[str, str]] = None,
+        cwd: Optional[str] = None,
     ) -> subprocess.CompletedProcess:
         """
         Run the abfs binary with the given arguments and flags.
@@ -110,6 +111,7 @@ class Abfs:
             check: Whether to raise AbfsError on non-zero exit code.
             input_data: String data to pass to stdin.
             env: Extra environment variables to pass to the process.
+            cwd: The working directory to run the command in.
 
         Returns:
             subprocess.CompletedProcess object containing stdout, stderr, etc.
@@ -141,6 +143,7 @@ class Abfs:
                 text=True,
                 check=False,  # We handle checking manually to wrap the error
                 env=full_env,
+                cwd=cwd,
             )
         except FileNotFoundError:
             logger.Error("Failed command: %s", " ".join(cmd))
@@ -176,4 +179,13 @@ class Abfs:
             project.remote.url,
             project.relpath,
         ], flags=flags, env=env)
+        return result.stdout.strip()
+
+    def checkout(self, project):
+        flags = AbfsFlags()
+        result = self.run(
+            ["git", "checkout", project.revisionExpr],
+            cwd=project.worktree,
+            flags=flags,
+        )
         return result.stdout.strip()
