@@ -135,3 +135,50 @@ class AllCommands(unittest.TestCase):
 
         # Make sure we aren't popping the wrong stuff.
         assert optparse.Option.CHECK_METHODS.pop(0) is _check_dest
+
+    def test_common_validate_options(self):
+        """Verify CommonValidateOptions sets up expected fields."""
+        for name, cls in subcmds.all_commands.items():
+            cmd = cls()
+            opts, args = cmd.OptionParser.parse_args([])
+
+            # Verify the fields don't exist yet.
+            self.assertFalse(
+                hasattr(opts, "verbose"),
+                msg=f"{name}: has verbose before validation",
+            )
+            self.assertFalse(
+                hasattr(opts, "quiet"),
+                msg=f"{name}: has quiet before validation",
+            )
+
+            cmd.CommonValidateOptions(opts, args)
+
+            # Verify the fields exist now.
+            self.assertTrue(
+                hasattr(opts, "verbose"),
+                msg=f"{name}: missing verbose after validation",
+            )
+            self.assertTrue(
+                hasattr(opts, "quiet"),
+                msg=f"{name}: missing quiet after validation",
+            )
+            self.assertTrue(
+                hasattr(opts, "outer_manifest"),
+                msg=f"{name}: missing outer_manifest after validation",
+            )
+
+    def test_attribute_error_repro(self):
+        """Confirm that accessing verbose before CommonValidateOptions fails."""
+        from subcmds.sync import Sync
+
+        cmd = Sync()
+        opts, args = cmd.OptionParser.parse_args([])
+
+        # This confirms that without the fix in main.py, an AttributeError
+        # would be raised because CommonValidateOptions hasn't been called yet.
+        with self.assertRaises(AttributeError):
+            _ = opts.verbose
+
+        cmd.CommonValidateOptions(opts, args)
+        self.assertTrue(hasattr(opts, "verbose"))
