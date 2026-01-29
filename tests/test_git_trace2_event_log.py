@@ -14,6 +14,8 @@
 
 """Unittests for the git_trace2_event_log.py module."""
 
+import contextlib
+import io
 import json
 import os
 import socket
@@ -65,13 +67,13 @@ class EventLogTestCase(unittest.TestCase):
 
     def setUp(self):
         """Load the event_log module every time."""
-        self._event_log_module = None
+        self._event_log = None
         # By default we initialize with the expected case where
         # repo launches us (so GIT_TRACE2_PARENT_SID is set).
         env = {
             self.PARENT_SID_KEY: self.PARENT_SID_VALUE,
         }
-        self._event_log_module = git_trace2_event_log.EventLog(env=env)
+        self._event_log = git_trace2_event_log.EventLog(env=env)
         self._log_data = None
 
     def verifyCommonKeys(
@@ -112,13 +114,13 @@ class EventLogTestCase(unittest.TestCase):
 
     def test_initial_state_with_parent_sid(self):
         """Test initial state when 'GIT_TRACE2_PARENT_SID' is set by parent."""
-        self.assertRegex(self._event_log_module.full_sid, self.FULL_SID_REGEX)
+        self.assertRegex(self._event_log.full_sid, self.FULL_SID_REGEX)
 
     def test_initial_state_no_parent_sid(self):
         """Test initial state when 'GIT_TRACE2_PARENT_SID' is not set."""
         # Setup an empty environment dict (no parent sid).
-        self._event_log_module = git_trace2_event_log.EventLog(env={})
-        self.assertRegex(self._event_log_module.full_sid, self.SELF_SID_REGEX)
+        self._event_log = git_trace2_event_log.EventLog(env={})
+        self.assertRegex(self._event_log.full_sid, self.SELF_SID_REGEX)
 
     def test_version_event(self):
         """Test 'version' event data is valid.
@@ -130,7 +132,7 @@ class EventLogTestCase(unittest.TestCase):
         <version event>
         """
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
-            log_path = self._event_log_module.Write(path=tempdir)
+            log_path = self._event_log.Write(path=tempdir)
             self._log_data = self.readLog(log_path)
 
         # A log with no added events should only have the version entry.
@@ -150,9 +152,9 @@ class EventLogTestCase(unittest.TestCase):
         <version event>
         <start event>
         """
-        self._event_log_module.StartEvent([])
+        self._event_log.StartEvent([])
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
-            log_path = self._event_log_module.Write(path=tempdir)
+            log_path = self._event_log.Write(path=tempdir)
             self._log_data = self.readLog(log_path)
 
         self.assertEqual(len(self._log_data), 2)
@@ -172,9 +174,9 @@ class EventLogTestCase(unittest.TestCase):
         <version event>
         <exit event>
         """
-        self._event_log_module.ExitEvent(None)
+        self._event_log.ExitEvent(None)
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
-            log_path = self._event_log_module.Write(path=tempdir)
+            log_path = self._event_log.Write(path=tempdir)
             self._log_data = self.readLog(log_path)
 
         self.assertEqual(len(self._log_data), 2)
@@ -193,9 +195,9 @@ class EventLogTestCase(unittest.TestCase):
         <version event>
         <exit event>
         """
-        self._event_log_module.ExitEvent(2)
+        self._event_log.ExitEvent(2)
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
-            log_path = self._event_log_module.Write(path=tempdir)
+            log_path = self._event_log.Write(path=tempdir)
             self._log_data = self.readLog(log_path)
 
         self.assertEqual(len(self._log_data), 2)
@@ -213,11 +215,9 @@ class EventLogTestCase(unittest.TestCase):
         <version event>
         <command event>
         """
-        self._event_log_module.CommandEvent(
-            name="repo", subcommands=["init", "this"]
-        )
+        self._event_log.CommandEvent(name="repo", subcommands=["init", "this"])
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
-            log_path = self._event_log_module.Write(path=tempdir)
+            log_path = self._event_log.Write(path=tempdir)
             self._log_data = self.readLog(log_path)
 
         self.assertEqual(len(self._log_data), 2)
@@ -241,10 +241,10 @@ class EventLogTestCase(unittest.TestCase):
             "repo.partialclone": "true",
             "repo.partialclonefilter": "blob:none",
         }
-        self._event_log_module.DefParamRepoEvents(config)
+        self._event_log.DefParamRepoEvents(config)
 
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
-            log_path = self._event_log_module.Write(path=tempdir)
+            log_path = self._event_log.Write(path=tempdir)
             self._log_data = self.readLog(log_path)
 
         self.assertEqual(len(self._log_data), 3)
@@ -268,10 +268,10 @@ class EventLogTestCase(unittest.TestCase):
             "git.foo": "bar",
             "git.core.foo2": "baz",
         }
-        self._event_log_module.DefParamRepoEvents(config)
+        self._event_log.DefParamRepoEvents(config)
 
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
-            log_path = self._event_log_module.Write(path=tempdir)
+            log_path = self._event_log.Write(path=tempdir)
             self._log_data = self.readLog(log_path)
 
         self.assertEqual(len(self._log_data), 1)
@@ -292,10 +292,10 @@ class EventLogTestCase(unittest.TestCase):
             "repo.syncstate.superproject.sys.argv": ["--", "sync", "protobuf"],
         }
         prefix_value = "prefix"
-        self._event_log_module.LogDataConfigEvents(config, prefix_value)
+        self._event_log.LogDataConfigEvents(config, prefix_value)
 
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
-            log_path = self._event_log_module.Write(path=tempdir)
+            log_path = self._event_log.Write(path=tempdir)
             self._log_data = self.readLog(log_path)
 
         self.assertEqual(len(self._log_data), 5)
@@ -311,7 +311,7 @@ class EventLogTestCase(unittest.TestCase):
             key = self.remove_prefix(key, f"{prefix_value}/")
             value = event["value"]
             self.assertEqual(
-                self._event_log_module.GetDataEventName(value), event["event"]
+                self._event_log.GetDataEventName(value), event["event"]
             )
             self.assertTrue(key in config and value == config[key])
 
@@ -324,9 +324,9 @@ class EventLogTestCase(unittest.TestCase):
         """
         msg = "invalid option: --cahced"
         fmt = "invalid option: %s"
-        self._event_log_module.ErrorEvent(msg, fmt)
+        self._event_log.ErrorEvent(msg, fmt)
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
-            log_path = self._event_log_module.Write(path=tempdir)
+            log_path = self._event_log.Write(path=tempdir)
             self._log_data = self.readLog(log_path)
 
         self.assertEqual(len(self._log_data), 2)
@@ -341,32 +341,32 @@ class EventLogTestCase(unittest.TestCase):
 
     def test_write_with_filename(self):
         """Test Write() with a path to a file exits with None."""
-        self.assertIsNone(self._event_log_module.Write(path="path/to/file"))
+        self.assertIsNone(self._event_log.Write(path="path/to/file"))
 
     def test_write_with_git_config(self):
         """Test Write() uses the git config path when 'git config' call
         succeeds."""
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
             with mock.patch.object(
-                self._event_log_module,
+                self._event_log,
                 "_GetEventTargetPath",
                 return_value=tempdir,
             ):
                 self.assertEqual(
-                    os.path.dirname(self._event_log_module.Write()), tempdir
+                    os.path.dirname(self._event_log.Write()), tempdir
                 )
 
     def test_write_no_git_config(self):
         """Test Write() with no git config variable present exits with None."""
         with mock.patch.object(
-            self._event_log_module, "_GetEventTargetPath", return_value=None
+            self._event_log, "_GetEventTargetPath", return_value=None
         ):
-            self.assertIsNone(self._event_log_module.Write())
+            self.assertIsNone(self._event_log.Write())
 
     def test_write_non_string(self):
         """Test Write() with non-string type for |path| throws TypeError."""
         with self.assertRaises(TypeError):
-            self._event_log_module.Write(path=1234)
+            self._event_log.Write(path=1234)
 
     @unittest.skipIf(not hasattr(socket, "AF_UNIX"), "Requires AF_UNIX sockets")
     def test_write_socket(self):
@@ -389,10 +389,8 @@ class EventLogTestCase(unittest.TestCase):
                 with server_ready:
                     server_ready.wait(timeout=120)
 
-                self._event_log_module.StartEvent([])
-                path = self._event_log_module.Write(
-                    path=f"af_unix:{socket_path}"
-                )
+                self._event_log.StartEvent([])
+                path = self._event_log.Write(path=f"af_unix:{socket_path}")
             finally:
                 server_thread.join(timeout=5)
 
@@ -405,3 +403,59 @@ class EventLogTestCase(unittest.TestCase):
         # Check for 'start' event specific fields.
         self.assertIn("argv", start_event)
         self.assertIsInstance(start_event["argv"], list)
+
+
+class EventLogVerboseTestCase(unittest.TestCase):
+    """TestCase for the EventLog module verbose logging."""
+
+    def setUp(self):
+        self._event_log = git_trace2_event_log.EventLog(env={})
+
+    def test_write_socket_error_no_verbose(self):
+        """Test Write() suppression of socket errors when not verbose."""
+        self._event_log.verbose = False
+        with contextlib.redirect_stderr(
+            io.StringIO()
+        ) as mock_stderr, mock.patch("socket.socket", side_effect=OSError):
+            self._event_log.Write(path="af_unix:stream:/tmp/test_sock")
+            self.assertEqual(mock_stderr.getvalue(), "")
+
+    def test_write_socket_error_verbose(self):
+        """Test Write() printing of socket errors when verbose."""
+        self._event_log.verbose = True
+        with contextlib.redirect_stderr(
+            io.StringIO()
+        ) as mock_stderr, mock.patch(
+            "socket.socket", side_effect=OSError("Mock error")
+        ):
+            self._event_log.Write(path="af_unix:stream:/tmp/test_sock")
+            self.assertIn(
+                "git trace2 logging failed: Mock error",
+                mock_stderr.getvalue(),
+            )
+
+    def test_write_file_error_no_verbose(self):
+        """Test Write() suppression of file errors when not verbose."""
+        self._event_log.verbose = False
+        with contextlib.redirect_stderr(
+            io.StringIO()
+        ) as mock_stderr, mock.patch(
+            "tempfile.NamedTemporaryFile", side_effect=FileExistsError
+        ):
+            self._event_log.Write(path="/tmp")
+            self.assertEqual(mock_stderr.getvalue(), "")
+
+    def test_write_file_error_verbose(self):
+        """Test Write() printing of file errors when verbose."""
+        self._event_log.verbose = True
+        with contextlib.redirect_stderr(
+            io.StringIO()
+        ) as mock_stderr, mock.patch(
+            "tempfile.NamedTemporaryFile",
+            side_effect=FileExistsError("Mock error"),
+        ):
+            self._event_log.Write(path="/tmp")
+            self.assertIn(
+                "git trace2 logging failed: FileExistsError",
+                mock_stderr.getvalue(),
+            )
