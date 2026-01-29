@@ -337,6 +337,9 @@ class _Repo:
             )
             return 1
 
+        cmd.CommonValidateOptions(copts, cargs)
+        git_trace2_event_log.verbose = copts.verbose
+
         if gopts.pager is not False and not isinstance(cmd, InteractiveCommand):
             config = cmd.client.globalConfig
             if gopts.pager:
@@ -359,7 +362,6 @@ class _Repo:
             Execute the subcommand.
             """
             nonlocal result
-            cmd.CommonValidateOptions(copts, cargs)
             cmd.ValidateOptions(copts, cargs)
 
             this_manifest_only = copts.this_manifest_only
