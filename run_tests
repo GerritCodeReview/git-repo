@@ -81,6 +81,14 @@ def run_pytest_py38(argv: list[str]) -> int:
 
 def run_black():
     """Returns the exit code from black."""
+    argv = ["--version"]
+    log_cmd("black", argv)
+    subprocess.run(
+        [sys.executable, "-m", "black"] + argv,
+        check=True,
+        cwd=ROOT_DIR,
+    )
+
     # Black by default only matches .py files.  We have to list standalone
     # scripts manually.
     extra_programs = [
@@ -100,6 +108,14 @@ def run_black():
 
 def run_flake8():
     """Returns the exit code from flake8."""
+    argv = ["--version"]
+    log_cmd("flake8", argv)
+    subprocess.run(
+        [sys.executable, "-m", "flake8"] + argv,
+        check=True,
+        cwd=ROOT_DIR,
+    )
+
     argv = [ROOT_DIR]
     log_cmd("flake8", argv)
     return subprocess.run(
@@ -111,6 +127,14 @@ def run_flake8():
 
 def run_isort():
     """Returns the exit code from isort."""
+    argv = ["--version-number"]
+    log_cmd("isort", argv)
+    subprocess.run(
+        [sys.executable, "-m", "isort"] + argv,
+        check=True,
+        cwd=ROOT_DIR,
+    )
+
     argv = ["--check", ROOT_DIR]
     log_cmd("isort", argv)
     return subprocess.run(
