@@ -14,6 +14,7 @@
 
 """Unittests for the git_trace2_event_log.py module."""
 
+import io
 import json
 import os
 import socket
@@ -405,3 +406,59 @@ class EventLogTestCase(unittest.TestCase):
         # Check for 'start' event specific fields.
         self.assertIn("argv", start_event)
         self.assertIsInstance(start_event["argv"], list)
+
+
+class EventLogVerboseTestCase(unittest.TestCase):
+    """TestCase for the EventLog module verbose logging."""
+
+    def setUp(self):
+        self._event_log_module = git_trace2_event_log.EventLog(env={})
+
+    def test_write_socket_error_no_verbose(self):
+        """Test Write() suppression of socket errors when not verbose."""
+        self._event_log_module.verbose = False
+        with mock.patch("sys.stderr", new=io.StringIO()) as mock_stderr:
+            # Simulate a socket error by providing a path that fails
+            # We mock socket.socket to fail on connect
+            with mock.patch("socket.socket") as mock_socket:
+                mock_socket.return_value.__enter__.return_value.connect.side_effect = OSError(
+                    "Mock error"
+                )
+                self._event_log_module.Write(path="af_unix:stream:/tmp/test_sock")
+            self.assertEqual(mock_stderr.getvalue(), "")
+
+    def test_write_socket_error_verbose(self):
+        """Test Write() printing of socket errors when verbose."""
+        self._event_log_module.verbose = True
+        with mock.patch("sys.stderr", new=io.StringIO()) as mock_stderr:
+             with mock.patch("socket.socket") as mock_socket:
+                mock_socket.return_value.__enter__.return_value.connect.side_effect = OSError(
+                    "Mock error"
+                )
+                self._event_log_module.Write(path="af_unix:stream:/tmp/test_sock")
+             self.assertIn(
+                "repo: warning: git trace2 logging failed: Mock error",
+                mock_stderr.getvalue(),
+            )
+
+    def test_write_file_error_no_verbose(self):
+        """Test Write() suppression of file errors when not verbose."""
+        self._event_log_module.verbose = False
+        with mock.patch("sys.stderr", new=io.StringIO()) as mock_stderr:
+             with mock.patch("tempfile.NamedTemporaryFile") as mock_temp:
+                 mock_temp.side_effect = FileExistsError("Mock error"
+                 )
+                 self._event_log_module.Write(path="/tmp")
+             self.assertEqual(mock_stderr.getvalue(), "")
+
+    def test_write_file_error_verbose(self):
+        """Test Write() printing of file errors when verbose."""
+        self._event_log_module.verbose = True
+        with mock.patch("sys.stderr", new=io.StringIO()) as mock_stderr:
+             with mock.patch("tempfile.NamedTemporaryFile") as mock_temp:
+                 mock_temp.side_effect = FileExistsError("Mock error")
+                 self._event_log_module.Write(path="/tmp")
+             self.assertIn(
+                "repo: warning: git trace2 logging failed: FileExistsError('Mock error')",
+                mock_stderr.getvalue(),
+            )
