@@ -362,6 +362,8 @@ class _Repo:
             cmd.CommonValidateOptions(copts, cargs)
             cmd.ValidateOptions(copts, cargs)
 
+            git_trace2_event_log.verbose = copts.verbose
+
             this_manifest_only = copts.this_manifest_only
             outer_manifest = copts.outer_manifest
             if cmd.MULTI_MANIFEST_SUPPORT or this_manifest_only:
