@@ -1,0 +1,342 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40e34256_849cd59f",
+        "filename": "git_trace2_event_log_base.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-29T21:52:44Z",
+      "side": 1,
+      "message": "i don\u0027t think this follows our style guide\nhttps://github.com/google/styleguide/blob/gh-pages/pyguide.md#315-getters-and-setters",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "077f8188_cfb9fcde",
+        "filename": "git_trace2_event_log_base.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-29T21:52:44Z",
+      "side": 1,
+      "message": "you created a `self.verbose` property ... you should use it",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0558755d_874ff9e9",
+        "filename": "main.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-29T21:52:44Z",
+      "side": 1,
+      "message": "currently you\u0027re changing the verbose level in execute_command_helper which is a few levels after it\u0027s been constructed, and after it\u0027s already been used a few times.  so i don\u0027t think changing verbosity that late in the game actually stops all logging from getting out.\n\nat the very least, this should be moved to right after copts is constructed in _RunLong around line 339.\n\ngetting it into _Run when EventLog is constructed would be ideal.  but that would require global/common options trickery which is not ideal.  i guess we have to live with errors in the initial Trace() call ?",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dde3a94d_3ce7745f",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-29T21:52:44Z",
+      "side": 1,
+      "message": "drop `_module`",
+      "fixSuggestions": [
+        {
+          "fixId": "ca9f3c9f_3a4cb47a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 415,
+                "startChar": 0,
+                "endLine": 416,
+                "endChar": 0
+              },
+              "replacement": "        self._event_log \u003d git_trace2_event_log.EventLog(env\u003d{})\n"
+            },
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 419,
+                "startChar": 0,
+                "endLine": 420,
+                "endChar": 0
+              },
+              "replacement": "        self._event_log.verbose \u003d False\n"
+            },
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 427,
+                "startChar": 0,
+                "endLine": 430,
+                "endChar": 0
+              },
+              "replacement": "                self._event_log.Write(path\u003d\"af_unix:stream:/tmp/test_sock\")\n"
+            },
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 434,
+                "startChar": 0,
+                "endLine": 435,
+                "endChar": 0
+              },
+              "replacement": "        self._event_log.verbose \u003d True\n"
+            },
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 440,
+                "startChar": 0,
+                "endLine": 443,
+                "endChar": 0
+              },
+              "replacement": "                self._event_log.Write(path\u003d\"af_unix:stream:/tmp/test_sock\")\n"
+            },
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 450,
+                "startChar": 0,
+                "endLine": 451,
+                "endChar": 0
+              },
+              "replacement": "        self._event_log.verbose \u003d False\n"
+            },
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 454,
+                "startChar": 0,
+                "endLine": 455,
+                "endChar": 0
+              },
+              "replacement": "                self._event_log.Write(path\u003d\"/tmp\")\n"
+            },
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 459,
+                "startChar": 0,
+                "endLine": 460,
+                "endChar": 0
+              },
+              "replacement": "        self._event_log.verbose \u003d True\n"
+            },
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 463,
+                "startChar": 0,
+                "endLine": 464,
+                "endChar": 0
+              },
+              "replacement": "                self._event_log.Write(path\u003d\"/tmp\")\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef4592ab_f25d2ddd",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-29T21:52:44Z",
+      "side": 1,
+      "message": "use `contextlib.redirect_stderr` instead",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3bdf70a_c0e5f08f",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-29T21:52:44Z",
+      "side": 1,
+      "message": "these comments seem repetitive with themselves ... and really it\u0027s the test docstring above that should provide this level of detail (and i think already does?)",
+      "range": {
+        "startLine": 421,
+        "startChar": 0,
+        "endLine": 422,
+        "endChar": 54
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6c4e46fa_63cbbc08",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 421,
+                "startChar": 0,
+                "endLine": 423,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38461f8c_ca781246",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-29T21:52:44Z",
+      "side": 1,
+      "message": "to help with nesting levels, you can specify multiple things in a single with statement.",
+      "fixSuggestions": [
+        {
+          "fixId": "4a9d2dae_77182876",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 420,
+                "startChar": 0,
+                "endLine": 421,
+                "endChar": 0
+              },
+              "replacement": "        with mock.patch(\"sys.stderr\", new\u003dio.StringIO()) as mock_stderr, \\\n             mock.patch(\"socket.socket\") as ms:\n"
+            },
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 423,
+                "startChar": 0,
+                "endLine": 430,
+                "endChar": 0
+              },
+              "replacement": "            ms.return_value.__enter__.return_value.connect.side_effect \u003d (\n                OSError(\"Mock error\")\n            )\n            self._event_log_module.Write(\n                path\u003d\"af_unix:stream:/tmp/test_sock\"\n            )\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09bfd516_4ddc271c",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-29T21:52:44Z",
+      "side": 1,
+      "message": "personally i wouldn\u0027t bother adding an error string to it -- pretty sure you can just write `side_effect\u003dOSError` and mock will DTRT.  comes up with some of the other tests in here.",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34ad4257_5b1f77c7",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-29T21:52:44Z",
+      "side": 1,
+      "message": "strip down the error message a bit that you\u0027re asserting.  if we decided to write WARNING or Warning or something, we wouldn\u0027t want the unittests to break.  i.e. make it less of a \"change detector\" test.",
+      "fixSuggestions": [
+        {
+          "fixId": "faaa2940_409ffaff",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_git_trace2_event_log.py",
+              "range": {
+                "startLine": 443,
+                "startChar": 0,
+                "endLine": 447,
+                "endChar": 0
+              },
+              "replacement": "            self.assertIn(\"git trace2 logging failed: Mock error\", mock_stderr.getvalue())\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aed14fc2_c41d5f23",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-01-29T21:52:44Z",
+      "side": 1,
+      "message": "side_effect is an argument to mock.patch",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
