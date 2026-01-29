@@ -68,6 +68,7 @@ class BaseEventLog:
         global p_init_count
         p_init_count += 1
         self._log = []
+        self.verbose = False
         # Try to get session-id (sid) from environment (setup in repo launcher).
         KEY = "GIT_TRACE2_PARENT_SID"
         if env is None:
@@ -309,10 +310,12 @@ class BaseEventLog:
                     # ignore the attempt and continue to DGRAM below. Otherwise,
                     # issue a warning.
                     if err.errno != errno.EPROTOTYPE:
-                        print(
-                            f"repo: warning: git trace2 logging failed: {err}",
-                            file=sys.stderr,
-                        )
+                        if self.verbose:
+                            print(
+                                "repo: warning: git trace2 logging failed:",
+                                f"{err}",
+                                file=sys.stderr,
+                            )
                         return None
             if socket_type == socket.SOCK_DGRAM or socket_type is None:
                 try:
@@ -322,18 +325,20 @@ class BaseEventLog:
                         self._WriteLog(lambda bs: sock.sendto(bs, path))
                         return f"af_unix:dgram:{path}"
                 except OSError as err:
-                    print(
-                        f"repo: warning: git trace2 logging failed: {err}",
-                        file=sys.stderr,
-                    )
+                    if self.verbose:
+                        print(
+                            f"repo: warning: git trace2 logging failed: {err}",
+                            file=sys.stderr,
+                        )
                     return None
             # Tried to open a socket but couldn't connect (SOCK_STREAM) or write
             # (SOCK_DGRAM).
-            print(
-                "repo: warning: git trace2 logging failed: could not write to "
-                "socket",
-                file=sys.stderr,
-            )
+            if self.verbose:
+                print(
+                    "repo: warning: git trace2 logging failed: could not"
+                    "write to socket",
+                    file=sys.stderr,
+                )
             return None
 
         # Path is an absolute path
@@ -348,9 +353,10 @@ class BaseEventLog:
                 self._WriteLog(f.write)
                 log_path = f.name
         except FileExistsError as err:
-            print(
-                "repo: warning: git trace2 logging failed: %r" % err,
-                file=sys.stderr,
-            )
+            if self.verbose:
+                print(
+                    "repo: warning: git trace2 logging failed: %r" % err,
+                    file=sys.stderr,
+                )
             return None
         return log_path
