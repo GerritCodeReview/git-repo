@@ -68,6 +68,7 @@ class BaseEventLog:
         global p_init_count
         p_init_count += 1
         self._log = []
+        self.verbose = False
         # Try to get session-id (sid) from environment (setup in repo launcher).
         KEY = "GIT_TRACE2_PARENT_SID"
         if env is None:
@@ -77,7 +78,7 @@ class BaseEventLog:
 
         # Save both our sid component and the complete sid.
         # We use our sid component (self._sid) as the unique filename prefix and
-        # the full sid (self._full_sid) in the log itself.
+        # the full sid (self.full_sid) in the log itself.
         self._sid = (
             f"repo-{self.start.strftime('%Y%m%dT%H%M%SZ')}-P{os.getpid():08x}"
         )
@@ -88,24 +89,20 @@ class BaseEventLog:
         parent_sid = env.get(KEY)
         # Append our sid component to the parent sid (if it exists).
         if parent_sid is not None:
-            self._full_sid = parent_sid + "/" + self._sid
+            self.full_sid = parent_sid + "/" + self._sid
         else:
-            self._full_sid = self._sid
+            self.full_sid = self._sid
 
         # Set/update the environment variable.
         # Environment handling across systems is messy.
         try:
-            env[KEY] = self._full_sid
+            env[KEY] = self.full_sid
         except UnicodeEncodeError:
-            env[KEY] = self._full_sid.encode()
+            env[KEY] = self.full_sid.encode()
 
         if repo_source_version is not None:
             # Add a version event to front of the log.
             self._AddVersionEvent(repo_source_version)
-
-    @property
-    def full_sid(self):
-        return self._full_sid
 
     def _AddVersionEvent(self, repo_source_version):
         """Adds a 'version' event at the beginning of current log."""
@@ -125,7 +122,7 @@ class BaseEventLog:
         """
         return {
             "event": event_name,
-            "sid": self._full_sid,
+            "sid": self.full_sid,
             "thread": threading.current_thread().name,
             "time": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         }
@@ -309,10 +306,12 @@ class BaseEventLog:
                     # ignore the attempt and continue to DGRAM below. Otherwise,
                     # issue a warning.
                     if err.errno != errno.EPROTOTYPE:
-                        print(
-                            f"repo: warning: git trace2 logging failed: {err}",
-                            file=sys.stderr,
-                        )
+                        if self.verbose:
+                            print(
+                                "repo: warning: git trace2 logging failed:",
+                                f"{err}",
+                                file=sys.stderr,
+                            )
                         return None
             if socket_type == socket.SOCK_DGRAM or socket_type is None:
                 try:
@@ -322,18 +321,20 @@ class BaseEventLog:
                         self._WriteLog(lambda bs: sock.sendto(bs, path))
                         return f"af_unix:dgram:{path}"
                 except OSError as err:
-                    print(
-                        f"repo: warning: git trace2 logging failed: {err}",
-                        file=sys.stderr,
-                    )
+                    if self.verbose:
+                        print(
+                            f"repo: warning: git trace2 logging failed: {err}",
+                            file=sys.stderr,
+                        )
                     return None
             # Tried to open a socket but couldn't connect (SOCK_STREAM) or write
             # (SOCK_DGRAM).
-            print(
-                "repo: warning: git trace2 logging failed: could not write to "
-                "socket",
-                file=sys.stderr,
-            )
+            if self.verbose:
+                print(
+                    "repo: warning: git trace2 logging failed: could not"
+                    "write to socket",
+                    file=sys.stderr,
+                )
             return None
 
         # Path is an absolute path
@@ -348,9 +349,10 @@ class BaseEventLog:
                 self._WriteLog(f.write)
                 log_path = f.name
         except FileExistsError as err:
-            print(
-                "repo: warning: git trace2 logging failed: %r" % err,
-                file=sys.stderr,
-            )
+            if self.verbose:
+                print(
+                    "repo: warning: git trace2 logging failed: %r" % err,
+                    file=sys.stderr,
+                )
             return None
         return log_path
