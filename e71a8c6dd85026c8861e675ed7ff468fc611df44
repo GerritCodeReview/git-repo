@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24d6fd85_bd1fec26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4478061
+      },
+      "writtenOn": "2026-01-30T08:33:54Z",
+      "side": 1,
+      "message": "540681: project: disable auto-gc for depth\u003d1 in git config | https://gerrit-review.googlesource.com/c/git-repo/+/540681",
+      "revId": "e71a8c6dd85026c8861e675ed7ff468fc611df44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
