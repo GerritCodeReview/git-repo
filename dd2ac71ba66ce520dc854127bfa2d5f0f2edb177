@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "327b5c45_9516cb28",
+        "filename": "git_trace2_event_log_base.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-01-30T02:43:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40e34256_849cd59f",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "077f8188_cfb9fcde",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba23e97a_f03aac47",
+        "filename": "git_trace2_event_log_base.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-01-30T02:43:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "077f8188_cfb9fcde",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0558755d_874ff9e9",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-01-29T21:52:44Z",
       "side": 1,
       "message": "currently you\u0027re changing the verbose level in execute_command_helper which is a few levels after it\u0027s been constructed, and after it\u0027s already been used a few times.  so i don\u0027t think changing verbosity that late in the game actually stops all logging from getting out.\n\nat the very least, this should be moved to right after copts is constructed in _RunLong around line 339.\n\ngetting it into _Run when EventLog is constructed would be ideal.  but that would require global/common options trickery which is not ideal.  i guess we have to live with errors in the initial Trace() call ?",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6358bad1_a51464d5",
+        "filename": "main.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-01-30T02:43:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0558755d_874ff9e9",
       "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -167,6 +221,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41e47918_d5fd777b",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-01-30T02:43:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dde3a94d_3ce7745f",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef4592ab_f25d2ddd",
@@ -180,6 +252,24 @@
       "writtenOn": "2026-01-29T21:52:44Z",
       "side": 1,
       "message": "use `contextlib.redirect_stderr` instead",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f32c8181_21b0274a",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-01-30T02:43:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef4592ab_f25d2ddd",
       "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -221,6 +311,30 @@
           ]
         }
       ],
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e1d333d_9bf744d4",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-01-30T02:43:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3bdf70a_c0e5f08f",
+      "range": {
+        "startLine": 421,
+        "startChar": 0,
+        "endLine": 422,
+        "endChar": 54
+      },
       "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -270,6 +384,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75d5d0cb_35dfdd8d",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-01-30T02:43:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38461f8c_ca781246",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09bfd516_4ddc271c",
@@ -283,6 +415,24 @@
       "writtenOn": "2026-01-29T21:52:44Z",
       "side": 1,
       "message": "personally i wouldn\u0027t bother adding an error string to it -- pretty sure you can just write `side_effect\u003dOSError` and mock will DTRT.  comes up with some of the other tests in here.",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c48e2385_531a70e1",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-01-30T02:43:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09bfd516_4ddc271c",
       "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -322,6 +472,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6f8fc5f_767b778b",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-01-30T02:43:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34ad4257_5b1f77c7",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aed14fc2_c41d5f23",
@@ -335,6 +503,24 @@
       "writtenOn": "2026-01-29T21:52:44Z",
       "side": 1,
       "message": "side_effect is an argument to mock.patch",
+      "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e22da387_cecdac9f",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-01-30T02:43:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aed14fc2_c41d5f23",
       "revId": "dd2ac71ba66ce520dc854127bfa2d5f0f2edb177",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
