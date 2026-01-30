@@ -16,6 +16,23 @@
       "message": "547542: Make git trace2 logging errors conditional on verbose mode. | https://gerrit-review.googlesource.com/c/git-repo/+/547542",
       "revId": "9a6674089c615aadbe5dfc6db87eabfa54472599",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3f7aae9_36e16e19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-01-30T18:28:18Z",
+      "side": 1,
+      "message": "i\u0027m getting an `AttributeError` after patching this change and trying to sync:\n```\n❯ ~/git-repo/repo sync\nTraceback (most recent call last):\n  File \"/usr/local/google/home/gavinmak/git-repo/main.py\", line 870, in \u003cmodule\u003e\n    _Main(sys.argv[1:])\n    ~~~~~^^^^^^^^^^^^^^\n  File \"/usr/local/google/home/gavinmak/git-repo/main.py\", line 846, in _Main\n    result \u003d repo._Run(name, gopts, argv) or 0\n             ~~~~~~~~~^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/google/home/gavinmak/git-repo/main.py\", line 292, in _Run\n    result \u003d run()\n  File \"/usr/local/google/home/gavinmak/git-repo/main.py\", line 273, in \u003clambda\u003e\n    lambda: self._RunLong(name, gopts, argv, git_trace2_event_log) or 0\n            ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/google/home/gavinmak/git-repo/main.py\", line 340, in _RunLong\n    git_trace2_event_log.verbose \u003d copts.verbose\n                                   ^^^^^^^^^^^^^\nAttributeError: \u0027Values\u0027 object has no attribute \u0027verbose\u0027\n```",
+      "revId": "9a6674089c615aadbe5dfc6db87eabfa54472599",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
