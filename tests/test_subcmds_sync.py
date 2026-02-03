@@ -97,6 +97,37 @@ def test_cli_jobs(argv, jobs_manifest, jobs, jobs_net, jobs_check):
     """Tests --jobs option behavior."""
     mp = mock.MagicMock()
     mp.manifest.default.sync_j = jobs_manifest
+    mp.manifest.default.sync_j_max = None
+
+    cmd = sync.Sync()
+    opts, args = cmd.OptionParser.parse_args(argv)
+    cmd.ValidateOptions(opts, args)
+
+    with mock.patch.object(sync, "_rlimit_nofile", return_value=(256, 256)):
+        with mock.patch.object(os, "cpu_count", return_value=OS_CPU_COUNT):
+            cmd._ValidateOptionsWithManifest(opts, mp)
+            assert opts.jobs == jobs
+            assert opts.jobs_network == jobs_net
+            assert opts.jobs_checkout == jobs_check
+
+
+@pytest.mark.parametrize(
+    "argv, jobs_manifest, jobs_manifest_max, jobs, jobs_net, jobs_check",
+    [
+        (["--jobs=10"], None, 5, 5, 5, 5),
+        (["--jobs=10", "--jobs-network=10"], None, 5, 5, 5, 5),
+        (["--jobs=10", "--jobs-checkout=10"], None, 5, 5, 5, 5),
+        # Force jobs bypasses limit
+        (["--force-jobs", "--jobs=10"], None, 5, 10, 10, 10),
+    ],
+)
+def test_cli_jobs_sync_j_max(
+    argv, jobs_manifest, jobs_manifest_max, jobs, jobs_net, jobs_check
+):
+    """Tests --jobs option behavior with sync-j-max."""
+    mp = mock.MagicMock()
+    mp.manifest.default.sync_j = jobs_manifest
+    mp.manifest.default.sync_j_max = jobs_manifest_max
 
     cmd = sync.Sync()
     opts, args = cmd.OptionParser.parse_args(argv)
