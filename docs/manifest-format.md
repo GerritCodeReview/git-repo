@@ -51,6 +51,7 @@ following DTD:
   <!ATTLIST default dest-branch CDATA #IMPLIED>
   <!ATTLIST default upstream    CDATA #IMPLIED>
   <!ATTLIST default sync-j      CDATA #IMPLIED>
+  <!ATTLIST default sync-j-max  CDATA #IMPLIED>
   <!ATTLIST default sync-c      CDATA #IMPLIED>
   <!ATTLIST default sync-s      CDATA #IMPLIED>
   <!ATTLIST default sync-tags   CDATA #IMPLIED>
@@ -213,7 +214,9 @@ can be found.  Used when syncing a revision locked manifest in
 -c mode to avoid having to sync the entire ref space. Project elements
 not setting their own `upstream` will inherit this value.
 
-Attribute `sync-j`: Number of parallel jobs to use when synching.
+Attribute `sync-j`: Number of parallel jobs to use when syncing.
+
+Attribute `sync-j-max`: Maximum number of parallel jobs to use when syncing.
 
 Attribute `sync-c`: Set to true to only sync the given Git
 branch (specified in the `revision` attribute) rather than the

@@ -1940,15 +1940,33 @@ later is required to fix a server side protocol bug.
         opt.jobs_network = min(opt.jobs_network, jobs_soft_limit)
         opt.jobs_checkout = min(opt.jobs_checkout, jobs_soft_limit)
 
-        # Warn once if effective job counts seem excessively high.
+        sync_j_max = mp.manifest.default.sync_j_max or None
+
+        # Check for shared options.
         # Prioritize --jobs, then --jobs-network, then --jobs-checkout.
-        job_options_to_check = (
-            ("--jobs", opt.jobs),
-            ("--jobs-network", opt.jobs_network),
-            ("--jobs-checkout", opt.jobs_checkout),
+        job_attributes = (
+            ("--jobs", "jobs"),
+            ("--jobs-network", "jobs_network"),
+            ("--jobs-checkout", "jobs_checkout"),
         )
-        for name, value in job_options_to_check:
-            if value > self._JOBS_WARN_THRESHOLD:
+
+        warned = False
+        limit_warned = False
+        for name, attr in job_attributes:
+            value = getattr(opt, attr)
+
+            if sync_j_max and value > sync_j_max:
+                if not limit_warned:
+                    logger.warning(
+                        "warning: manifest limits %s to %d",
+                        name,
+                        sync_j_max,
+                    )
+                    limit_warned = True
+                setattr(opt, attr, sync_j_max)
+                value = sync_j_max
+
+            if not warned and value > self._JOBS_WARN_THRESHOLD:
                 logger.warning(
                     "High job count (%d > %d) specified for %s; this may "
                     "lead to excessive resource usage or diminishing returns.",
@@ -1956,7 +1974,7 @@ later is required to fix a server side protocol bug.
                     self._JOBS_WARN_THRESHOLD,
                     name,
                 )
-                break
+                warned = True
 
     def Execute(self, opt, args):
         errors = []

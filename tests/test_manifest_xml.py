@@ -401,6 +401,32 @@ class XmlManifestTests(ManifestParseTestCase):
         self.assertEqual(len(manifest.projects), 1)
         self.assertEqual(manifest.projects[0].name, "test-project")
 
+    def test_sync_j_max(self):
+        """Check sync-j-max handling."""
+        # Check valid value.
+        manifest = self.getXmlManifest(
+            '<manifest><default sync-j-max="5" /></manifest>'
+        )
+        self.assertEqual(manifest.default.sync_j_max, 5)
+        self.assertEqual(
+            manifest.ToXml().toxml(),
+            '<?xml version="1.0" ?>'
+            '<manifest><default sync-j-max="5"/></manifest>',
+        )
+
+        # Check invalid values.
+        with self.assertRaises(error.ManifestParseError):
+            manifest = self.getXmlManifest(
+                '<manifest><default sync-j-max="0" /></manifest>'
+            )
+            manifest.ToXml()
+
+        with self.assertRaises(error.ManifestParseError):
+            manifest = self.getXmlManifest(
+                '<manifest><default sync-j-max="-1" /></manifest>'
+            )
+            manifest.ToXml()
+
 
 class IncludeElementTests(ManifestParseTestCase):
     """Tests for <include>."""
