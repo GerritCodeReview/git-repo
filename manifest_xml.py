@@ -155,6 +155,7 @@ class _Default:
     upstreamExpr = None
     remote = None
     sync_j = None
+    sync_j_max = None
     sync_c = False
     sync_s = False
     sync_tags = True
@@ -631,6 +632,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if d.sync_j is not None:
             have_default = True
             e.setAttribute("sync-j", "%d" % d.sync_j)
+        if d.sync_j_max is not None:
+            have_default = True
+            e.setAttribute("sync-j-max", "%d" % d.sync_j_max)
         if d.sync_c:
             have_default = True
             e.setAttribute("sync-c", "true")
@@ -1761,6 +1765,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             raise ManifestParseError(
                 '%s: sync-j must be greater than 0, not "%s"'
                 % (self.manifestFile, d.sync_j)
+            )
+
+        d.sync_j_max = XmlInt(node, "sync-j-max", None)
+        if d.sync_j_max is not None and d.sync_j_max <= 0:
+            raise ManifestParseError(
+                '%s: sync-j-max must be greater than 0, not "%s"'
+                % (self.manifestFile, d.sync_j_max)
             )
 
         d.sync_c = XmlBool(node, "sync-c", False)
