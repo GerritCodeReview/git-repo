@@ -3632,14 +3632,20 @@ class Project:
         here.  The path updates will happen independently.
         """
         # Figure out where in .repo/projects/ it's pointing to.
-        if not os.path.islink(os.path.join(dotgit, "refs")):
+        gitdir = None
+        for name in ("refs", "reftable", "objects"):
+            path = os.path.join(dotgit, name)
+            if os.path.islink(path):
+                gitdir = os.path.dirname(os.path.realpath(path))
+                break
+        else:
             raise GitError(
                 f"{dotgit}: unsupported checkout state", project=project
             )
-        gitdir = os.path.dirname(os.path.realpath(os.path.join(dotgit, "refs")))
 
         # Remove known symlink paths that exist in .repo/projects/.
         KNOWN_LINKS = {
+            # go/keep-sorted start
             "config",
             "description",
             "hooks",
@@ -3648,9 +3654,11 @@ class Project:
             "objects",
             "packed-refs",
             "refs",
+            "reftable",
             "rr-cache",
             "shallow",
             "svn",
+            # go/keep-sorted end
         }
         # Paths that we know will be in both, but are safe to clobber in
         # .repo/projects/.
@@ -3675,7 +3683,16 @@ class Project:
             dotgit_path = os.path.join(dotgit, name)
             if name in KNOWN_LINKS:
                 if not platform_utils.islink(dotgit_path):
-                    unknown_paths.append(f"{dotgit_path}: should be a symlink")
+                    # In reftable format, refs and reftable can be directories.
+                    if name in ("refs", "reftable") and platform_utils.isdir(
+                        dotgit_path
+                    ):
+                        pass
+                    else:
+                        unknown_paths.append(
+                            f"{dotgit_path}: should be a symlink"
+                        )
+
             else:
                 gitdir_path = os.path.join(gitdir, name)
                 if name not in SAFE_TO_CLOBBER and os.path.exists(gitdir_path):
@@ -3697,7 +3714,14 @@ class Project:
             if name.endswith("~") or (name[0] == "#" and name[-1] == "#"):
                 platform_utils.remove(dotgit_path)
             elif name in KNOWN_LINKS:
-                platform_utils.remove(dotgit_path)
+                if (
+                    name in ("refs", "reftable")
+                    and platform_utils.isdir(dotgit_path)
+                    and not platform_utils.islink(dotgit_path)
+                ):
+                    platform_utils.rmtree(dotgit_path)
+                else:
+                    platform_utils.remove(dotgit_path)
             else:
                 gitdir_path = os.path.join(gitdir, name)
                 platform_utils.remove(gitdir_path, missing_ok=True)
