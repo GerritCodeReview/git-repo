@@ -48,6 +48,21 @@ def TempGitTree():
         yield tempdir
 
 
+def _SupportsReftable():
+    with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+        repo = os.path.join(tempdir, "repo")
+        proc = subprocess.run(
+            ["git", "-c", "init.defaultRefFormat=reftable", "init", "-q", repo],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    return proc.returncode == 0
+
+
+SUPPORTS_REFTABLE = _SupportsReftable()
+
+
 class FakeProject:
     """A fake for Project for basic functionality."""
 
@@ -62,6 +77,10 @@ class FakeProject:
             self, bare=True, gitdir=self.gitdir
         )
         self.config = git_config.GitConfig.ForRepository(gitdir=self.gitdir)
+
+    def RelPath(self, local=True):
+        del local
+        return self.worktree
 
 
 class ReviewableBranchTests(unittest.TestCase):
@@ -115,6 +134,28 @@ class ProjectTests(unittest.TestCase):
             project.Project._encode_patchset_description("abcd00!! +"),
             "abcd00%21%21_%2b",
         )
+
+    @unittest.skipUnless(
+        SUPPORTS_REFTABLE, "git reftable support is required for this test"
+    )
+    def test_get_head_unborn_reftable(self):
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            subprocess.check_call(
+                [
+                    "git",
+                    "-c",
+                    "init.defaultRefFormat=reftable",
+                    "init",
+                    "-q",
+                    tempdir,
+                ]
+            )
+            fakeproj = FakeProject(tempdir)
+            expected = subprocess.check_output(
+                ["git", "-C", tempdir, "symbolic-ref", "-q", "HEAD"],
+                encoding="utf-8",
+            ).strip()
+            self.assertEqual(expected, fakeproj.work_git.GetHead())
 
 
 class CopyLinkTestCase(unittest.TestCase):
