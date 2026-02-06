@@ -366,6 +366,7 @@ class MigrateWorkTreeTests(unittest.TestCase):
         "logs",
         "objects",
         "packed-refs",
+        "reftable",
         "refs",
         "rr-cache",
         "shallow",
@@ -447,6 +448,25 @@ class MigrateWorkTreeTests(unittest.TestCase):
                 self.assertTrue((dotgit / name).is_file())
             for name in self._SYMLINKS:
                 self.assertTrue((dotgit / name).is_symlink())
+
+    def test_reftable_anchor_with_refs_dir(self):
+        """Migrate when reftable/ and refs/ are directories."""
+        with self._simple_layout() as tempdir:
+            dotgit = tempdir / "src/test/.git"
+            (dotgit / "refs").unlink()
+            (dotgit / "refs").mkdir()
+            (dotgit / "refs" / "heads").write_text("dummy")
+
+            (dotgit / "reftable").unlink()
+            (dotgit / "reftable").mkdir()
+            (dotgit / "reftable" / "tables.list").write_text("dummy")
+            project.Project._MigrateOldWorkTreeGitDir(str(dotgit))
+
+            self.assertTrue(dotgit.is_symlink())
+            self.assertEqual(
+                os.readlink(dotgit),
+                os.path.normpath("../../.repo/projects/src/test.git"),
+            )
 
 
 class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
