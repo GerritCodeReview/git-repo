@@ -33,6 +33,24 @@
       "message": "docs/manifest-format.md needs updating\n\ni wouldn\u0027t include --force-jobs at this point.  wait for someone to request it.",
       "revId": "3454ab32b00cab224d31698faefba88b05982670",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f1787be_5f5f0983",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-02-06T18:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a25a76e_6b7d0671",
+      "revId": "3454ab32b00cab224d31698faefba88b05982670",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
