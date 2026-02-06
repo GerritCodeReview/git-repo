@@ -284,7 +284,16 @@ class Gc(Command):
             args, all_manifests=not opt.this_manifest_only
         )
 
-        ret = self.delete_unused_projects(projects, opt)
+        # If the user specified projects, fetch the global list separately
+        # to avoid deleting untargeted projects.
+        if args:
+            all_projects = self.GetProjects(
+                [], all_manifests=not opt.this_manifest_only
+            )
+        else:
+            all_projects = projects
+
+        ret = self.delete_unused_projects(all_projects, opt)
         if ret != 0:
             return ret
 
