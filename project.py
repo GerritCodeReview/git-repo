@@ -2516,18 +2516,20 @@ class Project:
         if not remote.PreConnectFetch(ssh_proxy):
             ssh_proxy = None
 
+        alt_tmp_refs = []
         if initial:
             if alt_dir and "objects" == os.path.basename(alt_dir):
                 ref_dir = os.path.dirname(alt_dir)
-                packed_refs = os.path.join(self.gitdir, "packed-refs")
 
                 all_refs = self.bare_ref.all
                 ids = set(all_refs.values())
-                tmp = set()
+
+                update_ref_cmds = []
 
                 for r, ref_id in GitRefs(ref_dir).all.items():
                     if r not in all_refs:
                         if r.startswith(R_TAGS) or remote.WritesTo(r):
+                            update_ref_cmds.append(f"create {r} {ref_id}\n")
                             all_refs[r] = ref_id
                             ids.add(ref_id)
                             continue
@@ -2536,22 +2538,18 @@ class Project:
                         continue
 
                     r = "refs/_alt/%s" % ref_id
+                    update_ref_cmds.append(f"create {r} {ref_id}\n")
                     all_refs[r] = ref_id
                     ids.add(ref_id)
-                    tmp.add(r)
+                    alt_tmp_refs.append(r)
 
-                tmp_packed_lines = []
-                old_packed_lines = []
-
-                for r in sorted(all_refs):
-                    line = f"{all_refs[r]} {r}\n"
-                    tmp_packed_lines.append(line)
-                    if r not in tmp:
-                        old_packed_lines.append(line)
-
-                tmp_packed = "".join(tmp_packed_lines)
-                old_packed = "".join(old_packed_lines)
-                _lwrite(packed_refs, tmp_packed)
+                if update_ref_cmds:
+                    GitCommand(
+                        self,
+                        ["update-ref", "--no-deref", "--stdin"],
+                        bare=True,
+                        input="".join(update_ref_cmds),
+                    ).Wait()
             else:
                 alt_dir = None
 
@@ -2652,147 +2650,160 @@ class Project:
         retry_fetches = max(retry_fetches, 2)
         retry_cur_sleep = retry_sleep_initial_sec
         ok = prune_tried = False
-        for try_n in range(retry_fetches):
-            verify_command = try_n == retry_fetches - 1
-            gitcmd = GitCommand(
-                self,
-                cmd,
-                bare=True,
-                objdir=os.path.join(self.objdir, "objects"),
-                ssh_proxy=ssh_proxy,
-                merge_output=True,
-                capture_stdout=quiet or bool(output_redir),
-                verify_command=verify_command,
-            )
-            if gitcmd.stdout and not quiet and output_redir:
-                output_redir.write(gitcmd.stdout)
-            ret = gitcmd.Wait()
-            if ret == 0:
-                ok = True
-                break
-
-            # Retry later due to HTTP 429 Too Many Requests.
-            elif (
-                gitcmd.stdout
-                and "error:" in gitcmd.stdout
-                and "HTTP 429" in gitcmd.stdout
-            ):
-                # Fallthru to sleep+retry logic at the bottom.
-                pass
-
-            # TODO(b/360889369#comment24): git may gc commits incorrectly.
-            # Until the root cause is fixed, retry fetch with --refetch which
-            # will bring the repository into a good state.
-            elif gitcmd.stdout and (
-                "could not parse commit" in gitcmd.stdout
-                or "unable to parse commit" in gitcmd.stdout
-            ):
-                cmd.insert(1, "--refetch")
-                print(
-                    "could not parse commit error, retrying with refetch",
-                    file=output_redir,
-                )
-                continue
-
-            # Try to prune remote branches once in case there are conflicts.
-            # For example, if the remote had refs/heads/upstream, but deleted
-            # that and now has refs/heads/upstream/foo.
-            elif (
-                gitcmd.stdout
-                and "error:" in gitcmd.stdout
-                and "git remote prune" in gitcmd.stdout
-                and not prune_tried
-            ):
-                prune_tried = True
-                prunecmd = GitCommand(
+        try:
+            for try_n in range(retry_fetches):
+                verify_command = try_n == retry_fetches - 1
+                gitcmd = GitCommand(
                     self,
-                    ["remote", "prune", name],
+                    cmd,
                     bare=True,
+                    objdir=os.path.join(self.objdir, "objects"),
                     ssh_proxy=ssh_proxy,
+                    merge_output=True,
+                    capture_stdout=quiet or bool(output_redir),
+                    verify_command=verify_command,
                 )
-                ret = prunecmd.Wait()
-                if ret:
+                if gitcmd.stdout and not quiet and output_redir:
+                    output_redir.write(gitcmd.stdout)
+                ret = gitcmd.Wait()
+                if ret == 0:
+                    ok = True
                     break
-                print(
-                    "retrying fetch after pruning remote branches",
-                    file=output_redir,
-                )
-                # Continue right away so we don't sleep as we shouldn't need to.
-                continue
-            elif (
-                ret == 128
-                and gitcmd.stdout
-                and "fatal: could not read Username" in gitcmd.stdout
-            ):
-                # User needs to be authenticated, and Git wants to prompt for
-                # username and password.
-                print(
-                    "git requires authentication, but repo cannot perform "
-                    "interactive authentication. Check git credentials.",
-                    file=output_redir,
-                )
-                break
-            elif (
-                ret == 128
-                and gitcmd.stdout
-                and "remote helper 'sso' aborted session" in gitcmd.stdout
-            ):
-                # User needs to be authenticated, and Git wants to prompt for
-                # username and password.
-                print(
-                    "git requires authentication, but repo cannot perform "
-                    "interactive authentication.",
-                    file=output_redir,
-                )
-                raise GitAuthError(gitcmd.stdout)
-                break
-            elif current_branch_only and is_sha1 and ret == 128:
-                # Exit code 128 means "couldn't find the ref you asked for"; if
-                # we're in sha1 mode, we just tried sync'ing from the upstream
-                # field; it doesn't exist, thus abort the optimization attempt
-                # and do a full sync.
-                break
-            elif depth and is_sha1 and ret == 1:
-                # In sha1 mode, when depth is enabled, syncing the revision
-                # from upstream may not work because some servers only allow
-                # fetching named refs. Fetching a specific sha1 may result
-                # in an error like 'server does not allow request for
-                # unadvertised object'. In this case, attempt a full sync
-                # without depth.
-                break
-            elif ret < 0:
-                # Git died with a signal, exit immediately.
-                break
 
-            # Figure out how long to sleep before the next attempt, if there is
-            # one.
-            if not verbose and gitcmd.stdout:
-                print(
-                    f"\n{self.name}:\n{gitcmd.stdout}",
-                    end="",
-                    file=output_redir,
-                )
-            if try_n < retry_fetches - 1:
-                print(
-                    "%s: sleeping %s seconds before retrying"
-                    % (self.name, retry_cur_sleep),
-                    file=output_redir,
-                )
-                time.sleep(retry_cur_sleep)
-                retry_cur_sleep = min(
-                    retry_exp_factor * retry_cur_sleep, MAXIMUM_RETRY_SLEEP_SEC
-                )
-                retry_cur_sleep *= 1 - random.uniform(
-                    -RETRY_JITTER_PERCENT, RETRY_JITTER_PERCENT
-                )
+                # Retry later due to HTTP 429 Too Many Requests.
+                elif (
+                    gitcmd.stdout
+                    and "error:" in gitcmd.stdout
+                    and "HTTP 429" in gitcmd.stdout
+                ):
+                    # Fallthru to sleep+retry logic at the bottom.
+                    pass
 
-        if initial:
-            if alt_dir:
-                if old_packed != "":
-                    _lwrite(packed_refs, old_packed)
-                else:
-                    platform_utils.remove(packed_refs)
-            self.bare_git.pack_refs("--all", "--prune")
+                # TODO(b/360889369#comment24): git may gc commits incorrectly.
+                # Until the root cause is fixed, retry fetch with --refetch
+                # which will bring the repository into a good state.
+                elif gitcmd.stdout and (
+                    "could not parse commit" in gitcmd.stdout
+                    or "unable to parse commit" in gitcmd.stdout
+                ):
+                    cmd.insert(1, "--refetch")
+                    print(
+                        "could not parse commit error, retrying with refetch",
+                        file=output_redir,
+                    )
+                    continue
+
+                # Try to prune remote branches once in case there are conflicts.
+                # For example, if the remote had refs/heads/upstream, but
+                # deleted that and now has refs/heads/upstream/foo.
+                elif (
+                    gitcmd.stdout
+                    and "error:" in gitcmd.stdout
+                    and "git remote prune" in gitcmd.stdout
+                    and not prune_tried
+                ):
+                    prune_tried = True
+                    prunecmd = GitCommand(
+                        self,
+                        ["remote", "prune", name],
+                        bare=True,
+                        ssh_proxy=ssh_proxy,
+                    )
+                    ret = prunecmd.Wait()
+                    if ret:
+                        break
+                    print(
+                        "retrying fetch after pruning remote branches",
+                        file=output_redir,
+                    )
+                    # Continue right away so we don't sleep as we shouldn't
+                    # need to.
+                    continue
+                elif (
+                    ret == 128
+                    and gitcmd.stdout
+                    and "fatal: could not read Username" in gitcmd.stdout
+                ):
+                    # User needs to be authenticated, and Git wants to prompt
+                    # for username and password.
+                    print(
+                        "git requires authentication, but repo cannot perform "
+                        "interactive authentication. Check git credentials.",
+                        file=output_redir,
+                    )
+                    break
+                elif (
+                    ret == 128
+                    and gitcmd.stdout
+                    and "remote helper 'sso' aborted session" in gitcmd.stdout
+                ):
+                    # User needs to be authenticated, and Git wants to prompt
+                    # for username and password.
+                    print(
+                        "git requires authentication, but repo cannot perform "
+                        "interactive authentication.",
+                        file=output_redir,
+                    )
+                    raise GitAuthError(gitcmd.stdout)
+                    break
+                elif current_branch_only and is_sha1 and ret == 128:
+                    # Exit code 128 means "couldn't find the ref you asked for";
+                    # if we're in sha1 mode, we just tried sync'ing from the
+                    # upstream field; it doesn't exist, thus abort the
+                    # optimization attempt and do a full sync.
+                    break
+                elif depth and is_sha1 and ret == 1:
+                    # In sha1 mode, when depth is enabled, syncing the revision
+                    # from upstream may not work because some servers only allow
+                    # fetching named refs. Fetching a specific sha1 may result
+                    # in an error like 'server does not allow request for
+                    # unadvertised object'. In this case, attempt a full sync
+                    # without depth.
+                    break
+                elif ret < 0:
+                    # Git died with a signal, exit immediately.
+                    break
+
+                # Figure out how long to sleep before the next attempt, if
+                # there is one.
+                if not verbose and gitcmd.stdout:
+                    print(
+                        f"\n{self.name}:\n{gitcmd.stdout}",
+                        end="",
+                        file=output_redir,
+                    )
+                if try_n < retry_fetches - 1:
+                    print(
+                        "%s: sleeping %s seconds before retrying"
+                        % (self.name, retry_cur_sleep),
+                        file=output_redir,
+                    )
+                    time.sleep(retry_cur_sleep)
+                    retry_cur_sleep = min(
+                        retry_exp_factor * retry_cur_sleep,
+                        MAXIMUM_RETRY_SLEEP_SEC,
+                    )
+                    retry_cur_sleep *= 1 - random.uniform(
+                        -RETRY_JITTER_PERCENT, RETRY_JITTER_PERCENT
+                    )
+        finally:
+            if initial:
+                if alt_tmp_refs:
+                    delete_cmds = "".join(
+                        f"delete {ref}\n" for ref in alt_tmp_refs
+                    )
+                    GitCommand(
+                        self,
+                        ["update-ref", "--no-deref", "--stdin"],
+                        bare=True,
+                        input=delete_cmds,
+                        log_as_error=False,
+                    ).Wait()
+
+                    for ref in alt_tmp_refs:
+                        self.bare_ref.deleted(ref)
+
+                self.bare_git.pack_refs("--all", "--prune")
 
         if is_sha1 and current_branch_only:
             # We just synced the upstream given branch; verify we
