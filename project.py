@@ -3953,6 +3953,24 @@ class Project:
                     e,
                 )
 
+                # `git rev-parse --symbolic-full-name HEAD` will fail for unborn
+                # branches, so try symbolic-ref before falling back to raw file
+                # parsing.
+                try:
+                    p = GitCommand(
+                        self._project,
+                        ["symbolic-ref", "-q", HEAD],
+                        bare=True,
+                        gitdir=self._gitdir,
+                        capture_stdout=True,
+                        capture_stderr=True,
+                        log_as_error=False,
+                    )
+                    if p.Wait() == 0:
+                        return p.stdout.rstrip("\n")
+                except GitError:
+                    pass
+
                 # Fallback to direct file reading for compatibility with broken
                 # repos, e.g. if HEAD points to an unborn branch.
                 path = self.GetDotgitPath(subpath=HEAD)
