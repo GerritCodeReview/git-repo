@@ -16,6 +16,24 @@
       "message": "you can revert this file change (and repo-sync too)",
       "revId": "3267a54ab8a55ee640f9a71834cf3857718eb384",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "499a0f7c_c39d571c",
+        "filename": "man/repo-smartsync.1",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-02-06T19:29:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71263d82_7daeaaca",
+      "revId": "3267a54ab8a55ee640f9a71834cf3857718eb384",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
