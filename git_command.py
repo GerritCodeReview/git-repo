@@ -22,7 +22,6 @@ from typing import Any, Optional
 
 from error import GitError
 from error import RepoExitError
-from git_refs import HEAD
 from git_trace2_event_log_base import BaseEventLog
 import platform_utils
 from repo_logging import RepoLogger
@@ -83,7 +82,7 @@ def RepoSourceVersion():
         proj = os.path.dirname(os.path.abspath(__file__))
         env[GIT_DIR] = os.path.join(proj, ".git")
         result = subprocess.run(
-            [GIT, "describe", HEAD],
+            [GIT, "describe", "HEAD"],
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
             encoding="utf-8",

@@ -18,20 +18,28 @@ If you want to write a per-test fixture, see conftest.py instead.
 """
 
 import contextlib
+import functools
 from pathlib import Path
 import subprocess
 import tempfile
-from typing import Union
+from typing import Optional, Union
 
 import git_command
 
 
-def init_git_tree(path: Union[str, Path]) -> None:
+def init_git_tree(
+    path: Union[str, Path],
+    ref_format: Optional[str] = None,
+) -> None:
     """Initialize `path` as a new git repo."""
     with contextlib.ExitStack() as stack:
         # Tests need to assume, that main is default branch at init,
         # which is not supported in config until 2.28.
-        cmd = ["git", "init"]
+        cmd = ["git"]
+        if ref_format:
+            cmd += ["-c", f"init.defaultRefFormat={ref_format}"]
+        cmd += ["init"]
+
         if git_command.git_require((2, 28, 0)):
             cmd += ["--initial-branch=main"]
         else:
@@ -51,3 +59,41 @@ def TempGitTree():
     with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
         init_git_tree(tempdir)
         yield tempdir
+
+
+@functools.lru_cache(maxsize=None)
+def supports_reftable() -> bool:
+    """Check if git supports reftable."""
+    with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+        proc = subprocess.run(
+            ["git", "-c", "init.defaultRefFormat=reftable", "init"],
+            cwd=tempdir,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    return proc.returncode == 0
+
+
+@functools.lru_cache(maxsize=None)
+def supports_refs_migrate() -> bool:
+    """Check if git supports refs migrate."""
+    with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+        subprocess.check_call(
+            ["git", "-c", "init.defaultRefFormat=files", "init"],
+            cwd=tempdir,
+        )
+        proc = subprocess.run(
+            [
+                "git",
+                "refs",
+                "migrate",
+                "--ref-format=reftable",
+                "--dry-run",
+            ],
+            cwd=tempdir,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    return proc.returncode == 0
