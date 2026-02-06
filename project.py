@@ -3945,6 +3945,24 @@ class Project:
                     return self.rev_parse(HEAD)
                 return symbolic_head
             except GitError as e:
+                # `git rev-parse --symbolic-full-name HEAD` will fail for unborn
+                # branches, so try symbolic-ref before falling back to raw file
+                # parsing.
+                try:
+                    p = GitCommand(
+                        self._project,
+                        ["symbolic-ref", "-q", HEAD],
+                        bare=True,
+                        gitdir=self._gitdir,
+                        capture_stdout=True,
+                        capture_stderr=True,
+                        log_as_error=False,
+                    )
+                    if p.Wait() == 0:
+                        return p.stdout.rstrip("\n")
+                except GitError:
+                    pass
+
                 logger.warning(
                     "project %s: unparseable HEAD; trying to recover.\n"
                     "Check that HEAD ref in .git/HEAD is valid. The error "

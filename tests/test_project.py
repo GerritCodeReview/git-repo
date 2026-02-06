@@ -21,6 +21,8 @@ import subprocess
 import tempfile
 import unittest
 
+import test_git_refs
+
 import error
 import git_command
 import git_config
@@ -62,6 +64,9 @@ class FakeProject:
             self, bare=True, gitdir=self.gitdir
         )
         self.config = git_config.GitConfig.ForRepository(gitdir=self.gitdir)
+
+    def RelPath(self, local=None):
+        return self.name
 
 
 class ReviewableBranchTests(unittest.TestCase):
@@ -115,6 +120,29 @@ class ProjectTests(unittest.TestCase):
             project.Project._encode_patchset_description("abcd00!! +"),
             "abcd00%21%21_%2b",
         )
+
+    @unittest.skipUnless(
+        test_git_refs._supports_reftable(),
+        "git reftable support is required for this test",
+    )
+    def test_get_head_unborn_reftable(self):
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            subprocess.check_call(
+                [
+                    "git",
+                    "-c",
+                    "init.defaultRefFormat=reftable",
+                    "init",
+                    "-q",
+                    tempdir,
+                ]
+            )
+            fakeproj = FakeProject(tempdir)
+            expected = subprocess.check_output(
+                ["git", "-C", tempdir, "symbolic-ref", "-q", "HEAD"],
+                encoding="utf-8",
+            ).strip()
+            self.assertEqual(expected, fakeproj.work_git.GetHead())
 
 
 class CopyLinkTestCase(unittest.TestCase):
