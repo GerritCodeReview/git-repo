@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import subprocess
 
 import platform_utils
 from repo_trace import Trace
@@ -71,10 +72,12 @@ class GitRefs:
     def _NeedUpdate(self):
         with Trace(": scan refs %s", self._gitdir):
             for name, mtime in self._mtime.items():
+                if name:
+                    path = os.path.join(self._gitdir, name)
+                else:
+                    path = self._gitdir
                 try:
-                    if mtime != os.path.getmtime(
-                        os.path.join(self._gitdir, name)
-                    ):
+                    if mtime != os.path.getmtime(path):
                         return True
                 except OSError:
                     return True
@@ -86,9 +89,8 @@ class GitRefs:
             self._symref = {}
             self._mtime = {}
 
-            self._ReadPackedRefs()
-            self._ReadLoose("refs/")
-            self._ReadLoose1(os.path.join(self._gitdir, HEAD), HEAD)
+            self._ReadRefs()
+            self._ReadHead()
 
             scan = self._symref
             attempts = 0
@@ -102,64 +104,91 @@ class GitRefs:
                 scan = scan_next
                 attempts += 1
 
-    def _ReadPackedRefs(self):
-        path = os.path.join(self._gitdir, "packed-refs")
+            self._TrackMtime("")
+            self._TrackMtime(HEAD)
+            self._TrackMtime("config")
+            self._TrackMtime("packed-refs")
+            self._TrackTreeMtimes("refs")
+            self._TrackTreeMtimes("reftable")
+
+    def _Run(self, *cmd):
+        return subprocess.run(
+            ["git", f"--git-dir={self._gitdir}", *cmd],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            encoding="utf-8",
+            errors="replace",
+            check=False,
+        )
+
+    @staticmethod
+    def _IsNullRef(ref_id):
+        return ref_id and all(ch == "0" for ch in ref_id)
+
+    def _ReadRefs(self):
+        ret = self._Run(
+            "for-each-ref",
+            "--format=%(objectname)\t%(refname)\t%(symref)",
+        )
+        if ret.returncode != 0:
+            return
+
+        for line in ret.stdout.splitlines():
+            fields = line.split("\t")
+            if len(fields) < 2:
+                continue
+
+            ref_id, name = fields[:2]
+            symref = fields[2] if len(fields) > 2 else ""
+            if symref:
+                self._symref[name] = symref
+            elif ref_id and not self._IsNullRef(ref_id):
+                self._phyref[name] = ref_id
+
+    def _ReadHead(self):
+        ret = self._Run("symbolic-ref", "-q", HEAD)
+        if ret.returncode == 0:
+            ref = ret.stdout.strip()
+            if ref:
+                self._symref[HEAD] = ref
+                return
+
+        ret = self._Run("rev-parse", "--verify", "-q", HEAD)
+        if ret.returncode == 0:
+            ref_id = ret.stdout.strip()
+            if ref_id:
+                self._phyref[HEAD] = ref_id
+
+    def _TrackMtime(self, name):
+        if name:
+            path = os.path.join(self._gitdir, name)
+        else:
+            path = self._gitdir
         try:
-            fd = open(path)
-            mtime = os.path.getmtime(path)
+            self._mtime[name] = os.path.getmtime(path)
         except OSError:
             return
+
+    def _TrackTreeMtimes(self, root):
+        root_path = os.path.join(self._gitdir, root)
         try:
-            for line in fd:
-                line = str(line)
-                if line[0] == "#":
-                    continue
-                if line[0] == "^":
-                    continue
-
-                line = line[:-1]
-                p = line.split(" ")
-                ref_id = p[0]
-                name = p[1]
-
-                self._phyref[name] = ref_id
-        finally:
-            fd.close()
-        self._mtime["packed-refs"] = mtime
-
-    def _ReadLoose(self, prefix):
-        base = os.path.join(self._gitdir, prefix)
-        for name in platform_utils.listdir(base):
-            p = os.path.join(base, name)
-            # We don't implement the full ref validation algorithm, just the
-            # simple rules that would show up in local filesystems.
-            # https://git-scm.com/docs/git-check-ref-format
-            if name.startswith(".") or name.endswith(".lock"):
-                pass
-            elif platform_utils.isdir(p):
-                self._mtime[prefix] = os.path.getmtime(base)
-                self._ReadLoose(prefix + name + "/")
-            else:
-                self._ReadLoose1(p, prefix + name)
-
-    def _ReadLoose1(self, path, name):
-        try:
-            with open(path) as fd:
-                mtime = os.path.getmtime(path)
-                ref_id = fd.readline()
-        except (OSError, UnicodeError):
+            if not platform_utils.isdir(root_path):
+                return
+        except OSError:
             return
 
-        try:
-            ref_id = ref_id.decode()
-        except AttributeError:
-            pass
-        if not ref_id:
-            return
-        ref_id = ref_id[:-1]
+        to_scan = [root]
+        while to_scan:
+            name = to_scan.pop()
+            self._TrackMtime(name)
+            path = os.path.join(self._gitdir, name)
+            if not platform_utils.isdir(path):
+                continue
 
-        if ref_id.startswith("ref: "):
-            self._symref[name] = ref_id[5:]
-        else:
-            self._phyref[name] = ref_id
-        self._mtime[name] = mtime
+            for child in platform_utils.listdir(path):
+                child_name = os.path.join(name, child)
+                child_path = os.path.join(self._gitdir, child_name)
+                if platform_utils.isdir(child_path):
+                    to_scan.append(child_name)
+                else:
+                    self._TrackMtime(child_name)
