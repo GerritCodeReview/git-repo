@@ -18,6 +18,8 @@ If you want to write a per-test fixture, see conftest.py instead.
 """
 
 import contextlib
+import functools
+import os
 from pathlib import Path
 import subprocess
 import tempfile
@@ -51,3 +53,42 @@ def TempGitTree():
     with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
         init_git_tree(tempdir)
         yield tempdir
+
+
+@functools.lru_cache(maxsize=None)
+def supports_reftable():
+    """Check if git supports reftable."""
+    with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+        repo = os.path.join(tempdir, "repo")
+        proc = subprocess.run(
+            ["git", "-c", "init.defaultRefFormat=reftable", "init", "-q", repo],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    return proc.returncode == 0
+
+
+@functools.lru_cache(maxsize=None)
+def supports_refs_migrate():
+    """Check if git supports refs migrate."""
+    with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+        repo = os.path.join(tempdir, "repo")
+        subprocess.check_call(
+            ["git", "-c", "init.defaultRefFormat=files", "init", "-q", repo]
+        )
+        proc = subprocess.run(
+            [
+                "git",
+                "-C",
+                repo,
+                "refs",
+                "migrate",
+                "--ref-format=reftable",
+                "--dry-run",
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    return proc.returncode == 0
