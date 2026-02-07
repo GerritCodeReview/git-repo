@@ -23,9 +23,11 @@ Examples:
 """
 
 import functools
+import glob
 import hashlib
 import os
 import sys
+import tempfile
 import time
 from typing import NamedTuple
 import urllib.parse
@@ -34,6 +36,7 @@ from git_command import git_require
 from git_command import GitCommand
 from git_config import RepoConfig
 from git_refs import GitRefs
+import platform_utils
 
 
 _SUPERPROJECT_GIT_NAME = "superproject.git"
@@ -215,30 +218,63 @@ class Superproject:
         """
         if not os.path.exists(self._superproject_path):
             os.mkdir(self._superproject_path)
-        if not self._quiet and not os.path.exists(self._work_git):
+
+        if os.path.exists(self._work_git):
+            return True
+
+        if not self._quiet:
             print(
                 "%s: Performing initial setup for superproject; this might "
                 "take several minutes." % self._work_git
             )
-        cmd = ["init", "--bare", self._work_git_name]
-        p = GitCommand(
-            None,
-            cmd,
-            cwd=self._superproject_path,
-            capture_stdout=True,
-            capture_stderr=True,
+
+        tmp_gitdir_prefix = ".tmp-superproject-initgitdir-"
+        tmp_gitdir = tempfile.mkdtemp(
+            prefix=tmp_gitdir_prefix,
+            dir=self._superproject_path,
         )
-        retval = p.Wait()
-        if retval:
-            self._LogWarning(
-                "git init call failed, command: git {}, "
-                "return code: {}, stderr: {}",
+        tmp_git_name = os.path.basename(tmp_gitdir)
+
+        try:
+            cmd = ["init", "--bare", tmp_git_name]
+            p = GitCommand(
+                None,
                 cmd,
-                retval,
-                p.stderr,
+                cwd=self._superproject_path,
+                capture_stdout=True,
+                capture_stderr=True,
             )
-            return False
-        return True
+            retval = p.Wait()
+            if retval:
+                self._LogWarning(
+                    "git init call failed, command: git {}, "
+                    "return code: {}, stderr: {}",
+                    cmd,
+                    retval,
+                    p.stderr,
+                )
+                return False
+
+            platform_utils.rename(tmp_gitdir, self._work_git)
+            tmp_gitdir = None
+            return True
+        finally:
+            # Clean up the temporary directory created during the process,
+            # as well as any stale ones left over from previous attempts.
+            if tmp_gitdir and os.path.exists(tmp_gitdir):
+                platform_utils.rmtree(tmp_gitdir)
+
+            age_threshold = 60 * 60 * 24  # 1 day in seconds
+            now = time.time()
+            for tmp_dir in glob.glob(
+                os.path.join(self._superproject_path, f"{tmp_gitdir_prefix}*")
+            ):
+                try:
+                    mtime = os.path.getmtime(tmp_dir)
+                    if now - mtime > age_threshold:
+                        platform_utils.rmtree(tmp_dir)
+                except OSError:
+                    pass
 
     def _Fetch(self):
         """Fetches a superproject for the manifest based on |_remote_url|.
