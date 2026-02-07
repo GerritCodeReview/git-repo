@@ -215,7 +215,11 @@ class Superproject:
         """
         if not os.path.exists(self._superproject_path):
             os.mkdir(self._superproject_path)
-        if not self._quiet and not os.path.exists(self._work_git):
+
+        if os.path.exists(self._work_git):
+            return True
+
+        if not self._quiet:
             print(
                 "%s: Performing initial setup for superproject; this might "
                 "take several minutes." % self._work_git
