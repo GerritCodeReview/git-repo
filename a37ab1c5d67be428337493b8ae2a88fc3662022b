@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "112589a1_f4b37aea",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3641,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-10T02:13:36Z",
+      "side": 1,
+      "message": "```suggestion\n        else:\n```",
+      "revId": "a37ab1c5d67be428337493b8ae2a88fc3662022b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e493739b_5f5a2aa6",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3655,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-10T02:13:36Z",
+      "side": 1,
+      "message": "not sorted ... can you add go/keep-sorted blocks to this to keep it from breaking in the future ?",
+      "revId": "a37ab1c5d67be428337493b8ae2a88fc3662022b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bea005fd_bd2b1840",
+        "filename": "tests/test_project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-10T02:13:36Z",
+      "side": 1,
+      "message": "same here wrt sorting",
+      "revId": "a37ab1c5d67be428337493b8ae2a88fc3662022b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
