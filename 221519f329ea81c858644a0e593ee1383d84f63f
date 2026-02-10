@@ -16,6 +16,24 @@
       "message": "changing this lwrite section seems to be the only part aligned with the commit message.  the rest of the code is about refactoring into a try+finally block that isn\u0027t actually required for this ?",
       "revId": "221519f329ea81c858644a0e593ee1383d84f63f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9a54956_ec8871ed",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 2792,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-02-10T19:49:36Z",
+      "side": 0,
+      "message": "the previous implementation would leave the temp refs if, for example, the user runs into the GitAuthError. so the refactoring isn\u0027t strictly required for the lwrite changes but I added it so they always get cleaned up",
+      "parentUuid": "5a686c9d_b247ad2e",
+      "revId": "221519f329ea81c858644a0e593ee1383d84f63f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
