@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fe6d092_010f7c27",
+        "filename": "git_refs.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-10T02:06:23Z",
+      "side": 1,
+      "message": "please add docstrings (at least a one-liner) and typing to all new funcs",
+      "revId": "221519f329ea81c858644a0e593ee1383d84f63f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d82fe968_876a6177",
+        "filename": "git_refs.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-10T02:06:23Z",
+      "side": 1,
+      "message": "we have `git.GitCommand` already for abstracting git interfaces.  why can\u0027t we keep using that ?",
+      "revId": "221519f329ea81c858644a0e593ee1383d84f63f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a711442_00a42991",
+        "filename": "tests/test_git_refs.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-10T02:06:23Z",
+      "side": 1,
+      "message": "you can\u0027t modify the env in global scope like this.  it modifies all state at import time.\n\ni\u0027m not sure what this is for ... we already disable tracing via conftest.py:disable_repo_trace",
+      "revId": "221519f329ea81c858644a0e593ee1383d84f63f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "432961bd_518c850c",
+        "filename": "tests/test_git_refs.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-10T02:06:23Z",
+      "side": 1,
+      "message": "i\u0027m guessing your goal is to cache these values.  use `@functools.lru_cache(maxsize\u003dNone)` on the funcs instead.",
+      "revId": "221519f329ea81c858644a0e593ee1383d84f63f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
