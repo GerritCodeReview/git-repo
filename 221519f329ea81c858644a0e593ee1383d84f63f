@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a686c9d_b247ad2e",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 2792,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-10T02:11:34Z",
+      "side": 0,
+      "message": "changing this lwrite section seems to be the only part aligned with the commit message.  the rest of the code is about refactoring into a try+finally block that isn\u0027t actually required for this ?",
+      "revId": "221519f329ea81c858644a0e593ee1383d84f63f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
