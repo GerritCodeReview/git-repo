@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a36e4ab1_5941b2bc",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3948,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-11T20:27:13Z",
+      "side": 1,
+      "message": "should this warning be after the new logic below ?",
+      "revId": "4f24075a637becd93c16c485d29257d41f75ffbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8d41535_44ee7a43",
+        "filename": "tests/test_project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-11T20:27:13Z",
+      "side": 1,
+      "message": "aren\u0027t you duplicating this with a parent CL ?\n\nhttp://gerrit-review.googlesource.com/c/550401/6/tests/test_git_refs.py#28\n\nwe haven\u0027t had much code sharing between test modules so far, but it looks like importing them directly should just work.  so if you wanted to define the helpers in test_git_refs because it mirrors where the underlying checks are, you can have other test modules import test_git_refs for its helpers.\n\nconftest.py exists for defining some shared code, but that tends to be for fixtures rather than specific APIs.",
+      "revId": "4f24075a637becd93c16c485d29257d41f75ffbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
