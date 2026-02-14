@@ -923,7 +923,7 @@ class SuperProjectElementTests(ManifestParseTestCase):
         manifest = self.getXmlManifest(
             """
 <manifest>
-  <remote name="test-remote" fetch="http://localhost" revision="refs/heads/main" />
+  <remote name="test-remote" fetch="http://localhost" revision="refs/heads/main" lfsurl="http://localhost/lfs"/>
   <default remote="test-remote" />
   <superproject name="superproject" revision="refs/heads/stable" />
 </manifest>
@@ -938,11 +938,13 @@ class SuperProjectElementTests(ManifestParseTestCase):
         self.assertEqual(
             sort_attributes(manifest.ToXml().toxml()),
             '<?xml version="1.0" ?><manifest>'
-            '<remote fetch="http://localhost" name="test-remote" revision="refs/heads/main"/>'  # noqa: E501
+            '<remote fetch="http://localhost" lfsurl="http://localhost/lfs" name="test-remote" revision="refs/heads/main"/>'  # noqa: E501
             '<default remote="test-remote"/>'
             '<superproject name="superproject" revision="refs/heads/stable"/>'
             "</manifest>",
         )
+        self.assertEqual(manifest.superproject.remote.lfsUrl,
+                         "http://localhost/lfs")
 
     def test_remote(self):
         """Check superproject settings with a remote."""

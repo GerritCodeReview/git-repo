@@ -517,6 +517,7 @@ class RemoteSpec:
         name,
         url=None,
         pushUrl=None,
+        lfsUrl=None,
         review=None,
         revision=None,
         orig_name=None,
@@ -525,6 +526,7 @@ class RemoteSpec:
         self.name = name
         self.url = url
         self.pushUrl = pushUrl
+        self.lfsUrl = lfsUrl
         self.review = review
         self.revision = revision
         self.orig_name = orig_name
@@ -2328,6 +2330,7 @@ class Project:
                 self.remote.name,
                 url=url,
                 pushUrl=self.remote.pushUrl,
+                lfsUrl=self.remote.lfsUrl,
                 review=self.remote.review,
                 revision=self.remote.revision,
             )
@@ -3307,6 +3310,7 @@ class Project:
             remote = self.GetRemote()
             remote.url = self.remote.url
             remote.pushUrl = self.remote.pushUrl
+            remote.lfsUrl = self.remote.lfsUrl
             remote.review = self.remote.review
             remote.projectname = self.name
 
