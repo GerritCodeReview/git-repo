@@ -240,6 +240,7 @@ The `[branch]` settings are updated by `repo start` and `git branch`.
 | remote.\<remote\>.fetch               | sync          | Set of refs to fetch |
 | remote.\<remote\>.projectname         | \<network\>   | The name of the project as it exists in Gerrit review |
 | remote.\<remote\>.pushurl             | upload        | The base URI for pushing CLs |
+| remote.\<remote\>.lfsurl              | sync & upload | The base URI for LFS endpoint |
 | remote.\<remote\>.review              | upload        | The URI of the Gerrit review server |
 | remote.\<remote\>.url                 | sync & upload | The URI of the git project to fetch |
 | branch.\<branch\>.merge               | sync & upload | The branch to merge & upload & track |

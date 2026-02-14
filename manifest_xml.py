@@ -178,6 +178,7 @@ class _XmlRemote:
         alias=None,
         fetch=None,
         pushUrl=None,
+        lfsUrl=None,
         manifestUrl=None,
         review=None,
         revision=None,
@@ -185,6 +186,7 @@ class _XmlRemote:
         self.name = name
         self.fetchUrl = fetch
         self.pushUrl = pushUrl
+        self.lfsUrl = lfsUrl
         self.manifestUrl = manifestUrl
         self.remoteAlias = alias
         self.reviewUrl = review
@@ -200,6 +202,7 @@ class _XmlRemote:
             and self.name == other.name
             and self.fetchUrl == other.fetchUrl
             and self.pushUrl == other.pushUrl
+            and self.lfsUrl == other.lfsUrl
             and self.remoteAlias == other.remoteAlias
             and self.reviewUrl == other.reviewUrl
             and self.revision == other.revision
@@ -238,6 +241,7 @@ class _XmlRemote:
             remoteName,
             url=url,
             pushUrl=self.pushUrl,
+            lfsUrl=self.lfsUrl,
             review=self.reviewUrl,
             orig_name=self.name,
             fetchUrl=self.fetchUrl,
@@ -518,6 +522,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         e.setAttribute("fetch", r.fetchUrl)
         if r.pushUrl is not None:
             e.setAttribute("pushurl", r.pushUrl)
+        if r.lfsUrl is not None:
+            e.setAttribute("lfsurl", r.lfsUrl)
         if r.remoteAlias is not None:
             e.setAttribute("alias", r.remoteAlias)
         if r.reviewUrl is not None:
@@ -1729,6 +1735,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         pushUrl = node.getAttribute("pushurl")
         if pushUrl == "":
             pushUrl = None
+        lfsUrl = node.getAttribute("lfsurl")
+        if lfsUrl == "":
+            lfsUrl = None
         review = node.getAttribute("review")
         if review == "":
             review = None
@@ -1738,7 +1747,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         manifestUrl = self.manifestProject.config.GetString("remote.origin.url")
 
         remote = _XmlRemote(
-            name, alias, fetch, pushUrl, manifestUrl, review, revision
+            name, alias, fetch, pushUrl, lfsUrl, manifestUrl, review, revision
         )
 
         for n in node.childNodes:
