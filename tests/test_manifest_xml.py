@@ -949,7 +949,8 @@ class TestSuperProjectElement:
             """
 <manifest>
   <remote name="test-remote" fetch="http://localhost"
-          revision="refs/heads/main" />
+          revision="refs/heads/main"
+          lfsurl="http://localhost/lfs" />
   <default remote="test-remote" />
   <superproject name="superproject" revision="refs/heads/stable" />
 </manifest>
@@ -964,11 +965,12 @@ class TestSuperProjectElement:
         assert (
             sort_attributes(manifest.ToXml().toxml())
             == '<?xml version="1.0" ?><manifest>'
-            '<remote fetch="http://localhost" name="test-remote" revision="refs/heads/main"/>'  # noqa: E501
+            '<remote fetch="http://localhost" lfsurl="http://localhost/lfs" name="test-remote" revision="refs/heads/main"/>'  # noqa: E501
             '<default remote="test-remote"/>'
             '<superproject name="superproject" revision="refs/heads/stable"/>'
             "</manifest>"
         )
+        assert manifest.superproject.remote.lfsUrl == "http://localhost/lfs"
 
     def test_remote(self, repo_client: RepoClient) -> None:
         """Check superproject settings with a remote."""
