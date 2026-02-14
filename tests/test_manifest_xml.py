@@ -111,11 +111,9 @@ class ManifestParseTestCase(unittest.TestCase):
         # The manifest parsing really wants a git repo currently.
         gitdir = self.repodir / "manifests.git"
         gitdir.mkdir()
-        (gitdir / "config").write_text(
-            """[remote "origin"]
+        (gitdir / "config").write_text("""[remote "origin"]
         url = https://localhost:0/manifest
-"""
-        )
+""")
 
     def tearDown(self):
         self.tempdirobj.cleanup()
@@ -304,16 +302,14 @@ class XmlManifestTests(ManifestParseTestCase):
 
     def test_repo_hooks(self):
         """Check repo-hooks settings."""
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
   <project name="repohooks" path="src/repohooks"/>
   <repo-hooks in-project="repohooks" enabled-list="a, b"/>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(manifest.repo_hooks_project.name, "repohooks")
         self.assertEqual(
             manifest.repo_hooks_project.enabled_repo_hooks, ["a", "b"]
@@ -321,16 +317,14 @@ class XmlManifestTests(ManifestParseTestCase):
 
     def test_repo_hooks_unordered(self):
         """Check repo-hooks settings work even if the project def comes second."""  # noqa: E501
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
   <repo-hooks in-project="repohooks" enabled-list="a, b"/>
   <project name="repohooks" path="src/repohooks"/>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(manifest.repo_hooks_project.name, "repohooks")
         self.assertEqual(
             manifest.repo_hooks_project.enabled_repo_hooks, ["a", "b"]
@@ -338,8 +332,7 @@ class XmlManifestTests(ManifestParseTestCase):
 
     def test_unknown_tags(self):
         """Check superproject settings."""
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
@@ -347,8 +340,7 @@ class XmlManifestTests(ManifestParseTestCase):
   <iankaz value="unknown (possible) future tags are ignored"/>
   <x-custom-tag>X tags are always ignored</x-custom-tag>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(manifest.superproject.name, "superproject")
         self.assertEqual(manifest.superproject.remote.name, "test-remote")
         self.assertEqual(
@@ -362,15 +354,13 @@ class XmlManifestTests(ManifestParseTestCase):
 
     def test_remote_annotations(self):
         """Check remote settings."""
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost">
     <annotation name="foo" value="bar"/>
   </remote>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(
             manifest.remotes["test-remote"].annotations[0].name, "foo"
         )
@@ -388,16 +378,14 @@ class XmlManifestTests(ManifestParseTestCase):
 
     def test_parse_with_xml_doctype(self):
         """Check correct manifest parse with DOCTYPE node present."""
-        manifest = self.getXmlManifest(
-            """<?xml version="1.0" encoding="UTF-8"?>
+        manifest = self.getXmlManifest("""<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE manifest []>
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
   <project name="test-project" path="src/test-project"/>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(len(manifest.projects), 1)
         self.assertEqual(manifest.projects[0].name, "test-project")
 
@@ -434,8 +422,7 @@ class IncludeElementTests(ManifestParseTestCase):
     def test_revision_default(self):
         """Check handling of revision attribute."""
         root_m = self.manifest_dir / "root.xml"
-        root_m.write_text(
-            """
+        root_m.write_text("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
@@ -443,34 +430,27 @@ class IncludeElementTests(ManifestParseTestCase):
   <project name="root-name1" path="root-path1" />
   <project name="root-name2" path="root-path2" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "stable.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "stable.xml").write_text("""
 <manifest>
   <include name="man1.xml" />
   <include name="man2.xml" revision="stable-branch2" />
   <project name="stable-name1" path="stable-path1" />
   <project name="stable-name2" path="stable-path2" revision="stable-branch2" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "man1.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "man1.xml").write_text("""
 <manifest>
   <project name="man1-name1" />
   <project name="man1-name2" revision="stable-branch3" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "man2.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "man2.xml").write_text("""
 <manifest>
   <project name="man2-name1" />
   <project name="man2-name2" revision="stable-branch3" />
 </manifest>
-"""
-        )
+""")
         include_m = manifest_xml.XmlManifest(str(self.repodir), str(root_m))
         for proj in include_m.projects:
             if proj.name == "root-name1":
@@ -496,8 +476,7 @@ class IncludeElementTests(ManifestParseTestCase):
 
     def test_group_levels(self):
         root_m = self.manifest_dir / "root.xml"
-        root_m.write_text(
-            """
+        root_m.write_text("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
@@ -505,23 +484,18 @@ class IncludeElementTests(ManifestParseTestCase):
   <project name="root-name1" path="root-path1" />
   <project name="root-name2" path="root-path2" groups="r2g1,r2g2" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "level1.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "level1.xml").write_text("""
 <manifest>
   <include name="level2.xml" groups="level2-group" />
   <project name="level1-name1" path="level1-path1" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "level2.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "level2.xml").write_text("""
 <manifest>
   <project name="level2-name1" path="level2-path1" groups="l2g1,l2g2" />
 </manifest>
-"""
-        )
+""")
         include_m = manifest_xml.XmlManifest(str(self.repodir), str(root_m))
         for proj in include_m.projects:
             if proj.name == "root-name1":
@@ -542,30 +516,24 @@ class IncludeElementTests(ManifestParseTestCase):
 
     def test_group_levels_with_extend_project(self):
         root_m = self.manifest_dir / "root.xml"
-        root_m.write_text(
-            """
+        root_m.write_text("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
   <include name="man1.xml" groups="top-group1" />
   <include name="man2.xml" groups="top-group2" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "man1.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "man1.xml").write_text("""
 <manifest>
   <project name="project1" path="project1" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "man2.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "man2.xml").write_text("""
 <manifest>
   <extend-project name="project1" groups="eg1" />
 </manifest>
-"""
-        )
+""")
         include_m = manifest_xml.XmlManifest(str(self.repodir), str(root_m))
         proj = include_m.projects[0]
         # Check project has inherited group via project element.
@@ -578,23 +546,19 @@ class IncludeElementTests(ManifestParseTestCase):
     def test_extend_project_does_not_inherit_local_groups(self):
         """Check that extend-project does not inherit local groups."""
         root_m = self.manifest_dir / "root.xml"
-        root_m.write_text(
-            """
+        root_m.write_text("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
   <project name="project1" path="project1" />
   <include name="man1.xml" groups="g1,local:g2" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "man1.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "man1.xml").write_text("""
 <manifest>
   <extend-project name="project1" groups="g3" />
 </manifest>
-"""
-        )
+""")
         include_m = manifest_xml.XmlManifest(str(self.repodir), str(root_m))
         proj = include_m.projects[0]
 
@@ -607,15 +571,13 @@ class IncludeElementTests(ManifestParseTestCase):
 
         def parse(name):
             name = self.encodeXmlAttr(name)
-            manifest = self.getXmlManifest(
-                f"""
+            manifest = self.getXmlManifest(f"""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <include name="{name}" />
 </manifest>
-"""
-            )
+""")
             # Force the manifest to be parsed.
             manifest.ToXml()
 
@@ -639,15 +601,13 @@ class IncludeElementTests(ManifestParseTestCase):
                 f'<manifest><include name="{name}"/></manifest>'
             )
 
-            manifest = self.getXmlManifest(
-                """
+            manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <include name="target.xml" />
 </manifest>
-"""
-            )
+""")
             # Force the manifest to be parsed.
             manifest.ToXml()
 
@@ -668,16 +628,14 @@ class ProjectElementTests(ManifestParseTestCase):
 
     def test_group(self):
         """Check project group settings."""
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
   <project name="test-name" path="test-path"/>
   <project name="extras" path="path" groups="g1,g2,g1"/>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(len(manifest.projects), 2)
         # Ordering isn't guaranteed.
         result = {
@@ -699,15 +657,13 @@ class ProjectElementTests(ManifestParseTestCase):
 
     def test_set_revision_id(self):
         """Check setting of project's revisionId."""
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <project name="test-name"/>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(len(manifest.projects), 1)
         project = manifest.projects[0]
         project.SetRevisionId("ABCDEF")
@@ -726,15 +682,13 @@ class ProjectElementTests(ManifestParseTestCase):
         def parse(name, path):
             name = self.encodeXmlAttr(name)
             path = self.encodeXmlAttr(path)
-            return self.getXmlManifest(
-                f"""
+            return self.getXmlManifest(f"""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <project name="{name}" path="{path}" />
 </manifest>
-"""
-            )
+""")
 
         manifest = parse("a/path/", "foo")
         self.assertEqual(
@@ -778,15 +732,13 @@ class ProjectElementTests(ManifestParseTestCase):
         def parse(name, path):
             name = self.encodeXmlAttr(name)
             path = self.encodeXmlAttr(path)
-            return self.getXmlManifest(
-                f"""
+            return self.getXmlManifest(f"""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <project name="{name}" path="{path}" />
 </manifest>
-"""
-            )
+""")
 
         for path in (".", "./", ".//", ".///"):
             manifest = parse("server/path", path)
@@ -801,15 +753,13 @@ class ProjectElementTests(ManifestParseTestCase):
         def parse(name, path):
             name = self.encodeXmlAttr(name)
             path = self.encodeXmlAttr(path)
-            manifest = self.getXmlManifest(
-                f"""
+            manifest = self.getXmlManifest(f"""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <project name="{name}" path="{path}" />
 </manifest>
-"""
-            )
+""")
             # Force the manifest to be parsed.
             manifest.ToXml()
 
@@ -839,15 +789,13 @@ class SuperProjectElementTests(ManifestParseTestCase):
 
     def test_superproject(self):
         """Check superproject settings."""
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
   <superproject name="superproject"/>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(manifest.superproject.name, "superproject")
         self.assertEqual(manifest.superproject.remote.name, "test-remote")
         self.assertEqual(
@@ -866,15 +814,13 @@ class SuperProjectElementTests(ManifestParseTestCase):
     def test_superproject_revision(self):
         """Check superproject settings with a different revision attribute"""
         self.maxDiff = None
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
   <superproject name="superproject" revision="refs/heads/stable" />
 </manifest>
-"""
-        )
+""")
         self.assertEqual(manifest.superproject.name, "superproject")
         self.assertEqual(manifest.superproject.remote.name, "test-remote")
         self.assertEqual(
@@ -893,15 +839,13 @@ class SuperProjectElementTests(ManifestParseTestCase):
     def test_superproject_revision_default_negative(self):
         """Check superproject settings with a same revision attribute"""
         self.maxDiff = None
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/stable" />
   <superproject name="superproject" revision="refs/heads/stable" />
 </manifest>
-"""
-        )
+""")
         self.assertEqual(manifest.superproject.name, "superproject")
         self.assertEqual(manifest.superproject.remote.name, "test-remote")
         self.assertEqual(
@@ -920,15 +864,13 @@ class SuperProjectElementTests(ManifestParseTestCase):
     def test_superproject_revision_remote(self):
         """Check superproject settings with a same revision attribute"""
         self.maxDiff = None
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
-  <remote name="test-remote" fetch="http://localhost" revision="refs/heads/main" />
+  <remote name="test-remote" fetch="http://localhost" revision="refs/heads/main" lfsurl="http://localhost/lfs"/>
   <default remote="test-remote" />
   <superproject name="superproject" revision="refs/heads/stable" />
 </manifest>
-"""  # noqa: E501
-        )
+""")  # noqa: E501
         self.assertEqual(manifest.superproject.name, "superproject")
         self.assertEqual(manifest.superproject.remote.name, "test-remote")
         self.assertEqual(
@@ -938,24 +880,25 @@ class SuperProjectElementTests(ManifestParseTestCase):
         self.assertEqual(
             sort_attributes(manifest.ToXml().toxml()),
             '<?xml version="1.0" ?><manifest>'
-            '<remote fetch="http://localhost" name="test-remote" revision="refs/heads/main"/>'  # noqa: E501
+            '<remote fetch="http://localhost" lfsurl="http://localhost/lfs" name="test-remote" revision="refs/heads/main"/>'  # noqa: E501
             '<default remote="test-remote"/>'
             '<superproject name="superproject" revision="refs/heads/stable"/>'
             "</manifest>",
         )
+        self.assertEqual(
+            manifest.superproject.remote.lfsUrl, "http://localhost/lfs"
+        )
 
     def test_remote(self):
         """Check superproject settings with a remote."""
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <remote name="superproject-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <superproject name="platform/superproject" remote="superproject-remote"/>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(manifest.superproject.name, "platform/superproject")
         self.assertEqual(
             manifest.superproject.remote.name, "superproject-remote"
@@ -977,15 +920,13 @@ class SuperProjectElementTests(ManifestParseTestCase):
 
     def test_defalut_remote(self):
         """Check superproject settings with a default remote."""
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <superproject name="superproject" remote="default-remote"/>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(manifest.superproject.name, "superproject")
         self.assertEqual(manifest.superproject.remote.name, "default-remote")
         self.assertEqual(manifest.superproject.revision, "refs/heads/main")
@@ -1005,13 +946,11 @@ class ContactinfoElementTests(ManifestParseTestCase):
     def test_contactinfo(self):
         """Check contactinfo settings."""
         bugurl = "http://localhost/contactinfo"
-        manifest = self.getXmlManifest(
-            f"""
+        manifest = self.getXmlManifest(f"""
 <manifest>
   <contactinfo bugurl="{bugurl}"/>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(manifest.contactinfo.bugurl, bugurl)
         self.assertEqual(
             manifest.ToXml().toxml(),
@@ -1064,21 +1003,18 @@ class RemoveProjectElementTests(ManifestParseTestCase):
     """Tests for <remove-project>."""
 
     def test_remove_one_project(self):
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <project name="myproject" />
   <remove-project name="myproject" />
 </manifest>
-"""
-        )
+""")
         self.assertEqual(manifest.projects, [])
 
     def test_remove_one_project_one_remains(self):
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
@@ -1086,40 +1022,34 @@ class RemoveProjectElementTests(ManifestParseTestCase):
   <project name="yourproject" />
   <remove-project name="myproject" />
 </manifest>
-"""
-        )
+""")
 
         self.assertEqual(len(manifest.projects), 1)
         self.assertEqual(manifest.projects[0].name, "yourproject")
 
     def test_remove_one_project_doesnt_exist(self):
         with self.assertRaises(manifest_xml.ManifestParseError):
-            manifest = self.getXmlManifest(
-                """
+            manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <remove-project name="myproject" />
 </manifest>
-"""
-            )
+""")
             manifest.projects
 
     def test_remove_one_optional_project_doesnt_exist(self):
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <remove-project name="myproject" optional="true" />
 </manifest>
-"""
-        )
+""")
         self.assertEqual(manifest.projects, [])
 
     def test_remove_using_path_attrib(self):
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
@@ -1138,8 +1068,7 @@ class RemoveProjectElementTests(ManifestParseTestCase):
   <remove-project path="project5" />
   <remove-project path="tests/path6" />
 </manifest>
-"""
-        )
+""")
         found_proj1_path1 = False
         found_proj2 = False
         for proj in manifest.projects:
@@ -1156,60 +1085,51 @@ class RemoveProjectElementTests(ManifestParseTestCase):
         self.assertTrue(found_proj2)
 
     def test_base_revision_checks_on_patching(self):
-        manifest_fail_wrong_tag = self.getXmlManifest(
-            """
+        manifest_fail_wrong_tag = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="tag.002" />
   <project name="project1" path="tests/path1" />
   <extend-project name="project1" revision="new_hash" base-rev="tag.001" />
 </manifest>
-"""
-        )
+""")
         with self.assertRaises(error.ManifestParseError):
             manifest_fail_wrong_tag.ToXml()
 
-        manifest_fail_remove = self.getXmlManifest(
-            """
+        manifest_fail_remove = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <project name="project1" path="tests/path1" revision="hash1" />
   <remove-project name="project1" base-rev="wrong_hash" />
 </manifest>
-"""
-        )
+""")
         with self.assertRaises(error.ManifestParseError):
             manifest_fail_remove.ToXml()
 
-        manifest_fail_extend = self.getXmlManifest(
-            """
+        manifest_fail_extend = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <project name="project1" path="tests/path1" revision="hash1" />
   <extend-project name="project1" revision="new_hash" base-rev="wrong_hash" />
 </manifest>
-"""
-        )
+""")
         with self.assertRaises(error.ManifestParseError):
             manifest_fail_extend.ToXml()
 
-        manifest_fail_unknown = self.getXmlManifest(
-            """
+        manifest_fail_unknown = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <project name="project1" path="tests/path1" />
   <extend-project name="project1" revision="new_hash" base-rev="any_hash" />
 </manifest>
-"""
-        )
+""")
         with self.assertRaises(error.ManifestParseError):
             manifest_fail_unknown.ToXml()
 
-        manifest_ok = self.getXmlManifest(
-            """
+        manifest_ok = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
@@ -1225,8 +1145,7 @@ class RemoveProjectElementTests(ManifestParseTestCase):
   <extend-project name="project3" base-rev="new_hash3" revision="newer_hash3" />
   <remove-project path="tests/path4" base-rev="hash4" />
 </manifest>
-"""
-        )
+""")
         found_proj2 = False
         found_proj3 = False
         for proj in manifest_ok.projects:
@@ -1245,23 +1164,20 @@ class ExtendProjectElementTests(ManifestParseTestCase):
     """Tests for <extend-project>."""
 
     def test_extend_project_dest_path_single_match(self):
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <project name="myproject" />
   <extend-project name="myproject" dest-path="bar" />
 </manifest>
-"""
-        )
+""")
         self.assertEqual(len(manifest.projects), 1)
         self.assertEqual(manifest.projects[0].relpath, "bar")
 
     def test_extend_project_dest_path_multi_match(self):
         with self.assertRaises(manifest_xml.ManifestParseError):
-            manifest = self.getXmlManifest(
-                """
+            manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
@@ -1269,13 +1185,11 @@ class ExtendProjectElementTests(ManifestParseTestCase):
   <project name="myproject" path="y" />
   <extend-project name="myproject" dest-path="bar" />
 </manifest>
-"""
-            )
+""")
             manifest.projects
 
     def test_extend_project_dest_path_multi_match_path_specified(self):
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
@@ -1283,8 +1197,7 @@ class ExtendProjectElementTests(ManifestParseTestCase):
   <project name="myproject" path="y" />
   <extend-project name="myproject" path="x" dest-path="bar" />
 </manifest>
-"""
-        )
+""")
         self.assertEqual(len(manifest.projects), 2)
         if manifest.projects[0].relpath == "y":
             self.assertEqual(manifest.projects[1].relpath, "bar")
@@ -1293,36 +1206,31 @@ class ExtendProjectElementTests(ManifestParseTestCase):
             self.assertEqual(manifest.projects[1].relpath, "y")
 
     def test_extend_project_dest_branch(self):
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" dest-branch="foo" />
   <project name="myproject" />
   <extend-project name="myproject" dest-branch="bar" />
 </manifest>
-"""  # noqa: E501
-        )
+""")  # noqa: E501
         self.assertEqual(len(manifest.projects), 1)
         self.assertEqual(manifest.projects[0].dest_branch, "bar")
 
     def test_extend_project_upstream(self):
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <project name="myproject" />
   <extend-project name="myproject" upstream="bar" />
 </manifest>
-"""
-        )
+""")
         self.assertEqual(len(manifest.projects), 1)
         self.assertEqual(manifest.projects[0].upstream, "bar")
 
     def test_extend_project_copyfiles(self):
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
@@ -1331,8 +1239,7 @@ class ExtendProjectElementTests(ManifestParseTestCase):
     <copyfile src="foo" dest="bar" />
   </extend-project>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(list(manifest.projects[0].copyfiles)[0].src, "foo")
         self.assertEqual(list(manifest.projects[0].copyfiles)[0].dest, "bar")
         self.assertEqual(
@@ -1348,8 +1255,7 @@ class ExtendProjectElementTests(ManifestParseTestCase):
 
     def test_extend_project_duplicate_copyfiles(self):
         root_m = self.manifest_dir / "root.xml"
-        root_m.write_text(
-            """
+        root_m.write_text("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
@@ -1357,39 +1263,31 @@ class ExtendProjectElementTests(ManifestParseTestCase):
   <include name="man1.xml" />
   <include name="man2.xml" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "man1.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "man1.xml").write_text("""
 <manifest>
   <include name="common.xml" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "man2.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "man2.xml").write_text("""
 <manifest>
   <include name="common.xml" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "common.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "common.xml").write_text("""
 <manifest>
   <extend-project name="myproject">
     <copyfile dest="bar" src="foo"/>
   </extend-project>
 </manifest>
-"""
-        )
+""")
         manifest = manifest_xml.XmlManifest(str(self.repodir), str(root_m))
         self.assertEqual(len(manifest.projects[0].copyfiles), 1)
         self.assertEqual(list(manifest.projects[0].copyfiles)[0].src, "foo")
         self.assertEqual(list(manifest.projects[0].copyfiles)[0].dest, "bar")
 
     def test_extend_project_linkfiles(self):
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
@@ -1398,8 +1296,7 @@ class ExtendProjectElementTests(ManifestParseTestCase):
     <linkfile src="foo" dest="bar" />
   </extend-project>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(list(manifest.projects[0].linkfiles)[0].src, "foo")
         self.assertEqual(list(manifest.projects[0].linkfiles)[0].dest, "bar")
         self.assertEqual(
@@ -1415,8 +1312,7 @@ class ExtendProjectElementTests(ManifestParseTestCase):
 
     def test_extend_project_duplicate_linkfiles(self):
         root_m = self.manifest_dir / "root.xml"
-        root_m.write_text(
-            """
+        root_m.write_text("""
 <manifest>
   <remote name="test-remote" fetch="http://localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
@@ -1424,39 +1320,31 @@ class ExtendProjectElementTests(ManifestParseTestCase):
   <include name="man1.xml" />
   <include name="man2.xml" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "man1.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "man1.xml").write_text("""
 <manifest>
   <include name="common.xml" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "man2.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "man2.xml").write_text("""
 <manifest>
   <include name="common.xml" />
 </manifest>
-"""
-        )
-        (self.manifest_dir / "common.xml").write_text(
-            """
+""")
+        (self.manifest_dir / "common.xml").write_text("""
 <manifest>
   <extend-project name="myproject">
     <linkfile dest="bar" src="foo"/>
   </extend-project>
 </manifest>
-"""
-        )
+""")
         manifest = manifest_xml.XmlManifest(str(self.repodir), str(root_m))
         self.assertEqual(len(manifest.projects[0].linkfiles), 1)
         self.assertEqual(list(manifest.projects[0].linkfiles)[0].src, "foo")
         self.assertEqual(list(manifest.projects[0].linkfiles)[0].dest, "bar")
 
     def test_extend_project_annotations(self):
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
@@ -1465,8 +1353,7 @@ class ExtendProjectElementTests(ManifestParseTestCase):
     <annotation name="foo" value="bar" />
   </extend-project>
 </manifest>
-"""
-        )
+""")
         self.assertEqual(manifest.projects[0].annotations[0].name, "foo")
         self.assertEqual(manifest.projects[0].annotations[0].value, "bar")
         self.assertEqual(

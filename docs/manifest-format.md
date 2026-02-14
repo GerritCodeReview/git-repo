@@ -42,6 +42,7 @@ following DTD:
   <!ATTLIST remote alias        CDATA #IMPLIED>
   <!ATTLIST remote fetch        CDATA #REQUIRED>
   <!ATTLIST remote pushurl      CDATA #IMPLIED>
+  <!ATTLIST remote lfsurl       CDATA #IMPLIED>
   <!ATTLIST remote review       CDATA #IMPLIED>
   <!ATTLIST remote revision     CDATA #IMPLIED>
 
@@ -181,6 +182,11 @@ which use this remote.  Each project's name is appended to this
 prefix to form the actual URL used to "git push" the project.
 This attribute is optional; if not specified then "git push"
 will use the same URL as the `fetch` attribute.
+
+Attribute `lfsurl`: The Git LFS URL prefix for all projects
+which use this remote. Each project's name is appended to this
+prefix to form the actual URL used as LFS endpoint; if not
+specified the then same URL as the `fetch` attribute is used.
 
 Attribute `review`: Hostname of the Gerrit server where reviews
 are uploaded to by `repo upload`.  This attribute is optional;
