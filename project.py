@@ -62,7 +62,6 @@ import progress
 from repo_logging import RepoLogger
 from repo_trace import Trace
 
-
 logger = RepoLogger(__file__)
 
 
@@ -296,7 +295,7 @@ class ReviewableBranch:
         )
         for line in output.split("\n"):
             try:
-                (sha, ref) = line.split()
+                sha, ref = line.split()
                 refs[sha] = ref
             except ValueError:
                 pass
@@ -517,6 +516,7 @@ class RemoteSpec:
         name,
         url=None,
         pushUrl=None,
+        lfsUrl=None,
         review=None,
         revision=None,
         orig_name=None,
@@ -525,6 +525,7 @@ class RemoteSpec:
         self.name = name
         self.url = url
         self.pushUrl = pushUrl
+        self.lfsUrl = lfsUrl
         self.review = review
         self.revision = revision
         self.orig_name = orig_name
@@ -2328,6 +2329,7 @@ class Project:
                 self.remote.name,
                 url=url,
                 pushUrl=self.remote.pushUrl,
+                lfsUrl=self.remote.lfsUrl,
                 review=self.remote.review,
                 revision=self.remote.revision,
             )
@@ -2920,7 +2922,7 @@ class Project:
                 except OSError:
                     return False
 
-            (output, _) = proc.communicate()
+            output, _ = proc.communicate()
             curlret = proc.returncode
 
             if curlret in (22, 35, 56, 92):
@@ -3307,6 +3309,7 @@ class Project:
             remote = self.GetRemote()
             remote.url = self.remote.url
             remote.pushUrl = self.remote.pushUrl
+            remote.lfsUrl = self.remote.lfsUrl
             remote.review = self.remote.review
             remote.projectname = self.name
 

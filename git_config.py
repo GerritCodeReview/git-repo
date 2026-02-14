@@ -35,7 +35,6 @@ from git_refs import R_TAGS
 import platform_utils
 from repo_trace import Trace
 
-
 # Prefix that is prepended to all the keys of SyncAnalysisState's data
 # that is saved in the config.
 SYNC_STATE_PREFIX = "repo.syncstate."
@@ -569,6 +568,7 @@ class Remote:
         self.name = name
         self.url = self._Get("url")
         self.pushUrl = self._Get("pushurl")
+        self.lfsUrl = self._Get("lfsurl")
         self.review = self._Get("review")
         self.projectname = self._Get("projectname")
         self.fetch = list(
@@ -728,6 +728,10 @@ class Remote:
             self._Set("pushurl", self.pushUrl + "/" + self.projectname)
         else:
             self._Set("pushurl", self.pushUrl)
+        if self.lfsUrl is not None:
+            self._Set("lfsurl", self.lfsUrl + "/" + self.projectname)
+        else:
+            self._Set("lfsurl", self.lfsUrl)
         self._Set("review", self.review)
         self._Set("projectname", self.projectname)
         self._Set("fetch", list(map(str, self.fetch)))
