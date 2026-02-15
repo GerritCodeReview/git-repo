@@ -16,6 +16,24 @@
       "message": "`git-repo CL` fails because black and isort expect different formatting for `manifest_xml.py` and `tests/test_manifest_xml.py` -- it seems impossible to fulfil both",
       "revId": "687e81365257602ad60ff1ed09fa69032a08b604",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ada30987_ce09f63b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-15T01:59:58Z",
+      "side": 1,
+      "message": "i don\u0027t think that\u0027s true.  i took your commit, ran black on the files, and both isort \u0026 black are fine with the results.",
+      "parentUuid": "5a227c68_83670f80",
+      "revId": "687e81365257602ad60ff1ed09fa69032a08b604",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
