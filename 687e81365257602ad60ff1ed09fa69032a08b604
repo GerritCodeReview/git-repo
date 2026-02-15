@@ -34,6 +34,24 @@
       "parentUuid": "5a227c68_83670f80",
       "revId": "687e81365257602ad60ff1ed09fa69032a08b604",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e4bec99_02756845",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4561864
+      },
+      "writtenOn": "2026-02-15T18:57:14Z",
+      "side": 1,
+      "message": "after downgrading black from 26.1.0 to 25.1.0 I get the same results …",
+      "parentUuid": "ada30987_ce09f63b",
+      "revId": "687e81365257602ad60ff1ed09fa69032a08b604",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
