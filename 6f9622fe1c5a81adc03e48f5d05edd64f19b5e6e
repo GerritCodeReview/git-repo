@@ -16,6 +16,24 @@
       "message": "you seem to be making a lot of unrelated formatting changes in this file",
       "revId": "6f9622fe1c5a81adc03e48f5d05edd64f19b5e6e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f2e3b1e_e6eea46e",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 4561864
+      },
+      "writtenOn": "2026-02-15T19:08:32Z",
+      "side": 0,
+      "message": "black 26.1.0 changed this -- reverted …",
+      "parentUuid": "ed5e8ece_0d39beeb",
+      "revId": "6f9622fe1c5a81adc03e48f5d05edd64f19b5e6e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
