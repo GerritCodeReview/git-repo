@@ -52,6 +52,24 @@
       "parentUuid": "ada30987_ce09f63b",
       "revId": "687e81365257602ad60ff1ed09fa69032a08b604",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aed1cf49_89353e10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-16T01:38:45Z",
+      "side": 1,
+      "message": "26.x was released less than a month ago.  i don\u0027t think most distros have it yet in their stable track.  so i wouldn\u0027t upgrade our pipeline just yet.\n\nthe CQ run includes tool versions to make it clear what it\u0027s using.",
+      "parentUuid": "1e4bec99_02756845",
+      "revId": "687e81365257602ad60ff1ed09fa69032a08b604",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
