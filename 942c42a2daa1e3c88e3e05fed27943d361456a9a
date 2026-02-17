@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f2927e43_b1afb40e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-17T13:43:34Z",
+      "side": 1,
+      "message": "if this is something you want to pursue, the commit message needs expanding explaining what this is for and why it belongs in repo at all",
+      "revId": "942c42a2daa1e3c88e3e05fed27943d361456a9a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9bbfc593_96a007b1",
         "filename": "docs/manifest-format.md",
         "patchSetId": 6
