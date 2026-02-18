@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8390188c_652022c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4561864
+      },
+      "writtenOn": "2026-02-18T18:37:59Z",
+      "side": 1,
+      "message": "please take a look at Patchset 7, thx",
+      "parentUuid": "f2927e43_b1afb40e",
+      "revId": "942c42a2daa1e3c88e3e05fed27943d361456a9a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9bbfc593_96a007b1",
         "filename": "docs/manifest-format.md",
         "patchSetId": 6
