@@ -671,6 +671,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             if omit_local and self.IsFromLocalManifest(p):
                 return
 
+            # Skip projects whose worktree doesn't exist (e.g., after syncing
+            # to a manifest that removed the project).
+            if p.worktree and not platform_utils.isdir(p.worktree):
+                return
+
             name = p.name
             relpath = p.relpath
             if parent:
