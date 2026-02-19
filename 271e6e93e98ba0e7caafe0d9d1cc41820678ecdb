@@ -34,6 +34,24 @@
       "parentUuid": "7a0d98bd_88c684c8",
       "revId": "271e6e93e98ba0e7caafe0d9d1cc41820678ecdb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba486c7d_08cc1b59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-19T02:49:00Z",
+      "side": 1,
+      "message": "i think current behavior is logically what we want, so docs lgtm",
+      "parentUuid": "62e5d053_b23696d0",
+      "revId": "271e6e93e98ba0e7caafe0d9d1cc41820678ecdb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
