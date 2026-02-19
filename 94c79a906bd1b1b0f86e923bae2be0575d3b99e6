@@ -16,6 +16,24 @@
       "message": "use `tests:` prefix",
       "revId": "94c79a906bd1b1b0f86e923bae2be0575d3b99e6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c82dbc86_dfd6893c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1147902
+      },
+      "writtenOn": "2026-02-19T16:34:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0eb60bd6_e8003595",
+      "revId": "94c79a906bd1b1b0f86e923bae2be0575d3b99e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
