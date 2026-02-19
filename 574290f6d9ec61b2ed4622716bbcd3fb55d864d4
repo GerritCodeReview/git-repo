@@ -16,6 +16,23 @@
       "message": "Starting to upstream our internal (Meta) bugfixes and improvements, one at a time",
       "revId": "574290f6d9ec61b2ed4622716bbcd3fb55d864d4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6054e2d4_4cccdd2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-02-19T22:49:46Z",
+      "side": 1,
+      "message": "the change itself LGTM but please add a test to `tests/test_manifest_xml.py`",
+      "revId": "574290f6d9ec61b2ed4622716bbcd3fb55d864d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
