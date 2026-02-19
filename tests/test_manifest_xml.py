@@ -1480,6 +1480,46 @@ class ExtendProjectElementTests(ManifestParseTestCase):
             "</manifest>",
         )
 
+    def test_extend_project_annotations_multiples(self):
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="myproject">
+    <annotation name="foo" value="bar" />
+    <annotation name="few" value="bar" />
+  </project>
+  <extend-project name="myproject">
+    <annotation name="foo" value="new_bar" />
+    <annotation name="new" value="anno" />
+  </extend-project>
+</manifest>
+"""
+        )
+        self.assertEqual(
+            [(a.name, a.value) for a in manifest.projects[0].annotations],
+            [
+                ("foo", "bar"),
+                ("few", "bar"),
+                ("foo", "new_bar"),
+                ("new", "anno"),
+            ],
+        )
+        self.assertEqual(
+            sort_attributes(manifest.ToXml().toxml()),
+            '<?xml version="1.0" ?><manifest>'
+            '<remote fetch="http://localhost" name="default-remote"/>'
+            '<default remote="default-remote" revision="refs/heads/main"/>'
+            '<project name="myproject">'
+            '<annotation name="foo" value="bar"/>'
+            '<annotation name="few" value="bar"/>'
+            '<annotation name="foo" value="new_bar"/>'
+            '<annotation name="new" value="anno"/>'
+            "</project>"
+            "</manifest>",
+        )
+
 
 class NormalizeUrlTests(ManifestParseTestCase):
     """Tests for normalize_url() in manifest_xml.py"""
