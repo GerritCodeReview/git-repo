@@ -69,6 +69,24 @@
       "parentUuid": "dd7d17a7_bca4f4aa",
       "revId": "574290f6d9ec61b2ed4622716bbcd3fb55d864d4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35678355_08322b27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-02-20T23:30:00Z",
+      "side": 1,
+      "message": "Apologies - not a heavy gerrit user. Corrected.",
+      "parentUuid": "c14959ba_11058b9e",
+      "revId": "574290f6d9ec61b2ed4622716bbcd3fb55d864d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
