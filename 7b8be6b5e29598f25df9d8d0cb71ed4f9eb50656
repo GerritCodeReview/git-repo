@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e087a88a_06259cbb",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1563,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-02-20T23:53:59Z",
+      "side": 1,
+      "message": "can we move this to ~L304 with the other `test_toxml` tests?",
+      "range": {
+        "startLine": 1563,
+        "startChar": 8,
+        "endLine": 1563,
+        "endChar": 43
+      },
+      "revId": "7b8be6b5e29598f25df9d8d0cb71ed4f9eb50656",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e0976ab_b338856a",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1591,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-02-20T23:53:59Z",
+      "side": 1,
+      "message": "use `from unittest import mock` for consistency with other tests and move to the top of the file",
+      "range": {
+        "startLine": 1591,
+        "startChar": 8,
+        "endLine": 1591,
+        "endChar": 28
+      },
+      "revId": "7b8be6b5e29598f25df9d8d0cb71ed4f9eb50656",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
