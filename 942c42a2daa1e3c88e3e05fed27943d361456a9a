@@ -57,6 +57,30 @@
       },
       "revId": "942c42a2daa1e3c88e3e05fed27943d361456a9a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3454371_773abc0a",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 4561864
+      },
+      "writtenOn": "2026-02-20T19:15:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bbfc593_96a007b1",
+      "range": {
+        "startLine": 187,
+        "startChar": 23,
+        "endLine": 188,
+        "endChar": 50
+      },
+      "revId": "942c42a2daa1e3c88e3e05fed27943d361456a9a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
