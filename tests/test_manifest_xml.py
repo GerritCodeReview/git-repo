@@ -1555,3 +1555,53 @@ class NormalizeUrlTests(ManifestParseTestCase):
             manifestUrl="ssh://git@github.com/org2/custom_manifest.git",
         )
         self.assertEqual("ssh://git@github.com/org2", remote.resolvedFetchUrl)
+
+
+class ToXmlMissingWorktreeTests(ManifestParseTestCase):
+    """Tests for ToXml() with missing worktrees."""
+
+    def test_toxml_peg_rev_missing_worktree(self):
+        """ToXml(peg_rev=True) skips projects with missing worktrees."""
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="present" path="present" />
+  <project name="missing" path="missing" />
+</manifest>
+"""
+        )
+        # Create the worktree for "present" but not for "missing".
+        present_worktree = self.tempdir / "present"
+        present_worktree.mkdir()
+        # Set up a minimal git repo so rev-parse can work.
+        (present_worktree / ".git").mkdir()
+        # Create HEAD file pointing to a commit.
+        (present_worktree / ".git" / "HEAD").write_text("0" * 40 + "\n")
+
+        # Verify "missing" worktree does not exist.
+        missing_worktree = self.tempdir / "missing"
+        self.assertFalse(missing_worktree.exists())
+
+        # ToXml with peg_rev=True should not crash; it should skip "missing".
+        # Note: This will still fail on "present" because it's not a real git
+        # repo, but we're testing that "missing" is skipped before any git
+        # operations are attempted. We use a mock to avoid the git call.
+        import unittest.mock
+
+        with unittest.mock.patch.object(
+            manifest.projects[0], "work_git"
+        ) as mock_git:
+            mock_git.rev_parse.return_value = "a" * 40
+            with unittest.mock.patch.object(
+                manifest.projects[1], "work_git"
+            ) as mock_git2:
+                mock_git2.rev_parse.return_value = "b" * 40
+                output = manifest.ToXml(peg_rev=True).toxml()
+
+        # The "present" project should be in output (with revision pinned).
+        self.assertIn('name="present"', output)
+        self.assertIn('revision="' + "a" * 40 + '"', output)
+        # The "missing" project should NOT be in output.
+        self.assertNotIn('name="missing"', output)
