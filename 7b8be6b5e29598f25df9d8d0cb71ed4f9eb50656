@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6675ca8_b0293e0c",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1563,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-02-21T02:06:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e087a88a_06259cbb",
+      "range": {
+        "startLine": 1563,
+        "startChar": 8,
+        "endLine": 1563,
+        "endChar": 43
+      },
+      "revId": "7b8be6b5e29598f25df9d8d0cb71ed4f9eb50656",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e0976ab_b338856a",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-20T23:53:59Z",
       "side": 1,
       "message": "use `from unittest import mock` for consistency with other tests and move to the top of the file",
+      "range": {
+        "startLine": 1591,
+        "startChar": 8,
+        "endLine": 1591,
+        "endChar": 28
+      },
+      "revId": "7b8be6b5e29598f25df9d8d0cb71ed4f9eb50656",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc5242d9_32ad4998",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1591,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-02-21T02:06:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e0976ab_b338856a",
       "range": {
         "startLine": 1591,
         "startChar": 8,
