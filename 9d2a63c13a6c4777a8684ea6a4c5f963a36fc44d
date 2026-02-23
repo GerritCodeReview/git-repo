@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8cf3641_b9ac0561",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-02-23T20:12:11Z",
+      "side": 1,
+      "message": "Is this an accidental duplicate of 553341: manifest: skip projects with missing worktrees in ToXml | https://gerrit-review.googlesource.com/c/git-repo/+/553341 ?",
+      "revId": "9d2a63c13a6c4777a8684ea6a4c5f963a36fc44d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
