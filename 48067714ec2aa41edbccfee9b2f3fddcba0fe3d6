@@ -16,6 +16,23 @@
       "message": "git pull https://gerrit.googlesource.com/git-repo refs/changes/36/357136/2",
       "revId": "48067714ec2aa41edbccfee9b2f3fddcba0fe3d6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f943d3da_b0cf3ad8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4656572
+      },
+      "writtenOn": "2026-02-25T16:44:42Z",
+      "side": 1,
+      "message": "git pull https://gerrit.googlesource.com/git-repo refs/changes/36/357136/2",
+      "revId": "48067714ec2aa41edbccfee9b2f3fddcba0fe3d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
