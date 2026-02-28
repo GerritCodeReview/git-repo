@@ -16,6 +16,142 @@
       "message": "Hi! I would appreciate a review of this change. thank you!",
       "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89e985af_ba9329aa",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-28T06:12:31Z",
+      "side": 1,
+      "message": "let\u0027s not serialize lists of paths like this.  it gets unwieldy real fast, and is just the wrong approach when handling paths -- no delimiter is really safe.\n\ni would make it a child element instead.",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dc82af8_146228ba",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2565,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-28T06:12:31Z",
+      "side": 1,
+      "message": "period at the end of sentences",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81283c7c_f3ec6d05",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3580,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-28T06:12:31Z",
+      "side": 1,
+      "message": "i don\u0027t see any point in supporting sparse checkouts on the manifest project itself.  it seems like an incredibly rare need ... let\u0027s not complicate it now.",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6058c4c3_7fd06133",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3586,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-28T06:12:31Z",
+      "side": 1,
+      "message": "all new funcs should have typing info",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c03be616_1b4332f4",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3613,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-28T06:12:31Z",
+      "side": 1,
+      "message": "this seems like unnecessary log spam -\u003e delete",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f95e3af_9f9774e1",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3618,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-28T06:12:31Z",
+      "side": 1,
+      "message": "why would we want to ignore git failures ?  seems like this should fail, not just warn",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2618da96_60d9f1ae",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3621,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-28T06:12:31Z",
+      "side": 1,
+      "message": "the logger format string already uses `%s` which implicitly does `str()` on the argument, so pass `e` here",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c2d8e2f_90de3238",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-02-28T06:12:31Z",
+      "side": 1,
+      "message": "i don\u0027t think these options make sense in `repo sync` context.  they\u0027re basically project-specific, so trying to specify --sparse-paths for every project doesn\u0027t make sense.",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
