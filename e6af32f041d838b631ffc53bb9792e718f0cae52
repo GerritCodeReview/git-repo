@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0b21c53_a090e43c",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-04T21:43:48Z",
+      "side": 1,
+      "message": "Makes sense!",
+      "parentUuid": "89e985af_ba9329aa",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8dc82af8_146228ba",
@@ -48,6 +66,24 @@
       "writtenOn": "2026-02-28T06:12:31Z",
       "side": 1,
       "message": "period at the end of sentences",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4c0c4ca_7e345fe6",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2565,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-04T21:43:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8dc82af8_146228ba",
       "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -69,6 +105,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c4b9507_f18aac1a",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3580,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-04T21:43:48Z",
+      "side": 1,
+      "message": "good point",
+      "parentUuid": "81283c7c_f3ec6d05",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6058c4c3_7fd06133",
@@ -82,6 +136,24 @@
       "writtenOn": "2026-02-28T06:12:31Z",
       "side": 1,
       "message": "all new funcs should have typing info",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5189ef92_7ff0b20b",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3586,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-04T21:43:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6058c4c3_7fd06133",
       "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -103,6 +175,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d114f9f_5dafc9d4",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3613,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-04T21:43:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c03be616_1b4332f4",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f95e3af_9f9774e1",
@@ -116,6 +206,24 @@
       "writtenOn": "2026-02-28T06:12:31Z",
       "side": 1,
       "message": "why would we want to ignore git failures ?  seems like this should fail, not just warn",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8e88e2f_8faeff04",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3618,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-04T21:43:48Z",
+      "side": 1,
+      "message": "yeah good point. I removed the try block since I see the pattern in other parts of the codebase is to let GitError bubble up.",
+      "parentUuid": "6f95e3af_9f9774e1",
       "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -137,6 +245,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "535dfd84_94185f50",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3621,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-04T21:43:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2618da96_60d9f1ae",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c2d8e2f_90de3238",
@@ -150,6 +276,24 @@
       "writtenOn": "2026-02-28T06:12:31Z",
       "side": 1,
       "message": "i don\u0027t think these options make sense in `repo sync` context.  they\u0027re basically project-specific, so trying to specify --sparse-paths for every project doesn\u0027t make sense.",
+      "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "118f3ea8_0d10dcc0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-04T21:43:48Z",
+      "side": 1,
+      "message": "yeah that makes sense. It is really a per-project setting.",
+      "parentUuid": "8c2d8e2f_90de3238",
       "revId": "e6af32f041d838b631ffc53bb9792e718f0cae52",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
