@@ -316,9 +316,76 @@ class _Repo:
                 git_event_log=git_trace2_event_log,
             )
         except KeyError:
+            import difflib
+
+            close_commands = difflib.get_close_matches(
+                name, self.commands.keys(), n=5, cutoff=0.7
+            )
+
+            if close_commands:
+                assumed = close_commands[0]
+                autocorrect = outer_client.globalConfig.GetString(
+                    "help.autocorrect"
+                )
+
+                if autocorrect == "prompt":
+                    print(
+                        f"WARNING: You called a repo command named "
+                        f"'{name}', which does not exist.",
+                        file=sys.stderr,
+                    )
+                    try:
+                        resp = input(f"Run '{assumed}' instead [y/N]? ")
+                        if resp.lower().startswith("y"):
+                            return self._RunLong(
+                                assumed, gopts, argv, git_trace2_event_log
+                            )
+                    except (KeyboardInterrupt, EOFError):
+                        print(file=sys.stderr)
+                    return 1
+
+                try:
+                    autocorrect = int(autocorrect)
+                except (ValueError, TypeError):
+                    autocorrect = 0
+
+                if autocorrect != 0:
+                    if autocorrect < 0:
+                        print(
+                            f"WARNING: You called a repo command named "
+                            f"'{name}', which does not exist.\n"
+                            "Continuing assuming that "
+                            f"you meant '{assumed}'.",
+                            file=sys.stderr,
+                        )
+                    else:
+                        delay = autocorrect * 0.1
+                        print(
+                            f"WARNING: You called a repo command named "
+                            f"'{name}', which does not exist.\n"
+                            f"Continuing in {delay:.1f} seconds, assuming "
+                            f"that you meant '{assumed}'.",
+                            file=sys.stderr,
+                        )
+                        time.sleep(delay)
+                    return self._RunLong(
+                        assumed, gopts, argv, git_trace2_event_log
+                    )
+
             logger.error(
                 "repo: '%s' is not a repo command.  See 'repo help'.", name
             )
+
+            if close_commands:
+                print(
+                    "\nThe most similar command%s\n\t%s"
+                    % (
+                        "s are" if len(close_commands) > 1 else " is",
+                        "\n\t".join(close_commands),
+                    ),
+                    file=sys.stderr,
+                )
+
             return 1
 
         Editor.globalConfig = cmd.client.globalConfig
