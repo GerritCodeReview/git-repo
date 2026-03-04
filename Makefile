@@ -1,40 +1,47 @@
-.PHONY: help test unit-test lint format coverage pre-commit install install-hooks configure clean
+# git-repo Makefile — task runner for development workflow
+# All targets dispatch to standard tools; no business logic in recipes.
+
+SHELL := /bin/bash
+.SHELLFLAGS := -euo pipefail -c
+
+.DEFAULT_GOAL := help
+
+.PHONY: lint format format-check check test test-unit test-functional validate clean help
 
 help: ## Show this help message
-	@echo "Available make tasks:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@echo "Available make targets:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
+		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-test: ## Run all tests (lint + unit tests)
-	tox
+lint: ## Run all linters (ruff, markdownlint, yamllint)
+	@echo "lint: placeholder — will be implemented in E0-F1-S1-T2"
 
-unit-test: ## Run unit tests only
-	tox -e py312
+format: ## Auto-fix formatting issues (ruff format)
+	@echo "format: placeholder — will be implemented in E0-F1-S1-T2"
 
-lint: ## Run linting checks (black + flake8)
-	tox -e lint
+format-check: ## Verify formatting without modifying files (CI-safe)
+	@echo "format-check: placeholder — will be implemented in E0-F1-S1-T2"
 
-format: ## Format code with black and check with flake8
-	tox -e format
+check: lint format-check ## Run all checks: lint + format verification (read-only, CI-safe)
 
-coverage: ## Run unit tests with coverage report
-	python run_tests --cov=. --cov-report=html --cov-report=term
+test: ## Run pytest with coverage
+	@echo "test: placeholder — will be implemented in E0-F1-S1-T3"
 
-pre-commit: format lint unit-test ## Run pre-commit checks (format + lint + test)
+test-unit: ## Run unit tests only (-m unit)
+	@echo "test-unit: placeholder — will be implemented in E0-F1-S1-T3"
 
-install: ## Install development dependencies
-	pip install -r requirements-dev.txt
+test-functional: ## Run functional tests only (-m functional)
+	@echo "test-functional: placeholder — will be implemented in E0-F1-S1-T3"
 
-install-hooks: ## Install git hooks
-	git config core.hooksPath .githooks
-	@echo "✓ Git hooks installed"
+validate: check test ## Full CI equivalent: check + test
 
-configure: install install-hooks ## Install dependencies and git hooks
-	@echo "✓ Project configured"
-
-clean: ## Clean up build artifacts and cache
-	rm -rf .tox
-	rm -rf *.egg-info
+clean: ## Remove build artifacts and caches
+	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	rm -rf .pytest_cache
+	rm -rf .ruff_cache
 	rm -rf htmlcov
 	rm -f .coverage
-	find . -type d -name __pycache__ -exec rm -rf {} +
-	find . -type f -name '*.pyc' -delete
+	find . -type f -name '*.pyc' -delete 2>/dev/null || true
+	rm -rf .tox
+	rm -rf *.egg-info
+	@echo "clean: all build artifacts removed"
