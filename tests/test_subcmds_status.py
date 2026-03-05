@@ -19,9 +19,9 @@ import os
 from pathlib import Path
 import subprocess
 import tempfile
+from typing import List
 import unittest
 from unittest import mock
-from typing import List
 
 import git_command
 import manifest_xml
@@ -88,13 +88,17 @@ class StatusOrphans(unittest.TestCase):
             ["git", "-C", str(git_dir), "commit", "-q", "-m", "init"]
         )
 
-    def _create_manifest_with_project(self) -> manifest_xml.XmlManifest:
+    def _create_manifest_with_project(
+        self, project_inner_xml: str = ""
+    ) -> manifest_xml.XmlManifest:
         self.manifest_file.write_text(
-            """
+            f"""
                 <manifest>
                     <remote name="origin" fetch="http://localhost" />
                     <default remote="origin" revision="refs/heads/main" />
-                    <project name="proj" path="src/proj" />
+                    <project name="proj" path="src/proj">
+                        {project_inner_xml}
+                    </project>
                 </manifest>
             """,
             encoding="utf-8",
@@ -137,6 +141,50 @@ class StatusOrphans(unittest.TestCase):
         self.assertIn("Objects not within a project (orphans)", output)
         self.assertIn(" --\torphan.txt", output)
         self.assertIn("src/orphan_dir/", output)
+
+    @mock.patch("sys.stdout", new_callable=io.StringIO)
+    def test_orphans_with_copyfile_and_linkfile(
+        self, mock_stdout: io.StringIO
+    ) -> None:
+        manifest = self._create_manifest_with_project(
+            """
+            <copyfile src="README" dest="generated/copied.txt" />
+            <linkfile src="README" dest="links/README.link" />
+            """
+        )
+
+        (self.topdir / "src" / "proj" / "README").write_text("source")
+
+        copy_dest = self.topdir / "generated" / "copied.txt"
+        copy_dest.parent.mkdir(parents=True, exist_ok=True)
+        copy_dest.write_text("copied")
+
+        link_dest = self.topdir / "links" / "README.link"
+        link_dest.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            link_dest.symlink_to(self.topdir / "src" / "proj" / "README")
+        except OSError:
+            link_dest.write_text("linked")
+
+        (self.topdir / "orphan.txt").write_text("data")
+
+        self._run_status(manifest, ["-o"])
+
+        output = mock_stdout.getvalue().replace(os.sep, "/")
+        self.assertIn("Objects not within a project (orphans)", output)
+        self.assertIn(" --\torphan.txt", output)
+        self.assertIn("Objects created by copyfile", output)
+        self.assertIn(" --\tgenerated/copied.txt", output)
+        self.assertIn("Objects created by linkfile", output)
+        self.assertIn(" --\tlinks/README.link", output)
+        self.assertNotIn(
+            "Objects not within a project (orphans)\n --\tgenerated/copied.txt",
+            output,
+        )
+        self.assertNotIn(
+            "Objects not within a project (orphans)\n --\tlinks/README.link",
+            output,
+        )
 
     @mock.patch("sys.stdout", new_callable=io.StringIO)
     def test_empty_status_without_orphans(

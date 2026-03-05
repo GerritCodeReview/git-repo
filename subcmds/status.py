@@ -111,21 +111,43 @@ the following meanings:
         )
         return (ret, buf.getvalue())
 
-    def _FindOrphans(self, dirs, proj_dirs, proj_dirs_parents, outstring):
+    def _FindOrphans(
+        self,
+        dirs,
+        proj_dirs,
+        proj_dirs_parents,
+        outstring,
+        created_map,
+        created_parents,
+        created_outputs,
+    ):
         """find 'dirs' that are present in 'proj_dirs_parents' but not in 'proj_dirs'"""  # noqa: E501
         status_header = " --\t"
+
+        def _FormatEntry(path: str) -> str:
+            ret = status_header + path
+            if platform_utils.isdir(path):
+                ret += "/"
+            return ret
+
         for item in dirs:
+            if item in created_map:
+                created_outputs[created_map[item]].append(_FormatEntry(item))
+                continue
             if not platform_utils.isdir(item):
                 outstring.append("".join([status_header, item]))
                 continue
             if item in proj_dirs:
                 continue
-            if item in proj_dirs_parents:
+            if item in proj_dirs_parents or item in created_parents:
                 self._FindOrphans(
                     glob.glob("%s/.*" % item) + glob.glob("%s/*" % item),
                     proj_dirs,
                     proj_dirs_parents,
                     outstring,
+                    created_map,
+                    created_parents,
+                    created_outputs,
                 )
                 continue
             outstring.append("".join([status_header, item, "/"]))
@@ -163,6 +185,22 @@ the following meanings:
         if opt.orphans:
             proj_dirs = set()
             proj_dirs_parents = set()
+            created_map = {}
+            created_parents = set()
+            created_outputs = {"copyfile": [], "linkfile": []}
+
+            def _AddCreated(path: str, kind: str) -> None:
+                if path == ".":
+                    return
+                path = os.path.normpath(path)
+                if path in created_map:
+                    return
+                created_map[path] = kind
+                head, _tail = os.path.split(path)
+                while head:
+                    created_parents.add(head)
+                    head, _tail = os.path.split(head)
+
             for project in self.GetProjects(
                 None, missing_ok=True, all_manifests=not opt.this_manifest_only
             ):
@@ -172,6 +210,40 @@ the following meanings:
                 while head != "":
                     proj_dirs_parents.add(head)
                     (head, _tail) = os.path.split(head)
+                for copyfile in project.copyfiles:
+                    dest_abs = os.path.join(copyfile.topdir, copyfile.dest)
+                    if os.path.exists(dest_abs):
+                        dest_rel = os.path.relpath(
+                            dest_abs, self.manifest.topdir
+                        )
+                        _AddCreated(dest_rel, "copyfile")
+                for linkfile in project.linkfiles:
+                    if linkfile.src == ".":
+                        src_abs = linkfile.git_worktree
+                    else:
+                        src_abs = os.path.join(
+                            linkfile.git_worktree, linkfile.src
+                        )
+                    if glob.has_magic(src_abs):
+                        dest_dir_abs = os.path.join(
+                            linkfile.topdir, linkfile.dest
+                        )
+                        for abs_src in glob.glob(src_abs):
+                            dest_abs = os.path.join(
+                                dest_dir_abs, os.path.basename(abs_src)
+                            )
+                            if os.path.lexists(dest_abs):
+                                dest_rel = os.path.relpath(
+                                    dest_abs, self.manifest.topdir
+                                )
+                                _AddCreated(dest_rel, "linkfile")
+                    else:
+                        dest_abs = os.path.join(linkfile.topdir, linkfile.dest)
+                        if os.path.lexists(dest_abs):
+                            dest_rel = os.path.relpath(
+                                dest_abs, self.manifest.topdir
+                            )
+                            _AddCreated(dest_rel, "linkfile")
             proj_dirs.add(".repo")
 
             class StatusColoring(Coloring):
@@ -190,15 +262,31 @@ the following meanings:
                     proj_dirs,
                     proj_dirs_parents,
                     outstring,
+                    created_map,
+                    created_parents,
+                    created_outputs,
                 )
 
-                if outstring:
+                if outstring or any(created_outputs.values()):
                     output = StatusColoring(self.client.globalConfig)
-                    output.project("Objects not within a project (orphans)")
-                    output.nl()
-                    for entry in outstring:
-                        output.untracked(entry)
+                    if outstring:
+                        output.project("Objects not within a project (orphans)")
                         output.nl()
+                        for entry in outstring:
+                            output.untracked(entry)
+                            output.nl()
+                    if created_outputs["copyfile"]:
+                        output.project("Objects created by copyfile")
+                        output.nl()
+                        for entry in created_outputs["copyfile"]:
+                            output.untracked(entry)
+                            output.nl()
+                    if created_outputs["linkfile"]:
+                        output.project("Objects created by linkfile")
+                        output.nl()
+                        for entry in created_outputs["linkfile"]:
+                            output.untracked(entry)
+                            output.nl()
                 else:
                     print("No orphan files or directories")
 
