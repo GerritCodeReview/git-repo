@@ -80,6 +80,13 @@ class SyncNetworkHalfResult(NamedTuple):
         return not self.error
 
 
+class CopyLinkOutputPaths(NamedTuple):
+    """copyfile/linkfile outputs relative to the repo topdir."""
+
+    copyfile: List[str]
+    linkfile: List[str]
+
+
 class SyncNetworkHalfError(RepoError):
     """Failure trying to sync."""
 
@@ -1587,6 +1594,22 @@ class Project:
             copyfile._Copy()
         for linkfile in self.linkfiles:
             linkfile._Link()
+
+    def GetCopyLinkOutputPaths(self, topdir: str) -> CopyLinkOutputPaths:
+        """Return copyfile/linkfile outputs relative to |topdir|."""
+        copyfile_outputs = []
+        linkfile_outputs = []
+        for copyfile in self.copyfiles:
+            dest_abs = copyfile._DestPath()
+            if os.path.exists(dest_abs):
+                copyfile_outputs.append(os.path.relpath(dest_abs, topdir))
+        for linkfile in self.linkfiles:
+            for target in linkfile._GetLinkTargets():
+                if os.path.lexists(target.abs_dest):
+                    linkfile_outputs.append(
+                        os.path.relpath(target.abs_dest, topdir)
+                    )
+        return CopyLinkOutputPaths(copyfile_outputs, linkfile_outputs)
 
     def GetCommitRevisionId(self):
         """Get revisionId of a commit.
