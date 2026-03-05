@@ -18,6 +18,7 @@ import pathlib
 
 import pytest
 
+import color
 import platform_utils
 import repo_trace
 
@@ -26,6 +27,16 @@ import repo_trace
 def disable_repo_trace(tmp_path):
     """Set an environment marker to relax certain strict checks for test code."""  # noqa: E501
     repo_trace._TRACE_FILE = str(tmp_path / "TRACE_FILE_from_test")
+
+
+@pytest.fixture(autouse=True)
+def restore_default_coloring() -> None:
+    """Restore global color default after each test.
+
+    Some tests override color.DEFAULT via color.SetDefaultColoring. Keep that
+    state local to each test to avoid order-dependent failures.
+    """
+    color.DEFAULT = None
 
 
 # adapted from pytest-home 0.5.1
