@@ -1,40 +1,39 @@
-.PHONY: help test unit-test lint format coverage pre-commit install install-hooks configure clean
+SHELL := /bin/bash
+.SHELLFLAGS := -euo pipefail -c
 
-help: ## Show this help message
-	@echo "Available make tasks:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+.PHONY: help lint format format-check check test test-unit test-functional validate clean
 
-test: ## Run all tests (lint + unit tests)
-	tox
+help: ## Show available targets and their descriptions
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-unit-test: ## Run unit tests only
-	tox -e py312
+lint: ## Run all linters (ruff, markdownlint, yamllint)
+	@echo 'ERROR: lint target not yet configured (see E0-F1-S1-T2)' >&2 && exit 1
 
-lint: ## Run linting checks (black + flake8)
-	tox -e lint
+format: ## Auto-fix formatting issues (ruff format)
+	@echo 'ERROR: format target not yet configured (see E0-F1-S1-T2)' >&2 && exit 1
 
-format: ## Format code with black and check with flake8
-	tox -e format
+format-check: ## Verify formatting without modifying files (CI-safe)
+	@echo 'ERROR: format-check target not yet configured (see E0-F1-S1-T2)' >&2 && exit 1
 
-coverage: ## Run unit tests with coverage report
-	python run_tests --cov=. --cov-report=html --cov-report=term
+check: lint format-check ## Run all checks: lint + format verification (read-only, CI-safe)
 
-pre-commit: format lint unit-test ## Run pre-commit checks (format + lint + test)
+test: ## Run full test suite with coverage
+	@echo 'ERROR: test target not yet configured (see E0-F1-S1-T3)' >&2 && exit 1
 
-install: ## Install development dependencies
-	pip install -r requirements-dev.txt
+test-unit: ## Run unit tests only (pytest -m unit)
+	@echo 'ERROR: test-unit target not yet configured (see E0-F1-S1-T3)' >&2 && exit 1
 
-install-hooks: ## Install git hooks
-	git config core.hooksPath .githooks
-	@echo "✓ Git hooks installed"
+test-functional: ## Run functional tests only (pytest -m functional)
+	@echo 'ERROR: test-functional target not yet configured (see E0-F1-S1-T3)' >&2 && exit 1
 
-configure: install install-hooks ## Install dependencies and git hooks
-	@echo "✓ Project configured"
+validate: check test ## Full CI equivalent: check + test
 
-clean: ## Clean up build artifacts and cache
-	rm -rf .tox
-	rm -rf *.egg-info
+clean: ## Remove build artifacts and caches
+	find . -type d -name __pycache__ -exec rm -rf {} +
+	rm -rf .pytest_cache
+	rm -rf .ruff_cache
 	rm -rf htmlcov
 	rm -f .coverage
-	find . -type d -name __pycache__ -exec rm -rf {} +
+	rm -rf .tox
+	rm -rf *.egg-info
 	find . -type f -name '*.pyc' -delete

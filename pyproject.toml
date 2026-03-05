@@ -26,6 +26,9 @@ extend-exclude = '''
 skip = [".devcontainer/fix-line-endings.py"]
 
 [tool.pytest.ini_options]
-markers = """
-    skip_cq: Skip tests in the CQ. Should be rarely used!
-"""
+pythonpath = ["."]
+markers = [
+    "skip_cq: Skip tests in the CQ. Should be rarely used!",
+    "unit: Unit tests",
+    "functional: Functional tests",
+]

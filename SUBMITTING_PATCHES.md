@@ -43,71 +43,50 @@ probably need to split up your commit to finer grained pieces.
 
 Lint any changes by running:
 ```sh
-$ tox -e lint -- file.py
+$ make lint
 ```
 
 And format with:
 ```sh
-$ tox -e format -- file.py
+$ make format
 ```
 
-Or format everything:
-```sh
-$ tox -e format
-```
-
-Repo uses [black](https://black.readthedocs.io/) with line length of 80 as its
-formatter and flake8 as its linter. Repo also follows
-[Google's Python Style Guide].
+Repo uses [ruff](https://docs.astral.sh/ruff/) for Python linting and
+formatting. Repo also follows [Google's Python Style Guide].
 
 There should be no new errors or warnings introduced.
 
-Warnings that cannot be avoided without going against the Google Style Guide
-may be suppressed inline individally using a `# noqa` comment as described
-in the [flake8 documentation].
-
-If there are many occurrences of the same warning, these may be suppressed for
-the entire project in the included `.flake8` file.
-
 [Google's Python Style Guide]: https://google.github.io/styleguide/pyguide.html
 [PEP 8]: https://www.python.org/dev/peps/pep-0008/
-[flake8 documentation]: https://flake8.pycqa.org/en/3.1.1/user/ignoring-errors.html#in-line-ignoring-errors
 
 ## Running tests
 
-We use [pytest](https://pytest.org/) and [tox](https://tox.readthedocs.io/) for
-running tests.  You should make sure to install those first.
+We use [pytest](https://pytest.org/) for running tests. All test commands are
+available via `make`:
 
-To run the full suite against all supported Python versions, simply execute:
 ```sh
-$ tox -p auto
-```
+# Run the full CI validation (lint + format check + tests).
+$ make validate
 
-We have [`./run_tests`](./run_tests) which is a simple wrapper around `pytest`:
-```sh
-# Run the full suite against the default Python version.
-$ ./run_tests
-# List each test as it runs.
-$ ./run_tests -v
+# Run all tests with coverage.
+$ make test
 
-# Run a specific unittest module (and all tests in it).
-$ ./run_tests tests/test_git_command.py
+# Run unit tests only.
+$ make test-unit
 
-# Run a specific testsuite in a specific unittest module.
-$ ./run_tests tests/test_editor.py::EditString
+# Run functional tests only.
+$ make test-functional
 
-# Run a single test.
-$ ./run_tests tests/test_editor.py::EditString::test_cat_editor
+# Run a specific test file directly with pytest.
+$ pytest tests/test_git_command.py
 
-# List all available tests.
-$ ./run_tests --collect-only
+# Run a specific test.
+$ pytest tests/test_editor.py::EditString::test_cat_editor
 
 # Run a single test using substring match.
-$ ./run_tests -k test_cat_editor
+$ pytest -k test_cat_editor
 ```
 
-The coverage isn't great currently, but it should still be run for all commits.
-Adding more unittests for changes you make would be greatly appreciated :).
 Check out the [tests/](./tests/) subdirectory for more details.
 
 

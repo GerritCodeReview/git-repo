@@ -161,14 +161,30 @@ cd git-repo
 pip install -r requirements-dev.txt
 ```
 
+### Makefile Targets
+
+All development tasks are available via `make`:
+
+```bash
+make help            # Show available targets
+make lint            # Run all linters
+make format          # Auto-fix formatting issues
+make check           # Lint + format verification (read-only, CI-safe)
+make test            # Run full test suite with coverage
+make test-unit       # Run unit tests only
+make test-functional # Run functional tests only
+make validate        # Full CI equivalent: check + test
+make clean           # Remove build artifacts and caches
+```
+
 ### Running Tests
 
 ```bash
-# Run specific tests
-tox -- tests/test_subcmds_envsubst.py
+# Run full CI validation
+make validate
 
-# Run all tests
-tox
+# Run specific tests
+pytest tests/test_subcmds_envsubst.py
 ```
 
 ### Creating a Release
