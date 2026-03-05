@@ -84,12 +84,14 @@ class StatusOrphans(unittest.TestCase):
             ["git", "-C", git_dir, "commit", "-q", "-m", "init"]
         )
 
-    def _create_manifest_with_project(self):
-        manifest_data = """
+    def _create_manifest_with_project(self, project_inner_xml=""):
+        manifest_data = f"""
                 <manifest>
                     <remote name="origin" fetch="http://localhost" />
                     <default remote="origin" revision="refs/heads/main" />
-                    <project name="proj" path="src/proj" />
+                    <project name="proj" path="src/proj">
+                        {project_inner_xml}
+                    </project>
                 </manifest>
             """
         with open(self.manifest_file, "w", encoding="utf-8") as fp:
@@ -129,6 +131,56 @@ class StatusOrphans(unittest.TestCase):
         self.assertIn("Objects not within a project (orphans)", output)
         self.assertIn(" --\torphan.txt", output)
         self.assertIn("src/orphan_dir/", output)
+
+    @mock.patch("sys.stdout", new_callable=StringIO)
+    def test_orphans_with_copyfile_and_linkfile(self, mock_stdout):
+        manifest = self._create_manifest_with_project(
+            """
+            <copyfile src="README" dest="generated/copied.txt" />
+            <linkfile src="README" dest="links/README.link" />
+            """
+        )
+
+        with open(
+            os.path.join(self.topdir, "src", "proj", "README"), "w"
+        ) as fp:
+            fp.write("source")
+
+        copy_dest = os.path.join(self.topdir, "generated", "copied.txt")
+        os.makedirs(os.path.dirname(copy_dest), exist_ok=True)
+        with open(copy_dest, "w") as fp:
+            fp.write("copied")
+
+        link_dest = os.path.join(self.topdir, "links", "README.link")
+        os.makedirs(os.path.dirname(link_dest), exist_ok=True)
+        try:
+            os.symlink(
+                os.path.join(self.topdir, "src", "proj", "README"), link_dest
+            )
+        except OSError:
+            with open(link_dest, "w") as fp:
+                fp.write("linked")
+
+        with open(os.path.join(self.topdir, "orphan.txt"), "w") as fp:
+            fp.write("data")
+
+        self._run_status(manifest, ["-o"])
+
+        output = mock_stdout.getvalue().replace(os.sep, "/")
+        self.assertIn("Objects not within a project (orphans)", output)
+        self.assertIn(" --\torphan.txt", output)
+        self.assertIn("Objects created by copyfile", output)
+        self.assertIn(" --\tgenerated/copied.txt", output)
+        self.assertIn("Objects created by linkfile", output)
+        self.assertIn(" --\tlinks/README.link", output)
+        self.assertNotIn(
+            "Objects not within a project (orphans)\n --\tgenerated/copied.txt",
+            output,
+        )
+        self.assertNotIn(
+            "Objects not within a project (orphans)\n --\tlinks/README.link",
+            output,
+        )
 
     @mock.patch("sys.stdout", new_callable=StringIO)
     def test_empty_status_without_orphans(self, mock_stdout):
