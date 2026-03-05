@@ -55,6 +55,7 @@ from command import Command
 from command import DEFAULT_LOCAL_JOBS
 from command import MirrorSafeCommand
 from command import WORKER_BATCH_SIZE
+from error import ExitCode
 from error import GitError
 from error import RepoChangedException
 from error import RepoError
@@ -253,13 +254,25 @@ class _InterleavedSyncResult(NamedTuple):
 class SuperprojectError(SyncError):
     """Superproject sync repo."""
 
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("exit_code", ExitCode.SUPERPROJECT_ERROR)
+        super().__init__(*args, **kwargs)
+
 
 class SyncFailFastError(SyncError):
     """Sync exit error when --fail-fast set."""
 
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("exit_code", ExitCode.SYNC_FAIL_FAST_ERROR)
+        super().__init__(*args, **kwargs)
+
 
 class SmartSyncError(SyncError):
     """Smart sync exit error."""
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("exit_code", ExitCode.SMART_SYNC_ERROR)
+        super().__init__(*args, **kwargs)
 
 
 class ManifestInterruptError(RepoError):

@@ -18,6 +18,7 @@ import itertools
 
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
+from error import ExitCode
 from error import RepoError
 from error import RepoExitError
 from git_command import git
@@ -30,6 +31,10 @@ logger = RepoLogger(__file__)
 
 class AbandonError(RepoExitError):
     """Exit error when abandon command fails."""
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("exit_code", ExitCode.ABANDON_ERROR)
+        super().__init__(*args, **kwargs)
 
 
 class Abandon(Command):

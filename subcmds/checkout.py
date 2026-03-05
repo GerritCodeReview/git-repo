@@ -17,6 +17,7 @@ from typing import NamedTuple
 
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
+from error import ExitCode
 from error import GitError
 from error import RepoExitError
 from progress import Progress
@@ -36,9 +37,17 @@ class CheckoutBranchResult(NamedTuple):
 class CheckoutCommandError(RepoExitError):
     """Exception thrown when checkout command fails."""
 
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("exit_code", ExitCode.CHECKOUT_COMMAND_ERROR)
+        super().__init__(*args, **kwargs)
+
 
 class MissingBranchError(RepoExitError):
     """Exception thrown when no project has specified branch."""
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("exit_code", ExitCode.MISSING_BRANCH_ERROR)
+        super().__init__(*args, **kwargs)
 
 
 class Checkout(Command):

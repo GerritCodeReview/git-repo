@@ -17,6 +17,7 @@ from typing import NamedTuple
 
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
+from error import ExitCode
 from error import RepoExitError
 from git_command import git
 from git_config import IsImmutable
@@ -34,6 +35,10 @@ class ExecuteOneResult(NamedTuple):
 
 class StartError(RepoExitError):
     """Exit error for failed start command."""
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("exit_code", ExitCode.START_ERROR)
+        super().__init__(*args, **kwargs)
 
 
 class Start(Command):
