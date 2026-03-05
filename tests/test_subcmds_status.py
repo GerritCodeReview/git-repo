@@ -29,11 +29,24 @@ import manifest_xml
 import subcmds
 
 
-@pytest.fixture
-def repo_client_checkout(
+def _init_temp_git_tree(git_dir: Path) -> None:
+    """Create a new git checkout with an initial commit for testing."""
+    utils_for_test.init_git_tree(git_dir)
+    (git_dir / "README").write_text("init")
+    subprocess.check_call(["git", "add", "README"], cwd=git_dir)
+    subprocess.check_call(["git", "commit", "-q", "-m", "init"], cwd=git_dir)
+
+
+def _create_checkout(
     tmp_path: Path,
+    project_xml_fragment: str = "",
 ) -> Tuple[Path, manifest_xml.XmlManifest]:
-    """Create a basic repo client checkout for status tests."""
+    """Create a checkout and return (topdir, manifest).
+
+    The optional |project_xml_fragment| is inserted inside the
+    `<project>...</project>` element in the generated manifest so callers can
+    add entries like `<copyfile>` and `<linkfile>`.
+    """
     topdir = tmp_path
     repodir = topdir / ".repo"
     manifest_dir = repodir / "manifests"
@@ -46,19 +59,21 @@ def repo_client_checkout(
     gitdir.mkdir()
     (gitdir / "config").write_text(
         """[remote "origin"]
-                url = https://localhost:0/manifest
-                verbose = false
-            """
+            url = https://localhost:0/manifest
+            verbose = false
+        """
     )
 
     _init_temp_git_tree(manifest_dir)
 
     manifest_file.write_text(
-        """
+        f"""
             <manifest>
                 <remote name="origin" fetch="http://localhost" />
                 <default remote="origin" revision="refs/heads/main" />
-                <project name="proj" path="src/proj" />
+                <project name="proj" path="src/proj">
+                    {project_xml_fragment}
+                </project>
             </manifest>
         """,
         encoding="utf-8",
@@ -75,12 +90,12 @@ def repo_client_checkout(
     return topdir, manifest
 
 
-def _init_temp_git_tree(git_dir: Path) -> None:
-    """Create a new git checkout with an initial commit for testing."""
-    utils_for_test.init_git_tree(git_dir)
-    (git_dir / "README").write_text("init")
-    subprocess.check_call(["git", "add", "README"], cwd=git_dir)
-    subprocess.check_call(["git", "commit", "-q", "-m", "init"], cwd=git_dir)
+@pytest.fixture
+def repo_client_checkout(
+    tmp_path: Path,
+) -> Tuple[Path, manifest_xml.XmlManifest]:
+    """Create a basic repo client checkout for status tests."""
+    return _create_checkout(tmp_path)
 
 
 def _run_status(manifest: manifest_xml.XmlManifest, argv: List[str]) -> None:
@@ -106,13 +121,18 @@ def _assert_project_header(line: str, project_path: str, branch: str) -> None:
     assert line == expected
 
 
+def _assert_block(lines: List[str], header: str, expected: List[str]) -> None:
+    """Assert a section header and entries, with order-independent entries."""
+    assert lines
+    assert lines[0] == header
+    entries = lines[1:]
+    assert len(entries) == len(expected)
+    assert sorted(entries) == sorted(expected)
+
+
 def _assert_orphan_block(lines: List[str], expected: List[str]) -> None:
     """Assert orphan block header and entries, independent of entry ordering."""
-    assert lines
-    assert lines[0] == ("Objects not within a project (orphans)")
-    orphan_lines = lines[1:]
-    assert len(orphan_lines) == len(expected)
-    assert sorted(orphan_lines) == sorted(expected)
+    _assert_block(lines, "Objects not within a project (orphans)", expected)
 
 
 def test_orphans_basic(
@@ -138,6 +158,61 @@ def test_orphans_basic(
             f" --\t{disable_repo_trace.name}",
             " --\tsrc/orphan_dir/",
         ],
+    )
+
+
+def test_orphans_with_copyfile_and_linkfile(
+    tmp_path: Path,
+    disable_repo_trace: Path,
+) -> None:
+    """Verify copyfile/linkfile outputs are reported outside orphan entries."""
+    topdir, manifest = _create_checkout(
+        tmp_path,
+        """
+        <copyfile src="README" dest="generated/copied.txt" />
+        <linkfile src="README" dest="links/README.link" />
+        """,
+    )
+    project_path = next(iter(manifest.paths.keys()))
+
+    copy_dest = topdir / "generated" / "copied.txt"
+    copy_dest.parent.mkdir(parents=True, exist_ok=True)
+    copy_dest.write_text("copied")
+
+    link_dest = topdir / "links" / "README.link"
+    link_dest.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        link_dest.symlink_to(topdir / project_path / "README")
+    except OSError:
+        link_dest.write_text("linked")
+
+    (topdir / "orphan.txt").write_text("data")
+
+    with contextlib.redirect_stdout(io.StringIO()) as stdout:
+        _run_status(manifest, ["-o"])
+
+    lines = _status_lines(stdout.getvalue())
+    _assert_project_header(lines[0], project_path, "main")
+
+    copy_idx = lines.index("Objects created by copyfile")
+    link_idx = lines.index("Objects created by linkfile")
+
+    _assert_orphan_block(
+        lines[1:copy_idx],
+        [
+            " --\torphan.txt",
+            f" --\t{disable_repo_trace.name}",
+        ],
+    )
+    _assert_block(
+        lines[copy_idx:link_idx],
+        "Objects created by copyfile",
+        [" --\tgenerated/copied.txt"],
+    )
+    _assert_block(
+        lines[link_idx:],
+        "Objects created by linkfile",
+        [" --\tlinks/README.link"],
     )
 
 
