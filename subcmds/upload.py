@@ -22,6 +22,7 @@ from typing import List
 from command import DEFAULT_LOCAL_JOBS
 from command import InteractiveCommand
 from editor import Editor
+from error import ExitCode
 from error import GitError
 from error import SilentRepoExitError
 from error import UploadError
@@ -39,6 +40,9 @@ logger = RepoLogger(__file__)
 
 class UploadExitError(SilentRepoExitError):
     """Indicates that there is an upload command error requiring a sys exit."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, exit_code=ExitCode.UPLOAD_EXIT_ERROR, **kwargs)
 
 
 def _VerifyPendingCommits(branches: List[ReviewableBranch]) -> bool:

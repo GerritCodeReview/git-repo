@@ -17,6 +17,7 @@ import sys
 from typing import List
 
 from command import Command
+from error import ExitCode
 from error import GitError
 from error import RepoExitError
 import platform_utils
@@ -25,6 +26,9 @@ from project import DeleteWorktreeError
 
 class Error(RepoExitError):
     """Exit error when wipe command fails."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, exit_code=ExitCode.WIPE_ERROR, **kwargs)
 
 
 class Wipe(Command):

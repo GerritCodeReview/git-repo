@@ -19,11 +19,15 @@ import sys
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
+from error import ExitCode
 from error import RepoExitError
 
 
 class FetchFileError(RepoExitError):
     """Exit error when fetch_file fails."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, exit_code=ExitCode.FETCH_FILE_ERROR, **kwargs)
 
 
 def fetch_file(url, verbose=False):

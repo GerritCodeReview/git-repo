@@ -20,6 +20,7 @@ import subprocess
 import sys
 from typing import Any, Optional
 
+from error import ExitCode
 from error import GitError
 from error import RepoExitError
 from git_refs import HEAD
@@ -42,7 +43,7 @@ ERROR_EVENT_LOGGING_PREFIX = "RepoGitCommandError"
 # Common line length limit
 GIT_ERROR_STDOUT_LINES = 1
 GIT_ERROR_STDERR_LINES = 10
-INVALID_GIT_EXIT_CODE = 126
+INVALID_GIT_EXIT_CODE = ExitCode.GIT_REQUIRE_ERROR
 
 logger = RepoLogger(__file__)
 
