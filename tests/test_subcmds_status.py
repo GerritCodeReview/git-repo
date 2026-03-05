@@ -45,46 +45,58 @@ def init_temp_git_tree():
 
 
 @pytest.fixture
-def status_workspace(tmp_path, init_temp_git_tree):
-    topdir = tmp_path
-    repodir = topdir / ".repo"
-    manifest_dir = repodir / "manifests"
-    manifest_file = repodir / manifest_xml.MANIFEST_FILE_NAME
+def create_manifest_with_project(tmp_path, init_temp_git_tree):
+    """Create a test manifest workspace and return (topdir, manifest)."""
 
-    repodir.mkdir()
-    manifest_dir.mkdir()
+    def _create(project_inner_xml: str = ""):
+        topdir = tmp_path
+        repodir = topdir / ".repo"
+        manifest_dir = repodir / "manifests"
+        manifest_file = repodir / manifest_xml.MANIFEST_FILE_NAME
 
-    gitdir = repodir / "manifests.git"
-    gitdir.mkdir()
-    (gitdir / "config").write_text(
-        """[remote "origin"]
+        repodir.mkdir()
+        manifest_dir.mkdir()
+
+        gitdir = repodir / "manifests.git"
+        gitdir.mkdir()
+        (gitdir / "config").write_text(
+            """[remote "origin"]
                 url = https://localhost:0/manifest
                 verbose = false
             """
-    )
+        )
 
-    init_temp_git_tree(manifest_dir)
+        init_temp_git_tree(manifest_dir)
 
-    manifest_file.write_text(
-        """
-            <manifest>
-                <remote name="origin" fetch="http://localhost" />
-                <default remote="origin" revision="refs/heads/main" />
-                <project name="proj" path="src/proj" />
-            </manifest>
-        """,
-        encoding="utf-8",
-    )
+        manifest_file.write_text(
+            f"""
+                <manifest>
+                    <remote name="origin" fetch="http://localhost" />
+                    <default remote="origin" revision="refs/heads/main" />
+                    <project name="proj" path="src/proj">
+                        {project_inner_xml}
+                    </project>
+                </manifest>
+            """,
+            encoding="utf-8",
+        )
 
-    (repodir / "projects" / "src" / "proj.git").mkdir(parents=True)
-    (repodir / "project-objects" / "proj.git").mkdir(parents=True)
+        (repodir / "projects" / "src" / "proj.git").mkdir(parents=True)
+        (repodir / "project-objects" / "proj.git").mkdir(parents=True)
 
-    worktree = topdir / "src" / "proj"
-    worktree.parent.mkdir(parents=True, exist_ok=True)
-    init_temp_git_tree(worktree)
+        worktree = topdir / "src" / "proj"
+        worktree.parent.mkdir(parents=True, exist_ok=True)
+        init_temp_git_tree(worktree)
 
-    manifest = manifest_xml.XmlManifest(str(repodir), str(manifest_file))
-    return topdir, manifest
+        manifest = manifest_xml.XmlManifest(str(repodir), str(manifest_file))
+        return topdir, manifest
+
+    return _create
+
+
+@pytest.fixture
+def status_workspace(create_manifest_with_project):
+    return create_manifest_with_project()
 
 
 def _run_status(manifest: manifest_xml.XmlManifest, argv: List[str]) -> None:
@@ -113,6 +125,52 @@ def test_orphans_basic(status_workspace) -> None:
     assert "Objects not within a project (orphans)" in output
     assert " --\torphan.txt" in output
     assert "src/orphan_dir/" in output
+
+
+def test_orphans_with_copyfile_and_linkfile(
+    create_manifest_with_project,
+) -> None:
+    topdir, manifest = create_manifest_with_project(
+        """
+        <copyfile src="README" dest="generated/copied.txt" />
+        <linkfile src="README" dest="links/README.link" />
+        """
+    )
+
+    (topdir / "src" / "proj" / "README").write_text("source")
+
+    copy_dest = topdir / "generated" / "copied.txt"
+    copy_dest.parent.mkdir(parents=True, exist_ok=True)
+    copy_dest.write_text("copied")
+
+    link_dest = topdir / "links" / "README.link"
+    link_dest.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        link_dest.symlink_to(topdir / "src" / "proj" / "README")
+    except OSError:
+        link_dest.write_text("linked")
+
+    (topdir / "orphan.txt").write_text("data")
+
+    stdout = io.StringIO()
+    with contextlib.redirect_stdout(stdout):
+        _run_status(manifest, ["-o"])
+
+    output = stdout.getvalue().replace(os.sep, "/")
+    assert "Objects not within a project (orphans)" in output
+    assert " --\torphan.txt" in output
+    assert "Objects created by copyfile" in output
+    assert " --\tgenerated/copied.txt" in output
+    assert "Objects created by linkfile" in output
+    assert " --\tlinks/README.link" in output
+    assert (
+        "Objects not within a project (orphans)\n --\tgenerated/copied.txt"
+        not in output
+    )
+    assert (
+        "Objects not within a project (orphans)\n --\tlinks/README.link"
+        not in output
+    )
 
 
 def test_empty_status_without_orphans(status_workspace) -> None:
