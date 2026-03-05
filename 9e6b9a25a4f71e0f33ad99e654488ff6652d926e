@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03c2cdba_8d1993a1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1151597
+      },
+      "writtenOn": "2026-03-05T07:20:21Z",
+      "side": 1,
+      "message": "Should this be made into an option? Missing worktrees could be a mistake and for some situations you don\u0027t want such mistakes to pass silently. (Whether such an option should be opt-in or opt-out i leave unsaid.)\n\nIdeally accompanied with a more descriptive error message, like *\"manifest can not not be generated because the worktree for $project can not be found. To ignore missing projects, pass the --ignore-missing-projects flag*, instead of a `FileNotFoundError` stacktrace 😊",
+      "range": {
+        "startLine": 18,
+        "startChar": 42,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "9e6b9a25a4f71e0f33ad99e654488ff6652d926e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
