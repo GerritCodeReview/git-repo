@@ -11,3 +11,7 @@ __pycache__
 
 # PyCharm related
 /.idea/
+
+# Generated for non-vpython users
+/pip_requirements.txt
+/pip_constraints.txt
