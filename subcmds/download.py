@@ -16,6 +16,7 @@ import re
 import sys
 
 from command import Command
+from error import ExitCode
 from error import GitError
 from error import NoSuchProjectError
 from error import RepoExitError
@@ -28,6 +29,11 @@ logger = RepoLogger(__file__)
 
 class DownloadCommandError(RepoExitError):
     """Error raised when download command fails."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(
+            *args, exit_code=ExitCode.DOWNLOAD_COMMAND_ERROR, **kwargs
+        )
 
 
 class Download(Command):

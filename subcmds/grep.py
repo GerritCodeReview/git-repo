@@ -19,6 +19,7 @@ from typing import NamedTuple
 from color import Coloring
 from command import DEFAULT_LOCAL_JOBS
 from command import PagedCommand
+from error import ExitCode
 from error import GitError
 from error import InvalidArgumentsError
 from error import SilentRepoExitError
@@ -50,6 +51,9 @@ class GrepCommandError(SilentRepoExitError):
     """Grep command failure. Since Grep command
     output already outputs errors ensure that
     aggregate errors exit silently."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, exit_code=ExitCode.GREP_COMMAND_ERROR, **kwargs)
 
 
 class Grep(PagedCommand):
