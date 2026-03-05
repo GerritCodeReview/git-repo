@@ -18,6 +18,7 @@ import optparse
 import os
 import re
 
+from error import ExitCode
 from error import InvalidProjectGroupsError
 from error import NoSuchProjectError
 from error import RepoExitError
@@ -45,6 +46,9 @@ DEFAULT_LOCAL_JOBS = min(os.cpu_count(), 8)
 
 class UsageError(RepoExitError):
     """Exception thrown with invalid command usage."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, exit_code=ExitCode.USAGE_ERROR, **kwargs)
 
 
 class Command:
