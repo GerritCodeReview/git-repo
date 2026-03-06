@@ -28,7 +28,7 @@ import sys
 import tarfile
 import tempfile
 import time
-from typing import List, NamedTuple
+from typing import Dict, List, NamedTuple
 import urllib.parse
 
 from color import Coloring
@@ -1475,6 +1475,36 @@ class Project:
             copyfile._Copy()
         for linkfile in self.linkfiles:
             linkfile._Link()
+
+    def GetCopyLinkOutputPaths(self, topdir: str) -> Dict[str, List[str]]:
+        """Return copyfile/linkfile outputs relative to |topdir|."""
+        outputs = {"copyfile": [], "linkfile": []}
+        for copyfile in self.copyfiles:
+            dest_abs = os.path.join(copyfile.topdir, copyfile.dest)
+            if os.path.exists(dest_abs):
+                outputs["copyfile"].append(os.path.relpath(dest_abs, topdir))
+        for linkfile in self.linkfiles:
+            if linkfile.src == ".":
+                src_abs = linkfile.git_worktree
+            else:
+                src_abs = os.path.join(linkfile.git_worktree, linkfile.src)
+            if glob.has_magic(src_abs):
+                dest_dir_abs = os.path.join(linkfile.topdir, linkfile.dest)
+                for abs_src in glob.glob(src_abs):
+                    dest_abs = os.path.join(
+                        dest_dir_abs, os.path.basename(abs_src)
+                    )
+                    if os.path.lexists(dest_abs):
+                        outputs["linkfile"].append(
+                            os.path.relpath(dest_abs, topdir)
+                        )
+            else:
+                dest_abs = os.path.join(linkfile.topdir, linkfile.dest)
+                if os.path.lexists(dest_abs):
+                    outputs["linkfile"].append(
+                        os.path.relpath(dest_abs, topdir)
+                    )
+        return outputs
 
     def GetCommitRevisionId(self):
         """Get revisionId of a commit.
