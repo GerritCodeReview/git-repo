@@ -17,12 +17,12 @@
 from io import StringIO
 import os
 from shutil import rmtree
-import subprocess
 import tempfile
 import unittest
 from unittest import mock
 
-import git_command
+import utils_for_test
+
 import manifest_xml
 import project
 import subcmds
@@ -49,24 +49,6 @@ class AllCommands(unittest.TestCase):
     def tearDown(self):
         """Common teardown."""
         rmtree(self.tempdir, ignore_errors=True)
-
-    def initTempGitTree(self, git_dir):
-        """Create a new empty git checkout for testing."""
-
-        # Tests need to assume, that main is default branch at init,
-        # which is not supported in config until 2.28.
-        cmd = ["git", "init", "-q"]
-        if git_command.git_require((2, 28, 0)):
-            cmd += ["--initial-branch=main"]
-        else:
-            # Use template dir for init
-            templatedir = os.path.join(self.tempdirobj.name, ".test-template")
-            os.makedirs(templatedir)
-            with open(os.path.join(templatedir, "HEAD"), "w") as fp:
-                fp.write("ref: refs/heads/main\n")
-            cmd += ["--template", templatedir]
-        cmd += [git_dir]
-        subprocess.check_call(cmd)
 
     def getXmlManifestWith8Projects(self):
         """Create and return a setup of 8 projects with enough dummy
@@ -114,7 +96,7 @@ class AllCommands(unittest.TestCase):
                 )
             )
             git_path = os.path.join(self.tempdir, "tests/path" + str(x))
-            self.initTempGitTree(git_path)
+            utils_for_test.init_git_tree(git_path)
 
         return manifest_xml.XmlManifest(self.repodir, self.manifest_file)
 

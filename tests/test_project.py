@@ -21,31 +21,13 @@ import subprocess
 import tempfile
 import unittest
 
+import utils_for_test
+
 import error
-import git_command
 import git_config
 import manifest_xml
 import platform_utils
 import project
-
-
-@contextlib.contextmanager
-def TempGitTree():
-    """Create a new empty git checkout for testing."""
-    with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
-        # Tests need to assume, that main is default branch at init,
-        # which is not supported in config until 2.28.
-        cmd = ["git", "init"]
-        if git_command.git_require((2, 28, 0)):
-            cmd += ["--initial-branch=main"]
-        else:
-            # Use template dir for init.
-            templatedir = tempfile.mkdtemp(prefix=".test-template")
-            with open(os.path.join(templatedir, "HEAD"), "w") as fp:
-                fp.write("ref: refs/heads/main\n")
-            cmd += ["--template", templatedir]
-        subprocess.check_call(cmd, cwd=tempdir)
-        yield tempdir
 
 
 class FakeProject:
@@ -69,7 +51,7 @@ class ReviewableBranchTests(unittest.TestCase):
 
     def test_smoke(self):
         """A quick run through everything."""
-        with TempGitTree() as tempdir:
+        with utils_for_test.TempGitTree() as tempdir:
             fakeproj = FakeProject(tempdir)
 
             # Generate some commits.
@@ -467,7 +449,7 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
     def test_manifest_config_properties(self):
         """Test we are fetching the manifest config properties correctly."""
 
-        with TempGitTree() as tempdir:
+        with utils_for_test.TempGitTree() as tempdir:
             fakeproj = self.setUpManifest(tempdir)
 
             # Set property using the expected Set method, then ensure
