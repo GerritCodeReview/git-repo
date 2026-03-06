@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "045a9308_3c096749",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T03:12:17Z",
+      "side": 1,
+      "message": "`status: ...`",
+      "revId": "62d011963a11b312472e101acded49c32f983105",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2846e3d_ce6738ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T03:12:17Z",
+      "side": 1,
+      "message": "this makes sense, although i wish the logic could be shared between status.py and project.py as to the meanings/behavior of linkfile \u0026 copyfile directives",
+      "revId": "62d011963a11b312472e101acded49c32f983105",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "394021ac_80e4231b",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T03:12:17Z",
+      "side": 1,
+      "message": "```suggestion\n            ret \u003d status_header + path\n            if platform_utils.isdir(path):\n                ret +\u003d \"/\"\n            return ret\n```",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 49
+      },
+      "revId": "62d011963a11b312472e101acded49c32f983105",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25849936_5e617667",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T03:12:17Z",
+      "side": 1,
+      "message": "add typing to new functions",
+      "revId": "62d011963a11b312472e101acded49c32f983105",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
