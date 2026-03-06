@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "71d16645_65fd1e97",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-03-06T20:54:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "045a9308_3c096749",
+      "revId": "62d011963a11b312472e101acded49c32f983105",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c2846e3d_ce6738ff",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2026-03-06T03:12:17Z",
       "side": 1,
       "message": "this makes sense, although i wish the logic could be shared between status.py and project.py as to the meanings/behavior of linkfile \u0026 copyfile directives",
+      "revId": "62d011963a11b312472e101acded49c32f983105",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aeaa9df_0c5f40e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-03-06T20:54:52Z",
+      "side": 1,
+      "message": "I attempted a refactor as a follow up in change 558921.",
+      "parentUuid": "c2846e3d_ce6738ff",
       "revId": "62d011963a11b312472e101acded49c32f983105",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -58,6 +94,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e76ce690_6e6d94f6",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-03-06T20:54:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "394021ac_80e4231b",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 49
+      },
+      "revId": "62d011963a11b312472e101acded49c32f983105",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25849936_5e617667",
@@ -71,6 +131,24 @@
       "writtenOn": "2026-03-06T03:12:17Z",
       "side": 1,
       "message": "add typing to new functions",
+      "revId": "62d011963a11b312472e101acded49c32f983105",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13d157a2_73f80224",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-03-06T20:54:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25849936_5e617667",
       "revId": "62d011963a11b312472e101acded49c32f983105",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
