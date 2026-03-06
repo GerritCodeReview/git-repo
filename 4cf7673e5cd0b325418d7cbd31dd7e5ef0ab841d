@@ -1,0 +1,103 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c281fa0d_33b7d702",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T03:09:30Z",
+      "side": 1,
+      "message": "`import io`",
+      "fixSuggestions": [
+        {
+          "fixId": "34c779d8_9e66dd98",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 17,
+                "startChar": 0,
+                "endLine": 18,
+                "endChar": 0
+              },
+              "replacement": "import io\n"
+            },
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 118,
+                "startChar": 0,
+                "endLine": 119,
+                "endChar": 0
+              },
+              "replacement": "    @mock.patch(\"sys.stdout\", new_callable\u003dio.StringIO)\n"
+            },
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 133,
+                "startChar": 0,
+                "endLine": 134,
+                "endChar": 0
+              },
+              "replacement": "    @mock.patch(\"sys.stdout\", new_callable\u003dio.StringIO)\n"
+            },
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 144,
+                "startChar": 0,
+                "endLine": 145,
+                "endChar": 0
+              },
+              "replacement": "    @mock.patch(\"sys.stdout\", new_callable\u003dio.StringIO)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4cf7673e5cd0b325418d7cbd31dd7e5ef0ab841d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dccd49c8_6ae759f0",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T03:09:30Z",
+      "side": 1,
+      "message": "use pathlib in new code\n\n`from pathlib import Path`",
+      "revId": "4cf7673e5cd0b325418d7cbd31dd7e5ef0ab841d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9278c33f_5d4d817b",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T03:09:30Z",
+      "side": 1,
+      "message": "add typing to new functions",
+      "revId": "4cf7673e5cd0b325418d7cbd31dd7e5ef0ab841d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
