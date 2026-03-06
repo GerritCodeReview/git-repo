@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f5c0835_61e38d35",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T05:09:23Z",
+      "side": 1,
+      "message": "this is running in an exception block.  we really want those to be on the \"minimal\" side of things.  i would move all of this to a dedicated function in this class that basically just returns the name of the command to actually run.  if it doesn\u0027t match for whatever reason, return None, and do nothing.\n\n```\nexcept KeyError:\n  corrected_name \u003d self._autocorrect_command_name(...)\n  if corrected_name:\n    name \u003d corrected_name\n    cmd \u003d self.commands[name](\n                repodir\u003dself.repodir,\n                client\u003drepo_client,\n                manifest\u003drepo_client.manifest,\n                outer_client\u003douter_client,\n                outer_manifest\u003douter_client.manifest,\n                git_event_log\u003dgit_trace2_event_log,\n            )\n```\n\ni go this route rather than recurse into _RunLong because of the init at the top of the function.  other option might be to refactor that slightly too.\n\n```\ndef _RunLong(self, name, gopts, argv, git_trace2_event_log):\n  if name not in self.commands:\n    corrected_name \u003d self._autocorrect_command_name(...)\n    if not corrected_name:\n      logger.error(\"repo: \u0027%s\u0027 is not a repo command.  See \u0027repo help\u0027.\", name)\n      return 1\n    name \u003d corrected_name\n\n  ...rest of existing code...\n```",
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "424d56d5_2c161c87",
@@ -20,6 +37,210 @@
         "endLine": 323,
         "endChar": 13
       },
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "961775ff_fbbcc049",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T05:09:23Z",
+      "side": 1,
+      "message": "stick to `logger` rather than `print` yourself",
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "774750a0_de73b4d6",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T05:09:23Z",
+      "side": 1,
+      "message": "this doesn\u0027t correctly handle boolean settings.  autocorrect looks like a non-standard mess, so i think you have to hardcode them.\n\nhttps://git-scm.com/docs/git-config#Documentation/git-config.txt-helpautoCorrect",
+      "range": {
+        "startLine": 347,
+        "startChar": 0,
+        "endLine": 350,
+        "endChar": 35
+      },
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3cd7021_8c881c30",
+        "filename": "tests/test_main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T05:09:23Z",
+      "side": 1,
+      "message": "this is lacking a proper fileheader (license/copyright) and a module docstring",
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe22e4a8_7b40193b",
+        "filename": "tests/test_main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T05:09:23Z",
+      "side": 1,
+      "message": "this feels quite fragile with over use of mocks.  it feels like it\u0027s constructing a house of cards just so it can exercise the specific autocorrect codepath.  this pattern often leads to throw away tests because if we try to update the actual code in ways these mocks don\u0027t expect, we\u0027re left spending more time fighting the mocks.\n\nif that\u0027s your goal, then the function should be refactored in main.py so it can be run more directly without a lot of extra state floating around.",
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2430871c_57a66e2d",
+        "filename": "tests/test_main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T05:09:23Z",
+      "side": 1,
+      "message": "never mock a stdlib module via its import into another module.  `time.sleep` is the standard point, not `main.time.sleep`.",
+      "fixSuggestions": [
+        {
+          "fixId": "bc9e9b22_33aa58be",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 8,
+                "startChar": 0,
+                "endLine": 9,
+                "endChar": 0
+              },
+              "replacement": "    @mock.patch(\"time.sleep\")\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bb16096_0486424a",
+        "filename": "tests/test_main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T05:09:23Z",
+      "side": 1,
+      "message": "there\u0027s no reason to mock this at all in this file",
+      "fixSuggestions": [
+        {
+          "fixId": "114795c4_8cab24a7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 9,
+                "startChar": 0,
+                "endLine": 11,
+                "endChar": 0
+              },
+              "replacement": "    def test_autocorrect_positive(self, mock_sleep):\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 35,
+                "startChar": 0,
+                "endLine": 37,
+                "endChar": 0
+              },
+              "replacement": "    def test_autocorrect_negative(self):\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 55,
+                "startChar": 0,
+                "endLine": 57,
+                "endChar": 0
+              },
+              "replacement": "    def test_autocorrect_zero(self):\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 76,
+                "startChar": 0,
+                "endLine": 77,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 78,
+                "startChar": 0,
+                "endLine": 79,
+                "endChar": 0
+              },
+              "replacement": "    def test_autocorrect_prompt_yes(self, mock_input):\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 97,
+                "startChar": 0,
+                "endLine": 98,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 99,
+                "startChar": 0,
+                "endLine": 100,
+                "endChar": 0
+              },
+              "replacement": "    def test_autocorrect_prompt_no(self, mock_input):\n"
+            }
+          ]
+        }
+      ],
       "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
