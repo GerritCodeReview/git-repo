@@ -66,6 +66,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aada761a_5b3af276",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-03-06T20:54:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c281fa0d_33b7d702",
+      "revId": "4cf7673e5cd0b325418d7cbd31dd7e5ef0ab841d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dccd49c8_6ae759f0",
@@ -83,6 +101,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cf33861_e4c4b9a8",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-03-06T20:54:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dccd49c8_6ae759f0",
+      "revId": "4cf7673e5cd0b325418d7cbd31dd7e5ef0ab841d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9278c33f_5d4d817b",
@@ -96,6 +132,24 @@
       "writtenOn": "2026-03-06T03:09:30Z",
       "side": 1,
       "message": "add typing to new functions",
+      "revId": "4cf7673e5cd0b325418d7cbd31dd7e5ef0ab841d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7374d360_ee2779bc",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-03-06T20:54:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9278c33f_5d4d817b",
       "revId": "4cf7673e5cd0b325418d7cbd31dd7e5ef0ab841d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
