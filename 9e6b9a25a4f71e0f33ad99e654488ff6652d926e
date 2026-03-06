@@ -118,6 +118,30 @@
       },
       "revId": "9e6b9a25a4f71e0f33ad99e654488ff6652d926e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cecba1f_a5caf944",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-03-06T22:57:55Z",
+      "side": 1,
+      "message": "\u003e On second thought i would prefer the strict mode was default and the new permissive mode opt-in, to keep existing automation safe.\n\nIt\u0027s not a validation. It\u0027s a crash. As in it dumps a stacktrace. Take a look.",
+      "parentUuid": "46804499_a1b6c828",
+      "range": {
+        "startLine": 18,
+        "startChar": 42,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "9e6b9a25a4f71e0f33ad99e654488ff6652d926e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
