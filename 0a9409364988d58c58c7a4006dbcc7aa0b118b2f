@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38a169a8_87181c20",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T22:52:54Z",
+      "side": 1,
+      "message": "i think we should stop writing unittest.TestCase for new code.  we keep repeating mistakes and it makes code reuse more difficult since we don\u0027t have access to fixtures.  is there a strong reason to use TestCase here over pytests ?  setUp can be refactored into a local fixture.",
+      "revId": "0a9409364988d58c58c7a4006dbcc7aa0b118b2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1781c19d_939376c0",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T22:52:54Z",
+      "side": 1,
+      "message": "we need to stop duplicating this logic.  unified in\nhttps://gerrit-review.git.corp.google.com/c/git-repo/+/559041",
+      "revId": "0a9409364988d58c58c7a4006dbcc7aa0b118b2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7caa191e_9260e732",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T22:52:54Z",
+      "side": 1,
+      "message": "none of this should be necessary -\u003e delete",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 9
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "33f38fc9_07f697b2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 72,
+                "startChar": 0,
+                "endLine": 85,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "0a9409364988d58c58c7a4006dbcc7aa0b118b2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44f84e21_cb3f455c",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T22:52:54Z",
+      "side": 1,
+      "message": "you don\u0027t need to turn Path into str when calling subprocess\n```suggestion\n        subprocess.check_call([\"git\", \"-C\", git_dir, \"add\", \"README\"])\n```",
+      "revId": "0a9409364988d58c58c7a4006dbcc7aa0b118b2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503e14a5_8752a6bf",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T22:52:54Z",
+      "side": 1,
+      "message": "use subprocess\u0027s `cwd\u003d` option instead of passing `-C` to git",
+      "revId": "0a9409364988d58c58c7a4006dbcc7aa0b118b2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d33d212_6e629e16",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-06T22:52:54Z",
+      "side": 1,
+      "message": "use `contextlib.redirect_stdout` instead of mocking it",
+      "revId": "0a9409364988d58c58c7a4006dbcc7aa0b118b2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
