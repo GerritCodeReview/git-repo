@@ -403,9 +403,15 @@ class _CopyFile(NamedTuple):
     # Relative path under |topdir| of file to write.
     dest: str
 
+    def _SrcPath(self) -> str:
+        return _SafeExpandPath(self.git_worktree, self.src)
+
+    def _DestPath(self) -> str:
+        return _SafeExpandPath(self.topdir, self.dest)
+
     def _Copy(self):
-        src = _SafeExpandPath(self.git_worktree, self.src)
-        dest = _SafeExpandPath(self.topdir, self.dest)
+        src = self._SrcPath()
+        dest = self._DestPath()
 
         if platform_utils.isdir(src):
             raise ManifestInvalidPathError(
@@ -447,7 +453,13 @@ class _LinkFile(NamedTuple):
     # Relative path under |topdir| of symlink to create.
     dest: str
 
-    def __linkIt(self, relSrc, absDest):
+    class _LinkTarget(NamedTuple):
+        rel_src: str
+        abs_dest: str
+
+    def __linkIt(self, target: _LinkTarget):
+        relSrc = target.rel_src
+        absDest = target.abs_dest
         # Link file if it does not exist or is out of date.
         if not platform_utils.islink(absDest) or (
             platform_utils.readlink(absDest) != relSrc
@@ -464,51 +476,55 @@ class _LinkFile(NamedTuple):
             except OSError:
                 logger.error("error: Cannot symlink %s to %s", absDest, relSrc)
 
-    def _Link(self):
-        """Link the self.src & self.dest paths.
-
-        Handles wild cards on the src linking all of the files in the source in
-        to the destination directory.
-        """
+    def _GetSourcePath(self) -> str:
         # Some people use src="." to create stable links to projects.  Let's
         # allow that but reject all other uses of "." to keep things simple.
         if self.src == ".":
-            src = self.git_worktree
-        else:
-            src = _SafeExpandPath(self.git_worktree, self.src)
+            return self.git_worktree
+        return _SafeExpandPath(self.git_worktree, self.src)
+
+    def _GetLinkTargets(self) -> List[_LinkTarget]:
+        """Return target symlinks to create from this linkfile.
+
+        Handles wild cards on the src by mapping all matched files into
+        the destination directory.
+        """
+        src = self._GetSourcePath()
 
         if not glob.has_magic(src):
-            # Entity does not contain a wild card so just a simple one to one
-            # link operation.
             dest = _SafeExpandPath(self.topdir, self.dest, skipfinal=True)
-            # dest & src are absolute paths at this point.  Make sure the target
-            # of the symlink is relative in the context of the repo client
-            # checkout.
-            relpath = os.path.relpath(src, os.path.dirname(dest))
-            self.__linkIt(relpath, dest)
-        else:
-            dest = _SafeExpandPath(self.topdir, self.dest)
-            # Entity contains a wild card.
-            if os.path.exists(dest) and not platform_utils.isdir(dest):
-                logger.error(
-                    "Link error: src with wildcard, %s must be a directory",
-                    dest,
-                )
-            else:
-                for absSrcFile in glob.glob(src):
-                    # Create a releative path from source dir to destination
-                    # dir.
-                    absSrcDir = os.path.dirname(absSrcFile)
-                    relSrcDir = os.path.relpath(absSrcDir, dest)
+            rel_src = os.path.relpath(src, os.path.dirname(dest))
+            return [self._LinkTarget(rel_src=rel_src, abs_dest=dest)]
 
-                    # Get the source file name.
-                    srcFile = os.path.basename(absSrcFile)
+        # src contains a wild card.
+        dest = _SafeExpandPath(self.topdir, self.dest)
+        if os.path.exists(dest) and not platform_utils.isdir(dest):
+            logger.error(
+                "Link error: src with wildcard, %s must be a directory",
+                dest,
+            )
+            return []
 
-                    # Now form the final full paths to srcFile. They will be
-                    # absolute for the desintaiton and relative for the source.
-                    absDest = os.path.join(dest, srcFile)
-                    relSrc = os.path.join(relSrcDir, srcFile)
-                    self.__linkIt(relSrc, absDest)
+        targets = []
+        for absSrcFile in glob.glob(src):
+            # Create a relative path from source dir to destination dir.
+            absSrcDir = os.path.dirname(absSrcFile)
+            relSrcDir = os.path.relpath(absSrcDir, dest)
+
+            # Get the source file name.
+            srcFile = os.path.basename(absSrcFile)
+
+            # Now form the final full paths to srcFile. They will be absolute
+            # for the destination and relative for the source.
+            absDest = os.path.join(dest, srcFile)
+            relSrc = os.path.join(relSrcDir, srcFile)
+            targets.append(self._LinkTarget(rel_src=relSrc, abs_dest=absDest))
+        return targets
+
+    def _Link(self):
+        """Link the self.src & self.dest paths."""
+        for target in self._GetLinkTargets():
+            self.__linkIt(target)
 
 
 class RemoteSpec:
