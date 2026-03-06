@@ -210,40 +210,10 @@ the following meanings:
                 while head != "":
                     proj_dirs_parents.add(head)
                     (head, _tail) = os.path.split(head)
-                for copyfile in project.copyfiles:
-                    dest_abs = os.path.join(copyfile.topdir, copyfile.dest)
-                    if os.path.exists(dest_abs):
-                        dest_rel = os.path.relpath(
-                            dest_abs, self.manifest.topdir
-                        )
-                        _AddCreated(dest_rel, "copyfile")
-                for linkfile in project.linkfiles:
-                    if linkfile.src == ".":
-                        src_abs = linkfile.git_worktree
-                    else:
-                        src_abs = os.path.join(
-                            linkfile.git_worktree, linkfile.src
-                        )
-                    if glob.has_magic(src_abs):
-                        dest_dir_abs = os.path.join(
-                            linkfile.topdir, linkfile.dest
-                        )
-                        for abs_src in glob.glob(src_abs):
-                            dest_abs = os.path.join(
-                                dest_dir_abs, os.path.basename(abs_src)
-                            )
-                            if os.path.lexists(dest_abs):
-                                dest_rel = os.path.relpath(
-                                    dest_abs, self.manifest.topdir
-                                )
-                                _AddCreated(dest_rel, "linkfile")
-                    else:
-                        dest_abs = os.path.join(linkfile.topdir, linkfile.dest)
-                        if os.path.lexists(dest_abs):
-                            dest_rel = os.path.relpath(
-                                dest_abs, self.manifest.topdir
-                            )
-                            _AddCreated(dest_rel, "linkfile")
+                outputs = project.GetCopyLinkOutputPaths(self.manifest.topdir)
+                for kind in ("copyfile", "linkfile"):
+                    for dest_rel in outputs.get(kind, []):
+                        _AddCreated(dest_rel, kind)
             proj_dirs.add(".repo")
 
             class StatusColoring(Coloring):
