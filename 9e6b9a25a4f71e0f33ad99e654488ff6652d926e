@@ -70,6 +70,30 @@
       },
       "revId": "9e6b9a25a4f71e0f33ad99e654488ff6652d926e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "461bf73e_becdab44",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1151597
+      },
+      "writtenOn": "2026-03-06T10:55:13Z",
+      "side": 1,
+      "message": "I think crash is the wrong term. It\u0027s a validation. There are lots of situations where you might inadvertently have an inconsistent workspace, and don\u0027t want the generated manifest to to also inherit that inconsistency.\n\nFor example:\n1. `repo init`\n2. `repo sync` - Fails halfway through and you don\u0027t check the error, some directories are left without a worktree (though arguably you should always notice that error here)\n3. `repo manifest -r` - Now only returns half of the manifest, without warning you about it.\n\nOther examples: You accidentally remove a directory, permission error, the build system removes a directory. In automation this could lead to very difficult to diagnose errors further down the line. The key to reliable automation is to check and fail early.",
+      "parentUuid": "5e76b4e5_92b36216",
+      "range": {
+        "startLine": 18,
+        "startChar": 42,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "9e6b9a25a4f71e0f33ad99e654488ff6652d926e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
