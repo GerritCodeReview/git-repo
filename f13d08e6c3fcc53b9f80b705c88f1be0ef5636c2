@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "1d2b2303_81ec1d83",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-07T16:22:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f5c0835_61e38d35",
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "424d56d5_2c161c87",
         "filename": "main.py",
         "patchSetId": 1
@@ -58,6 +76,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a59b0be_9959fa6d",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-07T16:22:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "961775ff_fbbcc049",
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "774750a0_de73b4d6",
@@ -71,6 +107,30 @@
       "writtenOn": "2026-03-06T05:09:23Z",
       "side": 1,
       "message": "this doesn\u0027t correctly handle boolean settings.  autocorrect looks like a non-standard mess, so i think you have to hardcode them.\n\nhttps://git-scm.com/docs/git-config#Documentation/git-config.txt-helpautoCorrect",
+      "range": {
+        "startLine": 347,
+        "startChar": 0,
+        "endLine": 350,
+        "endChar": 35
+      },
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03f71a15_beb66d61",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-07T16:22:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "774750a0_de73b4d6",
       "range": {
         "startLine": 347,
         "startChar": 0,
@@ -98,6 +158,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f49cee0_2089c582",
+        "filename": "tests/test_main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-07T16:22:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3cd7021_8c881c30",
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe22e4a8_7b40193b",
@@ -111,6 +189,24 @@
       "writtenOn": "2026-03-06T05:09:23Z",
       "side": 1,
       "message": "this feels quite fragile with over use of mocks.  it feels like it\u0027s constructing a house of cards just so it can exercise the specific autocorrect codepath.  this pattern often leads to throw away tests because if we try to update the actual code in ways these mocks don\u0027t expect, we\u0027re left spending more time fighting the mocks.\n\nif that\u0027s your goal, then the function should be refactored in main.py so it can be run more directly without a lot of extra state floating around.",
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa7a4fcc_fdfaf9e0",
+        "filename": "tests/test_main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-07T16:22:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe22e4a8_7b40193b",
       "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -146,6 +242,24 @@
           ]
         }
       ],
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61dca8cc_bfe3e9d9",
+        "filename": "tests/test_main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-07T16:22:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2430871c_57a66e2d",
       "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -241,6 +355,24 @@
           ]
         }
       ],
+      "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fead78c3_9209b4d8",
+        "filename": "tests/test_main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-07T16:22:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bb16096_0486424a",
       "revId": "f13d08e6c3fcc53b9f80b705c88f1be0ef5636c2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
