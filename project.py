@@ -1391,6 +1391,15 @@ class Project:
         else:
             depth = self.manifest.manifestProject.depth
 
+        # If the project has been manually unshallowed (e.g. via
+        # `git fetch --unshallow`), don't re-shallow it during sync.
+        if (
+            depth
+            and not is_new
+            and not os.path.exists(os.path.join(self.gitdir, "shallow"))
+        ):
+            depth = None
+
         if depth and clone_filter_for_depth:
             depth = None
             clone_filter = clone_filter_for_depth
