@@ -16,6 +16,132 @@
       "message": "Bring hackef",
       "revId": "c2f414e6109b5872ab24705f5bb47cc66b2501dd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "806c209e_b3ee5f04",
+        "filename": "main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-08T03:19:50Z",
+      "side": 1,
+      "message": "add typing to new funcs",
+      "revId": "c2f414e6109b5872ab24705f5bb47cc66b2501dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4be95983_9a11cf24",
+        "filename": "main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-08T03:19:50Z",
+      "side": 1,
+      "message": "you only use `outer_client` to get at `globalConfig`.  so pass it in directly.\n\nthis will also simplify the test mocking.",
+      "revId": "c2f414e6109b5872ab24705f5bb47cc66b2501dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d166cc08_9c2452c8",
+        "filename": "main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-08T03:19:50Z",
+      "side": 1,
+      "message": "you shouldn\u0027t need `str()`",
+      "fixSuggestions": [
+        {
+          "fixId": "f0784c9e_ce331764",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "main.py",
+              "range": {
+                "startLine": 321,
+                "startChar": 0,
+                "endLine": 322,
+                "endChar": 0
+              },
+              "replacement": "        autocorrect \u003d autocorrect.lower()\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c2f414e6109b5872ab24705f5bb47cc66b2501dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0575584_324aa252",
+        "filename": "main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-08T03:19:50Z",
+      "side": 1,
+      "message": "can\u0027t we get rid of the try block entirely then ?",
+      "revId": "c2f414e6109b5872ab24705f5bb47cc66b2501dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa685690_9aa3b835",
+        "filename": "tests/test_main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-08T03:19:50Z",
+      "side": 1,
+      "message": "i was just thinking in another CL, we should stop writing unittest unless there\u0027s a strong reason ... use pytest only now.  i think these tests would be fairly trivial to write in pytest.\n\nfor example, all the `self.assertEqual(x, y)` turn into `assert x \u003d\u003d y`",
+      "revId": "c2f414e6109b5872ab24705f5bb47cc66b2501dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf708bae_60d98f14",
+        "filename": "tests/test_main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-08T03:19:50Z",
+      "side": 1,
+      "message": "do you need to modify this at all ?  main._Repo will initialize with the correct set of commands.  i guess if you override you don\u0027t have to worry about new subcommands messing up the tests.  i would leave a comment about that.\n\nhowever, you shouldn\u0027t need mocks.  you can just set `\"start\": None` and such.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 76
+      },
+      "revId": "c2f414e6109b5872ab24705f5bb47cc66b2501dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
