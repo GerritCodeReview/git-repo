@@ -176,6 +176,23 @@
       "message": "An error occurred\nError 403: edit not permitted\n\nEndpoint: /changes/*~*/edit/*\nTrace Id: 1773067133804-b6cac4e6",
       "revId": "9e6b9a25a4f71e0f33ad99e654488ff6652d926e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4f66e44_7947677d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-03-09T18:08:10Z",
+      "side": 1,
+      "message": "Respectfully, I disagree with making sane defaults options.",
+      "revId": "9e6b9a25a4f71e0f33ad99e654488ff6652d926e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
