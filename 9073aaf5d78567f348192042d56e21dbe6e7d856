@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38578d80_8f6372e3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-10T03:56:46Z",
+      "side": 1,
+      "message": "we don\u0027t use s-o-b tags",
+      "revId": "9073aaf5d78567f348192042d56e21dbe6e7d856",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd4ce9ba_d10a3a66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-10T03:56:46Z",
+      "side": 1,
+      "message": "i think this makes sense, but Gavin should double check with his recent shallowing/resetting work",
+      "revId": "9073aaf5d78567f348192042d56e21dbe6e7d856",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
