@@ -1,0 +1,321 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10da0643_c3547656",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-10T15:07:47Z",
+      "side": 1,
+      "message": "code looks good other than unittest-vs-pytest",
+      "revId": "2cd169b85c2d22cca8c0f39952453889c8baf8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21816a96_357473b6",
+        "filename": "tests/test_main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-10T15:07:47Z",
+      "side": 1,
+      "message": "you\u0027re not mocking the client anymore, you\u0027re mocking the config",
+      "fixSuggestions": [
+        {
+          "fixId": "2aaf07e3_928c45d8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 31,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config \u003d mock.MagicMock()\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 36,
+                "startChar": 0,
+                "endLine": 37,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.return_value \u003d \"10\"\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 38,
+                "startChar": 0,
+                "endLine": 41,
+                "endChar": 0
+              },
+              "replacement": "        res \u003d self.repo._autocorrect_command_name(\"tart\", self.mock_config)\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 42,
+                "startChar": 0,
+                "endLine": 45,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.assert_called_with(\"help.autocorrect\")\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 52,
+                "startChar": 0,
+                "endLine": 56,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.return_value \u003d \"-1\"\n        res \u003d self.repo._autocorrect_command_name(\"tart\", self.mock_config)\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 60,
+                "startChar": 0,
+                "endLine": 64,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.return_value \u003d \"true\"\n        res \u003d self.repo._autocorrect_command_name(\"tart\", self.mock_config)\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 68,
+                "startChar": 0,
+                "endLine": 72,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.return_value \u003d \"YES\"\n        res \u003d self.repo._autocorrect_command_name(\"tart\", self.mock_config)\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 76,
+                "startChar": 0,
+                "endLine": 80,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.return_value \u003d \"Immediate\"\n        res \u003d self.repo._autocorrect_command_name(\"tart\", self.mock_config)\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 86,
+                "startChar": 0,
+                "endLine": 90,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.return_value \u003d \"0\"\n        res \u003d self.repo._autocorrect_command_name(\"tart\", self.mock_config)\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 93,
+                "startChar": 0,
+                "endLine": 97,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.return_value \u003d \"False\"\n        res \u003d self.repo._autocorrect_command_name(\"tart\", self.mock_config)\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 100,
+                "startChar": 0,
+                "endLine": 104,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.return_value \u003d \"show\"\n        res \u003d self.repo._autocorrect_command_name(\"tart\", self.mock_config)\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 108,
+                "startChar": 0,
+                "endLine": 112,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.return_value \u003d \"never\"\n        res \u003d self.repo._autocorrect_command_name(\"tart\", self.mock_config)\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 117,
+                "startChar": 0,
+                "endLine": 118,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.return_value \u003d \"prompt\"\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 119,
+                "startChar": 0,
+                "endLine": 122,
+                "endChar": 0
+              },
+              "replacement": "        res \u003d self.repo._autocorrect_command_name(\"tart\", self.mock_config)\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 128,
+                "startChar": 0,
+                "endLine": 129,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.return_value \u003d \"prompt\"\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 130,
+                "startChar": 0,
+                "endLine": 133,
+                "endChar": 0
+              },
+              "replacement": "        res \u003d self.repo._autocorrect_command_name(\"tart\", self.mock_config)\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 139,
+                "startChar": 0,
+                "endLine": 140,
+                "endChar": 0
+              },
+              "replacement": "        self.mock_config.GetString.return_value \u003d \"prompt\"\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 141,
+                "startChar": 0,
+                "endLine": 144,
+                "endChar": 0
+              },
+              "replacement": "        res \u003d self.repo._autocorrect_command_name(\"tart\", self.mock_config)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2cd169b85c2d22cca8c0f39952453889c8baf8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c207c23c_91386c1d",
+        "filename": "tests/test_main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-10T15:07:47Z",
+      "side": 1,
+      "message": "nit: periods at the end of sentences",
+      "fixSuggestions": [
+        {
+          "fixId": "88feadd9_494b0ef2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 51,
+                "startChar": 0,
+                "endLine": 52,
+                "endChar": 0
+              },
+              "replacement": "        # Test numeric negative.\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 59,
+                "startChar": 0,
+                "endLine": 60,
+                "endChar": 0
+              },
+              "replacement": "        # Test string boolean \"true\".\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 67,
+                "startChar": 0,
+                "endLine": 68,
+                "endChar": 0
+              },
+              "replacement": "        # Test string boolean \"yes\".\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 75,
+                "startChar": 0,
+                "endLine": 76,
+                "endChar": 0
+              },
+              "replacement": "        # Test string boolean \"immediate\".\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 85,
+                "startChar": 0,
+                "endLine": 86,
+                "endChar": 0
+              },
+              "replacement": "        # Test numeric zero.\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 92,
+                "startChar": 0,
+                "endLine": 93,
+                "endChar": 0
+              },
+              "replacement": "        # Test string boolean \"false\".\n"
+            },
+            {
+              "path": "tests/test_main.py",
+              "range": {
+                "startLine": 99,
+                "startChar": 0,
+                "endLine": 100,
+                "endChar": 0
+              },
+              "replacement": "        # Test string boolean \"show\".\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2cd169b85c2d22cca8c0f39952453889c8baf8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

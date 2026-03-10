@@ -213,6 +213,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "57fce19b_927e9f66",
+        "filename": "tests/test_main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-10T15:07:47Z",
+      "side": 1,
+      "message": "i\u0027m not following ... we can avoid adding more \"bad\" code independently.  if you\u0027re using AI to generate these tests, it seems like a pretty easy task to convert it to pytest since the tests are pretty mechanical.",
+      "parentUuid": "e0910a9e_9dae7803",
+      "revId": "c2f414e6109b5872ab24705f5bb47cc66b2501dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bf708bae_60d98f14",
         "filename": "tests/test_main.py",
         "patchSetId": 3
