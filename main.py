@@ -19,6 +19,7 @@ People shouldn't run this directly; instead, they should use the `repo` wrapper
 which takes care of execing this entry point.
 """
 
+import difflib
 import getpass
 import json
 import netrc
@@ -29,6 +30,7 @@ import signal
 import sys
 import textwrap
 import time
+from typing import Optional
 import urllib.request
 
 from repo_logging import RepoLogger
@@ -292,6 +294,94 @@ class _Repo:
                 result = run()
         return result
 
+    def _autocorrect_command_name(
+        self, name: str, config: RepoConfig
+    ) -> Optional[str]:
+        """Autocorrect command name based on user's git config."""
+
+        close_commands = difflib.get_close_matches(
+            name, self.commands.keys(), n=5, cutoff=0.7
+        )
+
+        if not close_commands:
+            logger.error(
+                "repo: '%s' is not a repo command.  See 'repo help'.", name
+            )
+            return None
+
+        assumed = close_commands[0]
+        autocorrect = config.GetString("help.autocorrect")
+
+        # Handle git configuration boolean values:
+        # 0, "false", "off", "no", "show": show suggestion (default)
+        # 1, "true", "on", "yes", "immediate": run suggestion immediately
+        # "never": don't run or show any suggested command
+        # "prompt": show the suggestion and prompt for confirmation
+        # positive number > 1: run suggestion after specified deciseconds
+        if autocorrect is None:
+            autocorrect = "0"
+
+        autocorrect = autocorrect.lower()
+
+        if autocorrect in ("0", "false", "off", "no", "show"):
+            autocorrect = 0
+        elif autocorrect in ("1", "true", "on", "yes", "immediate"):
+            autocorrect = -1  # immediate
+        elif autocorrect == "never":
+            return None
+        elif autocorrect == "prompt":
+            logger.warning(
+                "You called a repo command named "
+                "'%s', which does not exist.",
+                name,
+            )
+            try:
+                resp = input(f"Run '{assumed}' instead [y/N]? ")
+                if resp.lower().startswith("y"):
+                    return assumed
+            except (KeyboardInterrupt, EOFError):
+                pass
+            return None
+        else:
+            try:
+                autocorrect = int(autocorrect)
+            except ValueError:
+                autocorrect = 0
+
+        if autocorrect != 0:
+            if autocorrect < 0:
+                logger.warning(
+                    "You called a repo command named "
+                    "'%s', which does not exist.\n"
+                    "Continuing assuming that "
+                    "you meant '%s'.",
+                    name,
+                    assumed,
+                )
+            else:
+                delay = autocorrect * 0.1
+                logger.warning(
+                    "You called a repo command named "
+                    "'%s', which does not exist.\n"
+                    "Continuing in %.1f seconds, assuming "
+                    "that you meant '%s'.",
+                    name,
+                    delay,
+                    assumed,
+                )
+                time.sleep(delay)
+            return assumed
+
+        logger.error(
+            "repo: '%s' is not a repo command.  See 'repo help'.", name
+        )
+        logger.warning(
+            "The most similar command%s\n\t%s",
+            "s are" if len(close_commands) > 1 else " is",
+            "\n\t".join(close_commands),
+        )
+        return None
+
     def _RunLong(self, name, gopts, argv, git_trace2_event_log):
         """Execute the (longer running) requested subcommand."""
         result = 0
@@ -306,20 +396,22 @@ class _Repo:
                 outer_client=outer_client,
             )
 
-        try:
-            cmd = self.commands[name](
-                repodir=self.repodir,
-                client=repo_client,
-                manifest=repo_client.manifest,
-                outer_client=outer_client,
-                outer_manifest=outer_client.manifest,
-                git_event_log=git_trace2_event_log,
+        if name not in self.commands:
+            corrected_name = self._autocorrect_command_name(
+                name, outer_client.globalConfig
             )
-        except KeyError:
-            logger.error(
-                "repo: '%s' is not a repo command.  See 'repo help'.", name
-            )
-            return 1
+            if not corrected_name:
+                return 1
+            name = corrected_name
+
+        cmd = self.commands[name](
+            repodir=self.repodir,
+            client=repo_client,
+            manifest=repo_client.manifest,
+            outer_client=outer_client,
+            outer_manifest=outer_client.manifest,
+            git_event_log=git_trace2_event_log,
+        )
 
         Editor.globalConfig = cmd.client.globalConfig
 
