@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52bce6a9_b3bcc2ec",
+        "filename": "git_config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-11T17:30:16Z",
+      "side": 0,
+      "message": "Git automatically creates the [branch \"\u003cname\u003e\"] section if it\u0027s missing from the file\n\n```\ngit config --file /tmp/test_git_config branch.testbranch.remote origin\n$ cat /tmp/test_git_config\n[branch \"testbranch\"]\n\tremote \u003d origin\n```\n\nas such\n\nThe [branch \"%s\"] header is implicitly handled by the standard git config tool, so manual concatenation is no longer needed.",
+      "range": {
+        "startLine": 776,
+        "startChar": 0,
+        "endLine": 776,
+        "endChar": 55
+      },
+      "revId": "b60512a75ad878c51cd01093ddfb75252893f3a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
