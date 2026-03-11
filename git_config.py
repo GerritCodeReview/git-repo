@@ -772,12 +772,11 @@ class Branch:
             self._Set("merge", self.merge)
 
         else:
-            with open(self._config.file, "a") as fd:
-                fd.write('[branch "%s"]\n' % self.name)
-                if self.remote:
-                    fd.write("\tremote = %s\n" % self.remote.name)
-                if self.merge:
-                    fd.write("\tmerge = %s\n" % self.merge)
+            if self.remote:
+                self._Set("remote", self.remote.name)
+            else:
+                self._Set("remote", None)
+            self._Set("merge", self.merge)
 
     def _Set(self, key, value):
         key = f"branch.{self.name}.{key}"

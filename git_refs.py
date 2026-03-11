@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import subprocess
 
 import platform_utils
 from repo_trace import Trace
@@ -86,80 +87,57 @@ class GitRefs:
             self._symref = {}
             self._mtime = {}
 
-            self._ReadPackedRefs()
-            self._ReadLoose("refs/")
-            self._ReadLoose1(os.path.join(self._gitdir, HEAD), HEAD)
+            # We track these for caching.
+            for name in ("packed-refs", "HEAD", "refs"):
+                try:
+                    self._mtime[name] = os.path.getmtime(
+                        os.path.join(self._gitdir, name)
+                    )
+                except OSError:
+                    pass
 
-            scan = self._symref
-            attempts = 0
-            while scan and attempts < 5:
-                scan_next = {}
-                for name, dest in scan.items():
-                    if dest in self._phyref:
-                        self._phyref[name] = self._phyref[dest]
-                    else:
-                        scan_next[name] = dest
-                scan = scan_next
-                attempts += 1
-
-    def _ReadPackedRefs(self):
-        path = os.path.join(self._gitdir, "packed-refs")
-        try:
-            fd = open(path)
-            mtime = os.path.getmtime(path)
-        except OSError:
-            return
-        try:
-            for line in fd:
-                line = str(line)
-                if line[0] == "#":
-                    continue
-                if line[0] == "^":
-                    continue
-
-                line = line[:-1]
-                p = line.split(" ")
-                ref_id = p[0]
-                name = p[1]
-
-                self._phyref[name] = ref_id
-        finally:
-            fd.close()
-        self._mtime["packed-refs"] = mtime
-
-    def _ReadLoose(self, prefix):
-        base = os.path.join(self._gitdir, prefix)
-        for name in platform_utils.listdir(base):
-            p = os.path.join(base, name)
-            # We don't implement the full ref validation algorithm, just the
-            # simple rules that would show up in local filesystems.
-            # https://git-scm.com/docs/git-check-ref-format
-            if name.startswith(".") or name.endswith(".lock"):
+            # Physical refs
+            try:
+                output = subprocess.check_output(
+                    ["git", "--git-dir", self._gitdir, "show-ref", "--head"],
+                    stderr=subprocess.DEVNULL,
+                    encoding="utf-8",
+                )
+                for line in output.splitlines():
+                    if " " in line:
+                        sha, name = line.split(" ", 1)
+                        self._phyref[name] = sha
+            except subprocess.CalledProcessError:
                 pass
-            elif platform_utils.isdir(p):
-                self._mtime[prefix] = os.path.getmtime(base)
-                self._ReadLoose(prefix + name + "/")
-            else:
-                self._ReadLoose1(p, prefix + name)
 
-    def _ReadLoose1(self, path, name):
-        try:
-            with open(path) as fd:
-                mtime = os.path.getmtime(path)
-                ref_id = fd.readline()
-        except (OSError, UnicodeError):
-            return
+            # Symbolic refs
+            try:
+                output = subprocess.check_output(
+                    [
+                        "git",
+                        "--git-dir",
+                        self._gitdir,
+                        "for-each-ref",
+                        "--format=%(refname) %(symref)",
+                    ],
+                    stderr=subprocess.DEVNULL,
+                    encoding="utf-8",
+                )
+                for line in output.splitlines():
+                    if " " in line:
+                        name, sym = line.split(" ", 1)
+                        if sym:
+                            self._symref[name] = sym
+            except subprocess.CalledProcessError:
+                pass
 
-        try:
-            ref_id = ref_id.decode()
-        except AttributeError:
-            pass
-        if not ref_id:
-            return
-        ref_id = ref_id[:-1]
-
-        if ref_id.startswith("ref: "):
-            self._symref[name] = ref_id[5:]
-        else:
-            self._phyref[name] = ref_id
-        self._mtime[name] = mtime
+            # Special case for HEAD symref
+            try:
+                output = subprocess.check_output(
+                    ["git", "--git-dir", self._gitdir, "symbolic-ref", HEAD],
+                    stderr=subprocess.DEVNULL,
+                    encoding="utf-8",
+                )
+                self._symref[HEAD] = output.strip()
+            except subprocess.CalledProcessError:
+                pass
