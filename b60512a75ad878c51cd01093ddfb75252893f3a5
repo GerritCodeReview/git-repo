@@ -22,6 +22,30 @@
       },
       "revId": "b60512a75ad878c51cd01093ddfb75252893f3a5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50ade520_8cd4df5b",
+        "filename": "git_config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-11T20:05:53Z",
+      "side": 0,
+      "message": "i think both branches of this if statement is the same now as a result",
+      "parentUuid": "52bce6a9_b3bcc2ec",
+      "range": {
+        "startLine": 776,
+        "startChar": 0,
+        "endLine": 776,
+        "endChar": 55
+      },
+      "revId": "b60512a75ad878c51cd01093ddfb75252893f3a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

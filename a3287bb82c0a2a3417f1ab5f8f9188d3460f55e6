@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e739703_2bed4798",
+        "filename": "git_refs.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-11T20:05:53Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "a3287bb82c0a2a3417f1ab5f8f9188d3460f55e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e8fc5bb_aada24c7",
+        "filename": "git_refs.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-11T20:05:53Z",
+      "side": 1,
+      "message": "we have git_command to wrap calls to git.  any reason to not use that ?",
+      "revId": "a3287bb82c0a2a3417f1ab5f8f9188d3460f55e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6f27ba6_bed49737",
+        "filename": "git_refs.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-11T20:05:53Z",
+      "side": 1,
+      "message": "i think you want `for-each-ref` instead of `show-ref`.  that has --format\u003d so you can control exact output.",
+      "revId": "a3287bb82c0a2a3417f1ab5f8f9188d3460f55e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
