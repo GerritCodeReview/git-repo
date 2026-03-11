@@ -70,8 +70,8 @@ def exec_command(cmd):
             sys.exit(ret)
         else:
             os.execvp(cmd[0], cmd)
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"repo: error: exec of {cmd[0]} failed: {e}", file=sys.stderr)
 
 
 def check_python_version():
@@ -508,8 +508,15 @@ def run_command(cmd, **kwargs):
             return output.decode("utf-8", "backslashreplace")
 
     # Run & package the results.
-    proc = subprocess.Popen(cmd, **kwargs)
-    (stdout, stderr) = proc.communicate(input=cmd_input)
+    try:
+        proc = subprocess.Popen(cmd, **kwargs)
+        (stdout, stderr) = proc.communicate(input=cmd_input)
+    except Exception as e:
+        print(f"repo: error: {cmd[0]} failed: {e}", file=sys.stderr)
+        if check:
+            raise
+        return subprocess.CompletedProcess(cmd, 1, "", str(e))
+
     dbg = ": " + cmdstr(cmd)
     if cmd_input is not None:
         dbg += " 0<|"

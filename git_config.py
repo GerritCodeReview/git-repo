@@ -33,12 +33,16 @@ from git_refs import R_CHANGES
 from git_refs import R_HEADS
 from git_refs import R_TAGS
 import platform_utils
+from repo_logging import RepoLogger
 from repo_trace import Trace
 
 
 # Prefix that is prepended to all the keys of SyncAnalysisState's data
 # that is saved in the config.
 SYNC_STATE_PREFIX = "repo.syncstate."
+
+
+logger = RepoLogger(__file__)
 
 ID_RE = re.compile(r"^[0-9a-f]{40}$")
 
@@ -172,10 +176,8 @@ class GitConfig:
         try:
             return int(v, base=base) * mult
         except ValueError:
-            print(
-                f"warning: expected {name} to represent an integer, got {v} "
-                "instead",
-                file=sys.stderr,
+            logger.warning(
+                "expected %s to represent an integer, got %s instead", name, v
             )
             return None
 
@@ -210,9 +212,8 @@ class GitConfig:
             return True
         if v in ("false", "no"):
             return False
-        print(
-            f"warning: expected {name} to represent a boolean, got {v} instead",
-            file=sys.stderr,
+        logger.warning(
+            "expected %s to represent a boolean, got %s instead", name, v
         )
         return None
 

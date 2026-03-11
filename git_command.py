@@ -238,9 +238,9 @@ def _build_env(
             s = p + " " + s
         env["GIT_CONFIG_PARAMETERS"] = s
     if "GIT_ALLOW_PROTOCOL" not in env:
-        env["GIT_ALLOW_PROTOCOL"] = (
-            "file:git:http:https:ssh:persistent-http:persistent-https:sso:rpc"
-        )
+        env[
+            "GIT_ALLOW_PROTOCOL"
+        ] = "file:git:http:https:ssh:persistent-http:persistent-https:sso:rpc"
     env["GIT_HTTP_USER_AGENT"] = user_agent.git
 
     if objdir:
@@ -360,6 +360,8 @@ class GitCommand:
                     f"{ERROR_EVENT_LOGGING_PREFIX}:{error_info}"
                 )
                 event_log.Write(GetEventTargetPath())
+            if log_as_error:
+                logger.error("%s", e)
             if isinstance(e, GitPopenCommandError):
                 raise
 
@@ -458,30 +460,36 @@ class GitCommand:
                     stderr=stderr,
                     **kwargs,
                 )
+                if ssh_proxy:
+                    ssh_proxy.add_client(p)
+
+                self.process = p
+
+                try:
+                    if tee_stderr:
+                        # tee_stderr streams stderr to sys.stderr while
+                        # capturing a copy within self.stderr. tee_stderr is
+                        # only enabled when the caller wants to pipe no stream.
+                        self.stderr = self._Tee(p.stderr, sys.stderr)
+                    else:
+                        self.stdout, self.stderr = p.communicate(input=input)
+                finally:
+                    if ssh_proxy:
+                        ssh_proxy.remove_client(p)
+                self.rc = p.wait()
             except Exception as e:
+                if not isinstance(e, GitError):
+                    msg = f"git command {command[1]!r} failed: {e}"
+                    if self.project:
+                        msg += f" in {self.project.name}"
+                    logger.error(msg)
+                if isinstance(e, GitPopenCommandError):
+                    raise
                 raise GitPopenCommandError(
                     message=f"{command[1]}: {e}",
                     project=self.project.name if self.project else None,
                     command_args=self.cmdv,
                 )
-
-            if ssh_proxy:
-                ssh_proxy.add_client(p)
-
-            self.process = p
-
-            try:
-                if tee_stderr:
-                    # tee_stderr streams stderr to sys.stderr while capturing
-                    # a copy within self.stderr. tee_stderr is only enabled
-                    # when the caller wants to pipe no stream.
-                    self.stderr = self._Tee(p.stderr, sys.stderr)
-                else:
-                    self.stdout, self.stderr = p.communicate(input=input)
-            finally:
-                if ssh_proxy:
-                    ssh_proxy.remove_client(p)
-            self.rc = p.wait()
 
     @staticmethod
     def _Tee(in_stream, out_stream):

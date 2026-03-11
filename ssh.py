@@ -26,10 +26,12 @@ import time
 
 from git_command import git
 import platform_utils
+from repo_logging import RepoLogger
 from repo_trace import Trace
 
 
 PROXY_PATH = os.path.join(os.path.dirname(__file__), "git_ssh")
+logger = RepoLogger(__file__)
 
 
 def _run_ssh_version():
@@ -56,13 +58,12 @@ def version():
     try:
         return _parse_ssh_version()
     except FileNotFoundError:
-        print("fatal: ssh not installed", file=sys.stderr)
+        logger.error("fatal: ssh not installed")
         sys.exit(1)
     except subprocess.CalledProcessError as e:
-        print(
+        logger.error(
             "fatal: unable to detect ssh version"
-            f" (code={e.returncode}, output={e.stdout})",
-            file=sys.stderr,
+            f" (code={e.returncode}, output={e.stdout})"
         )
         sys.exit(1)
 
@@ -207,9 +208,10 @@ class ProxyManager:
                     # running.  Add to the list of keys.
                     self._master_keys[key] = True
                     return True
-            except Exception:
-                # Ignore excpetions.  We we will fall back to the normal command
+            except Exception as e:
+                # Ignore exceptions. We will fall back to the normal command
                 # and print to the log there.
+                logger.debug("ssh check call failed: %s", e)
                 pass
 
         # Git protocol V2 is a new feature in git 2.18.0, made default in
@@ -245,10 +247,11 @@ class ProxyManager:
                 p = subprocess.Popen(command)
         except Exception as e:
             self._master_broken.value = True
-            print(
-                "\nwarn: cannot enable ssh control master for %s:%s\n%s"
-                % (host, port, str(e)),
-                file=sys.stderr,
+            logger.warning(
+                "cannot enable ssh control master for %s:%s\n%s",
+                host,
+                port,
+                str(e),
             )
             return False
 

@@ -34,10 +34,14 @@ from git_command import git_require
 from git_command import GitCommand
 from git_config import RepoConfig
 from git_refs import GitRefs
+from repo_logging import RepoLogger
 
 
 _SUPERPROJECT_GIT_NAME = "superproject.git"
 _SUPERPROJECT_MANIFEST_NAME = "superproject_override.xml"
+
+
+logger = RepoLogger(__file__)
 
 
 class SyncResult(NamedTuple):
@@ -188,8 +192,6 @@ class Superproject:
     def _LogMessage(self, fmt, *inputs):
         """Logs message to stderr and _git_event_log."""
         message = f"{self._LogMessagePrefix()} {fmt.format(*inputs)}"
-        if self._print_messages:
-            print(message, file=sys.stderr)
         if self._git_event_log:
             self._git_event_log.ErrorEvent(message, fmt)
 
@@ -201,10 +203,12 @@ class Superproject:
 
     def _LogError(self, fmt, *inputs):
         """Logs error message to stderr and _git_event_log."""
+        logger.error(f"{self._LogMessagePrefix()} {fmt}", *inputs)
         self._LogMessage(f"error: {fmt}", *inputs)
 
     def _LogWarning(self, fmt, *inputs):
         """Logs warning message to stderr and _git_event_log."""
+        logger.warning(f"{self._LogMessagePrefix()} {fmt}", *inputs)
         self._LogMessage(f"warning: {fmt}", *inputs)
 
     def _Init(self):

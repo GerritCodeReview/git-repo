@@ -106,8 +106,9 @@ class GitRefs:
                     if " " in line:
                         sha, name = line.split(" ", 1)
                         self._phyref[name] = sha
-            except subprocess.CalledProcessError:
-                pass
+            except subprocess.CalledProcessError as e:
+                with Trace(": load refs %s failed: %s", self._gitdir, e):
+                    pass
 
             # Symbolic refs
             try:
@@ -127,8 +128,9 @@ class GitRefs:
                         name, sym = line.split(" ", 1)
                         if sym:
                             self._symref[name] = sym
-            except subprocess.CalledProcessError:
-                pass
+            except subprocess.CalledProcessError as e:
+                with Trace(": load refs %s failed: %s", self._gitdir, e):
+                    pass
 
             # Special case for HEAD symref
             try:
@@ -138,5 +140,6 @@ class GitRefs:
                     encoding="utf-8",
                 )
                 self._symref[HEAD] = output.strip()
-            except subprocess.CalledProcessError:
-                pass
+            except subprocess.CalledProcessError as e:
+                with Trace(": load refs %s failed: %s", self._gitdir, e):
+                    pass
