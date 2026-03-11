@@ -3884,22 +3884,33 @@ class Project:
 
             As a convenience, append |subpath| if provided.
             """
-            if self._bare:
-                dotgit = self._gitdir
-            else:
-                dotgit = os.path.join(self._project.worktree, ".git")
-                if os.path.isfile(dotgit):
-                    # Git worktrees use a "gitdir:" syntax to point to the
-                    # scratch space.
-                    with open(dotgit) as fp:
-                        setting = fp.read()
-                    assert setting.startswith("gitdir:")
-                    gitdir = setting.split(":", 1)[1].strip()
-                    dotgit = os.path.normpath(
-                        os.path.join(self._project.worktree, gitdir)
-                    )
+            try:
+                if subpath:
+                    return self.rev_parse("--git-path", subpath)
+                return self.rev_parse("--absolute-git-dir")
+            except GitError:
+                # Fallback to manual computation if git fails.
+                if self._bare:
+                    dotgit = self._gitdir
+                else:
+                    dotgit = os.path.join(self._project.worktree, ".git")
+                    if os.path.isfile(dotgit):
+                        # Git worktrees use a "gitdir:" syntax to point to the
+                        # scratch space.
+                        try:
+                            with open(dotgit) as fp:
+                                setting = fp.read()
+                            if setting.startswith("gitdir:"):
+                                gitdir = setting.split(":", 1)[1].strip()
+                                dotgit = os.path.normpath(
+                                    os.path.join(self._project.worktree, gitdir)
+                                )
+                        except (OSError, IndexError):
+                            pass
 
-            return dotgit if subpath is None else os.path.join(dotgit, subpath)
+                return (
+                    dotgit if subpath is None else os.path.join(dotgit, subpath)
+                )
 
         def GetHead(self):
             """Return the ref that HEAD points to."""
@@ -3910,29 +3921,11 @@ class Project:
                     return self.rev_parse(HEAD)
                 return symbolic_head
             except GitError as e:
-                logger.warning(
-                    "project %s: unparseable HEAD; trying to recover.\n"
-                    "Check that HEAD ref in .git/HEAD is valid. The error "
-                    "was: %s",
-                    self._project.RelPath(local=False),
-                    e,
-                )
-
-                # Fallback to direct file reading for compatibility with broken
-                # repos, e.g. if HEAD points to an unborn branch.
-                path = self.GetDotgitPath(subpath=HEAD)
+                # Fallback to symbolic-ref for things like unborn branches.
                 try:
-                    with open(path) as fd:
-                        line = fd.readline()
-                except OSError:
-                    raise NoManifestException(path, str(e))
-                try:
-                    line = line.decode()
-                except AttributeError:
-                    pass
-                if line.startswith("ref: "):
-                    return line[5:-1]
-                return line[:-1]
+                    return self.symbolic_ref(HEAD)
+                except GitError:
+                    raise NoManifestException(self.GetDotgitPath(HEAD), str(e))
 
         def SetHead(self, ref, message=None):
             cmdv = []
