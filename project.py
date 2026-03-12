@@ -3709,9 +3709,18 @@ class Project:
                 # Finish checking out the worktree.
                 cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
                 try:
-                    if GitCommand(self, cmd).Wait() != 0:
+                    p = GitCommand(self, cmd)
+                    if p.Wait() != 0:
+                        stderr = p.stderr or ""
+                        # Trim to last 20 lines to keep error message
+                        # readable while showing the relevant context.
+                        stderr_tail = "\n".join(
+                            stderr.strip().splitlines()[-20:]
+                        )
                         raise GitError(
-                            "Cannot initialize work tree for " + self.name,
+                            "Cannot initialize work tree for %s"
+                            " (exit code %s): %s"
+                            % (self.name, p.rc, stderr_tail),
                             project=self.name,
                         )
                 except Exception as e:

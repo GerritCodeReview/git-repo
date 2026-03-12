@@ -482,6 +482,112 @@ class MigrateWorkTreeTests(unittest.TestCase):
             )
 
 
+class InitWorkTreeReadTreeErrorTest(unittest.TestCase):
+    """Check that _InitWorkTree includes stderr in read-tree errors."""
+
+    def _setup_project(self, tempdir):
+        """Create a FakeProject with a commit and the attributes needed
+        by _InitWorkTree."""
+        fakeproj = FakeProject(tempdir)
+
+        readme = os.path.join(tempdir, "readme")
+        with open(readme, "w") as f:
+            f.write("test")
+        fakeproj.work_git.add("readme")
+        fakeproj.work_git.commit("-mInit")
+
+        worktree = os.path.join(tempdir, "sub", "worktree")
+        fakeproj.worktree = worktree
+        fakeproj.objdir = fakeproj.gitdir
+        fakeproj.use_git_worktrees = False
+        fakeproj.parent = None
+
+        # Add methods that _InitWorkTree calls on self.
+        gitdir = fakeproj.gitdir
+
+        def _createDotGit(dg):
+            os.makedirs(os.path.dirname(dg), exist_ok=True)
+            with open(dg, "w") as f:
+                f.write("gitdir: %s\n" % gitdir)
+
+        fakeproj._createDotGit = _createDotGit
+        fakeproj.GetRevisionId = lambda *a, **kw: "abc123"
+        fakeproj._CopyAndLinkFiles = lambda: None
+
+        return fakeproj
+
+    def test_read_tree_failure_includes_stderr_and_exit_code(self):
+        """When read-tree fails, the error should contain the exit code and
+        git's stderr output so operators can diagnose the root cause."""
+        from unittest.mock import MagicMock
+        from unittest.mock import patch
+
+        with TempGitTree() as tempdir:
+            fakeproj = self._setup_project(tempdir)
+            dotgit = os.path.join(fakeproj.worktree, ".git")
+
+            mock_git_cmd = MagicMock()
+            mock_git_cmd.Wait.return_value = 128
+            mock_git_cmd.rc = 128
+            mock_git_cmd.stderr = (
+                "error: unable to read tree abc123\n"
+                "fatal: failed to unpack tree object abc123\n"
+            )
+
+            with patch("project.GitCommand", return_value=mock_git_cmd):
+                with self.assertRaises(error.GitError) as ctx:
+                    project.Project._InitWorkTree(fakeproj)
+
+                msg = str(ctx.exception)
+                self.assertIn("exit code 128", msg)
+                self.assertIn("fatal: failed to unpack tree", msg)
+                self.assertIn(fakeproj.name, msg)
+
+                # .git should have been cleaned up.
+                self.assertFalse(os.path.exists(dotgit))
+
+    def test_read_tree_failure_empty_stderr(self):
+        """When read-tree fails with no stderr (e.g. SIGKILL), the error
+        should still include the exit code."""
+        from unittest.mock import MagicMock
+        from unittest.mock import patch
+
+        with TempGitTree() as tempdir:
+            fakeproj = self._setup_project(tempdir)
+
+            mock_git_cmd = MagicMock()
+            mock_git_cmd.Wait.return_value = 137  # SIGKILL
+            mock_git_cmd.rc = 137
+            mock_git_cmd.stderr = ""
+
+            with patch("project.GitCommand", return_value=mock_git_cmd):
+                with self.assertRaises(error.GitError) as ctx:
+                    project.Project._InitWorkTree(fakeproj)
+
+                msg = str(ctx.exception)
+                self.assertIn("exit code 137", msg)
+                self.assertIn(fakeproj.name, msg)
+
+    def test_read_tree_success_no_error(self):
+        """When read-tree succeeds, no error should be raised."""
+        from unittest.mock import MagicMock
+        from unittest.mock import patch
+
+        with TempGitTree() as tempdir:
+            fakeproj = self._setup_project(tempdir)
+
+            mock_git_cmd = MagicMock()
+            mock_git_cmd.Wait.return_value = 0
+            mock_git_cmd.rc = 0
+            mock_git_cmd.stderr = ""
+
+            with patch("project.GitCommand", return_value=mock_git_cmd):
+                project.Project._InitWorkTree(fakeproj)
+
+                dotgit = os.path.join(fakeproj.worktree, ".git")
+                self.assertTrue(os.path.exists(dotgit))
+
+
 class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
     """Ensure properties are fetched properly."""
 
