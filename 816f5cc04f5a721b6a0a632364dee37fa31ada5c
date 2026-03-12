@@ -52,6 +52,24 @@
       "parentUuid": "311b34d9_f07ae487",
       "revId": "816f5cc04f5a721b6a0a632364dee37fa31ada5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "118ac8f6_4b522c60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-03-12T22:34:20Z",
+      "side": 1,
+      "message": "I had also requested two changes on PS3, eg https://gerrit-review.googlesource.com/c/git-repo/+/553341/3/tests/test_manifest_xml.py#1563",
+      "parentUuid": "3efb8835_b204f0d9",
+      "revId": "816f5cc04f5a721b6a0a632364dee37fa31ada5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
