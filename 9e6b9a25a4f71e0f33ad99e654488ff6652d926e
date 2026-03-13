@@ -168,6 +168,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b9d6275_54e73f1c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2026-03-13T07:39:12Z",
+      "side": 1,
+      "message": "Hence why i suggested to improve the error message from a stacktrace to something more descriptive 😊\n\n------------------------------\n\nPretty error or not, `repo` typically always operates with the **manifest as the source of truth**. Changing that is in my view unexpected and opens up risk for accidents. To operate with a partial manifest, there is `repo init -g` where repos can be included or excluded.\n\nI agree that the `repo manifest -r` is a bit of a hybrid, allowing some leeway there is valid. It\u0027s still only called `--revision-as-HEAD` though, so i still expect the *structure* of the manifest to be respected. If not, it opens up many ambiguities\n* Was the repo intentionally missing from the workspace or by mistake?\n* Should it exclude the project or fall back to the revision from the original manifest instead? \n* Should it even include *new* `.git` directories that were not part of the manifest before.\n\nYou could see it as a spectrum:\n\n* `repo manifest` - Manifest as 100 % source of truth\n* `repo manifest -r` - Manifest as source of truth with strictly ONLY revisions replaced. Same behaviour as it has today.\n* `repo manifest -r --permissive` - Intersection of manifest and whatever repos that happen to be present in the workspace. \n   Maybe give it a completely new exclusive flag instead of overloading the `-r` behavior?\n* `repo generate` (imaginary new command) - Generate a manifest based only on found `.git` directories. Without consulting any original manifest \n\nNote that I don\u0027t deny the usefulness of this command, I\u0027m just questioning the default of silently ignoring missing repos. As bare minimum i think the behaviour should be documented and a warning should be printed when repos are missing, but even that is a bit shaky as it would be difficult to detect in automation. When it comes to something as sensitive as manifest, i believe to lean on the side of caution over saving a few keystrokes, for something that at least to me looks like a quite rare operation. \n\n-------\n\nTo be clear, I\u0027m not a `repo` maintainer so my review might not carry a lot of weight here, would be good to hear their perspective.",
+      "parentUuid": "8cecba1f_a5caf944",
+      "range": {
+        "startLine": 18,
+        "startChar": 42,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "9e6b9a25a4f71e0f33ad99e654488ff6652d926e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6e97cb76_6d7e9e6f",
