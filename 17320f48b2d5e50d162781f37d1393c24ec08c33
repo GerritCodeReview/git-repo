@@ -1,0 +1,99 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76ac0662_b13dd530",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1481,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-13T06:28:49Z",
+      "side": 1,
+      "message": "use a NamedTuple instead and return that",
+      "fixSuggestions": [
+        {
+          "fixId": "5aa5a945_c263b40f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 31,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": "from typing import List, NamedTuple\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "class CopyLinkOutputPaths(NamedTuple):\n    \"\"\"Return value for GetCopyLinkOutputPaths.\"\"\"\n\n    copyfile: List[str]\n    linkfile: List[str]\n\n\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 1479,
+                "startChar": 0,
+                "endLine": 1480,
+                "endChar": 0
+              },
+              "replacement": "    def GetCopyLinkOutputPaths(self, topdir: str) -\u003e CopyLinkOutputPaths:\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 1481,
+                "startChar": 0,
+                "endLine": 1482,
+                "endChar": 0
+              },
+              "replacement": "        copyfile_outputs \u003d []\n        linkfile_outputs \u003d []\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 1485,
+                "startChar": 0,
+                "endLine": 1486,
+                "endChar": 0
+              },
+              "replacement": "                copyfile_outputs.append(os.path.relpath(dest_abs, topdir))\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 1498,
+                "startChar": 0,
+                "endLine": 1501,
+                "endChar": 0
+              },
+              "replacement": "                        linkfile_outputs.append(os.path.relpath(dest_abs, topdir))\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 1504,
+                "startChar": 0,
+                "endLine": 1508,
+                "endChar": 0
+              },
+              "replacement": "                    linkfile_outputs.append(os.path.relpath(dest_abs, topdir))\n        return CopyLinkOutputPaths(copyfile\u003dcopyfile_outputs, linkfile\u003dlinkfile_outputs)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "17320f48b2d5e50d162781f37d1393c24ec08c33",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
