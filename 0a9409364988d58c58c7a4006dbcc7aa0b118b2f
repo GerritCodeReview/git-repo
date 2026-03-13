@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cbafd3e4_2a1fe312",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-13T06:25:17Z",
+      "side": 1,
+      "message": "my CL has merged now, so please rebase \u0026 switch over",
+      "parentUuid": "1781c19d_939376c0",
+      "revId": "0a9409364988d58c58c7a4006dbcc7aa0b118b2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7caa191e_9260e732",
         "filename": "tests/test_subcmds_status.py",
         "patchSetId": 2
