@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "072d987f_6b01c4fb",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2026-03-13T06:41:09Z",
+      "side": 1,
+      "message": "This will not call `_print_output` on failures like the old version does. `CalledProcessError.__str__` does not output the `stdout/err` so printing `{e}` will not be sufficient.\n\n----------\n\nAt the same time i would say that there is likely room for simplifying the whole `run_command` function using `subprocess.run(...,input\u003d..., encoding\u003d..., check\u003d...)`, using a similar approach to what you have in mind here.",
+      "range": {
+        "startLine": 511,
+        "startChar": 2,
+        "endLine": 519,
+        "endChar": 1
+      },
+      "revId": "c79716fe628b1ce92ba051a274d2567427be3900",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
