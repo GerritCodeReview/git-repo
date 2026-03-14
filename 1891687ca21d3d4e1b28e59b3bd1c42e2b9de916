@@ -16,6 +16,114 @@
       "message": "@vapier@google.com PTAL",
       "revId": "1891687ca21d3d4e1b28e59b3bd1c42e2b9de916",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db45d5ee_d44b6cce",
+        "filename": "tests/test_git_refs.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-14T00:45:28Z",
+      "side": 1,
+      "message": "since i\u0027m starting to ask everyone else, can you convert this to pytest ?",
+      "revId": "1891687ca21d3d4e1b28e59b3bd1c42e2b9de916",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bfa23f8_cd353582",
+        "filename": "tests/test_git_refs.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-14T00:45:28Z",
+      "side": 1,
+      "message": "should we move this to utils_for_test.init_git_tree ?",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 13
+      },
+      "revId": "1891687ca21d3d4e1b28e59b3bd1c42e2b9de916",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac551207_11339f32",
+        "filename": "tests/utils_for_test.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-14T00:45:28Z",
+      "side": 1,
+      "message": "please add typing info for new funcs",
+      "revId": "1891687ca21d3d4e1b28e59b3bd1c42e2b9de916",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69381034_81da2348",
+        "filename": "tests/utils_for_test.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-14T00:45:28Z",
+      "side": 1,
+      "message": "i don\u0027t think we need a subdir.  do it directly in tempdir.\n\nset cwd\u003dtempdir in the subprocess call rather than pass it as an argument.",
+      "revId": "1891687ca21d3d4e1b28e59b3bd1c42e2b9de916",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddfade00_de44b10b",
+        "filename": "tests/utils_for_test.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-14T00:45:28Z",
+      "side": 1,
+      "message": "i would drop the -q since you capture the output",
+      "revId": "1891687ca21d3d4e1b28e59b3bd1c42e2b9de916",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2891b16f_edb8b57a",
+        "filename": "tests/utils_for_test.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-14T00:45:28Z",
+      "side": 1,
+      "message": "same feedback as above",
+      "revId": "1891687ca21d3d4e1b28e59b3bd1c42e2b9de916",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
