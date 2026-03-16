@@ -27,6 +27,7 @@ from error import SilentRepoExitError
 from error import UploadError
 from git_command import GitCommand
 from git_refs import R_HEADS
+import git_superproject
 from hooks import RepoHook
 from project import ReviewableBranch
 from repo_logging import RepoLogger
@@ -627,7 +628,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         # If using superproject, add the root repo as a push option.
         manifest = branch.project.manifest
         push_options = list(opt.push_options)
-        if manifest.manifestProject.use_superproject:
+        if git_superproject.UseSuperproject(None, manifest):
             sp = manifest.superproject
             if sp:
                 r_id = sp.repo_id
