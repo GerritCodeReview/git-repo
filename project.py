@@ -28,7 +28,7 @@ import sys
 import tarfile
 import tempfile
 import time
-from typing import List, NamedTuple
+from typing import List, NamedTuple, Optional
 import urllib.parse
 
 from color import Coloring
@@ -1245,6 +1245,7 @@ class Project:
         verbose=False,
         output_redir=None,
         is_new=None,
+        use_superproject=None,
         current_branch_only=None,
         force_sync=False,
         clone_bundle=True,
@@ -1399,7 +1400,9 @@ class Project:
         if not (
             optimized_fetch
             and IsId(self.revisionExpr)
-            and self._CheckForImmutableRevision()
+            and self._CheckForImmutableRevision(
+                use_superproject=use_superproject
+            )
         ):
             remote_fetched = True
             try:
@@ -1409,6 +1412,7 @@ class Project:
                     verbose=verbose,
                     output_redir=output_redir,
                     alt_dir=alt_dir,
+                    use_superproject=use_superproject,
                     current_branch_only=current_branch_only,
                     tags=tags,
                     prune=prune,
@@ -2397,7 +2401,9 @@ class Project:
 
         return None
 
-    def _CheckForImmutableRevision(self):
+    def _CheckForImmutableRevision(
+        self, use_superproject: Optional[bool] = None
+    ) -> bool:
         try:
             # if revision (sha or tag) is not present then following function
             # throws an error.
@@ -2405,7 +2411,9 @@ class Project:
             upstream_rev = None
 
             # Only check upstream when using superproject.
-            if self.upstream and self.manifest.manifestProject.use_superproject:
+            if self.upstream and git_superproject.UseSuperproject(
+                use_superproject, self.manifest
+            ):
                 upstream_rev = self.GetRemote().ToLocal(self.upstream)
                 revs.append(upstream_rev)
 
@@ -2419,7 +2427,9 @@ class Project:
 
             # Only verify upstream relationship for superproject scenarios
             # without affecting plain usage.
-            if self.upstream and self.manifest.manifestProject.use_superproject:
+            if self.upstream and git_superproject.UseSuperproject(
+                use_superproject, self.manifest
+            ):
                 self.bare_git.merge_base(
                     "--is-ancestor",
                     self.revisionExpr,
@@ -2450,6 +2460,7 @@ class Project:
     def _RemoteFetch(
         self,
         name=None,
+        use_superproject=None,
         current_branch_only=False,
         initial=False,
         quiet=False,
@@ -2489,7 +2500,9 @@ class Project:
                 tag_name = self.upstream[len(R_TAGS) :]
 
             if is_sha1 or tag_name is not None:
-                if self._CheckForImmutableRevision():
+                if self._CheckForImmutableRevision(
+                    use_superproject=use_superproject
+                ):
                     if verbose:
                         print(
                             "Skipped fetching project %s (already have "
@@ -2798,7 +2811,9 @@ class Project:
             # We just synced the upstream given branch; verify we
             # got what we wanted, else trigger a second run of all
             # refs.
-            if not self._CheckForImmutableRevision():
+            if not self._CheckForImmutableRevision(
+                use_superproject=use_superproject
+            ):
                 # Sync the current branch only with depth set to None.
                 # We always pass depth=None down to avoid infinite recursion.
                 return self._RemoteFetch(
@@ -2806,6 +2821,7 @@ class Project:
                     quiet=quiet,
                     verbose=verbose,
                     output_redir=output_redir,
+                    use_superproject=use_superproject,
                     current_branch_only=current_branch_only and depth,
                     initial=False,
                     alt_dir=alt_dir,
@@ -4774,6 +4790,7 @@ class ManifestProject(MetaProject):
                 quiet=not verbose,
                 verbose=verbose,
                 clone_bundle=clone_bundle,
+                use_superproject=use_superproject,
                 current_branch_only=current_branch_only,
                 tags=tags,
                 submodules=submodules,
