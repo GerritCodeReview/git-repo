@@ -808,6 +808,7 @@ later is required to fix a server side protocol bug.
                 quiet=opt.quiet,
                 verbose=opt.verbose,
                 output_redir=buf,
+                use_superproject=opt.use_superproject,
                 current_branch_only=cls._GetCurrentBranchOnly(
                     opt, project.manifest
                 ),
@@ -1499,6 +1500,7 @@ later is required to fix a server side protocol bug.
                     quiet=opt.quiet,
                     verbose=opt.verbose,
                     output_redir=buf,
+                    use_superproject=opt.use_superproject,
                     current_branch_only=self._GetCurrentBranchOnly(
                         opt, manifest
                     ),
@@ -1830,6 +1832,7 @@ later is required to fix a server side protocol bug.
                     quiet=not opt.verbose,
                     output_redir=buf,
                     verbose=opt.verbose,
+                    use_superproject=opt.use_superproject,
                     current_branch_only=self._GetCurrentBranchOnly(
                         opt, mp.manifest
                     ),
@@ -2356,6 +2359,7 @@ later is required to fix a server side protocol bug.
                     quiet=opt.quiet,
                     verbose=opt.verbose,
                     output_redir=network_output_capture,
+                    use_superproject=opt.use_superproject,
                     current_branch_only=cls._GetCurrentBranchOnly(
                         opt, project.manifest
                     ),
