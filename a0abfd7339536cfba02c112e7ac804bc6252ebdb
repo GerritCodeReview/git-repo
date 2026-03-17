@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "194c797b_83f5383e",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 3948,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-03-17T22:16:04Z",
+      "side": 1,
+      "message": "I guess I commented on the wrong change, but I think you can skip the `rev-parse --symbolic-full-name` call entirely and do this first. See https://gerrit-review.googlesource.com/c/git-repo/+/560323/comment/cc63457d_d16e375e/",
+      "revId": "a0abfd7339536cfba02c112e7ac804bc6252ebdb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
