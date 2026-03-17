@@ -50,6 +50,41 @@
       "message": "i think you want `for-each-ref` instead of `show-ref`.  that has --format\u003d so you can control exact output.",
       "revId": "a3287bb82c0a2a3417f1ab5f8f9188d3460f55e6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7152772d_a7249a26",
+        "filename": "git_refs.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-03-17T21:23:00Z",
+      "side": 1,
+      "message": "You can probably do it combined with the lookup for symbolic refs below by changing that format option to `\"--format\u003d\u0027%(refname) %(objectname) %(symref)\u0027\"`. If symref is blank, it\u0027s not symbolic.",
+      "parentUuid": "d6f27ba6_bed49737",
+      "revId": "a3287bb82c0a2a3417f1ab5f8f9188d3460f55e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc63457d_d16e375e",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3926,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-03-17T21:23:00Z",
+      "side": 1,
+      "message": "I think you can avoid this fallback by calling this first, with `-q`. If it fails with exit code 1 (catch `GitCommandError`), then it\u0027s not a symbolic ref and it\u0027s a detached HEAD, so run and return the rev_parse from line 3921. Otherwise it\u0027s some other fatal issue and you should throw the exception below.\n\n```\ntry:\n    return self.symbolic_ref(\"-q\", HEAD)\nexcept GitCommandError as e:\n    if e.git_rc \u003d\u003d 1:\n        # Detached HEAD. Return the commit SHA instead.\n        return self.rev_parse(HEAD)\n    raise NoManifestException(self.GetDotgitPath(HEAD), str(e))\n```",
+      "revId": "a3287bb82c0a2a3417f1ab5f8f9188d3460f55e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
