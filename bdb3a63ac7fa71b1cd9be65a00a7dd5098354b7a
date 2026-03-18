@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "747f8589_e612942e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-18T19:01:12Z",
+      "side": 1,
+      "message": "i know this works because w/out the settings, isort throws errors \u0026 fails run_tests ;)",
+      "revId": "bdb3a63ac7fa71b1cd9be65a00a7dd5098354b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
