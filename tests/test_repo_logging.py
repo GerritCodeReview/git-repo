@@ -12,90 +12,96 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Unit test for repo_logging module."""
+"""Unittests for the repo_logging.py module."""
 
 import contextlib
 import io
 import logging
-import unittest
+import re
 from unittest import mock
+
+import pytest
 
 from color import SetDefaultColoring
 from error import RepoExitError
 from repo_logging import RepoLogger
 
 
-class TestRepoLogger(unittest.TestCase):
-    @mock.patch.object(RepoLogger, "error")
-    def test_log_aggregated_errors_logs_aggregated_errors(self, mock_error):
-        """Test if log_aggregated_errors logs a list of aggregated errors."""
-        logger = RepoLogger(__name__)
-        logger.log_aggregated_errors(
-            RepoExitError(
-                aggregate_errors=[
-                    Exception("foo"),
-                    Exception("bar"),
-                    Exception("baz"),
-                    Exception("hello"),
-                    Exception("world"),
-                    Exception("test"),
-                ]
-            )
-        )
-
-        mock_error.assert_has_calls(
-            [
-                mock.call("=" * 80),
-                mock.call(
-                    "Repo command failed due to the following `%s` errors:",
-                    "RepoExitError",
-                ),
-                mock.call("foo\nbar\nbaz\nhello\nworld"),
-                mock.call("+%d additional errors...", 1),
+@mock.patch.object(RepoLogger, "error")
+def test_log_aggregated_errors_logs_aggregated_errors(mock_error) -> None:
+    """Test if log_aggregated_errors logs a list of aggregated errors."""
+    logger = RepoLogger(__name__)
+    logger.log_aggregated_errors(
+        RepoExitError(
+            aggregate_errors=[
+                Exception("foo"),
+                Exception("bar"),
+                Exception("baz"),
+                Exception("hello"),
+                Exception("world"),
+                Exception("test"),
             ]
         )
+    )
 
-    @mock.patch.object(RepoLogger, "error")
-    def test_log_aggregated_errors_logs_single_error(self, mock_error):
-        """Test if log_aggregated_errors logs empty aggregated_errors."""
+    mock_error.assert_has_calls(
+        [
+            mock.call("=" * 80),
+            mock.call(
+                "Repo command failed due to the following `%s` errors:",
+                "RepoExitError",
+            ),
+            mock.call("foo\nbar\nbaz\nhello\nworld"),
+            mock.call("+%d additional errors...", 1),
+        ]
+    )
+
+
+@mock.patch.object(RepoLogger, "error")
+def test_log_aggregated_errors_logs_single_error(mock_error) -> None:
+    """Test if log_aggregated_errors logs empty aggregated_errors."""
+    logger = RepoLogger(__name__)
+    logger.log_aggregated_errors(RepoExitError())
+
+    mock_error.assert_has_calls(
+        [
+            mock.call("=" * 80),
+            mock.call("Repo command failed: %s", "RepoExitError"),
+        ]
+    )
+
+
+@pytest.mark.parametrize(
+    "level",
+    (
+        logging.INFO,
+        logging.WARN,
+        logging.ERROR,
+    ),
+)
+def test_log_with_format_string(level: int) -> None:
+    """Test different log levels with format strings."""
+    name = logging.getLevelName(level)
+
+    # Set color output to "always" for consistent test results.
+    # This ensures the logger's behavior is uniform across different
+    # environments and git configurations.
+    SetDefaultColoring("always")
+
+    # Regex pattern to match optional ANSI color codes.
+    # \033    - Escape character
+    # \[      - Opening square bracket
+    # [0-9;]* - Zero or more digits or semicolons
+    # m       - Ending 'm' character
+    # ?       - Makes the entire group optional
+    opt_color = r"(\033\[[0-9;]*m)?"
+
+    output = io.StringIO()
+
+    with contextlib.redirect_stderr(output):
         logger = RepoLogger(__name__)
-        logger.log_aggregated_errors(RepoExitError())
+        logger.log(level, "%s", "100% pass")
 
-        mock_error.assert_has_calls(
-            [
-                mock.call("=" * 80),
-                mock.call("Repo command failed: %s", "RepoExitError"),
-            ]
-        )
-
-    def test_log_with_format_string(self):
-        """Test different log levels with format strings."""
-
-        # Set color output to "always" for consistent test results.
-        # This ensures the logger's behavior is uniform across different
-        # environments and git configurations.
-        SetDefaultColoring("always")
-
-        # Regex pattern to match optional ANSI color codes.
-        # \033    - Escape character
-        # \[      - Opening square bracket
-        # [0-9;]* - Zero or more digits or semicolons
-        # m       - Ending 'm' character
-        # ?       - Makes the entire group optional
-        opt_color = r"(\033\[[0-9;]*m)?"
-
-        for level in (logging.INFO, logging.WARN, logging.ERROR):
-            name = logging.getLevelName(level)
-
-            with self.subTest(level=level, name=name):
-                output = io.StringIO()
-
-                with contextlib.redirect_stderr(output):
-                    logger = RepoLogger(__name__)
-                    logger.log(level, "%s", "100% pass")
-
-                self.assertRegex(
-                    output.getvalue().strip(),
-                    f"^{opt_color}100% pass{opt_color}$",
-                    f"failed for level {name}",
-                )
+    assert re.search(
+        f"^{opt_color}100% pass{opt_color}$", output.getvalue().strip()
+    ), f"failed for level {name}"
