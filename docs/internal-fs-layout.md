@@ -23,9 +23,11 @@ It is always safe to re-run `repo init` in existing repo client checkouts.
 For example, if you want to change the manifest branch, you can simply run
 `repo init --manifest-branch=<new name>` and repo will take care of the rest.
 
-*   `config`: Per-repo client checkout settings using [git-config] file format.
+*   `config` (*Optional*): User-authored per-repo client checkout settings
+    using [git-config] file format (e.g. `[alias]` overrides).  This is not
+    created or managed automatically by `repo`.
 *   `.repo_config.json`: JSON cache of the `config` file for repo to
-    read/process quickly.
+    read/process quickly (if `config` exists).
 
 ### repo/ state
 
@@ -85,10 +87,6 @@ support, see the [manifest-format.md] file.
     setting.
 
     Older versions of repo managed this with symlinks.
-
-*   `manifest.xml -> manifests/<manifest-name>.xml`: A symlink to the manifest
-    that the user wishes to sync.  It is specified at `repo init` time via
-    `--manifest-name`.
 
 
 *   `manifests.git/.repo_config.json`: JSON cache of the `manifests.git/config`
