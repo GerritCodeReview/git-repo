@@ -1,0 +1,66 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "946abe0e_4a5c6db3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-18T21:08:26Z",
+      "side": 1,
+      "message": "why don\u0027t use s-o-b tags",
+      "revId": "938fedd67cdae4267bf6d019b3d22ad7a40126e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3646260f_bfbe9dbc",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2404,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-18T21:08:26Z",
+      "side": 1,
+      "message": "add typing to new code",
+      "fixSuggestions": [
+        {
+          "fixId": "070e1b33_5cb5ea48",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 31,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": "from typing import List, NamedTuple, Optional\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 2404,
+                "startChar": 0,
+                "endLine": 2405,
+                "endChar": 0
+              },
+              "replacement": "    def _CheckForImmutableRevision(self, use_superproject: Optional[bool] \u003d None) -\u003e bool:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "938fedd67cdae4267bf6d019b3d22ad7a40126e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
