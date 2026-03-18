@@ -285,6 +285,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9b73f09_0c55c29b",
+        "filename": "tests/test_main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-18T16:37:35Z",
+      "side": 1,
+      "message": "don\u0027t `import unittest`.  don\u0027t create classes that extend `unittest.TestCase`.\n\npytest tests are standalone functions.\n\nsee https://gerrit-review.googlesource.com/c/git-repo/+/563081 as an example",
+      "parentUuid": "eb72e6a1_7849d273",
+      "revId": "c2f414e6109b5872ab24705f5bb47cc66b2501dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bf708bae_60d98f14",
         "filename": "tests/test_main.py",
         "patchSetId": 3
