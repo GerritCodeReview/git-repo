@@ -14,33 +14,36 @@
 
 """Unittests for the subcmds/init.py module."""
 
-import unittest
+from typing import List
+
+import pytest
 
 from subcmds import init
 
 
-class InitCommand(unittest.TestCase):
-    """Check registered all_commands."""
+@pytest.mark.parametrize(
+    "argv",
+    ([],),
+)
+def test_cli_parser_good(argv: List[str]) -> None:
+    """Check valid command line options."""
+    cmd = init.Init()
+    opts, args = cmd.OptionParser.parse_args(argv)
+    cmd.ValidateOptions(opts, args)
 
-    def setUp(self):
-        self.cmd = init.Init()
 
-    def test_cli_parser_good(self):
-        """Check valid command line options."""
-        ARGV = ([],)
-        for argv in ARGV:
-            opts, args = self.cmd.OptionParser.parse_args(argv)
-            self.cmd.ValidateOptions(opts, args)
-
-    def test_cli_parser_bad(self):
-        """Check invalid command line options."""
-        ARGV = (
-            # Too many arguments.
-            ["url", "asdf"],
-            # Conflicting options.
-            ["--mirror", "--archive"],
-        )
-        for argv in ARGV:
-            opts, args = self.cmd.OptionParser.parse_args(argv)
-            with self.assertRaises(SystemExit):
-                self.cmd.ValidateOptions(opts, args)
+@pytest.mark.parametrize(
+    "argv",
+    (
+        # Too many arguments.
+        ["url", "asdf"],
+        # Conflicting options.
+        ["--mirror", "--archive"],
+    ),
+)
+def test_cli_parser_bad(argv: List[str]) -> None:
+    """Check invalid command line options."""
+    cmd = init.Init()
+    opts, args = cmd.OptionParser.parse_args(argv)
+    with pytest.raises(SystemExit):
+        cmd.ValidateOptions(opts, args)
