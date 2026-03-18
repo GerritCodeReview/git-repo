@@ -16,7 +16,9 @@
 
 import inspect
 import pickle
-import unittest
+from typing import Iterator, Type
+
+import pytest
 
 import command
 import error
@@ -26,7 +28,7 @@ import project
 from subcmds import all_modules
 
 
-imports = all_modules + [
+_IMPORTS = all_modules + [
     error,
     project,
     git_command,
@@ -35,36 +37,35 @@ imports = all_modules + [
 ]
 
 
-class PickleTests(unittest.TestCase):
-    """Make sure all our custom exceptions can be pickled."""
+def get_exceptions() -> Iterator[Type[Exception]]:
+    """Return all our custom exceptions."""
+    for entry in _IMPORTS:
+        for name in dir(entry):
+            cls = getattr(entry, name)
+            if isinstance(cls, type) and issubclass(cls, Exception):
+                yield cls
 
-    def getExceptions(self):
-        """Return all our custom exceptions."""
-        for entry in imports:
-            for name in dir(entry):
-                cls = getattr(entry, name)
-                if isinstance(cls, type) and issubclass(cls, Exception):
-                    yield cls
 
-    def testExceptionLookup(self):
-        """Make sure our introspection logic works."""
-        classes = list(self.getExceptions())
-        self.assertIn(error.HookError, classes)
-        # Don't assert the exact number to avoid being a change-detector test.
-        self.assertGreater(len(classes), 10)
+def test_exception_lookup() -> None:
+    """Make sure our introspection logic works."""
+    classes = list(get_exceptions())
+    assert error.HookError in classes
+    # Don't assert the exact number to avoid being a change-detector test.
+    assert len(classes) > 10
 
-    def testPickle(self):
-        """Try to pickle all the exceptions."""
-        for cls in self.getExceptions():
-            args = inspect.getfullargspec(cls.__init__).args[1:]
-            obj = cls(*args)
-            p = pickle.dumps(obj)
-            try:
-                newobj = pickle.loads(p)
-            except Exception as e:  # pylint: disable=broad-except
-                self.fail(
-                    "Class %s is unable to be pickled: %s\n"
-                    "Incomplete super().__init__(...) call?" % (cls, e)
-                )
-            self.assertIsInstance(newobj, cls)
-            self.assertEqual(str(obj), str(newobj))
+
+@pytest.mark.parametrize("cls", get_exceptions())
+def test_pickle(cls: Type[Exception]) -> None:
+    """Try to pickle all the exceptions."""
+    args = inspect.getfullargspec(cls.__init__).args[1:]
+    obj = cls(*args)
+    p = pickle.dumps(obj)
+    try:
+        newobj = pickle.loads(p)
+    except Exception as e:
+        pytest.fail(
+            f"Class {cls} is unable to be pickled: {e}\n"
+            "Incomplete super().__init__(...) call?"
+        )
+    assert isinstance(newobj, cls)
+    assert str(obj) == str(newobj)

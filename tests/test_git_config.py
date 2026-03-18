@@ -15,200 +15,219 @@
 """Unittests for the git_config.py module."""
 
 import os
-import tempfile
-import unittest
+from pathlib import Path
+from typing import Any
+
+import pytest
 
 import git_config
 
 
-def fixture(*paths):
+def fixture_path(*paths: str) -> str:
     """Return a path relative to test/fixtures."""
     return os.path.join(os.path.dirname(__file__), "fixtures", *paths)
 
 
-class GitConfigReadOnlyTests(unittest.TestCase):
-    """Read-only tests of the GitConfig class."""
-
-    def setUp(self):
-        """Create a GitConfig object using the test.gitconfig fixture."""
-        config_fixture = fixture("test.gitconfig")
-        self.config = git_config.GitConfig(config_fixture)
-
-    def test_GetString_with_empty_config_values(self):
-        """
-        Test config entries with no value.
-
-        [section]
-            empty
-
-        """
-        val = self.config.GetString("section.empty")
-        self.assertEqual(val, None)
-
-    def test_GetString_with_true_value(self):
-        """
-        Test config entries with a string value.
-
-        [section]
-            nonempty = true
-
-        """
-        val = self.config.GetString("section.nonempty")
-        self.assertEqual(val, "true")
-
-    def test_GetString_from_missing_file(self):
-        """
-        Test missing config file
-        """
-        config_fixture = fixture("not.present.gitconfig")
-        config = git_config.GitConfig(config_fixture)
-        val = config.GetString("empty")
-        self.assertEqual(val, None)
-
-    def test_GetBoolean_undefined(self):
-        """Test GetBoolean on key that doesn't exist."""
-        self.assertIsNone(self.config.GetBoolean("section.missing"))
-
-    def test_GetBoolean_invalid(self):
-        """Test GetBoolean on invalid boolean value."""
-        self.assertIsNone(self.config.GetBoolean("section.boolinvalid"))
-
-    def test_GetBoolean_true(self):
-        """Test GetBoolean on valid true boolean."""
-        self.assertTrue(self.config.GetBoolean("section.booltrue"))
-
-    def test_GetBoolean_false(self):
-        """Test GetBoolean on valid false boolean."""
-        self.assertFalse(self.config.GetBoolean("section.boolfalse"))
-
-    def test_GetInt_undefined(self):
-        """Test GetInt on key that doesn't exist."""
-        self.assertIsNone(self.config.GetInt("section.missing"))
-
-    def test_GetInt_invalid(self):
-        """Test GetInt on invalid integer value."""
-        self.assertIsNone(self.config.GetBoolean("section.intinvalid"))
-
-    def test_GetInt_valid(self):
-        """Test GetInt on valid integers."""
-        TESTS = (
-            ("inthex", 16),
-            ("inthexk", 16384),
-            ("int", 10),
-            ("intk", 10240),
-            ("intm", 10485760),
-            ("intg", 10737418240),
-        )
-        for key, value in TESTS:
-            self.assertEqual(value, self.config.GetInt(f"section.{key}"))
+@pytest.fixture
+def readonly_config() -> git_config.GitConfig:
+    """Create a GitConfig object using the test.gitconfig fixture."""
+    config_fixture = fixture_path("test.gitconfig")
+    return git_config.GitConfig(config_fixture)
 
 
-class GitConfigReadWriteTests(unittest.TestCase):
-    """Read/write tests of the GitConfig class."""
+def test_get_string_with_empty_config_values(
+    readonly_config: git_config.GitConfig,
+) -> None:
+    """Test config entries with no value.
 
-    def setUp(self):
-        self.tmpfile = tempfile.NamedTemporaryFile()
-        self.config = self.get_config()
+    [section]
+        empty
 
-    def get_config(self):
-        """Get a new GitConfig instance."""
-        return git_config.GitConfig(self.tmpfile.name)
+    """
+    val = readonly_config.GetString("section.empty")
+    assert val is None
 
-    def test_SetString(self):
-        """Test SetString behavior."""
-        # Set a value.
-        self.assertIsNone(self.config.GetString("foo.bar"))
-        self.config.SetString("foo.bar", "val")
-        self.assertEqual("val", self.config.GetString("foo.bar"))
 
-        # Make sure the value was actually written out.
-        config = self.get_config()
-        self.assertEqual("val", config.GetString("foo.bar"))
+def test_get_string_with_true_value(
+    readonly_config: git_config.GitConfig,
+) -> None:
+    """Test config entries with a string value.
 
-        # Update the value.
-        self.config.SetString("foo.bar", "valll")
-        self.assertEqual("valll", self.config.GetString("foo.bar"))
-        config = self.get_config()
-        self.assertEqual("valll", config.GetString("foo.bar"))
+    [section]
+        nonempty = true
 
-        # Delete the value.
-        self.config.SetString("foo.bar", None)
-        self.assertIsNone(self.config.GetString("foo.bar"))
-        config = self.get_config()
-        self.assertIsNone(config.GetString("foo.bar"))
+    """
+    val = readonly_config.GetString("section.nonempty")
+    assert val == "true"
 
-    def test_SetBoolean(self):
-        """Test SetBoolean behavior."""
-        # Set a true value.
-        self.assertIsNone(self.config.GetBoolean("foo.bar"))
-        for val in (True, 1):
-            self.config.SetBoolean("foo.bar", val)
-            self.assertTrue(self.config.GetBoolean("foo.bar"))
 
-        # Make sure the value was actually written out.
-        config = self.get_config()
-        self.assertTrue(config.GetBoolean("foo.bar"))
-        self.assertEqual("true", config.GetString("foo.bar"))
+def test_get_string_from_missing_file() -> None:
+    """Test missing config file."""
+    config_fixture = fixture_path("not.present.gitconfig")
+    config = git_config.GitConfig(config_fixture)
+    val = config.GetString("empty")
+    assert val is None
 
-        # Set a false value.
-        for val in (False, 0):
-            self.config.SetBoolean("foo.bar", val)
-            self.assertFalse(self.config.GetBoolean("foo.bar"))
 
-        # Make sure the value was actually written out.
-        config = self.get_config()
-        self.assertFalse(config.GetBoolean("foo.bar"))
-        self.assertEqual("false", config.GetString("foo.bar"))
+def test_get_boolean_undefined(readonly_config: git_config.GitConfig) -> None:
+    """Test GetBoolean on key that doesn't exist."""
+    assert readonly_config.GetBoolean("section.missing") is None
 
-        # Delete the value.
-        self.config.SetBoolean("foo.bar", None)
-        self.assertIsNone(self.config.GetBoolean("foo.bar"))
-        config = self.get_config()
-        self.assertIsNone(config.GetBoolean("foo.bar"))
 
-    def test_SetInt(self):
-        """Test SetInt behavior."""
-        # Set a value.
-        self.assertIsNone(self.config.GetInt("foo.bar"))
-        self.config.SetInt("foo.bar", 10)
-        self.assertEqual(10, self.config.GetInt("foo.bar"))
+def test_get_boolean_invalid(readonly_config: git_config.GitConfig) -> None:
+    """Test GetBoolean on invalid boolean value."""
+    assert readonly_config.GetBoolean("section.boolinvalid") is None
 
-        # Make sure the value was actually written out.
-        config = self.get_config()
-        self.assertEqual(10, config.GetInt("foo.bar"))
-        self.assertEqual("10", config.GetString("foo.bar"))
 
-        # Update the value.
-        self.config.SetInt("foo.bar", 20)
-        self.assertEqual(20, self.config.GetInt("foo.bar"))
-        config = self.get_config()
-        self.assertEqual(20, config.GetInt("foo.bar"))
+def test_get_boolean_true(readonly_config: git_config.GitConfig) -> None:
+    """Test GetBoolean on valid true boolean."""
+    assert readonly_config.GetBoolean("section.booltrue") is True
 
-        # Delete the value.
-        self.config.SetInt("foo.bar", None)
-        self.assertIsNone(self.config.GetInt("foo.bar"))
-        config = self.get_config()
-        self.assertIsNone(config.GetInt("foo.bar"))
 
-    def test_GetSyncAnalysisStateData(self):
-        """Test config entries with a sync state analysis data."""
-        superproject_logging_data = {}
-        superproject_logging_data["test"] = False
-        options = type("options", (object,), {})()
-        options.verbose = "true"
-        options.mp_update = "false"
-        TESTS = (
-            ("superproject.test", "false"),
-            ("options.verbose", "true"),
-            ("options.mpupdate", "false"),
-            ("main.version", "1"),
-        )
-        self.config.UpdateSyncAnalysisState(options, superproject_logging_data)
-        sync_data = self.config.GetSyncAnalysisStateData()
-        for key, value in TESTS:
-            self.assertEqual(
-                sync_data[f"{git_config.SYNC_STATE_PREFIX}{key}"], value
-            )
-        self.assertTrue(
-            sync_data[f"{git_config.SYNC_STATE_PREFIX}main.synctime"]
-        )
+def test_get_boolean_false(readonly_config: git_config.GitConfig) -> None:
+    """Test GetBoolean on valid false boolean."""
+    assert readonly_config.GetBoolean("section.boolfalse") is False
+
+
+def test_get_int_undefined(readonly_config: git_config.GitConfig) -> None:
+    """Test GetInt on key that doesn't exist."""
+    assert readonly_config.GetInt("section.missing") is None
+
+
+def test_get_int_invalid(readonly_config: git_config.GitConfig) -> None:
+    """Test GetInt on invalid integer value."""
+    assert readonly_config.GetInt("section.intinvalid") is None
+
+
+@pytest.mark.parametrize(
+    "key, expected",
+    (
+        ("inthex", 16),
+        ("inthexk", 16384),
+        ("int", 10),
+        ("intk", 10240),
+        ("intm", 10485760),
+        ("intg", 10737418240),
+    ),
+)
+def test_get_int_valid(
+    readonly_config: git_config.GitConfig, key: str, expected: int
+) -> None:
+    """Test GetInt on valid integers."""
+    assert readonly_config.GetInt(f"section.{key}") == expected
+
+
+@pytest.fixture
+def rw_config_file(tmp_path: Path) -> Path:
+    """Return a path to a temporary config file."""
+    return tmp_path / "config"
+
+
+def test_set_string(rw_config_file: Path) -> None:
+    """Test SetString behavior."""
+    config = git_config.GitConfig(str(rw_config_file))
+
+    # Set a value.
+    assert config.GetString("foo.bar") is None
+    config.SetString("foo.bar", "val")
+    assert config.GetString("foo.bar") == "val"
+
+    # Make sure the value was actually written out.
+    config2 = git_config.GitConfig(str(rw_config_file))
+    assert config2.GetString("foo.bar") == "val"
+
+    # Update the value.
+    config.SetString("foo.bar", "valll")
+    assert config.GetString("foo.bar") == "valll"
+    config3 = git_config.GitConfig(str(rw_config_file))
+    assert config3.GetString("foo.bar") == "valll"
+
+    # Delete the value.
+    config.SetString("foo.bar", None)
+    assert config.GetString("foo.bar") is None
+    config4 = git_config.GitConfig(str(rw_config_file))
+    assert config4.GetString("foo.bar") is None
+
+
+def test_set_boolean(rw_config_file: Path) -> None:
+    """Test SetBoolean behavior."""
+    config = git_config.GitConfig(str(rw_config_file))
+
+    # Set a true value.
+    assert config.GetBoolean("foo.bar") is None
+    for val in (True, 1):
+        config.SetBoolean("foo.bar", val)
+        assert config.GetBoolean("foo.bar") is True
+
+    # Make sure the value was actually written out.
+    config2 = git_config.GitConfig(str(rw_config_file))
+    assert config2.GetBoolean("foo.bar") is True
+    assert config2.GetString("foo.bar") == "true"
+
+    # Set a false value.
+    for val in (False, 0):
+        config.SetBoolean("foo.bar", val)
+        assert config.GetBoolean("foo.bar") is False
+
+    # Make sure the value was actually written out.
+    config3 = git_config.GitConfig(str(rw_config_file))
+    assert config3.GetBoolean("foo.bar") is False
+    assert config3.GetString("foo.bar") == "false"
+
+    # Delete the value.
+    config.SetBoolean("foo.bar", None)
+    assert config.GetBoolean("foo.bar") is None
+    config4 = git_config.GitConfig(str(rw_config_file))
+    assert config4.GetBoolean("foo.bar") is None
+
+
+def test_set_int(rw_config_file: Path) -> None:
+    """Test SetInt behavior."""
+    config = git_config.GitConfig(str(rw_config_file))
+
+    # Set a value.
+    assert config.GetInt("foo.bar") is None
+    config.SetInt("foo.bar", 10)
+    assert config.GetInt("foo.bar") == 10
+
+    # Make sure the value was actually written out.
+    config2 = git_config.GitConfig(str(rw_config_file))
+    assert config2.GetInt("foo.bar") == 10
+    assert config2.GetString("foo.bar") == "10"
+
+    # Update the value.
+    config.SetInt("foo.bar", 20)
+    assert config.GetInt("foo.bar") == 20
+    config3 = git_config.GitConfig(str(rw_config_file))
+    assert config3.GetInt("foo.bar") == 20
+
+    # Delete the value.
+    config.SetInt("foo.bar", None)
+    assert config.GetInt("foo.bar") is None
+    config4 = git_config.GitConfig(str(rw_config_file))
+    assert config4.GetInt("foo.bar") is None
+
+
+def test_get_sync_analysis_state_data(rw_config_file: Path) -> None:
+    """Test config entries with a sync state analysis data."""
+    config = git_config.GitConfig(str(rw_config_file))
+    superproject_logging_data: dict[str, Any] = {"test": False}
+
+    class Options:
+        """Container for testing."""
+
+    options = Options()
+    options.verbose = "true"
+    options.mp_update = "false"
+
+    TESTS = (
+        ("superproject.test", "false"),
+        ("options.verbose", "true"),
+        ("options.mpupdate", "false"),
+        ("main.version", "1"),
+    )
+    config.UpdateSyncAnalysisState(options, superproject_logging_data)
+    sync_data = config.GetSyncAnalysisStateData()
+    for key, value in TESTS:
+        assert sync_data[f"{git_config.SYNC_STATE_PREFIX}{key}"] == value
+    assert sync_data[f"{git_config.SYNC_STATE_PREFIX}main.synctime"]
