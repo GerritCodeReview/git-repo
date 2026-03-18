@@ -15,170 +15,164 @@
 """Unittests for the subcmds module (mostly __init__.py than subcommands)."""
 
 import optparse
-import unittest
+from typing import Type
+
+import pytest
 
 import subcmds
+from command import Command
 
 
-class AllCommands(unittest.TestCase):
-    """Check registered all_commands."""
+# NB: We don't test all subcommands as we want to avoid "change detection"
+# tests, so we just look for the most common/important ones here that are
+# unlikely to ever change.
+@pytest.mark.parametrize(
+    "cmd", ("cherry-pick", "help", "init", "start", "sync", "upload")
+)
+def test_required_basic(cmd: str) -> None:
+    """Basic checking of registered commands."""
+    assert cmd in subcmds.all_commands
 
-    def test_required_basic(self):
-        """Basic checking of registered commands."""
-        # NB: We don't test all subcommands as we want to avoid "change
-        # detection" tests, so we just look for the most common/important ones
-        # here that are unlikely to ever change.
-        for cmd in {"cherry-pick", "help", "init", "start", "sync", "upload"}:
-            self.assertIn(cmd, subcmds.all_commands)
 
-    def test_naming(self):
-        """Verify we don't add things that we shouldn't."""
-        for cmd in subcmds.all_commands:
-            # Reject filename suffixes like "help.py".
-            self.assertNotIn(".", cmd)
+@pytest.mark.parametrize("name", subcmds.all_commands.keys())
+def test_naming(name: str) -> None:
+    """Verify we don't add things that we shouldn't."""
+    # Reject filename suffixes like "help.py".
+    assert "." not in name
 
-            # Make sure all '_' were converted to '-'.
-            self.assertNotIn("_", cmd)
+    # Make sure all '_' were converted to '-'.
+    assert "_" not in name
 
-            # Reject internal python paths like "__init__".
-            self.assertFalse(cmd.startswith("__"))
+    # Reject internal python paths like "__init__".
+    assert not name.startswith("__")
 
-    def test_help_desc_style(self):
-        """Force some consistency in option descriptions.
 
-        Python's optparse & argparse has a few default options like --help.
-        Their option description text uses lowercase sentence fragments, so
-        enforce our options follow the same style so UI is consistent.
+@pytest.mark.parametrize("name, cls", subcmds.all_commands.items())
+def test_help_desc_style(name: str, cls: Type[Command]) -> None:
+    """Force some consistency in option descriptions.
 
-        We enforce:
-        * Text starts with lowercase.
-        * Text doesn't end with period.
-        """
-        for name, cls in subcmds.all_commands.items():
-            cmd = cls()
-            parser = cmd.OptionParser
-            for option in parser.option_list:
-                if option.help == optparse.SUPPRESS_HELP:
-                    continue
+    Python's optparse & argparse has a few default options like --help.
+    Their option description text uses lowercase sentence fragments, so
+    enforce our options follow the same style so UI is consistent.
 
-                c = option.help[0]
-                self.assertEqual(
-                    c.lower(),
-                    c,
-                    msg=f"subcmds/{name}.py: {option.get_opt_string()}: "
-                    f'help text should start with lowercase: "{option.help}"',
-                )
+    We enforce:
+    * Text starts with lowercase.
+    * Text doesn't end with period.
+    """
+    cmd = cls()
+    parser = cmd.OptionParser
+    for option in parser.option_list:
+        if option.help == optparse.SUPPRESS_HELP or not option.help:
+            continue
 
-                self.assertNotEqual(
-                    option.help[-1],
-                    ".",
-                    msg=f"subcmds/{name}.py: {option.get_opt_string()}: "
-                    f'help text should not end in a period: "{option.help}"',
-                )
+        c = option.help[0]
+        assert c.lower() == c, (
+            f"subcmds/{name}.py: {option.get_opt_string()}: "
+            f'help text should start with lowercase: "{option.help}"'
+        )
 
-    def test_cli_option_style(self):
-        """Force some consistency in option flags."""
-        for name, cls in subcmds.all_commands.items():
-            cmd = cls()
-            parser = cmd.OptionParser
-            for option in parser.option_list:
-                for opt in option._long_opts:
-                    self.assertNotIn(
-                        "_",
-                        opt,
-                        msg=f"subcmds/{name}.py: {opt}: only use dashes in "
-                        "options, not underscores",
-                    )
+        assert option.help[-1] != ".", (
+            f"subcmds/{name}.py: {option.get_opt_string()}: "
+            f'help text should not end in a period: "{option.help}"'
+        )
 
-    def test_cli_option_dest(self):
-        """Block redundant dest= arguments."""
 
-        def _check_dest(opt):
-            """Check the dest= setting."""
-            # If the destination is not set, nothing to check.
-            # If long options are not set, then there's no implicit destination.
-            # If callback is used, then a destination might be needed because
-            # optparse cannot assume a value is always stored.
-            if opt.dest is None or not opt._long_opts or opt.callback:
-                return
+@pytest.mark.parametrize("name, cls", subcmds.all_commands.items())
+def test_cli_option_style(name: str, cls: Type[Command]) -> None:
+    """Force some consistency in option flags."""
+    cmd = cls()
+    parser = cmd.OptionParser
+    for option in parser.option_list:
+        for opt in option._long_opts:
+            assert "_" not in opt, (
+                f"subcmds/{name}.py: {opt}: only use dashes in "
+                "options, not underscores"
+            )
 
-            long = opt._long_opts[0]
-            assert long.startswith("--")
-            # This matches optparse's behavior.
-            implicit_dest = long[2:].replace("-", "_")
-            if implicit_dest == opt.dest:
-                bad_opts.append((str(opt), opt.dest))
 
-        # Hook the option check list.
-        optparse.Option.CHECK_METHODS.insert(0, _check_dest)
+def test_cli_option_dest() -> None:
+    """Block redundant dest= arguments."""
+    bad_opts: list[tuple[str, str]] = []
 
+    def _check_dest(opt: optparse.Option) -> None:
+        """Check the dest= setting."""
+        # If the destination is not set, nothing to check.
+        # If long options are not set, then there's no implicit destination.
+        # If callback is used, then a destination might be needed because
+        # optparse cannot assume a value is always stored.
+        if opt.dest is None or not opt._long_opts or opt.callback:
+            return
+
+        long = opt._long_opts[0]
+        assert long.startswith("--")
+        # This matches optparse's behavior.
+        implicit_dest = long[2:].replace("-", "_")
+        if implicit_dest == opt.dest:
+            bad_opts.append((str(opt), opt.dest))
+
+    # Hook the option check list.
+    optparse.Option.CHECK_METHODS.insert(0, _check_dest)
+
+    try:
         # Gather all the bad options up front so people can see all bad options
         # instead of failing at the first one.
-        all_bad_opts = {}
+        all_bad_opts: dict[str, list[tuple[str, str]]] = {}
         for name, cls in subcmds.all_commands.items():
-            bad_opts = all_bad_opts[name] = []
+            bad_opts = []
             cmd = cls()
             # Trigger construction of parser.
-            cmd.OptionParser
+            _ = cmd.OptionParser
+            all_bad_opts[name] = bad_opts
 
-        errmsg = None
-        for name, bad_opts in sorted(all_bad_opts.items()):
-            if bad_opts:
+        errmsg = ""
+        for name, bad_opts_list in sorted(all_bad_opts.items()):
+            if bad_opts_list:
                 if not errmsg:
                     errmsg = "Omit redundant dest= when defining options.\n"
                 errmsg += f"\nSubcommand {name} (subcmds/{name}.py):\n"
                 errmsg += "".join(
-                    f"    {opt}: dest='{dest}'\n" for opt, dest in bad_opts
+                    f"    {opt}: dest='{dest}'\n" for opt, dest in bad_opts_list
                 )
         if errmsg:
-            self.fail(errmsg)
-
+            pytest.fail(errmsg)
+    finally:
         # Make sure we aren't popping the wrong stuff.
         assert optparse.Option.CHECK_METHODS.pop(0) is _check_dest
 
-    def test_common_validate_options(self):
-        """Verify CommonValidateOptions sets up expected fields."""
-        for name, cls in subcmds.all_commands.items():
-            cmd = cls()
-            opts, args = cmd.OptionParser.parse_args([])
 
-            # Verify the fields don't exist yet.
-            self.assertFalse(
-                hasattr(opts, "verbose"),
-                msg=f"{name}: has verbose before validation",
-            )
-            self.assertFalse(
-                hasattr(opts, "quiet"),
-                msg=f"{name}: has quiet before validation",
-            )
+@pytest.mark.parametrize("name, cls", subcmds.all_commands.items())
+def test_common_validate_options(name: str, cls: Type[Command]) -> None:
+    """Verify CommonValidateOptions sets up expected fields."""
+    cmd = cls()
+    opts, args = cmd.OptionParser.parse_args([])
 
-            cmd.CommonValidateOptions(opts, args)
+    # Verify the fields don't exist yet.
+    assert not hasattr(
+        opts, "verbose"
+    ), f"{name}: has verbose before validation"
+    assert not hasattr(opts, "quiet"), f"{name}: has quiet before validation"
 
-            # Verify the fields exist now.
-            self.assertTrue(
-                hasattr(opts, "verbose"),
-                msg=f"{name}: missing verbose after validation",
-            )
-            self.assertTrue(
-                hasattr(opts, "quiet"),
-                msg=f"{name}: missing quiet after validation",
-            )
-            self.assertTrue(
-                hasattr(opts, "outer_manifest"),
-                msg=f"{name}: missing outer_manifest after validation",
-            )
+    cmd.CommonValidateOptions(opts, args)
 
-    def test_attribute_error_repro(self):
-        """Confirm that accessing verbose before CommonValidateOptions fails."""
-        from subcmds.sync import Sync
+    # Verify the fields exist now.
+    assert hasattr(opts, "verbose"), f"{name}: missing verbose after validation"
+    assert hasattr(opts, "quiet"), f"{name}: missing quiet after validation"
+    assert hasattr(
+        opts, "outer_manifest"
+    ), f"{name}: missing outer_manifest after validation"
 
-        cmd = Sync()
-        opts, args = cmd.OptionParser.parse_args([])
 
-        # This confirms that without the fix in main.py, an AttributeError
-        # would be raised because CommonValidateOptions hasn't been called yet.
-        with self.assertRaises(AttributeError):
-            _ = opts.verbose
+def test_attribute_error_repro() -> None:
+    """Confirm that accessing verbose before CommonValidateOptions fails."""
+    from subcmds.sync import Sync
 
-        cmd.CommonValidateOptions(opts, args)
-        self.assertTrue(hasattr(opts, "verbose"))
+    cmd = Sync()
+    opts, args = cmd.OptionParser.parse_args([])
+
+    # This confirms that without the fix in main.py, an AttributeError
+    # would be raised because CommonValidateOptions hasn't been called yet.
+    with pytest.raises(AttributeError):
+        _ = opts.verbose
+
+    cmd.CommonValidateOptions(opts, args)
+    assert hasattr(opts, "verbose")
