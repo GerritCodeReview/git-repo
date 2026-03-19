@@ -50,8 +50,11 @@ Git worktrees (see the previous section for more info).
 Repo will use symlinks heavily internally.
 On *NIX platforms, this isn't an issue, but Windows makes it a bit difficult.
 
-There are some documents out there for how to do this, but usually the easiest
-answer is to run your shell as an Administrator and invoke repo/git in that.
+The easiest method to allow users to create symlinks is by enabling
+[Windows Developer Mode](https://learn.microsoft.com/en-us/windows/advanced-settings/developer-mode).
+
+The next easiest answer is to run your shell as an Administrator and invoke
+repo/git in that.
 
 This isn't a great solution, but Windows doesn't make this easy, so here we are.
 
