@@ -16,6 +16,24 @@
       "message": "@gavinmak@google.com @vapier@google.com Can you guys help me getting trusted contributors review?",
       "revId": "01d8f307698dad0c836789d5ee5408208e1f41dd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2789ade0_5c32574f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-03-20T17:04:14Z",
+      "side": 1,
+      "message": "just gave this a review, you should be able to submit with Commit-Queue+2 now",
+      "parentUuid": "a0084561_35793df7",
+      "revId": "01d8f307698dad0c836789d5ee5408208e1f41dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
