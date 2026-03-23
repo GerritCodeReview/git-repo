@@ -407,6 +407,7 @@ later is required to fix a server side protocol bug.
     PARALLEL_JOBS = 0
 
     _JOBS_WARN_THRESHOLD = 100
+    _REPOMON_THRESHOLD = 900
 
     def _Options(self, p, show_smart=True):
         p.add_option(
@@ -1980,6 +1981,8 @@ later is required to fix a server side protocol bug.
                 warned = True
 
     def Execute(self, opt, args):
+        self._new_project_count = 0
+        start_time = time.time()
         errors = []
         try:
             self._ExecuteHelper(opt, args, errors)
@@ -1987,6 +1990,8 @@ later is required to fix a server side protocol bug.
             raise
         except (KeyboardInterrupt, Exception) as e:
             raise RepoUnhandledExceptionError(e, aggregate_errors=errors)
+        finally:
+            self._MaybeReportRepoMon(opt, time.time() - start_time)
 
         # Run post-sync hook only after successful sync
         self._RunPostSyncHook(opt)
@@ -2002,6 +2007,48 @@ later is required to fix a server side protocol bug.
         success = hook.Run(repo_topdir=self.client.topdir)
         if not success:
             print("Warning: post-sync hook reported failure.")
+
+    def _MaybeReportRepoMon(self, opt, duration):
+        """Report a message if the sync took too long."""
+        if opt.quiet:
+            return
+
+        if not self._IsGoogleplexAndroid():
+            return
+
+        # Only suggest RepoMon for incremental syncs (no new projects).
+        if self._new_project_count > 0:
+            return
+
+        if self._IsRepoMonInstalled():
+            return
+
+        if duration > self._REPOMON_THRESHOLD:
+            print(
+                f"Sync took over {self._REPOMON_THRESHOLD} seconds. "
+                f"Try RepoMon to speed up your syncs! "
+                f"http://go/install-repomon"
+            )
+            if self.git_event_log:
+                self.git_event_log.LogDataConfigEvents(
+                    {"suggested": "true"}, "repomon"
+                )
+
+    def _IsRepoMonInstalled(self):
+        """Check if RepoMon is already installed on the system."""
+        return os.path.exists(
+            os.path.expanduser("~/.config/systemd/user/repomon.service")
+        )
+
+    def _IsGoogleplexAndroid(self):
+        """Check if any remote in the manifest is on googleplex-android."""
+        for r in self.manifest.remotes.values():
+            if (
+                r.resolvedFetchUrl
+                and "googleplex-android" in r.resolvedFetchUrl
+            ):
+                return True
+        return False
 
     def _ExecuteHelper(self, opt, args, errors):
         manifest = self.outer_manifest
@@ -2090,9 +2137,10 @@ later is required to fix a server side protocol bug.
 
         # Log the repo projects by existing and new.
         existing = [x for x in all_projects if x.Exists]
+        self._new_project_count = len(all_projects) - len(existing)
         mp.config.SetString("repo.existingprojectcount", str(len(existing)))
         mp.config.SetString(
-            "repo.newprojectcount", str(len(all_projects) - len(existing))
+            "repo.newprojectcount", str(self._new_project_count)
         )
 
         self._fetch_times = _FetchTimes(manifest)
