@@ -1980,6 +1980,7 @@ later is required to fix a server side protocol bug.
                 warned = True
 
     def Execute(self, opt, args):
+        start_time = time.time()
         errors = []
         try:
             self._ExecuteHelper(opt, args, errors)
@@ -1987,6 +1988,8 @@ later is required to fix a server side protocol bug.
             raise
         except (KeyboardInterrupt, Exception) as e:
             raise RepoUnhandledExceptionError(e, aggregate_errors=errors)
+        finally:
+            self._MaybeReportRepoMon(opt, time.time() - start_time)
 
         # Run post-sync hook only after successful sync
         self._RunPostSyncHook(opt)
@@ -2002,6 +2005,27 @@ later is required to fix a server side protocol bug.
         success = hook.Run(repo_topdir=self.client.topdir)
         if not success:
             print("Warning: post-sync hook reported failure.")
+
+    def _MaybeReportRepoMon(self, opt, duration):
+        """Report a message if the sync took too long."""
+        if opt.quiet:
+            return
+
+        if self._IsGoogleplexAndroid():
+            threshold = self.manifest.default.repomon_threshold or 600
+            if duration > threshold:
+                print(
+                    f"Sync took over {threshold} seconds. Consider trying "
+                    f"RepoMon to potentially speed up your syncs! "
+                    f"http://go/repomon"
+                )
+
+    def _IsGoogleplexAndroid(self):
+        """Check if any remote in the manifest is on googleplex-android."""
+        for r in self.manifest.remotes.values():
+            if r.resolvedFetchUrl and "googleplex-android" in r.resolvedFetchUrl:
+                return True
+        return False
 
     def _ExecuteHelper(self, opt, args, errors):
         manifest = self.outer_manifest

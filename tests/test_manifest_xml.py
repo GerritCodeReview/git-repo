@@ -1037,6 +1037,42 @@ class DefaultElementTests(ManifestParseTestCase):
         self.assertNotEqual(a, 123)
         self.assertNotEqual(a, None)
 
+    def test_repomon_threshold(self):
+        """Check repomon-threshold handling."""
+        # Check valid value.
+        manifest = self.getXmlManifest(
+            '<manifest><default repomon-threshold="300" /></manifest>'
+        )
+        self.assertEqual(manifest.default.repomon_threshold, 300)
+        self.assertEqual(
+            sort_attributes(manifest.ToXml().toxml()),
+            '<?xml version="1.0" ?>'
+            '<manifest><default repomon-threshold="300"/></manifest>',
+        )
+
+        # Check default value (None).
+        manifest = self.getXmlManifest("<manifest><default /></manifest>")
+        self.assertIsNone(manifest.default.repomon_threshold)
+
+        # Check invalid values.
+        with self.assertRaises(error.ManifestParseError):
+            manifest = self.getXmlManifest(
+                '<manifest><default repomon-threshold="0" /></manifest>'
+            )
+            manifest.ToXml()
+
+        with self.assertRaises(error.ManifestParseError):
+            manifest = self.getXmlManifest(
+                '<manifest><default repomon-threshold="-1" /></manifest>'
+            )
+            manifest.ToXml()
+
+        with self.assertRaises(error.ManifestParseError):
+            manifest = self.getXmlManifest(
+                '<manifest><default repomon-threshold="abc" /></manifest>'
+            )
+            manifest.ToXml()
+
 
 class RemoteElementTests(ManifestParseTestCase):
     """Tests for <remote>."""

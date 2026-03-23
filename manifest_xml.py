@@ -159,6 +159,7 @@ class _Default:
     sync_c = False
     sync_s = False
     sync_tags = True
+    repomon_threshold = None
 
     def __eq__(self, other):
         if not isinstance(other, _Default):
@@ -644,6 +645,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if not d.sync_tags:
             have_default = True
             e.setAttribute("sync-tags", "false")
+        if d.repomon_threshold is not None:
+            have_default = True
+            e.setAttribute("repomon-threshold", "%d" % d.repomon_threshold)
         if have_default:
             root.appendChild(e)
             root.appendChild(doc.createTextNode(""))
@@ -1777,6 +1781,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         d.sync_c = XmlBool(node, "sync-c", False)
         d.sync_s = XmlBool(node, "sync-s", False)
         d.sync_tags = XmlBool(node, "sync-tags", True)
+        d.repomon_threshold = XmlInt(node, "repomon-threshold", None)
+        if d.repomon_threshold is not None and d.repomon_threshold <= 0:
+            raise ManifestParseError(
+                '%s: repomon-threshold must be greater than 0, not "%s"'
+                % (self.manifestFile, d.repomon_threshold)
+            )
         return d
 
     def _ParseNotice(self, node):
