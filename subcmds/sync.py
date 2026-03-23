@@ -33,7 +33,6 @@ import urllib.request
 import xml.parsers.expat
 import xmlrpc.client
 
-
 try:
     import threading as _threading
 except ImportError:
@@ -81,7 +80,6 @@ from repo_logging import RepoLogger
 from repo_trace import Trace
 import ssh
 from wrapper import Wrapper
-
 
 _ONE_DAY_S = 24 * 60 * 60
 
@@ -407,6 +405,7 @@ later is required to fix a server side protocol bug.
     PARALLEL_JOBS = 0
 
     _JOBS_WARN_THRESHOLD = 100
+    _REPOMON_THRESHOLD = 2400
 
     def _Options(self, p, show_smart=True):
         p.add_option(
@@ -1980,6 +1979,7 @@ later is required to fix a server side protocol bug.
                 warned = True
 
     def Execute(self, opt, args):
+        start_time = time.time()
         errors = []
         try:
             self._ExecuteHelper(opt, args, errors)
@@ -1987,6 +1987,8 @@ later is required to fix a server side protocol bug.
             raise
         except (KeyboardInterrupt, Exception) as e:
             raise RepoUnhandledExceptionError(e, aggregate_errors=errors)
+        finally:
+            self._MaybeReportRepoMon(opt, time.time() - start_time)
 
         # Run post-sync hook only after successful sync
         self._RunPostSyncHook(opt)
@@ -2002,6 +2004,33 @@ later is required to fix a server side protocol bug.
         success = hook.Run(repo_topdir=self.client.topdir)
         if not success:
             print("Warning: post-sync hook reported failure.")
+
+    def _MaybeReportRepoMon(self, opt, duration):
+        """Report a message if the sync took too long."""
+        if opt.quiet:
+            return
+
+        if self._IsGoogleplexAndroid():
+            if duration > self._REPOMON_THRESHOLD:
+                print(
+                    f"Sync took over {self._REPOMON_THRESHOLD} seconds. "
+                    f"Consider trying RepoMon to potentially speed up your "
+                    f"syncs! http://go/repomon"
+                )
+                if self.git_event_log:
+                    self.git_event_log.LogDataConfigEvents(
+                        {"suggested": "true"}, "repomon"
+                    )
+
+    def _IsGoogleplexAndroid(self):
+        """Check if any remote in the manifest is on googleplex-android."""
+        for r in self.manifest.remotes.values():
+            if (
+                r.resolvedFetchUrl
+                and "googleplex-android" in r.resolvedFetchUrl
+            ):
+                return True
+        return False
 
     def _ExecuteHelper(self, opt, args, errors):
         manifest = self.outer_manifest
