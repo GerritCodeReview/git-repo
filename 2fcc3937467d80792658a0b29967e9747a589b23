@@ -16,6 +16,24 @@
       "message": "Can you be only reported for incremental sync, as we currently do not optimize initial sync.\n```suggestion\n    def _MaybeReportRepoMon(self, opt, duration):\n```",
       "revId": "2fcc3937467d80792658a0b29967e9747a589b23",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de44d6a4_4ee50017",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 2010,
+      "author": {
+        "id": 4681583
+      },
+      "writtenOn": "2026-03-24T15:16:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96dc1ce7_7a7c9e50",
+      "revId": "2fcc3937467d80792658a0b29967e9747a589b23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
