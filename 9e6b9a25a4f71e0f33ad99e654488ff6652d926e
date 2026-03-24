@@ -216,6 +216,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e2ea78f_4dfac19c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-03-24T20:49:03Z",
+      "side": 1,
+      "message": "After thinking about this a bit more, I think it\u0027d make sense to have `ToXml` raise some ManifestError that lets `repo` exit gracefully, while printing something like: \"project \u0027foo\u0027 is missing its worktree (did you run \u0027repo sync\u0027?). Cannot pin revision.\" . but we should keep the non-zero exit code for CI\n\n`repo forall` has a `--ignore-missing` flag which lets you silently ignore projects without a checkout. WDYT about adding the same flag to `repo manifest` to generate partial manifests (and moving the `return` behind this flag)?",
+      "parentUuid": "fab00054_4de15fc6",
+      "range": {
+        "startLine": 18,
+        "startChar": 42,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "9e6b9a25a4f71e0f33ad99e654488ff6652d926e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6e97cb76_6d7e9e6f",
