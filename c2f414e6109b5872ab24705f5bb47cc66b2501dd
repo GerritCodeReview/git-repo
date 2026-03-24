@@ -301,6 +301,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90de31b3_60cf35be",
+        "filename": "tests/test_main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-24T22:27:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9b73f09_0c55c29b",
+      "revId": "c2f414e6109b5872ab24705f5bb47cc66b2501dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf708bae_60d98f14",
