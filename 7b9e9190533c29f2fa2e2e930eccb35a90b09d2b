@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "affbeb15_30c9c549",
+        "filename": "main.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-24T22:45:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7890f88_b3c3859b",
+      "range": {
+        "startLine": 312,
+        "startChar": 8,
+        "endLine": 312,
+        "endChar": 35
+      },
+      "revId": "7b9e9190533c29f2fa2e2e930eccb35a90b09d2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "028c1fb9_b36e7dd8",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "380114af_150fea90",
+        "filename": "main.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-24T22:45:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "028c1fb9_b36e7dd8",
+      "range": {
+        "startLine": 328,
+        "startChar": 29,
+        "endLine": 328,
+        "endChar": 32
+      },
+      "revId": "7b9e9190533c29f2fa2e2e930eccb35a90b09d2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aeec41ff_31874206",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-03-18T18:08:59Z",
       "side": 1,
       "message": "do we want to handle `KeyboardInterrupt` here too?",
+      "range": {
+        "startLine": 372,
+        "startChar": 16,
+        "endLine": 372,
+        "endChar": 33
+      },
+      "revId": "7b9e9190533c29f2fa2e2e930eccb35a90b09d2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da2d3dc4_86564b8f",
+        "filename": "main.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-24T22:45:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aeec41ff_31874206",
       "range": {
         "startLine": 372,
         "startChar": 16,
