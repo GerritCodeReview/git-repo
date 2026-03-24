@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96dc1ce7_7a7c9e50",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 2010,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-03-24T14:34:28Z",
+      "side": 1,
+      "message": "Can you be only reported for incremental sync, as we currently do not optimize initial sync.\n```suggestion\n    def _MaybeReportRepoMon(self, opt, duration):\n```",
+      "revId": "2fcc3937467d80792658a0b29967e9747a589b23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
