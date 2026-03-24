@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ba99154_349d4003",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 2051,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-03-24T16:37:07Z",
+      "side": 1,
+      "message": "given repo is a global tool (not just for Android) - we need to figure out a way to inject this into repo externally - not as part of core repo.",
+      "range": {
+        "startLine": 2043,
+        "startChar": 0,
+        "endLine": 2051,
+        "endChar": 20
+      },
+      "revId": "5dcc962b6a5f320fdecf35a2eb01008819818e8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
