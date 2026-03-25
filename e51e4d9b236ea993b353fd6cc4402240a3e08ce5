@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea01a2cb_0e73d619",
+        "filename": "docs/exit-codes.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-03-25T18:02:55Z",
+      "side": 1,
+      "message": "add a `[TOC]` here so Gitiles can auto-generate a toc",
+      "revId": "e51e4d9b236ea993b353fd6cc4402240a3e08ce5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6e360c8_5e591dd1",
+        "filename": "error.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-03-25T18:02:55Z",
+      "side": 1,
+      "message": "nit: for consistency can we update all the `exit_code\u003dExitCode...` to `kwargs.setdefault(\"exit_code\", ...)` like in `ManifestParseError`?",
+      "range": {
+        "startLine": 108,
+        "startChar": 8,
+        "endLine": 110,
+        "endChar": 9
+      },
+      "revId": "e51e4d9b236ea993b353fd6cc4402240a3e08ce5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
