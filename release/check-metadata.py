@@ -106,7 +106,7 @@ def check_path(opts: argparse.Namespace, path: Path) -> bool:
 def check_paths(opts: argparse.Namespace, paths: list[Path]) -> bool:
     """Check all the paths."""
     # NB: Use list comprehension and not a generator so we check all paths.
-    return all([check_path(opts, x) for x in paths])
+    return all([check_path(opts, x) for x in paths])  # noqa: C419
 
 
 def find_files(opts: argparse.Namespace) -> list[Path]:

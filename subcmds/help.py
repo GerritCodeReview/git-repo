@@ -59,7 +59,7 @@ Displays detailed usage information about a command.
 
     def PrintAllCommandsBody(self):
         print("The complete list of recognized repo commands is:")
-        commandNames = list(sorted(all_commands))
+        commandNames = sorted(all_commands)
         self._PrintCommands(commandNames)
         print(
             "See 'repo help <command>' for more information on a "
@@ -74,10 +74,8 @@ Displays detailed usage information about a command.
     def PrintCommonCommandsBody(self):
         print("The most commonly used repo commands are:")
 
-        commandNames = list(
-            sorted(
-                name for name, command in all_commands.items() if command.COMMON
-            )
+        commandNames = sorted(
+            name for name, command in all_commands.items() if command.COMMON
         )
         self._PrintCommands(commandNames)
 

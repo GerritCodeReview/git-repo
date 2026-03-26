@@ -763,10 +763,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
             if p.subprojects:
                 subprojects = {subp.name for subp in p.subprojects}
-                output_projects(p, e, list(sorted(subprojects)))
+                output_projects(p, e, sorted(subprojects))
 
         projects = {p.name for p in self._paths.values() if not p.parent}
-        output_projects(None, root, list(sorted(projects)))
+        output_projects(None, root, sorted(projects))
 
         if self._repo_hooks_project:
             root.appendChild(doc.createTextNode(""))
@@ -823,7 +823,6 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             "submanifest",
             # These are children of 'project' nodes.
             "annotation",
-            "project",
             "copyfile",
             "linkfile",
         }

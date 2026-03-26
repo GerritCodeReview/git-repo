@@ -120,6 +120,16 @@ wheel: <
 >
 
 wheel: <
+  name: "infra/python/wheels/flake8-bugbear-py3"
+  version: "version:24.12.12"
+>
+
+wheel: <
+  name: "infra/python/wheels/flake8-comprehensions-py3"
+  version: "version:3.16.0"
+>
+
+wheel: <
   name: "infra/python/wheels/isort-py3"
   version: "version:5.10.1"
 >
