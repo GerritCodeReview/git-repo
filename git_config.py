@@ -42,7 +42,7 @@ SYNC_STATE_PREFIX = "repo.syncstate."
 
 ID_RE = re.compile(r"^[0-9a-f]{40}$")
 
-REVIEW_CACHE = dict()
+REVIEW_CACHE = {}
 
 
 def IsChange(rev):

@@ -149,7 +149,7 @@ class ProxyManager:
         while True:
             try:
                 procs.pop(0)
-            except:  # noqa: E722
+            except IndexError:
                 break
 
     def close(self):

@@ -225,7 +225,7 @@ class ReviewableBranch:
 
     @property
     def unabbrev_commits(self):
-        r = dict()
+        r = {}
         for commit in self.project.bare_git.rev_list(
             not_rev(self.base), R_HEADS + self.name, "--"
         ):
@@ -553,7 +553,7 @@ class Project:
         revisionExpr,
         revisionId,
         rebase=True,
-        groups=set(),
+        groups=None,
         sync_c=False,
         sync_s=False,
         sync_tags=True,
@@ -605,7 +605,7 @@ class Project:
         self.SetRevision(revisionExpr, revisionId=revisionId)
 
         self.rebase = rebase
-        self.groups = groups
+        self.groups = groups if groups is not None else set()
         self.sync_c = sync_c
         self.sync_s = sync_s
         self.sync_tags = sync_tags
@@ -943,7 +943,7 @@ class Project:
             out.important("prior sync failed; rebase still in progress")
             out.nl()
 
-        paths = list()
+        paths = []
         paths.extend(di.keys())
         paths.extend(df.keys())
         paths.extend(do)
@@ -1257,7 +1257,7 @@ class Project:
         submodules=False,
         ssh_proxy=None,
         clone_filter=None,
-        partial_clone_exclude=set(),
+        partial_clone_exclude=None,
         clone_filter_for_depth=None,
     ):
         """Perform only the network IO portion of the sync process.
@@ -1310,6 +1310,8 @@ class Project:
         if clone_bundle and os.path.exists(self.objdir):
             clone_bundle = False
 
+        if partial_clone_exclude is None:
+            partial_clone_exclude = set()
         if self.name in partial_clone_exclude:
             clone_bundle = True
             clone_filter = None

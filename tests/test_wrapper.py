@@ -385,11 +385,11 @@ class VerifyRev(RepoWrapperTestCase):
     def test_verify_fails(self):
         """Check we fall back to signed tag when we have an unsigned commit."""
         desc_result = subprocess.CompletedProcess([], 0, "v1.0-10-g1234\n", "")
-        gpg_result = Exception
+        gpg_result = RuntimeError
         with mock.patch.object(
             self.wrapper, "run_git", side_effect=(desc_result, gpg_result)
         ):
-            with self.assertRaises(Exception):
+            with self.assertRaises(RuntimeError):
                 self.wrapper.verify_rev("/", "refs/heads/stable", "1234", True)
 
 
@@ -543,15 +543,15 @@ class CheckRepoRev(GitCheckoutTestCase):
             self.wrapper, "check_repo_verify", return_value=True
         ):
             with mock.patch.object(
-                self.wrapper, "verify_rev", side_effect=Exception
+                self.wrapper, "verify_rev", side_effect=RuntimeError
             ):
-                with self.assertRaises(Exception):
+                with self.assertRaises(RuntimeError):
                     self.wrapper.check_repo_rev(self.GIT_DIR, "stable")
 
     def test_verify_ignore(self):
         """Should pass when verification is disabled."""
         with mock.patch.object(
-            self.wrapper, "verify_rev", side_effect=Exception
+            self.wrapper, "verify_rev", side_effect=RuntimeError
         ):
             rrev, lrev = self.wrapper.check_repo_rev(
                 self.GIT_DIR, "stable", repo_verify=False
