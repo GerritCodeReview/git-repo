@@ -16,6 +16,24 @@
       "message": "if we want to make these enforcing, they need to be added/updated in run_tests.vpython3 so that our devs/CI match",
       "revId": "a137da5c61e80f9cafbf2f671826a18c2e474686",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b0e7472_5d1958aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-03-26T23:52:20Z",
+      "side": 1,
+      "message": "The wheels for those extensions don\u0027t seem to exist, so I\u0027m afraid we can\u0027t enforce them. I\u0027m OK with that. I made these changes because internally our flake8 setup has that now, so the tests started to fail for us.\n\nAlternatively, I can add this to .flake8-ignore. But since the changes don\u0027t harm, maybe this should be merged regardless?",
+      "parentUuid": "58acdf45_34efa991",
+      "revId": "a137da5c61e80f9cafbf2f671826a18c2e474686",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
