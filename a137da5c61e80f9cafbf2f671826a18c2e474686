@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58acdf45_34efa991",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-03-26T21:15:24Z",
+      "side": 1,
+      "message": "if we want to make these enforcing, they need to be added/updated in run_tests.vpython3 so that our devs/CI match",
+      "revId": "a137da5c61e80f9cafbf2f671826a18c2e474686",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
