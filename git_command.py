@@ -47,7 +47,7 @@ logger = RepoLogger(__file__)
 
 
 class _GitCall:
-    @functools.lru_cache(maxsize=None)
+    @functools.lru_cache(maxsize=None)  # noqa: B019
     def version_tuple(self):
         ret = Wrapper().ParseGitVersion()
         if ret is None:
@@ -95,7 +95,7 @@ def RepoSourceVersion():
                 ver = ver[1:]
         else:
             ver = "unknown"
-        setattr(RepoSourceVersion, "version", ver)
+        RepoSourceVersion.version = ver
 
     return ver
 
@@ -611,7 +611,7 @@ class GitCommandError(GitError):
         self.git_stderr = git_stderr
 
     @property
-    @functools.lru_cache(maxsize=None)
+    @functools.lru_cache(maxsize=None)  # noqa: B019
     def suggestion(self):
         """Returns helpful next steps for the given stderr."""
         if not self.git_stderr:

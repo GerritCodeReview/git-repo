@@ -947,7 +947,7 @@ later is required to fix a server side protocol bug.
                 "sync_dict"
             ] = multiprocessing.Manager().dict()
 
-            objdir_project_map = dict()
+            objdir_project_map = {}
             for index, project in enumerate(projects):
                 objdir_project_map.setdefault(project.objdir, []).append(index)
             projects_list = list(objdir_project_map.values())
@@ -2657,7 +2657,7 @@ later is required to fix a server side protocol bug.
                             if previously_pending_relpaths == pending_relpaths:
                                 stalled_projects_str = "\n".join(
                                     f" - {path}"
-                                    for path in sorted(list(pending_relpaths))
+                                    for path in sorted(pending_relpaths)
                                 )
                                 logger.error(
                                     "The following projects failed and could "
