@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43cd030c_1ddb7e15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-27T19:02:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3d8dc1c_a357c0c8",
+      "revId": "2ee322d277e7f08aec5ab12566e289002270de4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dddfbed8_e6b37623",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-03-13T06:37:08Z",
       "side": 1,
       "message": "spec needs updating after changes",
+      "revId": "2ee322d277e7f08aec5ab12566e289002270de4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd25fdff_41b5abf4",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-27T19:02:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dddfbed8_e6b37623",
       "revId": "2ee322d277e7f08aec5ab12566e289002270de4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -58,6 +94,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71539e03_ddb06030",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-27T19:02:25Z",
+      "side": 1,
+      "message": "nope, good catch. we should probably just warn if this happens and turn sparse checkout off.",
+      "parentUuid": "e805c467_0778eaf3",
+      "range": {
+        "startLine": 392,
+        "startChar": 28,
+        "endLine": 393,
+        "endChar": 54
+      },
+      "revId": "2ee322d277e7f08aec5ab12566e289002270de4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fd8885c_a5ecad1b",
@@ -75,6 +135,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86a8a103_184ec239",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-27T19:02:25Z",
+      "side": 1,
+      "message": "1. what if the path doesn\u0027t match anything ? silently ignored ?\n  - git will silently ignore unmatched paths\n  2. does it only match files ? or can it match directories ?\n  - only matches directories\n  3. are wildcards supported ?\n  - wildcards are not supported",
+      "parentUuid": "7fd8885c_a5ecad1b",
+      "revId": "2ee322d277e7f08aec5ab12566e289002270de4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2610d10_36f5291b",
@@ -88,6 +166,24 @@
       "writtenOn": "2026-03-13T06:37:08Z",
       "side": 1,
       "message": "what is a \"cone mode\" ?  please link to relevant docs",
+      "revId": "2ee322d277e7f08aec5ab12566e289002270de4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efad55ef_27df177c",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-27T19:02:25Z",
+      "side": 1,
+      "message": "https://git-scm.com/docs/git-sparse-checkout#_internalscone_mode_handling. Yeah so cone mode is the default and is much more performant than non-cone mode. The restriction is that cone mode only matches directories and doesn\u0027t support wildcards.\n\nDo you think this is even worth mentioning in the docs here given it\u0027s more of an internal setting in Git? maybe we can just leave this detail out and instead document the restriction for sparse paths.",
+      "parentUuid": "e2610d10_36f5291b",
       "revId": "2ee322d277e7f08aec5ab12566e289002270de4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -127,6 +223,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5efaf83_a7fd532f",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 2263,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-27T19:02:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6d8f62c_3efc3e7c",
+      "revId": "2ee322d277e7f08aec5ab12566e289002270de4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebf1e65d_a0056285",
@@ -144,6 +258,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97b72387_b8d6401e",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-27T19:02:25Z",
+      "side": 1,
+      "message": "I think because _ParseSparsePath calls append() directly on sparse_paths, it needs to default to an array.",
+      "parentUuid": "ebf1e65d_a0056285",
+      "revId": "2ee322d277e7f08aec5ab12566e289002270de4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30a56c2a_1b643ba9",
@@ -157,6 +289,24 @@
       "writtenOn": "2026-03-13T06:37:08Z",
       "side": 1,
       "message": "period at the end",
+      "revId": "2ee322d277e7f08aec5ab12566e289002270de4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb4c84cf_dd2cebe6",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3564,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-03-27T19:02:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30a56c2a_1b643ba9",
       "revId": "2ee322d277e7f08aec5ab12566e289002270de4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
