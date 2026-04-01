@@ -558,6 +558,7 @@ class Project:
         sync_s=False,
         sync_tags=True,
         clone_depth=None,
+        sync_strategy=None,
         upstream=None,
         parent=None,
         use_git_worktrees=False,
@@ -610,6 +611,7 @@ class Project:
         self.sync_s = sync_s
         self.sync_tags = sync_tags
         self.clone_depth = clone_depth
+        self.sync_strategy = sync_strategy
         self.upstream = upstream
         self.parent = parent
         # NB: Do not use this setting in __init__ to change behavior so that the
