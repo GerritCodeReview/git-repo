@@ -558,7 +558,14 @@ def GetUrlCookieFile(url, quiet):
     cookiefile = GitConfig.ForUser().GetString("http.cookiefile")
     if cookiefile:
         cookiefile = os.path.expanduser(cookiefile)
-    yield cookiefile, None
+
+    # If talking to the Android manifest server and no proxy is provided,
+    # default to the local Uplink proxy (usually at 127.0.0.1:999).
+    proxy = None
+    if "android-smartsync" in url or "corp.google.com" in url:
+        proxy = os.environ.get("HTTP_PROXY") or "http://127.0.0.1:999"
+
+    yield cookiefile, proxy
 
 
 class Remote:
