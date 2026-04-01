@@ -720,6 +720,29 @@ class ProjectElementTests(ManifestParseTestCase):
             "</manifest>",
         )
 
+    def test_sync_strategy(self):
+        """Check setting of project's sync_strategy."""
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="test-name" sync-strategy="stateless"/>
+</manifest>
+"""
+        )
+        self.assertEqual(len(manifest.projects), 1)
+        project = manifest.projects[0]
+        self.assertEqual(project.sync_strategy, "stateless")
+        self.assertEqual(
+            sort_attributes(manifest.ToXml().toxml()),
+            '<?xml version="1.0" ?><manifest>'
+            '<remote fetch="http://localhost" name="default-remote"/>'
+            '<default remote="default-remote" revision="refs/heads/main"/>'
+            '<project name="test-name" sync-strategy="stateless"/>'
+            "</manifest>",
+        )
+
     def test_trailing_slash(self):
         """Check handling of trailing slashes in attributes."""
 
