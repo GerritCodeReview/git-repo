@@ -20,6 +20,7 @@ import platform
 import re
 import tempfile
 import unittest
+import unittest.mock
 import xml.dom.minidom
 
 import error
@@ -426,6 +427,23 @@ class XmlManifestTests(ManifestParseTestCase):
                 '<manifest><default sync-j-max="-1" /></manifest>'
             )
             manifest.ToXml()
+
+    @unittest.mock.patch('manifest_xml.GitConfig.ForUser')
+    def test_manifest_server_proxy(self, mock_for_user):
+        """Check manifest-server proxy setting."""
+        mock_config = unittest.mock.MagicMock()
+        mock_for_user.return_value = mock_config
+        
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <manifest-server url="http://localhost" proxy="http://127.0.0.2:999" />
+</manifest>
+"""
+        )
+        _ = manifest.manifest_server
+        
+        mock_config.SetString.assert_called_with("http.http://localhost.proxy", "http://127.0.0.2:999")
 
 
 class IncludeElementTests(ManifestParseTestCase):

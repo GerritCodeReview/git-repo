@@ -1425,6 +1425,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         "duplicate manifest-server in %s" % (self.manifestFile)
                     )
                 self._manifest_server = url
+                
+                proxy = node.getAttribute("proxy")
+                if proxy:
+                    GitConfig.ForUser().SetString(f"http.{url}.proxy", proxy)
 
         def recursively_add_projects(project):
             projects = self._projects.setdefault(project.name, [])
