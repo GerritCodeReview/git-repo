@@ -1150,6 +1150,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         self._notice = None
         self.branch = None
         self._manifest_server = None
+        self._manifest_server_proxy = None
 
     def Load(self):
         """Read the manifest into memory."""
@@ -1424,6 +1425,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         "duplicate manifest-server in %s" % (self.manifestFile)
                     )
                 self._manifest_server = url
+
+                proxy = node.getAttribute("proxy")
+                if proxy:
+                    self._manifest_server_proxy = proxy
 
         def recursively_add_projects(project):
             projects = self._projects.setdefault(project.name, [])
