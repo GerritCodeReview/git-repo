@@ -732,6 +732,29 @@ class TestProjectElement:
             "</manifest>"
         )
 
+    def test_sync_strategy(self, repo_client: RepoClient) -> None:
+        """Check setting of project's sync_strategy."""
+        manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="test-name" sync-strategy="stateless"/>
+</manifest>
+"""
+        )
+        assert len(manifest.projects) == 1
+        project = manifest.projects[0]
+        assert project.sync_strategy == "stateless"
+        assert (
+            sort_attributes(manifest.ToXml().toxml())
+            == '<?xml version="1.0" ?><manifest>'
+            '<remote fetch="http://localhost" name="default-remote"/>'
+            '<default remote="default-remote" revision="refs/heads/main"/>'
+            '<project name="test-name" sync-strategy="stateless"/>'
+            "</manifest>"
+        )
+
     def test_trailing_slash(self, repo_client: RepoClient) -> None:
         """Check handling of trailing slashes in attributes."""
 

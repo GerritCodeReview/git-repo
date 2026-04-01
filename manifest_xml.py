@@ -759,6 +759,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             if p.clone_depth:
                 e.setAttribute("clone-depth", str(p.clone_depth))
 
+            if p.sync_strategy:
+                e.setAttribute("sync-strategy", str(p.sync_strategy))
+
             self._output_manifest_project_extras(p, e)
 
             if p.subprojects:
@@ -1938,6 +1941,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 % (self.manifestFile, clone_depth)
             )
 
+        sync_strategy = node.getAttribute("sync-strategy") or None
+
         dest_branch = (
             node.getAttribute("dest-branch") or self._default.destBranchExpr
         )
@@ -1984,6 +1989,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             sync_s=sync_s,
             sync_tags=sync_tags,
             clone_depth=clone_depth,
+            sync_strategy=sync_strategy,
             upstream=upstream,
             parent=parent,
             dest_branch=dest_branch,
