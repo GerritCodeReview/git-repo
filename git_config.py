@@ -558,6 +558,7 @@ def GetUrlCookieFile(url, quiet):
     cookiefile = GitConfig.ForUser().GetString("http.cookiefile")
     if cookiefile:
         cookiefile = os.path.expanduser(cookiefile)
+
     yield cookiefile, None
 
 
