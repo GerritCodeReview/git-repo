@@ -23,6 +23,8 @@ import netrc
 import optparse
 import os
 from pathlib import Path
+import re
+import subprocess
 import sys
 import tempfile
 import time
@@ -30,9 +32,7 @@ from typing import List, NamedTuple, Optional, Set, Tuple, Union
 import urllib.error
 import urllib.parse
 import urllib.request
-import xml.parsers.expat
 import xmlrpc.client
-
 
 try:
     import threading as _threading
@@ -81,7 +81,6 @@ from repo_logging import RepoLogger
 from repo_trace import Trace
 import ssh
 from wrapper import Wrapper
-
 
 _ONE_DAY_S = 24 * 60 * 60
 
@@ -1712,20 +1711,28 @@ later is required to fix a server side protocol bug.
                     "://", f"://{username}:{password}@", 1
                 )
 
-        transport = PersistentTransport(manifest_server)
+        transport = PersistentTransport(
+            manifest_server, proxy=manifest.manifest_server_proxy
+        )
         if manifest_server.startswith("persistent-"):
             manifest_server = manifest_server[len("persistent-") :]
 
         # Changes in behavior should update docs/smart-sync.md accordingly.
         try:
             server = xmlrpc.client.Server(manifest_server, transport=transport)
+            branch = None
+            target = None
             if opt.smart_sync:
                 branch = self._GetBranch(manifest.manifestProject)
+                target = None
 
                 if "SYNC_TARGET" in os.environ:
                     target = os.environ["SYNC_TARGET"]
-                    [success, manifest_str] = server.GetApprovedManifest(
-                        branch, target
+                    logger.info(
+                        "Finding LKGB with branch: %s, target: %s "
+                        "(from SYNC_TARGET)",
+                        branch,
+                        target,
                     )
                 elif (
                     "TARGET_PRODUCT" in os.environ
@@ -1737,8 +1744,11 @@ later is required to fix a server side protocol bug.
                         os.environ["TARGET_RELEASE"],
                         os.environ["TARGET_BUILD_VARIANT"],
                     )
-                    [success, manifest_str] = server.GetApprovedManifest(
-                        branch, target
+                    logger.info(
+                        "Finding LKGB with branch: %s, target: %s "
+                        "(from TARGET_PRODUCT/RELEASE/VARIANT)",
+                        branch,
+                        target,
                     )
                 elif (
                     "TARGET_PRODUCT" in os.environ
@@ -1748,6 +1758,20 @@ later is required to fix a server side protocol bug.
                         os.environ["TARGET_PRODUCT"],
                         os.environ["TARGET_BUILD_VARIANT"],
                     )
+                    logger.info(
+                        "Finding LKGB with branch: %s, target: %s "
+                        "(from TARGET_PRODUCT/VARIANT)",
+                        branch,
+                        target,
+                    )
+                else:
+                    logger.info(
+                        "Finding LKGB with branch: %s and no target. "
+                        "Will pick the latest approved build.",
+                        branch,
+                    )
+
+                if target:
                     [success, manifest_str] = server.GetApprovedManifest(
                         branch, target
                     )
@@ -1755,10 +1779,35 @@ later is required to fix a server side protocol bug.
                     [success, manifest_str] = server.GetApprovedManifest(branch)
             else:
                 assert opt.smart_tag
+                logger.info("Finding LKGB with tag: %s", opt.smart_tag)
                 [success, manifest_str] = server.GetManifest(opt.smart_tag)
 
             if success:
                 manifest_name = os.path.basename(smart_sync_manifest_path)
+
+                # Parse build_id and target from comment
+                match = re.search(
+                    r'<!-- success: true build_id: "([^"]+)" target: "([^"]+)"',
+                    manifest_str,
+                )
+                if match:
+                    build_id = match.group(1)
+                    build_target = match.group(2)
+                    if opt.smart_sync:
+                        target_str = target if target else "none"
+                        print(
+                            f"Smart sync picked build_id: {build_id}, "
+                            f"target: {build_target} (branch: {branch}, "
+                            f"target: {target_str})",
+                            file=sys.stderr,
+                        )
+                    elif opt.smart_tag:
+                        print(
+                            f"Smart sync picked build_id: {build_id}, "
+                            f"target: {build_target} (tag: {opt.smart_tag})",
+                            file=sys.stderr,
+                        )
+
                 try:
                     with open(smart_sync_manifest_path, "w") as f:
                         f.write(manifest_str)
@@ -2815,6 +2864,53 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
             print("repo version %s is current" % rp.work_git.describe(HEAD))
 
 
+def _RunAuthHook(url, response_body):
+    """Run a custom auth hook if configured for the URL."""
+    from git_config import GitConfig
+    import shlex
+
+    config = GitConfig.ForUser()
+    subsections = config.GetSubSections("repo")
+    for subsect in subsections:
+        if not subsect.startswith("auth."):
+            continue
+        match_url = config.GetString(f"repo.{subsect}.matchUrl")
+        detect_text = config.GetString(f"repo.{subsect}.detectText")
+        command = config.GetString(f"repo.{subsect}.command")
+
+        if not match_url or not command:
+            continue
+
+        if re.search(match_url, url):
+            should_run = False
+            if detect_text and response_body:
+                if re.search(detect_text, response_body, re.IGNORECASE):
+                    should_run = True
+            elif not detect_text:
+                should_run = True
+
+            if should_run:
+                print(
+                    f"\nAuthentication may have expired. Running hook: "
+                    f"{command}"
+                )
+                try:
+                    args = shlex.split(command)
+                    result = subprocess.run(args, check=False)
+                    if result.returncode == 0:
+                        print("Auth hook successful. Retrying...")
+                        return True
+                    else:
+                        print(
+                            f"Auth hook failed with return code "
+                            f"{result.returncode}."
+                        )
+                except Exception as e:
+                    print(f"Failed to run auth hook {command}: {e}")
+                return False
+    return False
+
+
 class _FetchTimes:
     _ALPHA = 0.5
 
@@ -2954,106 +3050,131 @@ class LocalSyncState:
 # request to request like the normal transport, the real url
 # is passed during initialization.
 class PersistentTransport(xmlrpc.client.Transport):
-    def __init__(self, orig_host):
+    def __init__(self, orig_host, proxy=None):
         super().__init__()
         self.orig_host = orig_host
+        self.proxy = proxy
 
     def request(self, host, handler, request_body, verbose=False):
-        with GetUrlCookieFile(self.orig_host, not verbose) as (
-            cookiefile,
-            proxy,
-        ):
-            # Python doesn't understand cookies with the #HttpOnly_ prefix
-            # Since we're only using them for HTTP, copy the file temporarily,
-            # stripping those prefixes away.
-            if cookiefile:
-                tmpcookiefile = tempfile.NamedTemporaryFile(mode="w")
-                tmpcookiefile.write("# HTTP Cookie File")
-                try:
-                    with open(cookiefile) as f:
-                        for line in f:
-                            if line.startswith("#HttpOnly_"):
-                                line = line[len("#HttpOnly_") :]
-                            tmpcookiefile.write(line)
-                    tmpcookiefile.flush()
+        tried_login = False
+        cookiejar = None
+        while True:
+            with GetUrlCookieFile(self.orig_host, not verbose) as (
+                cookiefile,
+                proxy,
+            ):
+                if proxy is None:
+                    proxy = self.proxy
+                # Python doesn't understand cookies with the #HttpOnly_ prefix
+                # Since we're only using them for HTTP, copy the file
+                # temporarily, stripping those prefixes away.
+                if cookiejar is None:
+                    if cookiefile:
+                        tmpcookiefile = tempfile.NamedTemporaryFile(mode="w")
+                        tmpcookiefile.write("# HTTP Cookie File")
+                        try:
+                            with open(cookiefile) as f:
+                                for line in f:
+                                    if line.startswith("#HttpOnly_"):
+                                        line = line[len("#HttpOnly_") :]
+                                    tmpcookiefile.write(line)
+                            tmpcookiefile.flush()
 
-                    cookiejar = cookielib.MozillaCookieJar(tmpcookiefile.name)
-                    try:
-                        cookiejar.load()
-                    except cookielib.LoadError:
+                            cookiejar = cookielib.MozillaCookieJar(
+                                tmpcookiefile.name
+                            )
+                            try:
+                                cookiejar.load()
+                            except cookielib.LoadError:
+                                cookiejar = cookielib.CookieJar()
+                        finally:
+                            tmpcookiefile.close()
+                    else:
                         cookiejar = cookielib.CookieJar()
-                finally:
-                    tmpcookiefile.close()
-            else:
-                cookiejar = cookielib.CookieJar()
 
-            proxyhandler = urllib.request.ProxyHandler
-            if proxy:
-                proxyhandler = urllib.request.ProxyHandler(
-                    {"http": proxy, "https": proxy}
-                )
-
-            opener = urllib.request.build_opener(
-                urllib.request.HTTPCookieProcessor(cookiejar), proxyhandler
-            )
-
-            url = urllib.parse.urljoin(self.orig_host, handler)
-            parse_results = urllib.parse.urlparse(url)
-
-            scheme = parse_results.scheme
-            if scheme == "persistent-http":
-                scheme = "http"
-            if scheme == "persistent-https":
-                # If we're proxying through persistent-https, use http. The
-                # proxy itself will do the https.
+                proxyhandler = urllib.request.ProxyHandler
                 if proxy:
+                    proxyhandler = urllib.request.ProxyHandler(
+                        {"http": proxy, "https": proxy}
+                    )
+
+                opener = urllib.request.build_opener(
+                    urllib.request.HTTPCookieProcessor(cookiejar), proxyhandler
+                )
+
+                url = urllib.parse.urljoin(self.orig_host, handler)
+                parse_results = urllib.parse.urlparse(url)
+
+                scheme = parse_results.scheme
+                if scheme == "persistent-http":
                     scheme = "http"
-                else:
-                    scheme = "https"
+                if scheme == "persistent-https":
+                    # If we're proxying through persistent-https, use http. The
+                    # proxy itself will do the https.
+                    if proxy:
+                        scheme = "http"
+                    else:
+                        scheme = "https"
 
-            # Parse out any authentication information using the base class.
-            host, extra_headers, _ = self.get_host_info(parse_results.netloc)
-
-            url = urllib.parse.urlunparse(
-                (
-                    scheme,
-                    host,
-                    parse_results.path,
-                    parse_results.params,
-                    parse_results.query,
-                    parse_results.fragment,
+                # Parse out any authentication information using the base class.
+                host, extra_headers, _ = self.get_host_info(
+                    parse_results.netloc
                 )
-            )
 
-            request = urllib.request.Request(url, request_body)
-            if extra_headers is not None:
-                for name, header in extra_headers:
-                    request.add_header(name, header)
-            request.add_header("Content-Type", "text/xml")
-            try:
-                response = opener.open(request)
-            except urllib.error.HTTPError as e:
-                if e.code == 501:
-                    # We may have been redirected through a login process
-                    # but our POST turned into a GET. Retry.
+                url = urllib.parse.urlunparse(
+                    (
+                        scheme,
+                        host,
+                        parse_results.path,
+                        parse_results.params,
+                        parse_results.query,
+                        parse_results.fragment,
+                    )
+                )
+
+                request = urllib.request.Request(url, request_body)
+                if extra_headers is not None:
+                    for name, header in extra_headers:
+                        request.add_header(name, header)
+
+                request.add_header("Content-Type", "text/xml")
+                try:
                     response = opener.open(request)
-                else:
-                    raise
+                except urllib.error.HTTPError as e:
+                    if e.code == 501:
+                        # We may have been redirected through a login process
+                        # but our POST turned into a GET. Retry.
+                        response = opener.open(request)
+                    else:
+                        body = e.read().decode("utf-8", "ignore")
+                        raise OSError(
+                            f"Manifest server request failed: {e}\n"
+                            f"Response body:\n{body}"
+                        )
 
-            p, u = xmlrpc.client.getparser()
-            # Response should be fairly small, so read it all at once.
-            # This way we can show it to the user in case of error (e.g. HTML).
-            data = response.read()
-            try:
-                p.feed(data)
-            except xml.parsers.expat.ExpatError as e:
-                raise OSError(
-                    f"Parsing the manifest failed: {e}\n"
-                    f"Please report this to your manifest server admin.\n"
-                    f'Here is the full response:\n{data.decode("utf-8")}'
-                )
-            p.close()
-            return u.close()
+                p, u = xmlrpc.client.getparser()
+                # Response should be fairly small, so read it all at once.
+                # This way we can show it to the user in case of error
+                # (e.g. HTML).
+                data = response.read()
+                try:
+                    p.feed(data)
+                except Exception as e:
+                    decoded_data = data.decode("utf-8")
+                    if not tried_login and _RunAuthHook(
+                        self.orig_host, decoded_data
+                    ):
+                        tried_login = True
+                        cookiejar = None
+                        continue
+
+                    raise OSError(
+                        f"Parsing the manifest failed: {e}\n"
+                        f"Please report this to your manifest server admin.\n"
+                        f"Here is the full response:\n{decoded_data}"
+                    )
+                p.close()
+                return u.close()
 
     def close(self):
         pass
