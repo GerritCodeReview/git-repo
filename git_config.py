@@ -35,7 +35,6 @@ from git_refs import R_TAGS
 import platform_utils
 from repo_trace import Trace
 
-
 # Prefix that is prepended to all the keys of SyncAnalysisState's data
 # that is saved in the config.
 SYNC_STATE_PREFIX = "repo.syncstate."
@@ -558,7 +557,10 @@ def GetUrlCookieFile(url, quiet):
     cookiefile = GitConfig.ForUser().GetString("http.cookiefile")
     if cookiefile:
         cookiefile = os.path.expanduser(cookiefile)
-    yield cookiefile, None
+
+    proxy = None
+
+    yield cookiefile, proxy
 
 
 class Remote:
