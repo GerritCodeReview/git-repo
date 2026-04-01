@@ -21,6 +21,8 @@ import subprocess
 import tempfile
 from typing import Optional
 import unittest
+from unittest import mock
+
 
 import utils_for_test
 
@@ -565,3 +567,120 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
 
             fakeproj.config.SetString("manifest.platform", "auto")
             self.assertEqual(fakeproj.manifest_platform, "auto")
+
+
+class StatelessSyncTests(unittest.TestCase):
+    """Tests for stateless sync strategy."""
+
+    def _get_project(self, tempdir):
+        manifest = mock.MagicMock()
+        manifest.manifestProject.depth = None
+        manifest.manifestProject.dissociate = False
+        manifest.manifestProject.clone_filter = None
+        manifest.is_multimanifest = False
+        manifest.manifestProject.config.GetBoolean.return_value = False
+
+        remote = mock.MagicMock()
+        remote.name = "origin"
+        remote.url = "http://"
+
+        proj = project.Project(
+            manifest=manifest,
+            name="test-project",
+            remote=remote,
+            gitdir=os.path.join(tempdir, ".git"),
+            objdir=os.path.join(tempdir, ".git"),
+            worktree=tempdir,
+            relpath="test-project",
+            revisionExpr="1234abcd",
+            revisionId=None,
+            sync_strategy="stateless",
+        )
+        proj._CheckForImmutableRevision = mock.MagicMock(return_value=False)
+        proj._LsRemote = mock.MagicMock(
+            return_value="1234abcd\trefs/heads/main\n"
+        )
+        proj.bare_git = mock.MagicMock()
+        proj.bare_git.rev_parse.return_value = "5678abcd"
+        proj.bare_git.rev_list.return_value = ["0"]
+        proj.IsDirty = mock.MagicMock(return_value=False)
+        proj.GetBranches = mock.MagicMock(return_value=[])
+        proj.DeleteWorktree = mock.MagicMock()
+        proj._InitGitDir = mock.MagicMock()
+        proj._RemoteFetch = mock.MagicMock(return_value=True)
+        proj._InitRemote = mock.MagicMock()
+        proj._InitMRef = mock.MagicMock()
+        return proj
+
+    def test_sync_network_half_stateless_prune_needed(self):
+        """Test stateless sync queues prune when needed."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            res = proj.Sync_NetworkHalf()
+
+            self.assertTrue(res.success)
+            proj.DeleteWorktree.assert_not_called()
+            self.assertTrue(proj.stateless_prune_needed)
+            proj._RemoteFetch.assert_called_once()
+
+    def test_sync_local_half_stateless_prune(self):
+        """Test stateless GC pruning is queued in Sync_LocalHalf."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.stateless_prune_needed = True
+
+            proj._Checkout = mock.MagicMock()
+            proj._InitWorkTree = mock.MagicMock()
+            proj.IsRebaseInProgress = mock.MagicMock(return_value=False)
+            proj.IsCherryPickInProgress = mock.MagicMock(return_value=False)
+            proj.bare_ref = mock.MagicMock()
+            proj.bare_ref.all = {}
+            proj.GetRevisionId = mock.MagicMock(return_value="1234abcd")
+            proj._CopyAndLinkFiles = mock.MagicMock()
+
+            proj.work_git = mock.MagicMock()
+            proj.work_git.GetHead.return_value = "5678abcd"
+
+            syncbuf = project.SyncBuffer(proj.config)
+
+            with mock.patch("project.GitCommand") as mock_git_cmd:
+                mock_cmd_instance = mock.MagicMock()
+                mock_cmd_instance.Wait.return_value = 0
+                mock_git_cmd.return_value = mock_cmd_instance
+
+                proj.Sync_LocalHalf(syncbuf)
+                syncbuf.Finish()
+
+            self.assertEqual(mock_git_cmd.call_count, 2)
+            mock_git_cmd.assert_any_call(
+                proj, ["reflog", "expire", "--expire=all", "--all"], bare=True
+            )
+            mock_git_cmd.assert_any_call(
+                proj,
+                ["gc", "--prune=now"],
+                bare=True,
+                capture_stdout=True,
+                capture_stderr=True,
+            )
+
+    def test_sync_network_half_stateless_skips_if_stash(self):
+        """Test stateless sync skips if stash exists."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.HasStash = mock.MagicMock(return_value=True)
+
+            res = proj.Sync_NetworkHalf()
+
+            self.assertTrue(res.success)
+            self.assertFalse(getattr(proj, "stateless_prune_needed", False))
+
+    def test_sync_network_half_stateless_skips_if_local_commits(self):
+        """Test stateless sync skips if there are local-only commits."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.bare_git.rev_list.return_value = ["1"]
+
+            res = proj.Sync_NetworkHalf()
+
+            self.assertTrue(res.success)
+            self.assertFalse(getattr(proj, "stateless_prune_needed", False))
