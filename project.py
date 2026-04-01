@@ -629,6 +629,7 @@ class Project:
         self.linkfiles = {}
         self.annotations = []
         self.dest_branch = dest_branch
+        self.stateless_prune_needed = False
 
         # This will be filled in if a project is later identified to be the
         # project containing repo hooks.
@@ -757,6 +758,18 @@ class Project:
         if consider_untracked and self.UntrackedFiles():
             return True
         return False
+
+    def HasStash(self) -> bool:
+        """Returns True if there is a stash in the repository."""
+        p = GitCommand(
+            self,
+            ["rev-parse", "--verify", "refs/stash"],
+            bare=True,
+            capture_stdout=True,
+            capture_stderr=True,
+            log_as_error=False,
+        )
+        return p.Wait() == 0
 
     _userident_name = None
     _userident_email = None
@@ -1241,6 +1254,67 @@ class Project:
             logger.error("error: Cannot extract archive %s: %s", tarpath, e)
         return False
 
+    def _ShouldStatelessPrune(
+        self, use_superproject: Optional[bool] = None
+    ) -> bool:
+        """Determines if a stateless prune should be performed.
+
+        Stateless pruning reclaims space by running a reflog expiration and
+        garbage collection instead of an incremental fetch. It is only performed
+        if the repository is clean and has no local-only state.
+        """
+        if not self.Exists:
+            return False
+
+        if self._CheckForImmutableRevision(use_superproject=use_superproject):
+            return False
+
+        # Query the target hash from remote to see if we are up-to-date
+        target_hash = None
+        if IsId(self.revisionExpr):
+            target_hash = self.revisionExpr
+        else:
+            output = self._LsRemote(self.upstream or self.revisionExpr)
+            if output:
+                target_hash = output.splitlines()[0].split()[0]
+
+        if not target_hash:
+            return False
+
+        try:
+            local_head = self.bare_git.rev_parse("HEAD")
+        except GitError:
+            local_head = None
+
+        if target_hash == local_head:
+            return False
+
+        # Skip if sharing objects with other projects
+        shares_objdir = self.UseAlternates or self.use_git_worktrees
+        if not shares_objdir:
+            for p in self.manifest.GetProjectsWithName(self.name):
+                if p != self and p.objdir == self.objdir:
+                    shares_objdir = True
+                    break
+
+        if shares_objdir:
+            return False
+
+        # Skip if HEAD contains any unpushed local commits
+        try:
+            local_commits = self.bare_git.rev_list(
+                "--count", "HEAD", "--not", "--remotes", "--tags"
+            )
+            if int(local_commits[0]) > 0:
+                return False
+        except (GitError, IndexError, ValueError):
+            return False
+
+        if self.IsDirty(consider_untracked=True) or self.HasStash():
+            return False
+
+        return True
+
     def Sync_NetworkHalf(
         self,
         quiet=False,
@@ -1315,6 +1389,11 @@ class Project:
         if self.name in partial_clone_exclude:
             clone_bundle = True
             clone_filter = None
+
+        if self.sync_strategy == "stateless" and self._ShouldStatelessPrune(
+            use_superproject
+        ):
+            self.stateless_prune_needed = True
 
         if is_new is None:
             is_new = not self.Exists
@@ -1600,6 +1679,23 @@ class Project:
         def _dosubmodules():
             self._SyncSubmodules(quiet=True)
 
+        def _doprune() -> None:
+            """Expire reflogs and run prune-now GC for stateless sync."""
+            GitCommand(
+                self,
+                ["reflog", "expire", "--expire=all", "--all"],
+                bare=True,
+            ).Wait()
+            p = GitCommand(
+                self,
+                ["gc", "--prune=now"],
+                bare=True,
+                capture_stdout=True,
+                capture_stderr=True,
+            )
+            if p.Wait() != 0:
+                logger.warning("warn: %s: stateless gc failed", self.name)
+
         head = self.work_git.GetHead()
         if head.startswith(R_HEADS):
             branch = head[len(R_HEADS) :]
@@ -1645,6 +1741,8 @@ class Project:
                 fail(e)
                 return
             self._CopyAndLinkFiles()
+            if self.stateless_prune_needed:
+                syncbuf.later2(self, _doprune, not verbose)
             return
 
         if head == revid:
@@ -1790,6 +1888,9 @@ class Project:
             syncbuf.later1(self, _doff, not verbose)
             if submodules:
                 syncbuf.later1(self, _dosubmodules, not verbose)
+
+        if self.stateless_prune_needed:
+            syncbuf.later2(self, _doprune, not verbose)
 
     def AddCopyFile(self, src, dest, topdir):
         """Mark |src| for copying to |dest| (relative to |topdir|).
