@@ -20,6 +20,7 @@ import platform
 import re
 import tempfile
 import unittest
+import unittest.mock
 import xml.dom.minidom
 
 import error
@@ -426,6 +427,17 @@ class XmlManifestTests(ManifestParseTestCase):
                 '<manifest><default sync-j-max="-1" /></manifest>'
             )
             manifest.ToXml()
+
+    def test_manifest_server_proxy(self):
+        """Check manifest-server proxy setting."""
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <manifest-server url="http://localhost" proxy="http://127.0.0.2:999" />
+</manifest>
+"""
+        )
+        self.assertEqual(manifest.manifest_server_proxy, "http://127.0.0.2:999")
 
 
 class IncludeElementTests(ManifestParseTestCase):
