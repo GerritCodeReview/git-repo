@@ -23,6 +23,8 @@ import netrc
 import optparse
 import os
 from pathlib import Path
+import re
+import subprocess
 import sys
 import tempfile
 import time
@@ -30,9 +32,7 @@ from typing import List, NamedTuple, Optional, Set, Tuple, Union
 import urllib.error
 import urllib.parse
 import urllib.request
-import xml.parsers.expat
 import xmlrpc.client
-
 
 try:
     import threading as _threading
@@ -81,7 +81,6 @@ from repo_logging import RepoLogger
 from repo_trace import Trace
 import ssh
 from wrapper import Wrapper
-
 
 _ONE_DAY_S = 24 * 60 * 60
 
@@ -1760,6 +1759,7 @@ later is required to fix a server side protocol bug.
             if success:
                 manifest_name = os.path.basename(smart_sync_manifest_path)
                 try:
+
                     with open(smart_sync_manifest_path, "w") as f:
                         f.write(manifest_str)
                 except OSError as e:
@@ -2815,6 +2815,53 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
             print("repo version %s is current" % rp.work_git.describe(HEAD))
 
 
+def _RunAuthHook(url, response_body):
+    """Run a custom auth hook if configured for the URL."""
+    from git_config import GitConfig
+    import shlex
+
+    config = GitConfig.ForUser()
+    subsections = config.GetSubSections("repo")
+    for subsect in subsections:
+        if not subsect.startswith("auth."):
+            continue
+        match_url = config.GetString(f"repo.{subsect}.matchUrl")
+        detect_text = config.GetString(f"repo.{subsect}.detectText")
+        command = config.GetString(f"repo.{subsect}.command")
+
+        if not match_url or not command:
+            continue
+
+        if re.search(match_url, url):
+            should_run = False
+            if detect_text and response_body:
+                if re.search(detect_text, response_body, re.IGNORECASE):
+                    should_run = True
+            elif not detect_text:
+                should_run = True
+
+            if should_run:
+                print(
+                    f"\nAuthentication may have expired. Running hook: "
+                    f"{command}"
+                )
+                try:
+                    args = shlex.split(command)
+                    result = subprocess.run(args, check=False)
+                    if result.returncode == 0:
+                        print("Auth hook successful. Retrying...")
+                        return True
+                    else:
+                        print(
+                            f"Auth hook failed with return code "
+                            f"{result.returncode}."
+                        )
+                except Exception as e:
+                    print(f"Failed to run auth hook {command}: {e}")
+                return False
+    return False
+
+
 class _FetchTimes:
     _ALPHA = 0.5
 
@@ -2959,101 +3006,146 @@ class PersistentTransport(xmlrpc.client.Transport):
         self.orig_host = orig_host
 
     def request(self, host, handler, request_body, verbose=False):
-        with GetUrlCookieFile(self.orig_host, not verbose) as (
-            cookiefile,
-            proxy,
-        ):
-            # Python doesn't understand cookies with the #HttpOnly_ prefix
-            # Since we're only using them for HTTP, copy the file temporarily,
-            # stripping those prefixes away.
-            if cookiefile:
-                tmpcookiefile = tempfile.NamedTemporaryFile(mode="w")
-                tmpcookiefile.write("# HTTP Cookie File")
-                try:
-                    with open(cookiefile) as f:
-                        for line in f:
-                            if line.startswith("#HttpOnly_"):
-                                line = line[len("#HttpOnly_") :]
-                            tmpcookiefile.write(line)
-                    tmpcookiefile.flush()
+        tried_login = False
+        cookiejar = None
+        while True:
+            with GetUrlCookieFile(self.orig_host, not verbose) as (
+                cookiefile,
+                proxy,
+            ):
+                # Python doesn't understand cookies with the #HttpOnly_ prefix
+                # Since we're only using them for HTTP, copy the file
+                # temporarily, stripping those prefixes away.
+                if cookiejar is None:
+                    if cookiefile:
+                        tmpcookiefile = tempfile.NamedTemporaryFile(mode="w")
+                        tmpcookiefile.write("# HTTP Cookie File")
+                        try:
+                            with open(cookiefile) as f:
+                                for line in f:
+                                    if line.startswith("#HttpOnly_"):
+                                        line = line[len("#HttpOnly_") :]
+                                    tmpcookiefile.write(line)
+                            tmpcookiefile.flush()
 
-                    cookiejar = cookielib.MozillaCookieJar(tmpcookiefile.name)
-                    try:
-                        cookiejar.load()
-                    except cookielib.LoadError:
+                            cookiejar = cookielib.MozillaCookieJar(
+                                tmpcookiefile.name
+                            )
+                            try:
+                                cookiejar.load()
+                            except cookielib.LoadError:
+                                cookiejar = cookielib.CookieJar()
+                        finally:
+                            tmpcookiefile.close()
+                    else:
                         cookiejar = cookielib.CookieJar()
-                finally:
-                    tmpcookiefile.close()
-            else:
-                cookiejar = cookielib.CookieJar()
 
-            proxyhandler = urllib.request.ProxyHandler
-            if proxy:
-                proxyhandler = urllib.request.ProxyHandler(
-                    {"http": proxy, "https": proxy}
-                )
-
-            opener = urllib.request.build_opener(
-                urllib.request.HTTPCookieProcessor(cookiejar), proxyhandler
-            )
-
-            url = urllib.parse.urljoin(self.orig_host, handler)
-            parse_results = urllib.parse.urlparse(url)
-
-            scheme = parse_results.scheme
-            if scheme == "persistent-http":
-                scheme = "http"
-            if scheme == "persistent-https":
-                # If we're proxying through persistent-https, use http. The
-                # proxy itself will do the https.
+                proxyhandler = urllib.request.ProxyHandler
                 if proxy:
+                    proxyhandler = urllib.request.ProxyHandler(
+                        {"http": proxy, "https": proxy}
+                    )
+
+                opener = urllib.request.build_opener(
+                    urllib.request.HTTPCookieProcessor(cookiejar), proxyhandler
+                )
+
+                url = urllib.parse.urljoin(self.orig_host, handler)
+                parse_results = urllib.parse.urlparse(url)
+
+                scheme = parse_results.scheme
+                if scheme == "persistent-http":
                     scheme = "http"
-                else:
-                    scheme = "https"
+                if scheme == "persistent-https":
+                    # If we're proxying through persistent-https, use http. The
+                    # proxy itself will do the https.
+                    if proxy:
+                        scheme = "http"
+                    else:
+                        scheme = "https"
 
-            # Parse out any authentication information using the base class.
-            host, extra_headers, _ = self.get_host_info(parse_results.netloc)
-
-            url = urllib.parse.urlunparse(
-                (
-                    scheme,
-                    host,
-                    parse_results.path,
-                    parse_results.params,
-                    parse_results.query,
-                    parse_results.fragment,
+                # Parse out any authentication information using the base class.
+                host, extra_headers, _ = self.get_host_info(
+                    parse_results.netloc
                 )
-            )
 
-            request = urllib.request.Request(url, request_body)
-            if extra_headers is not None:
-                for name, header in extra_headers:
-                    request.add_header(name, header)
-            request.add_header("Content-Type", "text/xml")
-            try:
-                response = opener.open(request)
-            except urllib.error.HTTPError as e:
-                if e.code == 501:
-                    # We may have been redirected through a login process
-                    # but our POST turned into a GET. Retry.
+                url = urllib.parse.urlunparse(
+                    (
+                        scheme,
+                        host,
+                        parse_results.path,
+                        parse_results.params,
+                        parse_results.query,
+                        parse_results.fragment,
+                    )
+                )
+
+                request = urllib.request.Request(url, request_body)
+                if extra_headers is not None:
+                    for name, header in extra_headers:
+                        request.add_header(name, header)
+
+                # Inject header from git-authentication.config
+                import getpass
+                try:
+                    username = getpass.getuser()
+                    auth_config = f"/var/run/ccache/sso-{username}/git-authentication.config"
+                    if os.path.exists(auth_config):
+                        with open(auth_config) as f:
+                            for line in f:
+                                if "extraHeader =" in line:
+                                    header_val = line.split("=", 1)[1].strip()
+                                    h_name, h_val = header_val.split(":", 1)
+                                    request.add_header(h_name.strip(), h_val.strip())
+                except Exception:
+                    pass
+
+                request.add_header("Content-Type", "text/xml")
+                try:
                     response = opener.open(request)
-                else:
-                    raise
+                except urllib.error.HTTPError as e:
+                    if e.code == 501:
+                        # We may have been redirected through a login process
+                        # but our POST turned into a GET. Retry.
+                        response = opener.open(request)
+                    elif e.code in (401, 403):
+                        body = e.read().decode("utf-8", "ignore")
+                        if not tried_login and _RunAuthHook(
+                            self.orig_host, body
+                        ):
+                            tried_login = True
+                            cookiejar = None
+                            continue
+                        raise OSError(
+                            f"Manifest server request failed: {e}\n"
+                            f"Response body:\n{body}"
+                        )
+                    else:
+                        raise
 
-            p, u = xmlrpc.client.getparser()
-            # Response should be fairly small, so read it all at once.
-            # This way we can show it to the user in case of error (e.g. HTML).
-            data = response.read()
-            try:
-                p.feed(data)
-            except xml.parsers.expat.ExpatError as e:
-                raise OSError(
-                    f"Parsing the manifest failed: {e}\n"
-                    f"Please report this to your manifest server admin.\n"
-                    f'Here is the full response:\n{data.decode("utf-8")}'
-                )
-            p.close()
-            return u.close()
+                p, u = xmlrpc.client.getparser()
+                # Response should be fairly small, so read it all at once.
+                # This way we can show it to the user in case of error
+                # (e.g. HTML).
+                data = response.read()
+                try:
+                    p.feed(data)
+                except Exception as e:
+                    decoded_data = data.decode("utf-8")
+                    if not tried_login and _RunAuthHook(
+                        self.orig_host, decoded_data
+                    ):
+                        tried_login = True
+                        cookiejar = None
+                        continue
+
+                    raise OSError(
+                        f"Parsing the manifest failed: {e}\n"
+                        f"Please report this to your manifest server admin.\n"
+                        f"Here is the full response:\n{decoded_data}"
+                    )
+                p.close()
+                return u.close()
 
     def close(self):
         pass
