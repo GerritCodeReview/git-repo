@@ -73,18 +73,19 @@ following DTD:
                      project*,
                      copyfile*,
                      linkfile*)>
-  <!ATTLIST project name        CDATA #REQUIRED>
-  <!ATTLIST project path        CDATA #IMPLIED>
-  <!ATTLIST project remote      IDREF #IMPLIED>
-  <!ATTLIST project revision    CDATA #IMPLIED>
-  <!ATTLIST project dest-branch CDATA #IMPLIED>
-  <!ATTLIST project groups      CDATA #IMPLIED>
-  <!ATTLIST project sync-c      CDATA #IMPLIED>
-  <!ATTLIST project sync-s      CDATA #IMPLIED>
-  <!ATTLIST project sync-tags   CDATA #IMPLIED>
-  <!ATTLIST project upstream    CDATA #IMPLIED>
-  <!ATTLIST project clone-depth CDATA #IMPLIED>
-  <!ATTLIST project force-path  CDATA #IMPLIED>
+  <!ATTLIST project name          CDATA #REQUIRED>
+  <!ATTLIST project path          CDATA #IMPLIED>
+  <!ATTLIST project remote        IDREF #IMPLIED>
+  <!ATTLIST project revision      CDATA #IMPLIED>
+  <!ATTLIST project dest-branch   CDATA #IMPLIED>
+  <!ATTLIST project groups        CDATA #IMPLIED>
+  <!ATTLIST project sync-c        CDATA #IMPLIED>
+  <!ATTLIST project sync-s        CDATA #IMPLIED>
+  <!ATTLIST project sync-tags     CDATA #IMPLIED>
+  <!ATTLIST project upstream      CDATA #IMPLIED>
+  <!ATTLIST project clone-depth   CDATA #IMPLIED>
+  <!ATTLIST project force-path    CDATA #IMPLIED>
+  <!ATTLIST project sync-strategy CDATA #IMPLIED>
 
   <!ELEMENT annotation EMPTY>
   <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -388,6 +389,22 @@ local mirror repository according to its `path` attribute (if supplied)
 rather than the `name` attribute.  This attribute only applies to the
 local mirrors syncing, it will be ignored when syncing the projects in a
 client working directory.
+
+Attribute `sync-strategy`: Set the sync strategy used when fetching this
+project.  Currently the only supported value is `stateless`.  When set to
+`stateless`, repo will run a reflog expiration and aggressive garbage collection
+at the end of the sync process.  This is useful for projects that contain
+large binary files and use `clone-depth="1"`, where garbage can accumulate
+as binaries are added, deleted, or modified across successive syncs.
+
+During a stateless sync, repo checks the following before cleaning up:
+1. The project does not share an object directory with other projects.
+2. The working tree is clean (no uncommitted changes, no untracked files).
+3. There are no unpushed local commits.
+4. There is no Git stash.
+
+If any of these conditions are not met, repo falls back to a standard
+sync without garbage collection.
 
 ### Element extend-project
 
