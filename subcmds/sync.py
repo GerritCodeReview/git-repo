@@ -14,6 +14,7 @@
 
 import collections
 import contextlib
+import errno
 import functools
 import http.cookiejar as cookielib
 import io
@@ -23,6 +24,7 @@ import netrc
 import optparse
 import os
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import time
@@ -2815,6 +2817,45 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
             print("repo version %s is current" % rp.work_git.describe(HEAD))
 
 
+def _RunSmartSyncLogin(url):
+    """Run smartsync_login if the manifest server requires it.
+
+    Args:
+        url: The manifest server URL.
+
+    Returns:
+        True if login was successful or not needed.
+    """
+    if "android-smartsync" not in url and "corp.google.com" not in url:
+        return False
+
+    login_bin = "/google/data/ro/projects/android/smartsync_login"
+    if not os.path.exists(login_bin):
+        return False
+
+    print("\nYour smartsync session may have expired.")
+    try:
+        answer = input("Would you like to run 'smartsync_login' now? [y/N] ")
+    except EOFError:
+        return False
+
+    if answer.lower() != "y":
+        return False
+
+    print(f"Running {login_bin}...")
+    try:
+        result = subprocess.run([login_bin], check=False)
+        if result.returncode == 0:
+            print("Login successful. Retrying sync...")
+            return True
+        else:
+            print(f"Login failed with return code {result.returncode}.")
+    except Exception as e:
+        print(f"Failed to run {login_bin}: {e}")
+
+    return False
+
+
 class _FetchTimes:
     _ALPHA = 0.5
 
@@ -2959,101 +3000,119 @@ class PersistentTransport(xmlrpc.client.Transport):
         self.orig_host = orig_host
 
     def request(self, host, handler, request_body, verbose=False):
-        with GetUrlCookieFile(self.orig_host, not verbose) as (
-            cookiefile,
-            proxy,
-        ):
-            # Python doesn't understand cookies with the #HttpOnly_ prefix
-            # Since we're only using them for HTTP, copy the file temporarily,
-            # stripping those prefixes away.
-            if cookiefile:
-                tmpcookiefile = tempfile.NamedTemporaryFile(mode="w")
-                tmpcookiefile.write("# HTTP Cookie File")
-                try:
-                    with open(cookiefile) as f:
-                        for line in f:
-                            if line.startswith("#HttpOnly_"):
-                                line = line[len("#HttpOnly_") :]
-                            tmpcookiefile.write(line)
-                    tmpcookiefile.flush()
-
-                    cookiejar = cookielib.MozillaCookieJar(tmpcookiefile.name)
+        tried_login = False
+        while True:
+            with GetUrlCookieFile(self.orig_host, not verbose) as (
+                cookiefile,
+                proxy,
+            ):
+                # Python doesn't understand cookies with the #HttpOnly_ prefix
+                # Since we're only using them for HTTP, copy the file temporarily,
+                # stripping those prefixes away.
+                if cookiefile:
+                    tmpcookiefile = tempfile.NamedTemporaryFile(mode="w")
+                    tmpcookiefile.write("# HTTP Cookie File")
                     try:
-                        cookiejar.load()
-                    except cookielib.LoadError:
-                        cookiejar = cookielib.CookieJar()
-                finally:
-                    tmpcookiefile.close()
-            else:
-                cookiejar = cookielib.CookieJar()
+                        with open(cookiefile) as f:
+                            for line in f:
+                                if line.startswith("#HttpOnly_"):
+                                    line = line[len("#HttpOnly_") :]
+                                tmpcookiefile.write(line)
+                        tmpcookiefile.flush()
 
-            proxyhandler = urllib.request.ProxyHandler
-            if proxy:
-                proxyhandler = urllib.request.ProxyHandler(
-                    {"http": proxy, "https": proxy}
-                )
+                        cookiejar = cookielib.MozillaCookieJar(
+                            tmpcookiefile.name
+                        )
+                        try:
+                            cookiejar.load()
+                        except cookielib.LoadError:
+                            cookiejar = cookielib.CookieJar()
+                    finally:
+                        tmpcookiefile.close()
+                else:
+                    cookiejar = cookielib.CookieJar()
 
-            opener = urllib.request.build_opener(
-                urllib.request.HTTPCookieProcessor(cookiejar), proxyhandler
-            )
-
-            url = urllib.parse.urljoin(self.orig_host, handler)
-            parse_results = urllib.parse.urlparse(url)
-
-            scheme = parse_results.scheme
-            if scheme == "persistent-http":
-                scheme = "http"
-            if scheme == "persistent-https":
-                # If we're proxying through persistent-https, use http. The
-                # proxy itself will do the https.
+                proxyhandler = urllib.request.ProxyHandler
                 if proxy:
+                    proxyhandler = urllib.request.ProxyHandler(
+                        {"http": proxy, "https": proxy}
+                    )
+
+                opener = urllib.request.build_opener(
+                    urllib.request.HTTPCookieProcessor(cookiejar), proxyhandler
+                )
+
+                url = urllib.parse.urljoin(self.orig_host, handler)
+                parse_results = urllib.parse.urlparse(url)
+
+                scheme = parse_results.scheme
+                if scheme == "persistent-http":
                     scheme = "http"
-                else:
-                    scheme = "https"
+                if scheme == "persistent-https":
+                    # If we're proxying through persistent-https, use http. The
+                    # proxy itself will do the https.
+                    if proxy:
+                        scheme = "http"
+                    else:
+                        scheme = "https"
 
-            # Parse out any authentication information using the base class.
-            host, extra_headers, _ = self.get_host_info(parse_results.netloc)
-
-            url = urllib.parse.urlunparse(
-                (
-                    scheme,
-                    host,
-                    parse_results.path,
-                    parse_results.params,
-                    parse_results.query,
-                    parse_results.fragment,
+                # Parse out any authentication information using the base class.
+                host, extra_headers, _ = self.get_host_info(
+                    parse_results.netloc
                 )
-            )
 
-            request = urllib.request.Request(url, request_body)
-            if extra_headers is not None:
-                for name, header in extra_headers:
-                    request.add_header(name, header)
-            request.add_header("Content-Type", "text/xml")
-            try:
-                response = opener.open(request)
-            except urllib.error.HTTPError as e:
-                if e.code == 501:
-                    # We may have been redirected through a login process
-                    # but our POST turned into a GET. Retry.
+                url = urllib.parse.urlunparse(
+                    (
+                        scheme,
+                        host,
+                        parse_results.path,
+                        parse_results.params,
+                        parse_results.query,
+                        parse_results.fragment,
+                    )
+                )
+
+                request = urllib.request.Request(url, request_body)
+                if extra_headers is not None:
+                    for name, header in extra_headers:
+                        request.add_header(name, header)
+                request.add_header("Content-Type", "text/xml")
+                try:
                     response = opener.open(request)
-                else:
-                    raise
+                except urllib.error.HTTPError as e:
+                    if e.code == 501:
+                        # We may have been redirected through a login process
+                        # but our POST turned into a GET. Retry.
+                        response = opener.open(request)
+                    else:
+                        raise
 
-            p, u = xmlrpc.client.getparser()
-            # Response should be fairly small, so read it all at once.
-            # This way we can show it to the user in case of error (e.g. HTML).
-            data = response.read()
-            try:
-                p.feed(data)
-            except xml.parsers.expat.ExpatError as e:
-                raise OSError(
-                    f"Parsing the manifest failed: {e}\n"
-                    f"Please report this to your manifest server admin.\n"
-                    f'Here is the full response:\n{data.decode("utf-8")}'
-                )
-            p.close()
-            return u.close()
+                p, u = xmlrpc.client.getparser()
+                # Response should be fairly small, so read it all at once.
+                # This way we can show it to the user in case of error (e.g. HTML).
+                data = response.read()
+                try:
+                    p.feed(data)
+                except xml.parsers.expat.ExpatError as e:
+                    decoded_data = data.decode("utf-8")
+                    if (
+                        not tried_login
+                        and (
+                            "<html" in decoded_data.lower()
+                            or "login" in decoded_data.lower()
+                        )
+                        and _RunSmartSyncLogin(self.orig_host)
+                    ):
+                        tried_login = True
+                        continue
+
+                    raise OSError(
+                        f"Parsing the manifest failed (SSO Check Enabled): {e}\n"
+                        f"Please report this to your manifest server admin.\n"
+                        f"Here is the full response:\n{decoded_data}"
+                    )
+                p.close()
+                return u.close()
 
     def close(self):
         pass
