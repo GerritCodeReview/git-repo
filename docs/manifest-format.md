@@ -58,6 +58,7 @@ following DTD:
 
   <!ELEMENT manifest-server EMPTY>
   <!ATTLIST manifest-server url CDATA #REQUIRED>
+  <!ATTLIST manifest-server proxy CDATA #IMPLIED>
 
   <!ELEMENT submanifest EMPTY>
   <!ATTLIST submanifest name           ID    #REQUIRED>
@@ -235,6 +236,9 @@ the other ref tags.
 At most one manifest-server may be specified. The url attribute
 is used to specify the URL of a manifest server, which is an
 XML RPC service.
+
+Attribute `proxy`: The URL of the proxy to use for communication with the manifest server.
+If specified, `repo` will automatically configure Git to use this proxy for the specified URL.
 
 See the [smart sync documentation](./smart-sync.md) for more details.
 

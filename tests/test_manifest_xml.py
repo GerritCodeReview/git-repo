@@ -243,6 +243,15 @@ class TestXmlManifest:
         assert manifest.remotes == {}
         assert manifest.projects == []
 
+    def test_manifest_server_proxy(self, repo_client: RepoClient) -> None:
+        """Check manifest-server proxy setting."""
+        manifest = repo_client.get_xml_manifest("""
+<manifest>
+  <manifest-server url="http://localhost" proxy="http://127.0.0.2:999" />
+</manifest>
+""")
+        assert manifest.manifest_server_proxy == "http://127.0.0.2:999"
+
     def test_link(self, repo_client: RepoClient) -> None:
         """Verify Link handling with new names."""
         manifest = repo_client.get_xml_manifest("<manifest></manifest>")
