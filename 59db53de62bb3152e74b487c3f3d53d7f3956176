@@ -68,6 +68,24 @@
       "parentUuid": "3650c02d_e794e2ca",
       "revId": "59db53de62bb3152e74b487c3f3d53d7f3956176",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4f02b1a_91420fb6",
+        "filename": "ssh.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-04-02T18:33:39Z",
+      "side": 1,
+      "message": "unresolving since the fix hasn\u0027t been applied yet",
+      "parentUuid": "fded9227_4d25e855",
+      "revId": "59db53de62bb3152e74b487c3f3d53d7f3956176",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
