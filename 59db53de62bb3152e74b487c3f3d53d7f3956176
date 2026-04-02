@@ -140,6 +140,24 @@
       "parentUuid": "a8783ce9_ef3cfcfd",
       "revId": "59db53de62bb3152e74b487c3f3d53d7f3956176",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cde1b27e_876c37ee",
+        "filename": "ssh.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-02T21:25:09Z",
+      "side": 1,
+      "message": "some of this behavior is how we\u0027ve configured this Gerrit instance",
+      "parentUuid": "af5a0661_6d0b9ab3",
+      "revId": "59db53de62bb3152e74b487c3f3d53d7f3956176",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
