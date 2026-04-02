@@ -104,6 +104,24 @@
       "parentUuid": "f4f02b1a_91420fb6",
       "revId": "59db53de62bb3152e74b487c3f3d53d7f3956176",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8783ce9_ef3cfcfd",
+        "filename": "ssh.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-04-02T19:05:49Z",
+      "side": 1,
+      "message": "Thanks - still learning the gerrit interface. Apparently these changes resets all scores though. I suppose that\u0027s the way it is?",
+      "parentUuid": "cd14232b_8e3e0b10",
+      "revId": "59db53de62bb3152e74b487c3f3d53d7f3956176",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
