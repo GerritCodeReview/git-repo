@@ -72,6 +72,19 @@ class RepoWrapperUnitTest(RepoWrapperTestCase):
             self.wrapper.MIN_PYTHON_VERSION_HARD,
         )
 
+    def test_repo_script_is_executable(self):
+        """The repo launcher script should be executable."""
+        repo_path = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)), "repo"
+        )
+        self.assertTrue(
+            os.path.isfile(repo_path), f"{repo_path} does not exist"
+        )
+        self.assertTrue(
+            os.access(repo_path, os.X_OK),
+            f"{repo_path} is not executable",
+        )
+
     def test_init_parser(self):
         """Make sure 'init' GetParser works."""
         parser = self.wrapper.GetParser()
