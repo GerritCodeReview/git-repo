@@ -47,6 +47,12 @@ class Info(PagedCommand):
             help="show overview of all local commits",
         )
         p.add_option(
+            "-s",
+            "--summary",
+            action="store_true",
+            help="show only manifest summary without iterating projects",
+        )
+        p.add_option(
             "-c",
             "--current-branch",
             action="store_true",
@@ -110,7 +116,9 @@ class Info(PagedCommand):
 
         self.printSeparator()
 
-        if not opt.overview:
+        if opt.summary:
+            return
+        elif not opt.overview:
             self._printDiffInfo(opt, args)
         else:
             self._printCommitOverview(opt, args)
