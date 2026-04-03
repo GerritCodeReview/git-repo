@@ -819,6 +819,26 @@ class TestProjectElement:
                 str(repo_client.topdir), ".repo", "projects", "..git"
             )
 
+    def test_get_project_paths_local_gitdirs(
+        self, repo_client: RepoClient
+    ) -> None:
+        """Check GetProjectPaths with UseLocalGitDirs."""
+        manifest = repo_client.get_xml_manifest(
+            '<?xml version="1.0" encoding="UTF-8"?><manifest></manifest>'
+        )
+        manifest.manifestProject.config.SetBoolean("repo.uselocalgitdirs", True)
+
+        relpath, worktree, gitdir, objdir, use_git_worktrees = (
+            manifest.GetProjectPaths("foo", "bar", "origin")
+        )
+
+        assert os.path.normpath(gitdir) == os.path.normpath(
+            os.path.join(str(repo_client.topdir), "bar", ".git")
+        )
+        assert os.path.normpath(objdir) == os.path.normpath(
+            os.path.join(str(repo_client.topdir), "bar", ".git")
+        )
+
     def test_bad_path_name_checks(self, repo_client: RepoClient) -> None:
         """Check handling of bad path & name attributes."""
 
