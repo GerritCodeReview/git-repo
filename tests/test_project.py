@@ -532,6 +532,9 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             fakeproj.config.SetBoolean("repo.worktree", False)
             self.assertFalse(fakeproj.use_worktree)
 
+            fakeproj.config.SetBoolean("repo.uselocalgitdirs", False)
+            self.assertFalse(fakeproj.use_local_gitdirs)
+
             fakeproj.config.SetBoolean("repo.clonebundle", False)
             self.assertFalse(fakeproj.clone_bundle)
 
