@@ -106,6 +106,11 @@ class TestRepoWrapper:
             >= repo_wrapper.MIN_PYTHON_VERSION_HARD
         )
 
+    def test_repo_script_is_executable(self) -> None:
+        """The repo launcher script should be executable."""
+        repo_path = utils_for_test.THIS_DIR.parent / "repo"
+        assert os.access(repo_path, os.X_OK), f"{repo_path} is not executable"
+
     def test_init_parser(self, repo_wrapper: wrapper.Wrapper) -> None:
         """Make sure 'init' GetParser works."""
         parser = repo_wrapper.GetParser()
