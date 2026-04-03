@@ -970,3 +970,150 @@ class InterleavedSyncTest(unittest.TestCase):
         self.assertTrue(result.checkout_success)
         project.Sync_NetworkHalf.assert_called_once()
         project.Sync_LocalHalf.assert_not_called()
+
+
+class UpdateCopyLinkfileListTest(unittest.TestCase):
+    """Tests for Sync.UpdateCopyLinkfileList."""
+
+    def setUp(self):
+        self.tempdir = tempfile.mkdtemp()
+        self.topdir = os.path.join(self.tempdir, "checkout")
+        os.makedirs(self.topdir)
+
+        self.manifest_subdir = os.path.join(self.tempdir, "manifest")
+        os.makedirs(self.manifest_subdir)
+
+        self.manifest = mock.MagicMock()
+        self.manifest.subdir = self.manifest_subdir
+
+        git_event_log = mock.MagicMock(ErrorEvent=mock.Mock(return_value=None))
+        outer_client = mock.MagicMock()
+        outer_client.manifest.IsArchive = True
+        self.cmd = sync.Sync(
+            manifest=self.manifest,
+            outer_client=outer_client,
+            git_event_log=git_event_log,
+        )
+        self.cmd.client = mock.MagicMock()
+        self.cmd.client.topdir = self.topdir
+
+    def tearDown(self):
+        shutil.rmtree(self.tempdir)
+
+    def _write_copylinkfile_json(self, data):
+        import json
+
+        path = os.path.join(self.manifest_subdir, "copy-link-files.json")
+        with open(path, "w") as f:
+            json.dump(data, f)
+
+    def _setup_projects(self, linkfile_dests, copyfile_dests=None):
+        lf = [mock.MagicMock(dest=d) for d in linkfile_dests]
+        cf = [mock.MagicMock(dest=d) for d in (copyfile_dests or [])]
+        project = mock.MagicMock(linkfiles=lf, copyfiles=cf)
+        mock.patch.object(
+            self.cmd, "GetProjects", return_value=[project]
+        ).start()
+
+    def test_removes_old_linkfile_dest(self):
+        """Old linkfile dests that are no longer in the manifest are removed."""
+        # Old manifest had .llms/rules as a symlink.
+        old_dest = os.path.join(self.topdir, ".llms", "rules")
+        os.makedirs(os.path.dirname(old_dest))
+        os.symlink("../../vendor/tools/llms/rules", old_dest)
+
+        self._write_copylinkfile_json(
+            {"linkfile": [".llms/rules"], "copyfile": []}
+        )
+        # New manifest has no linkfiles at all.
+        self._setup_projects([])
+
+        self.cmd.UpdateCopyLinkfileList(self.manifest)
+        self.assertFalse(os.path.lexists(old_dest))
+
+    def test_does_not_delete_through_new_symlink(self):
+        """Old dests that traverse through a new linkfile must NOT be removed.
+
+        Regression test for SEV S633841: when the manifest changes from
+        individual linkfiles inside a directory (dest=".llms/rules",
+        dest=".llms/skills") to a single directory linkfile (dest=".llms"),
+        the cleanup of old dests must not follow the new ".llms" symlink
+        and delete real project files at dot-llms/rules/ and dot-llms/skills/.
+        """
+        # Set up project worktree with dot-llms/ containing real files.
+        project_dir = os.path.join(self.topdir, "vendor", "tools", "llms")
+        os.makedirs(os.path.join(project_dir, "dot-llms", "rules"))
+        os.makedirs(os.path.join(project_dir, "dot-llms", "skills"))
+        with open(
+            os.path.join(project_dir, "dot-llms", "rules", "basics.md"), "w"
+        ) as f:
+            f.write("# basics")
+        with open(
+            os.path.join(project_dir, "dot-llms", "skills", "repo.md"), "w"
+        ) as f:
+            f.write("# repo")
+
+        # Simulate state AFTER _CopyAndLinkFiles has already run:
+        # .llms is now a symlink to vendor/tools/llms/dot-llms.
+        llms_link = os.path.join(self.topdir, ".llms")
+        os.symlink("vendor/tools/llms/dot-llms", llms_link)
+
+        # Verify the symlink traversal: .llms/rules -> dot-llms/rules
+        self.assertTrue(
+            os.path.isdir(os.path.join(self.topdir, ".llms", "rules"))
+        )
+
+        # Old copy-link-files.json records the previous linkfile dests.
+        self._write_copylinkfile_json(
+            {"linkfile": [".llms/rules", ".llms/skills"], "copyfile": []}
+        )
+        # New manifest has ".llms" as the single linkfile dest.
+        self._setup_projects([".llms"])
+
+        self.cmd.UpdateCopyLinkfileList(self.manifest)
+
+        # The real project files must still exist.
+        self.assertTrue(
+            os.path.exists(
+                os.path.join(project_dir, "dot-llms", "rules", "basics.md")
+            ),
+            "dot-llms/rules/basics.md was deleted through symlink traversal",
+        )
+        self.assertTrue(
+            os.path.exists(
+                os.path.join(project_dir, "dot-llms", "skills", "repo.md")
+            ),
+            "dot-llms/skills/repo.md was deleted through symlink traversal",
+        )
+        # The .llms symlink itself should still be intact.
+        self.assertTrue(os.path.islink(llms_link))
+
+    def test_still_removes_non_traversing_old_dests(self):
+        """Old dests that don't traverse a new linkfile are still removed.
+
+        When changing from dest=".llms/rules" + dest=".llms/skills" to
+        dest=".llms", the old ".llms/rules" and ".llms/skills" symlinks
+        may still exist if _CopyAndLinkFiles hasn't cleaned them yet
+        (e.g. the project wasn't synced). Dests that don't traverse
+        through a new linkfile should still be removed normally.
+        """
+        # .llms/ is still a real directory (old state, not yet replaced).
+        llms_dir = os.path.join(self.topdir, ".llms")
+        os.makedirs(llms_dir)
+        # Old symlinks inside .llms/ pointing to now-broken targets.
+        os.symlink("../vendor/tools/llms/rules", os.path.join(llms_dir, "x"))
+
+        self._write_copylinkfile_json(
+            {"linkfile": [".llms/x", "standalone"], "copyfile": []}
+        )
+        # Create standalone as a file to be cleaned up.
+        standalone = os.path.join(self.topdir, "standalone")
+        os.symlink("vendor/tools/llms/something", standalone)
+
+        # New manifest has completely different linkfiles.
+        self._setup_projects(["other"])
+
+        self.cmd.UpdateCopyLinkfileList(self.manifest)
+        # Both old dests should be removed since neither traverses "other".
+        self.assertFalse(os.path.lexists(os.path.join(llms_dir, "x")))
+        self.assertFalse(os.path.lexists(standalone))
