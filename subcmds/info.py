@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import optparse
 
 from color import Coloring
@@ -30,7 +31,7 @@ class Info(PagedCommand):
     helpSummary = (
         "Get info on the manifest branch, current branch or unmerged branches"
     )
-    helpUsage = "%prog [-dl] [-o [-c]] [<project>...]"
+    helpUsage = "%prog [-dl] [-o [-c]] [--format=<format>] [<project>...]"
 
     def _Options(self, p):
         p.add_option(
@@ -45,6 +46,30 @@ class Info(PagedCommand):
             "--overview",
             action="store_true",
             help="show overview of all local commits",
+        )
+        p.add_option(
+            "--include-summary",
+            action="store_true",
+            default=True,
+            help="include manifest summary (default: true)",
+        )
+        p.add_option(
+            "--no-include-summary",
+            dest="include_summary",
+            action="store_false",
+            help="exclude manifest summary",
+        )
+        p.add_option(
+            "--include-projects",
+            action="store_true",
+            default=True,
+            help="include project details (default: true)",
+        )
+        p.add_option(
+            "--no-include-projects",
+            dest="include_projects",
+            action="store_false",
+            help="exclude project details",
         )
         p.add_option(
             "-c",
@@ -72,8 +97,21 @@ class Info(PagedCommand):
             action="store_true",
             help="disable all remote operations",
         )
+        p.add_option(
+            "--format",
+            default="text",
+            choices=("text", "json"),
+            help="output format: text, json (default: %default)",
+        )
 
     def Execute(self, opt, args):
+        if not opt.this_manifest_only:
+            self.manifest = self.manifest.outer_client
+
+        if opt.format == "json":
+            self._ExecuteJson(opt, args)
+            return
+
         self.out = _Coloring(self.client.globalConfig)
         self.heading = self.out.printer("heading", attr="bold")
         self.headtext = self.out.nofmt_printer("headtext", fg="yellow")
@@ -84,36 +122,72 @@ class Info(PagedCommand):
 
         self.opt = opt
 
-        if not opt.this_manifest_only:
-            self.manifest = self.manifest.outer_client
-        manifestConfig = self.manifest.manifestProject.config
-        mergeBranch = manifestConfig.GetBranch("default").merge
-        manifestGroups = self.manifest.GetManifestGroupsStr()
+        if opt.include_summary:
+            self._printSummary()
 
-        self.heading("Manifest branch: ")
-        if self.manifest.default.revisionExpr:
-            self.headtext(self.manifest.default.revisionExpr)
-        self.out.nl()
-        self.heading("Manifest merge branch: ")
-        # The manifest might not have a merge branch if it isn't in a git repo,
-        # e.g. if `repo init --standalone-manifest` is used.
-        self.headtext(mergeBranch or "")
-        self.out.nl()
-        self.heading("Manifest groups: ")
-        self.headtext(manifestGroups)
-        self.out.nl()
-        sp = self.manifest.superproject
-        srev = sp.commit_id if sp and sp.commit_id else "None"
-        self.heading("Superproject revision: ")
-        self.headtext(srev)
-        self.out.nl()
-
-        self.printSeparator()
-
-        if not opt.overview:
+        if not opt.include_projects:
+            return
+        elif not opt.overview:
             self._printDiffInfo(opt, args)
         else:
             self._printCommitOverview(opt, args)
+
+    def _getSummaryData(self):
+        """Gather manifest summary data as a dict."""
+        manifestConfig = self.manifest.manifestProject.config
+        mergeBranch = manifestConfig.GetBranch("default").merge
+        manifestGroups = self.manifest.GetManifestGroupsStr()
+        sp = self.manifest.superproject
+        srev = sp.commit_id if sp and sp.commit_id else None
+        return {
+            "manifest_branch": self.manifest.default.revisionExpr or "",
+            "manifest_merge_branch": mergeBranch or "",
+            "manifest_groups": manifestGroups,
+            "superproject_revision": srev,
+        }
+
+    def _getProjectData(self, project):
+        """Gather project data as a dict."""
+        data = {
+            "name": project.name,
+            "mount_path": project.worktree,
+            "current_revision": project.GetRevisionId(),
+            "manifest_revision": project.revisionExpr,
+            "local_branches": list(project.GetBranches().keys()),
+        }
+        currentBranch = project.CurrentBranch
+        if currentBranch:
+            data["current_branch"] = currentBranch
+        return data
+
+    def _ExecuteJson(self, opt, args):
+        """Output info as JSON."""
+        result = {}
+        if opt.include_summary:
+            result["summary"] = self._getSummaryData()
+        if opt.include_projects:
+            projs = self.GetProjects(
+                args, all_manifests=not opt.this_manifest_only
+            )
+            result["projects"] = [self._getProjectData(p) for p in projs]
+        print(json.dumps(result, sort_keys=True, indent=2))
+
+    def _printSummary(self):
+        """Print manifest summary in text format."""
+        data = self._getSummaryData()
+        self.heading("Manifest branch: ")
+        self.headtext(data["manifest_branch"])
+        self.out.nl()
+        self.heading("Manifest merge branch: ")
+        self.headtext(data["manifest_merge_branch"])
+        self.out.nl()
+        self.heading("Manifest groups: ")
+        self.headtext(data["manifest_groups"])
+        self.out.nl()
+        self.heading("Superproject revision: ")
+        self.headtext(data["superproject_revision"] or "None")
+        self.out.nl()
+        self.printSeparator()
 
     def printSeparator(self):
         self.text("----------------------------")
