@@ -1655,9 +1655,27 @@ later is required to fix a server side protocol bug.
                 - set(new_copyfile_paths)
             )
 
+            new_linkfile_set = set(new_linkfile_paths)
+            new_copyfile_set = set(new_copyfile_paths)
+            new_all_set = new_linkfile_set | new_copyfile_set
+
             for need_remove_file in need_remove_files:
                 # Try to remove the updated copyfile or linkfile.
                 # So, if the file is not exist, nothing need to do.
+
+                # Skip removal if the path traverses through a new
+                # linkfile dest.  For example, if old dests were
+                # ".llms/rules" and ".llms/skills", and the new dest
+                # is ".llms" (a symlink), then ".llms/rules" now
+                # resolves through the symlink into actual project
+                # files.  Removing it would delete real files.
+                parts = need_remove_file.split(os.sep)
+                if any(
+                    os.sep.join(parts[:i]) in new_all_set
+                    for i in range(1, len(parts))
+                ):
+                    continue
+
                 need_remove_path = os.path.join(
                     self.client.topdir, need_remove_file
                 )
