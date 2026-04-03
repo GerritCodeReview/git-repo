@@ -47,6 +47,30 @@ class Info(PagedCommand):
             help="show overview of all local commits",
         )
         p.add_option(
+            "--include-summary",
+            action="store_true",
+            default=True,
+            help="include manifest summary (default: true)",
+        )
+        p.add_option(
+            "--no-include-summary",
+            dest="include_summary",
+            action="store_false",
+            help="exclude manifest summary",
+        )
+        p.add_option(
+            "--include-projects",
+            action="store_true",
+            default=True,
+            help="include project details (default: true)",
+        )
+        p.add_option(
+            "--no-include-projects",
+            dest="include_projects",
+            action="store_false",
+            help="exclude project details",
+        )
+        p.add_option(
             "-c",
             "--current-branch",
             action="store_true",
@@ -86,31 +110,35 @@ class Info(PagedCommand):
 
         if not opt.this_manifest_only:
             self.manifest = self.manifest.outer_client
-        manifestConfig = self.manifest.manifestProject.config
-        mergeBranch = manifestConfig.GetBranch("default").merge
-        manifestGroups = self.manifest.GetManifestGroupsStr()
 
-        self.heading("Manifest branch: ")
-        if self.manifest.default.revisionExpr:
-            self.headtext(self.manifest.default.revisionExpr)
-        self.out.nl()
-        self.heading("Manifest merge branch: ")
-        # The manifest might not have a merge branch if it isn't in a git repo,
-        # e.g. if `repo init --standalone-manifest` is used.
-        self.headtext(mergeBranch or "")
-        self.out.nl()
-        self.heading("Manifest groups: ")
-        self.headtext(manifestGroups)
-        self.out.nl()
-        sp = self.manifest.superproject
-        srev = sp.commit_id if sp and sp.commit_id else "None"
-        self.heading("Superproject revision: ")
-        self.headtext(srev)
-        self.out.nl()
+        if opt.include_summary:
+            manifestConfig = self.manifest.manifestProject.config
+            mergeBranch = manifestConfig.GetBranch("default").merge
+            manifestGroups = self.manifest.GetManifestGroupsStr()
 
-        self.printSeparator()
+            self.heading("Manifest branch: ")
+            if self.manifest.default.revisionExpr:
+                self.headtext(self.manifest.default.revisionExpr)
+            self.out.nl()
+            self.heading("Manifest merge branch: ")
+            # The manifest might not have a merge branch if it isn't in a
+            # git repo, e.g. if `repo init --standalone-manifest` is used.
+            self.headtext(mergeBranch or "")
+            self.out.nl()
+            self.heading("Manifest groups: ")
+            self.headtext(manifestGroups)
+            self.out.nl()
+            sp = self.manifest.superproject
+            srev = sp.commit_id if sp and sp.commit_id else "None"
+            self.heading("Superproject revision: ")
+            self.headtext(srev)
+            self.out.nl()
 
-        if not opt.overview:
+            self.printSeparator()
+
+        if not opt.include_projects:
+            return
+        elif not opt.overview:
             self._printDiffInfo(opt, args)
         else:
             self._printCommitOverview(opt, args)
