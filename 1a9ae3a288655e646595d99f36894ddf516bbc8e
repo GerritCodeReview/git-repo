@@ -34,6 +34,24 @@
       "parentUuid": "53ec447f_eff8573d",
       "revId": "1a9ae3a288655e646595d99f36894ddf516bbc8e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97b30f49_4421b3c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-03T23:44:42Z",
+      "side": 1,
+      "message": "Yeah, I don\u0027t love these instructions either. I went ahead and followed the instructions for getting vpython and they work fine for running the tests.\n\nHowever, none of the other normal dev use cases work well. If we create a link from `run_tests.vpython3` to `.vpython3` (or mv first and then link in reverse order), then running `vpython3` anywhere inside the repo is better, but running `black` or `isort` or any other python-based tool that would respect a venv still doesn\u0027t work as expected because vpython3 doesn\u0027t get invoked.\n\nIf I was making a lot of changes I\u0027d probably try to find a better solution, but for now I guess I\u0027ll use vpython for running tests and pyenv for everything else.",
+      "parentUuid": "7ac42377_0a2d0710",
+      "revId": "1a9ae3a288655e646595d99f36894ddf516bbc8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
