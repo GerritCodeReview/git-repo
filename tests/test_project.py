@@ -363,6 +363,51 @@ class LinkFile(CopyLinkTestCase):
             os.path.join("git-project", "foo.txt"), os.readlink(dest)
         )
 
+    def test_replace_dir_with_symlink(self):
+        """A linkfile should replace a real directory at the dest path.
+
+        This happens when a manifest changes from individual linkfiles inside
+        a directory (e.g. dest=".llms/rules", dest=".llms/skills") to a single
+        linkfile for the whole directory (e.g. dest=".llms", src="dot-llms").
+        The old config causes repo to create .llms/ as a real directory, and
+        the new config needs to replace it with a symlink.
+        """
+        src_dir = os.path.join(self.worktree, "dot-llms")
+        os.makedirs(src_dir)
+        self.touch(os.path.join(src_dir, "a_file"))
+
+        dest = os.path.join(self.topdir, "mydir")
+        # Pre-create dest as a real directory (simulating leftover from old
+        # manifest that had linkfiles inside this directory).
+        os.makedirs(dest)
+        self.touch(os.path.join(dest, "stale"))
+
+        lf = self.LinkFile("dot-llms", "mydir")
+        lf._Link()
+        self.assertTrue(os.path.islink(dest))
+        self.assertEqual(
+            os.path.join("git-project", "dot-llms"), os.readlink(dest)
+        )
+
+    def test_replace_empty_dir_with_symlink(self):
+        """A linkfile should replace an empty real directory at the dest path.
+
+        This is the common case: the old linkfiles inside the directory were
+        already cleaned up, leaving an empty parent directory behind.
+        """
+        src_dir = os.path.join(self.worktree, "dot-llms")
+        os.makedirs(src_dir)
+
+        dest = os.path.join(self.topdir, "mydir")
+        os.makedirs(dest)
+
+        lf = self.LinkFile("dot-llms", "mydir")
+        lf._Link()
+        self.assertTrue(os.path.islink(dest))
+        self.assertEqual(
+            os.path.join("git-project", "dot-llms"), os.readlink(dest)
+        )
+
 
 class MigrateWorkTreeTests(unittest.TestCase):
     """Check _MigrateOldWorkTreeGitDir handling."""
