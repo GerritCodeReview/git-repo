@@ -3570,7 +3570,11 @@ class Project:
             self._MigrateOldSubmoduleDir()
 
         # If using an old layout style (a directory), migrate it.
-        if not platform_utils.islink(dotgit) and platform_utils.isdir(dotgit):
+        if (
+            not platform_utils.islink(dotgit)
+            and platform_utils.isdir(dotgit)
+            and not self.manifest.UseLocalGitDirs
+        ):
             self._MigrateOldWorkTreeGitDir(dotgit, project=self.name)
 
         init_dotgit = not os.path.lexists(dotgit)
@@ -3619,6 +3623,11 @@ class Project:
         For submodule projects, create a '.git' file using the gitfile
         mechanism, and for the rest, create a symbolic link.
         """
+        if self.manifest.UseLocalGitDirs and os.path.normpath(
+            self.gitdir
+        ) == os.path.normpath(dotgit):
+            return
+
         os.makedirs(self.worktree, exist_ok=True)
         if self.parent:
             _lwrite(
@@ -4389,6 +4398,11 @@ class ManifestProject(MetaProject):
         return self.config.GetBoolean("repo.worktree")
 
     @property
+    def use_local_gitdirs(self):
+        """Whether we use local gitdirs."""
+        return self.config.GetBoolean("repo.uselocalgitdirs")
+
+    @property
     def clone_bundle(self):
         """Whether we use clone_bundle."""
         return self.config.GetBoolean("repo.clonebundle")
@@ -4542,6 +4556,7 @@ class ManifestProject(MetaProject):
         this_manifest_only=False,
         outer_manifest=True,
         clone_filter_for_depth=None,
+        use_local_gitdirs=False,
     ):
         """Sync the manifest and all submanifests.
 
@@ -4771,6 +4786,14 @@ class ManifestProject(MetaProject):
             if is_new:
                 self.use_git_worktrees = True
             logger.warning("warning: --worktree is experimental!")
+
+        if use_local_gitdirs:
+            if mirror:
+                logger.error(
+                    "fatal: --mirror and --use-local-gitdirs are incompatible"
+                )
+                return False
+            self.config.SetBoolean("repo.uselocalgitdirs", use_local_gitdirs)
 
         if archive:
             if is_new:
