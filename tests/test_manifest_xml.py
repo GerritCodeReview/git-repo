@@ -795,6 +795,26 @@ class ProjectElementTests(ManifestParseTestCase):
                 os.path.join(self.tempdir, ".repo", "projects", "..git"),
             )
 
+    def test_get_project_paths_local_gitdirs(self):
+        """Check GetProjectPaths with UseLocalGitDirs."""
+        manifest = self.getXmlManifest(
+            '<?xml version="1.0" encoding="UTF-8"?><manifest></manifest>'
+        )
+        manifest.manifestProject.config.SetBoolean("repo.uselocalgitdirs", True)
+
+        relpath, worktree, gitdir, objdir, use_git_worktrees = (
+            manifest.GetProjectPaths("foo", "bar", "origin")
+        )
+
+        self.assertEqual(
+            os.path.normpath(gitdir),
+            os.path.normpath(os.path.join(self.tempdir, "bar", ".git")),
+        )
+        self.assertEqual(
+            os.path.normpath(objdir),
+            os.path.normpath(os.path.join(self.tempdir, "bar", ".git")),
+        )
+
     def test_bad_path_name_checks(self):
         """Check handling of bad path & name attributes."""
 

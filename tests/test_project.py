@@ -532,6 +532,9 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             fakeproj.config.SetBoolean("repo.worktree", False)
             self.assertFalse(fakeproj.use_worktree)
 
+            fakeproj.config.SetBoolean("repo.uselocalgitdirs", False)
+            self.assertFalse(fakeproj.use_local_gitdirs)
+
             fakeproj.config.SetBoolean("repo.clonebundle", False)
             self.assertFalse(fakeproj.clone_bundle)
 
@@ -565,3 +568,35 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
 
             fakeproj.config.SetString("manifest.platform", "auto")
             self.assertEqual(fakeproj.manifest_platform, "auto")
+
+    def test_sync_use_local_gitdirs_worktree_conflict(self):
+        """Test that --use-local-gitdirs conflicts with --worktree."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = self.setUpManifest(tempdir)
+
+            class DummyManifest:
+                is_submanifest = False
+
+                def GetDefaultGroupsStr(self, with_platform=False):
+                    return ""
+
+            fakeproj.manifest = DummyManifest()
+
+            result = fakeproj.Sync(use_local_gitdirs=True, worktree=True)
+            self.assertFalse(result)
+
+    def test_sync_use_local_gitdirs_archive_conflict(self):
+        """Test that --use-local-gitdirs conflicts with --archive."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = self.setUpManifest(tempdir)
+
+            class DummyManifest:
+                is_submanifest = False
+
+                def GetDefaultGroupsStr(self, with_platform=False):
+                    return ""
+
+            fakeproj.manifest = DummyManifest()
+
+            result = fakeproj.Sync(use_local_gitdirs=True, archive=True)
+            self.assertFalse(result)
