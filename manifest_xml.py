@@ -1056,6 +1056,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         return self.manifestProject.use_worktree
 
     @property
+    def UseLocalGitDirs(self):
+        return self.manifestProject.use_local_gitdirs
+
+    @property
     def IsArchive(self):
         return self.manifestProject.archive
 
@@ -2042,15 +2046,21 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             else:
                 namepath = f"{name}.git"
             worktree = os.path.join(self.topdir, path).replace("\\", "/")
-            gitdir = os.path.join(self.subdir, "projects", "%s.git" % path)
-            # We allow people to mix git worktrees & non-git worktrees for now.
-            # This allows for in situ migration of repo clients.
-            if os.path.exists(gitdir) or not self.UseGitWorktrees:
-                objdir = os.path.join(self.repodir, "project-objects", namepath)
-            else:
-                use_git_worktrees = True
-                gitdir = os.path.join(self.repodir, "worktrees", namepath)
+            if self.UseLocalGitDirs:
+                gitdir = os.path.join(worktree, ".git")
                 objdir = gitdir
+            else:
+                gitdir = os.path.join(self.subdir, "projects", "%s.git" % path)
+                # We allow people to mix git worktrees & non-git worktrees for
+                # now. This allows for in situ migration of repo clients.
+                if os.path.exists(gitdir) or not self.UseGitWorktrees:
+                    objdir = os.path.join(
+                        self.repodir, "project-objects", namepath
+                    )
+                else:
+                    use_git_worktrees = True
+                    gitdir = os.path.join(self.repodir, "worktrees", namepath)
+                    objdir = gitdir
         return relpath, worktree, gitdir, objdir, use_git_worktrees
 
     def GetProjectsWithName(self, name, all_manifests=False):

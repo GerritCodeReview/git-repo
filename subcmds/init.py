@@ -169,6 +169,7 @@ to update the working directory files.
             depth=opt.depth,
             git_event_log=self.git_event_log,
             manifest_name=opt.manifest_name,
+            use_local_gitdirs=opt.use_local_gitdirs,
         ):
             manifest_name = opt.manifest_name
             raise UpdateManifestError(
