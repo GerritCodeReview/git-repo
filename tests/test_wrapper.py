@@ -209,11 +209,12 @@ class Requirements(RepoWrapperTestCase):
 
     def test_missing_file(self):
         """Don't crash if the file is missing (old version)."""
-        testdir = os.path.dirname(os.path.realpath(__file__))
-        self.assertIsNone(self.wrapper.Requirements.from_dir(testdir))
+        self.assertIsNone(
+            self.wrapper.Requirements.from_dir(utils_for_test.THIS_DIR)
+        )
         self.assertIsNone(
             self.wrapper.Requirements.from_file(
-                os.path.join(testdir, "xxxxxxxxxxxxxxxxxxxxxxxx")
+                utils_for_test.THIS_DIR / "xxxxxxxxxxxxxxxxxxxxxxxx"
             )
         )
 
@@ -225,12 +226,10 @@ class Requirements(RepoWrapperTestCase):
     def test_valid_data(self):
         """Make sure we can parse the file we ship."""
         self.assertIsNotNone(self.wrapper.Requirements.from_data(b"{}"))
-        rootdir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+        rootdir = utils_for_test.THIS_DIR.parent
         self.assertIsNotNone(self.wrapper.Requirements.from_dir(rootdir))
         self.assertIsNotNone(
-            self.wrapper.Requirements.from_file(
-                os.path.join(rootdir, "requirements.json")
-            )
+            self.wrapper.Requirements.from_file(rootdir / "requirements.json")
         )
 
     def test_format_ver(self):
