@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46344d05_03b11312",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-04T06:18:27Z",
+      "side": 1,
+      "message": "do you want this because you\u0027re looking for something to read quickly, or are you parsing this output by another tool ?",
+      "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
