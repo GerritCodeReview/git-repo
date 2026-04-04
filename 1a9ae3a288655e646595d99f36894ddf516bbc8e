@@ -52,6 +52,24 @@
       "parentUuid": "7ac42377_0a2d0710",
       "revId": "1a9ae3a288655e646595d99f36894ddf516bbc8e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f323565d_a121a293",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-04T05:59:06Z",
+      "side": 1,
+      "message": "not pretty, but you can do:\n\n`$ vpython3 -vpython-spec run_tests.vpython3 -m black ...`\n\nwhich is why i have a local script:\n\n```\n$ cat run_black\n#!/bin/bash\nDIR\u003d\"$(realpath -- \"${0%/*}\")\"\nexec vpython3 -vpython-spec \"${DIR}/run_tests.vpython3\" -m black \"$@\"\n```",
+      "parentUuid": "97b30f49_4421b3c9",
+      "revId": "1a9ae3a288655e646595d99f36894ddf516bbc8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
