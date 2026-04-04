@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dd512de_073bb7f7",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-04T03:37:27Z",
+      "side": 1,
+      "message": "i don\u0027t think we need this.  if the file doesn\u0027t exist, all of the tests in this module would already fail because they attempt to read \u0026 load the file.\n\n```suggestion\n        self.assertTrue(\n```",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 24
+      },
+      "revId": "e7c0afaa4b0718f9c671f0fcc0fb35a195828a2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
