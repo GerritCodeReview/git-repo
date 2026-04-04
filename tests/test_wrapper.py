@@ -29,11 +29,6 @@ import main
 import wrapper
 
 
-def fixture(*paths):
-    """Return a path relative to tests/fixtures."""
-    return os.path.join(os.path.dirname(__file__), "fixtures", *paths)
-
-
 class RepoWrapperTestCase(unittest.TestCase):
     """TestCase for the wrapper module."""
 

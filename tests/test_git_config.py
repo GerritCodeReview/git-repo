@@ -14,24 +14,19 @@
 
 """Unittests for the git_config.py module."""
 
-import os
 from pathlib import Path
 from typing import Any
 
 import pytest
+import utils_for_test
 
 import git_config
-
-
-def fixture_path(*paths: str) -> str:
-    """Return a path relative to test/fixtures."""
-    return os.path.join(os.path.dirname(__file__), "fixtures", *paths)
 
 
 @pytest.fixture
 def readonly_config() -> git_config.GitConfig:
     """Create a GitConfig object using the test.gitconfig fixture."""
-    config_fixture = fixture_path("test.gitconfig")
+    config_fixture = utils_for_test.FIXTURES_DIR / "test.gitconfig"
     return git_config.GitConfig(config_fixture)
 
 
@@ -63,7 +58,7 @@ def test_get_string_with_true_value(
 
 def test_get_string_from_missing_file() -> None:
     """Test missing config file."""
-    config_fixture = fixture_path("not.present.gitconfig")
+    config_fixture = utils_for_test.FIXTURES_DIR / "not.present.gitconfig"
     config = git_config.GitConfig(config_fixture)
     val = config.GetString("empty")
     assert val is None
