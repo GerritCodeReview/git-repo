@@ -111,7 +111,7 @@ class GitConfig:
         return cls(configfile=os.path.join(gitdir, "config"), defaults=defaults)
 
     def __init__(self, configfile, defaults=None, jsonFile=None):
-        self.file = configfile
+        self.file = str(configfile)
         self.defaults = defaults
         self._cache_dict = None
         self._section_dict = None

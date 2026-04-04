@@ -27,6 +27,11 @@ from typing import Optional, Union
 import git_command
 
 
+THIS_FILE = Path(__file__).resolve()
+THIS_DIR = THIS_FILE.parent
+FIXTURES_DIR = THIS_DIR / "fixtures"
+
+
 def init_git_tree(
     path: Union[str, Path],
     ref_format: Optional[str] = None,

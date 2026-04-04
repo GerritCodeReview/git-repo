@@ -14,23 +14,17 @@
 
 """Unittests for the color.py module."""
 
-import os
-
 import pytest
+import utils_for_test
 
 import color
 import git_config
 
 
-def fixture(*paths: str) -> str:
-    """Return a path relative to test/fixtures."""
-    return os.path.join(os.path.dirname(__file__), "fixtures", *paths)
-
-
 @pytest.fixture
 def coloring() -> color.Coloring:
     """Create a Coloring object for testing."""
-    config_fixture = fixture("test.gitconfig")
+    config_fixture = utils_for_test.FIXTURES_DIR / "test.gitconfig"
     config = git_config.GitConfig(config_fixture)
     color.SetDefaultColoring("true")
     return color.Coloring(config, "status")
