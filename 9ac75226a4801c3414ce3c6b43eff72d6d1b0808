@@ -16,6 +16,24 @@
       "message": "do you want this because you\u0027re looking for something to read quickly, or are you parsing this output by another tool ?",
       "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "098cfa57_caa88cc9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-04-06T17:15:20Z",
+      "side": 1,
+      "message": "The output is read by one of the steps in our build pipeline - it only needs the info on the header, nothing from the individual projects, but it uses repo info and then greps... is there a better way to retrieve those fields? (assuming I prefer not to implement an ad-hoc parser)",
+      "parentUuid": "46344d05_03b11312",
+      "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
