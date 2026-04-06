@@ -22,9 +22,10 @@ import functools
 from pathlib import Path
 import subprocess
 import tempfile
-from typing import Optional, Union
+from typing import List, Optional, Tuple, Union
 
 import git_command
+import manifest_xml
 
 
 THIS_FILE = Path(__file__).resolve()
@@ -56,6 +57,72 @@ def init_git_tree(
             cmd += ["--template", templatedir]
         cmd += [path]
         subprocess.run(cmd, check=True)
+
+
+class RepoClientCheckout:
+    """Shared helper for constructing a test repo client checkout."""
+
+    def __init__(self, topdir: Path):
+        self.topdir = Path(topdir)
+        self.repodir = self.topdir / ".repo"
+        self.manifest_dir = self.repodir / "manifests"
+        self.manifest_file = self.repodir / manifest_xml.MANIFEST_FILE_NAME
+        self.local_manifest_dir = (
+            self.repodir / manifest_xml.LOCAL_MANIFESTS_DIR_NAME
+        )
+
+        self.repodir.mkdir(parents=True, exist_ok=True)
+        self.manifest_dir.mkdir(parents=True, exist_ok=True)
+
+    def init_manifest_git(
+        self, remote_url: str = "https://localhost:0/manifest"
+    ) -> None:
+        """Create `.repo/manifests.git/config` with a fake origin remote."""
+        gitdir = self.repodir / "manifests.git"
+        gitdir.mkdir(parents=True, exist_ok=True)
+        (gitdir / "config").write_text(
+            f"""[remote "origin"]
+    url = {remote_url}
+    verbose = false
+""",
+            encoding="utf-8",
+        )
+
+    def write_manifest(self, xml: str) -> None:
+        """Write XML data to `.repo/manifest.xml`."""
+        self.manifest_file.write_text(xml, encoding="utf-8")
+
+    def xml_manifest(self) -> manifest_xml.XmlManifest:
+        """Parse and return the manifest from this test checkout."""
+        return manifest_xml.XmlManifest(
+            str(self.repodir), str(self.manifest_file)
+        )
+
+    def create_project(
+        self,
+        *,
+        name: str,
+        path: str,
+        init_worktree: bool = True,
+    ) -> Path:
+        """Create manifest project dirs and optionally init a git worktree."""
+        (self.repodir / "projects" / f"{path}.git").mkdir(
+            parents=True, exist_ok=True
+        )
+        (self.repodir / "project-objects" / f"{name}.git").mkdir(
+            parents=True, exist_ok=True
+        )
+        worktree = self.topdir / path
+        worktree.parent.mkdir(parents=True, exist_ok=True)
+        if init_worktree:
+            init_git_tree(worktree)
+        return worktree
+
+    def create_projects(self, projects: List[Tuple[str, str]]) -> List[Path]:
+        """Bulk-create multiple projects."""
+        return [
+            self.create_project(name=name, path=path) for name, path in projects
+        ]
 
 
 @contextlib.contextmanager

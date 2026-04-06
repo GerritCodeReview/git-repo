@@ -21,6 +21,7 @@ import re
 import xml.dom.minidom
 
 import pytest
+import utils_for_test
 
 import error
 import manifest_xml
@@ -97,30 +98,19 @@ class RepoClient:
     """Basic empty repo checkout."""
 
     def __init__(self, topdir: Path):
-        self.topdir = topdir
-        self.repodir = self.topdir / ".repo"
-        self.manifest_dir = self.repodir / "manifests"
-        self.manifest_file = self.repodir / manifest_xml.MANIFEST_FILE_NAME
-        self.local_manifest_dir = (
-            self.repodir / manifest_xml.LOCAL_MANIFESTS_DIR_NAME
-        )
-        self.repodir.mkdir()
-        self.manifest_dir.mkdir()
+        self.repo_client_checkout = utils_for_test.RepoClientCheckout(topdir)
+        self.topdir = self.repo_client_checkout.topdir
+        self.repodir = self.repo_client_checkout.repodir
+        self.manifest_dir = self.repo_client_checkout.manifest_dir
+        self.manifest_file = self.repo_client_checkout.manifest_file
+        self.local_manifest_dir = self.repo_client_checkout.local_manifest_dir
         # The manifest parsing really wants a git repo currently.
-        gitdir = self.repodir / "manifests.git"
-        gitdir.mkdir()
-        (gitdir / "config").write_text(
-            """[remote "origin"]
-        url = https://localhost:0/manifest
-"""
-        )
+        self.repo_client_checkout.init_manifest_git()
 
     def get_xml_manifest(self, data: str) -> manifest_xml.XmlManifest:
         """Helper to initialize a manifest for testing."""
-        self.manifest_file.write_text(data, encoding="utf-8")
-        return manifest_xml.XmlManifest(
-            str(self.repodir), str(self.manifest_file)
-        )
+        self.repo_client_checkout.write_manifest(data)
+        return self.repo_client_checkout.xml_manifest()
 
     @staticmethod
     def encode_xml_attr(attr: str) -> str:
