@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e3b04d6_5884dd2e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-06T20:06:27Z",
+      "side": 1,
+      "message": "I did this because I think I can refactor `_create_manifest_with_8_projects()` and the new [`status_workspace()`](https://gerrit.googlesource.com/git-repo/+/refs/changes/01/558501/3/tests/test_subcmds_status.py#47) fixture I\u0027m adding in `test_subcmds_status.py` to share code with [`RepoClient`](https://gerrit.googlesource.com/git-repo/+/refs/changes/43/569443/2/tests/test_manifest_xml.py#96) from `test_manifest_xml.py`. But I figured this file should use pytest first.",
+      "revId": "d36c07ea902d964b1553c8ba53610c0a102cb513",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
