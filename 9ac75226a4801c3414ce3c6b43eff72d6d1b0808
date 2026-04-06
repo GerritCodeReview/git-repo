@@ -34,6 +34,58 @@
       "parentUuid": "46344d05_03b11312",
       "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46ad918f_743bed38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-06T19:48:14Z",
+      "side": 1,
+      "message": "`repo info` isn\u0027t designed for machine processing.  if we wanted to go that route, we should introduce a `--format\u003d` option",
+      "parentUuid": "098cfa57_caa88cc9",
+      "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ecfdb30_391347ac",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-06T19:48:14Z",
+      "side": 1,
+      "message": "i\u0027m of the mind that we shouldn\u0027t add short options for the sake of short options.  this doesn\u0027t feel like something commonly used.",
+      "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5a12661_db19413f",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-06T19:48:14Z",
+      "side": 1,
+      "message": "this feels like a boolean option.  i haven\u0027t gotten around to standardizing them in repo (because it\u0027s still built off of optparse rather than argparse),\n\nwhat if we do:\n* `--include-summary`\n* `--no-include-summary`\n* `--include-projects`\n* `--no-include-projects`\n\nthen basically your `repo info --summary` turns into `repo info --no-include-projects`, and we have a basic extensible framework for adding more sections in the future.",
+      "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
