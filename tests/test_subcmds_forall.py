@@ -12,13 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Unittests for the forall subcmd."""
+"""Pytests for the forall subcmd."""
 
-from io import StringIO
-import os
-from shutil import rmtree
-import tempfile
-import unittest
+import contextlib
+import io
+from pathlib import Path
 from unittest import mock
 
 import utils_for_test
@@ -28,111 +26,82 @@ import project
 import subcmds
 
 
-class AllCommands(unittest.TestCase):
-    """Check registered all_commands."""
+def _create_manifest_with_8_projects(
+    topdir: Path,
+) -> manifest_xml.XmlManifest:
+    """Create a setup of 8 projects to execute forall."""
+    repodir = topdir / ".repo"
+    manifest_dir = repodir / "manifests"
+    manifest_file = repodir / manifest_xml.MANIFEST_FILE_NAME
 
-    def setUp(self):
-        """Common setup."""
-        self.tempdirobj = tempfile.TemporaryDirectory(prefix="forall_tests")
-        self.tempdir = self.tempdirobj.name
-        self.repodir = os.path.join(self.tempdir, ".repo")
-        self.manifest_dir = os.path.join(self.repodir, "manifests")
-        self.manifest_file = os.path.join(
-            self.repodir, manifest_xml.MANIFEST_FILE_NAME
-        )
-        self.local_manifest_dir = os.path.join(
-            self.repodir, manifest_xml.LOCAL_MANIFESTS_DIR_NAME
-        )
-        os.mkdir(self.repodir)
-        os.mkdir(self.manifest_dir)
+    repodir.mkdir()
+    manifest_dir.mkdir()
 
-    def tearDown(self):
-        """Common teardown."""
-        rmtree(self.tempdir, ignore_errors=True)
+    # Set up a manifest git dir for parsing to work.
+    gitdir = repodir / "manifests.git"
+    gitdir.mkdir()
+    (gitdir / "config").write_text(
+        """[remote "origin"]
+            url = https://localhost:0/manifest
+            verbose = false
+        """
+    )
 
-    def getXmlManifestWith8Projects(self):
-        """Create and return a setup of 8 projects with enough dummy
-        files and setup to execute forall."""
+    # Add the manifest data.
+    manifest_file.write_text(
+        """
+            <manifest>
+                <remote name="origin" fetch="http://localhost" />
+                <default remote="origin" revision="refs/heads/main" />
+                <project name="project1" path="tests/path1" />
+                <project name="project2" path="tests/path2" />
+                <project name="project3" path="tests/path3" />
+                <project name="project4" path="tests/path4" />
+                <project name="project5" path="tests/path5" />
+                <project name="project6" path="tests/path6" />
+                <project name="project7" path="tests/path7" />
+                <project name="project8" path="tests/path8" />
+            </manifest>
+        """,
+        encoding="utf-8",
+    )
 
-        # Set up a manifest git dir for parsing to work
-        gitdir = os.path.join(self.repodir, "manifests.git")
-        os.mkdir(gitdir)
-        with open(os.path.join(gitdir, "config"), "w") as fp:
-            fp.write(
-                """[remote "origin"]
-                    url = https://localhost:0/manifest
-                    verbose = false
-                """
-            )
+    # Set up 8 empty projects to match the manifest.
+    for x in range(1, 9):
+        (repodir / "projects" / "tests" / f"path{x}.git").mkdir(parents=True)
+        (repodir / "project-objects" / f"project{x}.git").mkdir(parents=True)
+        git_path = topdir / "tests" / f"path{x}"
+        utils_for_test.init_git_tree(git_path)
 
-        # Add the manifest data
-        manifest_data = """
-                <manifest>
-                    <remote name="origin" fetch="http://localhost" />
-                    <default remote="origin" revision="refs/heads/main" />
-                    <project name="project1" path="tests/path1" />
-                    <project name="project2" path="tests/path2" />
-                    <project name="project3" path="tests/path3" />
-                    <project name="project4" path="tests/path4" />
-                    <project name="project5" path="tests/path5" />
-                    <project name="project6" path="tests/path6" />
-                    <project name="project7" path="tests/path7" />
-                    <project name="project8" path="tests/path8" />
-                </manifest>
-            """
-        with open(self.manifest_file, "w", encoding="utf-8") as fp:
-            fp.write(manifest_data)
+    return manifest_xml.XmlManifest(str(repodir), str(manifest_file))
 
-        # Set up 8 empty projects to match the manifest
-        for x in range(1, 9):
-            os.makedirs(
-                os.path.join(
-                    self.repodir, "projects/tests/path" + str(x) + ".git"
-                )
-            )
-            os.makedirs(
-                os.path.join(
-                    self.repodir, "project-objects/project" + str(x) + ".git"
-                )
-            )
-            git_path = os.path.join(self.tempdir, "tests/path" + str(x))
-            utils_for_test.init_git_tree(git_path)
 
-        return manifest_xml.XmlManifest(self.repodir, self.manifest_file)
+def test_forall_all_projects_called_once(tmp_path: Path) -> None:
+    """Test that all projects get a command run once each."""
+    manifest = _create_manifest_with_8_projects(tmp_path)
 
-    # Use mock to capture stdout from the forall run
-    @unittest.mock.patch("sys.stdout", new_callable=StringIO)
-    def test_forall_all_projects_called_once(self, mock_stdout):
-        """Test that all projects get a command run once each."""
+    cmd = subcmds.forall.Forall()
+    cmd.manifest = manifest
 
-        manifest_with_8_projects = self.getXmlManifestWith8Projects()
+    # Use echo project names as the test of forall.
+    opts, args = cmd.OptionParser.parse_args(["-c", "echo $REPO_PROJECT"])
+    opts.verbose = False
 
-        cmd = subcmds.forall.Forall()
-        cmd.manifest = manifest_with_8_projects
-
-        # Use echo project names as the test of forall
-        opts, args = cmd.OptionParser.parse_args(["-c", "echo $REPO_PROJECT"])
-        opts.verbose = False
-
-        # Mock to not have the Execute fail on remote check
+    stdout = io.StringIO()
+    with contextlib.redirect_stdout(stdout):
+        # Mock to not have the Execute fail on remote check.
         with mock.patch.object(
             project.Project, "GetRevisionId", return_value="refs/heads/main"
         ):
-            # Run the forall command
+            # Run the forall command.
             cmd.Execute(opts, args)
 
-            # Verify that we got every project name in the prints
-            for x in range(1, 9):
-                self.assertIn("project" + str(x), mock_stdout.getvalue())
+    output = stdout.getvalue()
+    # Verify that we got every project name in the output.
+    for x in range(1, 9):
+        assert f"project{x}" in output
 
-            # Split the captured output into lines to count them
-            line_count = 0
-            for line in mock_stdout.getvalue().split("\n"):
-                # A commented out print to stderr as a reminder
-                # that stdout is mocked, include sys and uncomment if needed
-                # print(line, file=sys.stderr)
-                if len(line) > 0:
-                    line_count += 1
-
-            # Verify that we didn't get more lines than expected
-            assert line_count == 8
+    # Split the captured output into lines to count them.
+    line_count = len([line for line in output.splitlines() if line])
+    # Verify that we didn't get more lines than expected.
+    assert line_count == 8
