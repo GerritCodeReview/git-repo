@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3851b40d_0012053b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-06T18:56:58Z",
+      "side": 1,
+      "message": "\u003e _CopyAndLinkFiles (which runs first) replaces the .llms/ directory with a .llms -\u003e dot-llms symlink.\n\nthis should not happen in the first place",
+      "revId": "a07524444d8ace47b55fd7aa48fd6235d8797e30",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
