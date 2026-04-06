@@ -70,6 +70,24 @@
       "parentUuid": "97b30f49_4421b3c9",
       "revId": "1a9ae3a288655e646595d99f36894ddf516bbc8e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2c241ff_eff942fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-06T17:07:27Z",
+      "side": 1,
+      "message": "Right, and if we added that `.vpython3` file, then you could omit `-vpython-spec run_tests.vpython3`. Beyond that, I think I\u0027d be getting into creating shell functions to look for a `.vypthon3` file or parse the output of `vpython3 -vpython-log-level debug -vpython-tool verify` to see if it found a spec and then either call `vpython3 -m black` or `black`.\n\nIt\u0027d be nice if `vpython3` exposed the venv to activate it, but I guess the whole model doesn\u0027t really support that since you can have per-command and embedded specs.\n\nI\u0027ll abandon this change for now and if it really bugs me in the future I\u0027ll probably add real support for non-vpython tools with a validator script for CI to run to ensure it doesn\u0027t drift from the vpython3 spec.",
+      "parentUuid": "f323565d_a121a293",
+      "revId": "1a9ae3a288655e646595d99f36894ddf516bbc8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
