@@ -48,26 +48,14 @@ def _create_checkout(
     add entries like `<copyfile>` and `<linkfile>`.
     """
     # Create in a subdir to avoid noise (like the repo_trace file).
-    topdir = tmp_path / "client_checkout"
-    repodir = topdir / ".repo"
-    manifest_dir = repodir / "manifests"
-    manifest_file = repodir / manifest_xml.MANIFEST_FILE_NAME
-
-    repodir.mkdir(parents=True)
-    manifest_dir.mkdir()
-
-    gitdir = repodir / "manifests.git"
-    gitdir.mkdir()
-    (gitdir / "config").write_text(
-        """[remote "origin"]
-            url = https://localhost:0/manifest
-            verbose = false
-        """
+    repo_client_checkout = utils_for_test.RepoClientCheckout(
+        tmp_path / "client_checkout"
     )
+    repo_client_checkout.init_manifest_git()
 
-    _init_temp_git_tree(manifest_dir)
+    _init_temp_git_tree(repo_client_checkout.manifest_dir)
 
-    manifest_file.write_text(
+    repo_client_checkout.write_manifest(
         f"""
             <manifest>
                 <remote name="origin" fetch="http://localhost" />
@@ -77,18 +65,19 @@ def _create_checkout(
                 </project>
             </manifest>
         """,
-        encoding="utf-8",
     )
 
-    (repodir / "projects" / "src" / "proj.git").mkdir(parents=True)
-    (repodir / "project-objects" / "proj.git").mkdir(parents=True)
-
-    worktree = topdir / "src" / "proj"
-    worktree.parent.mkdir(parents=True, exist_ok=True)
+    worktree = repo_client_checkout.create_project(
+        name="proj",
+        path="src/proj",
+        init_worktree=False,
+    )
     _init_temp_git_tree(worktree)
 
-    manifest = manifest_xml.XmlManifest(str(repodir), str(manifest_file))
-    return topdir, manifest
+    return (
+        repo_client_checkout.topdir,
+        repo_client_checkout.xml_manifest(),
+    )
 
 
 @pytest.fixture
