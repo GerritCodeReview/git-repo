@@ -88,6 +88,24 @@
       "parentUuid": "f323565d_a121a293",
       "revId": "1a9ae3a288655e646595d99f36894ddf516bbc8e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9650f817_25b9d36c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-06T19:01:39Z",
+      "side": 1,
+      "message": "using `.vpython3` for the test env feels wrong to me as that should be about running the general repo tool, not test suite specific stuff",
+      "parentUuid": "a2c241ff_eff942fb",
+      "revId": "1a9ae3a288655e646595d99f36894ddf516bbc8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ],
   "submitRequirementResults": [
