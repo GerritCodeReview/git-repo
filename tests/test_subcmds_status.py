@@ -30,10 +30,10 @@ import subcmds
 
 
 @pytest.fixture
-def init_temp_git_tree():
+def init_temp_git_tree_with_commit():
     """Create a new git checkout with an initial commit for testing."""
 
-    def _init_temp_git_tree(git_dir: Path) -> None:
+    def _init_temp_git_tree_with_commit(git_dir: Path) -> None:
         utils_for_test.init_git_tree(git_dir)
         (git_dir / "README").write_text("init")
         subprocess.check_call(["git", "add", "README"], cwd=git_dir)
@@ -41,34 +41,20 @@ def init_temp_git_tree():
             ["git", "commit", "-q", "-m", "init"], cwd=git_dir
         )
 
-    return _init_temp_git_tree
+    return _init_temp_git_tree_with_commit
 
 
 @pytest.fixture
-def create_manifest_with_project(tmp_path, init_temp_git_tree):
+def create_manifest_with_project(tmp_path, init_temp_git_tree_with_commit):
     """Create a test manifest workspace and return (topdir, manifest)."""
 
     def _create(project_inner_xml: str = ""):
-        topdir = tmp_path
-        repodir = topdir / ".repo"
-        manifest_dir = repodir / "manifests"
-        manifest_file = repodir / manifest_xml.MANIFEST_FILE_NAME
+        workspace = utils_for_test.TestRepoWorkspace(tmp_path)
+        workspace.init_manifest_git()
 
-        repodir.mkdir()
-        manifest_dir.mkdir()
+        init_temp_git_tree_with_commit(workspace.manifest_dir)
 
-        gitdir = repodir / "manifests.git"
-        gitdir.mkdir()
-        (gitdir / "config").write_text(
-            """[remote "origin"]
-                url = https://localhost:0/manifest
-                verbose = false
-            """
-        )
-
-        init_temp_git_tree(manifest_dir)
-
-        manifest_file.write_text(
+        workspace.write_manifest(
             f"""
                 <manifest>
                     <remote name="origin" fetch="http://localhost" />
@@ -78,18 +64,16 @@ def create_manifest_with_project(tmp_path, init_temp_git_tree):
                     </project>
                 </manifest>
             """,
-            encoding="utf-8",
         )
 
-        (repodir / "projects" / "src" / "proj.git").mkdir(parents=True)
-        (repodir / "project-objects" / "proj.git").mkdir(parents=True)
+        worktree = workspace.create_manifest_project(
+            name="proj",
+            path="src/proj",
+            init_worktree=False,
+        )
+        init_temp_git_tree_with_commit(worktree)
 
-        worktree = topdir / "src" / "proj"
-        worktree.parent.mkdir(parents=True, exist_ok=True)
-        init_temp_git_tree(worktree)
-
-        manifest = manifest_xml.XmlManifest(str(repodir), str(manifest_file))
-        return topdir, manifest
+        return workspace.topdir, workspace.xml_manifest()
 
     return _create
 

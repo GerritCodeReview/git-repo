@@ -30,25 +30,10 @@ def _create_manifest_with_8_projects(
     topdir: Path,
 ) -> manifest_xml.XmlManifest:
     """Create a setup of 8 projects to execute forall."""
-    repodir = topdir / ".repo"
-    manifest_dir = repodir / "manifests"
-    manifest_file = repodir / manifest_xml.MANIFEST_FILE_NAME
+    workspace = utils_for_test.TestRepoWorkspace(topdir)
+    workspace.init_manifest_git()
 
-    repodir.mkdir()
-    manifest_dir.mkdir()
-
-    # Set up a manifest git dir for parsing to work.
-    gitdir = repodir / "manifests.git"
-    gitdir.mkdir()
-    (gitdir / "config").write_text(
-        """[remote "origin"]
-            url = https://localhost:0/manifest
-            verbose = false
-        """
-    )
-
-    # Add the manifest data.
-    manifest_file.write_text(
+    workspace.write_manifest(
         """
             <manifest>
                 <remote name="origin" fetch="http://localhost" />
@@ -63,17 +48,12 @@ def _create_manifest_with_8_projects(
                 <project name="project8" path="tests/path8" />
             </manifest>
         """,
-        encoding="utf-8",
     )
 
-    # Set up 8 empty projects to match the manifest.
-    for x in range(1, 9):
-        (repodir / "projects" / "tests" / f"path{x}.git").mkdir(parents=True)
-        (repodir / "project-objects" / f"project{x}.git").mkdir(parents=True)
-        git_path = topdir / "tests" / f"path{x}"
-        utils_for_test.init_git_tree(git_path)
+    projects = [(f"project{x}", f"tests/path{x}") for x in range(1, 9)]
+    workspace.create_manifest_projects(projects)
 
-    return manifest_xml.XmlManifest(str(repodir), str(manifest_file))
+    return workspace.xml_manifest()
 
 
 def test_forall_all_projects_called_once(tmp_path: Path) -> None:
