@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "73769ec5_34e546fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-04-06T21:49:43Z",
+      "side": 1,
+      "message": "Yes, thought about that as well, but it felt a bit overkill of this specific use case, and didn\u0027t want to bloat repo to add something we don\u0027t really need at the time. We can discuss anyway and see how that would look like. \n\nFor now what I\u0027m upstreaming is patches that we use internally and that have been battle tested, not new (to us) features.",
+      "parentUuid": "46ad918f_743bed38",
+      "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ecfdb30_391347ac",
         "filename": "subcmds/info.py",
         "patchSetId": 1
@@ -67,6 +85,24 @@
       "writtenOn": "2026-04-06T19:48:14Z",
       "side": 1,
       "message": "i\u0027m of the mind that we shouldn\u0027t add short options for the sake of short options.  this doesn\u0027t feel like something commonly used.",
+      "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e193af8_5ef278b0",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-04-06T21:49:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ecfdb30_391347ac",
       "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -84,6 +120,24 @@
       "writtenOn": "2026-04-06T19:48:14Z",
       "side": 1,
       "message": "this feels like a boolean option.  i haven\u0027t gotten around to standardizing them in repo (because it\u0027s still built off of optparse rather than argparse),\n\nwhat if we do:\n* `--include-summary`\n* `--no-include-summary`\n* `--include-projects`\n* `--no-include-projects`\n\nthen basically your `repo info --summary` turns into `repo info --no-include-projects`, and we have a basic extensible framework for adding more sections in the future.",
+      "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50c0ad64_82c57438",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-04-06T21:49:43Z",
+      "side": 1,
+      "message": "This works.",
+      "parentUuid": "e5a12661_db19413f",
       "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
