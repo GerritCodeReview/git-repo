@@ -16,6 +16,7 @@ import os
 from typing import List, Set
 
 from command import Command
+from git_command import git_require
 from git_command import GitCommand
 import platform_utils
 from progress import Progress
@@ -204,6 +205,7 @@ class Gc(Command):
                 [
                     "rev-list",
                     "--objects",
+                    "--missing=allow-promisor",
                     f"--remotes={project.remote.name}",
                     "--filter=blob:none",
                     "--tags",
@@ -215,7 +217,12 @@ class Gc(Command):
             # Get all local objects and pack them.
             local_head_objects_cmd = GitCommand(
                 project,
-                ["rev-list", "--objects", "HEAD^{tree}"],
+                [
+                    "rev-list",
+                    "--objects",
+                    "--missing=allow-promisor",
+                    "HEAD^{tree}",
+                ],
                 capture_stdout=True,
                 verify_command=True,
             )
@@ -224,6 +231,7 @@ class Gc(Command):
                 [
                     "rev-list",
                     "--objects",
+                    "--missing=allow-promisor",
                     "--all",
                     "--reflog",
                     "--indexed-objects",
@@ -299,5 +307,7 @@ class Gc(Command):
 
         if not opt.repack:
             return
+
+        git_require((2, 17, 0), fail=True, msg="--repack")
 
         return self.repack_projects(projects, opt)
