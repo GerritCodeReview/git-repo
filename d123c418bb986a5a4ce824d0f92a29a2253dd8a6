@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aa34bdb_8c8f57cd",
+        "filename": "git_config.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2026-04-07T16:27:37Z",
+      "side": 1,
+      "message": "given this is an open source project - i do not love the coupling of sniffing for internal URL patterns",
+      "range": {
+        "startLine": 561,
+        "startChar": 0,
+        "endLine": 568,
+        "endChar": 27
+      },
+      "revId": "d123c418bb986a5a4ce824d0f92a29a2253dd8a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
