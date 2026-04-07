@@ -16,6 +16,24 @@
       "message": "\u003e _CopyAndLinkFiles (which runs first) replaces the .llms/ directory with a .llms -\u003e dot-llms symlink.\n\nthis should not happen in the first place",
       "revId": "a07524444d8ace47b55fd7aa48fd6235d8797e30",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d41021d_8ac27f28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-04-07T01:05:10Z",
+      "side": 1,
+      "message": "\u003e \u003e _CopyAndLinkFiles (which runs first) replaces the .llms/ directory with a .llms -\u003e dot-llms symlink.\n\u003e \n\u003e this should not happen in the first place\n\nCan you elaborate? Our specific case were manifest changes that actually wanted this - i.e. replace a real directory with a symlink (or vice versa) - in this case it was just llm rules being moved around, shared (and unshared) between projects and so on, but it\u0027s a legit use case.",
+      "parentUuid": "3851b40d_0012053b",
+      "revId": "a07524444d8ace47b55fd7aa48fd6235d8797e30",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
