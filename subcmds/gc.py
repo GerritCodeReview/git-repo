@@ -204,6 +204,7 @@ class Gc(Command):
                 [
                     "rev-list",
                     "--objects",
+                    "--missing=allow-promisor",
                     f"--remotes={project.remote.name}",
                     "--filter=blob:none",
                     "--tags",
@@ -215,7 +216,12 @@ class Gc(Command):
             # Get all local objects and pack them.
             local_head_objects_cmd = GitCommand(
                 project,
-                ["rev-list", "--objects", "HEAD^{tree}"],
+                [
+                    "rev-list",
+                    "--objects",
+                    "--missing=allow-promisor",
+                    "HEAD^{tree}",
+                ],
                 capture_stdout=True,
                 verify_command=True,
             )
@@ -224,6 +230,7 @@ class Gc(Command):
                 [
                     "rev-list",
                     "--objects",
+                    "--missing=allow-promisor",
                     "--all",
                     "--reflog",
                     "--indexed-objects",
