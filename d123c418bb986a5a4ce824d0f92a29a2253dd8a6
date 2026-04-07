@@ -22,6 +22,47 @@
       },
       "revId": "d123c418bb986a5a4ce824d0f92a29a2253dd8a6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9eaf8c4_cef8fa40",
+        "filename": "git_config.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-07T16:31:45Z",
+      "side": 1,
+      "message": "yeah, largely none of this is fit",
+      "parentUuid": "4aa34bdb_8c8f57cd",
+      "range": {
+        "startLine": 561,
+        "startChar": 0,
+        "endLine": 568,
+        "endChar": 27
+      },
+      "revId": "d123c418bb986a5a4ce824d0f92a29a2253dd8a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fecf002_95c63c6d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1782,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-07T16:31:45Z",
+      "side": 1,
+      "message": "people should be using git insteadOf already as internal documents say, or they clone the manifest via sso://",
+      "revId": "d123c418bb986a5a4ce824d0f92a29a2253dd8a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
