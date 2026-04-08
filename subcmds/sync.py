@@ -3013,6 +3013,15 @@ class PersistentTransport(xmlrpc.client.Transport):
                 cookiefile,
                 proxy,
             ):
+                if not cookiefile:
+                    import getpass
+                    try:
+                        username = getpass.getuser()
+                        ccache_cookiefile = f"/var/run/ccache/sso-{username}/git-persistent-https-cookies.txt"
+                        if os.path.exists(ccache_cookiefile):
+                            cookiefile = ccache_cookiefile
+                    except Exception:
+                        pass
                 # Python doesn't understand cookies with the #HttpOnly_ prefix
                 # Since we're only using them for HTTP, copy the file
                 # temporarily, stripping those prefixes away.
@@ -3084,6 +3093,22 @@ class PersistentTransport(xmlrpc.client.Transport):
                 if extra_headers is not None:
                     for name, header in extra_headers:
                         request.add_header(name, header)
+
+                # Inject header from git-authentication.config
+                import getpass
+                try:
+                    username = getpass.getuser()
+                    auth_config = f"/var/run/ccache/sso-{username}/git-authentication.config"
+                    if os.path.exists(auth_config):
+                        with open(auth_config) as f:
+                            for line in f:
+                                if "extraHeader =" in line:
+                                    header_val = line.split("=", 1)[1].strip()
+                                    h_name, h_val = header_val.split(":", 1)
+                                    request.add_header(h_name.strip(), h_val.strip())
+                except Exception:
+                    pass
+
                 request.add_header("Content-Type", "text/xml")
                 try:
                     response = opener.open(request)
