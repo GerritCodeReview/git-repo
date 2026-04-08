@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e1fcd6b_490c5892",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-08T18:43:50Z",
+      "side": 1,
+      "message": "i\u0027m likely to push back on things that make the current format easier or more robust for machine parsing.  and we aren\u0027t committing to the stability of this output format.",
+      "parentUuid": "73769ec5_34e546fd",
+      "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ecfdb30_391347ac",
         "filename": "subcmds/info.py",
         "patchSetId": 1

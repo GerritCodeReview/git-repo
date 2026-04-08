@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "761f70a2_97d08f86",
+        "filename": "subcmds/info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-08T18:43:50Z",
+      "side": 1,
+      "message": "i think this is needed only when opt.include_projects is set, so move this down below",
+      "revId": "1c238d4d7bf83c59de6e9f5e4bcf03ed764a775b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c44f7c88_0989a8c2",
+        "filename": "tests/test_subcmds_info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-08T18:43:50Z",
+      "side": 1,
+      "message": "don\u0027t use `unittest.TestCase` in new test suites",
+      "revId": "1c238d4d7bf83c59de6e9f5e4bcf03ed764a775b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7edb5ca_84146727",
+        "filename": "tests/test_subcmds_info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-08T18:43:50Z",
+      "side": 1,
+      "message": "i would refactor this into a _get_cmd helper like test_subcmds_manifest.py",
+      "revId": "1c238d4d7bf83c59de6e9f5e4bcf03ed764a775b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fded0a60_1d607e43",
+        "filename": "tests/test_subcmds_info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-08T18:43:50Z",
+      "side": 1,
+      "message": "just inline this",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 25
+      },
+      "revId": "1c238d4d7bf83c59de6e9f5e4bcf03ed764a775b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
