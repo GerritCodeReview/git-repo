@@ -22,6 +22,30 @@
       },
       "revId": "104933f8d6e0cb6899b04e7bf7022df3d0709927",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "542005e3_60941a70",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-04-08T19:52:26Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "5be3e049_b32f0d51",
+      "range": {
+        "startLine": 308,
+        "startChar": 0,
+        "endLine": 313,
+        "endChar": 50
+      },
+      "revId": "104933f8d6e0cb6899b04e7bf7022df3d0709927",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
