@@ -16,6 +16,24 @@
       "message": "what version of git introduced this option ?  is it backwards compatible with every version we care about ?",
       "revId": "e8e796e356b6b108c4b7b777ed55b64bb8ee8a76",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4845f8da_913e1a96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-04-08T18:18:19Z",
+      "side": 1,
+      "message": "it was added in git 2.17.0: https://git-scm.com/docs/git-rev-list/2.17.0\n\npractically speaking, the flag should be safe since `repack_projects` only runs if doing `repo gc --repack` and the method only targets partial clones which already requires 2.19.0: https://cs.opensource.google/gerrit/gerrit/git-repo/+/main:project.py;l\u003d2583;drc\u003d573983948ae0550b0f655ea81431bb08ce0bd540\n\nit\u0027d only fail if someone created a partial clone with git 2.19.0, ,then downgraded to \u003c 2.17.0 and ran `repo gc --repack`. but added a check for 2.17.0",
+      "parentUuid": "7603de93_f31bab2b",
+      "revId": "e8e796e356b6b108c4b7b777ed55b64bb8ee8a76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
