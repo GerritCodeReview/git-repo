@@ -72,6 +72,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2460e518_ac426d61",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-08T20:10:17Z",
+      "side": 1,
+      "message": "(fixed in PS4)",
+      "parentUuid": "f18f3e17_b0d67fc4",
+      "revId": "ac26f51b187cd6d263597533b05321dd3b9c19ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5476c00c_5c9ca441",
