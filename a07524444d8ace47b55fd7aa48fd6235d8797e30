@@ -34,6 +34,24 @@
       "parentUuid": "3851b40d_0012053b",
       "revId": "a07524444d8ace47b55fd7aa48fd6235d8797e30",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4a70f02_8cc2b9dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-08T18:31:19Z",
+      "side": 1,
+      "message": "repo may undo linkfile \u0026 copyfile, and delete empty dirs, but it can\u0027t go deleting content otherwise.  if the user created content in there, we have no business clobbering it.\n\nso if repo is undoing the previous settings, and then adding the new one, i\u0027d understand why it works.  but then i wouldn\u0027t understand why you need this change.",
+      "parentUuid": "5d41021d_8ac27f28",
+      "revId": "a07524444d8ace47b55fd7aa48fd6235d8797e30",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
