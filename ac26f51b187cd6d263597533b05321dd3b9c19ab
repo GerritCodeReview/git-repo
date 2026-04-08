@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f18f3e17_b0d67fc4",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-08T20:06:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f202deed_75f48a2d",
+      "revId": "ac26f51b187cd6d263597533b05321dd3b9c19ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5476c00c_5c9ca441",
@@ -77,6 +95,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f90754d_39fc00d4",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-08T20:06:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5476c00c_5c9ca441",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 44
+      },
+      "revId": "ac26f51b187cd6d263597533b05321dd3b9c19ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ada92bb1_97e67a73",
@@ -90,6 +132,24 @@
       "writtenOn": "2026-04-08T18:50:17Z",
       "side": 1,
       "message": "len accepts generators\n\n```suggestion\n    line_count \u003d len(x for x in output.splitlines() if x)\n```",
+      "revId": "ac26f51b187cd6d263597533b05321dd3b9c19ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "437b73c9_9096ebbe",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-08T20:06:31Z",
+      "side": 1,
+      "message": "\u003e len accepts generators\n\nYou sure?\n```\n\u003e       line_count \u003d len(x for x in output.splitlines() if x)\nE       TypeError: object of type \u0027generator\u0027 has no len()\n```\n\nThis works though:\n```\nline_count \u003d sum(1 for x in output.splitlines() if x)\n```",
+      "parentUuid": "ada92bb1_97e67a73",
       "revId": "ac26f51b187cd6d263597533b05321dd3b9c19ab",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
