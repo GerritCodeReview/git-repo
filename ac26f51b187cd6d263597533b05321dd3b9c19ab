@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c52fb48_f093ba23",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-08T18:50:17Z",
+      "side": 1,
+      "message": "leave the docstring as it was.  pytest is a framework, and it runs unittests.  this wasn\u0027t a reference to the unittest module.",
+      "revId": "ac26f51b187cd6d263597533b05321dd3b9c19ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5476c00c_5c9ca441",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-08T18:50:17Z",
+      "side": 1,
+      "message": "```suggestion\n    with contextlib.redirect_stdout(io.StringIO()) as stdout:\n```",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 44
+      },
+      "revId": "ac26f51b187cd6d263597533b05321dd3b9c19ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ada92bb1_97e67a73",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-08T18:50:17Z",
+      "side": 1,
+      "message": "len accepts generators\n\n```suggestion\n    line_count \u003d len(x for x in output.splitlines() if x)\n```",
+      "revId": "ac26f51b187cd6d263597533b05321dd3b9c19ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
