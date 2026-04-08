@@ -1,0 +1,59 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f885453a_211f8ab9",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-08T20:51:36Z",
+      "side": 1,
+      "message": "period at the end of sentences here and below",
+      "fixSuggestions": [
+        {
+          "fixId": "cc0a4e9a_897012b4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 1272,
+                "startChar": 0,
+                "endLine": 1273,
+                "endChar": 0
+              },
+              "replacement": "        # Query the target hash from remote to see if we are up-to-date.\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 1292,
+                "startChar": 0,
+                "endLine": 1293,
+                "endChar": 0
+              },
+              "replacement": "        # Skip if sharing objects with other projects.\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 1303,
+                "startChar": 0,
+                "endLine": 1304,
+                "endChar": 0
+              },
+              "replacement": "        # Skip if HEAD contains any unpushed local commits.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "20c09e7b9edd0bb88fb3fd2f93f256b0ada3d8df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
