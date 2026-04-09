@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4579264_203b590c",
+        "filename": "git_config.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-04-09T09:51:50Z",
+      "side": 1,
+      "message": "Reverted changes in this file.",
+      "parentUuid": "f9eaf8c4_cef8fa40",
+      "range": {
+        "startLine": 561,
+        "startChar": 0,
+        "endLine": 568,
+        "endChar": 27
+      },
+      "revId": "d123c418bb986a5a4ce824d0f92a29a2253dd8a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fecf002_95c63c6d",
@@ -61,6 +85,24 @@
       "writtenOn": "2026-04-07T16:31:45Z",
       "side": 1,
       "message": "people should be using git insteadOf already as internal documents say, or they clone the manifest via sso://",
+      "revId": "d123c418bb986a5a4ce824d0f92a29a2253dd8a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86f57ca7_c882caf1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1782,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-04-09T09:51:50Z",
+      "side": 1,
+      "message": "Ack. Reverted the regex replacement. The auth hook will now trigger if the xml-rpc response couldn\u0027t be parsed. The auth hook with run a login command if the user has a [repo \"auth.smartsync\"] section in their .gitconfig (example in the change description).",
+      "parentUuid": "0fecf002_95c63c6d",
       "revId": "d123c418bb986a5a4ce824d0f92a29a2253dd8a6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
