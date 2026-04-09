@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc975abb_d195bdce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-09T22:41:49Z",
+      "side": 1,
+      "message": "This is the refactor I mentioned. I\u0027m a little worried this looks like re-implementing parts of repo itself, but all that logic is already in the tests and just consolidated in this change, so I think it\u0027s still a net improvement.",
+      "revId": "ee8b90803598ce3e8bfaddf127000767d601e273",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
