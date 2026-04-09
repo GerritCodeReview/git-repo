@@ -2570,7 +2570,7 @@ class Project:
                 if update_ref_cmds:
                     GitCommand(
                         self,
-                        ["update-ref", "--no-deref", "--stdin"],
+                        ["update-ref", "--stdin"],
                         bare=True,
                         input="".join(update_ref_cmds),
                     ).Wait()
@@ -2818,7 +2818,7 @@ class Project:
                     )
                     GitCommand(
                         self,
-                        ["update-ref", "--no-deref", "--stdin"],
+                        ["update-ref", "--stdin"],
                         bare=True,
                         input=delete_cmds,
                         log_as_error=False,
