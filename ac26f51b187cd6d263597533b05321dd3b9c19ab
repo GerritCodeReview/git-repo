@@ -170,6 +170,24 @@
       "parentUuid": "ada92bb1_97e67a73",
       "revId": "ac26f51b187cd6d263597533b05321dd3b9c19ab",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef9c5751_d3ed96a7",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-09T18:35:24Z",
+      "side": 1,
+      "message": "yeah, i\u0027m dumb, ignore me\n\ni\u0027m fine with sum() or len([])",
+      "parentUuid": "437b73c9_9096ebbe",
+      "revId": "ac26f51b187cd6d263597533b05321dd3b9c19ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
