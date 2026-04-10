@@ -16,6 +16,24 @@
       "message": "repo does not declare 2.17.0 as the min supported version.  we support down to 1.9.1 atm.",
       "revId": "c3b3b9af88bba8f95820ac2628efd7e004a698ec",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2639614d_305bbc88",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 3239492
+      },
+      "writtenOn": "2026-04-10T03:12:06Z",
+      "side": 1,
+      "message": "Thank you for your comment. Let me clarify your point to be sure. I understand I should write proper min version repo support. I found that MIN_GIT_VERSION \u003d (1, 7, 9)  in repo. Should I use 1.7.9 or 1.9.1 ?  https://gerrit.googlesource.com/git-repo/+/refs/heads/main/repo#218\n```suggestion\nrepo declares Git 1.9.1 as its minimum supported version, this causes\n```",
+      "parentUuid": "b070845e_0d9d5c97",
+      "revId": "c3b3b9af88bba8f95820ac2628efd7e004a698ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
