@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38815898_24b4b855",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-10T04:38:41Z",
+      "side": 1,
+      "message": "```suggestion\nproject: Drop --no-deref from update-ref --stdin\n```",
+      "revId": "7642ecd5fdfae1b677faf4d7f6eeb2bcd9d17110",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
