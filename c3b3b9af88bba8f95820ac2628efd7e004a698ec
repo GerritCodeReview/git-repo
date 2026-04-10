@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b070845e_0d9d5c97",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-10T03:00:32Z",
+      "side": 1,
+      "message": "repo does not declare 2.17.0 as the min supported version.  we support down to 1.9.1 atm.",
+      "revId": "c3b3b9af88bba8f95820ac2628efd7e004a698ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
