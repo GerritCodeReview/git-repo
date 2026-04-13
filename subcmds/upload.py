@@ -33,7 +33,6 @@ from project import ReviewableBranch
 from repo_logging import RepoLogger
 from subcmds.sync import LocalSyncState
 
-
 _DEFAULT_UNUSUAL_COMMIT_THRESHOLD = 5
 logger = RepoLogger(__file__)
 
@@ -393,6 +392,12 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             action="store_true",
             default=False,
             help="automatically handle fixups by creating fixup! commits",
+        )
+        p.add_option(
+            "--autosquash",
+            action="store_true",
+            default=False,
+            help="automatically squash fixup! commits after hook run",
         )
         RepoHook.AddOptionGroup(p, "pre-upload")
 
@@ -818,6 +823,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 project_list=pending_proj_names,
                 worktree_list=pending_worktrees,
                 commit_fixups=opt.commit_fixups,
+                autosquash=opt.autosquash,
             ):
                 if LocalSyncState(manifest).IsPartiallySynced():
                     logger.error(
