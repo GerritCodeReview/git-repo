@@ -394,6 +394,12 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             default=False,
             help="automatically handle fixups by creating fixup! commits",
         )
+        p.add_option(
+            "--autosquash",
+            action="store_true",
+            default=False,
+            help="automatically squash fixup! commits after hook run",
+        )
         RepoHook.AddOptionGroup(p, "pre-upload")
 
     def _SingleBranch(self, opt, branch, people):
@@ -818,6 +824,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 project_list=pending_proj_names,
                 worktree_list=pending_worktrees,
                 commit_fixups=opt.commit_fixups,
+                autosquash=opt.autosquash,
             ):
                 if LocalSyncState(manifest).IsPartiallySynced():
                     logger.error(
