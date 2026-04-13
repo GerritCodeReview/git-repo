@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b29753c5_e0554900",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2026-04-13T07:18:16Z",
+      "side": 1,
+      "message": "+1 for adding a command for easier retrieving these fields - Preferably in a machine-readable format. Today it has to be gathered from various sources:\n\n* Groups: `git -C .repo/manifest config manifest.groups` -  (Plus handling for the field missing when assuming default groups)\n* Manifest file: Parse `.repo/manifest.xml` to see what it `\u003cinclude\u003e` - This isn\u0027t part of `repo info` today.\n* Manifest revision: `git -C .repo/manifest ...` your typical git operations. (One could argue that this should remain as plain `git`, as use cases may differ a lot here; revisions, branches, tags, describe, etc. Just the basic revision+branch should be common enough to list as convenience though).\n\nI\u0027m probably missing some fields as well, in essence what\u0027s missing is something to understand which arguments were used during `repo init`",
+      "parentUuid": "5e1fcd6b_490c5892",
+      "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ecfdb30_391347ac",
         "filename": "subcmds/info.py",
         "patchSetId": 1
