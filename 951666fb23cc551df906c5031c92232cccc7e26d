@@ -16,6 +16,24 @@
       "message": "this file has a lot of unrelated style changes.  revert them.",
       "revId": "951666fb23cc551df906c5031c92232cccc7e26d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "423bff0c_9281664c",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 35
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-04-13T09:10:23Z",
+      "side": 0,
+      "message": "It seems that LUCI black (version 25.1.0) doesn\u0027t agree with how my local black (version 26.3.1) wants to format this file. :/ which is also why the CI is failing.",
+      "parentUuid": "25508122_9223ca33",
+      "revId": "951666fb23cc551df906c5031c92232cccc7e26d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
