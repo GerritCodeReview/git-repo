@@ -1,0 +1,331 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c576aecd_df5ce2f7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 43
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "please line wrap your commit messages\n\nhttps://cbea.ms/git-commit/",
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eedd65f1_b374c01c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 43
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "i don\u0027t see this documented anywhere in this CL",
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e1ece14_4ef64788",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 43
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "line wrap to 80 cols",
+      "fixSuggestions": [
+        {
+          "fixId": "4929659c_0e2df250",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "docs/manifest-format.md",
+              "range": {
+                "startLine": 240,
+                "startChar": 0,
+                "endLine": 242,
+                "endChar": 0
+              },
+              "replacement": "Attribute `proxy`: The URL of the proxy to use for communication with the\nmanifest server. If specified, `repo` will automatically configure Git to use\nthis proxy for the specified URL.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09c2e85d_e9dbb78f",
+        "filename": "git_config.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "remove unrelated style changes",
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5257a218_200ee494",
+        "filename": "manifest_xml.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 1000,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "all new code should have typing \u0026 at least a one-liner docstring",
+      "fixSuggestions": [
+        {
+          "fixId": "5ae8f2d0_aebb0038",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "from typing import Optional\n"
+            },
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1000,
+                "startChar": 0,
+                "endLine": 1001,
+                "endChar": 0
+              },
+              "replacement": "    def manifest_server_proxy(self) -\u003e Optional[str]:\n        \"\"\"Returns the manifest server proxy URL, if defined.\"\"\"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a8742f9_bcb5ca99",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 1729,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "you just set this to None 3 lines before.  why do you need it here?",
+      "fixSuggestions": [
+        {
+          "fixId": "c34f22fb_9e273a16",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 1729,
+                "startChar": 0,
+                "endLine": 1730,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7d92595_81f53069",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 1734,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "\"LKGB\" is an android/chrome concept, not repo.  repo smartsync talks about syncing to a known good revision.",
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d421021_cdfd4fee",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 1790,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "just ... no.  comments are not structured data.  this is not a documented interface.  granted you\u0027re only using it for logging purposes, but still don\u0027t.\n\nif you want to pass more info back to the client, then seems like it should be part of the GetManifest API.",
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f993b413_c775dd54",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 2869,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "all new code should have typing info",
+      "fixSuggestions": [
+        {
+          "fixId": "c451f183_55845032",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 2869,
+                "startChar": 0,
+                "endLine": 2870,
+                "endChar": 0
+              },
+              "replacement": "def _RunAuthHook(url: str, response_body: Optional[str]) -\u003e bool:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2642404_8ed9ffaa",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 2871,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "don\u0027t use nested imports without a very good \u0026 clear reason.  afaict, that doesn\u0027t apply to either of these.",
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c969fa09_3bfa8e1d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 2882,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "are these settings based on some existing git behavior ?  or did you invent it from scratch ?",
+      "range": {
+        "startLine": 2880,
+        "startChar": 0,
+        "endLine": 2882,
+        "endChar": 61
+      },
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "023a77a5_238484a2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 2911,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "never catch `Exception`.  why do you need to catch anything here for that matter ?",
+      "fixSuggestions": [
+        {
+          "fixId": "f5a4934a_5c1f7c96",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 2900,
+                "startChar": 0,
+                "endLine": 2913,
+                "endChar": 0
+              },
+              "replacement": "                args \u003d shlex.split(command)\n                result \u003d subprocess.run(args, check\u003dFalse)\n                if result.returncode \u003d\u003d 0:\n                    print(\"Auth hook successful. Retrying...\")\n                    return True\n                else:\n                    print(\n                        f\"Auth hook failed with return code \"\n                        f\"{result.returncode}.\"\n                    )\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e6e04ba_28a5be87",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 3061,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T06:34:37Z",
+      "side": 1,
+      "message": "this diff is difficult to read.  what did you change ?  you put it into an infinte loop so you can try to auth/login \u0026 retry ?  feels like we should keep this logic separate rather than blending it.  keep a simple request function (I guess rename this to _request or something), and have a higher level one deal with specific errors.",
+      "revId": "bba5eb15c7c65865d334e151de43fb46bb65fdd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
