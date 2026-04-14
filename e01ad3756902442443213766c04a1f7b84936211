@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43c58fa6_a2c87894",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-14T23:44:38Z",
+      "side": 1,
+      "message": "I\u0027m tempted to make `expected` just a list of paths and do the rest of the formatting here. I could also consider it for the project tracked files, but I\u0027d need a dictionary since those have statuses we could care about.",
+      "revId": "e01ad3756902442443213766c04a1f7b84936211",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
