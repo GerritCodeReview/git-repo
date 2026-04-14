@@ -1,0 +1,308 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbd1b115_760450cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T17:11:58Z",
+      "side": 1,
+      "message": "mostly nits (still?).  i think next round we should be good.",
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0085c6dc_b82fd370",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T17:11:58Z",
+      "side": 1,
+      "message": "i don\u0027t think this makes sense as a fixture.  it\u0027s just creating a function that is called later on.  make it a function and let code call it.",
+      "fixSuggestions": [
+        {
+          "fixId": "0a03a556_e309aac8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 32,
+                "startChar": 0,
+                "endLine": 34,
+                "endChar": 0
+              },
+              "replacement": "def init_temp_git_tree(git_dir: Path) -\u003e None:\n"
+            },
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 35,
+                "startChar": 0,
+                "endLine": 45,
+                "endChar": 0
+              },
+              "replacement": "    utils_for_test.init_git_tree(git_dir)\n    (git_dir / \"README\").write_text(\"init\")\n    subprocess.check_call([\"git\", \"add\", \"README\"], cwd\u003dgit_dir)\n    subprocess.check_call(\n        [\"git\", \"commit\", \"-q\", \"-m\", \"init\"], cwd\u003dgit_dir\n    )\n"
+            },
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 48,
+                "startChar": 0,
+                "endLine": 49,
+                "endChar": 0
+              },
+              "replacement": "def status_workspace(tmp_path):\n"
+            }
+          ]
+        }
+      ],
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca72bead_e39ab3ec",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T17:11:58Z",
+      "side": 1,
+      "message": "at least add typing info to the return",
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53568dd0_c0d18ec6",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T17:11:58Z",
+      "side": 1,
+      "message": "naming nit: i don\u0027t think we generally use \"workspace\" to describe a repo checkout.  i think \"repo client checkout\" is what we tend to use.  a bit more wordy, but we often run into problems where the same short name is reused in diff ways :/.\n\nsince this module is for the status subcommand, i would drop \"status_\" from the name.",
+      "fixSuggestions": [
+        {
+          "fixId": "4154fbdd_65bae646",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 48,
+                "startChar": 0,
+                "endLine": 49,
+                "endChar": 0
+              },
+              "replacement": "def repo_client_checkout(tmp_path, init_temp_git_tree):\n"
+            },
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 102,
+                "startChar": 0,
+                "endLine": 104,
+                "endChar": 0
+              },
+              "replacement": "def test_orphans_basic(repo_client_checkout) -\u003e None:\n    topdir, manifest \u003d repo_client_checkout\n"
+            },
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 118,
+                "startChar": 0,
+                "endLine": 120,
+                "endChar": 0
+              },
+              "replacement": "def test_empty_status_without_orphans(repo_client_checkout) -\u003e None:\n    _, manifest \u003d repo_client_checkout\n"
+            },
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 131,
+                "startChar": 0,
+                "endLine": 133,
+                "endChar": 0
+              },
+              "replacement": "def test_status_without_orphans(repo_client_checkout) -\u003e None:\n    topdir, manifest \u003d repo_client_checkout\n"
+            }
+          ]
+        }
+      ],
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2a26cd2_ff889ee4",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T17:11:58Z",
+      "side": 1,
+      "message": "add docstrings for all of these tests\n\n(the suggestion is what AI thinks it should be, i haven\u0027t checked)",
+      "fixSuggestions": [
+        {
+          "fixId": "e37da38b_28bee8fb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "    \"\"\"Create a basic repo workspace for status tests.\"\"\"\n"
+            },
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "    \"\"\"Test that the status command correctly identifies orphan files/dirs.\"\"\"\n"
+            },
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "    \"\"\"Test status output with no changes and no orphan checking.\"\"\"\n"
+            },
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "    \"\"\"Test status output with a modified file and no orphan checking.\"\"\"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b93c8bd9_08f2c19b",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T17:11:58Z",
+      "side": 1,
+      "message": "pass `--jobs\u003d1` to the invocation, maybe `-j1` if you want",
+      "fixSuggestions": [
+        {
+          "fixId": "54d18f00_dc6ed473",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 95,
+                "startChar": 0,
+                "endLine": 96,
+                "endChar": 0
+              },
+              "replacement": "    opts, args \u003d cmd.OptionParser.parse_args(argv + [\"--jobs\u003d1\"])\n"
+            },
+            {
+              "path": "tests/test_subcmds_status.py",
+              "range": {
+                "startLine": 97,
+                "startChar": 0,
+                "endLine": 98,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50fb4ea4_7aad08d8",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T17:11:58Z",
+      "side": 1,
+      "message": "the redirect API returns the object passed in, so you can one-line this (and below)\n\n`with contextlib.redirect_stdout(io.StringIO()) as stdout:`",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 44
+      },
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9f517d3_3d93ce92",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-14T17:11:58Z",
+      "side": 1,
+      "message": "this is why i push for machine readable output ;)",
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
