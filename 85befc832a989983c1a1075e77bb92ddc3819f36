@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4043ae2a_82b3e016",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-14T23:34:51Z",
+      "side": 1,
+      "message": "Thanks for all the reviews! I ended up changing a lot more than I expected to in PS5, so sorry if I introduced any new issues.",
+      "parentUuid": "bbd1b115_760450cf",
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0085c6dc_b82fd370",
@@ -69,6 +87,24 @@
           ]
         }
       ],
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f92f795_b333239f",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-14T23:34:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0085c6dc_b82fd370",
       "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -220,6 +256,60 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb69d91e_18e293ac",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-14T23:34:51Z",
+      "side": 1,
+      "message": "Thanks for the suggestion. We tend to use \"workspace\" a lot here and I had found some references to \"repo workspace\" and \"repo client workspace\", but it does look like \"repo client checkout\" (or just \"repo client\") is used more than those. I\u0027ve updated like you suggested.",
+      "parentUuid": "53568dd0_c0d18ec6",
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10f0025e_7dc6ae83",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-14T23:34:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2a26cd2_ff889ee4",
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e3d8012_797ae4b5",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-14T23:34:51Z",
+      "side": 1,
+      "message": "Sorry, missed that on these fixture methods. Done.",
+      "parentUuid": "ca72bead_e39ab3ec",
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b93c8bd9_08f2c19b",
@@ -265,6 +355,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "751ea9b7_f1f3bcd4",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-14T23:34:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b93c8bd9_08f2c19b",
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50fb4ea4_7aad08d8",
@@ -290,6 +398,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "29810625_10531075",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-14T23:34:51Z",
+      "side": 1,
+      "message": "Done (sorry you had to repeat that comment from the forall test)",
+      "parentUuid": "50fb4ea4_7aad08d8",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 44
+      },
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c9f517d3_3d93ce92",
         "filename": "tests/test_subcmds_status.py",
         "patchSetId": 4
@@ -301,6 +433,24 @@
       "writtenOn": "2026-04-14T17:11:58Z",
       "side": 1,
       "message": "this is why i push for machine readable output ;)",
+      "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c230841c_df272908",
+        "filename": "tests/test_subcmds_status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-14T23:34:51Z",
+      "side": 1,
+      "message": "Yeah, maybe I should have added a `--format` flag first and wrote all the tests against JSON 😊\n\nLooking at these asserts again now, they feel a little too loose, so I\u0027m going to make them more exact comparisons (this is where the PS5 churn shows up, sorry).",
+      "parentUuid": "c9f517d3_3d93ce92",
       "revId": "85befc832a989983c1a1075e77bb92ddc3819f36",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
