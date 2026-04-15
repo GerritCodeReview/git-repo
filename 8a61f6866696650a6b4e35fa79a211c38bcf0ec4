@@ -16,6 +16,24 @@
       "message": "while we wouldn\u0027t sprinkle these files everywhere, i think we can make space for the tools.  i heard Google is lighting metric trainloads of cash on fire for AI or something.\n\nChromium has a loose framework that looks like something we could duplicate, at least bare-skeleton wise.\nhttps://chromium.googlesource.com/chromium/src/+/HEAD/agents",
       "revId": "8a61f6866696650a6b4e35fa79a211c38bcf0ec4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f696f6b_36d803a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-15T18:32:49Z",
+      "side": 1,
+      "message": "Cool framework!\n\nIf I\u0027m understanding your idea and https://chromium.googlesource.com/chromium/src/+/HEAD/agents/prompts/README.md correctly, we\u0027d start with adding a `./agents/prompts/common.md` with some tool-agnostic system prompt info. I think we\u0027d also keep the gitignore lines I added (with the addition of `GEMINI.md`), because then individual developers would create untracked file(s) for their tool(s) of choice and add `@agents/prompts/common.md` into those file(s).\n\nIs that along the lines of what you were thinking?",
+      "parentUuid": "5186a391_7f8f8487",
+      "revId": "8a61f6866696650a6b4e35fa79a211c38bcf0ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
