@@ -14,6 +14,7 @@
 
 import os
 import sys
+from typing import Optional
 
 import pager
 
@@ -84,7 +85,7 @@ def _Color(fg=None, bg=None, attr=None):
 DEFAULT = None
 
 
-def SetDefaultColoring(state):
+def SetDefaultColoring(state: Optional[str]) -> None:
     """Set coloring behavior to |state|.
 
     This is useful for overriding config options via the command line.
@@ -97,9 +98,9 @@ def SetDefaultColoring(state):
     state = state.lower()
     if state in ("auto",):
         DEFAULT = state
-    elif state in ("always", "yes", "true", True):
+    elif state in ("always", "yes", "true"):
         DEFAULT = "always"
-    elif state in ("never", "no", "false", False):
+    elif state in ("never", "no", "false"):
         DEFAULT = "never"
 
 
