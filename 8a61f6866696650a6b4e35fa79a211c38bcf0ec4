@@ -52,6 +52,24 @@
       "parentUuid": "4f696f6b_36d803a3",
       "revId": "8a61f6866696650a6b4e35fa79a211c38bcf0ec4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cedf3e1_00fd6caa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-15T18:52:48Z",
+      "side": 1,
+      "message": "I think you do because the agents won\u0027t look for them under agents/? That at least seems to be the logic from https://chromium.googlesource.com/chromium/src/+/HEAD/agents/prompts/#creating-the-system-instruction-prompt\n\u003e Create a local, untracked file `//GEMINI.md`. Include the relevant prompts using `@`, ...\n\nMaybe the Googler doc http://go/chrome-coding-with-ai-agents has more info?",
+      "parentUuid": "41cf77e5_ededbe2b",
+      "revId": "8a61f6866696650a6b4e35fa79a211c38bcf0ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
