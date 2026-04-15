@@ -245,9 +245,14 @@ class _InterleavedSyncResult(NamedTuple):
     Attributes:
       results (List[_SyncResult]): A list of results, one for each project
           processed. Empty if the worker failed before creating results.
+      bloated_projects (List[str]): A list of project names that are bloated.
+      gc_success (Optional[bool]): True if GC succeeded, False if failed,
+          None if not run.
     """
 
     results: List[_SyncResult]
+    bloated_projects: List[str]
+    gc_success: Optional[bool]
 
 
 class SuperprojectError(SyncError):
@@ -1244,14 +1249,15 @@ later is required to fix a server side protocol bug.
 
         return False
 
-    def _SetPreciousObjectsState(self, project: Project, opt):
+    @classmethod
+    def _SetPreciousObjectsState(cls, project: Project, opt):
         """Correct the preciousObjects state for the project.
 
         Args:
             project: the project to examine, and possibly correct.
             opt: options given to sync.
         """
-        expected = self._GetPreciousObjectsState(project, opt)
+        expected = cls._GetPreciousObjectsState(project, opt)
         actual = (
             project.config.GetBoolean("extensions.preciousObjects") or False
         )
@@ -1377,16 +1383,15 @@ later is required to fix a server side protocol bug.
         pm.end()
 
     @classmethod
-    def _CheckOneBloatedProject(cls, project_index: int) -> Optional[str]:
+    def _CheckOneBloatedProject(cls, project) -> Optional[str]:
         """Checks if a single project is bloated.
 
         Args:
-            project_index: The index of the project in the parallel context.
+            project: The project object.
 
         Returns:
             The name of the project if it is bloated, else None.
         """
-        project = cls.get_parallel_context()["projects"][project_index]
 
         if not project.Exists or not project.worktree:
             return None
@@ -2134,7 +2139,7 @@ later is required to fix a server side protocol bug.
                 "experience, sync the entire tree."
             )
 
-        if existing:
+        if existing and not opt.interleaved:
             self._CheckForBloatedProjects(all_projects, opt)
 
         if not opt.quiet:
@@ -2509,10 +2514,40 @@ later is required to fix a server side protocol bug.
             for idx in project_indices:
                 project = projects[idx]
                 results.append(cls._SyncOneProject(opt, idx, project))
+
+            # Post-sync operations for this group (sharing same objdir)
+            # Always set precious objects state to avoid regressions.
+            for idx in project_indices:
+                cls._SetPreciousObjectsState(projects[idx], opt)
+
+            gc_success = None
+            if opt.auto_gc:
+                try:
+                    # Run GC on the shared objdir (via the first project)
+                    first_project.bare_git.gc("--auto")
+                    gc_success = True
+                except Exception as e:
+                    logger.error(
+                        "error: Cannot run GC in %s: %s", first_project.name, e
+                    )
+                    gc_success = False
+
+            bloated_projects = []
+            if git_require((2, 23, 0)):
+                for idx in project_indices:
+                    p = projects[idx]
+                    if getattr(p, "clone_depth", None):
+                        res = cls._CheckOneBloatedProject(p)
+                        if res:
+                            bloated_projects.append(res)
         finally:
             del sync_dict[key]
 
-        return _InterleavedSyncResult(results=results)
+        return _InterleavedSyncResult(
+            results=results,
+            bloated_projects=bloated_projects,
+            gc_success=gc_success,
+        )
 
     def _ProcessSyncInterleavedResults(
         self,
@@ -2528,6 +2563,10 @@ later is required to fix a server side protocol bug.
         ret = True
         projects = self.get_parallel_context()["projects"]
         for result_group in results_sets:
+            self._bloated_projects.extend(result_group.bloated_projects)
+            if result_group.gc_success is False:
+                ret = False
+                err_event.set()
             for result in result_group.results:
                 pm.update()
                 project = projects[result.project_index]
@@ -2612,6 +2651,7 @@ later is required to fix a server side protocol bug.
         self._interleaved_err_network_results = []
         self._interleaved_err_checkout = False
         self._interleaved_err_checkout_results = []
+        self._bloated_projects = []
 
         err_event = multiprocessing.Event()
         finished_relpaths = set()
@@ -2749,9 +2789,6 @@ later is required to fix a server side protocol bug.
         err_update_projects, err_update_linkfiles = self._UpdateManifestLists(
             opt, err_event, errors
         )
-        if not self.outer_client.manifest.IsArchive:
-            self._GCProjects(project_list, opt, err_event)
-
         self._PrintManifestNotices(opt)
         if err_event.is_set():
             self._ReportErrors(
@@ -2762,6 +2799,13 @@ later is required to fix a server side protocol bug.
                 failing_checkout_repos=self._interleaved_err_checkout_results,
                 err_update_projects=err_update_projects,
                 err_update_linkfiles=err_update_linkfiles,
+            )
+
+        for project_name in self._bloated_projects:
+            logger.warning(
+                "project %s is accumulating "
+                'unoptimized data. Please run "repo sync --auto-gc" or '
+                '"repo gc --repack" to clean up.' % project_name
             )
 
 
