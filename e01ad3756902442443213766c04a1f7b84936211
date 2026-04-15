@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d449e000_a54e40ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-15T05:25:48Z",
+      "side": 1,
+      "message": "Yeah, that works.",
+      "parentUuid": "e72b2d34_5193aeaf",
+      "revId": "e01ad3756902442443213766c04a1f7b84936211",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a93a9f12_30e349a5",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-04-15T04:24:53Z",
       "side": 1,
       "message": "just disable it all the time by default\n```suggestion\n    color.SetDefaultColoring(False)\n```",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 23
+      },
+      "revId": "e01ad3756902442443213766c04a1f7b84936211",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d766a65_3f61d928",
+        "filename": "tests/conftest.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-15T05:25:48Z",
+      "side": 1,
+      "message": "I think you meant `color.SetDefaultColoring(None)`, but that doesn\u0027t work because it\u0027s treated as a no-op. Disabling it like this does work though:\n```suggestion\n    color.DEFAULT \u003d None\n```",
+      "parentUuid": "a93a9f12_30e349a5",
       "range": {
         "startLine": 41,
         "startChar": 0,
