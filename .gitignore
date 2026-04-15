@@ -11,3 +11,7 @@ __pycache__
 
 # PyCharm related
 /.idea/
+
+# AI tool related
+AGENTS.md
+CLAUDE.md
