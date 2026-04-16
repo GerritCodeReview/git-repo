@@ -70,6 +70,24 @@
       "parentUuid": "41cf77e5_ededbe2b",
       "revId": "8a61f6866696650a6b4e35fa79a211c38bcf0ec4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "516e75e3_b6cdcad9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-16T18:51:30Z",
+      "side": 1,
+      "message": "i looked in Chromium\u0027s .gitignore to see if they were ignoring these files and didn\u0027t see it, but i checked again and `/GEMINI.md` is def in there\n\nif you want to ignore `/GEMINI.md` \u0026 `/CLAUDE.md`, that seems fine.  what uses `AGENTS.md` ?",
+      "parentUuid": "3cedf3e1_00fd6caa",
+      "revId": "8a61f6866696650a6b4e35fa79a211c38bcf0ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
