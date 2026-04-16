@@ -1495,6 +1495,10 @@ class Project:
             and self._CheckForImmutableRevision(
                 use_superproject=use_superproject
             )
+            and (
+                not depth
+                or os.path.exists(os.path.join(self.gitdir, "shallow"))
+            )
         ):
             remote_fetched = True
             try:
@@ -2616,6 +2620,9 @@ class Project:
             if is_sha1 or tag_name is not None:
                 if self._CheckForImmutableRevision(
                     use_superproject=use_superproject
+                ) and (
+                    not depth
+                    or os.path.exists(os.path.join(self.gitdir, "shallow"))
                 ):
                     if verbose:
                         print(
