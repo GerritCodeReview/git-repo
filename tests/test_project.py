@@ -683,3 +683,115 @@ class StatelessSyncTests(unittest.TestCase):
 
             self.assertTrue(res.success)
             self.assertFalse(getattr(proj, "stateless_prune_needed", False))
+
+
+class SyncOptimizationTests(unittest.TestCase):
+    """Tests for sync optimization logic involving shallow clones."""
+
+    def _get_project(self, tempdir, depth=None):
+        manifest = mock.MagicMock()
+        manifest.manifestProject.depth = depth
+        manifest.manifestProject.dissociate = False
+        manifest.manifestProject.clone_filter = None
+        manifest.is_multimanifest = False
+        manifest.manifestProject.config.GetBoolean.return_value = False
+        manifest.IsMirror = False
+
+        remote = mock.MagicMock()
+        remote.name = "origin"
+        remote.url = "http://"
+
+        proj = project.Project(
+            manifest=manifest,
+            name="test-project",
+            remote=remote,
+            gitdir=os.path.join(tempdir, "gitdir"),
+            objdir=os.path.join(tempdir, "objdir"),
+            worktree=tempdir,
+            relpath="test-project",
+            revisionExpr="0123456789abcdef0123456789abcdef01234567",
+            revisionId=None,
+        )
+        proj._CheckForImmutableRevision = mock.MagicMock(return_value=True)
+        proj.DeleteWorktree = mock.MagicMock()
+        proj._InitGitDir = mock.MagicMock()
+        proj._InitRemote = mock.MagicMock()
+        proj._InitMRef = mock.MagicMock()
+        return proj
+
+    def test_sync_network_half_shallow_missing_fetches(self):
+        """Test Sync_NetworkHalf fetches if shallow file is missing for shallow clone."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, depth=1)
+            # Ensure gitdir does not exist to simulate new project
+            if os.path.exists(proj.gitdir):
+                import shutil
+                shutil.rmtree(proj.gitdir)
+            shallow_path = os.path.join(proj.gitdir, "shallow")
+            if os.path.exists(shallow_path):
+                os.unlink(shallow_path)
+
+            proj._RemoteFetch = mock.MagicMock(return_value=True)
+
+            res = proj.Sync_NetworkHalf(optimized_fetch=True)
+
+            self.assertTrue(res.success)
+            proj._RemoteFetch.assert_called_once()
+
+    def test_sync_network_half_shallow_exists_skips(self):
+        """Test Sync_NetworkHalf skips fetch if shallow file exists for shallow clone."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, depth=1)
+            os.makedirs(proj.gitdir, exist_ok=True)
+            os.makedirs(proj.objdir, exist_ok=True)
+            with open(os.path.join(proj.gitdir, "shallow"), "w") as f:
+                f.write("")
+
+            proj._RemoteFetch = mock.MagicMock()
+
+            res = proj.Sync_NetworkHalf(optimized_fetch=True)
+
+            self.assertTrue(res.success)
+            proj._RemoteFetch.assert_not_called()
+
+    def test_remote_fetch_shallow_missing_fetches(self):
+        """Test _RemoteFetch fetches if shallow file is missing for shallow clone."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, depth=1)
+            shallow_path = os.path.join(proj.gitdir, "shallow")
+            if os.path.exists(shallow_path):
+                os.unlink(shallow_path)
+
+            with mock.patch("project.GitCommand") as mock_git_cmd:
+                mock_cmd_instance = mock.MagicMock()
+                mock_cmd_instance.Wait.return_value = 0
+                mock_git_cmd.return_value = mock_cmd_instance
+
+                res = proj._RemoteFetch(
+                    current_branch_only=True,
+                    depth=1,
+                    use_superproject=False,
+                )
+
+                self.assertTrue(res)
+                mock_git_cmd.assert_called()
+
+    def test_remote_fetch_shallow_exists_skips(self):
+        """Test _RemoteFetch skips fetch if shallow file exists for shallow clone."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, depth=1)
+            os.makedirs(proj.gitdir, exist_ok=True)
+            os.makedirs(proj.objdir, exist_ok=True)
+            with open(os.path.join(proj.gitdir, "shallow"), "w") as f:
+                f.write("")
+
+            with mock.patch("project.GitCommand") as mock_git_cmd:
+                res = proj._RemoteFetch(
+                    current_branch_only=True,
+                    depth=1,
+                    use_superproject=False,
+                )
+
+                self.assertTrue(res)
+                mock_git_cmd.assert_not_called()
+
