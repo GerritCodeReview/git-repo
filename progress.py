@@ -159,6 +159,8 @@ class Progress:
             inc: The number of items completed.
             msg: The message to display. If None, use the last message.
         """
+        if self._ended:
+            return
         self._done += inc
         if msg is None:
             msg = self._last_msg
