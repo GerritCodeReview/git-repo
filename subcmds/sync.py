@@ -2113,6 +2113,9 @@ later is required to fix a server side protocol bug.
             superproject_logging_data,
         )
 
+        if not opt.quiet:
+            print("Finalizing sync state...")
+
         # Log the previous sync analysis state from the config.
         self.git_event_log.LogDataConfigEvents(
             mp.config.GetSyncAnalysisStateData(), "previous_sync_state"
