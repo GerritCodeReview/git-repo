@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7d5f836_6f75a7b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1030207
+      },
+      "writtenOn": "2026-04-17T00:58:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d274b5b5_8702116d",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 2
+      },
+      "revId": "1261ba07112f3b872de14200ed57189a862a9163",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c25126d9_da99493e",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-04-16T23:57:51Z",
       "side": 1,
       "message": "add a `Bug: 503081454` footer",
+      "revId": "1261ba07112f3b872de14200ed57189a862a9163",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4abd7a43_d641f15b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1030207
+      },
+      "writtenOn": "2026-04-17T00:58:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c25126d9_da99493e",
       "revId": "1261ba07112f3b872de14200ed57189a862a9163",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
