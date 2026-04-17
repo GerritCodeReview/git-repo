@@ -16,6 +16,24 @@
       "message": "is there a reference bug that can be added?",
       "revId": "b575ab81a555c3a27ba0d800277db154954180db",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b2300c2_ca47e402",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-04-17T22:43:08Z",
+      "side": 1,
+      "message": "just created b/503869525 and added it to the footer",
+      "parentUuid": "492b3cfb_f21f8143",
+      "revId": "b575ab81a555c3a27ba0d800277db154954180db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
