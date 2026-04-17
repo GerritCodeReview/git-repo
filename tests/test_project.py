@@ -567,6 +567,31 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             fakeproj.config.SetString("manifest.platform", "auto")
             self.assertEqual(fakeproj.manifest_platform, "auto")
 
+    def test_check_immutable_revision_metaproject_skips_manifest_load(self):
+        """MetaProjects must not parse manifest.xml during immutable check.
+
+        During `repo init` the manifestProject's own Sync_NetworkHalf runs
+        before manifest.xml has been linked into .repo/, so
+        _CheckForImmutableRevision must not touch it.
+        """
+
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = self.setUpManifest(tempdir)
+            manifest_path = os.path.join(
+                tempdir, ".repo", manifest_xml.MANIFEST_FILE_NAME
+            )
+            self.assertFalse(os.path.exists(manifest_path))
+
+            fakeproj.revisionExpr = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+            fakeproj.upstream = "refs/heads/main"
+
+            # Must return False without raising ManifestParseError, and
+            # must leave the absent manifest.xml untouched.
+            self.assertFalse(
+                fakeproj._CheckForImmutableRevision(use_superproject=None)
+            )
+            self.assertFalse(os.path.exists(manifest_path))
+
 
 class StatelessSyncTests(unittest.TestCase):
     """Tests for stateless sync strategy."""
