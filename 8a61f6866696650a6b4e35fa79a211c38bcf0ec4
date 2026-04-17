@@ -88,6 +88,24 @@
       "parentUuid": "3cedf3e1_00fd6caa",
       "revId": "8a61f6866696650a6b4e35fa79a211c38bcf0ec4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9128d90_3953115d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-04-17T23:30:31Z",
+      "side": 1,
+      "message": "\u003e i looked in Chromium\u0027s .gitignore to see if they were ignoring these files and didn\u0027t see it, but i checked again and `/GEMINI.md` is def in there\n\n+1\n\n\u003e \n\u003e if you want to ignore `/GEMINI.md` \u0026 `/CLAUDE.md`, that seems fine.  what uses `AGENTS.md` ?\n\nA bunch, see https://agents.md/\n\nFrom my quick web search:\n\u003e This file is supported by over 25 tools, including Codex, Copilot, Cursor, and Windsurf, and is now governed by the Linux Foundation.",
+      "parentUuid": "516e75e3_b6cdcad9",
+      "revId": "8a61f6866696650a6b4e35fa79a211c38bcf0ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
