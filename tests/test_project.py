@@ -567,6 +567,25 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             fakeproj.config.SetString("manifest.platform", "auto")
             self.assertEqual(fakeproj.manifest_platform, "auto")
 
+    def test_check_immutable_revision_does_not_load_manifest_early(self):
+        """Do not parse manifest.xml before first init links it."""
+
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = self.setUpManifest(tempdir)
+            manifest_path = os.path.join(
+                tempdir, ".repo", manifest_xml.MANIFEST_FILE_NAME
+            )
+            self.assertFalse(os.path.exists(manifest_path))
+            self.assertFalse(fakeproj.manifest._loaded)
+
+            fakeproj.revisionExpr = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+            fakeproj.upstream = "refs/heads/main"
+
+            self.assertFalse(
+                fakeproj._CheckForImmutableRevision(use_superproject=None)
+            )
+            self.assertFalse(fakeproj.manifest._loaded)
+
 
 class StatelessSyncTests(unittest.TestCase):
     """Tests for stateless sync strategy."""
