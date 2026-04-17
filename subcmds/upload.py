@@ -803,9 +803,10 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 project_list=pending_proj_names, worktree_list=pending_worktrees
             ):
                 if LocalSyncState(manifest).IsPartiallySynced():
-                    logger.error(
-                        "Partially synced tree detected. Syncing all projects "
-                        "may resolve issues you're seeing."
+                    logger.info(
+                        "Tip: A partially synced tree was detected. "
+                        "If this failure involves cross-project dependencies, "
+                        "a full `repo sync` might help."
                     )
                 ret = 1
         if ret:
