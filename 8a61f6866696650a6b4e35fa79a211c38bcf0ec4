@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c9a8528_b8e3d092",
+        "filename": ".gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-18T01:08:24Z",
+      "side": 1,
+      "message": "```suggestion\n# AI tool related.\n```",
+      "revId": "8a61f6866696650a6b4e35fa79a211c38bcf0ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5186a391_7f8f8487",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -104,6 +121,24 @@
       "side": 1,
       "message": "\u003e i looked in Chromium\u0027s .gitignore to see if they were ignoring these files and didn\u0027t see it, but i checked again and `/GEMINI.md` is def in there\n\n+1\n\n\u003e \n\u003e if you want to ignore `/GEMINI.md` \u0026 `/CLAUDE.md`, that seems fine.  what uses `AGENTS.md` ?\n\nA bunch, see https://agents.md/\n\nFrom my quick web search:\n\u003e This file is supported by over 25 tools, including Codex, Copilot, Cursor, and Windsurf, and is now governed by the Linux Foundation.",
       "parentUuid": "516e75e3_b6cdcad9",
+      "revId": "8a61f6866696650a6b4e35fa79a211c38bcf0ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c08871bd_4cc0f175",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-18T01:08:24Z",
+      "side": 1,
+      "message": "sounds fine.  add GEMINI.md and we\u0027ll call it good.\n\nand to be clear, pretty sure we want to use `/` prefix here and not ignore the files in any path, only the top dir.",
+      "parentUuid": "f9128d90_3953115d",
       "revId": "8a61f6866696650a6b4e35fa79a211c38bcf0ec4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
