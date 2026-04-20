@@ -92,12 +92,17 @@ class GitConfig:
     def _getUserConfig():
         """Get the user-specific config file.
 
-        Prefers the XDG config location if available, with fallback to
-        ~/.gitconfig
+        Returns the value of the GIT_CONFIG_GLOBAL environment
+        variable if set. Otherwise prefers the XDG config location if
+        available, with fallback to ~/.gitconfig
 
         This matches git behavior:
         https://git-scm.com/docs/git-config#FILES
+
         """
+        git_config_global = os.getenv("GIT_CONFIG_GLOBAL")
+        if git_config_global:
+            return os.path.expanduser(git_config_global)
         xdg_config_home = os.getenv(
             "XDG_CONFIG_HOME", os.path.expanduser("~/.config")
         )
