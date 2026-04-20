@@ -477,6 +477,113 @@ class GetPreciousObjectsState(unittest.TestCase):
         )
 
 
+class CheckForBloatedProjects(unittest.TestCase):
+    """Tests for Sync._CheckForBloatedProjects."""
+
+    def setUp(self):
+        self.cmd = sync.Sync()
+        self.opt = mock.Mock()
+        self.opt.quiet = True
+        self.opt.jobs = 1
+        self.project = mock.MagicMock(clone_depth="1")
+        self.project.name = "project"
+        self.project.Exists = True
+        self.project.worktree = "worktree"
+        self.cmd.git_event_log = mock.MagicMock()
+
+    @mock.patch("subcmds.sync.git_require")
+    def test_git_version_unsupported(self, mock_git_require):
+        """Test that it returns early if git version is unsupported."""
+        mock_git_require.return_value = False
+        self.cmd._CheckForBloatedProjects([self.project], self.opt)
+        self.assertFalse(self.cmd.git_event_log.ErrorEvent.called)
+
+    @mock.patch("subcmds.sync.git_require")
+    def test_no_projects(self, mock_git_require):
+        """Test that it returns early if no projects have clone_depth."""
+        mock_git_require.return_value = True
+        self.project.clone_depth = None
+        self.cmd._CheckForBloatedProjects([self.project], self.opt)
+        self.assertFalse(self.cmd.git_event_log.ErrorEvent.called)
+
+    @mock.patch("subcmds.sync.git_require")
+    @mock.patch("subcmds.sync.Progress")
+    def test_bloated_project_found(self, mock_progress, mock_git_require):
+        """Test that it logs warning for bloated project."""
+        mock_git_require.return_value = True
+
+        self.cmd.get_parallel_context = mock.Mock(
+            return_value={"projects": [self.project]}
+        )
+
+        def mock_execute_in_parallel(
+            jobs, func, work_items, callback, **kwargs
+        ):
+            callback(None, mock.Mock(), ["project"])
+            return True
+
+        self.cmd.ExecuteInParallel = mock_execute_in_parallel
+
+        with mock.patch.object(self.cmd, "ParallelContext"):
+            self.cmd._CheckForBloatedProjects([self.project], self.opt)
+
+        self.cmd.git_event_log.ErrorEvent.assert_called_once()
+
+
+class GCProjectsTest(unittest.TestCase):
+    """Tests for Sync._GCProjects."""
+
+    def setUp(self):
+        self.cmd = sync.Sync()
+        self.opt = mock.Mock()
+        self.opt.quiet = True
+        self.opt.auto_gc = True
+        self.opt.jobs = 1
+        self.project = mock.MagicMock()
+        self.project.name = "project"
+        self.project.objdir = "objdir"
+        self.project.gitdir = "gitdir"
+        self.project.bare_git = mock.MagicMock()
+        self.project.bare_git._project = self.project
+        self.cmd.git_event_log = mock.MagicMock()
+
+    @mock.patch("subcmds.sync.Progress")
+    def test_GCProjects_skip_gc(self, mock_progress):
+        """Test that it skips GC if opt.auto_gc is False."""
+        self.opt.auto_gc = False
+        self.cmd._SetPreciousObjectsState = mock.Mock()
+        self.cmd._GCProjects([self.project], self.opt, None)
+        self.cmd._SetPreciousObjectsState.assert_called_once_with(
+            self.project, self.opt
+        )
+        self.assertFalse(self.project.bare_git.gc.called)
+
+    @mock.patch("subcmds.sync.Progress")
+    def test_GCProjects_sequential(self, mock_progress):
+        """Test sequential GC (jobs < 2)."""
+        self.cmd._SetPreciousObjectsState = mock.Mock()
+        self.cmd._GCProjects([self.project], self.opt, None)
+        self.project.config.SetString.assert_called_once_with(
+            "gc.autoDetach", "false"
+        )
+        self.project.bare_git.gc.assert_called_once_with("--auto")
+
+    @mock.patch("subcmds.sync.Progress")
+    def test_GCProjects_parallel(self, mock_progress):
+        """Test parallel GC (jobs >= 2)."""
+        self.opt.jobs = 2
+        self.cmd._SetPreciousObjectsState = mock.Mock()
+
+        with mock.patch("subcmds.sync._threading.Thread") as mock_thread:
+            mock_t = mock.MagicMock()
+            mock_thread.return_value = mock_t
+            err_event = mock.Mock()
+            err_event.is_set.return_value = False
+            self.cmd._GCProjects([self.project], self.opt, err_event)
+
+        self.assertTrue(mock_thread.called)
+
+
 class SyncCommand(unittest.TestCase):
     """Tests for cmd.Execute."""
 
