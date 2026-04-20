@@ -679,6 +679,7 @@ class InterleavedSyncTest(unittest.TestCase):
             manifest=self.manifest, outer_client=self.outer_client
         )
         self.cmd.outer_manifest = self.manifest
+        self.cmd._bloated_projects = []
 
         # Mock projects.
         self.projA = FakeProject("projA", objdir="objA")
@@ -846,6 +847,135 @@ class InterleavedSyncTest(unittest.TestCase):
             self.assertEqual(result.checkout_errors, [])
             project.Sync_NetworkHalf.assert_called_once()
             project.Sync_LocalHalf.assert_called_once()
+
+    def test_worker_runs_gc_and_bloat_check(self):
+        """Test _SyncProjectList runs GC and bloat check."""
+        opt = self._get_opts(["--interleaved", "--auto-gc"])
+        project = self.projA
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        project.manifest.manifestProject.config = mock.MagicMock()
+        project.bare_git = mock.MagicMock()
+        project.clone_depth = 1
+        project.Exists = True
+        project.manifest.IsArchive = False
+        self.mock_context["projects"] = [project]
+
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buf_instance = mock.MagicMock()
+            mock_sync_buf_instance.Finish.return_value = True
+            mock_sync_buf_instance.errors = []
+            mock_sync_buffer.return_value = mock_sync_buf_instance
+
+            with mock.patch.object(
+                sync.Sync, "_SetPreciousObjectsState"
+            ) as mock_set_precious:
+                with mock.patch.object(
+                    sync.Sync, "_CheckOneBloatedProject"
+                ) as mock_check_bloat:
+                    mock_check_bloat.return_value = "projA"
+                    with mock.patch(
+                        "subcmds.sync.git_require", return_value=True
+                    ):
+                        with mock.patch("os.cpu_count", return_value=4):
+                            result_obj = self.cmd._SyncProjectList(opt, [0])
+
+                            mock_set_precious.assert_called_once_with(
+                                project, opt
+                            )
+                            project.bare_git.gc.assert_called_once_with(
+                                "--auto",
+                                config={
+                                    "pack.threads": 4,
+                                    "gc.autoDetach": "false",
+                                },
+                            )
+                            mock_check_bloat.assert_called_once_with(0)
+                            self.assertEqual(
+                                result_obj.bloated_projects, ["projA"]
+                            )
+
+    def test_worker_runs_pack_refs_on_secondary_projects(self):
+        """Test _SyncProjectList runs pack_refs on secondary projects."""
+        opt = self._get_opts(["--interleaved", "--auto-gc"])
+        projectA = self.projA
+        projectA.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        projectA.Sync_LocalHalf = mock.Mock()
+        projectA.manifest.manifestProject.config = mock.MagicMock()
+        projectA.bare_git = mock.MagicMock()
+        projectA.manifest.IsArchive = False
+
+        projectB = self.projB
+        projectB.objdir = projectA.objdir  # Share objdir
+        projectB.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        projectB.Sync_LocalHalf = mock.Mock()
+        projectB.manifest.manifestProject.config = mock.MagicMock()
+        projectB.bare_git = mock.MagicMock()
+        projectB.manifest.IsArchive = False
+
+        self.mock_context["projects"] = [projectA, projectB]
+
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buf_instance = mock.MagicMock()
+            mock_sync_buf_instance.Finish.return_value = True
+            mock_sync_buf_instance.errors = []
+            mock_sync_buffer.return_value = mock_sync_buf_instance
+
+            with mock.patch.object(sync.Sync, "_SetPreciousObjectsState"):
+                with mock.patch.object(sync.Sync, "_CheckOneBloatedProject"):
+                    with mock.patch(
+                        "subcmds.sync.git_require", return_value=True
+                    ):
+                        with mock.patch("os.cpu_count", return_value=4):
+                            self.cmd._SyncProjectList(opt, [0, 1])
+
+                            # First project runs GC
+                            projectA.bare_git.gc.assert_called_once_with(
+                                "--auto",
+                                config={
+                                    "pack.threads": 4,
+                                    "gc.autoDetach": "false",
+                                },
+                            )
+                            # Second project runs pack_refs
+                            projectB.bare_git.pack_refs.assert_called_once_with(
+                                config={"pack.threads": 4}
+                            )
+
+    def test_worker_skips_gc_on_archive(self):
+        """Test _SyncProjectList skips GC on archive manifests."""
+        opt = self._get_opts(["--interleaved", "--auto-gc"])
+        project = self.projA
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        project.manifest.manifestProject.config = mock.MagicMock()
+        project.bare_git = mock.MagicMock()
+        project.clone_depth = 1
+        project.Exists = True
+        project.manifest.IsArchive = True
+        self.mock_context["projects"] = [project]
+
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buf_instance = mock.MagicMock()
+            mock_sync_buf_instance.Finish.return_value = True
+            mock_sync_buf_instance.errors = []
+            mock_sync_buffer.return_value = mock_sync_buf_instance
+
+            with mock.patch.object(sync.Sync, "_SetPreciousObjectsState"):
+                with mock.patch.object(sync.Sync, "_CheckOneBloatedProject"):
+                    with mock.patch(
+                        "subcmds.sync.git_require", return_value=True
+                    ):
+                        self.cmd._SyncProjectList(opt, [0])
+                        project.bare_git.gc.assert_not_called()
 
     def test_worker_fetch_fails(self):
         """Test _SyncProjectList with a failed fetch."""

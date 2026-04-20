@@ -240,14 +240,19 @@ class _SyncResult(NamedTuple):
 
 
 class _InterleavedSyncResult(NamedTuple):
-    """Result of an interleaved sync.
+    """Results of _SyncProjectList.
 
     Attributes:
       results (List[_SyncResult]): A list of results, one for each project
           processed. Empty if the worker failed before creating results.
+      bloated_projects (List[str]): A list of project names that are bloated.
+      gc_success (Optional[bool]): True if GC succeeded, False if failed,
+          None if not run.
     """
 
     results: List[_SyncResult]
+    bloated_projects: List[str]
+    gc_success: Optional[bool]
 
 
 class SuperprojectError(SyncError):
@@ -2140,7 +2145,7 @@ later is required to fix a server side protocol bug.
                 "experience, sync the entire tree."
             )
 
-        if existing:
+        if existing and not opt.interleaved:
             self._CheckForBloatedProjects(all_projects, opt)
 
         for project_name in self._bloated_projects:
@@ -2494,7 +2499,9 @@ later is required to fix a server side protocol bug.
         )
 
     @classmethod
-    def _SyncProjectList(cls, opt, project_indices) -> _InterleavedSyncResult:
+    def _SyncProjectList(
+        cls, opt, project_indices, total_workers=1
+    ) -> _InterleavedSyncResult:
         """Worker for interleaved sync.
 
         This function is responsible for syncing a group of projects that share
@@ -2504,6 +2511,7 @@ later is required to fix a server side protocol bug.
             opt: Program options returned from optparse.  See _Options().
             project_indices: A list of indices into the projects list stored in
                 the parallel context.
+            total_workers: Total number of parallel workers in the pool.
 
         Returns:
             An `_InterleavedSyncResult` containing the results for each project.
@@ -2524,10 +2532,56 @@ later is required to fix a server side protocol bug.
             for idx in project_indices:
                 project = projects[idx]
                 results.append(cls._SyncOneProject(opt, idx, project))
+
+            # Post-sync operations for this group (sharing same objdir)
+            # Always set precious objects state to avoid regressions.
+            for idx in project_indices:
+                cls._SetPreciousObjectsState(projects[idx], opt)
+
+            gc_success = None
+            if opt.auto_gc and not first_project.manifest.IsArchive:
+                try:
+                    # Calculate pack.threads to avoid CPU contention
+                    cpu_count = os.cpu_count() or 1
+                    config = {
+                        "pack.threads": (
+                            cpu_count // total_workers
+                            if cpu_count > total_workers
+                            else 1
+                        )
+                    }
+
+                    # Run GC on the shared objdir (via the first project)
+                    cls._RunOneGC(first_project, config=config)
+                    gc_success = True
+
+                    # Run pack-refs on the remaining projects in the group
+                    # to ensure their refs are packed since they share objdir
+                    # but have distinct gitdirs.
+                    for idx in project_indices[1:]:
+                        projects[idx].bare_git.pack_refs(config=config)
+                except Exception as e:
+                    logger.error(
+                        "error: Cannot run GC in %s: %s", first_project.name, e
+                    )
+                    gc_success = False
+
+            bloated_projects = []
+            if git_require((2, 23, 0)):
+                for idx in project_indices:
+                    p = projects[idx]
+                    if getattr(p, "clone_depth", None):
+                        res = cls._CheckOneBloatedProject(idx)
+                        if res:
+                            bloated_projects.append(res)
         finally:
             del sync_dict[key]
 
-        return _InterleavedSyncResult(results=results)
+        return _InterleavedSyncResult(
+            results=results,
+            bloated_projects=bloated_projects,
+            gc_success=gc_success,
+        )
 
     def _ProcessSyncInterleavedResults(
         self,
@@ -2543,6 +2597,10 @@ later is required to fix a server side protocol bug.
         ret = True
         projects = self.get_parallel_context()["projects"]
         for result_group in results_sets:
+            self._bloated_projects.extend(result_group.bloated_projects)
+            if result_group.gc_success is False:
+                ret = False
+                err_event.set()
             for result in result_group.results:
                 pm.update()
                 project = projects[result.project_index]
@@ -2728,7 +2786,9 @@ later is required to fix a server side protocol bug.
                                 if not self.ExecuteInParallel(
                                     jobs,
                                     functools.partial(
-                                        self._SyncProjectList, opt
+                                        self._SyncProjectList,
+                                        opt,
+                                        total_workers=jobs,
                                     ),
                                     work_items,
                                     callback=callback,
@@ -2764,8 +2824,6 @@ later is required to fix a server side protocol bug.
         err_update_projects, err_update_linkfiles = self._UpdateManifestLists(
             opt, err_event, errors
         )
-        if not self.outer_client.manifest.IsArchive:
-            self._GCProjects(project_list, opt, err_event)
 
         self._PrintManifestNotices(opt)
         if err_event.is_set():
