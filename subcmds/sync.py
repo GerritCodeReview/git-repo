@@ -1244,14 +1244,15 @@ later is required to fix a server side protocol bug.
 
         return False
 
-    def _SetPreciousObjectsState(self, project: Project, opt):
+    @classmethod
+    def _SetPreciousObjectsState(cls, project: Project, opt):
         """Correct the preciousObjects state for the project.
 
         Args:
             project: the project to examine, and possibly correct.
             opt: options given to sync.
         """
-        expected = self._GetPreciousObjectsState(project, opt)
+        expected = cls._GetPreciousObjectsState(project, opt)
         actual = (
             project.config.GetBoolean("extensions.preciousObjects") or False
         )
@@ -1285,7 +1286,17 @@ later is required to fix a server side protocol bug.
                 project.config.SetString("extensions.preciousObjects", None)
                 project.config.SetString("gc.pruneExpire", None)
 
-    def _GCProjects(self, projects, opt, err_event):
+    @staticmethod
+    def _RunOneGC(project: Project, config: Optional[dict] = None) -> None:
+        """Run auto GC on a single project."""
+        local_config = {}
+        if config:
+            local_config.update(config)
+        local_config["gc.autoDetach"] = "false"
+        project.bare_git.gc("--auto", config=local_config)
+
+    @classmethod
+    def _GCProjects(cls, projects: List[Project], opt: optparse.Values, err_event: _threading.Event) -> None:
         """Perform garbage collection.
 
         If We are skipping garbage collection (opt.auto_gc not set), we still
@@ -1295,7 +1306,7 @@ later is required to fix a server side protocol bug.
         if not opt.auto_gc:
             # Just repair preciousObjects state, and return.
             for project in projects:
-                self._SetPreciousObjectsState(project, opt)
+                cls._SetPreciousObjectsState(project, opt)
             return
 
         pm = Progress(
@@ -1305,9 +1316,8 @@ later is required to fix a server side protocol bug.
 
         tidy_dirs = {}
         for project in projects:
-            self._SetPreciousObjectsState(project, opt)
+            cls._SetPreciousObjectsState(project, opt)
 
-            project.config.SetString("gc.autoDetach", "false")
             # Only call git gc once per objdir, but call pack-refs for the
             # remainder.
             if project.objdir not in tidy_dirs:
@@ -1328,7 +1338,7 @@ later is required to fix a server side protocol bug.
                 pm.update(msg=bare_git._project.name)
 
                 if run_gc:
-                    bare_git.gc("--auto")
+                    cls._RunOneGC(bare_git._project)
                 else:
                     bare_git.pack_refs()
             pm.end()
@@ -1345,7 +1355,7 @@ later is required to fix a server side protocol bug.
             try:
                 try:
                     if run_gc:
-                        bare_git.gc("--auto", config=config)
+                        cls._RunOneGC(bare_git._project, config=config)
                     else:
                         bare_git.pack_refs(config=config)
                 except GitError:
