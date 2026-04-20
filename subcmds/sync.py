@@ -1448,7 +1448,6 @@ later is required to fix a server side protocol bug.
         if not projects:
             return
 
-        bloated_projects = []
         pm = Progress(
             "Checking for bloat", len(projects), delay=False, quiet=opt.quiet
         )
@@ -1456,7 +1455,7 @@ later is required to fix a server side protocol bug.
         def _ProcessResults(pool, pm, results):
             for result in results:
                 if result:
-                    bloated_projects.append(result)
+                    self._bloated_projects.append(result)
                 pm.update(msg="")
 
         with self.ParallelContext():
@@ -1470,15 +1469,6 @@ later is required to fix a server side protocol bug.
                 chunksize=1,
             )
         pm.end()
-
-        for project_name in bloated_projects:
-            warn_msg = (
-                f'warning: Project "{project_name}" is accumulating '
-                'unoptimized data. Please run "repo sync --auto-gc" or '
-                '"repo gc --repack" to clean up.'
-            )
-            self.git_event_log.ErrorEvent(warn_msg)
-            logger.warning(warn_msg)
 
     def _UpdateRepoProject(self, opt, manifest, errors):
         """Fetch the repo project and check for updates."""
@@ -2097,6 +2087,7 @@ later is required to fix a server side protocol bug.
 
         self._fetch_times = _FetchTimes(manifest)
         self._local_sync_state = LocalSyncState(manifest)
+        self._bloated_projects = []
 
         if opt.interleaved:
             sync_method = self._SyncInterleaved
@@ -2136,6 +2127,15 @@ later is required to fix a server side protocol bug.
 
         if existing:
             self._CheckForBloatedProjects(all_projects, opt)
+
+        for project_name in sorted(self._bloated_projects):
+            warn_msg = (
+                f'warning: Project "{project_name}" is accumulating '
+                'unoptimized data. Please run "repo sync --auto-gc" or '
+                '"repo gc --repack" to clean up.'
+            )
+            self.git_event_log.ErrorEvent(warn_msg)
+            logger.warning(warn_msg)
 
         if not opt.quiet:
             print("repo sync has finished successfully.")
