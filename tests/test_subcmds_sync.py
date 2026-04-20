@@ -552,35 +552,33 @@ class GCProjectsTest(unittest.TestCase):
     def test_GCProjects_skip_gc(self, mock_progress):
         """Test that it skips GC if opt.auto_gc is False."""
         self.opt.auto_gc = False
-        self.cmd._SetPreciousObjectsState = mock.Mock()
-        self.cmd._GCProjects([self.project], self.opt, None)
-        self.cmd._SetPreciousObjectsState.assert_called_once_with(
-            self.project, self.opt
-        )
+        with mock.patch.object(
+            sync.Sync, "_SetPreciousObjectsState"
+        ) as mock_set_state:
+            self.cmd._GCProjects([self.project], self.opt, None)
+            mock_set_state.assert_called_once_with(self.project, self.opt)
         self.assertFalse(self.project.bare_git.gc.called)
 
     @mock.patch("subcmds.sync.Progress")
     def test_GCProjects_sequential(self, mock_progress):
         """Test sequential GC (jobs < 2)."""
-        self.cmd._SetPreciousObjectsState = mock.Mock()
-        self.cmd._GCProjects([self.project], self.opt, None)
-        self.project.config.SetString.assert_called_once_with(
-            "gc.autoDetach", "false"
+        with mock.patch.object(sync.Sync, "_SetPreciousObjectsState"):
+            self.cmd._GCProjects([self.project], self.opt, None)
+        self.project.bare_git.gc.assert_called_once_with(
+            "--auto", config={"gc.autoDetach": "false"}
         )
-        self.project.bare_git.gc.assert_called_once_with("--auto")
 
     @mock.patch("subcmds.sync.Progress")
     def test_GCProjects_parallel(self, mock_progress):
         """Test parallel GC (jobs >= 2)."""
         self.opt.jobs = 2
-        self.cmd._SetPreciousObjectsState = mock.Mock()
-
-        with mock.patch("subcmds.sync._threading.Thread") as mock_thread:
-            mock_t = mock.MagicMock()
-            mock_thread.return_value = mock_t
-            err_event = mock.Mock()
-            err_event.is_set.return_value = False
-            self.cmd._GCProjects([self.project], self.opt, err_event)
+        with mock.patch.object(sync.Sync, "_SetPreciousObjectsState"):
+            with mock.patch("subcmds.sync._threading.Thread") as mock_thread:
+                mock_t = mock.MagicMock()
+                mock_thread.return_value = mock_t
+                err_event = mock.Mock()
+                err_event.is_set.return_value = False
+                self.cmd._GCProjects([self.project], self.opt, err_event)
 
         self.assertTrue(mock_thread.called)
 
