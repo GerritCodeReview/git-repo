@@ -490,6 +490,7 @@ class CheckForBloatedProjects(unittest.TestCase):
         self.project.Exists = True
         self.project.worktree = "worktree"
         self.cmd.git_event_log = mock.MagicMock()
+        self.cmd._bloated_projects = []
 
     @mock.patch("subcmds.sync.git_require")
     def test_git_version_unsupported(self, mock_git_require):
@@ -509,7 +510,7 @@ class CheckForBloatedProjects(unittest.TestCase):
     @mock.patch("subcmds.sync.git_require")
     @mock.patch("subcmds.sync.Progress")
     def test_bloated_project_found(self, mock_progress, mock_git_require):
-        """Test that it logs warning for bloated project."""
+        """Test that it adds project to _bloated_projects."""
         mock_git_require.return_value = True
 
         self.cmd.get_parallel_context = mock.Mock(
@@ -527,7 +528,7 @@ class CheckForBloatedProjects(unittest.TestCase):
         with mock.patch.object(self.cmd, "ParallelContext"):
             self.cmd._CheckForBloatedProjects([self.project], self.opt)
 
-        self.cmd.git_event_log.ErrorEvent.assert_called_once()
+        self.assertEqual(self.cmd._bloated_projects, ["project"])
 
 
 class GCProjectsTest(unittest.TestCase):
