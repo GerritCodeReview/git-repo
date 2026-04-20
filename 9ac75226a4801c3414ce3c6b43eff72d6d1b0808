@@ -108,6 +108,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1335ccd_21d269c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3424839
+      },
+      "writtenOn": "2026-04-20T20:33:49Z",
+      "side": 1,
+      "message": "OK, I added a --format switch to select JSON. Didn\u0027t add new fields though.",
+      "parentUuid": "b29753c5_e0554900",
+      "revId": "9ac75226a4801c3414ce3c6b43eff72d6d1b0808",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ecfdb30_391347ac",
