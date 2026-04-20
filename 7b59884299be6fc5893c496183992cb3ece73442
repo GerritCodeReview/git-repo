@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "698ba858_e0509578",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2131,
+      "author": {
+        "id": 1030207
+      },
+      "writtenOn": "2026-04-20T20:38:38Z",
+      "side": 1,
+      "message": "Consider sorting `self._bloated_projects` to ensure the warnings are printed in a deterministic order, since the results from parallel execution might arrive in any order.\n\n```python\nfor project_name in sorted(self._bloated_projects):\n```\n\nConsider sorting `self._bloated_projects` to ensure the warnings are printed in a deterministic order, since the results from parallel execution might arrive in any order.\n\n```python\nfor project_name in sorted(self._bloated_projects):\n```",
+      "range": {
+        "startLine": 2131,
+        "startChar": 0,
+        "endLine": 2131,
+        "endChar": 0
+      },
+      "revId": "7b59884299be6fc5893c496183992cb3ece73442",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
