@@ -58,3 +58,45 @@ def test_direct_interp(shebang: str, interp: str) -> None:
 def test_env_interp(shebang: str, interp: str) -> None:
     """Lines whose shebang launches through `env`."""
     assert hooks.RepoHook._ExtractInterpFromShebang(shebang) == interp
+
+
+def test_post_sync_argument_validation() -> None:
+    """Test that post-sync hook requires exact API arguments."""
+
+    class FakeProject:
+
+        def __init__(self):
+            self.worktree = None
+            self.enabled_repo_hooks = ["post-sync"]
+
+    hook = hooks.RepoHook(
+        hook_type="post-sync",
+        hooks_project=FakeProject(),
+        repo_topdir="/topdir",
+        manifest_url="https://gerrit",
+        allow_all_hooks=True,
+    )
+
+    import sys
+    from io import StringIO
+
+    old_stderr = sys.stderr
+    sys.stderr = StringIO()
+
+    try:
+        # Call with missing arg `sync_duration_seconds`
+        res = hook.Run(repo_topdir="/topdir")
+        assert res is False
+        assert "hook 'post-sync' called incorrectly" in sys.stderr.getvalue()
+
+        # Mock _CheckHook and _ExecuteHook to test success path
+        hook._CheckHook = lambda: None
+        hook._ExecuteHook = lambda **kw: None
+
+        res = hook.Run(
+            repo_topdir="/topdir", sync_duration_seconds=12.345
+        )
+        assert res is True
+
+    finally:
+        sys.stderr = old_stderr
