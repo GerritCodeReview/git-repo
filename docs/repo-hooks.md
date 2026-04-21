@@ -163,13 +163,14 @@ Example:
 The `post-sync.py` file should be defined like:
 
 ```py
-def main(repo_topdir=None, **kwargs):
+def main(repo_topdir=None, sync_duration_seconds=None, **kwargs):
     """Main function invoked directly by repo.
 
     We must use the name "main" as that is what repo requires.
 
     Args:
       repo_topdir: The absolute path to the top-level directory of the repo workspace.
+      sync_duration_seconds: The duration of the sync operation in seconds.
       kwargs: Leave this here for forward-compatibility.
     """
 ```
