@@ -264,6 +264,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "c232eead_48153db6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-04-21T18:30:04Z",
+      "side": 1,
+      "message": "I realized my last comment was resolved by someone (a spammer?). not sure if you had a chance to take a look at my feedback @carlosfsanz@meta.com",
+      "parentUuid": "d0a4bb7e_2e48bf60",
+      "range": {
+        "startLine": 18,
+        "startChar": 42,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "9e6b9a25a4f71e0f33ad99e654488ff6652d926e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6e97cb76_6d7e9e6f",
