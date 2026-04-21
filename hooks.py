@@ -388,6 +388,7 @@ class RepoHook:
             # Run the hook by importing directly.
             self._ExecuteHookViaImport(data, context, **kwargs)
         finally:
+
             # Restore sys.path and CWD.
             sys.path = orig_syspath
             os.chdir(orig_path)

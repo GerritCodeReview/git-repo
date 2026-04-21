@@ -1981,17 +1981,21 @@ later is required to fix a server side protocol bug.
 
     def Execute(self, opt, args):
         errors = []
+        start_time = time.time()
         try:
             self._ExecuteHelper(opt, args, errors)
+            sync_duration_seconds = time.time() - start_time
         except (RepoExitError, RepoChangedException):
             raise
         except (KeyboardInterrupt, Exception) as e:
             raise RepoUnhandledExceptionError(e, aggregate_errors=errors)
 
         # Run post-sync hook only after successful sync
-        self._RunPostSyncHook(opt)
+        self._RunPostSyncHook(
+            opt, sync_duration_seconds=int(sync_duration_seconds)
+        )
 
-    def _RunPostSyncHook(self, opt):
+    def _RunPostSyncHook(self, opt, sync_duration_seconds=None):
         """Run post-sync hook if configured in manifest <repo-hooks>."""
         hook = RepoHook.FromSubcmd(
             hook_type="post-sync",
@@ -1999,7 +2003,10 @@ later is required to fix a server side protocol bug.
             opt=opt,
             abort_if_user_denies=False,
         )
-        success = hook.Run(repo_topdir=self.client.topdir)
+        success = hook.Run(
+            repo_topdir=self.client.topdir,
+            sync_duration_seconds=sync_duration_seconds,
+        )
         if not success:
             print("Warning: post-sync hook reported failure.")
 
