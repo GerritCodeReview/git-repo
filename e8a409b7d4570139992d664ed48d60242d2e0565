@@ -22,6 +22,30 @@
       },
       "revId": "e8a409b7d4570139992d664ed48d60242d2e0565",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ac7afe6_9d530128",
+        "filename": "tests/test_hooks.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-04-21T19:51:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38b5cb92_f98f3e82",
+      "range": {
+        "startLine": 94,
+        "startChar": 8,
+        "endLine": 94,
+        "endChar": 45
+      },
+      "revId": "e8a409b7d4570139992d664ed48d60242d2e0565",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
