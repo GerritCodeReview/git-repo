@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "373cdf64_fe37ee6f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-04-21T18:39:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6640841f_ef3d1887",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 26
+      },
+      "revId": "614d3cb44d8b079f403244379bd84f636c2b928f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53add5e2_70c76102",
@@ -41,6 +65,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc25aafd_a118ce22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-04-21T18:39:39Z",
+      "side": 1,
+      "message": "Done. I have updated  _API_ARGS  in  hooks.py  to include  \"sync_duration_seconds\"  for  \"post-sync\"  hooks, so it passes the argument validation.",
+      "parentUuid": "53add5e2_70c76102",
+      "revId": "614d3cb44d8b079f403244379bd84f636c2b928f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b21bd1e9_d2818e99",
@@ -54,6 +96,24 @@
       "writtenOn": "2026-04-21T17:32:54Z",
       "side": 1,
       "message": "remove empty newline",
+      "revId": "614d3cb44d8b079f403244379bd84f636c2b928f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd7f61b7_4dcd21ea",
+        "filename": "hooks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-04-21T18:39:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b21bd1e9_d2818e99",
       "revId": "614d3cb44d8b079f403244379bd84f636c2b928f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -83,6 +143,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2ff61df5_0fa69dee",
+        "filename": "hooks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-04-21T18:39:39Z",
+      "side": 1,
+      "message": "Done. I have updated  _API_ARGS  in  hooks.py  to include  \"sync_duration_seconds\"  for  \"post-sync\"  hooks, so it passes the argument validation.",
+      "parentUuid": "e543a91b_8c7148e7",
+      "range": {
+        "startLine": 428,
+        "startChar": 8,
+        "endLine": 430,
+        "endChar": 36
+      },
+      "revId": "614d3cb44d8b079f403244379bd84f636c2b928f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "27b62003_c340117a",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -94,6 +178,30 @@
       "writtenOn": "2026-04-21T17:32:54Z",
       "side": 1,
       "message": "WDYT about not casting `sync_duration_seconds` to int for better granularity?",
+      "range": {
+        "startLine": 1995,
+        "startChar": 39,
+        "endLine": 1995,
+        "endChar": 65
+      },
+      "revId": "614d3cb44d8b079f403244379bd84f636c2b928f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf27a1bf_e5087e0c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1995,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-04-21T18:39:39Z",
+      "side": 1,
+      "message": "Sending them all as strings makes sense, we should move the onus of validation downstream, also because this may be used to send richer information.",
+      "parentUuid": "27b62003_c340117a",
       "range": {
         "startLine": 1995,
         "startChar": 39,
