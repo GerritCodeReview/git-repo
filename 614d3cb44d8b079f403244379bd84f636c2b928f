@@ -118,6 +118,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a25c6fc_b2604502",
+        "filename": "hooks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-04-21T18:39:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd7f61b7_4dcd21ea",
+      "revId": "614d3cb44d8b079f403244379bd84f636c2b928f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e543a91b_8c7148e7",
@@ -155,6 +173,30 @@
       "side": 1,
       "message": "Done. I have updated  _API_ARGS  in  hooks.py  to include  \"sync_duration_seconds\"  for  \"post-sync\"  hooks, so it passes the argument validation.",
       "parentUuid": "e543a91b_8c7148e7",
+      "range": {
+        "startLine": 428,
+        "startChar": 8,
+        "endLine": 430,
+        "endChar": 36
+      },
+      "revId": "614d3cb44d8b079f403244379bd84f636c2b928f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ca5a339_a370c322",
+        "filename": "hooks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-04-21T18:39:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ff61df5_0fa69dee",
       "range": {
         "startLine": 428,
         "startChar": 8,
