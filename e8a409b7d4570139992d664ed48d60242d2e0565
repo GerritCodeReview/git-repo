@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38b5cb92_f98f3e82",
+        "filename": "tests/test_hooks.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-04-21T19:42:40Z",
+      "side": 1,
+      "message": "it\u0027d be better to verify that `_ExecuteHook` actually receives `sync_duration_seconds`, with something like:\n```\nexecuted_kwargs \u003d {}\ndef fake_execute(**kw):\n    executed_kwargs.update(kw)\n...\nassert executed_kwargs.get(\"sync_duration_seconds\") \u003d\u003d 12.345\n\n```",
+      "range": {
+        "startLine": 94,
+        "startChar": 8,
+        "endLine": 94,
+        "endChar": 45
+      },
+      "revId": "e8a409b7d4570139992d664ed48d60242d2e0565",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
