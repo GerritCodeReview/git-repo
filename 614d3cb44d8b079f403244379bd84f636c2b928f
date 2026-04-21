@@ -85,6 +85,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "277c12f6_08059bb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-04-21T18:56:43Z",
+      "side": 1,
+      "message": "unresolving, please update `docs/repo-hooks.md` and add tests",
+      "parentUuid": "dc25aafd_a118ce22",
+      "revId": "614d3cb44d8b079f403244379bd84f636c2b928f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b21bd1e9_d2818e99",
         "filename": "hooks.py",
         "patchSetId": 1
