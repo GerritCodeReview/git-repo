@@ -2559,6 +2559,23 @@ class Project:
             # There is no such persistent revision. We have to fetch it.
             return False
 
+    def _SharingProjectHasShallow(self):
+        """Check if another project sharing this objdir has a "shallow" file
+
+        If any project sharing this objdir has a shallow file in its gitdir,
+        then the shared objdir may be depth-limited, and every other project
+        sharing this objdir needs its own shallow file so that git knows
+        where history is truncated.
+        """
+        other_projects = self.manifest.GetProjectsWithName(
+            self.name, all_manifests=True
+        )
+        for project in other_projects:
+            if project.gitdir != self.gitdir:
+                if os.path.exists(os.path.join(project.gitdir, "shallow")):
+                    return True
+        return False
+
     def _FetchArchive(self, tarpath, cwd=None):
         cmd = ["archive", "-v", "-o", tarpath]
         cmd.append("--remote=%s" % self.remote.url)
@@ -2624,12 +2641,13 @@ class Project:
                     not depth
                     or os.path.exists(os.path.join(self.gitdir, "shallow"))
                 ):
-                    if verbose:
-                        print(
-                            "Skipped fetching project %s (already have "
-                            "persistent ref)" % self.name
-                        )
-                    return True
+                    if not self._SharingProjectHasShallow():
+                        if verbose:
+                            print(
+                                "Skipped fetching project %s (already have "
+                                "persistent ref)" % self.name
+                            )
+                        return True
             if is_sha1 and not depth:
                 # When syncing a specific commit and --depth is not set:
                 # * if upstream is explicitly specified and is not a sha1, fetch
