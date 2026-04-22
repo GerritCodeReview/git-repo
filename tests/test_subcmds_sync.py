@@ -1079,3 +1079,171 @@ class InterleavedSyncTest(unittest.TestCase):
         self.assertTrue(result.checkout_success)
         project.Sync_NetworkHalf.assert_called_once()
         project.Sync_LocalHalf.assert_not_called()
+
+
+class SyncToSuperprojectRevTests(unittest.TestCase):
+    """Tests for Sync._SyncToSuperprojectRev."""
+
+    def setUp(self):
+        self.repodir = tempfile.mkdtemp(".repo")
+        self.manifest = mock.MagicMock(repodir=self.repodir)
+        self.manifest.superproject = mock.MagicMock()
+        self.manifest.path_prefix = ""
+
+        self.mp = mock.MagicMock()
+        self.cmd = sync.Sync(manifest=self.manifest)
+        self.cmd.outer_manifest = self.manifest
+
+        self.opt = mock.Mock()
+        self.opt.verbose = False
+        self.opt.superproject_rev = "deadbeef"
+        self.opt.mp_update = True
+
+        self.errors = []
+
+    def tearDown(self):
+        shutil.rmtree(self.repodir)
+
+    @mock.patch("subcmds.sync.GitCommand")
+    def test_successful_sync(self, mock_git_command):
+        """Test successful sync to superproject rev."""
+        mock_superproject = self.manifest.superproject
+        mock_superproject.Sync.return_value = mock.Mock(success=True)
+
+        mock_git = mock.Mock()
+        mock_git.Wait.return_value = 0
+        mock_git.stdout = "proj branch manifest_commit_hash\n"
+        mock_git_command.return_value = mock_git
+
+        with mock.patch.object(
+            self.cmd, "_UpdateManifestProject"
+        ) as mock_update:
+            self.cmd._SyncToSuperprojectRev(
+                self.opt, self.manifest, self.mp, "name", self.errors
+            )
+
+            mock_superproject.SetRevisionId.assert_called_with("deadbeef")
+            mock_superproject.Sync.assert_called_once()
+            mock_git_command.assert_called_once()
+            self.mp.SetRevision.assert_called_with("manifest_commit_hash")
+            mock_update.assert_called_once()
+            self.assertEqual(self.errors, [])
+
+    @mock.patch("subcmds.sync.GitCommand")
+    def test_parse_error(self, mock_git_command):
+        """Test error when .supermanifest cannot be parsed."""
+        mock_superproject = self.manifest.superproject
+        mock_superproject.Sync.return_value = mock.Mock(success=True)
+
+        mock_git = mock.Mock()
+        mock_git.Wait.return_value = 0
+        # Invalid format (not 3 parts)
+        mock_git.stdout = "invalid_content\n"
+        mock_git_command.return_value = mock_git
+
+        with self.assertRaises(sync.SyncError) as e:
+            self.cmd._SyncToSuperprojectRev(
+                self.opt, self.manifest, self.mp, "name", self.errors
+            )
+        self.assertIn("could not parse .supermanifest", str(e.exception))
+
+    @mock.patch("subcmds.sync.GitCommand")
+    def test_read_error(self, mock_git_command):
+        """Test error when reading .supermanifest fails."""
+        mock_superproject = self.manifest.superproject
+        mock_superproject.Sync.return_value = mock.Mock(success=True)
+
+        mock_git = mock.Mock()
+        mock_git.Wait.return_value = 1
+        mock_git.stderr = "git error"
+        mock_git_command.return_value = mock_git
+
+        with self.assertRaises(sync.SyncError) as e:
+            self.cmd._SyncToSuperprojectRev(
+                self.opt, self.manifest, self.mp, "name", self.errors
+            )
+        self.assertIn("failed to read .supermanifest", str(e.exception))
+
+    def test_no_superproject(self):
+        """Test error when superproject is not defined."""
+        self.manifest.superproject = None
+
+        with self.assertRaises(sync.SyncError) as e:
+            self.cmd._SyncToSuperprojectRev(
+                self.opt, self.manifest, self.mp, "name", self.errors
+            )
+        self.assertIn("superproject not defined", str(e.exception))
+
+    @mock.patch("subcmds.sync.GitCommand")
+    def test_sync_failure(self, mock_git_command):
+        """Test error when superproject sync fails."""
+        mock_superproject = self.manifest.superproject
+        mock_superproject.Sync.return_value = mock.Mock(success=False)
+
+        with self.assertRaises(sync.SyncError) as e:
+            self.cmd._SyncToSuperprojectRev(
+                self.opt, self.manifest, self.mp, "name", self.errors
+            )
+        self.assertIn("failed to sync superproject", str(e.exception))
+
+
+class UpdateAllManifestProjectsTests(unittest.TestCase):
+    """Tests for Sync._UpdateAllManifestProjects."""
+
+    def setUp(self):
+        self.repodir = tempfile.mkdtemp(".repo")
+        self.manifest = mock.MagicMock(repodir=self.repodir)
+        self.manifest.superproject = mock.MagicMock()
+        self.manifest.path_prefix = ""
+        self.manifest.standalone_manifest_url = None
+        self.manifest.submanifests = {}
+
+        self.mp = mock.MagicMock()
+        self.mp.manifest = self.manifest
+        self.mp.standalone_manifest_url = None
+        self.cmd = sync.Sync(manifest=self.manifest)
+        self.cmd.outer_manifest = self.manifest
+
+        self.opt = mock.Mock()
+        self.opt.verbose = False
+        self.opt.superproject_rev = None
+        self.opt.mp_update = True
+
+        self.errors = []
+
+    def tearDown(self):
+        shutil.rmtree(self.repodir)
+
+    def test_superproject_rev_outer_manifest(self):
+        """Test that _SyncToSuperprojectRev is called for outer manifest."""
+        self.opt.superproject_rev = "deadbeef"
+
+        with mock.patch.object(
+            self.cmd, "_SyncToSuperprojectRev"
+        ) as mock_sync_to_rev:
+            self.cmd._UpdateAllManifestProjects(
+                self.opt, self.mp, "name", self.errors
+            )
+            mock_sync_to_rev.assert_called_once_with(
+                self.opt, self.manifest, self.mp, "name", self.errors
+            )
+
+    def test_superproject_rev_submanifest(self):
+        """Test that _SyncToSuperprojectRev is NOT called for submanifest."""
+        self.opt.superproject_rev = "deadbeef"
+        submanifest = mock.MagicMock()
+        submanifest.path_prefix = "sub/"
+        submanifest.standalone_manifest_url = None
+        self.mp.manifest = submanifest
+
+        with mock.patch.object(
+            self.cmd, "_SyncToSuperprojectRev"
+        ) as mock_sync_to_rev:
+            with mock.patch.object(
+                self.cmd, "_UpdateManifestProject"
+            ) as mock_update_manifest:
+                self.cmd._UpdateAllManifestProjects(
+                    self.opt, self.mp, "name", self.errors
+                )
+                mock_sync_to_rev.assert_not_called()
+                mock_update_manifest.assert_called_once()
