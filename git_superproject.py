@@ -34,6 +34,7 @@ import urllib.parse
 
 from git_command import git_require
 from git_command import GitCommand
+from git_config import IsId
 from git_config import RepoConfig
 from git_refs import GitRefs
 import platform_utils
@@ -131,6 +132,10 @@ class Superproject:
     def SetPrintMessages(self, value):
         """Set the _print_messages attribute."""
         self._print_messages = value
+
+    def SetRevisionId(self, revision_id: str) -> None:
+        """Set the revisionId of the superproject to sync to."""
+        self.revision = self._branch = revision_id
 
     @property
     def commit_id(self):
@@ -313,7 +318,10 @@ class Superproject:
             cmd.extend(["--negotiation-tip", rev_commit])
 
         if self._branch:
-            cmd += [self._branch + ":" + self._branch]
+            if IsId(self._branch):
+                cmd += [self._branch]
+            else:
+                cmd += [self._branch + ":" + self._branch]
         p = GitCommand(
             None,
             cmd,
@@ -400,6 +408,8 @@ class Superproject:
 
         if not self._Init():
             return SyncResult(False, should_exit)
+        if IsId(self.revision) and self.commit_id:
+            return SyncResult(True, False)
         if not self._Fetch():
             return SyncResult(False, should_exit)
         if not self._quiet:

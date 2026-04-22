@@ -64,6 +64,7 @@ from error import SyncError
 from error import UpdateManifestError
 import event_log
 from git_command import git_require
+from git_command import GitCommand
 from git_config import GetUrlCookieFile
 from git_refs import HEAD
 from git_refs import R_HEADS
@@ -565,6 +566,11 @@ later is required to fix a server side protocol bug.
             dest="use_superproject",
             help="disable use of manifest superprojects",
         )
+        p.add_option(
+            "--superproject-rev",
+            action="store",
+            help="sync to superproject hash state",
+        )
         p.add_option("--tags", action="store_true", help="fetch tags")
         p.add_option(
             "--no-tags",
@@ -746,6 +752,8 @@ later is required to fix a server side protocol bug.
                 opt.use_superproject, m
             )
             m.superproject.SetPrintMessages(print_messages)
+            if opt.superproject_rev and m.path_prefix == manifest.path_prefix:
+                m.superproject.SetRevisionId(opt.superproject_rev)
             update_result = m.superproject.UpdateProjectsRevisionId(
                 per_manifest[m.path_prefix], git_event_log=self.git_event_log
             )
@@ -2013,6 +2021,56 @@ later is required to fix a server side protocol bug.
         if not success:
             print("Warning: post-sync hook reported failure.")
 
+    def _SyncToSuperprojectRev(
+        self,
+        opt: optparse.Values,
+        manifest,
+        mp: Project,
+        manifest_name: Optional[str],
+        errors: List[Exception],
+    ) -> None:
+        """Sync to a specific superproject commit."""
+        if not manifest.superproject:
+            raise SyncError("superproject not defined in manifest")
+
+        manifest.superproject.SetQuiet(not opt.verbose)
+        manifest.superproject.SetPrintMessages(True)
+        manifest.superproject.SetRevisionId(opt.superproject_rev)
+
+        sync_result = manifest.superproject.Sync(self.git_event_log)
+        if not sync_result.success:
+            raise SyncError("failed to sync superproject")
+
+        cmd = ["show", f"{opt.superproject_rev}:.supermanifest"]
+        p = GitCommand(
+            None,
+            cmd,
+            gitdir=manifest.superproject._work_git,
+            bare=True,
+            capture_stdout=True,
+            capture_stderr=True,
+        )
+        if p.Wait() != 0:
+            raise SyncError(
+                f"failed to read .supermanifest from superproject: {p.stderr}"
+            )
+
+        try:
+            _, _, manifest_commit = p.stdout.strip().split()
+        except ValueError:
+            raise SyncError("could not parse .supermanifest")
+
+        mp.SetRevision(manifest_commit)
+        num_errors_before = len(errors)
+        try:
+            self._UpdateManifestProject(opt, mp, manifest_name, errors)
+        except UpdateManifestError as e:
+            raise SyncError(
+                "failed to sync manifest project", aggregate_errors=[e]
+            )
+        if len(errors) > num_errors_before:
+            raise SyncError("failed to sync manifest project")
+
     def _ExecuteHelper(self, opt, args, errors):
         manifest = self.outer_manifest
         if not opt.outer_manifest:
@@ -2072,6 +2130,12 @@ later is required to fix a server side protocol bug.
                 _REPO_ALLOW_SHALLOW == "0" and mp.clone_filter_for_depth is None
             ):
                 mp.ConfigureCloneFilterForDepth("blob:none")
+
+        if opt.superproject_rev:
+            self._SyncToSuperprojectRev(
+                opt, manifest, mp, manifest_name, errors
+            )
+            opt.mp_update = False
 
         if opt.mp_update:
             self._UpdateAllManifestProjects(opt, mp, manifest_name, errors)
