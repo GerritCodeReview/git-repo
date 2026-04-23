@@ -34,6 +34,24 @@
       ],
       "revId": "fd80906d0b7eca5146965d464b29a5f4a458993b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33a46edc_9283a429",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1654,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2026-04-23T16:24:04Z",
+      "side": 1,
+      "message": "Should we even be loading the local manifests when loading the superproject override manifest? Or generating that override without the local manifests?",
+      "parentUuid": "3225d2c1_c462385d",
+      "revId": "fd80906d0b7eca5146965d464b29a5f4a458993b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
