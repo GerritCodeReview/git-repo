@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4979be8c_e04693f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4675070
+      },
+      "writtenOn": "2026-04-23T16:48:39Z",
+      "side": 1,
+      "message": "Ok, so the new approach is to just make the condition of removing a missing project a no-op with warning. This might make future refactors around overrides less complicated.",
+      "revId": "70837f051f97d48198d988795817afe342b7ebac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
