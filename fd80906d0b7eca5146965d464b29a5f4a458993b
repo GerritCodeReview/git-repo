@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3225d2c1_c462385d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1654,
+      "author": {
+        "id": 4675070
+      },
+      "writtenOn": "2026-04-23T16:22:07Z",
+      "side": 1,
+      "message": "The other option is to just allow removal of non-existent projects with just a warning.",
+      "fixSuggestions": [
+        {
+          "fixId": "ac447bbb_24711c8a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 1651,
+                "startChar": 0,
+                "endLine": 1654,
+                "endChar": 0
+              },
+              "replacement": "                        print(\n                            \"warning: manifest: remove-project element \"\n                            \"specifies non-existent project: %s\"\n                            % node.toxml(),\n                            file\u003dsys.stderr,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fd80906d0b7eca5146965d464b29a5f4a458993b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
