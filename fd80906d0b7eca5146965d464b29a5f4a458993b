@@ -69,6 +69,24 @@
       "parentUuid": "3225d2c1_c462385d",
       "revId": "fd80906d0b7eca5146965d464b29a5f4a458993b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e408401_a7be4b34",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1654,
+      "author": {
+        "id": 4675070
+      },
+      "writtenOn": "2026-04-23T16:30:26Z",
+      "side": 1,
+      "message": "I haven\u0027t examined the set of actions available in overrides to make that kind of determination. Could changing that behavior break someone\u0027s workflow?",
+      "parentUuid": "33a46edc_9283a429",
+      "revId": "fd80906d0b7eca5146965d464b29a5f4a458993b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
