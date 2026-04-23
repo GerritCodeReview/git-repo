@@ -1646,7 +1646,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 if not removed_project and not XmlBool(node, "optional", False):
                     raise ManifestParseError(
                         "remove-project element specifies non-existent "
-                        "project: %s" % node.toxml()
+                        'project: %s\nadd optional="true" to remove-project'
+                        " element to ignore error." % node.toxml()
                     )
 
         if failed_revision_changes:

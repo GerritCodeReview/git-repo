@@ -521,8 +521,9 @@ locations are kept.
 If only path is specified, a matching project is removed regardless of its
 name. Logic otherwise behaves like both are specified.
 
-Attribute `optional`: Set to true to ignore remove-project elements with no
-matching `project` element.
+Attribute `optional`: Set to true to allow remove-project elements to not
+match a `project` element. Otherwise, a remove-project element that does not
+match a project will throw an error.
 
 Attribute `base-rev`: If specified, adds a check against the revision
 to be removed. Manifest parse will fail and give a list of mismatch removes
