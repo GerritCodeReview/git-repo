@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "377bc0f7_8aee1940",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4675070
+      },
+      "writtenOn": "2026-04-23T16:39:53Z",
+      "side": 1,
+      "message": "gerrit\u0027s auto-proposed fix was bad... fixing manually",
+      "revId": "fd80906d0b7eca5146965d464b29a5f4a458993b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3225d2c1_c462385d",
@@ -85,6 +102,24 @@
       "side": 1,
       "message": "I haven\u0027t examined the set of actions available in overrides to make that kind of determination. Could changing that behavior break someone\u0027s workflow?",
       "parentUuid": "33a46edc_9283a429",
+      "revId": "fd80906d0b7eca5146965d464b29a5f4a458993b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1acbdf78_8aeacf9b",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1654,
+      "author": {
+        "id": 4675070
+      },
+      "writtenOn": "2026-04-23T16:39:53Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "1e408401_a7be4b34",
       "revId": "fd80906d0b7eca5146965d464b29a5f4a458993b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
