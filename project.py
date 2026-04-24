@@ -3116,6 +3116,19 @@ class Project:
         except OSError:
             return False
 
+    def _FormatErrorWithStderr(self, operation, rev, rc, stderr):
+        parts = [self.name, operation]
+        if rev:
+            parts.append(rev)
+        msg = " ".join(parts)
+        if rc is not None:
+            msg += f" (exit code {rc})"
+        if stderr:
+            tail = "\n".join(stderr.strip().splitlines()[-20:])
+            if tail:
+                msg += ":\n" + tail
+        return msg
+
     def _Checkout(self, rev, force_checkout=False, quiet=False):
         cmd = ["checkout"]
         if quiet:
@@ -3124,10 +3137,14 @@ class Project:
             cmd.append("-f")
         cmd.append(rev)
         cmd.append("--")
-        if GitCommand(self, cmd).Wait() != 0:
+        p = GitCommand(self, cmd)
+        if p.Wait() != 0:
             if self._allrefs:
                 raise GitError(
-                    f"{self.name} checkout {rev} ", project=self.name
+                    self._FormatErrorWithStderr(
+                        "checkout", rev, p.rc, p.stderr
+                    ),
+                    project=self.name,
                 )
 
     def _CherryPick(self, rev, ffonly=False, record_origin=False):
@@ -3138,10 +3155,14 @@ class Project:
             cmd.append("-x")
         cmd.append(rev)
         cmd.append("--")
-        if GitCommand(self, cmd).Wait() != 0:
+        p = GitCommand(self, cmd)
+        if p.Wait() != 0:
             if self._allrefs:
                 raise GitError(
-                    f"{self.name} cherry-pick {rev} ", project=self.name
+                    self._FormatErrorWithStderr(
+                        "cherry-pick", rev, p.rc, p.stderr
+                    ),
+                    project=self.name,
                 )
 
     def _LsRemote(self, refs):
@@ -3156,27 +3177,41 @@ class Project:
         cmd.append("--no-edit")
         cmd.append(rev)
         cmd.append("--")
-        if GitCommand(self, cmd).Wait() != 0:
+        p = GitCommand(self, cmd)
+        if p.Wait() != 0:
             if self._allrefs:
-                raise GitError(f"{self.name} revert {rev} ", project=self.name)
+                raise GitError(
+                    self._FormatErrorWithStderr("revert", rev, p.rc, p.stderr),
+                    project=self.name,
+                )
 
     def _ResetHard(self, rev, quiet=True):
         cmd = ["reset", "--hard"]
         if quiet:
             cmd.append("-q")
         cmd.append(rev)
-        if GitCommand(self, cmd).Wait() != 0:
+        p = GitCommand(self, cmd)
+        if p.Wait() != 0:
             raise GitError(
-                f"{self.name} reset --hard {rev} ", project=self.name
+                self._FormatErrorWithStderr(
+                    "reset --hard", rev, p.rc, p.stderr
+                ),
+                project=self.name,
             )
 
     def _SyncSubmodules(self, quiet=True):
         cmd = ["submodule", "update", "--init", "--recursive"]
         if quiet:
             cmd.append("-q")
-        if GitCommand(self, cmd).Wait() != 0:
+        p = GitCommand(self, cmd)
+        if p.Wait() != 0:
             raise GitError(
-                "%s submodule update --init --recursive " % self.name,
+                self._FormatErrorWithStderr(
+                    "submodule update --init --recursive",
+                    None,
+                    p.rc,
+                    p.stderr,
+                ),
                 project=self.name,
             )
 
@@ -3219,8 +3254,12 @@ class Project:
         if onto is not None:
             cmd.extend(["--onto", onto])
         cmd.append(upstream)
-        if GitCommand(self, cmd).Wait() != 0:
-            raise GitError(f"{self.name} rebase {upstream} ", project=self.name)
+        p = GitCommand(self, cmd)
+        if p.Wait() != 0:
+            raise GitError(
+                self._FormatErrorWithStderr("rebase", upstream, p.rc, p.stderr),
+                project=self.name,
+            )
 
     def _FastForward(self, head, ffonly=False, quiet=True):
         cmd = ["merge", "--no-stat", head]
@@ -3228,8 +3267,12 @@ class Project:
             cmd.append("--ff-only")
         if quiet:
             cmd.append("-q")
-        if GitCommand(self, cmd).Wait() != 0:
-            raise GitError(f"{self.name} merge {head} ", project=self.name)
+        p = GitCommand(self, cmd)
+        if p.Wait() != 0:
+            raise GitError(
+                self._FormatErrorWithStderr("merge", head, p.rc, p.stderr),
+                project=self.name,
+            )
 
     def _InitGitDir(self, mirror_git=None, force_sync=False, quiet=False):
         # Prefix for temporary directories created during gitdir initialization.
@@ -3709,9 +3752,18 @@ class Project:
                 # Finish checking out the worktree.
                 cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
                 try:
-                    if GitCommand(self, cmd).Wait() != 0:
+                    p = GitCommand(self, cmd)
+                    if p.Wait() != 0:
+                        stderr = p.stderr or ""
+                        # Trim to last 20 lines to keep error message
+                        # readable while showing the relevant context.
+                        stderr_tail = "\n".join(
+                            stderr.strip().splitlines()[-20:]
+                        )
                         raise GitError(
-                            "Cannot initialize work tree for " + self.name,
+                            "Cannot initialize work tree for %s"
+                            " (exit code %s): %s"
+                            % (self.name, p.rc, stderr_tail),
                             project=self.name,
                         )
                 except Exception as e:
