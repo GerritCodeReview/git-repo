@@ -190,7 +190,7 @@ class SuperprojectTestCase(unittest.TestCase):
             ),
             revision="refs/heads/main",
         )
-        with mock.patch.object(self._superproject, "_branch", "junk"):
+        with mock.patch.object(self._superproject, "revision", "junk"):
             sync_result = self._superproject.Sync(self.git_event_log)
             self.assertFalse(sync_result.success)
             self.assertTrue(sync_result.fatal)
