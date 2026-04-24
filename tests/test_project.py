@@ -522,7 +522,7 @@ class InitWorkTreeReadTreeErrorTest(unittest.TestCase):
         from unittest.mock import MagicMock
         from unittest.mock import patch
 
-        with TempGitTree() as tempdir:
+        with utils_for_test.TempGitTree() as tempdir:
             fakeproj = self._setup_project(tempdir)
             dotgit = os.path.join(fakeproj.worktree, ".git")
 
@@ -552,7 +552,7 @@ class InitWorkTreeReadTreeErrorTest(unittest.TestCase):
         from unittest.mock import MagicMock
         from unittest.mock import patch
 
-        with TempGitTree() as tempdir:
+        with utils_for_test.TempGitTree() as tempdir:
             fakeproj = self._setup_project(tempdir)
 
             mock_git_cmd = MagicMock()
@@ -573,7 +573,7 @@ class InitWorkTreeReadTreeErrorTest(unittest.TestCase):
         from unittest.mock import MagicMock
         from unittest.mock import patch
 
-        with TempGitTree() as tempdir:
+        with utils_for_test.TempGitTree() as tempdir:
             fakeproj = self._setup_project(tempdir)
 
             mock_git_cmd = MagicMock()
@@ -900,3 +900,43 @@ class SyncOptimizationTests(unittest.TestCase):
 
                 self.assertTrue(res)
                 mock_git_cmd.assert_not_called()
+
+
+class FormatErrorWithStderrTests(unittest.TestCase):
+    """Check _FormatErrorWithStderr formatting."""
+
+    def _call(self, operation, rev, rc, stderr):
+        obj = type("Stub", (), {"name": "my/project"})()
+        return project.Project._FormatErrorWithStderr(
+            obj, operation, rev, rc, stderr
+        )
+
+    def test_with_all_fields(self):
+        result = self._call("checkout", "abc123", 1, "error: not found\n")
+        self.assertEqual(
+            result,
+            "my/project checkout abc123 (exit code 1):\nerror: not found",
+        )
+
+    def test_no_stderr(self):
+        result = self._call("checkout", "abc123", 1, None)
+        self.assertEqual(result, "my/project checkout abc123 (exit code 1)")
+
+    def test_empty_stderr(self):
+        result = self._call("checkout", "abc123", 1, "")
+        self.assertEqual(result, "my/project checkout abc123 (exit code 1)")
+
+    def test_no_rev(self):
+        result = self._call("submodule update --init --recursive", None, 1, "")
+        self.assertEqual(
+            result,
+            "my/project submodule update --init --recursive (exit code 1)",
+        )
+
+    def test_stderr_truncated_to_20_lines(self):
+        lines = [f"line {i}" for i in range(30)]
+        stderr = "\n".join(lines) + "\n"
+        result = self._call("checkout", "abc123", 128, stderr)
+        self.assertIn("line 10", result)
+        self.assertIn("line 29", result)
+        self.assertNotIn("line 9", result)
