@@ -100,7 +100,7 @@ class Superproject:
         self._manifest = manifest
         self.name = name
         self.remote = remote
-        self.revision = self._branch = revision
+        self.revision = revision
         self._repodir = manifest.repodir
         self._superproject_dir = superproject_dir
         self._superproject_path = manifest.SubmanifestInfoDir(
@@ -199,7 +199,8 @@ class Superproject:
     def _LogMessagePrefix(self):
         """Returns the prefix string to be logged in each log message"""
         return (
-            f"repo superproject branch: {self._branch} url: {self._remote_url}"
+            f"repo superproject revision: {self.revision} "
+            f"url: {self._remote_url}"
         )
 
     def _LogError(self, fmt, *inputs):
@@ -312,8 +313,8 @@ class Superproject:
         if rev_commit:
             cmd.extend(["--negotiation-tip", rev_commit])
 
-        if self._branch:
-            cmd += [self._branch + ":" + self._branch]
+        if self.revision:
+            cmd += [self.revision + ":" + self.revision]
         p = GitCommand(
             None,
             cmd,
@@ -348,7 +349,7 @@ class Superproject:
             )
             return None
         data = None
-        branch = "HEAD" if not self._branch else self._branch
+        branch = "HEAD" if not self.revision else self.revision
         cmd = ["ls-tree", "-z", "-r", branch]
 
         p = GitCommand(
