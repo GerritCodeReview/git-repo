@@ -2110,6 +2110,18 @@ class Project:
             ).Wait()
             return True
 
+        # Check for Directory/File conflicts.
+        ref_prefix = R_HEADS + name + "/"
+        for ref in all_refs:
+            if ref.startswith(ref_prefix):
+                raise GitError(
+                    f"Cannot create branch '{name}' because branch '{ref[len(R_HEADS):]}' exists"
+                )
+            if name.startswith(ref[len(R_HEADS):] + "/"):
+                raise GitError(
+                    f"Cannot create branch '{name}' because branch '{ref[len(R_HEADS):]}' exists"
+                )
+
         branch = self.GetBranch(name)
         branch.remote = self.GetRemote()
         branch.merge = branch_merge

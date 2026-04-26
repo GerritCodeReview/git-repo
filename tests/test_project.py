@@ -794,3 +794,46 @@ class SyncOptimizationTests(unittest.TestCase):
 
                 self.assertTrue(res)
                 mock_git_cmd.assert_not_called()
+
+
+class StartBranchTests(unittest.TestCase):
+    """Check StartBranch behavior."""
+
+    def test_start_branch_df_conflict(self):
+        """Test StartBranch detects D/F conflicts."""
+        with utils_for_test.TempGitTree() as tempdir:
+            manifest = mock.MagicMock()
+            remote = mock.MagicMock()
+            remote.name = "origin"
+            
+            proj = project.Project(
+                manifest=manifest,
+                name="test-project",
+                remote=remote,
+                gitdir=os.path.join(tempdir, ".git"),
+                objdir=os.path.join(tempdir, ".git"),
+                worktree=tempdir,
+                relpath="test-project",
+                revisionExpr="refs/heads/main",
+            )
+            
+            proj.bare_ref = mock.MagicMock()
+            proj.bare_ref.all = {
+                "refs/heads/foo/bar": "1234abcd",
+            }
+            
+            proj.work_git = mock.MagicMock()
+            proj.work_git.GetHead.return_value = "refs/heads/main"
+            proj.GetBranch = mock.MagicMock()
+            proj.GetRemote = mock.MagicMock()
+            
+            with self.assertRaises(error.GitError) as cm:
+                proj.StartBranch("foo")
+            self.assertIn("Cannot create branch 'foo' because branch 'foo/bar' exists", str(cm.exception))
+
+            proj.bare_ref.all = {
+                "refs/heads/foo": "1234abcd",
+            }
+            with self.assertRaises(error.GitError) as cm:
+                proj.StartBranch("foo/bar")
+            self.assertIn("Cannot create branch 'foo/bar' because branch 'foo' exists", str(cm.exception))
