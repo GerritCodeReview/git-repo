@@ -245,9 +245,12 @@ class _InterleavedSyncResult(NamedTuple):
     Attributes:
       results (List[_SyncResult]): A list of results, one for each project
           processed. Empty if the worker failed before creating results.
+      gc_success (Optional[bool]): True if GC succeeded, False if failed,
+          None if not run.
     """
 
     results: List[_SyncResult]
+    gc_success: Optional[bool]
 
 
 class SuperprojectError(SyncError):
@@ -2514,9 +2517,11 @@ later is required to fix a server side protocol bug.
             An `_InterleavedSyncResult` containing the results for each project.
         """
         results = []
+        gc_success = None
         context = cls.get_parallel_context()
         projects = context["projects"]
         sync_dict = context["sync_dict"]
+        is_archive = context["is_archive"]
 
         assert project_indices, "_SyncProjectList called with no indices."
 
@@ -2529,10 +2534,54 @@ later is required to fix a server side protocol bug.
             for idx in project_indices:
                 project = projects[idx]
                 results.append(cls._SyncOneProject(opt, idx, project))
+
+            # Post-sync operations for this group (sharing same objdir).
+            if not is_archive:
+                for idx in project_indices:
+                    cls._SetPreciousObjectsState(projects[idx], opt)
+
+                if opt.auto_gc:
+                    # Mirror _GCProjects: run gc once per objdir (on the
+                    # first project), and pack-refs on each remaining
+                    # gitdir.
+                    cpu_count = os.cpu_count() or 1
+                    jobs = max(1, opt.jobs)
+                    gc_config = {
+                        "pack.threads": (
+                            cpu_count // jobs if cpu_count > jobs else 1
+                        )
+                    }
+                    seen_gitdirs = {first_project.gitdir}
+                    try:
+                        cls._RunOneGC(first_project, config=gc_config)
+                        gc_success = True
+                    except Exception as e:
+                        logger.error(
+                            "error: Cannot run GC in %s: %s",
+                            first_project.name,
+                            e,
+                        )
+                        gc_success = False
+
+                    for idx in project_indices[1:]:
+                        p = projects[idx]
+                        if p.gitdir in seen_gitdirs:
+                            continue
+                        seen_gitdirs.add(p.gitdir)
+                        try:
+                            p.bare_git.pack_refs(config=gc_config)
+                        except Exception as e:
+                            logger.error(
+                                "error: Cannot pack-refs in %s: %s", p.name, e
+                            )
+                            gc_success = False
         finally:
             del sync_dict[key]
 
-        return _InterleavedSyncResult(results=results)
+        return _InterleavedSyncResult(
+            results=results,
+            gc_success=gc_success,
+        )
 
     def _ProcessSyncInterleavedResults(
         self,
@@ -2548,6 +2597,8 @@ later is required to fix a server side protocol bug.
         ret = True
         projects = self.get_parallel_context()["projects"]
         for result_group in results_sets:
+            if result_group.gc_success is False:
+                self._interleaved_gc_failed = True
             for result in result_group.results:
                 pm.update()
                 project = projects[result.project_index]
@@ -2632,6 +2683,7 @@ later is required to fix a server side protocol bug.
         self._interleaved_err_network_results = []
         self._interleaved_err_checkout = False
         self._interleaved_err_checkout_results = []
+        self._interleaved_gc_failed = False
 
         err_event = multiprocessing.Event()
         finished_relpaths = set()
@@ -2656,6 +2708,9 @@ later is required to fix a server side protocol bug.
                 ssh_proxy.sock()
                 with self.ParallelContext():
                     self.get_parallel_context()["ssh_proxy"] = ssh_proxy
+                    self.get_parallel_context()[
+                        "is_archive"
+                    ] = self.outer_client.manifest.IsArchive
                     # TODO(gavinmak): Use multprocessing.Queue instead of dict.
                     self.get_parallel_context()[
                         "sync_dict"
@@ -2769,9 +2824,8 @@ later is required to fix a server side protocol bug.
         err_update_projects, err_update_linkfiles = self._UpdateManifestLists(
             opt, err_event, errors
         )
-        if not self.outer_client.manifest.IsArchive:
-            self._GCProjects(project_list, opt, err_event)
-
+        if self._interleaved_gc_failed:
+            err_event.set()
         self._PrintManifestNotices(opt)
         if err_event.is_set():
             self._ReportErrors(

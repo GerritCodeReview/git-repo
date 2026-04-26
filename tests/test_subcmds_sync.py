@@ -338,6 +338,7 @@ class FakeProject:
         self.relpath = relpath
         self.name = name or relpath
         self.objdir = objdir or relpath
+        self.gitdir = relpath
         self.worktree = relpath
 
         self.use_git_worktrees = False
@@ -345,6 +346,7 @@ class FakeProject:
         self.manifest = mock.MagicMock()
         self.manifest.GetProjectsWithName.return_value = [self]
         self.config = mock.MagicMock()
+        self.bare_git = mock.MagicMock()
         self.EnableRepositoryExtension = mock.MagicMock()
 
     def RelPath(self, local=None):
@@ -813,6 +815,7 @@ class InterleavedSyncTest(unittest.TestCase):
         self.mock_context = {
             "projects": [],
             "sync_dict": self.sync_dict,
+            "is_archive": False,
         }
         self.mock_get_parallel_context.return_value = self.mock_context
 
@@ -955,6 +958,36 @@ class InterleavedSyncTest(unittest.TestCase):
             self.assertEqual(result.checkout_errors, [])
             project.Sync_NetworkHalf.assert_called_once()
             project.Sync_LocalHalf.assert_called_once()
+
+    def test_worker_runs_gc(self):
+        """Test _SyncProjectList runs GC."""
+        opt = self._get_opts(["--interleaved", "--auto-gc"])
+        project = self.projA
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        project.manifest.manifestProject.config = mock.MagicMock()
+        project.bare_git = mock.MagicMock()
+        self.mock_context["projects"] = [project]
+
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buf_instance = mock.MagicMock()
+            mock_sync_buf_instance.Finish.return_value = True
+            mock_sync_buf_instance.errors = []
+            mock_sync_buffer.return_value = mock_sync_buf_instance
+
+            with mock.patch.object(
+                sync.Sync, "_SetPreciousObjectsState"
+            ) as mock_set_precious:
+                result_obj = self.cmd._SyncProjectList(opt, [0])
+
+                mock_set_precious.assert_called_once_with(project, opt)
+                project.bare_git.gc.assert_called_once()
+                gc_args, gc_kwargs = project.bare_git.gc.call_args
+                self.assertEqual(gc_args, ("--auto",))
+                self.assertIn("pack.threads", gc_kwargs.get("config", {}))
+                self.assertTrue(result_obj.gc_success)
 
     def test_worker_fetch_fails(self):
         """Test _SyncProjectList with a failed fetch."""
