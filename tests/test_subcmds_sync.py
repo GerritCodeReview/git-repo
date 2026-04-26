@@ -340,6 +340,7 @@ class FakeProject:
         self.objdir = objdir or relpath
         self.gitdir = relpath
         self.worktree = relpath
+        self.clone_depth = None
 
         self.use_git_worktrees = False
         self.UseAlternates = False
@@ -790,6 +791,7 @@ class InterleavedSyncTest(unittest.TestCase):
             manifest=self.manifest, outer_client=self.outer_client
         )
         self.cmd.outer_manifest = self.manifest
+        self.cmd._bloated_projects = []
 
         # Mock projects.
         self.projA = FakeProject("projA", objdir="objA")
@@ -959,8 +961,8 @@ class InterleavedSyncTest(unittest.TestCase):
             project.Sync_NetworkHalf.assert_called_once()
             project.Sync_LocalHalf.assert_called_once()
 
-    def test_worker_runs_gc(self):
-        """Test _SyncProjectList runs GC."""
+    def test_worker_runs_gc_and_bloat_check(self):
+        """Test _SyncProjectList runs GC and bloat check."""
         opt = self._get_opts(["--interleaved", "--auto-gc"])
         project = self.projA
         project.Sync_NetworkHalf = mock.Mock(
@@ -969,6 +971,8 @@ class InterleavedSyncTest(unittest.TestCase):
         project.Sync_LocalHalf = mock.Mock()
         project.manifest.manifestProject.config = mock.MagicMock()
         project.bare_git = mock.MagicMock()
+        project.clone_depth = 1
+        project.Exists = True
         self.mock_context["projects"] = [project]
 
         with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
@@ -980,14 +984,25 @@ class InterleavedSyncTest(unittest.TestCase):
             with mock.patch.object(
                 sync.Sync, "_SetPreciousObjectsState"
             ) as mock_set_precious:
-                result_obj = self.cmd._SyncProjectList(opt, [0])
+                with mock.patch.object(
+                    sync.Sync, "_CheckOneBloatedProject"
+                ) as mock_check_bloat:
+                    mock_check_bloat.return_value = "projA"
+                    with mock.patch(
+                        "subcmds.sync.git_require", return_value=True
+                    ):
+                        result_obj = self.cmd._SyncProjectList(opt, [0])
 
-                mock_set_precious.assert_called_once_with(project, opt)
-                project.bare_git.gc.assert_called_once()
-                gc_args, gc_kwargs = project.bare_git.gc.call_args
-                self.assertEqual(gc_args, ("--auto",))
-                self.assertIn("pack.threads", gc_kwargs.get("config", {}))
-                self.assertTrue(result_obj.gc_success)
+                        mock_set_precious.assert_called_once_with(project, opt)
+                        project.bare_git.gc.assert_called_once()
+                        gc_args, gc_kwargs = project.bare_git.gc.call_args
+                        self.assertEqual(gc_args, ("--auto",))
+                        self.assertIn(
+                            "pack.threads", gc_kwargs.get("config", {})
+                        )
+                        self.assertTrue(result_obj.gc_success)
+                        mock_check_bloat.assert_called_once_with(0)
+                        self.assertEqual(result_obj.bloated_projects, ["projA"])
 
     def test_worker_fetch_fails(self):
         """Test _SyncProjectList with a failed fetch."""
