@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "827aee8c_66e86b31",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3119,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-26T01:22:34Z",
+      "side": 1,
+      "message": "add docstring \u0026 typing to new functions",
+      "revId": "aaff65ceb8cb8af387fba0458d9df25c7098289a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dea5e52b_d8f6f89b",
+        "filename": "tests/test_project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-26T01:22:34Z",
+      "side": 1,
+      "message": "incorrect style.  see this doc for details:\n\nhttps://www.chromium.org/chromium-os/developer-library/reference/style-guides/python/#describing-arguments-in-docstrings",
+      "revId": "aaff65ceb8cb8af387fba0458d9df25c7098289a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e96305f_d9507f78",
+        "filename": "tests/test_project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-26T01:22:34Z",
+      "side": 1,
+      "message": "only inherit modules, not classes\n\ndo not import inside funcs",
+      "revId": "aaff65ceb8cb8af387fba0458d9df25c7098289a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
