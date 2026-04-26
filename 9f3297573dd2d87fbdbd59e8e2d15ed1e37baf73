@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a02a957_25c67929",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-26T02:26:55Z",
+      "side": 1,
+      "message": "```suggestion\ngitignore: Add AI agent files\n```",
+      "revId": "9f3297573dd2d87fbdbd59e8e2d15ed1e37baf73",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
