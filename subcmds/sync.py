@@ -245,11 +245,13 @@ class _InterleavedSyncResult(NamedTuple):
     Attributes:
       results (List[_SyncResult]): A list of results, one for each project
           processed. Empty if the worker failed before creating results.
+      bloated_projects (List[str]): A list of project names that are bloated.
       gc_success (Optional[bool]): True if GC succeeded, False if failed,
           None if not run.
     """
 
     results: List[_SyncResult]
+    bloated_projects: List[str]
     gc_success: Optional[bool]
 
 
@@ -2148,7 +2150,7 @@ later is required to fix a server side protocol bug.
                 "experience, sync the entire tree."
             )
 
-        if existing:
+        if existing and not opt.interleaved:
             self._CheckForBloatedProjects(all_projects, opt)
 
         for project_name in sorted(self._bloated_projects):
@@ -2517,6 +2519,7 @@ later is required to fix a server side protocol bug.
             An `_InterleavedSyncResult` containing the results for each project.
         """
         results = []
+        bloated_projects = []
         gc_success = None
         context = cls.get_parallel_context()
         projects = context["projects"]
@@ -2575,11 +2578,19 @@ later is required to fix a server side protocol bug.
                                 "error: Cannot pack-refs in %s: %s", p.name, e
                             )
                             gc_success = False
+
+                if git_require((2, 23, 0)):
+                    for idx in project_indices:
+                        if projects[idx].clone_depth:
+                            res = cls._CheckOneBloatedProject(idx)
+                            if res:
+                                bloated_projects.append(res)
         finally:
             del sync_dict[key]
 
         return _InterleavedSyncResult(
             results=results,
+            bloated_projects=bloated_projects,
             gc_success=gc_success,
         )
 
@@ -2597,6 +2608,7 @@ later is required to fix a server side protocol bug.
         ret = True
         projects = self.get_parallel_context()["projects"]
         for result_group in results_sets:
+            self._bloated_projects.extend(result_group.bloated_projects)
             if result_group.gc_success is False:
                 self._interleaved_gc_failed = True
             for result in result_group.results:
