@@ -85,18 +85,18 @@ Repo launcher bucket:
   gs://git-repo-downloads/
 
 You should first upload it with a specific version:
-  gsutil cp -a public-read {opts.launcher} gs://git-repo-downloads/repo-{version}
-  gsutil cp -a public-read {opts.launcher}.asc gs://git-repo-downloads/repo-{version}.asc
+  gcloud storage cp --predefined-acl=public-read {opts.launcher} gs://git-repo-downloads/repo-{version}
+  gcloud storage cp --predefined-acl=public-read {opts.launcher}.asc gs://git-repo-downloads/repo-{version}.asc
 
 Then to make it the public default:
-  gsutil cp -a public-read gs://git-repo-downloads/repo-{version} gs://git-repo-downloads/repo
-  gsutil cp -a public-read gs://git-repo-downloads/repo-{version}.asc gs://git-repo-downloads/repo.asc
+  gcloud storage cp --predefined-acl=public-read gs://git-repo-downloads/repo-{version} gs://git-repo-downloads/repo
+  gcloud storage cp --predefined-acl=public-read gs://git-repo-downloads/repo-{version}.asc gs://git-repo-downloads/repo.asc
 
 NB: If a rollback is necessary, the GS bucket archives old versions, and may be
     accessed by specifying their unique id number.
-  gsutil ls -la gs://git-repo-downloads/repo gs://git-repo-downloads/repo.asc
-  gsutil cp -a public-read gs://git-repo-downloads/repo#<unique id> gs://git-repo-downloads/repo
-  gsutil cp -a public-read gs://git-repo-downloads/repo.asc#<unique id> gs://git-repo-downloads/repo.asc
+  gcloud storage ls --long --all-versions gs://git-repo-downloads/repo gs://git-repo-downloads/repo.asc
+  gcloud storage cp --predefined-acl=public-read gs://git-repo-downloads/repo#<unique id> gs://git-repo-downloads/repo
+  gcloud storage cp --predefined-acl=public-read gs://git-repo-downloads/repo.asc#<unique id> gs://git-repo-downloads/repo.asc
 """  # noqa: E501
     )
 
