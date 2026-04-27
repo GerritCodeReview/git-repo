@@ -34,7 +34,7 @@ def fetch_file(url, verbose=False):
     """
     scheme = urlparse(url).scheme
     if scheme == "gs":
-        cmd = ["gsutil", "cat", url]
+        cmd = ["gcloud", "storage", "cat", url]
         errors = []
         try:
             result = subprocess.run(
@@ -42,7 +42,7 @@ def fetch_file(url, verbose=False):
             )
             if result.stderr and verbose:
                 print(
-                    'warning: non-fatal error running "gsutil": %s'
+                    'warning: non-fatal error running "gcloud storage": %s'
                     % result.stderr,
                     file=sys.stderr,
                 )
@@ -50,7 +50,8 @@ def fetch_file(url, verbose=False):
         except subprocess.CalledProcessError as e:
             errors.append(e)
             print(
-                'fatal: error running "gsutil": %s' % e.stderr, file=sys.stderr
+                'fatal: error running "gcloud storage": %s' % e.stderr,
+                 file=sys.stderr,
             )
         raise FetchFileError(aggregate_errors=errors)
     with urlopen(url) as f:
