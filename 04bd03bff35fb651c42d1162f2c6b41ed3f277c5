@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e66af15_4179e4c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-27T16:05:50Z",
+      "side": 1,
+      "message": "if you\u0027re automating stuff, would be nice if you fix whatever is generating these commits messages to follow git standards.\n\nhttps://cbea.ms/git-commit/",
+      "revId": "04bd03bff35fb651c42d1162f2c6b41ed3f277c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b57ba55a_e6aeb530",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-27T16:05:50Z",
+      "side": 1,
+      "message": "over to Gavin since he\u0027s done all the releases of late and would be better positioned to test run the new commands",
+      "revId": "04bd03bff35fb651c42d1162f2c6b41ed3f277c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
