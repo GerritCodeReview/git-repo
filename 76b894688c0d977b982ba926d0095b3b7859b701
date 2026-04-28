@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af302625_7a4129fc",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1501,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-04-28T21:16:03Z",
+      "side": 1,
+      "message": "this condition might skip _RemoteFetch, does it need to be updated too?",
+      "range": {
+        "startLine": 1493,
+        "startChar": 12,
+        "endLine": 1501,
+        "endChar": 13
+      },
+      "revId": "76b894688c0d977b982ba926d0095b3b7859b701",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aecb9502_20df1afd",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2562,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-04-28T21:16:03Z",
+      "side": 1,
+      "message": "add typing",
+      "range": {
+        "startLine": 2562,
+        "startChar": 8,
+        "endLine": 2562,
+        "endChar": 40
+      },
+      "revId": "76b894688c0d977b982ba926d0095b3b7859b701",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
