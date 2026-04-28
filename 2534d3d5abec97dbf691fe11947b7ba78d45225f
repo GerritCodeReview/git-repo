@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "472d7503_a478426e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-04-28T18:40:00Z",
+      "side": 1,
+      "message": "could we instead update GitError in error.py to accept rc and stderr as optional args then have GitError.__str__ return the detailed msg with rc + stderr tail",
+      "revId": "2534d3d5abec97dbf691fe11947b7ba78d45225f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
