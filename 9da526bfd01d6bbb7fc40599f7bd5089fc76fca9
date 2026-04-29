@@ -1,0 +1,170 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ab7dd63_8919b0e8",
+        "filename": "man/repo-info.1",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T14:40:20Z",
+      "side": 1,
+      "message": "need to regen this",
+      "revId": "9da526bfd01d6bbb7fc40599f7bd5089fc76fca9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6682feca_6865d673",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T14:40:20Z",
+      "side": 1,
+      "message": "look at how subcmds/manifest.py handles this with OutputFormat \u0026 enum\n\nfor now, duplicate rather than try to merge/reuse",
+      "revId": "9da526bfd01d6bbb7fc40599f7bd5089fc76fca9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b65ad8c3_2f390fa4",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T14:40:20Z",
+      "side": 1,
+      "message": "look at how subcmds/manifest.py prints JSON output\n\nfor now, that too can be duplicated",
+      "revId": "9da526bfd01d6bbb7fc40599f7bd5089fc76fca9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c810ee7_dd34191d",
+        "filename": "tests/test_subcmds_info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T14:40:20Z",
+      "side": 1,
+      "message": "add typing info to new code\n\ni think AI agents are generally pretty good at this task, at least as a first pass",
+      "fixSuggestions": [
+        {
+          "fixId": "bf239937_4e55326a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_info.py",
+              "range": {
+                "startLine": 23,
+                "startChar": 0,
+                "endLine": 24,
+                "endChar": 0
+              },
+              "replacement": "def _get_cmd() -\u003e info.Info:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9da526bfd01d6bbb7fc40599f7bd5089fc76fca9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30d229c1_618cccad",
+        "filename": "tests/test_subcmds_info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T14:40:20Z",
+      "side": 1,
+      "message": "inline the cmd variable",
+      "fixSuggestions": [
+        {
+          "fixId": "b09510d4_68ab434b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_info.py",
+              "range": {
+                "startLine": 37,
+                "startChar": 0,
+                "endLine": 38,
+                "endChar": 0
+              },
+              "replacement": "    return info.Info(\n"
+            },
+            {
+              "path": "tests/test_subcmds_info.py",
+              "range": {
+                "startLine": 42,
+                "startChar": 0,
+                "endLine": 43,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "9da526bfd01d6bbb7fc40599f7bd5089fc76fca9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b72d892a_ba089f85",
+        "filename": "tests/test_subcmds_info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T14:40:20Z",
+      "side": 1,
+      "message": "hmm, i don\u0027t think we need to assert things are exactly the bool sentinels, just that they\u0027re truthy\n\ncomes up below with falsey values",
+      "fixSuggestions": [
+        {
+          "fixId": "bcd48e50_5c3a2178",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_info.py",
+              "range": {
+                "startLine": 49,
+                "startChar": 0,
+                "endLine": 51,
+                "endChar": 0
+              },
+              "replacement": "    assert opts.include_summary\n    assert opts.include_projects\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9da526bfd01d6bbb7fc40599f7bd5089fc76fca9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
