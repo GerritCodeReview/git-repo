@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6a33e70_2628ba55",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T20:55:44Z",
+      "side": 1,
+      "message": "add at least one-liner docstrings to new methods/classes\n\ni know the diff makes it look like you\u0027re adding more methods than you actually are (e.g. the `_Copy()`), so i won\u0027t push on every one that\u0027s \"changed\"\n\ngoal is to not make the status quo worse ;)",
+      "revId": "15bce9fdd8f9596c242f0b87c6e6f93fc8cd8443",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1521fcbd_3ea11e3e",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T20:55:44Z",
+      "side": 1,
+      "message": "don\u0027t nest classes.  i don\u0027t see a reason to do it here (since it\u0027s using an `_` prefix, it communicates it\u0027s internal to the module).\n\ni\u0027m not sure it\u0027s a problem for nesting classes inside of a class, but i generally have bad reactions to nested classes because putting them inside funcs leads to bad pickling behavior which comes up with multiprocessing.  and those kind of errors tend to be the ones that blow up at the wrong time and hard to track down.",
+      "revId": "15bce9fdd8f9596c242f0b87c6e6f93fc8cd8443",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
