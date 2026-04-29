@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0bac139_84da28c3",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1604,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T20:57:00Z",
+      "side": 1,
+      "message": "should this check be here ?  seems like we always want to return the dest since we\u0027re going to copy to it ?",
+      "revId": "289c2a9e85e852c2fa3eb3336a43492b14ee6f74",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84c05ab6_01534345",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1608,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T20:57:00Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "289c2a9e85e852c2fa3eb3336a43492b14ee6f74",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4840bc5_0259599c",
+        "filename": "subcmds/status.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T20:57:00Z",
+      "side": 1,
+      "message": "i\u0027ll skip reviewing this file for now since i think it needs a significant rebase",
+      "revId": "289c2a9e85e852c2fa3eb3336a43492b14ee6f74",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
