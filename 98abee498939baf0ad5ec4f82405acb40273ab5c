@@ -50,6 +50,24 @@
       "message": "what is the code path such that _CheckForImmutableRevision is being called in the first place when we don\u0027t have a manifest yet ?  it feels like that is the problem, and changing _CheckForImmutableRevision behavior is papering over the bug.\n\n`_loaded` means \"this is internal to the class\".  it shouldn\u0027t be inspected by code outside of it such as project.py.",
       "revId": "98abee498939baf0ad5ec4f82405acb40273ab5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "705ed705_24b38e34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3255163
+      },
+      "writtenOn": "2026-04-29T08:58:13Z",
+      "side": 1,
+      "message": "You\u0027re right. The real observation is that the superproject-gated upstream branch only applies to user projects listed in the manifest. MetaProjects (ManifestProject, RepoProject) never participate in a superproject relationship, so that whole branch shouldn\u0027t run for them.",
+      "parentUuid": "6cd3eca4_f8e3a56d",
+      "revId": "98abee498939baf0ad5ec4f82405acb40273ab5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
