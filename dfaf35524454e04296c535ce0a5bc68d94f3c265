@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ffe737e_814e9c70",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T05:13:00Z",
+      "side": 1,
+      "message": "i don\u0027t think this one is relevant.  drop it.",
+      "revId": "dfaf35524454e04296c535ce0a5bc68d94f3c265",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fc61e2e_4cb7b70b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-04-29T05:13:00Z",
+      "side": 1,
+      "message": "this is fine to start with, but this misses GIT_CONFIG_SYSTEM support",
+      "revId": "dfaf35524454e04296c535ce0a5bc68d94f3c265",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
