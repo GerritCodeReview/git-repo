@@ -22,6 +22,30 @@
       },
       "revId": "bb85c36ab1b252200ebe93820f3b8d8776232063",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85b764a2_fa4d3867",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-05-01T17:07:07Z",
+      "side": 1,
+      "message": "yeah, previous questions at https://gerrit-review.git.corp.google.com/c/git-repo/+/569244",
+      "parentUuid": "b275b6be_945946b1",
+      "range": {
+        "startLine": 458,
+        "startChar": 22,
+        "endLine": 460,
+        "endChar": 47
+      },
+      "revId": "bb85c36ab1b252200ebe93820f3b8d8776232063",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
