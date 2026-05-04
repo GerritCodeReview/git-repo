@@ -663,6 +663,36 @@ class StatelessSyncTests(unittest.TestCase):
                 capture_stderr=True,
             )
 
+    def test_sync_local_half_no_upstream_propagates_force_checkout(self):
+        """Test Sync_LocalHalf forwards force_checkout when detaching."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+
+            proj._InitWorkTree = mock.MagicMock()
+            proj.CleanPublishedCache = mock.MagicMock()
+            proj.GetRevisionId = mock.MagicMock(return_value="1234abcd")
+            proj._Checkout = mock.MagicMock()
+            proj._CopyAndLinkFiles = mock.MagicMock()
+
+            proj.work_git = mock.MagicMock()
+            proj.work_git.GetHead.return_value = "refs/heads/topic"
+
+            proj.bare_ref = mock.MagicMock()
+            proj.bare_ref.all = {"refs/heads/topic": "5678abcd"}
+
+            branch = mock.MagicMock()
+            branch.name = "topic"
+            branch.LocalMerge = False
+            proj.GetBranch = mock.MagicMock(return_value=branch)
+
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf, force_checkout=True)
+
+            proj._Checkout.assert_called_once_with(
+                "1234abcd", force_checkout=True, quiet=True
+            )
+            proj._CopyAndLinkFiles.assert_called_once_with()
+
     def test_sync_network_half_stateless_skips_if_stash(self):
         """Test stateless sync skips if stash exists."""
         with utils_for_test.TempGitTree() as tempdir:
