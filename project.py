@@ -1767,7 +1767,7 @@ class Project:
                 self, "leaving %s; does not track upstream", branch.name
             )
             try:
-                self._Checkout(revid, quiet=True)
+                self._Checkout(revid, force_checkout=force_checkout, quiet=True)
                 if submodules:
                     self._SyncSubmodules(quiet=True)
             except GitError as e:
