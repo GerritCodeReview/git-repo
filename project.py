@@ -2444,7 +2444,7 @@ class Project:
                 result.extend(project.GetDerivedSubprojects())
                 continue
 
-            if url.startswith(".."):
+            if url.startswith("."):
                 url = urllib.parse.urljoin("%s/" % self.remote.url, url)
             remote = RemoteSpec(
                 self.remote.name,
