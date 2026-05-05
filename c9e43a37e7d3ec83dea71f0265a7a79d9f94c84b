@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "733f8269_851d083f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-05-05T14:07:44Z",
+      "side": 1,
+      "message": "just nits.  i don\u0027t use zsh, so can\u0027t really comment, but happy to simply merge and let others provide feedback.",
+      "revId": "c9e43a37e7d3ec83dea71f0265a7a79d9f94c84b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7c4538a_9152f598",
+        "filename": "completion.zsh",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-05-05T14:07:44Z",
+      "side": 1,
+      "message": "use the current year\n```suggestion\n# Copyright (C) 2026 The Android Open Source Project\n```",
+      "revId": "c9e43a37e7d3ec83dea71f0265a7a79d9f94c84b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40b7a97f_e35b24bd",
+        "filename": "completion.zsh",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-05-05T14:07:44Z",
+      "side": 1,
+      "message": "we use 2 space indent in completion.bash.  unless there\u0027s some strong reason for it here, use 2 space in this file too.",
+      "revId": "c9e43a37e7d3ec83dea71f0265a7a79d9f94c84b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e41ec488_830d6fb6",
+        "filename": "completion.zsh",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-05-05T14:07:44Z",
+      "side": 1,
+      "message": "use `${var}` style everywhere\n\nhttps://google.github.io/styleguide/shellguide.html#variable-expansion",
+      "revId": "c9e43a37e7d3ec83dea71f0265a7a79d9f94c84b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ecc9c2c_9c32c2a0",
+        "filename": "completion.zsh",
+        "patchSetId": 3
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-05-05T14:07:44Z",
+      "side": 1,
+      "message": "comments are full sentences, so period at the end\n```suggestion\n            # Handle states for positional arguments.\n```",
+      "revId": "c9e43a37e7d3ec83dea71f0265a7a79d9f94c84b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
