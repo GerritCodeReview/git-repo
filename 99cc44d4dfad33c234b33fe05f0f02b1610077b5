@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a37ff92_1743c09a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-05-05T18:19:10Z",
+      "side": 1,
+      "message": "when exactly is this happening ?  every project listed in the manifest should have been initialized by repo including setting projectname.  this change seems to be papering over a bug.",
+      "revId": "99cc44d4dfad33c234b33fe05f0f02b1610077b5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
