@@ -412,7 +412,8 @@ class Command:
             for project in all_projects_list:
                 if submodules_ok or project.sync_s:
                     derived_projects.update(
-                        (p.name, p) for p in project.GetDerivedSubprojects()
+                        (p.RelPath(local=False), p)
+                        for p in project.GetDerivedSubprojects()
                     )
             all_projects_list.extend(derived_projects.values())
             for project in all_projects_list:
