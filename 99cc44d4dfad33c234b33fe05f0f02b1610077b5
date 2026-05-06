@@ -16,6 +16,24 @@
       "message": "when exactly is this happening ?  every project listed in the manifest should have been initialized by repo including setting projectname.  this change seems to be papering over a bug.",
       "revId": "99cc44d4dfad33c234b33fe05f0f02b1610077b5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c72d3f00_b9e88e1e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4818947
+      },
+      "writtenOn": "2026-05-06T07:53:32Z",
+      "side": 1,
+      "message": "The manifest project itself does not appear to get a `projectname` - is that a bug?\n\nThe case I ran into where this caused issues was as follows:\n\n```\n# Initialize against my manifest\nrepo init --manifest-url ssh://url.to/my/manifest\n\n# After initializing, set pushurl for my manifest repo\n# Since I want to be able to push reviews to Gerrit\ncd .repo/manifests\ngit config remote.origin.pushurl ssh://url.to/my/manifest\n\n# Redo init, e.g. to switch version of repo\nrepo init --manifest-url ssh://url.to/my/manifest --repo-rev main\n```\n\nThe last `repo init` then yields this stack trace:\n\n```\nTraceback (most recent call last):\n  File \"/tmp/temp_repo/.repo/repo/main.py\", line 970, in \u003cmodule\u003e\n    _Main(sys.argv[1:])\n  File \"/tmp/temp_repo/.repo/repo/main.py\", line 946, in _Main\n    result \u003d repo._Run(name, gopts, argv) or 0\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/temp_repo/.repo/repo/main.py\", line 294, in _Run\n    result \u003d run()\n             ^^^^^\n  File \"/tmp/temp_repo/.repo/repo/main.py\", line 275, in \u003clambda\u003e\n    lambda: self._RunLong(name, gopts, argv, git_trace2_event_log) or 0\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/temp_repo/.repo/repo/main.py\", line 538, in _RunLong\n    execute_command()\n  File \"/tmp/temp_repo/.repo/repo/main.py\", line 504, in execute_command\n    execute_command_helper()\n  File \"/tmp/temp_repo/.repo/repo/main.py\", line 470, in execute_command_helper\n    result \u003d cmd.Execute(copts, cargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/temp_repo/.repo/repo/subcmds/init.py\", line 401, in Execute\n    self._SyncManifest(opt)\n  File \"/tmp/temp_repo/.repo/repo/subcmds/init.py\", line 147, in _SyncManifest\n    if not self.manifest.manifestProject.Sync(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/temp_repo/.repo/repo/project.py\", line 4806, in Sync\n    r.Save()\n  File \"/tmp/temp_repo/.repo/repo/git_config.py\", line 728, in Save\n    self._Set(\"pushurl\", self.pushUrl + \"/\" + self.projectname)\n                         ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~\nTypeError: can only concatenate str (not \"NoneType\") to str\n```\n\nI updated the commit message with these details. Let me know if there is an underlying bug that should be fixed instead.",
+      "parentUuid": "5a37ff92_1743c09a",
+      "revId": "99cc44d4dfad33c234b33fe05f0f02b1610077b5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
