@@ -2319,6 +2319,14 @@ later is required to fix a server side protocol bug.
                 warned = True
 
     def Execute(self, opt, args):
+        try:
+            import abfs
+            if not os.environ.get(abfs.NO_ABFS_ENV):
+                abfs.Abfs(topdir=self.manifest.topdir).repo_sync(args, opt)
+                return
+        except Exception as e:
+            logger.error("abfs repo sync failed or not applicable: %s", e)
+
         errors = []
         start_time = time.time()
         try:

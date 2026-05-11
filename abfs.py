@@ -101,6 +101,7 @@ class Abfs:
         input_data: Optional[str] = None,
         env: Optional[Dict[str, str]] = None,
         cwd: Optional[str] = None,
+        stream_output: bool = False,
     ) -> subprocess.CompletedProcess:
         """
         Run the abfs binary with the given arguments and flags.
@@ -136,15 +137,28 @@ class Abfs:
             if env:
                 full_env.update(env)
 
-            result = subprocess.run(
-                cmd,
-                input=input_data,
-                capture_output=True,
-                text=True,
-                check=False,  # We handle checking manually to wrap the error
-                env=full_env,
-                cwd=cwd,
-            )
+            if stream_output:
+                result = subprocess.run(
+                    cmd,
+                    input=input_data,
+                    capture_output=False,
+                    check=False,
+                    env=full_env,
+                    cwd=cwd,
+                )
+                if check and result.returncode != 0:
+                    raise AbfsError(cmd, result.returncode, "", "")
+                return result
+            else:
+                result = subprocess.run(
+                    cmd,
+                    input=input_data,
+                    capture_output=True,
+                    text=True,
+                    check=False,  # We handle checking manually to wrap the error
+                    env=full_env,
+                    cwd=cwd,
+                )
         except FileNotFoundError:
             logger.Error("Failed command: %s", " ".join(cmd))
             logger.error("Binary '%s' not found in PATH.", self.binary)
@@ -189,3 +203,44 @@ class Abfs:
             flags=flags,
         )
         return result.stdout.strip()
+
+    def _get_version(self) -> str:
+        try:
+            result = self.run(["--version"], check=False, stream_output=False)
+            return result.stdout.strip()
+        except Exception:
+            return ""
+
+    def repo_sync(self, args: List[str], opt: Any):
+        version_str = self._get_version()
+        prefix = version_str.split('-')[0]
+        try:
+            version_tuple = tuple(int(x) for x in prefix.split('.'))
+        except ValueError:
+            version_tuple = (0, 0, 0)
+
+        if version_tuple > (0, 1, 14):
+            import sys
+            try:
+                sync_idx = sys.argv.index('sync')
+                args_to_pass = sys.argv[sync_idx + 1:]
+            except ValueError:
+                args_to_pass = sys.argv[2:]
+
+            self.run(
+                ["repo", "sync"] + args_to_pass,
+                stream_output=True,
+            )
+            return ""
+
+        flags = AbfsFlags()
+        if getattr(opt, 'jobs', None):
+            flags.add("--jobs", opt.jobs)
+
+        self.run(
+            ["repo", "sync"] + args,
+            flags=flags,
+            stream_output=True,
+        )
+        return ""
+
