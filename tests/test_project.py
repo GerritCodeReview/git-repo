@@ -931,7 +931,33 @@ class SyncOptimizationTests(unittest.TestCase):
         proj._InitGitDir = mock.MagicMock()
         proj._InitRemote = mock.MagicMock()
         proj._InitMRef = mock.MagicMock()
+        manifest.GetProjectsWithName.return_value = [proj]
         return proj
+
+    def _create_sharing_project(self, tempdir, proj, share_objdir=True):
+        """Create another project with the same name but a different gitdir.
+
+        Args:
+            share_objdir: a boolean, if True - the new project shares the same
+                objdir, if False - the new project has a different objdir.
+        """
+        if share_objdir:
+            other_objdir = proj.objdir
+        else:
+            other_objdir = os.path.join(tempdir, "other_objdir")
+        other = project.Project(
+            manifest=proj.manifest,
+            name=proj.name,
+            remote=proj.remote,
+            gitdir=os.path.join(tempdir, "other_gitdir"),
+            objdir=other_objdir,
+            worktree=os.path.join(tempdir, "other_worktree"),
+            relpath="other-test-project",
+            revisionExpr=proj.revisionExpr,
+            revisionId=None,
+        )
+        proj.manifest.GetProjectsWithName.return_value.append(other)
+        return other
 
     def test_sync_network_half_shallow_missing_fetches(self):
         """Test Sync_NetworkHalf fetches if shallow file is missing."""
@@ -958,6 +984,72 @@ class SyncOptimizationTests(unittest.TestCase):
             os.makedirs(proj.gitdir, exist_ok=True)
             os.makedirs(proj.objdir, exist_ok=True)
             with open(os.path.join(proj.gitdir, "shallow"), "w") as f:
+                f.write("")
+
+            proj._RemoteFetch = mock.MagicMock()
+
+            res = proj.Sync_NetworkHalf(optimized_fetch=True)
+
+            self.assertTrue(res.success)
+            proj._RemoteFetch.assert_not_called()
+
+    def test_sync_network_half_sharing_project_shallow_missing_fetches(
+        self,
+    ):
+        """Test Sync_NetworkHalf fetches when sharing project has shallow
+        file but this project does not."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, depth=1)
+            os.makedirs(proj.gitdir, exist_ok=True)
+            os.makedirs(proj.objdir, exist_ok=True)
+
+            other = self._create_sharing_project(tempdir, proj)
+            os.makedirs(other.gitdir, exist_ok=True)
+            with open(os.path.join(other.gitdir, "shallow"), "w") as f:
+                f.write("")
+
+            proj._RemoteFetch = mock.MagicMock(return_value=True)
+
+            res = proj.Sync_NetworkHalf(optimized_fetch=True)
+
+            self.assertTrue(res.success)
+            proj._RemoteFetch.assert_called_once()
+
+    def test_sync_network_half_different_objdir_shallow_exists_skips(self):
+        """Test Sync_NetworkHalf skips when same-name project has shallow file
+        but different objdir (like in a multi-manifest setup)."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, depth=1)
+            os.makedirs(proj.gitdir, exist_ok=True)
+            os.makedirs(proj.objdir, exist_ok=True)
+
+            other = self._create_sharing_project(
+                tempdir, proj, share_objdir=False
+            )
+            os.makedirs(other.gitdir, exist_ok=True)
+            with open(os.path.join(other.gitdir, "shallow"), "w") as f:
+                f.write("")
+
+            proj._RemoteFetch = mock.MagicMock()
+
+            res = proj.Sync_NetworkHalf(optimized_fetch=True)
+
+            self.assertTrue(res.success)
+            proj._RemoteFetch.assert_not_called()
+
+    def test_sync_network_half_sharing_project_both_shallow_skips(self):
+        """Test Sync_NetworkHalf skips when both this project and the sharing
+        project have shallow files."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, depth=1)
+            os.makedirs(proj.gitdir, exist_ok=True)
+            os.makedirs(proj.objdir, exist_ok=True)
+            with open(os.path.join(proj.gitdir, "shallow"), "w") as f:
+                f.write("")
+
+            other = self._create_sharing_project(tempdir, proj)
+            os.makedirs(other.gitdir, exist_ok=True)
+            with open(os.path.join(other.gitdir, "shallow"), "w") as f:
                 f.write("")
 
             proj._RemoteFetch = mock.MagicMock()
@@ -996,6 +1088,58 @@ class SyncOptimizationTests(unittest.TestCase):
             os.makedirs(proj.gitdir, exist_ok=True)
             os.makedirs(proj.objdir, exist_ok=True)
             with open(os.path.join(proj.gitdir, "shallow"), "w") as f:
+                f.write("")
+
+            with mock.patch("project.GitCommand") as mock_git_cmd:
+                res = proj._RemoteFetch(
+                    current_branch_only=True,
+                    depth=1,
+                    use_superproject=False,
+                )
+
+                self.assertTrue(res)
+                mock_git_cmd.assert_not_called()
+
+    def test_remote_fetch_sharing_project_shallow_missing_fetches(self):
+        """Test _RemoteFetch fetches when sharing project has shallow file
+        but this project does not."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, depth=1)
+            os.makedirs(proj.gitdir, exist_ok=True)
+            os.makedirs(proj.objdir, exist_ok=True)
+
+            other = self._create_sharing_project(tempdir, proj)
+            os.makedirs(other.gitdir, exist_ok=True)
+            with open(os.path.join(other.gitdir, "shallow"), "w") as f:
+                f.write("")
+
+            with mock.patch("project.GitCommand") as mock_git_cmd:
+                mock_cmd_instance = mock.MagicMock()
+                mock_cmd_instance.Wait.return_value = 0
+                mock_git_cmd.return_value = mock_cmd_instance
+
+                res = proj._RemoteFetch(
+                    current_branch_only=True,
+                    depth=1,
+                    use_superproject=False,
+                )
+
+                self.assertTrue(res)
+                mock_git_cmd.assert_called()
+
+    def test_remote_fetch_sharing_project_both_shallow_skips(self):
+        """Test _RemoteFetch skips when both this project and the sharing
+        project have shallow files."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, depth=1)
+            os.makedirs(proj.gitdir, exist_ok=True)
+            os.makedirs(proj.objdir, exist_ok=True)
+            with open(os.path.join(proj.gitdir, "shallow"), "w") as f:
+                f.write("")
+
+            other = self._create_sharing_project(tempdir, proj)
+            os.makedirs(other.gitdir, exist_ok=True)
+            with open(os.path.join(other.gitdir, "shallow"), "w") as f:
                 f.write("")
 
             with mock.patch("project.GitCommand") as mock_git_cmd:
