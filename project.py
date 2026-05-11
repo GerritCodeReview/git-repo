@@ -1537,6 +1537,7 @@ class Project:
 
         # See if we can skip the network fetch entirely.
         remote_fetched = False
+        has_shallow = os.path.exists(os.path.join(self.gitdir, "shallow"))
         if not (
             optimized_fetch
             and IsId(self.revisionExpr)
@@ -1544,8 +1545,8 @@ class Project:
                 use_superproject=use_superproject
             )
             and (
-                not depth
-                or os.path.exists(os.path.join(self.gitdir, "shallow"))
+                has_shallow
+                or (not depth and not self._SharingProjectHasShallow())
             )
         ):
             remote_fetched = True
@@ -2609,6 +2610,23 @@ class Project:
             # There is no such persistent revision. We have to fetch it.
             return False
 
+    def _SharingProjectHasShallow(self) -> bool:
+        """Check if another project sharing this objdir has a "shallow" file.
+
+        If any project sharing this objdir has a shallow file in its gitdir,
+        then the shared objdir may be depth-limited, and every other project
+        sharing this objdir needs its own shallow file so that git knows
+        where history is truncated.
+        """
+        other_projects = self.manifest.GetProjectsWithName(
+            self.name, all_manifests=True
+        )
+        for proj in other_projects:
+            if proj.objdir == self.objdir and proj.gitdir != self.gitdir:
+                if os.path.exists(os.path.join(proj.gitdir, "shallow")):
+                    return True
+        return False
+
     def _FetchArchive(self, tarpath, cwd=None):
         cmd = ["archive", "-v", "-o", tarpath]
         cmd.append("--remote=%s" % self.remote.url)
@@ -2668,11 +2686,15 @@ class Project:
                 tag_name = self.upstream[len(R_TAGS) :]
 
             if is_sha1 or tag_name is not None:
-                if self._CheckForImmutableRevision(
-                    use_superproject=use_superproject
-                ) and (
-                    not depth
-                    or os.path.exists(os.path.join(self.gitdir, "shallow"))
+                has_shallow = os.path.exists(os.path.join(self.gitdir, "shallow"))
+                if (
+                    self._CheckForImmutableRevision(
+                        use_superproject=use_superproject
+                    )
+                    and (
+                        has_shallow
+                        or (not depth and not self._SharingProjectHasShallow())
+                    )
                 ):
                     if verbose:
                         print(
