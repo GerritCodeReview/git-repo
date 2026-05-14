@@ -727,38 +727,63 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             self.assertFalse(result)
 
 
+def _create_mock_project(
+    tempdir,
+    use_local_gitdirs=False,
+    fetch_cmd=None,
+    depth=None,
+    gitdir=None,
+    objdir=None,
+    revisionExpr="main",
+    sync_strategy=None,
+):
+    manifest = mock.MagicMock()
+    manifest.manifestProject.use_local_gitdirs = use_local_gitdirs
+    manifest.manifestProject.fetch_cmd = fetch_cmd
+    manifest.manifestProject.depth = depth
+    manifest.manifestProject.dissociate = False
+    manifest.manifestProject.clone_filter = None
+    manifest.manifestProject.config.GetBoolean.return_value = False
+    manifest.is_multimanifest = False
+    manifest.IsMirror = False
+    manifest.topdir = tempdir
+
+    remote = mock.MagicMock()
+    remote.name = "origin"
+    remote.url = "http://example.com/repo"
+
+    if gitdir is None:
+        gitdir = os.path.join(tempdir, ".git")
+    if objdir is None:
+        objdir = os.path.join(tempdir, ".git")
+
+    proj = project.Project(
+        manifest=manifest,
+        name="test-project",
+        remote=remote,
+        gitdir=gitdir,
+        objdir=objdir,
+        worktree=tempdir,
+        relpath="test-project",
+        revisionExpr=revisionExpr,
+        revisionId=None,
+        sync_strategy=sync_strategy,
+    )
+
+    proj.bare_git = mock.MagicMock()
+    proj._LsRemote = mock.MagicMock(return_value="1234abcd\trefs/heads/main\n")
+
+    return proj
+
+
 class StatelessSyncTests(unittest.TestCase):
     """Tests for stateless sync strategy."""
 
     def _get_project(self, tempdir):
-        manifest = mock.MagicMock()
-        manifest.manifestProject.depth = None
-        manifest.manifestProject.dissociate = False
-        manifest.manifestProject.clone_filter = None
-        manifest.is_multimanifest = False
-        manifest.manifestProject.config.GetBoolean.return_value = False
-
-        remote = mock.MagicMock()
-        remote.name = "origin"
-        remote.url = "http://"
-
-        proj = project.Project(
-            manifest=manifest,
-            name="test-project",
-            remote=remote,
-            gitdir=os.path.join(tempdir, ".git"),
-            objdir=os.path.join(tempdir, ".git"),
-            worktree=tempdir,
-            relpath="test-project",
-            revisionExpr="1234abcd",
-            revisionId=None,
-            sync_strategy="stateless",
+        proj = _create_mock_project(
+            tempdir, revisionExpr="1234abcd", sync_strategy="stateless"
         )
         proj._CheckForImmutableRevision = mock.MagicMock(return_value=False)
-        proj._LsRemote = mock.MagicMock(
-            return_value="1234abcd\trefs/heads/main\n"
-        )
-        proj.bare_git = mock.MagicMock()
         proj.bare_git.rev_parse.return_value = "5678abcd"
         proj.bare_git.rev_list.return_value = ["0"]
         proj.IsDirty = mock.MagicMock(return_value=False)
@@ -878,28 +903,12 @@ class SyncOptimizationTests(unittest.TestCase):
     """Tests for sync optimization logic involving shallow clones."""
 
     def _get_project(self, tempdir, depth=None):
-        manifest = mock.MagicMock()
-        manifest.manifestProject.depth = depth
-        manifest.manifestProject.dissociate = False
-        manifest.manifestProject.clone_filter = None
-        manifest.is_multimanifest = False
-        manifest.manifestProject.config.GetBoolean.return_value = False
-        manifest.IsMirror = False
-
-        remote = mock.MagicMock()
-        remote.name = "origin"
-        remote.url = "http://"
-
-        proj = project.Project(
-            manifest=manifest,
-            name="test-project",
-            remote=remote,
+        proj = _create_mock_project(
+            tempdir,
+            depth=depth,
             gitdir=os.path.join(tempdir, "gitdir"),
             objdir=os.path.join(tempdir, "objdir"),
-            worktree=tempdir,
-            relpath="test-project",
             revisionExpr="0123456789abcdef0123456789abcdef01234567",
-            revisionId=None,
         )
         proj._CheckForImmutableRevision = mock.MagicMock(return_value=True)
         proj.DeleteWorktree = mock.MagicMock()
