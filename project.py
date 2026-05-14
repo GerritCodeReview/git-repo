@@ -679,6 +679,7 @@ class Project:
                 manifest.
             REPO_DEST_BRANCH: The name of the destination branch for code
                 review, as specified in the manifest.
+            REPO_PROJECT_FETCH_URL: The full resolved fetch URL for the project.
             REPO__*: Any extra environment variables specified by the
                 "annotation" element under any project element.
         """
@@ -694,6 +695,7 @@ class Project:
         setenv("REPO_INNERPATH", self.relpath)
         setenv("REPO_PATH", self.RelPath(local=local))
         setenv("REPO_REMOTE", self.remote.name)
+        setenv("REPO_PROJECT_FETCH_URL", self.remote.url)
 
         try:
             lrev = "" if mirror else self.GetRevisionId()
@@ -1564,30 +1566,44 @@ class Project:
         ):
             remote_fetched = True
             try:
-                if not self._RemoteFetch(
-                    initial=is_new,
-                    quiet=quiet,
-                    verbose=verbose,
-                    output_redir=output_redir,
-                    alt_dir=alt_dir,
-                    use_superproject=use_superproject,
-                    current_branch_only=current_branch_only,
-                    tags=tags,
-                    prune=prune,
-                    depth=depth,
-                    submodules=submodules,
-                    force_sync=force_sync,
-                    ssh_proxy=ssh_proxy,
-                    clone_filter=clone_filter,
-                    retry_fetches=retry_fetches,
+                if (
+                    self.manifest.manifestProject.use_local_gitdirs
+                    and self.manifest.manifestProject.fetch_cmd
                 ):
-                    return SyncNetworkHalfResult(
-                        remote_fetched,
-                        SyncNetworkHalfError(
-                            f"Unable to remote fetch project {self.name}",
-                            project=self.name,
-                        ),
-                    )
+                    if not self._CustomFetch():
+                        return SyncNetworkHalfResult(
+                            remote_fetched,
+                            SyncNetworkHalfError(
+                                f"Unable to fetch project {self.name} using "
+                                "fetch_cmd",
+                                project=self.name,
+                            ),
+                        )
+                else:
+                    if not self._RemoteFetch(
+                        initial=is_new,
+                        quiet=quiet,
+                        verbose=verbose,
+                        output_redir=output_redir,
+                        alt_dir=alt_dir,
+                        use_superproject=use_superproject,
+                        current_branch_only=current_branch_only,
+                        tags=tags,
+                        prune=prune,
+                        depth=depth,
+                        submodules=submodules,
+                        force_sync=force_sync,
+                        ssh_proxy=ssh_proxy,
+                        clone_filter=clone_filter,
+                        retry_fetches=retry_fetches,
+                    ):
+                        return SyncNetworkHalfResult(
+                            remote_fetched,
+                            SyncNetworkHalfError(
+                                f"Unable to remote fetch project {self.name}",
+                                project=self.name,
+                            ),
+                        )
             except RepoError as e:
                 return SyncNetworkHalfResult(
                     remote_fetched,
@@ -2636,6 +2652,98 @@ class Project:
             verify_command=True,
         )
         command.Wait()
+
+    def _CustomFetch(self) -> bool:
+        """Fetch using custom command."""
+        # Resolve REPO_TREV (Target Revision resolved to a full commit hash)
+        repo_trev = None
+        if self.revisionId and IsId(self.revisionId):
+            repo_trev = self.revisionId
+
+        if not repo_trev:
+            output = self._LsRemote(self.upstream or self.revisionExpr)
+            if output:
+                repo_trev = output.splitlines()[0].split()[0]
+
+        if not repo_trev:
+            logger.error("error: Cannot resolve REPO_TREV for %s", self.name)
+            return False
+
+        # Prepare environment
+        env = os.environ.copy()
+        env.update(self.GetEnvVars())
+        env["REPO_TREV"] = repo_trev
+
+        # Execute command
+        cmd_str = self.manifest.manifestProject.fetch_cmd
+
+        logger.info("Running fetch_cmd: %s for %s", cmd_str, self.name)
+
+        try:
+            p = subprocess.run(
+                cmd_str,
+                shell=True,
+                cwd=self.manifest.topdir,
+                env=env,
+                capture_output=True,
+                text=True,
+            )
+
+            if p.returncode != 0:
+                logger.error(
+                    "error: fetch_cmd failed with exit code %d", p.returncode
+                )
+                logger.error("stderr: %s", p.stderr)
+                return False
+
+        except Exception as e:
+            logger.error("error: Failed to execute fetch_cmd: %s", e)
+            return False
+
+        # Verify postconditions
+        try:
+            self.bare_git.cat_file("-e", repo_trev)
+        except GitError:
+            logger.error(
+                "error: Postcondition failed: %s not found in object store",
+                repo_trev,
+            )
+            return False
+
+        try:
+            ref_name = self.remote.ToLocal(self.revisionExpr)
+        except GitError as e:
+            logger.error("error: Failed to resolve tracking ref: %s", e)
+            return False
+        try:
+            resolved_ref = self.bare_git.rev_parse(ref_name)
+            if resolved_ref != repo_trev:
+                logger.error(
+                    "error: Postcondition failed: %s is %s, expected %s",
+                    ref_name,
+                    resolved_ref,
+                    repo_trev,
+                )
+                return False
+        except GitError:
+            logger.error("error: Postcondition failed: %s not found", ref_name)
+            return False
+
+        try:
+            fetch_head = self.bare_git.rev_parse("FETCH_HEAD")
+            if fetch_head != repo_trev:
+                logger.error(
+                    "error: Postcondition failed: FETCH_HEAD is %s, "
+                    "expected %s",
+                    fetch_head,
+                    repo_trev,
+                )
+                return False
+        except GitError:
+            logger.error("error: Postcondition failed: FETCH_HEAD not found")
+            return False
+
+        return True
 
     def _RemoteFetch(
         self,
@@ -4561,6 +4669,11 @@ class ManifestProject(MetaProject):
         return self.config.GetBoolean("repo.uselocalgitdirs")
 
     @property
+    def fetch_cmd(self):
+        """The fetch command to use."""
+        return self.config.GetString("repo.fetchcmd")
+
+    @property
     def clone_bundle(self):
         """Whether we use clone_bundle."""
         return self.config.GetBoolean("repo.clonebundle")
@@ -4972,6 +5085,13 @@ class ManifestProject(MetaProject):
                 return False
 
             self.config.SetBoolean("repo.uselocalgitdirs", use_local_gitdirs)
+
+        if self.fetch_cmd and not (use_local_gitdirs or self.use_local_gitdirs):
+            logger.error(
+                "fatal: repo.fetchcmd is set but repo.uselocalgitdirs is "
+                "not enabled"
+            )
+            return False
 
         if archive:
             if is_new:
