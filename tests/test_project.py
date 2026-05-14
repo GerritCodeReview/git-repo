@@ -991,3 +991,69 @@ class SyncOptimizationTests(unittest.TestCase):
 
                 self.assertTrue(res)
                 mock_git_cmd.assert_not_called()
+
+
+class FetchCmdTests(unittest.TestCase):
+    """Tests for fetch_cmd feature."""
+
+    def setUpManifest(self, tempdir):
+        repodir = os.path.join(tempdir, ".repo")
+        manifest_dir = os.path.join(repodir, "manifests")
+        manifest_file = os.path.join(repodir, manifest_xml.MANIFEST_FILE_NAME)
+        os.mkdir(repodir)
+        os.mkdir(manifest_dir)
+        manifest = manifest_xml.XmlManifest(repodir, manifest_file)
+
+        return project.ManifestProject(
+            manifest, "test/manifest", os.path.join(tempdir, ".git"), tempdir
+        )
+
+    def _get_project(self, tempdir):
+        proj = _create_mock_project(
+            tempdir, use_local_gitdirs=True, fetch_cmd="echo hi"
+        )
+        proj.GetRevisionId = mock.MagicMock(return_value="1234abcd")
+        return proj
+        return proj
+
+    def test_fetch_cmd_execution(self):
+        """Test that fetch_cmd is executed with correct environment."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+
+            proj.bare_git.rev_parse.return_value = "1234abcd"
+
+            with mock.patch("subprocess.run") as mock_run:
+                mock_run.return_value = mock.MagicMock(returncode=0, stderr="")
+                res = proj._CustomFetch()
+
+                self.assertTrue(res)
+                mock_run.assert_called_once()
+            args, kwargs = mock_run.call_args
+            self.assertEqual(args[0], "echo hi")
+            self.assertEqual(kwargs["shell"], True)
+            self.assertEqual(kwargs["cwd"], tempdir)
+            self.assertEqual(kwargs["env"]["REPO_TREV"], "1234abcd")
+            self.assertEqual(
+                kwargs["env"]["REPO_PROJECT_FETCH_URL"],
+                "http://example.com/repo",
+            )
+
+    def test_sync_fetch_cmd_requires_use_local_gitdirs(self):
+        """Test that fetch_cmd requires use_local_gitdirs."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = self.setUpManifest(tempdir)
+
+            class DummyManifest:
+                is_submanifest = False
+
+                def GetDefaultGroupsStr(self, with_platform=False):
+                    return ""
+
+            fakeproj.manifest = DummyManifest()
+
+            fakeproj.config.SetString("repo.fetchcmd", "echo hi")
+            fakeproj.config.SetBoolean("repo.uselocalgitdirs", False)
+
+            result = fakeproj.Sync(use_local_gitdirs=False)
+            self.assertFalse(result)
