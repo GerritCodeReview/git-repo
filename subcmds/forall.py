@@ -107,6 +107,8 @@ manifest.
 REPO_DEST_BRANCH is the name of the destination branch for code review,
 as specified in the manifest.
 
+REPO_PROJECT_FETCH_URL is the full resolved fetch URL for the project.
+
 REPO_COUNT is the total number of projects being iterated.
 
 REPO_I is the current (1-based) iteration count. Can be used in
