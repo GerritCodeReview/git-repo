@@ -25,7 +25,6 @@ from color import Coloring
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
 from command import MirrorSafeCommand
-from error import ManifestInvalidRevisionError
 from repo_logging import RepoLogger
 
 
@@ -339,25 +338,8 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
             val = ""
         env[name] = val
 
-    setenv("REPO_PROJECT", project.name)
-    setenv("REPO_OUTERPATH", project.manifest.path_prefix)
-    setenv("REPO_INNERPATH", project.relpath)
-    setenv("REPO_PATH", project.RelPath(local=opt.this_manifest_only))
-    setenv("REPO_REMOTE", project.remote.name)
-    try:
-        # If we aren't in a fully synced state and we don't have the ref the
-        # manifest wants, then this will fail.  Ignore it for the purposes of
-        # this code.
-        lrev = "" if mirror else project.GetRevisionId()
-    except ManifestInvalidRevisionError:
-        lrev = ""
-    setenv("REPO_LREV", lrev)
-    setenv("REPO_RREV", project.revisionExpr)
-    setenv("REPO_UPSTREAM", project.upstream)
-    setenv("REPO_DEST_BRANCH", project.dest_branch)
-    setenv("REPO_I", str(cnt + 1))
-    for annotation in project.annotations:
-        setenv("REPO__%s" % (annotation.name), annotation.value)
+    env.update(project.GetEnvVars(local=opt.this_manifest_only, mirror=mirror))
+    env["REPO_I"] = str(cnt + 1)
 
     if mirror:
         setenv("GIT_DIR", project.gitdir)

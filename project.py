@@ -28,7 +28,7 @@ import sys
 import tarfile
 import tempfile
 import time
-from typing import List, NamedTuple, Optional
+from typing import Dict, List, NamedTuple, Optional
 import urllib.parse
 
 from color import Coloring
@@ -650,6 +650,64 @@ class Project:
         if local:
             return self.relpath
         return os.path.join(self.manifest.path_prefix, self.relpath)
+
+    def GetEnvVars(
+        self, local: bool = True, mirror: bool = False
+    ) -> Dict[str, str]:
+        """Get project-context environment variables.
+
+        Args:
+            local: If True, REPO_PATH is relative to the local (sub)manifest.
+                If False, it is relative to the outermost manifest.
+            mirror: If True, assume a mirror client layout.
+
+        Returns:
+            A dictionary mapping environment variable names to their values.
+
+        Environment Variables:
+            REPO_PROJECT: The unique name of the project.
+            REPO_PATH: The path relative to the root of the client.
+            REPO_OUTERPATH: The path of the sub manifest's root relative to the
+                root of the client.
+            REPO_INNERPATH: The path relative to the root of the sub manifest.
+            REPO_REMOTE: The name of the remote system from the manifest.
+            REPO_LREV: The name of the revision from the manifest, translated to
+                a local tracking branch.
+            REPO_RREV: The name of the revision from the manifest, exactly as
+                written in the manifest.
+            REPO_UPSTREAM: The name of the upstream branch as specified in the
+                manifest.
+            REPO_DEST_BRANCH: The name of the destination branch for code
+                review, as specified in the manifest.
+            REPO__*: Any extra environment variables specified by the
+                "annotation" element under any project element.
+        """
+        env = {}
+
+        def setenv(name, val):
+            if val is None:
+                val = ""
+            env[name] = val
+
+        setenv("REPO_PROJECT", self.name)
+        setenv("REPO_OUTERPATH", self.manifest.path_prefix)
+        setenv("REPO_INNERPATH", self.relpath)
+        setenv("REPO_PATH", self.RelPath(local=local))
+        setenv("REPO_REMOTE", self.remote.name)
+
+        try:
+            lrev = "" if mirror else self.GetRevisionId()
+        except ManifestInvalidRevisionError:
+            lrev = ""
+        setenv("REPO_LREV", lrev)
+        setenv("REPO_RREV", self.revisionExpr)
+        setenv("REPO_UPSTREAM", self.upstream)
+        setenv("REPO_DEST_BRANCH", self.dest_branch)
+
+        for annotation in self.annotations:
+            setenv(f"REPO__{annotation.name}", annotation.value)
+
+        return env
 
     def SetRevision(self, revisionExpr, revisionId=None):
         """Set revisionId based on revision expression and id"""
