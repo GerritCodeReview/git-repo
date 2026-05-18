@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa9bc052_c5dedf27",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-05-18T19:31:32Z",
+      "side": 1,
+      "message": "```suggestion\nBug: 40013218\nChange-Id: Ia86518ccf2c0af7bd7e4daf8d703a55b7e10ba52\n```",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 6
+      },
+      "revId": "d29f8027fc248d15df0e66d8f3ce6948382aa802",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
