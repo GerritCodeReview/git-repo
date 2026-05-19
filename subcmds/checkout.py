@@ -75,6 +75,7 @@ The command is equivalent to:
 
     def Execute(self, opt, args):
         nb = args[0]
+        self.TryOverrideManifestWithSmartSync()
         err = []
         err_projects = []
         success = []

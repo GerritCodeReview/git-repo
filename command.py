@@ -528,6 +528,8 @@ class Command:
         """Override manifest with smart_sync_override.xml if it exists."""
         if manifest is None:
             manifest = self.manifest
+        if manifest is None:
+            return
         smart_sync_manifest_path = self.GetSmartSyncOverridePath(manifest)
         if os.path.isfile(smart_sync_manifest_path):
             manifest.Override(smart_sync_manifest_path)

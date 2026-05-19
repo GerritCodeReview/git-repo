@@ -349,6 +349,7 @@ contain a line that matches both expressions:
         return (git_failed, bad_rev, have_match, errors)
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         out = GrepColoring(self.manifest.manifestProject.config)
 
         cmd_argv = ["grep"]

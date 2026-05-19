@@ -288,6 +288,7 @@ class Gc(Command):
         return 0
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         projects: List[Project] = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
         )

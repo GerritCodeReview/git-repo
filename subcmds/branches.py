@@ -115,6 +115,7 @@ is shown, then the branch appears in all projects.
         return branches
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         projects = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
         )
