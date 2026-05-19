@@ -61,6 +61,9 @@ class Command:
     # command to show short-vs-full summaries.
     COMMON = False
 
+    # Whether this command should respect the smart sync override manifest if it exists.
+    RESPECT_SMART_SYNC_OVERRIDE = True
+
     # Whether this command supports running in parallel. If greater than 0,
     # it is the number of parallel jobs to default to.
     PARALLEL_JOBS = None
@@ -241,6 +244,12 @@ class Command:
             # By default, treat multi-manifest instances as a single manifest
             # from the user's perspective.
             opt.outer_manifest = True
+
+        if self.RESPECT_SMART_SYNC_OVERRIDE:
+            if self.manifest:
+                self.TryOverrideManifestWithSmartSync(self.manifest)
+            if self.outer_manifest and self.outer_manifest != self.manifest:
+                self.TryOverrideManifestWithSmartSync(self.outer_manifest)
 
     def ValidateOptions(self, opt, args):
         """Validate the user options & arguments before executing.
