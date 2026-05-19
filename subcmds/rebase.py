@@ -95,6 +95,7 @@ branch but need to incorporate new upstream changes "underneath" them.
         )
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         all_projects = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
         )

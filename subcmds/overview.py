@@ -55,6 +55,7 @@ are displayed.
         )
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         all_branches = []
         for project in self.GetProjects(
             args, all_manifests=not opt.this_manifest_only

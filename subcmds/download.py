@@ -140,6 +140,7 @@ If no project is specified try to use current directory as a project.
                 )
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         try:
             self._ExecuteHelper(opt, args)
         except Exception as e:

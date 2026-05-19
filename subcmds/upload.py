@@ -736,6 +736,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         return (project_idx, avail)
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         projects = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
         )
