@@ -34,6 +34,7 @@ class Prune(PagedCommand):
         return project.PruneHeads()
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         projects = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
         )

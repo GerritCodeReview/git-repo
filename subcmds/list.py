@@ -100,6 +100,7 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
             opt: The options.
             args: Positional args.  Can be a list of projects to list, or empty.
         """
+        self.TryOverrideManifestWithSmartSync()
         if not opt.regex:
             projects = self.GetProjects(
                 args,

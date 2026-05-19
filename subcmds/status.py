@@ -131,6 +131,7 @@ the following meanings:
             outstring.append("".join([status_header, item, "/"]))
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         all_projects = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
         )
