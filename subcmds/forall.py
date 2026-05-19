@@ -243,8 +243,6 @@ without iterating through the remaining projects.
 
         mirror = self.manifest.IsMirror
 
-        self.TryOverrideManifestWithSmartSync()
-
         if opt.regex:
             projects = self.FindProjects(args, all_manifests=all_trees)
         elif opt.inverse_regex:

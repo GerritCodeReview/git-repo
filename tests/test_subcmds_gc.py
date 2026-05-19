@@ -24,7 +24,7 @@ class GcCommand(unittest.TestCase):
     """Tests for gc command."""
 
     def setUp(self):
-        self.cmd = gc.Gc()
+        self.cmd = gc.Gc(manifest=mock.MagicMock())
         self.opt, self.args = self.cmd.OptionParser.parse_args([])
         self.opt.this_manifest_only = False
         self.opt.repack = False
