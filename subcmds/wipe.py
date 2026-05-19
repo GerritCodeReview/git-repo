@@ -78,6 +78,7 @@ Examples:
             self.Usage()
 
     def Execute(self, opt, args: List[str]):
+        self.TryOverrideManifestWithSmartSync()
         # Get all projects to handle shared object directories.
         all_projects = self.GetProjects(None, all_manifests=True, groups="all")
         projects_to_wipe = self.GetProjects(args, all_manifests=True)

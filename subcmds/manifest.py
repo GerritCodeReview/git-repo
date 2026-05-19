@@ -202,4 +202,5 @@ human-readable variations.
             self.Usage()
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         self._Output(opt)

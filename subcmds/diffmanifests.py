@@ -222,6 +222,7 @@ synced and their revisions won't be found.
             )
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         self.out = _Coloring(self.client.globalConfig)
         self.printText = self.out.nofmt_printer("text")
         if opt.color:

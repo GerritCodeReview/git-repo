@@ -59,6 +59,7 @@ to the Unix 'patch' command.
         return (ret, buf.getvalue())
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         all_projects = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
         )

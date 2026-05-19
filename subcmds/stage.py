@@ -51,6 +51,7 @@ The '%prog' command stages files to prepare the next commit.
         )
 
     def Execute(self, opt, args):
+        self.TryOverrideManifestWithSmartSync()
         if opt.interactive:
             self._Interactive(opt, args)
         else:
