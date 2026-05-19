@@ -16,6 +16,24 @@
       "message": "i was wondering about this with your last CL\n\nthe manifest project is a properly of command.py:Command.  why wouldn\u0027t we make this override call in that class and not have to remember to annotate every subcommand ?",
       "revId": "afa6c6090370d512dc29af477da36614718ae1b6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eba65a9e_0f4d9ffc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-05-19T19:52:48Z",
+      "side": 1,
+      "message": "some subcmds don\u0027t want this override since they manage the manifest lifecycle themselves. mainly sync which manages/resets the override, and init which can break if you try to switch manifests while having an old override manifest in the workspace",
+      "parentUuid": "a4d373c9_07184ffc",
+      "revId": "afa6c6090370d512dc29af477da36614718ae1b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
