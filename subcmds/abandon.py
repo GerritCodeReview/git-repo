@@ -94,7 +94,6 @@ It is equivalent to "git branch -D <branchname>".
 
     def Execute(self, opt, args):
         nb = args[0].split()
-        self.TryOverrideManifestWithSmartSync()
         err = collections.defaultdict(list)
         success = collections.defaultdict(list)
         aggregate_errors = []
