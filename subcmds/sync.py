@@ -312,6 +312,7 @@ class TeeStringIO(io.StringIO):
 
 class Sync(Command, MirrorSafeCommand):
     COMMON = True
+    RESPECT_SMART_SYNC_OVERRIDE = False
     MULTI_MANIFEST_SUPPORT = True
     helpSummary = "Update working tree to the latest revision"
     helpUsage = """

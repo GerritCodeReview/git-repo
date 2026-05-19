@@ -33,6 +33,7 @@ _REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
 
 class Init(InteractiveCommand, MirrorSafeCommand):
     COMMON = True
+    RESPECT_SMART_SYNC_OVERRIDE = False
     MULTI_MANIFEST_SUPPORT = True
     helpSummary = "Initialize a repo client checkout in the current directory"
     helpUsage = """
