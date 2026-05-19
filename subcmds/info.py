@@ -147,8 +147,6 @@ class Info(PagedCommand):
         if not opt.this_manifest_only:
             self.manifest = self.manifest.outer_client
 
-        self.TryOverrideManifestWithSmartSync()
-
         output_format = OutputFormat[opt.format.upper()]
         if output_format == OutputFormat.JSON:
             self._ExecuteJson(opt, args)
