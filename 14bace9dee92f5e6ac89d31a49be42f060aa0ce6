@@ -16,6 +16,23 @@
       "message": "@vapier@google.com could you please review? Thanks!",
       "revId": "14bace9dee92f5e6ac89d31a49be42f060aa0ce6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b56034bb_538d0d1e",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2526,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-05-20T19:53:10Z",
+      "side": 1,
+      "message": "i recall there being a need/desire to short circuit here.  you\u0027ve changed the logic such that git_superproject.UseSuperproject is called even when `self.upstream` is False.  i\u0027d have to dig through the commit/Gerrit history to double check.\n\nbut you can move that `self.upstream` check out of the 2 if statements below to here and preserve that behavior.",
+      "revId": "14bace9dee92f5e6ac89d31a49be42f060aa0ce6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
