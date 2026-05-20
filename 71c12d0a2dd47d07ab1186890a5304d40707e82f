@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df10b730_27ae2f0c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-05-20T01:51:22Z",
+      "side": 1,
+      "message": "it says \"dedupe\", but you aren\u0027t deduping anything in this CL ...",
+      "revId": "71c12d0a2dd47d07ab1186890a5304d40707e82f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
