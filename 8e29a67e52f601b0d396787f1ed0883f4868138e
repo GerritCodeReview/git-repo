@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6be40999_8e086592",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-05-20T14:43:24Z",
+      "side": 1,
+      "message": "spell out \"revision\".  optparse will autocomplete partial options that are unambiguous, so `--superproject-rev` would still work.  if you wanted to make it explicitly supported, add both.",
+      "revId": "8e29a67e52f601b0d396787f1ed0883f4868138e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
