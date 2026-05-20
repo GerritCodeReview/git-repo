@@ -70,6 +70,30 @@
       },
       "revId": "d29f8027fc248d15df0e66d8f3ce6948382aa802",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a574a027_aaab6212",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 4818947
+      },
+      "writtenOn": "2026-05-20T06:38:47Z",
+      "side": 1,
+      "message": "Sorry! Gerrit UI confused me - I had not pressed \"Publish\".. Fixed now.",
+      "parentUuid": "67780707_8e015773",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 6
+      },
+      "revId": "d29f8027fc248d15df0e66d8f3ce6948382aa802",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
