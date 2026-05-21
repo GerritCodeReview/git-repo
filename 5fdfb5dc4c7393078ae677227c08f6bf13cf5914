@@ -16,6 +16,24 @@
       "message": "why is this an option ?",
       "revId": "5fdfb5dc4c7393078ae677227c08f6bf13cf5914",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff99ff8e_4e3048b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-05-21T19:27:22Z",
+      "side": 1,
+      "message": "http://shortn/_msMXdYsKvO has the context behind this CL chain and why we want to have an option of just using regular .git dirs in the worktree",
+      "parentUuid": "833b87a8_4aef691b",
+      "revId": "5fdfb5dc4c7393078ae677227c08f6bf13cf5914",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
