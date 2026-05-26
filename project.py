@@ -1575,6 +1575,8 @@ class Project:
         self._InitHooks()
 
     def _CopyAndLinkFiles(self):
+        if not self.worktree or not platform_utils.isdir(self.worktree):
+            return
         for copyfile in self.copyfiles:
             copyfile._Copy()
         for linkfile in self.linkfiles:
