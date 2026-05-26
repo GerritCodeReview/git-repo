@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a887cd05_09d3b319",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4346027
+      },
+      "writtenOn": "2026-05-26T13:56:25Z",
+      "side": 1,
+      "message": "I am not sure if I should set Verified, of if I should wait for a CR vote.",
+      "revId": "47cddd78c71dad4aa86831e83d8999c88d412a20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
