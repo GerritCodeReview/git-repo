@@ -16,6 +16,24 @@
       "message": "these are good docs ... but not sure this is the best place for them since they aren\u0027t visible to users\n\ni see subcmds/forall.py has an Environment section that shows up for users in `repo help` and in our man pages.  can we have this docstring point repo devs to that instead so we know things are kept in sync for users ?",
       "revId": "5ddaaa8974f6f6c9e4b05d23bd72915f431e926a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "720ac345_89cf09a3",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-05-26T18:18:30Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "8caf10e6_849bed5a",
+      "revId": "5ddaaa8974f6f6c9e4b05d23bd72915f431e926a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
