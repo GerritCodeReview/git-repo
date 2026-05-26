@@ -1007,3 +1007,89 @@ class SyncOptimizationTests(unittest.TestCase):
 
                 self.assertTrue(res)
                 mock_git_cmd.assert_not_called()
+
+
+class GetEnvVarsTests(unittest.TestCase):
+    """Tests for GetEnvVars project environment variable generation."""
+
+    def _get_project(self, tempdir, revisionExpr="main"):
+        proj = _create_mock_project(tempdir, revisionExpr=revisionExpr)
+        proj.GetRevisionId = mock.MagicMock(return_value="1234abcd")
+        return proj
+
+    def test_get_env_vars_basic(self):
+        """Test that all basic environment variables are set correctly."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.manifest.path_prefix = "sub-manifest"
+            proj.upstream = "upstream-branch"
+            proj.dest_branch = "dest-branch"
+
+            env = proj.GetEnvVars(local=True)
+
+            self.assertEqual(env["REPO_PROJECT"], "test-project")
+            self.assertEqual(env["REPO_OUTERPATH"], "sub-manifest")
+            self.assertEqual(env["REPO_INNERPATH"], "test-project")
+            self.assertEqual(env["REPO_PATH"], "test-project")
+            self.assertEqual(env["REPO_REMOTE"], "origin")
+            self.assertEqual(env["REPO_LREV"], "1234abcd")
+            self.assertEqual(env["REPO_RREV"], "main")
+            self.assertEqual(env["REPO_UPSTREAM"], "upstream-branch")
+            self.assertEqual(env["REPO_DEST_BRANCH"], "dest-branch")
+
+    def test_get_env_vars_non_local(self):
+        """Test environment variables generation with local=False."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.manifest.path_prefix = "sub-manifest"
+
+            env = proj.GetEnvVars(local=False)
+
+            # REPO_PATH should be relative to outermost manifest
+            # (sub-manifest/test-project)
+            self.assertEqual(env["REPO_PATH"], "sub-manifest/test-project")
+
+    def test_get_env_vars_mirror(self):
+        """Test environment variables generation in mirror mode."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.manifest.IsMirror = True
+
+            env = proj.GetEnvVars()
+
+            # In mirror mode, REPO_LREV should be empty, and GetRevisionId must
+            # not be called
+            self.assertEqual(env["REPO_LREV"], "")
+            proj.GetRevisionId.assert_not_called()
+
+    def test_get_env_vars_annotations(self):
+        """Test that project annotations are added correctly."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+
+            annotation1 = mock.MagicMock()
+            annotation1.name = "key1"
+            annotation1.value = "value1"
+
+            annotation2 = mock.MagicMock()
+            annotation2.name = "key2"
+            annotation2.value = "value2"
+
+            proj.annotations = [annotation1, annotation2]
+
+            env = proj.GetEnvVars()
+
+            self.assertEqual(env["REPO__key1"], "value1")
+            self.assertEqual(env["REPO__key2"], "value2")
+
+    def test_get_env_vars_invalid_revision_graceful(self):
+        """Test that invalid revision error is handled gracefully."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.GetRevisionId.side_effect = error.ManifestInvalidRevisionError(
+                "revision not found"
+            )
+
+            env = proj.GetEnvVars()
+
+            self.assertEqual(env["REPO_LREV"], "")

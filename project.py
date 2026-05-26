@@ -28,7 +28,7 @@ import sys
 import tarfile
 import tempfile
 import time
-from typing import List, NamedTuple, Optional
+from typing import Dict, List, NamedTuple, Optional
 import urllib.parse
 
 from color import Coloring
@@ -650,6 +650,50 @@ class Project:
         if local:
             return self.relpath
         return os.path.join(self.manifest.path_prefix, self.relpath)
+
+    def GetEnvVars(self, local: bool = True) -> Dict[str, str]:
+        """Get project-context environment variables.
+
+        Args:
+            local: If True, REPO_PATH is relative to the local (sub)manifest.
+                If False, it is relative to the outermost manifest.
+
+        Returns:
+            A dictionary mapping environment variable names to their values.
+
+        Environment Variables:
+            See the Environment section in `repo help forall` or
+            `subcmds/forall.py` for details on the available variables.
+            Note that `forall.py` also documents some extra variables that are
+            specific to how the `repo forall` command iterates over projects
+            (e.g., `REPO_COUNT` and `REPO_I`).
+        """
+        env = {}
+
+        def setenv(name, val):
+            if val is None:
+                val = ""
+            env[name] = val
+
+        setenv("REPO_PROJECT", self.name)
+        setenv("REPO_OUTERPATH", self.manifest.path_prefix)
+        setenv("REPO_INNERPATH", self.relpath)
+        setenv("REPO_PATH", self.RelPath(local=local))
+        setenv("REPO_REMOTE", self.remote.name)
+
+        try:
+            lrev = "" if self.manifest.IsMirror else self.GetRevisionId()
+        except ManifestInvalidRevisionError:
+            lrev = ""
+        setenv("REPO_LREV", lrev)
+        setenv("REPO_RREV", self.revisionExpr)
+        setenv("REPO_UPSTREAM", self.upstream)
+        setenv("REPO_DEST_BRANCH", self.dest_branch)
+
+        for annotation in self.annotations:
+            setenv(f"REPO__{annotation.name}", annotation.value)
+
+        return env
 
     def SetRevision(self, revisionExpr, revisionId=None):
         """Set revisionId based on revision expression and id"""
