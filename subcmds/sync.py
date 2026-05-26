@@ -1718,7 +1718,8 @@ later is required to fix a server side protocol bug.
         # directory may have failed.  _CopyAndLinkFiles is idempotent
         # and skips dests that are already correct.
         for project in projects:
-            project._CopyAndLinkFiles()
+            if project.worktree and platform_utils.isdir(project.worktree):
+                project._CopyAndLinkFiles()
 
         return True
 
