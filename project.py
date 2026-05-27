@@ -3276,6 +3276,15 @@ class Project:
                     self._ReferenceGitDir(
                         self.objdir, curr_gitdir, copy_all=True
                     )
+                git_alt = os.path.join(curr_gitdir, "objects/info/alternates")
+                _lwrite(
+                    git_alt,
+                    os.path.relpath(
+                        self.objdir, os.path.join(curr_gitdir, "objects")
+                    )
+                    + "/objects\n",
+                )
+
                 try:
                     self._CheckDirReference(self.objdir, curr_gitdir)
                 except GitError as e:
@@ -3329,12 +3338,15 @@ class Project:
                             ref_dir = os.path.relpath(
                                 ref_dir, os.path.join(self.objdir, "objects")
                             )
-                        _lwrite(
-                            os.path.join(
-                                self.objdir, "objects/info/alternates"
-                            ),
-                            os.path.join(ref_dir, "objects") + "\n",
+
+                        alt_path = os.path.join(
+                            self.objdir, "objects/info/alternates"
                         )
+                        if init_obj_dir:
+                            _lwrite(
+                                alt_path,
+                                os.path.join(ref_dir, "objects") + "\n",
+                            )
 
                 m = self.manifest.manifestProject.config
                 for key in ["user.name", "user.email"]:
