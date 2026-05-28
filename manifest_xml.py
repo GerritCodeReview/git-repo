@@ -1473,6 +1473,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
                 path = node.getAttribute("path")
                 dest_path = node.getAttribute("dest-path")
+                git_path = node.getAttribute("git-path") or None
+                obj_name = node.getAttribute("obj-name") or None
                 groups = node.getAttribute("groups")
                 if groups:
                     groups = self._ParseSet(groups or "")
@@ -1530,7 +1532,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                             gitdir,
                             objdir,
                             _,
-                        ) = self.GetProjectPaths(name, dest_path, remote.name)
+                        ) = self.GetProjectPaths(name, obj_name, dest_path, git_path, remote.name)
                         p.UpdatePaths(relpath, worktree, gitdir, objdir)
                         self._paths[p.relpath] = p
 
@@ -1953,6 +1955,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         upstream = node.getAttribute("upstream") or self._default.upstreamExpr
 
+        git_path = node.getAttribute("git-path") or None
+        obj_name = node.getAttribute("obj-name") or None
+
         if parent is None:
             (
                 relpath,
@@ -1960,7 +1965,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 gitdir,
                 objdir,
                 use_git_worktrees,
-            ) = self.GetProjectPaths(name, path, remote.name)
+            ) = self.GetProjectPaths(name, obj_name, path, git_path, remote.name)
         else:
             use_git_worktrees = False
             relpath, worktree, gitdir, objdir = self.GetSubprojectPaths(
@@ -2015,12 +2020,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         return project
 
-    def GetProjectPaths(self, name, path, remote):
+    def GetProjectPaths(self, name, obj_name, path, git_path, remote):
         """Return the paths for a project.
 
         Args:
             name: a string, the name of the project.
+            obj_name: a string, override name of project for purposes of object .git
             path: a string, the path of the project.
+            git_path: a string, override path name of project for locating .git
             remote: a string, the remote.name of the project.
 
         Returns:
@@ -2036,6 +2043,19 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         use_git_worktrees = False
         use_remote_name = self.is_multimanifest
         relpath = path
+
+        # Allow overriding the gitdir based on a different path so that
+        # if the user has two manifests with different paths to the same
+        # .git repo, they can share .git/configs and preferences.
+        if git_path is not None:
+            path = git_path
+
+        # Allow overriding the objdir based on a different project name
+        # so that a user that has two manifests with different project
+        # names for the same .git repo can share objects and potentially
+        # lots of disk space if switching & merging back & forth.
+        if obj_name is not None:
+            name = obj_name
         if self.IsMirror:
             worktree = None
             gitdir = os.path.join(self.topdir, "%s.git" % name)
@@ -2045,7 +2065,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 namepath = os.path.join(remote, f"{name}.git")
             else:
                 namepath = f"{name}.git"
-            worktree = os.path.join(self.topdir, path).replace("\\", "/")
+            worktree = os.path.join(self.topdir, relpath).replace("\\", "/")
             if self.UseLocalGitDirs:
                 gitdir = os.path.join(worktree, ".git")
                 objdir = gitdir
