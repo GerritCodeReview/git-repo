@@ -86,6 +86,8 @@ following DTD:
   <!ATTLIST project clone-depth   CDATA #IMPLIED>
   <!ATTLIST project force-path    CDATA #IMPLIED>
   <!ATTLIST project sync-strategy CDATA #IMPLIED>
+  <!ATTLIST project obj-name      CDATA #IMPLIED>
+  <!ATTLIST project git-path      CDATA #IMPLIED>
 
   <!ELEMENT annotation EMPTY>
   <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -405,6 +407,16 @@ During a stateless sync, repo checks the following before cleaning up:
 
 If any of these conditions are not met, repo falls back to a standard
 sync without garbage collection.
+
+Attribute `obj-name`: Set obj-name when you want to store object files
+in a location as if the project had the name 'obj-name'.  Useful if
+you want to share objects between projects with different names
+in different manifests.
+
+Attribute `git-path`: Set git-path when you want to store the git
+dir for the project in a location as if the project had the path
+'git-path'.  Useful if you want to share git configuration between
+projects with different paths in different manifests.
 
 ### Element extend-project
 
