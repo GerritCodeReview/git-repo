@@ -673,6 +673,65 @@ class TestIncludeElement:
 class TestProjectElement:
     """Tests for <project>."""
 
+    def test_git_path(self, repo_client: RepoClient) -> None:
+        """Check that the git-path element on a project overrides
+        the path the manifest uses to access the .git directory
+        for a project compared to it's "path" element."""
+        old_manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="some/name" path="some/path" />
+</manifest>
+"""
+        )
+        old_name = old_manifest.projects[0].name
+        old_objdir = old_manifest.projects[0].objdir
+        old_worktree = old_manifest.projects[0].worktree
+        old_gitdir = old_manifest.projects[0].gitdir
+
+        repath_manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="some/name" path="another/place" />
+</manifest>
+"""
+        )
+        repath_name = repath_manifest.projects[0].name
+        repath_objdir = repath_manifest.projects[0].objdir
+        repath_worktree = repath_manifest.projects[0].worktree
+        repath_gitdir = repath_manifest.projects[0].gitdir
+
+        git_path_manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="some/name" path="another/place" git-path="some/path" />
+</manifest>
+"""
+        )
+        git_path_name = git_path_manifest.projects[0].name
+        git_path_worktree = git_path_manifest.projects[0].worktree
+        git_path_gitdir = git_path_manifest.projects[0].gitdir
+        git_path_objdir = git_path_manifest.projects[0].objdir
+
+        # names don't change
+        assert old_name == repath_name
+        assert repath_name == git_path_name
+        # worktrees change with new path
+        assert old_worktree != repath_worktree
+        assert old_worktree != git_path_worktree
+        # gitdirs match when you use git-path element
+        assert old_gitdir != repath_gitdir
+        assert old_gitdir == git_path_gitdir
+        # objdirs don't change
+        assert old_objdir == repath_objdir
+        assert old_objdir == git_path_objdir
+
     def test_group(self, repo_client: RepoClient) -> None:
         """Check project group settings."""
         manifest = repo_client.get_xml_manifest(
@@ -829,7 +888,7 @@ class TestProjectElement:
         manifest.manifestProject.config.SetBoolean("repo.uselocalgitdirs", True)
 
         relpath, worktree, gitdir, objdir, use_git_worktrees = (
-            manifest.GetProjectPaths("foo", "bar", "origin")
+            manifest.GetProjectPaths("foo", None, "bar", None, "origin")
         )
 
         assert os.path.normpath(gitdir) == os.path.normpath(
@@ -877,6 +936,64 @@ class TestProjectElement:
                 with pytest.raises(error.ManifestInvalidPathError):
                     parse("ok", path)
 
+    def test_obj_name(self, repo_client: RepoClient) -> None:
+        """Check that the obj-name element on a project overrides
+        the path the .project-objects used as if the project was named
+        obj-name."""
+        old_manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="some/base/name" path="some/path" />
+</manifest>
+"""
+        )
+        old_name = old_manifest.projects[0].name
+        old_objdir = old_manifest.projects[0].objdir
+        old_worktree = old_manifest.projects[0].worktree
+        old_gitdir = old_manifest.projects[0].gitdir
+
+        renamed_manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="another/label" path="some/path" />
+</manifest>
+"""
+        )
+        renamed_name = renamed_manifest.projects[0].name
+        renamed_objdir = renamed_manifest.projects[0].objdir
+        renamed_worktree = renamed_manifest.projects[0].worktree
+        renamed_gitdir = renamed_manifest.projects[0].gitdir
+
+        obj_name_manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="another/label" obj-name="some/base/name" path="some/path" />
+</manifest>
+"""
+        )
+        obj_name = obj_name_manifest.projects[0].name
+        obj_worktree = obj_name_manifest.projects[0].worktree
+        obj_gitdir = obj_name_manifest.projects[0].gitdir
+        obj_objdir = obj_name_manifest.projects[0].objdir
+
+        # name changed
+        assert old_name != renamed_name
+        assert renamed_name == obj_name
+        # worktree didn't (same path)
+        assert old_worktree == renamed_worktree
+        assert old_worktree == obj_worktree
+        # gitdir didn't (same path)
+        assert old_gitdir == renamed_gitdir
+        assert old_gitdir == obj_gitdir
+        # objdir matches when obj-name applied
+        assert old_objdir != renamed_objdir
+        assert old_objdir == obj_objdir
 
 class TestSuperProjectElement:
     """Tests for <superproject>."""
