@@ -743,9 +743,8 @@ class Project:
 
     @property
     def Exists(self):
-        return platform_utils.isdir(self.gitdir) and platform_utils.isdir(
-            self.objdir
-        )
+        return ((platform_utils.isdir(self.gitdir) or platform_utils.islink(self.gitdir)) and
+                (platform_utils.isdir(self.objdir) or platform_utils.islink(self.objdir)))
 
     @property
     def CurrentBranch(self):
