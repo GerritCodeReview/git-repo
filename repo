@@ -62,7 +62,7 @@ def cmdstr(cmd):
 
 
 def exec_command(cmd):
-    """Execute |cmd| or return None on failure."""
+    """Execute |cmd| or return None on failure. asdf"""
     trace.print(":", cmdstr(cmd))
     try:
         if platform.system() == "Windows":
