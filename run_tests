@@ -17,6 +17,7 @@
 
 import functools
 import os
+import re
 import shlex
 import shutil
 import subprocess
@@ -144,6 +145,62 @@ def run_isort():
     ).returncode
 
 
+def check_repo_launcher_version() -> int:
+    """Check repo version is bumped if launcher changed relative to main.
+
+    Print a warning rather than failing if VERSION is unchanged since updating
+    VERSION is optional.
+    """
+    path = os.path.join(ROOT_DIR, "repo")
+    log_cmd("git", ["diff", "origin/main", "--", path])
+    diff_res = subprocess.run(
+        ["git", "diff", "origin/main", "--", path],
+        capture_output=True,
+        encoding="utf-8",
+        cwd=ROOT_DIR,
+    )
+
+    if not diff_res.stdout.strip():
+        return 0
+
+    # Get VERSION from origin/main.
+    log_cmd("git", ["show", "origin/main:repo"])
+    base_res = subprocess.run(
+        ["git", "show", "origin/main:repo"],
+        capture_output=True,
+        encoding="utf-8",
+        cwd=ROOT_DIR,
+    )
+
+    def extract_version(content: str) -> tuple[int, ...] | None:
+        m = re.search(r"^VERSION\s*=\s*\(([^)]+)\)", content, re.M)
+        if not m:
+            return None
+        return tuple(int(x.strip()) for x in m.group(1).split(","))
+
+    base_version = extract_version(base_res.stdout)
+
+    # Get VERSION from the current workspace.
+    with open(path, encoding="utf-8") as f:
+        current_content = f.read()
+    current_version = extract_version(current_content)
+    if not current_version:
+        print(
+            "error: repo: VERSION not found in launcher script",
+            file=sys.stderr,
+        )
+        return 1
+
+    if current_version == base_version:
+        print(
+            "warning: The repo launcher script was modified, but its VERSION "
+            f"was not bumped: {current_version}.",
+            file=sys.stderr,
+        )
+
+    return 0
+
+
 def run_check_metadata():
     """Returns the exit code from check-metadata."""
     argv = []
@@ -190,6 +247,7 @@ def main(argv):
         run_black,
         run_flake8,
         run_isort,
+        check_repo_launcher_version,
         run_check_metadata,
         run_update_manpages,
     )
