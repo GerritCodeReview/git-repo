@@ -88,6 +88,57 @@ def check_license(path: Path, lines: list[str]) -> bool:
     return True
 
 
+def check_launcher_version(opts: argparse.Namespace, path: Path) -> bool:
+    """Verify repo version is bumped if launcher changed relative to main."""
+    if path.name != "repo":
+        return True
+
+    diff_res = util.run(
+        opts,
+        ["git", "diff", "origin/main", "--", str(path)],
+        capture_output=True,
+        encoding="utf-8",
+    )
+
+    if not diff_res.stdout.strip():
+        return True
+
+    # Get VERSION from origin/main.
+    base_res = util.run(
+        opts,
+        ["git", "show", "origin/main:repo"],
+        capture_output=True,
+        encoding="utf-8",
+    )
+
+    def extract_version(content: str) -> tuple[int, ...] | None:
+        m = re.search(r"^VERSION\s*=\s*\(([^)]+)\)", content, re.M)
+        if not m:
+            return None
+        return tuple(int(x.strip()) for x in m.group(1).split(","))
+
+    base_version = extract_version(base_res.stdout)
+
+    # Get VERSION from the current workspace.
+    current_content = path.read_text(encoding="utf-8")
+    current_version = extract_version(current_content)
+    if not current_version:
+        print(
+            "error: repo: VERSION not found in launcher script",
+            file=sys.stderr,
+        )
+        return False
+
+    if current_version == base_version:
+        print(
+            "warning: The repo launcher script was modified, but its VERSION "
+            f"was not bumped: {current_version}.",
+            file=sys.stderr,
+        )
+
+    return True
+
+
 def check_path(opts: argparse.Namespace, path: Path) -> bool:
     """Check a single path."""
     try:
@@ -99,6 +150,7 @@ def check_path(opts: argparse.Namespace, path: Path) -> bool:
     return all(
         [
             check_license(path, lines),
+            check_launcher_version(opts, path),
         ]
     )
 
