@@ -1999,23 +1999,43 @@ class Project:
 
         Args:
             verbose: Whether to show verbose messages.
-            force: Always delete tree even if dirty.
+            force: Always delete tree even if dirty or corrupted.
 
         Returns:
             True if the worktree was completely cleaned out.
         """
-        if self.IsDirty():
+        is_dirty = False
+        is_corrupted = False
+        try:
+            is_dirty = self.IsDirty()
+        except GitError:
+            is_corrupted = True
+
+        if is_dirty or is_corrupted:
             if force:
-                logger.warning(
-                    "warning: %s: Removing dirty project: uncommitted changes "
-                    "lost.",
-                    self.RelPath(local=False),
-                )
+                if is_corrupted:
+                    logger.warning(
+                        "warning: %s: Removing corrupted project.",
+                        self.RelPath(local=False),
+                    )
+                else:
+                    logger.warning(
+                        "warning: %s: Removing dirty project: "
+                        "uncommitted changes lost.",
+                        self.RelPath(local=False),
+                    )
             else:
-                msg = (
-                    "error: %s: Cannot remove project: uncommitted "
-                    "changes are present.\n" % self.RelPath(local=False)
-                )
+                if is_corrupted:
+                    msg = (
+                        "error: %s: Cannot remove project: "
+                        "project is corrupted.\n" % self.RelPath(local=False)
+                    )
+                else:
+                    msg = (
+                        "error: %s: Cannot remove project: "
+                        "uncommitted changes are present.\n"
+                        % self.RelPath(local=False)
+                    )
                 logger.error(msg)
                 raise DeleteDirtyWorktreeError(msg, project=self.name)
 
