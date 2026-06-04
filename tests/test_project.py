@@ -742,6 +742,30 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             result = fakeproj.Sync(use_local_gitdirs=True, mirror=True)
             self.assertFalse(result)
 
+    def test_delete_worktree_corrupted(self):
+        """Test DeleteWorktree gracefully handles corrupted projects."""
+        for use_git_worktrees in (False, True):
+            with self.subTest(use_git_worktrees=use_git_worktrees):
+                with utils_for_test.TempGitTree() as tempdir:
+                    proj = _create_mock_project(tempdir)
+                    os.makedirs(os.path.join(tempdir, "worktree"))
+                    os.makedirs(os.path.join(tempdir, "gitdir"))
+                    proj.worktree = os.path.join(tempdir, "worktree")
+                    proj.gitdir = os.path.join(tempdir, "gitdir")
+                    proj.use_git_worktrees = use_git_worktrees
+
+                    with mock.patch.object(
+                        proj,
+                        "IsDirty",
+                        side_effect=error.GitError("mock error"),
+                    ):
+                        with self.assertRaises(project.DeleteWorktreeError):
+                            proj.DeleteWorktree(force=False)
+
+                        self.assertTrue(proj.DeleteWorktree(force=True))
+                        self.assertFalse(os.path.exists(proj.worktree))
+                        self.assertFalse(os.path.exists(proj.gitdir))
+
 
 def _create_mock_project(
     tempdir,
