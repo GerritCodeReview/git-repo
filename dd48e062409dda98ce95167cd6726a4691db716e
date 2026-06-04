@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a350a5f_27046595",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-04T21:37:07Z",
+      "side": 1,
+      "message": "it can block but in most cases, assuming you don\u0027t remove VERSION, it prints a warning. e.g. PS2 added a comment to `repo` and passed CQ, https://logs.chromium.org/logs/gerrit/buildbucket/cr-buildbucket/8680446516209309105/+/u/Run_tests/stdout:\n```\n...\nSkipped 1 files\n+ release/check-metadata.py \n+ git ls-tree -r -z --name-only HEAD\n+ git diff origin/main -- /b/s/w/ir/x/w/git-repo/repo\n+ git show origin/main:repo\nwarning: The repo launcher script was modified, but its VERSION was not bumped: (2, 54).\n+ release/update-manpages --check\n```",
+      "parentUuid": "9907e82f_a6add9bb",
+      "revId": "dd48e062409dda98ce95167cd6726a4691db716e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f876cc60_6a7c47a9",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-06-04T19:59:48Z",
       "side": 1,
       "message": "i don\u0027t think check-metadata.py makes sense for this.  as you see with the `path.name` at the top of the func, you\u0027re running this on every single file in the tree (~160), and skipping every one but files named `repo`.\n\nthis feels like it belongs in a sep file, or in run_tests itself.\n\nit\u0027s possible to change the repo launcher without needing to bump it.  it\u0027s like 50/50 whether it\u0027s necessary.  think style/comment changes.  not a deal breaker, but it means we might bump more often, and not release every version.",
+      "revId": "dd48e062409dda98ce95167cd6726a4691db716e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c02b3f69_fe2fc26c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-04T21:37:07Z",
+      "side": 1,
+      "message": "moved to `run_tests`\n\n\u003e it\u0027s possible to change the repo launcher without needing to bump it. \n\nack, i think test would be useful still, clarified that VERSION bumping is optional in `check_repo_launcher_version`",
+      "parentUuid": "f876cc60_6a7c47a9",
       "revId": "dd48e062409dda98ce95167cd6726a4691db716e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
