@@ -1999,28 +1999,51 @@ class Project:
 
         Args:
             verbose: Whether to show verbose messages.
-            force: Always delete tree even if dirty.
+            force: Always delete tree even if dirty or corrupted.
 
         Returns:
             True if the worktree was completely cleaned out.
         """
-        if self.IsDirty():
+        is_dirty = False
+        is_corrupted = False
+        try:
+            is_dirty = self.IsDirty()
+        except GitError:
+            is_corrupted = True
+
+        rel_path = self.RelPath(local=False)
+
+        if is_dirty or is_corrupted:
             if force:
-                logger.warning(
-                    "warning: %s: Removing dirty project: uncommitted changes "
-                    "lost.",
-                    self.RelPath(local=False),
-                )
+                if is_corrupted:
+                    logger.warning(
+                        "warning: %s: Removing corrupted project.",
+                        rel_path,
+                    )
+                else:
+                    logger.warning(
+                        "warning: %s: Removing dirty project: "
+                        "uncommitted changes lost.",
+                        rel_path,
+                    )
             else:
-                msg = (
-                    "error: %s: Cannot remove project: uncommitted "
-                    "changes are present.\n" % self.RelPath(local=False)
-                )
-                logger.error(msg)
-                raise DeleteDirtyWorktreeError(msg, project=self.name)
+                if is_corrupted:
+                    msg = (
+                        f"error: {rel_path}: Cannot remove project: "
+                        "project is corrupted.\n"
+                    )
+                    logger.error(msg)
+                    raise DeleteWorktreeError(msg, project=self.name)
+                else:
+                    msg = (
+                        f"error: {rel_path}: Cannot remove project: "
+                        "uncommitted changes are present.\n"
+                    )
+                    logger.error(msg)
+                    raise DeleteDirtyWorktreeError(msg, project=self.name)
 
         if verbose:
-            print(f"{self.RelPath(local=False)}: Deleting obsolete checkout.")
+            print(f"{rel_path}: Deleting obsolete checkout.")
 
         # Unlock and delink from the main worktree.  We don't use git's worktree
         # remove because it will recursively delete projects -- we handle that
@@ -2028,23 +2051,33 @@ class Project:
         if self.use_git_worktrees:
             needle = os.path.realpath(self.gitdir)
             # Find the git worktree commondir under .repo/worktrees/.
-            output = self.bare_git.worktree("list", "--porcelain").splitlines()[
-                0
-            ]
-            assert output.startswith("worktree "), output
-            commondir = output[9:]
-            # Walk each of the git worktrees to see where they point.
-            configs = os.path.join(commondir, "worktrees")
-            for name in os.listdir(configs):
-                gitdir = os.path.join(configs, name, "gitdir")
-                with open(gitdir) as fp:
-                    relpath = fp.read().strip()
-                # Resolve the checkout path and see if it matches this project.
-                fullpath = os.path.realpath(
-                    os.path.join(configs, name, relpath)
+            try:
+                output = self.bare_git.worktree(
+                    "list", "--porcelain"
+                ).splitlines()[0]
+                assert output.startswith("worktree "), output
+                commondir = output[9:]
+                # Walk each of the git worktrees to see where they point.
+                configs = os.path.join(commondir, "worktrees")
+                if os.path.exists(configs):
+                    for name in os.listdir(configs):
+                        gitdir = os.path.join(configs, name, "gitdir")
+                        with open(gitdir) as fp:
+                            relpath = fp.read().strip()
+                        # Resolve the checkout path and see if it
+                        # matches this project.
+                        fullpath = os.path.realpath(
+                            os.path.join(configs, name, relpath)
+                        )
+                        if fullpath == needle:
+                            platform_utils.rmtree(os.path.join(configs, name))
+            except GitError as e:
+                logger.warning(
+                    "warning: %s: Failed to list worktrees, skipping worktree "
+                    "cleanup: %s",
+                    rel_path,
+                    e,
                 )
-                if fullpath == needle:
-                    platform_utils.rmtree(os.path.join(configs, name))
 
         # Delete the .git directory first, so we're less likely to have a
         # partially working git repository around. There shouldn't be any git
@@ -2065,7 +2098,7 @@ class Project:
                 logger.error(
                     "error: %s: Failed to delete obsolete checkout; remove "
                     "manually, then run `repo sync -l`.",
-                    self.RelPath(local=False),
+                    rel_path,
                 )
                 raise DeleteWorktreeError(aggregate_errors=[e])
 
@@ -2129,7 +2162,7 @@ class Project:
                 logger.error(
                     "%s: Failed to delete obsolete checkout.\n",
                     "       Remove manually, then run `repo sync -l`.",
-                    self.RelPath(local=False),
+                    rel_path,
                 )
                 raise DeleteWorktreeError(aggregate_errors=errors)
 
