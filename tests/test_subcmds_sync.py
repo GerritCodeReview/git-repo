@@ -340,6 +340,7 @@ class FakeProject:
         self.name = name or relpath
         self.objdir = objdir or relpath
         self.worktree = relpath
+        self.parent = None
 
         self.use_git_worktrees = False
         self.UseAlternates = False
@@ -394,6 +395,65 @@ class SafeCheckoutOrder(unittest.TestCase):
                 [p_bar, p_foo, p_foo_dash_bar, p_foobar],
                 [p_foo_bar],
                 [p_foo_bar_baz_baq],
+            ],
+        )
+
+    def test_sibling_submodules_with_shared_parent_are_serialized(self):
+        parent = mock.Mock(worktree="/worktree/parent")
+        other_parent = mock.Mock(worktree="/worktree/other")
+        p_parent = FakeProject("parent")
+        p_other = FakeProject("other")
+        p_parent_sub1 = FakeProject("parent/sub1")
+        p_parent_sub1.parent = parent
+        p_parent_sub2 = FakeProject("parent/sub2")
+        p_parent_sub2.parent = parent
+        p_other_sub = FakeProject("other/sub")
+        p_other_sub.parent = other_parent
+
+        out = sync._SafeCheckoutOrder(
+            [p_parent_sub2, p_other_sub, p_parent, p_parent_sub1, p_other]
+        )
+
+        self.assertEqual(
+            out,
+            [
+                [p_other, p_parent],
+                [p_other_sub, p_parent_sub1],
+                [p_parent_sub2],
+            ],
+        )
+
+    def test_nested_submodules_respect_delayed_parent_level(self):
+        parent = mock.Mock(worktree="/worktree/parent")
+        sub1 = mock.Mock(worktree="/worktree/parent/sub1")
+        sub2 = mock.Mock(worktree="/worktree/parent/sub2")
+        p_parent = FakeProject("parent")
+        p_parent_sub1 = FakeProject("parent/sub1")
+        p_parent_sub1.parent = parent
+        p_parent_sub1_nested = FakeProject("parent/sub1/nested")
+        p_parent_sub1_nested.parent = sub1
+        p_parent_sub2 = FakeProject("parent/sub2")
+        p_parent_sub2.parent = parent
+        p_parent_sub2_nested = FakeProject("parent/sub2/nested")
+        p_parent_sub2_nested.parent = sub2
+
+        out = sync._SafeCheckoutOrder(
+            [
+                p_parent_sub2_nested,
+                p_parent_sub2,
+                p_parent_sub1_nested,
+                p_parent,
+                p_parent_sub1,
+            ]
+        )
+
+        self.assertEqual(
+            out,
+            [
+                [p_parent],
+                [p_parent_sub1],
+                [p_parent_sub1_nested, p_parent_sub2],
+                [p_parent_sub2_nested],
             ],
         )
 

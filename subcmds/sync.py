@@ -96,19 +96,27 @@ logger = RepoLogger(__file__)
 
 
 def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
-    """Generate a sequence of checkouts that is safe to perform. The client
-    should checkout everything from n-th index before moving to n+1.
+    """Generate a sequence of checkouts that is safe to perform.
+
+    The client should checkout everything from n-th index before moving to
+    n+1.
 
     This is only useful if manifest contains nested projects.
 
     E.g. if foo, foo/bar and foo/bar/baz are project paths, then foo needs to
     finish before foo/bar can proceed, and foo/bar needs to finish before
-    foo/bar/baz."""
-    res = [[]]
-    current = res[0]
+    foo/bar/baz.
 
-    # depth_stack contains a current stack of parent paths.
+    Discovered submodules have an additional constraint: sibling submodules in
+    the same parent repository must not be checked out in parallel because they
+    all run `git submodule init` against the same parent .git/config.
+    """
+    res = [[]]
+
+    # depth_stack contains the current stack of parent paths together with the
+    # effective checkout level assigned to each path.
     depth_stack = []
+    submodule_parent_level = {}
     # Checkouts are iterated in the hierarchical order. That way, it can easily
     # be determined if the previous checkout is parent of the current checkout.
     # We are splitting by the path separator so the final result is
@@ -119,21 +127,29 @@ def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
         checkout_path = Path(checkout.relpath)
         while depth_stack:
             try:
-                checkout_path.relative_to(depth_stack[-1])
+                checkout_path.relative_to(depth_stack[-1][0])
             except ValueError:
                 # Path.relative_to returns ValueError if paths are not relative.
                 # TODO(sokcevic): Switch to is_relative_to once min supported
                 # version is py3.9.
                 depth_stack.pop()
             else:
-                if len(depth_stack) >= len(res):
-                    # Another depth created.
-                    res.append([])
                 break
 
-        current = res[len(depth_stack)]
+        level = depth_stack[-1][1] + 1 if depth_stack else 0
+        parent = checkout.parent
+        if parent is not None:
+            level = max(
+                level,
+                submodule_parent_level.get(parent.worktree, level - 1) + 1,
+            )
+            submodule_parent_level[parent.worktree] = level
+        if level >= len(res):
+            res.extend([] for _ in range(level + 1 - len(res)))
+
+        current = res[level]
         current.append(checkout)
-        depth_stack.append(checkout_path)
+        depth_stack.append((checkout_path, level))
 
     return res
 
