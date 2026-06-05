@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e32f9ead_c03674a5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-05T15:59:44Z",
+      "side": 1,
+      "message": "`sync: ...`",
+      "revId": "82e57103f0ab424d572de91725aac980b21c089f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d59bd6c_f25b161d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-05T15:59:44Z",
+      "side": 1,
+      "message": "i agree with the logic described in the commit message, but i honestly haven\u0027t given thought to the _SafeCheckoutOrder implementation as i\u0027ve never looked at the func before",
+      "revId": "82e57103f0ab424d572de91725aac980b21c089f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e404847_9de5ebac",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-05T15:59:44Z",
+      "side": 1,
+      "message": "this docstring style is/was wrong.  let\u0027s at least fix this part while you\u0027re here.",
+      "fixSuggestions": [
+        {
+          "fixId": "e407f465_e9476f2c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 110,
+                "startChar": 0,
+                "endLine": 111,
+                "endChar": 0
+              },
+              "replacement": "    all run `git submodule init` against the same parent .git/config.\n    \"\"\"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "82e57103f0ab424d572de91725aac980b21c089f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fed672c2_6b311d08",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-05T15:59:44Z",
+      "side": 1,
+      "message": "why getattr ?  if `checkout` is a `Project` object, it always has a `.parent` property.",
+      "revId": "82e57103f0ab424d572de91725aac980b21c089f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f634efef_ee9fa6a5",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-05T15:59:44Z",
+      "side": 1,
+      "message": "why check `use_git_worktrees` ?  i don\u0027t think submodules change behavior with it.",
+      "revId": "82e57103f0ab424d572de91725aac980b21c089f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce788c48_9019d420",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-05T15:59:44Z",
+      "side": 1,
+      "message": "use extend + multiplication\n\n```suggestion\n            if level \u003e\u003d len(res):\n                res.extend([[]] * (level + 1 - len(res)))\n```",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 30
+      },
+      "revId": "82e57103f0ab424d572de91725aac980b21c089f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
