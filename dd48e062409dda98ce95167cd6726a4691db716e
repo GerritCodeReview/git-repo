@@ -69,6 +69,24 @@
       "parentUuid": "f876cc60_6a7c47a9",
       "revId": "dd48e062409dda98ce95167cd6726a4691db716e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60d5b59c_c4618128",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-05T15:42:40Z",
+      "side": 1,
+      "message": "i wish it was easy to plumb warnings from our CI back to Gerrit comments.  but that pipeline has largely been shutoff \u0026 moved to the checkers framework.\n\nshould we investigate that instead ?  if we wrote an ayeaye checker for git-repo, everytime it sees `repo` modified with no change to `VERSION`, it could leave a comment on the file.\n\nwriting bespoke ayeaye checkers actually isn\u0027t terribly difficult ... i\u0027ve started doing that for AL stuff.  gemini isn\u0027t half bad either at creating one from scratch.",
+      "parentUuid": "c02b3f69_fe2fc26c",
+      "revId": "dd48e062409dda98ce95167cd6726a4691db716e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
