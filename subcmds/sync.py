@@ -96,19 +96,26 @@ logger = RepoLogger(__file__)
 
 
 def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
-    """Generate a sequence of checkouts that is safe to perform. The client
-    should checkout everything from n-th index before moving to n+1.
+    """Generate a sequence of checkouts that is safe to perform.
+
+    The client should checkout everything from n-th index before moving to
+    n+1.
 
     This is only useful if manifest contains nested projects.
 
     E.g. if foo, foo/bar and foo/bar/baz are project paths, then foo needs to
     finish before foo/bar can proceed, and foo/bar needs to finish before
-    foo/bar/baz."""
+    foo/bar/baz.
+
+    Discovered submodules have an additional constraint: sibling submodules in
+    the same parent repository must not be checked out in parallel because they
+    all run `git submodule init` against the same parent .git/config.
+    """
     res = [[]]
-    current = res[0]
 
     # depth_stack contains a current stack of parent paths.
     depth_stack = []
+    submodule_parent_level = {}
     # Checkouts are iterated in the hierarchical order. That way, it can easily
     # be determined if the previous checkout is parent of the current checkout.
     # We are splitting by the path separator so the final result is
@@ -131,7 +138,18 @@ def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
                     res.append([])
                 break
 
-        current = res[len(depth_stack)]
+        level = len(depth_stack)
+        parent = checkout.parent
+        if parent is not None:
+            level = max(
+                level,
+                submodule_parent_level.get(parent.worktree, level - 1) + 1,
+            )
+            submodule_parent_level[parent.worktree] = level
+            if level >= len(res):
+                res.extend([[]] * (level + 1 - len(res)))
+
+        current = res[level]
         current.append(checkout)
         depth_stack.append(checkout_path)
 
