@@ -34,6 +34,29 @@ If the URL starts with `persistent-`, then the
 [`git-remote-persistent-https` helper](https://github.com/git/git/blob/HEAD/contrib/persistent-https/README)
 is used to communicate with the server.
 
+### Pluggable Remote Helpers
+
+For custom URI schemes (e.g., `sso://`), `git-repo` supports pluggable remote helpers to dynamically resolve proxy settings and authenticate.
+
+If a custom scheme is detected in the `<manifest-server>` URL:
+1.  `git-repo` searches your system `PATH` for a helper binary named `repo-remote-<scheme>` (e.g., `repo-remote-sso` for `sso://`).
+2.  The helper is executed with the full manifest server URL as its first argument:
+    ```bash
+    repo-remote-<scheme> <url>
+    ```
+3.  The helper must output a single-line JSON object on stdout and exit:
+    *   On success, return `status: "ok"` and a loopback proxy URL (including scheme, e.g., `http://127.0.0.1:999`):
+        ```json
+        {"status": "ok", "message": "http://127.0.0.1:999"}
+        ```
+    *   On failure, return `status: "error"` and an error message:
+        ```json
+        {"status": "error", "message": "unauthorized"}
+        ```
+4.  `git-repo` routes the XML-RPC request through the returned proxy address. For custom schemes, the connection URL is internally mapped to `http://` so the local proxy can intercept and upgrade it (e.g., injecting authentication headers or upgrading to SSL).
+
+**Timeout Constraint**: The remote helper must complete and exit within 10 seconds. If it hangs or exceeds this limit, `git-repo` will force-terminate (`kill`) the process and abort the synchronization.
+
 ## Credentials
 
 Credentials may be specified directly in typical `username:password`

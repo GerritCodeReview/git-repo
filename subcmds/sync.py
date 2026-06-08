@@ -23,6 +23,8 @@ import netrc
 import optparse
 import os
 from pathlib import Path
+import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -1733,53 +1735,130 @@ later is required to fix a server side protocol bug.
         if not opt.quiet:
             print("Using manifest server %s" % manifest_server)
 
-        if "@" not in manifest_server:
-            username = None
-            password = None
-            if opt.manifest_server_username and opt.manifest_server_password:
-                username = opt.manifest_server_username
-                password = opt.manifest_server_password
-            else:
-                try:
-                    info = netrc.netrc()
-                except OSError:
-                    # .netrc file does not exist or could not be opened.
-                    pass
-                else:
-                    try:
-                        parse_result = urllib.parse.urlparse(manifest_server)
-                        if parse_result.hostname:
-                            auth = info.authenticators(parse_result.hostname)
-                            if auth:
-                                username, _account, password = auth
-                            else:
-                                logger.error(
-                                    "No credentials found for %s in .netrc",
-                                    parse_result.hostname,
-                                )
-                    except netrc.NetrcParseError as e:
-                        logger.error("Error parsing .netrc file: %s", e)
+        scheme = urllib.parse.urlparse(manifest_server).scheme
+        helper_binary = f"repo-remote-{scheme}"
 
-            if username and password:
-                manifest_server = manifest_server.replace(
-                    "://", f"://{username}:{password}@", 1
+        helper_ok = False
+
+        if shutil.which(helper_binary):
+            if not opt.quiet:
+                print(f"Using remote helper {helper_binary}")
+
+            p = None
+            try:
+                p = subprocess.Popen(
+                    [helper_binary, manifest_server],
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                stdout, stderr = p.communicate(timeout=10)
+                output = stdout.strip()
+            except subprocess.TimeoutExpired as e:
+                raise SmartSyncError(
+                    f"helper {helper_binary} timed out after 10 seconds"
+                ) from e
+            except Exception as e:
+                raise SmartSyncError(
+                    "failed to start or communicate with helper "
+                    f"{helper_binary}: {e}"
+                )
+            finally:
+                if p and p.poll() is None:
+                    p.kill()
+                    p.wait()
+
+            try:
+                res = json.loads(output)
+                status = res.get("status")
+                msg = res.get("message")
+            except json.JSONDecodeError as e:
+                raise SmartSyncError(
+                    f"failed to parse JSON from helper {helper_binary}: {e}. "
+                    f"Output was: {output}"
                 )
 
-        transport = PersistentTransport(manifest_server)
-        if manifest_server.startswith("persistent-"):
-            manifest_server = manifest_server[len("persistent-") :]
+            if status != "ok":
+                raise SmartSyncError(
+                    f"helper {helper_binary} returned error: {msg}"
+                )
+
+            proxy_url = msg
+            transport = PersistentTransport(manifest_server, proxy=proxy_url)
+            server_url = manifest_server
+            if scheme not in ("http", "https"):
+                server_url = manifest_server.replace(
+                    f"{scheme}://", "http://", 1
+                )
+            helper_ok = True
+
+        else:
+            # Fallback path if helper is missing
+            if scheme not in (
+                "http",
+                "https",
+                "persistent-http",
+                "persistent-https",
+            ):
+                raise SmartSyncError(
+                    f"error: unsupported manifest server scheme '{scheme}'. "
+                    "If this is a custom scheme, please ensure the local "
+                    f"helper '{helper_binary}' is installed in your PATH."
+                )
+
+            if "@" not in manifest_server:
+                username = None
+                password = None
+                if (
+                    opt.manifest_server_username
+                    and opt.manifest_server_password
+                ):
+                    username = opt.manifest_server_username
+                    password = opt.manifest_server_password
+                else:
+                    try:
+                        info = netrc.netrc()
+                    except OSError:
+                        # .netrc file does not exist or could not be opened.
+                        pass
+                    else:
+                        try:
+                            parse_result = urllib.parse.urlparse(
+                                manifest_server
+                            )
+                            if parse_result.hostname:
+                                auth = info.authenticators(
+                                    parse_result.hostname
+                                )
+                                if auth:
+                                    username, _account, password = auth
+                                else:
+                                    logger.error(
+                                        "No credentials found for %s in .netrc",
+                                        parse_result.hostname,
+                                    )
+                        except netrc.NetrcParseError as e:
+                            logger.error("Error parsing .netrc file: %s", e)
+
+                if username and password:
+                    manifest_server = manifest_server.replace(
+                        "://", f"://{username}:{password}@", 1
+                    )
+
+            transport = PersistentTransport(manifest_server)
+            server_url = manifest_server
+            if server_url.startswith("persistent-"):
+                server_url = server_url[len("persistent-") :]
 
         # Changes in behavior should update docs/smart-sync.md accordingly.
         try:
-            server = xmlrpc.client.Server(manifest_server, transport=transport)
+            server = xmlrpc.client.Server(server_url, transport=transport)
             if opt.smart_sync:
                 branch = self._GetBranch(manifest.manifestProject)
-
+                target = None
                 if "SYNC_TARGET" in os.environ:
                     target = os.environ["SYNC_TARGET"]
-                    [success, manifest_str] = server.GetApprovedManifest(
-                        branch, target
-                    )
                 elif (
                     "TARGET_PRODUCT" in os.environ
                     and "TARGET_BUILD_VARIANT" in os.environ
@@ -1790,9 +1869,6 @@ later is required to fix a server side protocol bug.
                         os.environ["TARGET_RELEASE"],
                         os.environ["TARGET_BUILD_VARIANT"],
                     )
-                    [success, manifest_str] = server.GetApprovedManifest(
-                        branch, target
-                    )
                 elif (
                     "TARGET_PRODUCT" in os.environ
                     and "TARGET_BUILD_VARIANT" in os.environ
@@ -1801,6 +1877,8 @@ later is required to fix a server side protocol bug.
                         os.environ["TARGET_PRODUCT"],
                         os.environ["TARGET_BUILD_VARIANT"],
                     )
+
+                if target:
                     [success, manifest_str] = server.GetApprovedManifest(
                         branch, target
                     )
@@ -1822,24 +1900,33 @@ later is required to fix a server side protocol bug.
                         aggregate_errors=[e],
                     )
                 self._ReloadManifest(manifest_name, manifest)
-            else:
-                raise SmartSyncError(
-                    "error: manifest server RPC call failed: %s" % manifest_str
-                )
+                return manifest_name
+
+            raise SmartSyncError(
+                "error: manifest server RPC call failed: %s" % manifest_str
+            )
         except (OSError, xmlrpc.client.Fault) as e:
+            if helper_ok:
+                raise SmartSyncError(
+                    "error: failed to communicate with manifest server via "
+                    f"helper: {e}"
+                )
             raise SmartSyncError(
                 "error: cannot connect to manifest server %s:\n%s"
                 % (manifest.manifest_server, e),
                 aggregate_errors=[e],
             )
         except xmlrpc.client.ProtocolError as e:
+            if helper_ok:
+                raise SmartSyncError(
+                    "error: failed to communicate with manifest server via "
+                    f"helper: {e}"
+                )
             raise SmartSyncError(
                 "error: cannot connect to manifest server %s:\n%d %s"
                 % (manifest.manifest_server, e.errcode, e.errmsg),
                 aggregate_errors=[e],
             )
-
-        return manifest_name
 
     def _UpdateAllManifestProjects(self, opt, mp, manifest_name, errors):
         """Fetch & update the local manifest project.
@@ -3078,14 +3165,15 @@ class LocalSyncState:
 # request to request like the normal transport, the real url
 # is passed during initialization.
 class PersistentTransport(xmlrpc.client.Transport):
-    def __init__(self, orig_host):
+    def __init__(self, orig_host, proxy=None):
         super().__init__()
         self.orig_host = orig_host
+        self.proxy = proxy
 
     def request(self, host, handler, request_body, verbose=False):
         with GetUrlCookieFile(self.orig_host, not verbose) as (
             cookiefile,
-            proxy,
+            cookie_proxy,
         ):
             # Python doesn't understand cookies with the #HttpOnly_ prefix
             # Since we're only using them for HTTP, copy the file temporarily,
@@ -3111,10 +3199,11 @@ class PersistentTransport(xmlrpc.client.Transport):
             else:
                 cookiejar = cookielib.CookieJar()
 
+            active_proxy = self.proxy or cookie_proxy
             proxyhandler = urllib.request.ProxyHandler
-            if proxy:
+            if active_proxy:
                 proxyhandler = urllib.request.ProxyHandler(
-                    {"http": proxy, "https": proxy}
+                    {"http": active_proxy, "https": active_proxy}
                 )
 
             opener = urllib.request.build_opener(
@@ -3127,13 +3216,16 @@ class PersistentTransport(xmlrpc.client.Transport):
             scheme = parse_results.scheme
             if scheme == "persistent-http":
                 scheme = "http"
-            if scheme == "persistent-https":
+            elif scheme == "persistent-https":
                 # If we're proxying through persistent-https, use http. The
                 # proxy itself will do the https.
-                if proxy:
+                if active_proxy:
                     scheme = "http"
                 else:
                     scheme = "https"
+            elif scheme not in ("http", "https"):
+                if active_proxy:
+                    scheme = "http"
 
             # Parse out any authentication information using the base class.
             host, extra_headers, _ = self.get_host_info(parse_results.netloc)
