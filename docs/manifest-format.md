@@ -58,6 +58,7 @@ following DTD:
 
   <!ELEMENT manifest-server EMPTY>
   <!ATTLIST manifest-server url CDATA #REQUIRED>
+  <!ATTLIST manifest-server helper CDATA #IMPLIED>
 
   <!ELEMENT submanifest EMPTY>
   <!ATTLIST submanifest name           ID    #REQUIRED>
@@ -238,6 +239,11 @@ is used to specify the URL of a manifest server, which is an
 XML RPC service.
 
 See the [smart sync documentation](./smart-sync.md) for more details.
+
+Attribute `url`: The URL of the manifest server.
+
+Attribute `helper`: Optional name of a remote helper binary to execute to
+resolve proxying or authentication for the manifest server.
 
 
 ### Element submanifest
