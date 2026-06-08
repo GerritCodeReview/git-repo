@@ -23,6 +23,8 @@ import netrc
 import optparse
 import os
 from pathlib import Path
+import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -651,8 +653,10 @@ later is required to fix a server side protocol bug.
             manifest_project: The manifestProject to query.
         """
         b = manifest_project.GetBranch(manifest_project.CurrentBranch)
-        branch = b.merge
-        if branch.startswith(R_HEADS):
+        branch = b.merge if b else None
+        if not branch:
+            branch = manifest_project.revisionExpr
+        if branch and branch.startswith(R_HEADS):
             branch = branch[len(R_HEADS) :]
         return branch
 
@@ -1732,6 +1736,119 @@ later is required to fix a server side protocol bug.
         manifest_server = manifest.manifest_server
         if not opt.quiet:
             print("Using manifest server %s" % manifest_server)
+
+        scheme = urllib.parse.urlparse(manifest_server).scheme
+        helper_binary = f"repo-remote-{scheme}"
+
+        # Helper path
+        if shutil.which(helper_binary):
+            if not opt.quiet:
+                print(f"Using remote helper {helper_binary}")
+            try:
+                p = subprocess.Popen(
+                    [helper_binary, manifest_server],
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                output = p.stdout.readline().strip()
+            except Exception as e:
+                raise SmartSyncError(
+                    f"failed to start or read from helper {helper_binary}: {e}"
+                )
+
+            try:
+                res = json.loads(output)
+                status = res.get("status")
+                msg = res.get("message")
+            except json.JSONDecodeError as e:
+                raise SmartSyncError(
+                    f"failed to parse JSON from helper {helper_binary}: {e}. Output was: {output}"
+                )
+
+            if status != "ok":
+                raise SmartSyncError(
+                    f"helper {helper_binary} returned error: {msg}"
+                )
+
+            proxy_url = msg
+            if not proxy_url.startswith("http://") and not proxy_url.startswith("https://"):
+                proxy_url = f"http://{proxy_url}"
+
+            transport = PersistentTransport(manifest_server, proxy=proxy_url)
+            
+            clean_manifest_server = manifest_server
+            if scheme not in ("http", "https"):
+                clean_manifest_server = manifest_server.replace(f"{scheme}://", "http://", 1)
+
+            try:
+                server = xmlrpc.client.Server(clean_manifest_server, transport=transport)
+                if opt.smart_sync:
+                    branch = self._GetBranch(manifest.manifestProject)
+                    target = None
+                    if "SYNC_TARGET" in os.environ:
+                        target = os.environ["SYNC_TARGET"]
+                    elif (
+                        "TARGET_PRODUCT" in os.environ
+                        and "TARGET_BUILD_VARIANT" in os.environ
+                        and "TARGET_RELEASE" in os.environ
+                    ):
+                        target = "%s-%s-%s" % (
+                            os.environ["TARGET_PRODUCT"],
+                            os.environ["TARGET_RELEASE"],
+                            os.environ["TARGET_BUILD_VARIANT"],
+                        )
+                    elif (
+                        "TARGET_PRODUCT" in os.environ
+                        and "TARGET_BUILD_VARIANT" in os.environ
+                    ):
+                        target = "%s-%s" % (
+                            os.environ["TARGET_PRODUCT"],
+                            os.environ["TARGET_BUILD_VARIANT"],
+                        )
+                    
+                    if target:
+                        [success, manifest_str] = server.GetApprovedManifest(branch, target)
+                    else:
+                        [success, manifest_str] = server.GetApprovedManifest(branch)
+                else:
+                    assert opt.smart_tag
+                    [success, manifest_str] = server.GetManifest(opt.smart_tag)
+
+                p.stdin.close()
+                p.wait()
+
+                if success:
+                    manifest_name = os.path.basename(smart_sync_manifest_path)
+                    try:
+                        with open(smart_sync_manifest_path, "w") as f:
+                            f.write(manifest_str)
+                    except OSError as e:
+                        raise SmartSyncError(
+                            "error: cannot write manifest to %s:\n%s"
+                            % (smart_sync_manifest_path, e),
+                            aggregate_errors=[e],
+                        )
+                    self._ReloadManifest(manifest_name, manifest)
+                    return manifest_name
+                else:
+                    raise SmartSyncError(
+                        "error: manifest server RPC call failed: %s" % manifest_str
+                    )
+            except Exception as e:
+                p.kill()
+                p.wait()
+                raise SmartSyncError(
+                    f"error: failed to communicate with manifest server via helper: {e}"
+                )
+
+        # Fallback path
+        if scheme not in ("http", "https", "persistent-http", "persistent-https"):
+            raise SmartSyncError(
+                f"error: unsupported manifest server scheme '{scheme}'. If this is a custom "
+                f"scheme, please ensure the local helper '{helper_binary}' is installed in your PATH."
+            )
 
         if "@" not in manifest_server:
             username = None
@@ -3078,14 +3195,15 @@ class LocalSyncState:
 # request to request like the normal transport, the real url
 # is passed during initialization.
 class PersistentTransport(xmlrpc.client.Transport):
-    def __init__(self, orig_host):
+    def __init__(self, orig_host, proxy=None):
         super().__init__()
         self.orig_host = orig_host
+        self.proxy = proxy
 
     def request(self, host, handler, request_body, verbose=False):
         with GetUrlCookieFile(self.orig_host, not verbose) as (
             cookiefile,
-            proxy,
+            cookie_proxy,
         ):
             # Python doesn't understand cookies with the #HttpOnly_ prefix
             # Since we're only using them for HTTP, copy the file temporarily,
@@ -3111,10 +3229,11 @@ class PersistentTransport(xmlrpc.client.Transport):
             else:
                 cookiejar = cookielib.CookieJar()
 
+            active_proxy = self.proxy or cookie_proxy
             proxyhandler = urllib.request.ProxyHandler
-            if proxy:
+            if active_proxy:
                 proxyhandler = urllib.request.ProxyHandler(
-                    {"http": proxy, "https": proxy}
+                    {"http": active_proxy, "https": active_proxy}
                 )
 
             opener = urllib.request.build_opener(
@@ -3127,13 +3246,16 @@ class PersistentTransport(xmlrpc.client.Transport):
             scheme = parse_results.scheme
             if scheme == "persistent-http":
                 scheme = "http"
-            if scheme == "persistent-https":
+            elif scheme == "persistent-https":
                 # If we're proxying through persistent-https, use http. The
                 # proxy itself will do the https.
-                if proxy:
+                if active_proxy:
                     scheme = "http"
                 else:
                     scheme = "https"
+            elif scheme not in ("http", "https"):
+                if active_proxy:
+                    scheme = "http"
 
             # Parse out any authentication information using the base class.
             host, extra_headers, _ = self.get_host_info(parse_results.netloc)
