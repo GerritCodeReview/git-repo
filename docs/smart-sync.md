@@ -27,12 +27,43 @@ the [`<manifest-server>` element](manifest-format.md#Element-manifest_server)
 element.  This is how the client knows what service to talk to.
 
 ```xml
-  <manifest-server url="https://example.com/your/manifest/server/url" />
+  <manifest-server url="https://example.com/your/manifest/server/url"
+                   helper="repo-remote-helper-name" />
 ```
 
 If the URL starts with `persistent-`, then the
 [`git-remote-persistent-https` helper](https://github.com/git/git/blob/HEAD/contrib/persistent-https/README)
 is used to communicate with the server.
+
+### Pluggable Remote Helpers
+
+For custom proxying or authentication, Repo supports pluggable remote helpers.
+You can declare a helper binary via the optional `helper` attribute on the
+`<manifest-server>` element.
+
+If the `helper` attribute is present in `<manifest-server>`:
+1.  Repo searches your system `PATH` for the specified helper binary (e.g.,
+    `repo-remote-sso`). If the helper cannot be found in `PATH`, Repo will raise
+    a `SmartSyncError` and abort the sync.
+2.  The helper is executed with the manifest server URL as its first argument:
+    ```bash
+    <helper-binary-name> <url>
+    ```
+3.  The helper must output a single-line JSON object on stdout and exit:
+    *   On success, return `status: "ok"` and a loopback proxy URL (including
+        scheme, e.g., `http://127.0.0.1:999`):
+        ```json
+        {"status": "ok", "message": "http://127.0.0.1:999"}
+        ```
+    *   On failure, return `status: "error"` and a detailed error message:
+        ```json
+        {"status": "error", "message": "unauthorized"}
+        ```
+4.  Repo routes the XML-RPC request through the returned proxy address.
+
+**Timeout Constraint**: The remote helper must complete and exit within 10
+seconds. If it hangs or exceeds this limit, Repo will force-terminate (`kill`)
+the process and abort the synchronization.
 
 ## Credentials
 
