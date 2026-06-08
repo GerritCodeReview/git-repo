@@ -1454,3 +1454,129 @@ class UpdateAllManifestProjectsTests(unittest.TestCase):
                 )
                 mock_sync_to_rev.assert_not_called()
                 mock_update_manifest.assert_called_once()
+
+
+class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
+    """Tests for _SmartSyncSetup with remote helpers."""
+
+    def setUp(self):
+        self.cmd = sync.Sync()
+        self.opt = mock.MagicMock()
+        self.opt.quiet = False
+        self.opt.smart_sync = True
+        self.manifest = mock.MagicMock()
+        self.smart_sync_manifest_path = "/fake/path/to/manifest.xml"
+
+    @mock.patch("shutil.which")
+    @mock.patch("subprocess.Popen")
+    @mock.patch("xmlrpc.client.Server")
+    @mock.patch("subcmds.sync.PersistentTransport")
+    def test_smart_sync_setup_with_helper(
+        self, mock_transport_class, mock_server_class, mock_popen, mock_which
+    ):
+        """Test _SmartSyncSetup when a helper is present and succeeds."""
+        import subprocess
+
+        self.manifest.manifest_server = (
+            "sso://android-smartsync.corp.google.com/manifestserver"
+        )
+        mock_which.return_value = "/fake/bin/repo-remote-sso"
+
+        # Mock subprocess to return a JSON with status ok and proxy address
+        mock_process = mock.MagicMock()
+        mock_process.communicate.return_value = (
+            '{"status":"ok","message":"http://127.0.0.1:999"}\n',
+            "",
+        )
+        mock_popen.return_value = mock_process
+
+        # Mock XML-RPC server call
+        mock_server = mock.MagicMock()
+        mock_server.GetApprovedManifest.return_value = [
+            True,
+            "<manifest></manifest>",
+        ]
+        mock_server_class.return_value = mock_server
+
+        # Mock manifest project branch
+        self.cmd._GetBranch = mock.MagicMock(return_value="main")
+        self.cmd._ReloadManifest = mock.MagicMock()
+
+        # Mock open to avoid writing to disk
+        with mock.patch("builtins.open", mock.mock_open()):
+            manifest_name = self.cmd._SmartSyncSetup(
+                self.opt, self.smart_sync_manifest_path, self.manifest
+            )
+
+        # Assertions
+        mock_which.assert_called_once_with("repo-remote-sso")
+        mock_popen.assert_called_once_with(
+            ["repo-remote-sso", self.manifest.manifest_server],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+
+        # Verify transport was created with the proxy returned by helper (with
+        # http:// prepended)
+        mock_transport_class.assert_called_once_with(
+            self.manifest.manifest_server, proxy="http://127.0.0.1:999"
+        )
+
+        # Verify Server was created with rewritten HTTP URL
+        mock_server_class.assert_called_once_with(
+            "http://android-smartsync.corp.google.com/manifestserver",
+            transport=mock_transport_class.return_value,
+        )
+
+        self.assertEqual(manifest_name, "manifest.xml")
+
+    @mock.patch("shutil.which")
+    @mock.patch("subprocess.Popen")
+    def test_smart_sync_setup_helper_error(self, mock_popen, mock_which):
+        """Test _SmartSyncSetup when helper returns an error status."""
+        self.manifest.manifest_server = (
+            "sso://android-smartsync.corp.google.com/manifestserver"
+        )
+        mock_which.return_value = "/fake/bin/repo-remote-sso"
+
+        # Mock subprocess to return a JSON with status error
+        mock_process = mock.MagicMock()
+        mock_process.communicate.return_value = (
+            '{"status":"error","message":"uplink-helper failed"}\n',
+            "",
+        )
+        mock_popen.return_value = mock_process
+
+        with self.assertRaises(sync.SmartSyncError) as context:
+            self.cmd._SmartSyncSetup(
+                self.opt, self.smart_sync_manifest_path, self.manifest
+            )
+
+        self.assertIn(
+            "helper repo-remote-sso returned error: uplink-helper failed",
+            str(context.exception),
+        )
+
+    @mock.patch("shutil.which")
+    def test_smart_sync_setup_missing_helper_custom_scheme(self, mock_which):
+        """Test _SmartSyncSetup when helper is missing for custom scheme."""
+        self.manifest.manifest_server = (
+            "sso://android-smartsync.corp.google.com/manifestserver"
+        )
+        mock_which.return_value = None
+
+        with self.assertRaises(sync.SmartSyncError) as context:
+            self.cmd._SmartSyncSetup(
+                self.opt, self.smart_sync_manifest_path, self.manifest
+            )
+
+        self.assertIn(
+            "unsupported manifest server scheme 'sso'",
+            str(context.exception),
+        )
+        self.assertIn(
+            "please ensure the local helper 'repo-remote-sso' is installed",
+            str(context.exception),
+        )
