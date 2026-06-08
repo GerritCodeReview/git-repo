@@ -651,6 +651,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if self._manifest_server:
             e = doc.createElement("manifest-server")
             e.setAttribute("url", self._manifest_server)
+            if self._manifest_server_helper:
+                e.setAttribute("helper", self._manifest_server_helper)
             root.appendChild(e)
             root.appendChild(doc.createTextNode(""))
 
@@ -1000,6 +1002,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         return self._manifest_server
 
     @property
+    def manifest_server_helper(self):
+        self._Load()
+        return self._manifest_server_helper
+
+    @property
     def CloneBundle(self):
         clone_bundle = self.manifestProject.clone_bundle
         if clone_bundle is None:
@@ -1026,9 +1033,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
     def SetManifestOverride(self, path):
         """Override manifestFile.  The caller must call Unload()"""
-        self._outer_client.manifest.manifestFileOverrides[self.path_prefix] = (
-            path
-        )
+        self._outer_client.manifest.manifestFileOverrides[
+            self.path_prefix
+        ] = path
 
     @property
     def UseLocalManifests(self):
@@ -1157,6 +1164,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         self._notice = None
         self.branch = None
         self._manifest_server = None
+        self._manifest_server_helper = None
 
     def Load(self):
         """Read the manifest into memory."""
@@ -1426,11 +1434,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         for node in itertools.chain(*node_list):
             if node.nodeName == "manifest-server":
                 url = self._reqatt(node, "url")
+                helper = node.getAttribute("helper") or None
                 if self._manifest_server is not None:
                     raise ManifestParseError(
                         "duplicate manifest-server in %s" % (self.manifestFile)
                     )
                 self._manifest_server = url
+                self._manifest_server_helper = helper
 
         def recursively_add_projects(project):
             projects = self._projects.setdefault(project.name, [])
