@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "3d943c0b_99050aff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4818947
+      },
+      "writtenOn": "2026-06-08T08:47:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e32f9ead_c03674a5",
+      "revId": "82e57103f0ab424d572de91725aac980b21c089f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "8d59bd6c_f25b161d",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -70,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37fa9dab_2ae60dd2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 4818947
+      },
+      "writtenOn": "2026-06-08T08:47:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e404847_9de5ebac",
+      "revId": "82e57103f0ab424d572de91725aac980b21c089f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fed672c2_6b311d08",
@@ -83,6 +119,24 @@
       "writtenOn": "2026-06-05T15:59:44Z",
       "side": 1,
       "message": "why getattr ?  if `checkout` is a `Project` object, it always has a `.parent` property.",
+      "revId": "82e57103f0ab424d572de91725aac980b21c089f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e9015f5_270d5525",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 4818947
+      },
+      "writtenOn": "2026-06-08T08:47:22Z",
+      "side": 1,
+      "message": "You are right, I just confused myself with the mocks for this in the tests 😊",
+      "parentUuid": "fed672c2_6b311d08",
       "revId": "82e57103f0ab424d572de91725aac980b21c089f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -104,6 +158,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10fd82bd_1a4f543a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 4818947
+      },
+      "writtenOn": "2026-06-08T08:47:22Z",
+      "side": 1,
+      "message": "It was included because I mirrored the condition in Project.Sync_LocalHalf(): _InitSubmodule() only runs under if self.parent and not self.use_git_worktrees in project.py. Since the race is caused by git submodule init, my original patch tried to scope the serialization to exactly the cases that actually call _InitSubmodule().\n\nAfter double checking, I agree that it is redundant since derived submodules are created with parent\u003dself and do not pass use_git_worktrees.\n\nRemoved!",
+      "parentUuid": "f634efef_ee9fa6a5",
+      "revId": "82e57103f0ab424d572de91725aac980b21c089f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce788c48_9019d420",
@@ -117,6 +189,30 @@
       "writtenOn": "2026-06-05T15:59:44Z",
       "side": 1,
       "message": "use extend + multiplication\n\n```suggestion\n            if level \u003e\u003d len(res):\n                res.extend([[]] * (level + 1 - len(res)))\n```",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 30
+      },
+      "revId": "82e57103f0ab424d572de91725aac980b21c089f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "851dbe5a_c5988ce1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 4818947
+      },
+      "writtenOn": "2026-06-08T08:47:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce788c48_9019d420",
       "range": {
         "startLine": 146,
         "startChar": 0,
