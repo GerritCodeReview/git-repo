@@ -34,6 +34,24 @@
       "tag": "mailMessageId\u003d\u003cCANVWZtGATOgjC1fHanARBQdDO70OZjY6JOJvSJ-jw5kMpMA6UQ@mail.gmail.com\u003e",
       "revId": "84af90f7c7cc4ac86e4c3905b45297a72264ccb8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17ded2f0_386cec93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1085986
+      },
+      "writtenOn": "2026-06-09T04:57:56Z",
+      "side": 1,
+      "message": "I like the alternates idea, I will experiment with that tomorrow.\n\nFor git-path, the primary purpose of this is nicely setting up remotes properly for both projects.  Maybe instead I can add an \"alternate-remote\" and \"alternate-remote-project-name\" attribute to do the equivalent without being so deep in internals? (names also subject to bikeshedding)",
+      "parentUuid": "b17696b3_f9510bfc",
+      "revId": "84af90f7c7cc4ac86e4c3905b45297a72264ccb8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
