@@ -52,6 +52,24 @@
       "parentUuid": "b17696b3_f9510bfc",
       "revId": "84af90f7c7cc4ac86e4c3905b45297a72264ccb8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4398f68d_778e9260",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1085986
+      },
+      "writtenOn": "2026-06-09T06:32:16Z",
+      "side": 1,
+      "message": "Turns out for my object sharing, I don\u0027t need this or alternates - I can use a prefix in the fetch path, with different remotes w/ aliases to the same name for different prefixes in the manifest.  For specifying alternate remotes within i still need something.",
+      "parentUuid": "17ded2f0_386cec93",
+      "revId": "84af90f7c7cc4ac86e4c3905b45297a72264ccb8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
