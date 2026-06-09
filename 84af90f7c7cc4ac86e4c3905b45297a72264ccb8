@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b17696b3_f9510bfc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-09T03:55:58Z",
+      "side": 1,
+      "message": "ignoring the lack of validation wrt security considering manifests are basically remote controlled ...\n\ni don\u0027t think fundamentally this should happen.  this is bleeding internal repo implementation details to users, and it\u0027s implementation details we\u0027ve been slowly walking away from because it\u0027s known to not play well with git.  so encoding this as public API locks us into a state we don\u0027t want to be in.\n\nif your goal is purely about object sharing, i think that is something that could be supported without internals bleeding out.  bind at the `\u003cproject\u003e` level to other `\u003cproject\u003e` elements with an attribute like `object-alternates` (bikeshed the name) ?  the value matches based on `name\u003d` since we currently require that value be unique.\n\nthen perhaps we use the alternates mechanism ?\nhttps://git-scm.com/docs/gitrepository-layout#Documentation/gitrepository-layout.txt-objectsinfoalternates",
+      "revId": "84af90f7c7cc4ac86e4c3905b45297a72264ccb8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
