@@ -70,6 +70,24 @@
       "parentUuid": "17ded2f0_386cec93",
       "revId": "84af90f7c7cc4ac86e4c3905b45297a72264ccb8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05296408_bf63129e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-09T11:35:43Z",
+      "side": 1,
+      "message": "\u003e I\u0027m not sure how \"store objects as if it\u0027s project-name-x\" bleeds out internals too much.\n\nbecause it\u0027s directly exposing how repo organizes its internal storage.  the only reason to specify these paths in the manifest is because you\u0027re aware of that internal layout.  it also means it\u0027s easy for people to shoot themselves by specifying wrong values.  like if unrelated projects both specify `common`.\n\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/docs/internal-fs-layout.md#Project-objects",
+      "parentUuid": "1c19e6f9_70549bc2",
+      "revId": "84af90f7c7cc4ac86e4c3905b45297a72264ccb8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ],
   "submitRequirementResults": [
