@@ -16,6 +16,57 @@
       "message": "ping @dwillemsen@google.com",
       "revId": "a4c71e7fd64443b6d760e505cc238c42446055ac",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6018b4b9_c0e912dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-11T21:01:22Z",
+      "side": 1,
+      "message": "hmm, this seems to overlap with the new proposal for remote fetch helpers.  can we consolidate somehow rather than having 2 parallel-but-pretty-similar functions ?",
+      "revId": "a4c71e7fd64443b6d760e505cc238c42446055ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14111ab6_8ae19eb2",
+        "filename": "docs/fetch-cmd.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-11T21:01:22Z",
+      "side": 1,
+      "message": "quoting seems bad.  this should be \"natural\" akin to what we do in repohooks.",
+      "revId": "a4c71e7fd64443b6d760e505cc238c42446055ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38d6d3ce_b2e27076",
+        "filename": "project.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-11T21:01:22Z",
+      "side": 1,
+      "message": "split this change out to merge by itself ?",
+      "revId": "a4c71e7fd64443b6d760e505cc238c42446055ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
