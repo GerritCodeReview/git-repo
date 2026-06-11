@@ -88,6 +88,29 @@
       "parentUuid": "273186a9_90d555ac",
       "revId": "b4320a401027f8f592e90bfe530bf9b3a5053161",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95ad5fc3_c4731b38",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-11T19:24:03Z",
+      "side": 1,
+      "message": "can we also add a test to make sure nested submodules are executed in correct order? ie if we have:\n```\nparent\nparent/sub1\nparent/sub1/nested\nparent/sub2\nparent/sub2/nested\n```\n\nthe ideal checkout order should be:\n```\n0: parent\n1: parent/sub1\n2: parent/sub1/nested, parent/sub2\n3: parent/sub2/nested\n```\n\nbut from my testing of this change, it\u0027s getting:\n```\n0: parent\n1: parent/sub1\n2: parent/sub1/nested, parent/sub2, parent/sub2/nested\n```",
+      "range": {
+        "startLine": 144,
+        "startChar": 12,
+        "endLine": 148,
+        "endChar": 59
+      },
+      "revId": "b4320a401027f8f592e90bfe530bf9b3a5053161",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
