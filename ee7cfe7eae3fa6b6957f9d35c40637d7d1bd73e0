@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ddab5ef_347efccf",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-11T19:07:11Z",
+      "side": 1,
+      "message": "can we add typing info ?",
+      "revId": "ee7cfe7eae3fa6b6957f9d35c40637d7d1bd73e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4d921bf_8c46fe5a",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-11T19:07:11Z",
+      "side": 1,
+      "message": "instead of a dict, what if it were a NamedTuple ?",
+      "revId": "ee7cfe7eae3fa6b6957f9d35c40637d7d1bd73e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
