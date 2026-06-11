@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6498b599_3f8d28fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4818947
+      },
+      "writtenOn": "2026-06-11T06:28:52Z",
+      "side": 1,
+      "message": "@gavinmak@google.com Possible to get a patch release with this once merged? 🙏 Causing issues for multiple teams at Arm after we transitioned from an internal branch to your `stable` branch.",
+      "revId": "b4320a401027f8f592e90bfe530bf9b3a5053161",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
