@@ -70,6 +70,24 @@
       "parentUuid": "7c699b56_9a223c37",
       "revId": "b4320a401027f8f592e90bfe530bf9b3a5053161",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "917d60fc_d2b84f09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-11T16:13:19Z",
+      "side": 1,
+      "message": "https://gerrit.googlesource.com/git-repo/+/HEAD/docs/release-process.md#Schedule",
+      "parentUuid": "273186a9_90d555ac",
+      "revId": "b4320a401027f8f592e90bfe530bf9b3a5053161",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
