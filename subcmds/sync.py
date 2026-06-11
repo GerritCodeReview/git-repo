@@ -70,6 +70,7 @@ from git_refs import HEAD
 from git_refs import R_HEADS
 import git_superproject
 from hooks import RepoHook
+from hooks import SyncType
 import platform_utils
 from progress import elapsed_str
 from progress import jobs_str
@@ -2039,6 +2040,11 @@ later is required to fix a server side protocol bug.
     def Execute(self, opt, args):
         errors = []
         start_time = time.time()
+
+        # Check if project.list exists to see if this is an initial sync.
+        project_list_path = os.path.join(self.manifest.subdir, "project.list")
+        initial = not os.path.exists(project_list_path)
+
         try:
             self._ExecuteHelper(opt, args, errors)
             sync_duration_seconds = time.time() - start_time
@@ -2048,9 +2054,13 @@ later is required to fix a server side protocol bug.
             raise RepoUnhandledExceptionError(e, aggregate_errors=errors)
 
         # Run post-sync hook only after successful sync
-        self._RunPostSyncHook(opt, sync_duration_seconds=sync_duration_seconds)
+        self._RunPostSyncHook(
+            opt,
+            sync_duration_seconds=sync_duration_seconds,
+            initial=initial,
+        )
 
-    def _RunPostSyncHook(self, opt, sync_duration_seconds=None):
+    def _RunPostSyncHook(self, opt, sync_duration_seconds=None, initial=False):
         """Run post-sync hook if configured in manifest <repo-hooks>."""
         hook = RepoHook.FromSubcmd(
             hook_type="post-sync",
@@ -2061,6 +2071,11 @@ later is required to fix a server side protocol bug.
         success = hook.Run(
             repo_topdir=self.client.topdir,
             sync_duration_seconds=sync_duration_seconds,
+            sync_type=SyncType(
+                initial=initial,
+                network_only=bool(opt.network_only),
+                local_only=bool(opt.local_only),
+            ),
         )
         if not success:
             print("Warning: post-sync hook reported failure.")

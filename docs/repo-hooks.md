@@ -163,7 +163,14 @@ Example:
 The `post-sync.py` file should be defined like:
 
 ```py
-def main(repo_topdir=None, sync_duration_seconds=None, **kwargs):
+from typing import Any, NamedTuple
+
+def main(
+    repo_topdir: str,
+    sync_duration_seconds: float,
+    sync_type: NamedTuple,
+    **kwargs: Any,
+):
     """Main function invoked directly by repo.
 
     We must use the name "main" as that is what repo requires.
@@ -171,6 +178,10 @@ def main(repo_topdir=None, sync_duration_seconds=None, **kwargs):
     Args:
       repo_topdir: The absolute path to the top-level directory of the repo workspace.
       sync_duration_seconds: The duration of the sync operation in seconds.
+      sync_type: A NamedTuple containing the characteristics of the sync. Includes
+          `initial` (boolean) indicating if this was the first sync,
+          `network_only` (boolean) if it was a network fetch only, and
+          `local_only` (boolean) if it was a local checkout only.
       kwargs: Leave this here for forward-compatibility.
     """
 ```

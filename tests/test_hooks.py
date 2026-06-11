@@ -84,7 +84,7 @@ def test_post_sync_argument_validation() -> None:
     sys.stderr = StringIO()
 
     try:
-        # Call with missing arg `sync_duration_seconds`
+        # Call with missing arg `sync_duration_seconds` and `sync_type`
         res = hook.Run(repo_topdir="/topdir")
         assert res is False
         assert "hook 'post-sync' called incorrectly" in sys.stderr.getvalue()
@@ -99,9 +99,22 @@ def test_post_sync_argument_validation() -> None:
 
         hook._ExecuteHook = fake_execute
 
-        res = hook.Run(repo_topdir="/topdir", sync_duration_seconds=12.345)
+        res = hook.Run(
+            repo_topdir="/topdir",
+            sync_duration_seconds=12.345,
+            sync_type=hooks.SyncType(
+                initial=True,
+                network_only=False,
+                local_only=False,
+            ),
+        )
         assert res is True
         assert executed_kwargs.get("sync_duration_seconds") == 12.345
+        assert executed_kwargs.get("sync_type") == hooks.SyncType(
+            initial=True,
+            network_only=False,
+            local_only=False,
+        )
 
     finally:
         sys.stderr = old_stderr

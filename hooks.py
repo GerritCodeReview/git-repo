@@ -16,16 +16,25 @@ import os
 import re
 import sys
 import traceback
+from typing import NamedTuple
 import urllib.parse
 
 from error import HookError
 from git_refs import HEAD
 
 
+class SyncType(NamedTuple):
+    """Characteristics of the sync operation."""
+
+    initial: bool
+    network_only: bool
+    local_only: bool
+
+
 # The API we've documented to hook authors.  Keep in sync with repo-hooks.md.
 _API_ARGS = {
     "pre-upload": {"project_list", "worktree_list"},
-    "post-sync": {"repo_topdir", "sync_duration_seconds"},
+    "post-sync": {"repo_topdir", "sync_duration_seconds", "sync_type"},
 }
 
 
