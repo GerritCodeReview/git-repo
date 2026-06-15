@@ -680,6 +680,7 @@ class Project:
         setenv("REPO_INNERPATH", self.relpath)
         setenv("REPO_PATH", self.RelPath(local=local))
         setenv("REPO_REMOTE", self.remote.name)
+        setenv("REPO_PROJECT_FETCH_URL", self.remote.url)
 
         try:
             lrev = "" if self.manifest.IsMirror else self.GetRevisionId()

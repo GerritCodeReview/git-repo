@@ -1060,6 +1060,9 @@ class GetEnvVarsTests(unittest.TestCase):
             self.assertEqual(env["REPO_RREV"], "main")
             self.assertEqual(env["REPO_UPSTREAM"], "upstream-branch")
             self.assertEqual(env["REPO_DEST_BRANCH"], "dest-branch")
+            self.assertEqual(
+                env["REPO_PROJECT_FETCH_URL"], "http://example.com/repo"
+            )
 
     def test_get_env_vars_non_local(self):
         """Test environment variables generation with local=False."""
