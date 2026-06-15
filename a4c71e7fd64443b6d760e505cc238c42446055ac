@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e9aaa11_f1398078",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-15T23:58:55Z",
+      "side": 1,
+      "message": "https://gerrit-review.git.corp.google.com/c/git-repo/+/591642 is for smartsync only, this change is to replace/bypass per-project git fetches",
+      "parentUuid": "6018b4b9_c0e912dd",
+      "revId": "a4c71e7fd64443b6d760e505cc238c42446055ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14111ab6_8ae19eb2",
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "694b640a_8902d6db",
+        "filename": "docs/fetch-cmd.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-15T23:58:55Z",
+      "side": 1,
+      "message": "AFAIK there\u0027s no way around quoting here. git config treats `;` and `#` as comment characters if they\u0027re not surrounded by double quotes. we could have repo parse git config for that specific value but that feels like overkill",
+      "parentUuid": "14111ab6_8ae19eb2",
+      "revId": "a4c71e7fd64443b6d760e505cc238c42446055ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38d6d3ce_b2e27076",
@@ -65,6 +101,24 @@
       "writtenOn": "2026-06-11T21:01:22Z",
       "side": 1,
       "message": "split this change out to merge by itself ?",
+      "revId": "a4c71e7fd64443b6d760e505cc238c42446055ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f82c7994_c6f14a88",
+        "filename": "project.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-15T23:58:55Z",
+      "side": 1,
+      "message": "done: https://gerrit-review.git.corp.google.com/c/git-repo/+/596121/3",
+      "parentUuid": "38d6d3ce_b2e27076",
       "revId": "a4c71e7fd64443b6d760e505cc238c42446055ac",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
