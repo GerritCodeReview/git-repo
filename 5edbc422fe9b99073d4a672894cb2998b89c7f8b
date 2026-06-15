@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c52c8e8a_c63f4711",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-15T22:20:59Z",
+      "side": 1,
+      "message": "is there any tracking bug we can put here?",
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc822a4e_2b2c61e5",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-15T22:20:59Z",
+      "side": 1,
+      "message": "nit: use \"Repo\" instead of \"`git-repo`\" to match rest of doc",
+      "range": {
+        "startLine": 39,
+        "startChar": 41,
+        "endLine": 39,
+        "endChar": 51
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ad74611a_9a2b459d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "docs/smart-sync.md",
+              "range": {
+                "startLine": 39,
+                "startChar": 0,
+                "endLine": 40,
+                "endChar": 0
+              },
+              "replacement": "For custom URI schemes (e.g., `sso://`), Repo supports pluggable remote helpers to dynamically resolve proxy settings and authenticate.\n"
+            },
+            {
+              "path": "docs/smart-sync.md",
+              "range": {
+                "startLine": 42,
+                "startChar": 0,
+                "endLine": 43,
+                "endChar": 0
+              },
+              "replacement": "1.  Repo searches your system `PATH` for a helper binary named `repo-remote-\u003cscheme\u003e` (e.g., `repo-remote-sso` for `sso://`).\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e58c57f_ccc85950",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-15T22:20:59Z",
+      "side": 1,
+      "message": "what happens if this isn\u0027t found on PATH?",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 131
+      },
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c0381e3_b6a4ca55",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1727,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-15T22:20:59Z",
+      "side": 1,
+      "message": "this method does a lot now and feels pretty overloaded. can we split this into a new _ResolveManifestServerTransport() method that returns (server_url, transport) and raises its own failures?",
+      "range": {
+        "startLine": 1727,
+        "startChar": 8,
+        "endLine": 1727,
+        "endChar": 23
+      },
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "459b07f7_c5f04bf7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1739,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-15T22:20:59Z",
+      "side": 1,
+      "message": "nit: something that just occurred to me, this naming matches git\u0027s \"git-remote-\u003ctransport\u003e\" naming, but it\u0027s very different. can we name this to \"repo-smartsync-proxy-{scheme}\" or something so they don\u0027t overlap?",
+      "range": {
+        "startLine": 1739,
+        "startChar": 31,
+        "endLine": 1739,
+        "endChar": 37
+      },
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1facccc8_4f41c21d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1756,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-15T22:20:59Z",
+      "side": 1,
+      "message": "we capture this but don\u0027t use it, we should include it in the error messages",
+      "range": {
+        "startLine": 1756,
+        "startChar": 24,
+        "endLine": 1756,
+        "endChar": 30
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "92128da7_0e7c3b02",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 1756,
+                "startChar": 0,
+                "endLine": 1757,
+                "endChar": 0
+              },
+              "replacement": "                stdout, _ \u003d p.communicate(timeout\u003d10)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca5edd9a_0a0f2b77",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1762,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-15T22:20:59Z",
+      "side": 1,
+      "message": "this will catch ctrl+c, can we narrow it to OSError?",
+      "range": {
+        "startLine": 1762,
+        "startChar": 19,
+        "endLine": 1762,
+        "endChar": 28
+      },
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf52ea84_af7890f7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1766,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-15T22:20:59Z",
+      "side": 1,
+      "message": "chain exceptions with \"from e\" here and below",
+      "range": {
+        "startLine": 1766,
+        "startChar": 16,
+        "endLine": 1766,
+        "endChar": 17
+      },
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
