@@ -1,0 +1,25 @@
+# See http://shortn/_BhKERPSKMk for the agent config proto.
+
+# Git Repo Code Review Workflow Agent
+configs: {
+  id: "git-repo-code-review-workflow"
+  display_name: "Git Repo Code Review Workflow"
+  description: "Analyzes git-repo Gerrit submission labeling, commit metadata, Python linting, and testing strategy."
+  skills: "git_repo_code_review_workflow"
+  include_filters: {
+    project: "git-repo"
+  }
+  automatic: true
+}
+
+# Git Repo Core Internals Agent
+configs: {
+  id: "git-repo-core-internals"
+  display_name: "Git Repo Core Internals"
+  description: "Analyzes git-repo synchronization, multiprocessing, manifest parsing, git integration, worktree layouts, and CLI commands."
+  skills: "git_repo_core_internals"
+  include_filters: {
+    project: "git-repo"
+  }
+  automatic: true
+}
