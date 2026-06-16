@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fef68dfb_6a53671e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-16T20:47:02Z",
+      "side": 1,
+      "message": "nit: move Bug to the bottom so it becomes an actual git footer\n```suggestion\n\nTAG\u003dagy\n\nCONV\u003df124a531-ea09-4255-8b54-40bc40cfa59c\n\nBug: b/517477903\nChange-Id: I3b6b8ea2640bb077521df4b4a9e8a34a8c6ecdad\n```",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 52
+      },
+      "revId": "32311b8e1679a74d536031cb65d106b057ded6c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b13eecd_34680aaf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-16T20:47:02Z",
+      "side": 1,
+      "message": "please make sure \"Verify git-repo CL\" passes",
+      "revId": "32311b8e1679a74d536031cb65d106b057ded6c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
