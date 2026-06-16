@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c57d5370_a509c0ae",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-16T00:19:03Z",
+      "side": 1,
+      "message": "i checked -- you don\u0027t need this as `range(-negative)` will be empty",
+      "fixSuggestions": [
+        {
+          "fixId": "454a593c_9aa20435",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 147,
+                "startChar": 0,
+                "endLine": 149,
+                "endChar": 0
+              },
+              "replacement": "        res.extend([] for _ in range(level + 1 - len(res)))\n"
+            }
+          ]
+        }
+      ],
+      "revId": "87fc81baf9323c3bdb7067cd26fc95b4bb43c216",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
