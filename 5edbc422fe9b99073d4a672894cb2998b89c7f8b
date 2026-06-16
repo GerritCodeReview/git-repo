@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b7275cb_c37d5604",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-16T15:15:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c52c8e8a_c63f4711",
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc822a4e_2b2c61e5",
@@ -128,6 +146,30 @@
       "writtenOn": "2026-06-15T22:20:59Z",
       "side": 1,
       "message": "nit: something that just occurred to me, this naming matches git\u0027s \"git-remote-\u003ctransport\u003e\" naming, but it\u0027s very different. can we name this to \"repo-smartsync-proxy-{scheme}\" or something so they don\u0027t overlap?",
+      "range": {
+        "startLine": 1739,
+        "startChar": 31,
+        "endLine": 1739,
+        "endChar": 37
+      },
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62353710_d62545c0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1739,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-16T15:15:05Z",
+      "side": 1,
+      "message": "With the updated design the helper name won\u0027t come up in this change but rather in the manifest XML file. We can update the helper binary name before we make the changes in manifest XML file. Something like \"repo-smartsync-proxy-finder\" makes sense.",
+      "parentUuid": "459b07f7_c5f04bf7",
       "range": {
         "startLine": 1739,
         "startChar": 31,
