@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4755ed50_80371429",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-17T22:11:39Z",
+      "side": 1,
+      "message": "please update manifest-format.md",
+      "revId": "c6d5c06c34eef36741c235e74a52bd9a7d109724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0d259f1_b9440c65",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 24
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-17T22:11:39Z",
+      "side": 1,
+      "message": "format doc to wrap at 80 chars",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 182
+      },
+      "revId": "c6d5c06c34eef36741c235e74a52bd9a7d109724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d454e7f_bceaba4a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 1800,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-17T22:11:39Z",
+      "side": 1,
+      "message": "we only check `p.returncode` on JSONDecodeError. is it worth checking it even outside of that?",
+      "range": {
+        "startLine": 1800,
+        "startChar": 17,
+        "endLine": 1800,
+        "endChar": 37
+      },
+      "revId": "c6d5c06c34eef36741c235e74a52bd9a7d109724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "648a005a_06818b76",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 1826,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-17T22:11:39Z",
+      "side": 1,
+      "message": "do we also need to strip any leading `persistent-` here? (see L1874)",
+      "range": {
+        "startLine": 1826,
+        "startChar": 12,
+        "endLine": 1826,
+        "endChar": 40
+      },
+      "revId": "c6d5c06c34eef36741c235e74a52bd9a7d109724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
