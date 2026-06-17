@@ -87,6 +87,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60bc7263_ba2f1224",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-17T11:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc822a4e_2b2c61e5",
+      "range": {
+        "startLine": 39,
+        "startChar": 41,
+        "endLine": 39,
+        "endChar": 51
+      },
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e58c57f_ccc85950",
@@ -110,6 +134,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eb070d1_0f9b2606",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-17T11:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e58c57f_ccc85950",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 131
+      },
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c0381e3_b6a4ca55",
@@ -123,6 +171,30 @@
       "writtenOn": "2026-06-15T22:20:59Z",
       "side": 1,
       "message": "this method does a lot now and feels pretty overloaded. can we split this into a new _ResolveManifestServerTransport() method that returns (server_url, transport) and raises its own failures?",
+      "range": {
+        "startLine": 1727,
+        "startChar": 8,
+        "endLine": 1727,
+        "endChar": 23
+      },
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2cc3f76_ec3fe187",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1727,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-17T11:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c0381e3_b6a4ca55",
       "range": {
         "startLine": 1727,
         "startChar": 8,
@@ -221,6 +293,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61cdddd4_82a761cd",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1756,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-17T11:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1facccc8_4f41c21d",
+      "range": {
+        "startLine": 1756,
+        "startChar": 24,
+        "endLine": 1756,
+        "endChar": 30
+      },
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca5edd9a_0a0f2b77",
@@ -244,6 +340,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d574abb_2ae21c39",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1762,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-17T11:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca5edd9a_0a0f2b77",
+      "range": {
+        "startLine": 1762,
+        "startChar": 19,
+        "endLine": 1762,
+        "endChar": 28
+      },
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf52ea84_af7890f7",
@@ -257,6 +377,30 @@
       "writtenOn": "2026-06-15T22:20:59Z",
       "side": 1,
       "message": "chain exceptions with \"from e\" here and below",
+      "range": {
+        "startLine": 1766,
+        "startChar": 16,
+        "endLine": 1766,
+        "endChar": 17
+      },
+      "revId": "5edbc422fe9b99073d4a672894cb2998b89c7f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f1f55a1_85e32fcc",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1766,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-17T11:10:21Z",
+      "side": 1,
+      "message": "From what I can tell, chaining exceptions won\u0027t really affect anything. main.py catches and silences these tracebacks and no effect on logging or telemetry. \n\nhttps://gerrit.googlesource.com/git-repo/+/refs/heads/main/main.py#949\nhttps://gerrit.googlesource.com/git-repo/+/refs/heads/main/repo_logging.py#80\n\nBecause str(expception) in Python only returns the outer message, using \"from e\" without formatting \": {e}\" directly into the string would hide underlying failure details from the users. We\u0027ll need to update the logger to handle the chained errors properly.",
+      "parentUuid": "cf52ea84_af7890f7",
       "range": {
         "startLine": 1766,
         "startChar": 16,
