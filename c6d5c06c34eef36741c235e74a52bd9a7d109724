@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a839df58_70f89f83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-18T16:10:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4755ed50_80371429",
+      "revId": "c6d5c06c34eef36741c235e74a52bd9a7d109724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0d259f1_b9440c65",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-06-17T22:11:39Z",
       "side": 1,
       "message": "format doc to wrap at 80 chars",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 182
+      },
+      "revId": "c6d5c06c34eef36741c235e74a52bd9a7d109724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75a4f642_f10456c3",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 24
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-18T16:10:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0d259f1_b9440c65",
       "range": {
         "startLine": 39,
         "startChar": 0,
@@ -64,6 +106,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6893e119_84749628",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 1800,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-18T16:10:23Z",
+      "side": 1,
+      "message": "Yes, update to look at the returncode before attempting the parsing.",
+      "parentUuid": "3d454e7f_bceaba4a",
+      "range": {
+        "startLine": 1800,
+        "startChar": 17,
+        "endLine": 1800,
+        "endChar": 37
+      },
+      "revId": "c6d5c06c34eef36741c235e74a52bd9a7d109724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "648a005a_06818b76",
@@ -77,6 +143,30 @@
       "writtenOn": "2026-06-17T22:11:39Z",
       "side": 1,
       "message": "do we also need to strip any leading `persistent-` here? (see L1874)",
+      "range": {
+        "startLine": 1826,
+        "startChar": 12,
+        "endLine": 1826,
+        "endChar": 40
+      },
+      "revId": "c6d5c06c34eef36741c235e74a52bd9a7d109724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd0ffd8f_67b83c14",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 1826,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-18T16:10:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "648a005a_06818b76",
       "range": {
         "startLine": 1826,
         "startChar": 12,

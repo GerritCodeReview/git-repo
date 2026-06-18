@@ -22,6 +22,30 @@
       },
       "revId": "cd307a6089f136e8f4f0fe85ce0393782cf99af1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a86f7bd5_374545a6",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 24
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-18T16:10:23Z",
+      "side": 0,
+      "message": "Reverted.",
+      "parentUuid": "d43fd733_589b3e02",
+      "range": {
+        "startLine": 30,
+        "startChar": 28,
+        "endLine": 30,
+        "endChar": 29
+      },
+      "revId": "cd307a6089f136e8f4f0fe85ce0393782cf99af1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
