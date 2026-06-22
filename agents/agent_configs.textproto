@@ -1,0 +1,26 @@
+# proto-file: http://shortn/_BhKERPSKMk
+# proto-message: HostAgents
+
+# Code Review Workflow Agent
+configs: {
+  id: "code-review-workflow"
+  display_name: "Code Review Workflow"
+  description: "Analyzes git-repo Gerrit submission labeling, commit metadata, Python linting, and testing strategy."
+  skills: "code_review_workflow"
+  include_filters: {
+    project: "git-repo"
+  }
+  automatic: true
+}
+
+# Core Internals Agent
+configs: {
+  id: "core-internals"
+  display_name: "Core Internals"
+  description: "Analyzes git-repo synchronization, multiprocessing, manifest parsing, git integration, worktree layouts, and CLI commands."
+  skills: "core_internals"
+  include_filters: {
+    project: "git-repo"
+  }
+  automatic: true
+}
