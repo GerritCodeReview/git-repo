@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79361349_3b004596",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-22T23:26:24Z",
+      "side": 1,
+      "message": "can we add a agents/README.md ?\n\nhttps://chromium.googlesource.com/chromium/src/+/HEAD/agents for inspiration",
+      "revId": "6aeb0452d79475e4b7012f1f615eb55e17855201",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b9e7438_a1592586",
+        "filename": "agents/agent_configs.textproto",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-22T23:26:24Z",
+      "side": 1,
+      "message": "use go/textformat-spec#header instead",
+      "revId": "6aeb0452d79475e4b7012f1f615eb55e17855201",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b7048c7_307ab527",
+        "filename": "agents/skills/git_repo_code_review_workflow/SKILL.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-22T23:26:24Z",
+      "side": 1,
+      "message": "do we need to include \"git_repo_\" in the path name ?  it\u0027s in the git-repo project.",
+      "revId": "6aeb0452d79475e4b7012f1f615eb55e17855201",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
