@@ -196,7 +196,8 @@ class Info(PagedCommand):
         data = {
             "name": project.name,
             "mount_path": project.worktree,
-            "current_revision": project.GetRevisionId(),
+            "current_revision": project.GetHeadRevisionId()
+            or project.GetRevisionId(),
             "manifest_revision": project.revisionExpr,
             "local_branches": list(project.GetBranches()),
         }
@@ -273,7 +274,7 @@ class Info(PagedCommand):
         out.nl()
 
         heading("Current revision: ")
-        headtext(project.GetRevisionId())
+        headtext(project.GetHeadRevisionId() or project.GetRevisionId())
         out.nl()
 
         currentBranch = project.CurrentBranch

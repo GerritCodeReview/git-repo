@@ -1646,6 +1646,18 @@ class Project:
                 f"revision {self.revisionExpr} in {self.name} not found"
             )
 
+    def GetHeadRevisionId(self) -> Optional[str]:
+        """Get the commit revision of the checked out HEAD.
+
+        Returns None if worktree is not checked out or HEAD cannot be resolved.
+        """
+        if self.work_git:
+            try:
+                return self.work_git.rev_parse("HEAD")
+            except GitError:
+                pass
+        return None
+
     def GetRevisionId(self, all_refs=None):
         if self.revisionId:
             return self.revisionId
