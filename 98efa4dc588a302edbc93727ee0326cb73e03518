@@ -16,6 +16,24 @@
       "message": "configs/ sounds like the wrong path\n\nplease see previous discussion in https://gerrit-review.git.corp.google.com/c/git-repo/+/573601",
       "revId": "98efa4dc588a302edbc93727ee0326cb73e03518",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27ebcff0_4457a286",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-22T21:24:05Z",
+      "side": 1,
+      "message": "using agents/ instead",
+      "parentUuid": "e6b0ebbe_35e829e2",
+      "revId": "98efa4dc588a302edbc93727ee0326cb73e03518",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
