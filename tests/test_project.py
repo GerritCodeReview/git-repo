@@ -104,6 +104,28 @@ class ProjectTests(unittest.TestCase):
             "abcd00%21%21_%2b",
         )
 
+    def test_get_head_revision_id(self):
+        """Check GetHeadRevisionId behavior."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+
+            # Initially unborn HEAD should return None.
+            self.assertIsNone(proj.GetHeadRevisionId())
+
+            # Create a commit.
+            with open(os.path.join(tempdir, "readme"), "w") as fp:
+                fp.write("hello")
+            proj.work_git.add("readme")
+            proj.work_git.commit("-m", "initial commit")
+
+            # HEAD should resolve to the commit SHA.
+            commit_sha = proj.work_git.rev_parse("HEAD")
+            self.assertEqual(commit_sha, proj.GetHeadRevisionId())
+
+            # Even if worktree is detached.
+            proj.work_git.checkout("HEAD~0")
+            self.assertEqual(commit_sha, proj.GetHeadRevisionId())
+
     @unittest.skipUnless(
         utils_for_test.supports_reftable(),
         "git reftable support is required for this test",
