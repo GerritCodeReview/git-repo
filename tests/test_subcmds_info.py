@@ -199,3 +199,27 @@ def test_text_enables_pager() -> None:
     cmd = _get_cmd()
     opts, _ = cmd.OptionParser.parse_args([])
     assert cmd.WantPager(opts)
+
+
+def test_get_project_data_uses_head_revision() -> None:
+    """_getProjectData should use GetHeadRevisionId if available."""
+    cmd = _get_cmd()
+    project = mock.MagicMock()
+    project.name = "foo"
+    project.worktree = "/path/to/foo"
+    project.revisionExpr = "refs/heads/main"
+    project.GetBranches.return_value = []
+
+    # GetHeadRevisionId() returns a SHA, it should be used.
+    project.GetHeadRevisionId.return_value = "head_sha_12345"
+    project.GetRevisionId.return_value = "manifest_sha_54321"
+
+    data = cmd._getProjectData(project)
+    assert data["current_revision"] == "head_sha_12345"
+    project.GetHeadRevisionId.assert_called_once()
+
+    # GetHeadRevisionId() is None, fall back to GetRevisionId().
+    project.GetHeadRevisionId.reset_mock()
+    project.GetHeadRevisionId.return_value = None
+    data = cmd._getProjectData(project)
+    assert data["current_revision"] == "manifest_sha_54321"
