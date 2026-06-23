@@ -40,7 +40,7 @@ from repo_trace import Trace
 # that is saved in the config.
 SYNC_STATE_PREFIX = "repo.syncstate."
 
-ID_RE = re.compile(r"^[0-9a-f]{40}$")
+ID_RE = re.compile(r"^[0-9a-f]{40}$|^[0-9a-f]{64}$")
 
 REVIEW_CACHE = {}
 
