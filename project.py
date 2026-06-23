@@ -2691,7 +2691,7 @@ class Project:
         if depth:
             current_branch_only = True
 
-        is_sha1 = bool(IsId(self.revisionExpr))
+        is_sha1 = IsId(self.revisionExpr)
 
         if current_branch_only:
             if self.revisionExpr.startswith(R_TAGS):

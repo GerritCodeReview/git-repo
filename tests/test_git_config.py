@@ -244,3 +244,27 @@ def test_remote_save_with_push_url_without_projectname(
     assert (
         written_config.GetString("remote.origin.pushurl") == "ssh://example.com"
     )
+
+
+@pytest.mark.parametrize(
+    "rev, expected",
+    (
+        ("a" * 40, True),
+        ("0" * 40, True),
+        ("f" * 40, True),
+        ("a" * 64, True),
+        ("0" * 64, True),
+        ("f" * 64, True),
+        ("a" * 39, False),
+        ("a" * 41, True),
+        ("a" * 63, True),
+        ("a" * 65, False),
+        ("g" * 40, False),
+        ("g" * 64, False),
+        ("refs/heads/master", False),
+        ("refs/tags/v1.0", False),
+    ),
+)
+def test_is_id(rev: str, expected: bool) -> None:
+    """Test IsId identifies both SHA-1 and SHA-256 hashes."""
+    assert git_config.IsId(rev) == expected
