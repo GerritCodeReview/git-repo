@@ -40,7 +40,7 @@ from repo_trace import Trace
 # that is saved in the config.
 SYNC_STATE_PREFIX = "repo.syncstate."
 
-ID_RE = re.compile(r"^[0-9a-f]{40}$")
+ID_RE = re.compile(r"^[0-9a-f]{40,64}$")
 
 REVIEW_CACHE = {}
 
@@ -49,8 +49,8 @@ def IsChange(rev):
     return rev.startswith(R_CHANGES)
 
 
-def IsId(rev):
-    return ID_RE.match(rev)
+def IsId(rev: str) -> bool:
+    return bool(ID_RE.match(rev))
 
 
 def IsTag(rev):
