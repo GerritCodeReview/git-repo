@@ -747,6 +747,28 @@ def SetGitTrace2ParentSid(env=None):
     _setenv(KEY, value, env=env)
 
 
+def _NormalizeGpgHomePath(path: str) -> str:
+    """Convert path for GPG on Windows if running in MSYS/MinGW.
+
+    If GPG is MSYS-based (common in Git Bash/Cygwin), it expects POSIX-like paths
+    (e.g. /c/Users/... instead of C:\\Users\\...). Native Windows Python uses
+    Windows-style paths, which MSYS GPG will incorrectly treat as relative paths.
+    We use cygpath to query the active MSYS/Cygwin mount configuration and resolve
+    the correct POSIX path.
+    """
+    if platform.system() == "Windows":
+        try:
+            out = subprocess.check_output(
+                ["cygpath", "-u", path],
+                stderr=subprocess.DEVNULL,
+                universal_newlines=True,
+            )
+            return out.strip()
+        except (OSError, subprocess.CalledProcessError):
+            pass
+    return path
+
+
 def _setenv(key, value, env=None):
     """Set |key| in the OS environment |env| to |value|."""
     if env is None:
@@ -1079,7 +1101,7 @@ def verify_rev(cwd, remote_ref, rev, quiet):
             print(file=sys.stderr)
 
     env = os.environ.copy()
-    _setenv("GNUPGHOME", gpg_dir, env)
+    _setenv("GNUPGHOME", _NormalizeGpgHomePath(gpg_dir), env)
     run_git("tag", "-v", cur, cwd=cwd, env=env)
     return "%s^0" % cur
 
