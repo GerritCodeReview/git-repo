@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f1318aa_681fd5a5",
+        "filename": "agents/skills/code_review_workflow/SKILL.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-24T20:30:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63f94511_86b72511",
+      "revId": "ac616adab3de13529eb42389ab4c118615a80d78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b6c47bb_821d757d",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-06-24T19:28:57Z",
       "side": 1,
       "message": "should this discuss `Commit-Queue+1` for testing the CI pipeline w/out actually merging ?  or do we not care since (i think) we run the tests on upload ?",
+      "revId": "ac616adab3de13529eb42389ab4c118615a80d78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be1ec4bd_24f14de7",
+        "filename": "agents/skills/code_review_workflow/SKILL.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-24T20:30:11Z",
+      "side": 1,
+      "message": "yeah, i think it\u0027s fine to omit it for now. our CONTRIBUTING.md doesn\u0027t even mention CQ+1",
+      "parentUuid": "7b6c47bb_821d757d",
       "revId": "ac616adab3de13529eb42389ab4c118615a80d78",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c1d29d6_4e15a128",
+        "filename": "agents/skills/code_review_workflow/SKILL.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-24T20:30:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f9c519f_639f3ded",
+      "revId": "ac616adab3de13529eb42389ab4c118615a80d78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb75e3a2_b97fee26",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-06-24T19:28:57Z",
       "side": 1,
       "message": "```suggestion\nwithin the git-repo codebase. This repository of folk knowledge exists to\n```",
+      "revId": "ac616adab3de13529eb42389ab4c118615a80d78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c737fa51_a8d8f1ec",
+        "filename": "agents/skills/core_internals/SKILL.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-24T20:30:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb75e3a2_b97fee26",
       "revId": "ac616adab3de13529eb42389ab4c118615a80d78",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
