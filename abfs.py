@@ -160,11 +160,11 @@ class Abfs:
                     cwd=cwd,
                 )
         except FileNotFoundError:
-            logger.Error("Failed command: %s", " ".join(cmd))
+            logger.error("Failed command: %s", " ".join(cmd))
             logger.error("Binary '%s' not found in PATH.", self.binary)
             raise AbfsError(cmd, -1, "", f"Binary '{self.binary}' not found.")
         except Exception as e:
-            logger.Error("Failed command: %s", " ".join(cmd))
+            logger.error("Failed command: %s", " ".join(cmd))
             logger.error("Unexpected error running abfs: %s", e)
             raise AbfsError(cmd, -1, "", str(e))
 
@@ -236,6 +236,8 @@ class Abfs:
         flags = AbfsFlags()
         if getattr(opt, 'jobs', None):
             flags.add("--jobs", opt.jobs)
+        if getattr(opt, 'rebase', False):
+            flags.add("--rebase")
 
         self.run(
             ["repo", "sync"] + args,
