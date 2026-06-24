@@ -1,0 +1,138 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f157dfd_c6282724",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-24T17:21:41Z",
+      "side": 1,
+      "message": "how deeply do you want me to review the SKILL.md files themselves ?",
+      "revId": "b8a7e94a217e37cb01ccb9245b61ef0260bd405f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28179960_cc8c8111",
+        "filename": "agents/agent_configs.textproto",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-24T17:21:41Z",
+      "side": 1,
+      "message": "go/textformat-spec#text-format-files says to use `.txtpb`",
+      "revId": "b8a7e94a217e37cb01ccb9245b61ef0260bd405f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17c36448_6d4b725e",
+        "filename": "agents/agent_configs.textproto",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-24T17:21:41Z",
+      "side": 1,
+      "message": "i don\u0027t believe any tools will be able to process this.  use the actual path.\n\nwhile we don\u0027t have prior art for this specific file, we def have OSS usage with internal google3 paths.\n\n`google/corp/android/engprod/codereviewagentconfiguration/v1/agent.proto`",
+      "fixSuggestions": [
+        {
+          "fixId": "7e722a38_f41d400b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "agents/agent_configs.textproto",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 2,
+                "endChar": 0
+              },
+              "replacement": "# proto-file: google/corp/android/engprod/codereviewagentconfiguration/v1/agent.proto\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b8a7e94a217e37cb01ccb9245b61ef0260bd405f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d9a3955_4effdf83",
+        "filename": "agents/agent_configs.textproto",
+        "patchSetId": 6
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-24T17:21:41Z",
+      "side": 1,
+      "message": "drop the `:` before `{` everywhere in here",
+      "fixSuggestions": [
+        {
+          "fixId": "0151b634_27574607",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "agents/agent_configs.textproto",
+              "range": {
+                "startLine": 5,
+                "startChar": 0,
+                "endLine": 6,
+                "endChar": 0
+              },
+              "replacement": "configs {\n"
+            },
+            {
+              "path": "agents/agent_configs.textproto",
+              "range": {
+                "startLine": 10,
+                "startChar": 0,
+                "endLine": 11,
+                "endChar": 0
+              },
+              "replacement": "  include_filters {\n"
+            },
+            {
+              "path": "agents/agent_configs.textproto",
+              "range": {
+                "startLine": 17,
+                "startChar": 0,
+                "endLine": 18,
+                "endChar": 0
+              },
+              "replacement": "configs {\n"
+            },
+            {
+              "path": "agents/agent_configs.textproto",
+              "range": {
+                "startLine": 22,
+                "startChar": 0,
+                "endLine": 23,
+                "endChar": 0
+              },
+              "replacement": "  include_filters {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b8a7e94a217e37cb01ccb9245b61ef0260bd405f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
