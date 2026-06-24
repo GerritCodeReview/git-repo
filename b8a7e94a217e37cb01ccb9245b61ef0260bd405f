@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7fe3d93_5bbd94ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-24T18:41:51Z",
+      "side": 1,
+      "message": "not too deeply. for context they were generated with 2y of code review comments using http://shortn/_EUkSs1qesw. i meant for this CL to be an internal experiment for us to see how useful review agents are (the agents\u0027 results are only visible to Googlers for now). i intend to tweak the config and skills later if we find it spammy/unhelpful/incorrect/etc\n\nalso updated agents/README.md with a WIP disclaimer",
+      "parentUuid": "5f157dfd_c6282724",
+      "revId": "b8a7e94a217e37cb01ccb9245b61ef0260bd405f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28179960_cc8c8111",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-06-24T17:21:41Z",
       "side": 1,
       "message": "go/textformat-spec#text-format-files says to use `.txtpb`",
+      "revId": "b8a7e94a217e37cb01ccb9245b61ef0260bd405f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "646a8aa1_f6038cfd",
+        "filename": "agents/agent_configs.textproto",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-24T18:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28179960_cc8c8111",
       "revId": "b8a7e94a217e37cb01ccb9245b61ef0260bd405f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -66,6 +102,24 @@
           ]
         }
       ],
+      "revId": "b8a7e94a217e37cb01ccb9245b61ef0260bd405f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d241159_5d765d7a",
+        "filename": "agents/agent_configs.textproto",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-24T18:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17c36448_6d4b725e",
       "revId": "b8a7e94a217e37cb01ccb9245b61ef0260bd405f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -131,6 +185,24 @@
           ]
         }
       ],
+      "revId": "b8a7e94a217e37cb01ccb9245b61ef0260bd405f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f42cf204_08e97c6a",
+        "filename": "agents/agent_configs.textproto",
+        "patchSetId": 6
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-24T18:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d9a3955_4effdf83",
       "revId": "b8a7e94a217e37cb01ccb9245b61ef0260bd405f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
