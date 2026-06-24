@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95184759_420ab1c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-24T19:28:57Z",
+      "side": 1,
+      "message": "i would assume that the skills can be used locally by devs and whatever agents they\u0027re running\n\nYOLO",
+      "parentUuid": "d7fe3d93_5bbd94ab",
+      "revId": "b8a7e94a217e37cb01ccb9245b61ef0260bd405f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28179960_cc8c8111",
