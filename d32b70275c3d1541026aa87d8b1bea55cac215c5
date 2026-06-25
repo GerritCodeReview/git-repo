@@ -22,6 +22,30 @@
       },
       "revId": "d32b70275c3d1541026aa87d8b1bea55cac215c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb44bd04_dd846bdc",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-06-25T22:50:16Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "76eac1f7_29678741",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 91
+      },
+      "revId": "d32b70275c3d1541026aa87d8b1bea55cac215c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
