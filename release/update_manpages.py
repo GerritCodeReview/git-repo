@@ -76,6 +76,7 @@ def main(argv: List[str]) -> int:
     # behavior (like probing active number of CPUs).  We use a weird name &
     # value to make it less likely for users to set this var themselves.
     os.environ["_REPO_GENERATE_MANPAGES_"] = " indeed! "
+    os.environ["COLUMNS"] = "10000"
 
     # "repo branch" is an alias for "repo branches".
     del subcmds.all_commands["branch"]
