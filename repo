@@ -405,20 +405,20 @@ def InitParser(parser):
         "--partial-clone",
         action="store_true",
         help="perform partial clone (https://git-scm.com/"
-        "docs/gitrepository-layout#_code_partialclone_code)",
+        "docs/gitrepository-layout#_partialclone)",
     )
     group.add_option(
         "--no-partial-clone",
         action="store_false",
         help="disable use of partial clone (https://git-scm.com/"
-        "docs/gitrepository-layout#_code_partialclone_code)",
+        "docs/gitrepository-layout#_partialclone)",
     )
     group.add_option(
         "--partial-clone-exclude",
         action="store",
         help="exclude the specified projects (a comma-delimited "
         "project names) from partial clone (https://git-scm.com"
-        "/docs/gitrepository-layout#_code_partialclone_code)",
+        "/docs/gitrepository-layout#_partialclone)",
     )
     group.add_option(
         "--clone-filter",
@@ -514,7 +514,7 @@ def run_command(cmd, **kwargs):
 
     # Run & package the results.
     proc = subprocess.Popen(cmd, **kwargs)
-    (stdout, stderr) = proc.communicate(input=cmd_input)
+    stdout, stderr = proc.communicate(input=cmd_input)
     dbg = ": " + cmdstr(cmd)
     if cmd_input is not None:
         dbg += " 0<|"

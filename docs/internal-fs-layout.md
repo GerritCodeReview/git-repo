@@ -182,7 +182,7 @@ User controlled settings are initialized when running `repo init`.
 | user.email               | `--config-name`           | User's e-mail address; Copied into `.git/config` when checking out a new project |
 | user.name                | `--config-name`           | User's name; Copied into `.git/config` when checking out a new project |
 
-[partial git clones]: https://git-scm.com/docs/gitrepository-layout#_code_partialclone_code
+[partial git clones]: https://git-scm.com/docs/gitrepository-layout#_partialclone
 [superproject]: https://en.wikibooks.org/wiki/Git/Submodules_and_Superprojects
 
 ### Repo hooks settings
