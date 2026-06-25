@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76eac1f7_29678741",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-25T22:13:06Z",
+      "side": 0,
+      "message": "this link was supposed to point to partialclone as mike pointed out: https://web.archive.org/web/20190410225913/https://git-scm.com/docs/gitrepository-layout#_code_partialclone_code\n\ncan we update the link to a new partialclone page?",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 91
+      },
+      "revId": "d32b70275c3d1541026aa87d8b1bea55cac215c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
