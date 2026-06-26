@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42b27a5c_a51d8dd8",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-26T20:49:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b01052b2_c85d099b",
+      "revId": "e9a8b976a41bf17cc929e05090e17b208b610d31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00b72349_cfec9d16",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-06-26T19:13:38Z",
       "side": 1,
       "message": "move the `bool()` to the `IsId` def itself.  that func should return a bool, not a match obj we then treat as truthiness.",
+      "revId": "e9a8b976a41bf17cc929e05090e17b208b610d31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7be0e7d1_c183c84d",
+        "filename": "tests/test_git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-26T20:49:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00b72349_cfec9d16",
       "revId": "e9a8b976a41bf17cc929e05090e17b208b610d31",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
