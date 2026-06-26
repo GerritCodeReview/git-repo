@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a8ab714_78b99437",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-26T02:47:07Z",
+      "side": 1,
+      "message": "this is what the git author field is for.  plus that original CL seemed pretty active, so not sure why we created another one.",
+      "revId": "3af9e2f1462a13a3e344b4fd2e6ed6c4f5403f72",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f960708_035f427d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1541,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-06-26T02:47:07Z",
+      "side": 1,
+      "message": "i don\u0027t see the point of this change unless you also merge with the above usage",
+      "revId": "3af9e2f1462a13a3e344b4fd2e6ed6c4f5403f72",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
