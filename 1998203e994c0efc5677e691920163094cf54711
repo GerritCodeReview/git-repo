@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e5875ba_25d8a73f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4961882
+      },
+      "writtenOn": "2026-06-26T21:26:22Z",
+      "side": 1,
+      "message": "git commit --amend",
+      "revId": "1998203e994c0efc5677e691920163094cf54711",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
