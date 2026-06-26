@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "770f857d_2f873cc5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 4346027
+      },
+      "writtenOn": "2026-06-26T06:33:00Z",
+      "side": 1,
+      "message": "I agree that it is unfortunate about the author field. But I had to ask for support getting the fix in, because the original CL stalled and it was getting problematic to follow it through.",
+      "parentUuid": "2a8ab714_78b99437",
+      "revId": "3af9e2f1462a13a3e344b4fd2e6ed6c4f5403f72",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5f960708_035f427d",
         "filename": "project.py",
         "patchSetId": 4
