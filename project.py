@@ -996,11 +996,32 @@ class Project:
             out.nl()
             return "DIRTY"
 
-        branch = self.CurrentBranch
-        if branch is None:
+        branch_name = self.CurrentBranch
+        if branch_name is None:
             out.nobranch("(*** NO BRANCH ***)")
         else:
-            out.branch("branch %s", branch)
+            branch_obj = self.GetBranch(branch_name)
+            ahead_behind = ""
+            try:
+                local_merge = branch_obj.LocalMerge
+                if local_merge:
+                    left_right = self.work_git.rev_list(
+                        "--left-right",
+                        "--count",
+                        f"{local_merge}...{R_HEADS}{branch_name}",
+                    )
+                    left, right = left_right[0].split()
+                    behind = int(left)
+                    ahead = int(right)
+                    if ahead and behind:
+                        ahead_behind = f" [ahead {ahead}, behind {behind}]"
+                    elif ahead:
+                        ahead_behind = f" [ahead {ahead}]"
+                    elif behind:
+                        ahead_behind = f" [behind {behind}]"
+            except GitError:
+                pass
+            out.branch("branch %s%s", branch_name, ahead_behind)
         out.nl()
 
         if rb:

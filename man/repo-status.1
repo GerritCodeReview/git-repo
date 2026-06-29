@@ -68,6 +68,15 @@ branch devwork
 \fB\-m\fR
 subcmds/status.py
 .PP
+If the branch is tracking an upstream branch, the number of commits ahead and/or
+behind is also shown:
+.TP
+project repo/
+branch devwork [ahead 1, behind 2]
+.TP
+\fB\-m\fR
+subcmds/status.py
+.PP
 The first column explains how the staging area (index) differs from the last
 commit (HEAD). Its values are always displayed in upper case and have the
 following meanings:
