@@ -52,6 +52,41 @@
       "parentUuid": "a9c52302_0a9a73d3",
       "revId": "2897f64b99d6f2df664449347991c4d7a0964412",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "557fddf0_07e58ada",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-29T19:16:46Z",
+      "side": 1,
+      "message": "lso",
+      "revId": "2897f64b99d6f2df664449347991c4d7a0964412",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02c425f3_2c26a568",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-29T19:16:46Z",
+      "side": 1,
+      "message": "(it\u0027d also be nice to know when the config is broken, I\u0027ve been seeing \"AI Code Review / Completed without results.\" so I had assumed it was just working fine)",
+      "parentUuid": "a9c52302_0a9a73d3",
+      "revId": "2897f64b99d6f2df664449347991c4d7a0964412",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
