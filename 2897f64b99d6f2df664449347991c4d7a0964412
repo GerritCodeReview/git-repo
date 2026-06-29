@@ -16,6 +16,24 @@
       "message": "Not sure if the service should support both, but for now it doesn\u0027t",
       "revId": "2897f64b99d6f2df664449347991c4d7a0964412",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9c52302_0a9a73d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-29T19:14:47Z",
+      "side": 1,
+      "message": "is http://cl/939963527 the right fix? the config is incorrectly pointing to textproto",
+      "parentUuid": "a6386a39_264d2f90",
+      "revId": "2897f64b99d6f2df664449347991c4d7a0964412",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
