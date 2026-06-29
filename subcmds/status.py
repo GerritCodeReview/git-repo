@@ -54,6 +54,12 @@ project 'repo' on branch 'devwork':
   project repo/                                   branch devwork
    -m     subcmds/status.py
 
+If the branch is tracking an upstream branch, the number of commits
+ahead and/or behind is also shown:
+
+  project repo/                           branch devwork [ahead 1, behind 2]
+   -m     subcmds/status.py
+
 The first column explains how the staging area (index) differs from
 the last commit (HEAD).  Its values are always displayed in upper
 case and have the following meanings:
