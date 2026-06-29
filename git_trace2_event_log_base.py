@@ -195,7 +195,7 @@ class BaseEventLog:
 
     def GetDataEventName(self, value):
         """Returns 'data-json' if the value is an array else returns 'data'."""
-        return "data-json" if value[0] == "[" and value[-1] == "]" else "data"
+        return "data-json" if value and value[0] == "[" and value[-1] == "]" else "data"
 
     def LogDataConfigEvents(self, config, prefix):
         """Append a 'data' event for each entry in |config| to the current log.
