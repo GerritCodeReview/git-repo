@@ -315,6 +315,7 @@ def test_data_event_config(event_log: git_trace2_event_log.EventLog) -> None:
         "repo.partialclone": "false",
         "repo.syncstate.superproject.hassuperprojecttag": "true",
         "repo.syncstate.superproject.sys.argv": ["--", "sync", "protobuf"],
+        "repo.syncstate.emptykey": "",
     }
     prefix_value = "prefix"
     event_log.LogDataConfigEvents(config, prefix_value)
@@ -323,7 +324,7 @@ def test_data_event_config(event_log: git_trace2_event_log.EventLog) -> None:
         log_path = event_log.Write(path=tempdir)
         log_data = read_log(log_path)
 
-    assert len(log_data) == 5
+    assert len(log_data) == 6
     data_events = log_data[1:]
     verify_common_keys(log_data[0], expected_event_name="version")
 
