@@ -1,0 +1,58 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b28a6ea_8fd30810",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1030207
+      },
+      "writtenOn": "2026-06-29T19:53:38Z",
+      "side": 1,
+      "message": "[CL Review Agent] ✅ **LGTM with minor suggestions** — See inline comments for optional improvements. [[trajectory](go/traj/a20c9872-2cde-468b-8b12-685d018bf6e4)]",
+      "isAi": true,
+      "revId": "3a1db0364ffb876ea7aa809f7ee8e679a92f6ea7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6c9d586_5de4bd3c",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2728,
+      "author": {
+        "id": 1030207
+      },
+      "writtenOn": "2026-06-29T19:53:38Z",
+      "side": 1,
+      "message": "[CL Review Agent] If `_LsRemote` returns whitespace characters (such as `\\n`), `output` will evaluate as truthy, but `output.splitlines()` will return an empty list `[]`. This would cause `output.splitlines()[0]` on the next line to raise an `IndexError`.\n\nConsider making this check more robust, for example:\n```python\n            if output and output.splitlines():\n```",
+      "isAi": true,
+      "revId": "3a1db0364ffb876ea7aa809f7ee8e679a92f6ea7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c570ded_eb0438aa",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2744,
+      "author": {
+        "id": 1030207
+      },
+      "writtenOn": "2026-06-29T19:53:38Z",
+      "side": 1,
+      "message": "[CL Review Agent] Running `subprocess.run` with `capture_output\u003dTrue` suppresses all stdout and stderr from the custom fetch command during execution. For long-running custom fetches, the lack of incremental progress updates may make it appear as though the sync progress has hung. Furthermore, even when `verbose\u003dTrue` is passed to `_CustomFetch`, only the setup message is printed and the command\u0027s stdout remains hidden.\n\nConsider supporting streaming of output (e.g. allowing `stdout` and `stderr` to be piped or printed incrementally, particularly if `verbose` is enabled or if executing synchronously).",
+      "isAi": true,
+      "revId": "3a1db0364ffb876ea7aa809f7ee8e679a92f6ea7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
