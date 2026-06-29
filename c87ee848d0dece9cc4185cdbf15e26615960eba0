@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3aa3914b_6009d57f",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 2662,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-06-29T17:38:10Z",
+      "side": 1,
+      "message": "Remove this extra whitespace please",
+      "revId": "c87ee848d0dece9cc4185cdbf15e26615960eba0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
