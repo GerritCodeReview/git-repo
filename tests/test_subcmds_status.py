@@ -107,6 +107,18 @@ def _assert_project_header(line: str, project_path: str, branch: str) -> None:
     assert line == expected
 
 
+def _assert_project_header_with_ahead_behind(
+    line: str,
+    project_path: str,
+    branch: str,
+    ahead_behind: str,
+) -> None:
+    """Assert a status project header line includes ahead/behind info."""
+    suffix = f"branch {branch}{ahead_behind}"
+    expected = f"project {(project_path + '/ '):<40}{suffix}"
+    assert line == expected
+
+
 def _assert_orphan_block(lines: List[str], expected: List[str]) -> None:
     """Assert orphan block header and entries, independent of entry ordering."""
     assert lines
@@ -218,3 +230,224 @@ def test_empty_status_after_start_shows_started_branch(
     lines = _status_lines(stdout.getvalue())
     assert len(lines) == 1
     _assert_project_header(lines[0], project_path, started_branch)
+
+
+def _setup_remote_tracking_branch(
+    manifest: manifest_xml.XmlManifest,
+    branch_name: str,
+) -> None:
+    """Create a branch tracking a remote ref, like ``repo start``.
+
+    In a real repo checkout, ``repo start`` creates a branch that
+    tracks a remote tracking ref (e.g. refs/remotes/origin/main).
+    This sets up the same config in both the worktree and the
+    project gitdir (where repo reads its config from).
+    """
+    proj = list(manifest.paths.values())[0]
+    worktree = Path(proj.worktree)
+    proj_gitdir = Path(proj.gitdir)
+
+    # Create the remote tracking ref in the worktree.
+    subprocess.check_call(
+        ["git", "update-ref", "refs/remotes/origin/main", "main"],
+        cwd=worktree,
+    )
+    # Create the new branch from main in the worktree.
+    subprocess.check_call(
+        ["git", "checkout", "-q", "-b", branch_name, "main"],
+        cwd=worktree,
+    )
+    # Write remote and branch config into the *project gitdir* config,
+    # which is where repo's Project.config reads from.
+    cfg = str(proj_gitdir / "config")
+    subprocess.check_call(
+        [
+            "git",
+            "config",
+            "-f",
+            cfg,
+            "remote.origin.url",
+            "http://localhost/fake",
+        ],
+    )
+    subprocess.check_call(
+        [
+            "git",
+            "config",
+            "-f",
+            cfg,
+            "remote.origin.fetch",
+            "+refs/heads/*:refs/remotes/origin/*",
+        ],
+    )
+    subprocess.check_call(
+        ["git", "config", "-f", cfg, f"branch.{branch_name}.remote", "origin"],
+    )
+    subprocess.check_call(
+        [
+            "git",
+            "config",
+            "-f",
+            cfg,
+            f"branch.{branch_name}.merge",
+            "refs/heads/main",
+        ],
+    )
+
+
+def test_status_branch_ahead_of_upstream(
+    repo_client_checkout: Tuple[Path, manifest_xml.XmlManifest],
+) -> None:
+    """Verify status shows [ahead N] for local commits."""
+    topdir, manifest = repo_client_checkout
+    project_path = next(iter(manifest.paths.keys()))
+    project_worktree = topdir / project_path
+
+    _setup_remote_tracking_branch(manifest, "feature")
+    subprocess.check_call(
+        ["git", "commit", "-q", "--allow-empty", "-m", "c1"],
+        cwd=project_worktree,
+    )
+    subprocess.check_call(
+        ["git", "commit", "-q", "--allow-empty", "-m", "c2"],
+        cwd=project_worktree,
+    )
+
+    with contextlib.redirect_stdout(io.StringIO()) as stdout:
+        _run_status(manifest, [])
+
+    lines = _status_lines(stdout.getvalue())
+    assert len(lines) == 1
+    _assert_project_header_with_ahead_behind(
+        lines[0], project_path, "feature", " [ahead 2]"
+    )
+
+
+def test_status_branch_behind_upstream(
+    repo_client_checkout: Tuple[Path, manifest_xml.XmlManifest],
+) -> None:
+    """Verify status shows [behind N] when upstream is ahead."""
+    topdir, manifest = repo_client_checkout
+    project_path = next(iter(manifest.paths.keys()))
+    project_worktree = topdir / project_path
+
+    _setup_remote_tracking_branch(manifest, "feature")
+    # Advance the remote tracking ref past the feature branch.
+    subprocess.check_call(
+        ["git", "checkout", "-q", "main"], cwd=project_worktree
+    )
+    subprocess.check_call(
+        ["git", "commit", "-q", "--allow-empty", "-m", "upstream"],
+        cwd=project_worktree,
+    )
+    subprocess.check_call(
+        ["git", "update-ref", "refs/remotes/origin/main", "main"],
+        cwd=project_worktree,
+    )
+    subprocess.check_call(
+        ["git", "checkout", "-q", "feature"],
+        cwd=project_worktree,
+    )
+
+    with contextlib.redirect_stdout(io.StringIO()) as stdout:
+        _run_status(manifest, [])
+
+    lines = _status_lines(stdout.getvalue())
+    assert len(lines) == 1
+    _assert_project_header_with_ahead_behind(
+        lines[0], project_path, "feature", " [behind 1]"
+    )
+
+
+def test_status_branch_ahead_and_behind(
+    repo_client_checkout: Tuple[Path, manifest_xml.XmlManifest],
+) -> None:
+    """Verify [ahead N, behind M] when branch has diverged."""
+    topdir, manifest = repo_client_checkout
+    project_path = next(iter(manifest.paths.keys()))
+    project_worktree = topdir / project_path
+
+    _setup_remote_tracking_branch(manifest, "feature")
+    # Add a local commit on feature.
+    subprocess.check_call(
+        ["git", "commit", "-q", "--allow-empty", "-m", "local"],
+        cwd=project_worktree,
+    )
+    # Advance the remote tracking ref independently.
+    subprocess.check_call(
+        ["git", "checkout", "-q", "main"], cwd=project_worktree
+    )
+    subprocess.check_call(
+        ["git", "commit", "-q", "--allow-empty", "-m", "upstream"],
+        cwd=project_worktree,
+    )
+    subprocess.check_call(
+        ["git", "update-ref", "refs/remotes/origin/main", "main"],
+        cwd=project_worktree,
+    )
+    subprocess.check_call(
+        ["git", "checkout", "-q", "feature"],
+        cwd=project_worktree,
+    )
+
+    with contextlib.redirect_stdout(io.StringIO()) as stdout:
+        _run_status(manifest, [])
+
+    lines = _status_lines(stdout.getvalue())
+    assert len(lines) == 1
+    _assert_project_header_with_ahead_behind(
+        lines[0],
+        project_path,
+        "feature",
+        " [ahead 1, behind 1]",
+    )
+
+
+def test_status_branch_no_tracking_no_ahead_behind(
+    repo_client_checkout: Tuple[Path, manifest_xml.XmlManifest],
+) -> None:
+    """Verify no ahead/behind when branch has no upstream."""
+    topdir, manifest = repo_client_checkout
+    project_path = next(iter(manifest.paths.keys()))
+    project_worktree = topdir / project_path
+
+    subprocess.check_call(
+        [
+            "git",
+            "checkout",
+            "-q",
+            "-b",
+            "orphan-branch",
+            "--no-track",
+            "main",
+        ],
+        cwd=project_worktree,
+    )
+    subprocess.check_call(
+        ["git", "commit", "-q", "--allow-empty", "-m", "c1"],
+        cwd=project_worktree,
+    )
+
+    with contextlib.redirect_stdout(io.StringIO()) as stdout:
+        _run_status(manifest, [])
+
+    lines = _status_lines(stdout.getvalue())
+    assert len(lines) == 1
+    _assert_project_header(lines[0], project_path, "orphan-branch")
+
+
+def test_status_branch_synced_no_ahead_behind(
+    repo_client_checkout: Tuple[Path, manifest_xml.XmlManifest],
+) -> None:
+    """Verify no ahead/behind when branch is fully synced."""
+    topdir, manifest = repo_client_checkout
+    project_path = next(iter(manifest.paths.keys()))
+
+    _setup_remote_tracking_branch(manifest, "synced")
+
+    with contextlib.redirect_stdout(io.StringIO()) as stdout:
+        _run_status(manifest, [])
+
+    lines = _status_lines(stdout.getvalue())
+    assert len(lines) == 1
+    _assert_project_header(lines[0], project_path, "synced")
