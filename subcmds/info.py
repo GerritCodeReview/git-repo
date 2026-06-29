@@ -191,7 +191,8 @@ class Info(PagedCommand):
             "superproject_revision": srev,
         }
 
-    def _getProjectData(self, project) -> Dict[str, Any]:
+    @classmethod
+    def _getProjectData(cls, project) -> Dict[str, Any]:
         """Gather project data as a dict."""
         data = {
             "name": project.name,
@@ -206,6 +207,12 @@ class Info(PagedCommand):
             data["current_branch"] = currentBranch
         return data
 
+    @classmethod
+    def _ProjectDataHelper(cls, project_idx: int) -> Dict[str, Any]:
+        """Helper to get project data in parallel."""
+        project = cls.get_parallel_context()["projects"][project_idx]
+        return cls._getProjectData(project)
+
     def _ExecuteJson(self, opt, args) -> None:
         """Output info as JSON."""
         result = {}
@@ -215,7 +222,22 @@ class Info(PagedCommand):
             projs = self.GetProjects(
                 args, all_manifests=not opt.this_manifest_only
             )
-            result["projects"] = [self._getProjectData(p) for p in projs]
+            project_data = []
+
+            def _ProcessResults(_pool, _output, results):
+                project_data.extend(results)
+
+            with self.ParallelContext():
+                self.get_parallel_context()["projects"] = projs
+                self.ExecuteInParallel(
+                    opt.jobs,
+                    self._ProjectDataHelper,
+                    range(len(projs)),
+                    callback=_ProcessResults,
+                    ordered=True,
+                    chunksize=1,
+                )
+            result["projects"] = project_data
 
         json_settings = {
             # JSON style guide says Unicode characters are fully allowed.

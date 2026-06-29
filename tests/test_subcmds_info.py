@@ -223,3 +223,34 @@ def test_get_project_data_uses_head_revision() -> None:
     project.GetHeadRevisionId.return_value = None
     data = cmd._getProjectData(project)
     assert data["current_revision"] == "manifest_sha_54321"
+
+
+def test_json_with_projects(capsys) -> None:
+    """--format=json should emit project data."""
+    cmd = _get_cmd()
+    opts, args = cmd.OptionParser.parse_args(["--format=json"])
+    opts.jobs = 1  # To avoid multiprocessing pickle issues with mocks
+
+    project = mock.MagicMock()
+    project.name = "foo"
+    project.worktree = "/path/to/foo"
+    project.revisionExpr = "refs/heads/main"
+    project.GetBranches.return_value = {"branch1": mock.MagicMock()}
+    project.GetHeadRevisionId.return_value = "head_sha_12345"
+    project.CurrentBranch = "branch1"
+
+    cmd.GetProjects = mock.MagicMock(return_value=[project])
+
+    cmd.Execute(opts, args)
+
+    data = json.loads(capsys.readouterr().out)
+    assert "projects" in data
+    assert len(data["projects"]) == 1
+    project_data = data["projects"][0]
+    assert project_data["name"] == "foo"
+    assert project_data["mount_path"] == "/path/to/foo"
+    assert project_data["current_revision"] == "head_sha_12345"
+    assert project_data["manifest_revision"] == "refs/heads/main"
+    assert project_data["local_branches"] == ["branch1"]
+    assert project_data["current_branch"] == "branch1"
+
