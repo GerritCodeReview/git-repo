@@ -14,6 +14,8 @@
 
 """Unittests for the color.py module."""
 
+from unittest import mock
+
 import pytest
 import utils_for_test
 
@@ -26,7 +28,15 @@ def coloring() -> color.Coloring:
     """Create a Coloring object for testing."""
     config_fixture = utils_for_test.FIXTURES_DIR / "test.gitconfig"
     config = git_config.GitConfig(config_fixture)
-    color.SetDefaultColoring("true")
+    color.SetDefaultColoring("always")
+    return color.Coloring(config, "status")
+
+
+def _make_coloring(default_state):
+    """Helper to create a Coloring with a given default coloring state."""
+    config_fixture = utils_for_test.FIXTURES_DIR / "test.gitconfig"
+    config = git_config.GitConfig(config_fixture)
+    color.SetDefaultColoring(default_state)
     return color.Coloring(config, "status")
 
 
@@ -72,3 +82,101 @@ def test_Color_Parse_empty_entry(coloring: color.Coloring) -> None:
     assert val == "\033[2;34;47m"
     val = coloring._parse("empty", "green", "white", "bold")
     assert val == "\033[1;32;47m"
+
+
+class TestSetDefaultColoring:
+    """Tests for SetDefaultColoring."""
+
+    def test_none_leaves_default_unchanged(self):
+        color.DEFAULT = "auto"
+        color.SetDefaultColoring(None)
+        assert color.DEFAULT == "auto"
+
+    @pytest.mark.parametrize("value", ("auto", "Auto", "AUTO"))
+    def test_auto(self, value):
+        color.SetDefaultColoring(value)
+        assert color.DEFAULT == "auto"
+
+    @pytest.mark.parametrize("value", ("true", "True", "TRUE"))
+    def test_true_maps_to_auto(self, value):
+        color.SetDefaultColoring(value)
+        assert color.DEFAULT == "auto"
+
+    @pytest.mark.parametrize("value", ("yes", "Yes", "YES"))
+    def test_yes_maps_to_auto(self, value):
+        color.SetDefaultColoring(value)
+        assert color.DEFAULT == "auto"
+
+    @pytest.mark.parametrize("value", ("always", "Always", "ALWAYS"))
+    def test_always(self, value):
+        color.SetDefaultColoring(value)
+        assert color.DEFAULT == "always"
+
+    @pytest.mark.parametrize("value", ("never", "no", "false"))
+    def test_never(self, value):
+        color.SetDefaultColoring(value)
+        assert color.DEFAULT == "never"
+
+
+class TestColoringInit:
+    """Tests for Coloring.__init__ color mode logic."""
+
+    def test_always_enables_color(self):
+        """'always' should enable color regardless of terminal."""
+        c = _make_coloring("always")
+        assert c.is_on is True
+
+    def test_never_disables_color(self):
+        """'never' should disable color regardless of terminal."""
+        c = _make_coloring("never")
+        assert c.is_on is False
+
+    def test_true_on_tty(self):
+        """'true' should enable color when stdout is a TTY."""
+        with mock.patch("os.isatty", return_value=True):
+            c = _make_coloring("true")
+        assert c.is_on is True
+
+    def test_true_not_on_pipe(self):
+        """'true' should disable color when stdout is not a TTY."""
+        with mock.patch("os.isatty", return_value=False), mock.patch(
+            "pager.active", False
+        ):
+            c = _make_coloring("true")
+        assert c.is_on is False
+
+    def test_yes_on_tty(self):
+        """'yes' should enable color when stdout is a TTY."""
+        with mock.patch("os.isatty", return_value=True):
+            c = _make_coloring("yes")
+        assert c.is_on is True
+
+    def test_yes_not_on_pipe(self):
+        """'yes' should disable color when stdout is not a TTY."""
+        with mock.patch("os.isatty", return_value=False), mock.patch(
+            "pager.active", False
+        ):
+            c = _make_coloring("yes")
+        assert c.is_on is False
+
+    def test_auto_on_tty(self):
+        """'auto' should enable color when stdout is a TTY."""
+        with mock.patch("os.isatty", return_value=True):
+            c = _make_coloring("auto")
+        assert c.is_on is True
+
+    def test_auto_not_on_pipe(self):
+        """'auto' should disable color when stdout is not a TTY."""
+        with mock.patch("os.isatty", return_value=False), mock.patch(
+            "pager.active", False
+        ):
+            c = _make_coloring("auto")
+        assert c.is_on is False
+
+    def test_auto_on_with_active_pager(self):
+        """'auto' should enable color when pager is active."""
+        with mock.patch("os.isatty", return_value=False), mock.patch(
+            "pager.active", True
+        ):
+            c = _make_coloring("auto")
+        assert c.is_on is True
