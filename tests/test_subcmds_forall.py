@@ -86,6 +86,10 @@ def test_forall_all_projects_called_once(tmp_path: Path) -> None:
     # Use echo project names as the test of forall.
     opts, args = cmd.OptionParser.parse_args(["-c", "echo $REPO_PROJECT"])
     opts.verbose = False
+    # Force serial execution so the mock.patch below is visible in the
+    # worker.  Python 3.14+ defaults to "forkserver" on Linux, and
+    # class-level mock patches do not survive into forkserver workers.
+    opts.jobs = 1
 
     with contextlib.redirect_stdout(io.StringIO()) as stdout:
         # Mock to not have the Execute fail on remote check.
