@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3ce531b_73c5f503",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-06-30T17:47:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6481586e_966cb969",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 14
+      },
+      "revId": "6051cb750c3e27a0668964be064c120af2856991",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff9688a1_a9143a6a",
@@ -41,6 +65,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dadd22f_6395479d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-06-30T17:47:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff9688a1_a9143a6a",
+      "revId": "6051cb750c3e27a0668964be064c120af2856991",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70ea9443_299dee20",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-06-30T16:11:36Z",
       "side": 1,
       "message": "unlikely, but this could raise a `GitError`. let\u0027s move it into the `try` block",
+      "range": {
+        "startLine": 1005,
+        "startChar": 15,
+        "endLine": 1005,
+        "endChar": 36
+      },
+      "revId": "6051cb750c3e27a0668964be064c120af2856991",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42e64e3a_958f6938",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-06-30T17:47:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70ea9443_299dee20",
       "range": {
         "startLine": 1005,
         "startChar": 15,
@@ -87,6 +153,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4e915e4_695cb28d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1013,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-06-30T17:47:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e824aac3_b1f12115",
+      "range": {
+        "startLine": 1013,
+        "startChar": 38,
+        "endLine": 1013,
+        "endChar": 53
+      },
+      "revId": "6051cb750c3e27a0668964be064c120af2856991",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f07577bd_6112a5d6",
@@ -100,6 +190,30 @@
       "writtenOn": "2026-06-30T16:11:36Z",
       "side": 1,
       "message": "let\u0027s use f strings for consistency with the repo codebase",
+      "range": {
+        "startLine": 1007,
+        "startChar": 20,
+        "endLine": 1027,
+        "endChar": 62
+      },
+      "revId": "6051cb750c3e27a0668964be064c120af2856991",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ece708c_39bf5a33",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1027,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-06-30T17:47:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f07577bd_6112a5d6",
       "range": {
         "startLine": 1007,
         "startChar": 20,
