@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67a84a8f_9b2165f7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-30T21:41:32Z",
+      "side": 1,
+      "message": "if this is the case, would it work if we just set `p.revisionId \u003d \"refs/heads/main\"` for all projects in manifest.projects before cmd.Execute? then we wouldn\u0027t have to mock GetRevisionId either",
+      "range": {
+        "startLine": 11,
+        "startChar": 58,
+        "endLine": 14,
+        "endChar": 16
+      },
+      "revId": "142487aa8ce3e94e4053526f9bb59ba2342e575c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
