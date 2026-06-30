@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df0ed2ea_45cd122e",
+        "filename": "tests/test_color.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-30T23:28:14Z",
+      "side": 1,
+      "message": "let\u0027s dedupe by calling _make_coloring",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 43
+      },
+      "revId": "aa3d4e8641adf3ce4d91e186d2c63e515f075c29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52e422b4_12e42856",
+        "filename": "tests/test_color.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-30T23:28:14Z",
+      "side": 1,
+      "message": "add type hints to new methods",
+      "range": {
+        "startLine": 35,
+        "startChar": 4,
+        "endLine": 35,
+        "endChar": 34
+      },
+      "revId": "aa3d4e8641adf3ce4d91e186d2c63e515f075c29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b7d9419_72ddc8da",
+        "filename": "tests/test_color.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-30T23:28:14Z",
+      "side": 1,
+      "message": "it feels like we can dedupe some of these tests with by parametrizing the coloring state, eg test_true_on_tty and test_yes_on_tty, etc",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 30
+      },
+      "revId": "aa3d4e8641adf3ce4d91e186d2c63e515f075c29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
