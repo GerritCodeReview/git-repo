@@ -17,12 +17,10 @@
 import contextlib
 import io
 from pathlib import Path
-from unittest import mock
 
 import utils_for_test
 
 import manifest_xml
-import project
 import subcmds
 
 
@@ -87,13 +85,16 @@ def test_forall_all_projects_called_once(tmp_path: Path) -> None:
     opts, args = cmd.OptionParser.parse_args(["-c", "echo $REPO_PROJECT"])
     opts.verbose = False
 
+    # Set revisionId directly so GetRevisionId() short-circuits without
+    # touching git.  Using mock.patch.object on the class does not work
+    # with Python 3.14+, which defaults to "forkserver" on Linux —
+    # class-level patches do not survive into forkserver worker processes.
+    for proj in manifest.projects:
+        proj.revisionId = "refs/heads/main"
+
     with contextlib.redirect_stdout(io.StringIO()) as stdout:
-        # Mock to not have the Execute fail on remote check.
-        with mock.patch.object(
-            project.Project, "GetRevisionId", return_value="refs/heads/main"
-        ):
-            # Run the forall command.
-            cmd.Execute(opts, args)
+        # Run the forall command.
+        cmd.Execute(opts, args)
 
     output = stdout.getvalue()
     # Verify that we got every project name in the output.
