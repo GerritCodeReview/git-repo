@@ -14,6 +14,8 @@
 
 """Unittests for the color.py module."""
 
+from unittest import mock
+
 import pytest
 import utils_for_test
 
@@ -24,9 +26,14 @@ import git_config
 @pytest.fixture
 def coloring() -> color.Coloring:
     """Create a Coloring object for testing."""
+    return _make_coloring("always")
+
+
+def _make_coloring(default_state: str) -> color.Coloring:
+    """Set the default color mode and return a Coloring using test config."""
     config_fixture = utils_for_test.FIXTURES_DIR / "test.gitconfig"
     config = git_config.GitConfig(config_fixture)
-    color.SetDefaultColoring("true")
+    color.SetDefaultColoring(default_state)
     return color.Coloring(config, "status")
 
 
@@ -72,3 +79,71 @@ def test_Color_Parse_empty_entry(coloring: color.Coloring) -> None:
     assert val == "\033[2;34;47m"
     val = coloring._parse("empty", "green", "white", "bold")
     assert val == "\033[1;32;47m"
+
+
+class TestSetDefaultColoring:
+    """Tests for SetDefaultColoring."""
+
+    def test_none_leaves_default_unchanged(self) -> None:
+        color.DEFAULT = "auto"
+        color.SetDefaultColoring(None)
+        assert color.DEFAULT == "auto"
+
+    @pytest.mark.parametrize(
+        "value, expected",
+        (
+            # auto/true/yes all map to "auto" (case-insensitive).
+            ("auto", "auto"),
+            ("Auto", "auto"),
+            ("true", "auto"),
+            ("True", "auto"),
+            ("yes", "auto"),
+            ("Yes", "auto"),
+            # "always" stays "always".
+            ("always", "always"),
+            ("Always", "always"),
+            # never/no/false all map to "never".
+            ("never", "never"),
+            ("no", "never"),
+            ("false", "never"),
+        ),
+    )
+    def test_maps_to_expected(self, value: str, expected: str) -> None:
+        color.SetDefaultColoring(value)
+        assert color.DEFAULT == expected
+
+
+class TestColoringInit:
+    """Tests for Coloring.__init__ color mode logic."""
+
+    @pytest.mark.parametrize(
+        "state, isatty, pager_active, expected",
+        (
+            # "always" enables color unconditionally.
+            ("always", False, False, True),
+            # "never" disables color unconditionally.
+            ("never", True, True, False),
+            # auto/true/yes enable color only on a TTY or active pager.
+            ("auto", True, False, True),
+            ("auto", False, False, False),
+            ("auto", False, True, True),
+            ("true", True, False, True),
+            ("true", False, False, False),
+            ("true", False, True, True),
+            ("yes", True, False, True),
+            ("yes", False, False, False),
+            ("yes", False, True, True),
+        ),
+    )
+    def test_color_mode(
+        self,
+        state: str,
+        isatty: bool,
+        pager_active: bool,
+        expected: bool,
+    ) -> None:
+        with mock.patch("os.isatty", return_value=isatty), mock.patch(
+            "pager.active", pager_active
+        ):
+            c = _make_coloring(state)
+        assert c.is_on is expected

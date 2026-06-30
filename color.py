@@ -96,9 +96,9 @@ def SetDefaultColoring(state: Optional[str]) -> None:
 
     global DEFAULT
     state = state.lower()
-    if state in ("auto",):
-        DEFAULT = state
-    elif state in ("always", "yes", "true"):
+    if state in ("auto", "yes", "true"):
+        DEFAULT = "auto"
+    elif state in ("always",):
         DEFAULT = "always"
     elif state in ("never", "no", "false"):
         DEFAULT = "never"
@@ -116,12 +116,12 @@ class Coloring:
             if on is None:
                 on = self._config.GetString("color.ui")
 
-        if on == "auto":
+        if on in ("auto", "true", "yes"):
             if pager.active or os.isatty(1):
                 self._on = True
             else:
                 self._on = False
-        elif on in ("true", "always"):
+        elif on in ("always",):
             self._on = True
         else:
             self._on = False
