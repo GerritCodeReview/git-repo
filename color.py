@@ -84,29 +84,37 @@ def _Color(fg=None, bg=None, attr=None):
 
 DEFAULT = None
 
+CHECK_CONSOLE = "CHECK_CONSOLE"
+
+# https://git-scm.com/docs/git-config#Documentation/git-config.txt-colorui
+CONFIG_TO_COLOR_SETTING = {
+    "false": False,
+    "never": False,
+    "no": False,
+    "auto": CHECK_CONSOLE,
+    "true": CHECK_CONSOLE,
+    "yes": CHECK_CONSOLE,
+    "always": True,
+}
+
 
 def SetDefaultColoring(state: Optional[str]) -> None:
     """Set coloring behavior to |state|.
 
     This is useful for overriding config options via the command line.
     """
-    if state is None:
-        # Leave it alone -- return quick!
-        return
 
     global DEFAULT
-    state = state.lower()
-    if state in ("auto",):
+
+    if isinstance(state, str):
+        state = state.lower()
+    if state in CONFIG_TO_COLOR_SETTING:
         DEFAULT = state
-    elif state in ("always", "yes", "true"):
-        DEFAULT = "always"
-    elif state in ("never", "no", "false"):
-        DEFAULT = "never"
 
 
 class Coloring:
     def __init__(self, config, section_type):
-        self._section = "color.%s" % section_type
+        self._section = f"color.{section_type}"
         self._config = config
         self._out = sys.stdout
 
@@ -115,16 +123,12 @@ class Coloring:
             on = self._config.GetString(self._section)
             if on is None:
                 on = self._config.GetString("color.ui")
+        if isinstance(on, str):
+            on = on.lower()
 
-        if on == "auto":
-            if pager.active or os.isatty(1):
-                self._on = True
-            else:
-                self._on = False
-        elif on in ("true", "always"):
-            self._on = True
-        else:
-            self._on = False
+        self._on = CONFIG_TO_COLOR_SETTING.get(on, CHECK_CONSOLE)
+        if self._on == CHECK_CONSOLE:
+            self._on = pager.active or os.isatty(1)
 
     def redirect(self, out):
         self._out = out
