@@ -22,6 +22,30 @@
       },
       "revId": "4443eb703383ab5be78973b08a9c6c329d45052b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5626bdc_1ef88973",
+        "filename": "git_trace2_event_log_base.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-06-30T09:45:40Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "b91fe107_080481e2",
+      "range": {
+        "startLine": 198,
+        "startChar": 8,
+        "endLine": 202,
+        "endChar": 9
+      },
+      "revId": "4443eb703383ab5be78973b08a9c6c329d45052b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
