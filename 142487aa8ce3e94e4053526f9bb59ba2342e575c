@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fc6cdc28_cfd0d01d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-06-30T21:50:46Z",
+      "side": 1,
+      "message": "nit: since this commit is fixing tests (and doesn\u0027t actually modify `forall` in any way), let\u0027s use the tests tag\n\n```suggestion\ntests: Fix test compatibility with Python 3.14 forkserver\n```",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 6
+      },
+      "revId": "142487aa8ce3e94e4053526f9bb59ba2342e575c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "67a84a8f_9b2165f7",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
