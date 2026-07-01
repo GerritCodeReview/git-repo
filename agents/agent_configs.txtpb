@@ -10,7 +10,7 @@ configs {
   include_filters {
     project: "git-repo"
   }
-  automatic: true
+  automatic: false
 }
 
 # Core Internals Agent
@@ -22,5 +22,5 @@ configs {
   include_filters {
     project: "git-repo"
   }
-  automatic: true
+  automatic: false
 }
