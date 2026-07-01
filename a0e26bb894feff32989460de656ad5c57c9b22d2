@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "049de01d_2cca9f46",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-01T01:26:46Z",
+      "side": 1,
+      "message": "git docs are browseable online, so please (deep) link to the relevant section(s).  i\u0027m not saying you\u0027re wrong, but it helps reviewers spot check things by us both reading the docs.",
+      "revId": "a0e26bb894feff32989460de656ad5c57c9b22d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dae9a06_951e138f",
+        "filename": "color.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-01T01:26:46Z",
+      "side": 1,
+      "message": "here is a good place to leave breadcrumbs to the git online docs for the config settings",
+      "revId": "a0e26bb894feff32989460de656ad5c57c9b22d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "948bc62f_794158a1",
+        "filename": "color.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-01T01:26:46Z",
+      "side": 1,
+      "message": "since you\u0027re spending time on fixing a bug, you should also adjust the code to make it more resilient.  instead of duplicating the git config parsing logic as to the meaning of values, create a dedicated function that returns an enum, and have both places use that new helper.",
+      "revId": "a0e26bb894feff32989460de656ad5c57c9b22d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
