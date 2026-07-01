@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44dc708a_adfb1060",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-07-01T18:42:14Z",
+      "side": 1,
+      "message": "this is common enough that we should just have some analyzer check commit messages. filed http://b/530238148 to track that",
+      "parentUuid": "56a3c531_c446c004",
+      "revId": "e7cac4bca6b8e4276a5a64287653b5c56555d6f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c3b94ed_a9e21a0a",
