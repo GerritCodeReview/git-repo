@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b743bbc4_358b1bdf",
+        "filename": "color.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-01T22:28:37Z",
+      "side": 1,
+      "message": "seems you just want a unique sentinel ?",
+      "fixSuggestions": [
+        {
+          "fixId": "503f029e_8f8a44be",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "color.py",
+              "range": {
+                "startLine": 87,
+                "startChar": 0,
+                "endLine": 88,
+                "endChar": 0
+              },
+              "replacement": "\nclass _CheckConsoleSentinel:\n  \"\"\"Sentinel for checking console coloring.\"\"\"\n\n\nCHECK_CONSOLE \u003d _CheckConsoleSentinel()\n"
+            }
+          ]
+        }
+      ],
+      "revId": "edd4d43f0f19794958486e67abf32b2184014e3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f1641f0_7f45e76d",
+        "filename": "color.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-01T22:28:37Z",
+      "side": 1,
+      "message": "these should be internal constants, so use `_`",
+      "revId": "edd4d43f0f19794958486e67abf32b2184014e3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
