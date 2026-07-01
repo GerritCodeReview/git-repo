@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ae8ca90_bf6292fd",
+        "filename": "tests/test_color.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-07-01T00:42:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df0ed2ea_45cd122e",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 43
+      },
+      "revId": "aa3d4e8641adf3ce4d91e186d2c63e515f075c29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52e422b4_12e42856",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22578cfa_37172426",
+        "filename": "tests/test_color.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-07-01T00:42:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52e422b4_12e42856",
+      "range": {
+        "startLine": 35,
+        "startChar": 4,
+        "endLine": 35,
+        "endChar": 34
+      },
+      "revId": "aa3d4e8641adf3ce4d91e186d2c63e515f075c29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b7d9419_72ddc8da",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-06-30T23:28:14Z",
       "side": 1,
       "message": "it feels like we can dedupe some of these tests with by parametrizing the coloring state, eg test_true_on_tty and test_yes_on_tty, etc",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 30
+      },
+      "revId": "aa3d4e8641adf3ce4d91e186d2c63e515f075c29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "836aa077_2b5f2c27",
+        "filename": "tests/test_color.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-07-01T00:42:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b7d9419_72ddc8da",
       "range": {
         "startLine": 134,
         "startChar": 0,
