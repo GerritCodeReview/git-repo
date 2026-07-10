@@ -83,6 +83,13 @@ then check it directly.  Hooks should not normally modify the active git repo
 the user.  Although user interaction is discouraged in the common case, it can
 be useful when deploying automatic fixes.
 
+### Safe Prompts
+
+If the repo command that triggered the hook supports a "yes" option (e.g.,
+`repo upload --yes`), this option is propagated to the hook's `main` function
+as `yes` parameter (defaulting to `False`).  Hooks can use this to bypass
+interactive confirmation prompts when they can automatically fix issues.
+
 ### Shebang Handling
 
 *** note
@@ -119,7 +126,7 @@ This hook runs when people run `repo upload`.
 The `pre-upload.py` file should be defined like:
 
 ```py
-def main(project_list, worktree_list=None, **kwargs):
+def main(project_list, worktree_list=None, yes=False, **kwargs):
     """Main function invoked directly by repo.
 
     We must use the name "main" as that is what repo requires.
@@ -130,6 +137,8 @@ def main(project_list, worktree_list=None, **kwargs):
           project_list, so that each entry in project_list matches with a
           directory in worktree_list.  If None, we will attempt to calculate
           the directories automatically.
+      yes: Whether to answer yes to all safe prompts (see
+          [Safe Prompts](#safe-prompts)).
       kwargs: Leave this here for forward-compatibility.
     """
 ```

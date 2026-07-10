@@ -105,3 +105,37 @@ def test_post_sync_argument_validation() -> None:
 
     finally:
         sys.stderr = old_stderr
+
+
+@pytest.mark.parametrize("yes_val", (True, False))
+def test_repo_upload_yes_arg(tmp_path, yes_val: bool) -> None:
+    """Test that yes is passed in kwargs during hook execution."""
+
+    class FakeProject:
+        def __init__(self, worktree):
+            self.worktree = worktree
+            self.enabled_repo_hooks = ["pre-upload"]
+            self.config = None
+
+    hook_file = tmp_path / "pre-upload.py"
+
+    hook_content = """
+def main(project_list, **kwargs):
+    project_list.append(kwargs.get("yes"))
+"""
+    hook_file.write_text(hook_content)
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(str(tmp_path)),
+        repo_topdir=str(tmp_path),
+        manifest_url="https://gerrit",
+        allow_all_hooks=True,
+        yes=yes_val,
+    )
+
+    project_list = []
+    res = hook.Run(project_list=project_list, worktree_list=[])
+
+    assert res is True
+    assert project_list == [yes_val]
