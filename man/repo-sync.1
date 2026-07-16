@@ -80,11 +80,11 @@ username to authenticate with the manifest server
 \fB\-p\fR MANIFEST_SERVER_PASSWORD, \fB\-\-manifest\-server\-password\fR=\fI\,MANIFEST_SERVER_PASSWORD\/\fR
 password to authenticate with the manifest server
 .TP
-\fB\-\-fetch\-submodules\fR
-fetch submodules from server
+\fB\-\-recurse\-submodules\fR
+sync submodules from server
 .TP
-\fB\-\-no\-fetch\-submodules\fR
-don't fetch submodules from server
+\fB\-\-no\-recurse\-submodules\fR
+don't sync submodules from server
 .TP
 \fB\-\-use\-superproject\fR
 use the manifest superproject to sync projects; implies \fB\-c\fR
@@ -215,9 +215,12 @@ bootstrap a new Git repository from a resumeable bundle file on a content
 delivery network. This may be necessary if there are problems with the local
 Python HTTP client or proxy configuration, but the Git binary works.
 .PP
-The \fB\-\-fetch\-submodules\fR option enables fetching Git submodules of all projects
-from the server. The \fB\-\-no\-fetch\-submodules\fR option disables fetching Git
+The \fB\-\-recurse\-submodules\fR option enables syncing Git submodules of all projects
+from the server. The \fB\-\-no\-recurse\-submodules\fR option disables syncing Git
 submodules, even when a project has sync\-s="true" in the manifest.
+.PP
+The \fB\-\-fetch\-submodules\fR and \fB\-\-no\-fetch\-submodules\fR options are deprecated aliases
+for \fB\-\-recurse\-submodules\fR and \fB\-\-no\-recurse\-submodules\fR, respectively.
 .PP
 The \fB\-c\fR/\-\-current\-branch option can be used to only fetch objects that are on the
 branch specified by a project's revision.
