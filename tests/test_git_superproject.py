@@ -59,11 +59,9 @@ class SuperprojectTestCase(unittest.TestCase):
         gitdir = os.path.join(self.repodir, "manifests.git")
         os.mkdir(gitdir)
         with open(os.path.join(gitdir, "config"), "w") as fp:
-            fp.write(
-                """[remote "origin"]
+            fp.write("""[remote "origin"]
         url = https://localhost:0/manifest
-"""
-            )
+""")
 
         manifest = self.getXmlManifest(
             """
@@ -138,26 +136,22 @@ class SuperprojectTestCase(unittest.TestCase):
 
     def test_superproject_get_superproject_no_superproject(self):
         """Test with no url."""
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
 </manifest>
-"""
-        )
+""")
         self.assertIsNone(manifest.superproject)
 
     @pytest.mark.skip_cq("TODO(b/266734831): Find out why this takes 8m+ in CQ")
     def test_superproject_get_superproject_invalid_url(self):
         """Test with an invalid url."""
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="test-remote" fetch="localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
   <superproject name="superproject"/>
 </manifest>
-"""
-        )
+""")
         superproject = git_superproject.Superproject(
             manifest,
             name="superproject",
@@ -173,15 +167,13 @@ class SuperprojectTestCase(unittest.TestCase):
     @pytest.mark.skip_cq("TODO(b/266734831): Find out why this takes 8m+ in CQ")
     def test_superproject_get_superproject_invalid_branch(self):
         """Test with an invalid branch."""
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="test-remote" fetch="localhost" />
   <default remote="test-remote" revision="refs/heads/main" />
   <superproject name="superproject"/>
 </manifest>
-"""
-        )
+""")
         self._superproject = git_superproject.Superproject(
             manifest,
             name="superproject",
@@ -305,15 +297,13 @@ class SuperprojectTestCase(unittest.TestCase):
 
     def test_superproject_update_project_revision_id_no_superproject_tag(self):
         """Test update of commit ids of a manifest without superproject tag."""
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <project name="test-name"/>
 </manifest>
-"""
-        )
+""")
         self.maxDiff = None
         self.assertIsNone(manifest.superproject)
         self.assertEqual(
@@ -518,15 +508,13 @@ class SuperprojectTestCase(unittest.TestCase):
             self.assertFalse(os.path.exists(self._superproject._work_git))
 
     def test_Fetch(self):
-        manifest = self.getXmlManifest(
-            """
+        manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <superproject name="superproject"/>
   " /></manifest>
-"""
-        )
+""")
         self.maxDiff = None
         self._superproject = git_superproject.Superproject(
             manifest,

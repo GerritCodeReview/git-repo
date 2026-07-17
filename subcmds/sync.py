@@ -559,6 +559,13 @@ later is required to fix a server side protocol bug.
             metavar="NAME.xml",
         )
         p.add_option(
+            "-g",
+            "--groups",
+            help="sync projects matching the specific groups.  Not persistent "
+            "unlike when used on init",
+            metavar="GROUP",
+        )
+        p.add_option(
             "--clone-bundle",
             action="store_true",
             help="enable use of /clone.bundle on HTTP/HTTPS",
@@ -774,6 +781,7 @@ later is required to fix a server side protocol bug.
 
         all_projects = self.GetProjects(
             args,
+            groups=opt.groups,
             missing_ok=True,
             submodules_ok=opt.recurse_submodules,
             manifest=manifest,
@@ -1103,6 +1111,7 @@ later is required to fix a server side protocol bug.
                 self._ReloadManifest(None, manifest)
                 all_projects = self.GetProjects(
                     args,
+                    groups=opt.groups,
                     missing_ok=True,
                     submodules_ok=opt.recurse_submodules,
                     manifest=manifest,
@@ -2350,6 +2359,7 @@ later is required to fix a server side protocol bug.
 
         all_projects = self.GetProjects(
             args,
+            groups=opt.groups,
             missing_ok=True,
             submodules_ok=opt.recurse_submodules,
             manifest=manifest,
@@ -3013,6 +3023,7 @@ later is required to fix a server side protocol bug.
                             self._ReloadManifest(None, manifest)
                             project_list = self.GetProjects(
                                 args,
+                                groups=opt.groups,
                                 missing_ok=True,
                                 submodules_ok=opt.recurse_submodules,
                                 manifest=manifest,
