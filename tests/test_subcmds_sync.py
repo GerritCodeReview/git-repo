@@ -15,6 +15,7 @@
 
 import json
 import os
+from pathlib import Path
 import shutil
 import tempfile
 import time
@@ -26,6 +27,7 @@ import pytest
 import command
 from error import GitError
 from error import RepoExitError
+import manifest_xml
 from project import SyncNetworkHalfResult
 from subcmds import sync
 
@@ -94,6 +96,120 @@ def test_get_current_branch_only(use_superproject, cli_args, result):
         "git_superproject.UseSuperproject", return_value=use_superproject
     ):
         assert cmd._GetCurrentBranchOnly(opts, cmd.manifest) == result
+
+
+@pytest.mark.parametrize(
+    "cli_args, expected_groups",
+    [
+        ([], None),
+        (["-g", "groupA"], "groupA"),
+        (["--groups=groupB,groupC"], "groupB,groupC"),
+    ],
+)
+def test_groups_option_parsing(cli_args, expected_groups):
+    """Test --groups / -g option parsing."""
+    cmd = sync.Sync()
+    opts, _ = cmd.OptionParser.parse_args(cli_args)
+    assert opts.groups == expected_groups
+
+
+def _create_manifest_with_groups(topdir: Path) -> manifest_xml.XmlManifest:
+    """Create a test XmlManifest with projects assigned to various groups."""
+    repodir = topdir / ".repo"
+    manifest_dir = repodir / "manifests"
+    manifest_file = repodir / manifest_xml.MANIFEST_FILE_NAME
+
+    repodir.mkdir(exist_ok=True)
+    manifest_dir.mkdir(exist_ok=True)
+
+    gitdir = repodir / "manifests.git"
+    gitdir.mkdir(exist_ok=True)
+    (gitdir / "config").write_text(
+        """[remote "origin"]
+            url = https://localhost:0/manifest
+        """,
+        encoding="utf-8",
+    )
+
+    manifest_file.write_text(
+        """
+            <manifest>
+                <remote name="origin" fetch="http://localhost" />
+                <default remote="origin" revision="refs/heads/main" />
+                <project name="proj_g1" path="path_g1" groups="group1" />
+                <project name="proj_g2" path="path_g2" groups="group2" />
+                <project name="proj_g1_g2" path="path_g1_g2"
+                         groups="group1,group2" />
+                <project name="proj_default" path="path_default" />
+                <project name="proj_notdefault" path="path_notdefault"
+                         groups="notdefault" />
+            </manifest>
+        """,
+        encoding="utf-8",
+    )
+
+    for p in [
+        "proj_g1",
+        "proj_g2",
+        "proj_g1_g2",
+        "proj_default",
+        "proj_notdefault",
+    ]:
+        (repodir / "projects" / f"{p}.git").mkdir(parents=True, exist_ok=True)
+
+    return manifest_xml.XmlManifest(str(repodir), str(manifest_file))
+
+
+@pytest.mark.parametrize(
+    "cli_args, expected_projects",
+    [
+        (["-g", "group1"], ["proj_g1", "proj_g1_g2"]),
+        (["-g", "group2"], ["proj_g2", "proj_g1_g2"]),
+        (["-g", "group1,group2"], ["proj_g1", "proj_g1_g2", "proj_g2"]),
+        (["-g", "default,-group1"], ["proj_default", "proj_g2"]),
+        ([], ["proj_default", "proj_g1", "proj_g1_g2", "proj_g2"]),
+    ],
+)
+def test_sync_groups_manifest_filtering(
+    tmp_path: Path, cli_args, expected_projects
+):
+    """Test that repo sync -g selects only matching projects."""
+    manifest = _create_manifest_with_groups(tmp_path)
+    cmd = sync.Sync()
+    cmd.manifest = manifest
+
+    opts, args = cmd.OptionParser.parse_args(cli_args)
+    projects = cmd.GetProjects(args, groups=opts.groups, missing_ok=True)
+    project_names = sorted([p.name for p in projects])
+    assert project_names == sorted(expected_projects)
+
+
+def test_sync_update_projects_revision_id_respects_groups(tmp_path: Path):
+    """Test that _UpdateProjectsRevisionId filters projects using opt.groups."""
+    manifest = _create_manifest_with_groups(tmp_path)
+    cmd = sync.Sync()
+    cmd.manifest = manifest
+
+    superproject = mock.MagicMock()
+    superproject.UpdateProjectsRevisionId.return_value = mock.MagicMock(
+        manifest_path=None
+    )
+    manifest._superproject = superproject
+
+    opts, args = cmd.OptionParser.parse_args(["-g", "group1"])
+    opts.verbose = False
+    opts.fetch_submodules = False
+    opts.this_manifest_only = True
+    opts.local_only = False
+
+    with mock.patch.object(
+        cmd, "GetProjects", wraps=cmd.GetProjects
+    ) as spy_get_projects:
+        with mock.patch.object(cmd, "ManifestList", return_value=[manifest]):
+            cmd._UpdateProjectsRevisionId(opts, args, {}, manifest)
+            spy_get_projects.assert_called_once()
+            _, kwargs = spy_get_projects.call_args
+            assert kwargs.get("groups") == "group1"
 
 
 # Used to patch os.cpu_count() for reliable results.
@@ -831,6 +947,19 @@ class SyncCommand(unittest.TestCase):
             self.cmd.Execute(self.opt, [])
             self.assertIn(self.sync_local_half_error, e.aggregate_errors)
             self.assertIn(self.sync_network_half_error, e.aggregate_errors)
+
+    def test_groups_passed_to_get_projects(self):
+        """Ensure Execute passes opt.groups to GetProjects."""
+        self.opt.groups = "my_group"
+        self.opt.mp_update = False
+        with mock.patch.object(self.cmd, "_UpdateRepoProject"):
+            with mock.patch.object(self.cmd, "_ValidateOptionsWithManifest"):
+                with mock.patch.object(self.cmd, "_SyncInterleaved"):
+                    with mock.patch.object(self.cmd, "_RunPostSyncHook"):
+                        self.cmd.Execute(self.opt, [])
+        self.cmd.GetProjects.assert_called()
+        _, kwargs = self.cmd.GetProjects.call_args
+        self.assertEqual(kwargs.get("groups"), "my_group")
 
 
 class SyncUpdateRepoProject(unittest.TestCase):
