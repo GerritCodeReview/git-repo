@@ -35,6 +35,8 @@ from typing import NamedTuple
 MIN_PYTHON_VERSION_SOFT = (3, 6)
 MIN_PYTHON_VERSION_HARD = (3, 6)
 
+def foo(x):
+    print(x)
 
 # Keep basic logic in sync with repo_trace.py.
 class Trace:
@@ -129,6 +131,7 @@ if not REPO_REV:
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
 # increment this whenever we make important changes to this script
+VERSION = (2, 65)
 VERSION = (2, 65)
 
 # increment this if the MAINTAINER_KEYS block is modified
