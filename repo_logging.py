@@ -33,6 +33,9 @@ class _ConfigMock:
     def GetString(self, x):
         return self.default_values.get(x, None)
 
+    def bar(self, y):
+        print(y)
+
 
 class _LogColoring(Coloring):
     """Coloring outstream for logging."""
