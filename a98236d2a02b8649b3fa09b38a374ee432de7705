@@ -107,6 +107,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ed65f65_d726509f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 4818947
+      },
+      "writtenOn": "2026-07-20T08:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f214539e_f73032ba",
+      "revId": "a98236d2a02b8649b3fa09b38a374ee432de7705",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6fcb1fd_8cb8ba67",
@@ -142,6 +160,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc0e54c1_a1d5fed3",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 4818947
+      },
+      "writtenOn": "2026-07-20T08:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff7b86cf_f9cf9a06",
+      "revId": "a98236d2a02b8649b3fa09b38a374ee432de7705",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b97ca7d_2187aba1",
@@ -173,6 +209,24 @@
       "side": 1,
       "message": "Nice, replaced with that",
       "parentUuid": "0b97ca7d_2187aba1",
+      "revId": "a98236d2a02b8649b3fa09b38a374ee432de7705",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "977e74b7_a7e1e63e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 601,
+      "author": {
+        "id": 4818947
+      },
+      "writtenOn": "2026-07-20T08:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e651b4d_12478ffd",
       "revId": "a98236d2a02b8649b3fa09b38a374ee432de7705",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
