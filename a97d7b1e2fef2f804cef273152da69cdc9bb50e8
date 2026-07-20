@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9883798a_b9f0e812",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1085986
+      },
+      "writtenOn": "2026-07-20T19:44:57Z",
+      "side": 1,
+      "message": "It\u0027s not intentionaland it leads to different behavior between superprojects and non-superprojects which isn\u0027t ideal.  I\u0027m not sure if that\u0027s a showstopper.\n\nWhy do superprojects filter groups out of the re-written manifest?\n\nThe nice thing about this change is it was relatively minor. I see two ways out of this behavior:\n #1 - don\u0027t have superprojects filter groups out, I need to understand the implications of this.\n #2 - update this code to only sync the subset of groups from init, let me see if this can be done in a straightforward way.",
+      "parentUuid": "053c0fa1_4c9184e7",
+      "revId": "a97d7b1e2fef2f804cef273152da69cdc9bb50e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3250983_754b63e8",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -31,6 +49,30 @@
       "writtenOn": "2026-07-20T18:12:27Z",
       "side": 1,
       "message": "can you try rebasing this change to get \"Verify git-repo CL\" running again? my local run_tests fails with:\n\n`AssertionError: subcmds/sync.py: --groups: help text should not end in a period: \"sync projects matching the specific groups.  Not persistent unlike when used on init.\"`",
+      "range": {
+        "startLine": 552,
+        "startChar": 12,
+        "endLine": 553,
+        "endChar": 40
+      },
+      "revId": "a97d7b1e2fef2f804cef273152da69cdc9bb50e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2916dbf_fdf81bab",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 1085986
+      },
+      "writtenOn": "2026-07-20T19:44:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f3250983_754b63e8",
       "range": {
         "startLine": 552,
         "startChar": 12,
