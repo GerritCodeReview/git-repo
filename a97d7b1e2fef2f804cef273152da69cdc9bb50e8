@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "053c0fa1_4c9184e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-07-20T18:12:27Z",
+      "side": 1,
+      "message": "I tried testing this change locally and found that with superproject enabled, a `repo sync -g G2` after `repo init -g G1` syncs only projects in both `G1` and `G2`, and projects in `G2` that aren\u0027t also in `G1` weren\u0027t synced. looks like it\u0027s caused from `_WriteManifestFile` generating a `superproject_override.xml` with only `G1` projects. is that behavior intentional?",
+      "revId": "a97d7b1e2fef2f804cef273152da69cdc9bb50e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3250983_754b63e8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-07-20T18:12:27Z",
+      "side": 1,
+      "message": "can you try rebasing this change to get \"Verify git-repo CL\" running again? my local run_tests fails with:\n\n`AssertionError: subcmds/sync.py: --groups: help text should not end in a period: \"sync projects matching the specific groups.  Not persistent unlike when used on init.\"`",
+      "range": {
+        "startLine": 552,
+        "startChar": 12,
+        "endLine": 553,
+        "endChar": 40
+      },
+      "revId": "a97d7b1e2fef2f804cef273152da69cdc9bb50e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
