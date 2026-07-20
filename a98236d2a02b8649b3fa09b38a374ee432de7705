@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4da37ed2_22120980",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-07-20T17:05:32Z",
+      "side": 1,
+      "message": "fwiu `repo` treats submodules as psuedo-projects so they go through `repo`\u0027s sync flow (eg parallel fetch, shared objdir/gitdir layout in `.repo/`), `git fetch --recurse-submodules` would skip that",
+      "parentUuid": "c12ba74b_79489f93",
+      "revId": "a98236d2a02b8649b3fa09b38a374ee432de7705",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d05a273e_c1eb225e",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
