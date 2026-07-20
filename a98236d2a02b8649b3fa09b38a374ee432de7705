@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c12ba74b_79489f93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4818947
+      },
+      "writtenOn": "2026-07-20T08:12:58Z",
+      "side": 1,
+      "message": "Thanks for thorough feedback!\n\nTo be clear, this is just a suggestion - happy to abandon if you feel the renaming is unnecessary.\n\n\u003e more of an english grammar thing\n\nI do disagree with this though. Current name of the flag lead me to believe `repo` would not actually checkout the submodules, but it does.\n\n\u003e If we want to rename --fetch-submodules to clarify that it applies to every step of \"syncing\" (clone, fetch, checkout, rebase, etc...), i would be more inclined to support --recurse-submodules since that\u0027s the name git seems to use already.\n\nThis is much better! Switched to `--recurse-submodules`.\n\nOn the topic of harmonizing with `git`, I was wondering why `repo` currently does not leverage that `git` has its own submodule recursion already. Why write custom code to recurse into all submodules instead of just using what git already has?",
+      "parentUuid": "b709a2b4_8ec82a45",
+      "revId": "a98236d2a02b8649b3fa09b38a374ee432de7705",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d05a273e_c1eb225e",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
