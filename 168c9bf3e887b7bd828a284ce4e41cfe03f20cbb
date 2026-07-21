@@ -16,6 +16,24 @@
       "message": "Is there a black config file I can use?  Looks like my local version of black is choosing different formatting.",
       "revId": "168c9bf3e887b7bd828a284ce4e41cfe03f20cbb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90961719_79bd1186",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-21T17:59:54Z",
+      "side": 1,
+      "message": "i wonder if we should add a `--fix` option to run_tests\n\nwe\u0027re using black-25 atm",
+      "parentUuid": "3c043b12_e8fe331a",
+      "revId": "168c9bf3e887b7bd828a284ce4e41cfe03f20cbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
