@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d953cf8_6a083779",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5022105
+      },
+      "writtenOn": "2026-07-25T08:15:45Z",
+      "side": 1,
+      "message": "subcmds/stage.py repo",
+      "revId": "0b82311632d14d3f49675fb6a017c20f7a7dee37",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
