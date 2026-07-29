@@ -4398,8 +4398,17 @@ class Project:
                 except AttributeError:
                     pass
                 if line.startswith("ref: "):
-                    return line[5:-1]
-                return line[:-1]
+                    ref = line[5:-1]
+                else:
+                    ref = line[:-1]
+                # With the "reftable" ref backend, .git/HEAD is only a stub that
+                # points at the "refs/heads/.invalid" placeholder; the real HEAD
+                # lives in the reftable stack, not this file. Reading the stub
+                # would yield a bogus value, so treat it as unresolvable rather
+                # than returning it.
+                if ref == R_HEADS + ".invalid":
+                    raise NoManifestException(path, str(e))
+                return ref
 
         def SetHead(self, ref, message=None):
             cmdv = []
