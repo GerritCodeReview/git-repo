@@ -4672,7 +4672,7 @@ class MetaProject(Project):
             worktree=worktree,
             remote=RemoteSpec("origin"),
             relpath=".repo/%s" % name,
-            revisionExpr="refs/heads/master",
+            revisionExpr="refs/heads/main",
             revisionId=None,
             groups=None,
         )
@@ -5131,8 +5131,8 @@ class ManifestProject(MetaProject):
                     default_branch = self.ResolveRemoteHead()
                     if default_branch is None:
                         # If the remote doesn't have HEAD configured, default to
-                        # master.
-                        default_branch = "refs/heads/master"
+                        # main.
+                        default_branch = "refs/heads/main"
                     self.revisionExpr = default_branch
                 else:
                     self.PreSync()
