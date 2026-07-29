@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eff089d2_17ce13e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-29T19:51:48Z",
+      "side": 1,
+      "message": "don\u0027t use these tags in OSS.  they\u0027re meaningless spam.",
+      "revId": "e2263e7d81cb509afcfba0b52a0f52f65288ac0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93c754d2_e675e927",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-29T19:51:48Z",
+      "side": 1,
+      "message": "see this section",
+      "revId": "e2263e7d81cb509afcfba0b52a0f52f65288ac0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
