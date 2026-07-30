@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "644d3f63_3bec9050",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 4679,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-07-30T23:45:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93982e7d_bbbcafb0",
+      "revId": "d3c665c77c4671913b8dea91d84d91f62d4f204f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c55b9e40_8979d20d",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-07-30T22:28:44Z",
       "side": 1,
       "message": "the first line of docstrings are one-liners",
+      "revId": "d3c665c77c4671913b8dea91d84d91f62d4f204f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08405c99_18365ff4",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 4685,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-07-30T23:45:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c55b9e40_8979d20d",
       "revId": "d3c665c77c4671913b8dea91d84d91f62d4f204f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -58,6 +94,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f64737d0_91d64937",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 4688,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-07-30T23:45:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a9a1f3f_cd32a140",
+      "range": {
+        "startLine": 4688,
+        "startChar": 12,
+        "endLine": 4688,
+        "endChar": 80
+      },
+      "revId": "d3c665c77c4671913b8dea91d84d91f62d4f204f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71f0797f_dc654a0e",
@@ -71,6 +131,30 @@
       "writtenOn": "2026-07-30T22:23:27Z",
       "side": 1,
       "message": "this test doesn\u0027t feel very helpful since _DefaultBranchFallback can be either one of master/main. let\u0027s make this test stronger by actually setting defaultBranch or mocking git var.",
+      "range": {
+        "startLine": 725,
+        "startChar": 17,
+        "endLine": 725,
+        "endChar": 57
+      },
+      "revId": "d3c665c77c4671913b8dea91d84d91f62d4f204f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4607f27d_ccef499a",
+        "filename": "tests/test_project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-07-30T23:45:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71f0797f_dc654a0e",
       "range": {
         "startLine": 725,
         "startChar": 17,
