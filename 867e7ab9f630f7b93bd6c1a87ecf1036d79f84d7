@@ -52,6 +52,24 @@
       "parentUuid": "ae3f3478_e51c8b11",
       "revId": "867e7ab9f630f7b93bd6c1a87ecf1036d79f84d7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91f5fc22_11b0879e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-07-30T21:16:15Z",
+      "side": 1,
+      "message": "\u003e maybe we could respect git\u0027s `init.defaultBranch` now ?\n\nThat sounds reasonable.",
+      "parentUuid": "88830689_256baa77",
+      "revId": "867e7ab9f630f7b93bd6c1a87ecf1036d79f84d7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
