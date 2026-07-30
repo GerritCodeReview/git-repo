@@ -16,6 +16,24 @@
       "message": "repo is not Android-specific.  we should hold on this change until git-3.0 is released which changes its default from master to main.",
       "revId": "867e7ab9f630f7b93bd6c1a87ecf1036d79f84d7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae3f3478_e51c8b11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-07-30T16:45:36Z",
+      "side": 1,
+      "message": "+1, unless you want to add a second fallback, i.e. `HEAD-\u003emaster-\u003emain` that can then be flipped to `HEAD-\u003emain-\u003emaster` with git-3.0.",
+      "parentUuid": "27ef3c0d_2dd884be",
+      "revId": "867e7ab9f630f7b93bd6c1a87ecf1036d79f84d7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
