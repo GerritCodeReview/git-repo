@@ -34,6 +34,24 @@
       "parentUuid": "27ef3c0d_2dd884be",
       "revId": "867e7ab9f630f7b93bd6c1a87ecf1036d79f84d7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88830689_256baa77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-30T17:38:55Z",
+      "side": 1,
+      "message": "eh, i don\u0027t know that probing the local version number helps us since it says nothing about the remote\n\ni\u0027d be comfortable with something like \"when git 3 reaches Debian stable \u0026 the next Ubuntu release (doesn\u0027t need to be LTS)\".  this is more about the ecosystem slowing shifting their norms.\n\nmaybe we could respect git\u0027s `init.defaultBranch` now ?",
+      "parentUuid": "ae3f3478_e51c8b11",
+      "revId": "867e7ab9f630f7b93bd6c1a87ecf1036d79f84d7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
