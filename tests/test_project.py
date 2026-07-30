@@ -20,10 +20,11 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
-from typing import Optional
+from typing import Dict, List, Optional, Tuple
 import unittest
 from unittest import mock
 
+import pytest
 import utils_for_test
 
 import error
@@ -812,6 +813,60 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
                         self.assertTrue(proj.DeleteWorktree(force=True))
                         self.assertFalse(os.path.exists(proj.worktree))
                         self.assertFalse(os.path.exists(proj.gitdir))
+
+
+_VAR_CMD: List[str] = ["var", "GIT_DEFAULT_BRANCH"]
+_CONFIG_CMD: List[str] = ["config", "--get", "init.defaultBranch"]
+
+
+@pytest.mark.parametrize(
+    "responses, expected_ref, expected_calls",
+    (
+        # git >= 2.35 answers `git var GIT_DEFAULT_BRANCH`.
+        ({"var": (0, "jellybean\n")}, "refs/heads/jellybean", [_VAR_CMD]),
+        # Older git: `git var` fails, so read init.defaultBranch instead.
+        (
+            {"var": (1, ""), "config": (0, "custom\n")},
+            "refs/heads/custom",
+            [_VAR_CMD, _CONFIG_CMD],
+        ),
+        # Nothing configured anywhere: git's historical built-in default.
+        (
+            {"var": (1, ""), "config": (1, "")},
+            "refs/heads/master",
+            [_VAR_CMD, _CONFIG_CMD],
+        ),
+    ),
+    ids=("git_var", "old_git_reads_config", "unconfigured_defaults_to_master"),
+)
+def test_default_branch_fallback(
+    responses: Dict[str, Tuple[int, str]],
+    expected_ref: str,
+    expected_calls: List[List[str]],
+) -> None:
+    """_DefaultBranchFallback resolves the default branch via git."""
+    seen: List[List[str]] = []
+
+    class FakeGitCommand:
+        # Emulate git by returning the canned response for the subcommand.
+        def __init__(
+            self, project_: Optional[project.Project], cmdv: List[str], **kwargs
+        ) -> None:
+            self.returncode, self.stdout = responses[cmdv[0]]
+            seen.append(cmdv)
+
+        def Wait(self) -> int:
+            return self.returncode
+
+    # The result is memoized, so clear it before (to bypass any cached real
+    # value) and after (so the mocked value doesn't leak to other tests).
+    project._DefaultBranchFallback.cache_clear()
+    try:
+        with mock.patch.object(project, "GitCommand", FakeGitCommand):
+            assert project._DefaultBranchFallback() == expected_ref
+        assert seen == expected_calls
+    finally:
+        project._DefaultBranchFallback.cache_clear()
 
 
 def _create_mock_project(
