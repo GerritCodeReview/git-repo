@@ -716,6 +716,15 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             fakeproj.config.SetString("manifest.platform", "auto")
             self.assertEqual(fakeproj.manifest_platform, "auto")
 
+    def test_default_branch_fallback(self):
+        """_DefaultBranchFallback returns whatever git uses as its default."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = self.setUpManifest(tempdir)
+            self.assertIn(
+                fakeproj._DefaultBranchFallback(),
+                ("refs/heads/main", "refs/heads/master"),
+            )
+
     def test_check_immutable_revision_metaproject_skips_manifest_load(self):
         """MetaProjects must not parse manifest.xml during immutable check.
 
