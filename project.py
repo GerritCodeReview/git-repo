@@ -4672,10 +4672,23 @@ class MetaProject(Project):
             worktree=worktree,
             remote=RemoteSpec("origin"),
             relpath=".repo/%s" % name,
-            revisionExpr="refs/heads/master",
+            revisionExpr=None,
             revisionId=None,
             groups=None,
         )
+        self.SetRevision(self._DefaultBranchFallback())
+
+    def _DefaultBranchFallback(self):
+        """Return the ref to use when the default branch can't be resolved
+        from the remote.
+        """
+        try:
+            branch = self.bare_git.var("GIT_DEFAULT_BRANCH", log_as_error=False)
+        except GitError:
+            branch = None
+        # The git call will only fail on older versions
+        # of git (which use master by default).
+        return f"refs/heads/{branch or 'master'}"
 
     def PreSync(self):
         if self.Exists:
@@ -5130,9 +5143,9 @@ class ManifestProject(MetaProject):
                 if is_new:
                     default_branch = self.ResolveRemoteHead()
                     if default_branch is None:
-                        # If the remote doesn't have HEAD configured, default to
-                        # master.
-                        default_branch = "refs/heads/master"
+                        # If the remote doesn't have HEAD configured, fall back
+                        # to whatever git uses as its default branch.
+                        default_branch = self._DefaultBranchFallback()
                     self.revisionExpr = default_branch
                 else:
                     self.PreSync()
