@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93982e7d_bbbcafb0",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 4679,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-30T22:28:44Z",
+      "side": 1,
+      "message": "relying on bare_git seems to unnecessarily complicate the runtime logic in order to use a simpler Python API.  the logic in reality has no binding to the repo client state.  seems like _DefaultBranchFallback should be a module function, marked with `@functools.lru_cache(maxsize\u003dNone)`, and implemented using `GitCommand`.",
+      "revId": "d3c665c77c4671913b8dea91d84d91f62d4f204f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c55b9e40_8979d20d",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 4685,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-30T22:28:44Z",
+      "side": 1,
+      "message": "the first line of docstrings are one-liners",
+      "revId": "d3c665c77c4671913b8dea91d84d91f62d4f204f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8a9a1f3f_cd32a140",
         "filename": "project.py",
         "patchSetId": 6
