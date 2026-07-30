@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a9a1f3f_cd32a140",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 4688,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-07-30T22:23:27Z",
+      "side": 1,
+      "message": "this was added in git 2.35.0: https://github.com/git/git/blob/master/Documentation/RelNotes/2.35.0.adoc\n\ncan we also fallback to reading init.defaultBranch for older versions of git?",
+      "range": {
+        "startLine": 4688,
+        "startChar": 12,
+        "endLine": 4688,
+        "endChar": 80
+      },
+      "revId": "d3c665c77c4671913b8dea91d84d91f62d4f204f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71f0797f_dc654a0e",
+        "filename": "tests/test_project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-07-30T22:23:27Z",
+      "side": 1,
+      "message": "this test doesn\u0027t feel very helpful since _DefaultBranchFallback can be either one of master/main. let\u0027s make this test stronger by actually setting defaultBranch or mocking git var.",
+      "range": {
+        "startLine": 725,
+        "startChar": 17,
+        "endLine": 725,
+        "endChar": 57
+      },
+      "revId": "d3c665c77c4671913b8dea91d84d91f62d4f204f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
