@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c74a6ba1_7b924ac0",
+        "filename": ".gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-31T15:57:19Z",
+      "side": 1,
+      "message": "will vscode create this in subdirs ?  or only in the root of the git project ?  if it only shows up in the top-level, this should be `/.vscode/`.",
+      "revId": "36cbcf0ab37c2ea8c687ec5edbd625f0f5273fe7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c0f578b_b7c6b882",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-07-31T15:57:19Z",
+      "side": 1,
+      "message": "you\u0027ll need to rebase for us to merge",
+      "revId": "36cbcf0ab37c2ea8c687ec5edbd625f0f5273fe7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
