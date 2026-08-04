@@ -2890,14 +2890,15 @@ class Project:
             current_branch_only = True
 
         is_sha1 = IsId(self.revisionExpr)
+        upstream = self.upstream
 
         if current_branch_only:
             if self.revisionExpr.startswith(R_TAGS):
                 # This is a tag and its commit id should never change.
                 tag_name = self.revisionExpr[len(R_TAGS) :]
-            elif self.upstream and self.upstream.startswith(R_TAGS):
+            elif upstream and upstream.startswith(R_TAGS):
                 # This is a tag and its commit id should never change.
-                tag_name = self.upstream[len(R_TAGS) :]
+                tag_name = upstream[len(R_TAGS) :]
 
             if is_sha1 or tag_name is not None:
                 has_shallow = os.path.exists(
@@ -2923,8 +2924,21 @@ class Project:
                 #   sync will fail.
                 # * otherwise, fetch all branches to make sure we end up with
                 #   the specific commit.
-                if self.upstream:
-                    current_branch_only = not IsId(self.upstream)
+                if not upstream:
+                    upstream = (
+                        self.dest_branch
+                        or self.manifest.default.upstreamExpr
+                        or self.manifest.default.destBranchExpr
+                    )
+                    if (
+                        not upstream
+                        and self.manifest.default.revisionExpr
+                        and not IsId(self.manifest.default.revisionExpr)
+                    ):
+                        upstream = self.manifest.default.revisionExpr
+
+                if upstream:
+                    current_branch_only = not IsId(upstream)
                 else:
                     current_branch_only = False
 
@@ -3038,11 +3052,11 @@ class Project:
             # Shallow checkout of a specific commit, fetch from that commit and
             # not the heads only as the commit might be deeper in the history.
             spec.append(branch)
-            if self.upstream:
-                spec.append(self.upstream)
+            if upstream:
+                spec.append(upstream)
         else:
             if is_sha1:
-                branch = self.upstream
+                branch = upstream
             if branch is not None and branch.strip():
                 if not branch.startswith("refs/"):
                     branch = R_HEADS + branch

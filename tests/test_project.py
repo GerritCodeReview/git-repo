@@ -1045,13 +1045,15 @@ class StatelessSyncTests(unittest.TestCase):
 class SyncOptimizationTests(unittest.TestCase):
     """Tests for sync optimization logic involving shallow clones."""
 
-    def _get_project(self, tempdir, depth=None):
+    def _get_project(self, tempdir, depth=None, revisionExpr=None):
+        if revisionExpr is None:
+            revisionExpr = "0123456789abcdef0123456789abcdef01234567"
         proj = _create_mock_project(
             tempdir,
             depth=depth,
             gitdir=os.path.join(tempdir, "gitdir"),
             objdir=os.path.join(tempdir, "objdir"),
-            revisionExpr="0123456789abcdef0123456789abcdef01234567",
+            revisionExpr=revisionExpr,
         )
         proj._CheckForImmutableRevision = mock.MagicMock(return_value=True)
         proj.DeleteWorktree = mock.MagicMock()
@@ -1277,6 +1279,64 @@ class SyncOptimizationTests(unittest.TestCase):
 
                 self.assertTrue(res)
                 mock_git_cmd.assert_not_called()
+
+    def test_remote_fetch_sha1_upstream_fallback(self):
+        """Test _RemoteFetch resolves upstream fallback when revisionExpr is SHA-1."""
+        sha = "4f8a3c0000000000000000000000000000000000"
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, revisionExpr=sha)
+            proj._CheckForImmutableRevision.side_effect = [False, True]
+            proj.upstream = None
+            proj.dest_branch = "my-dest-branch"
+
+            mock_remote = mock.MagicMock()
+            mock_remote.name = "origin"
+            mock_remote.ToLocal.side_effect = lambda r: "refs/remotes/origin/" + (r[11:] if r.startswith("refs/heads/") else r)
+            mock_remote.PreConnectFetch.return_value = True
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+
+            with mock.patch("project.GitCommand") as mock_git_cmd:
+                mock_cmd_instance = mock.MagicMock()
+                mock_cmd_instance.Wait.return_value = 0
+                mock_git_cmd.return_value = mock_cmd_instance
+
+                res = proj._RemoteFetch(current_branch_only=True)
+
+                self.assertTrue(res)
+                mock_git_cmd.assert_called_once()
+                cmd_args = mock_git_cmd.call_args[0][1]
+                self.assertIn("+refs/heads/my-dest-branch:refs/remotes/origin/my-dest-branch", cmd_args)
+                self.assertNotIn("+refs/heads/*:refs/remotes/origin/*", cmd_args)
+
+    def test_remote_fetch_sha1_manifest_default_fallback(self):
+        """Test _RemoteFetch resolves upstream fallback from manifest default attributes."""
+        sha = "4f8a3c0000000000000000000000000000000000"
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, revisionExpr=sha)
+            proj._CheckForImmutableRevision.side_effect = [False, True]
+            proj.upstream = None
+            proj.dest_branch = None
+            proj.manifest.default.upstreamExpr = "manifest-upstream"
+
+            mock_remote = mock.MagicMock()
+            mock_remote.name = "origin"
+            mock_remote.ToLocal.side_effect = lambda r: "refs/remotes/origin/" + (r[11:] if r.startswith("refs/heads/") else r)
+            mock_remote.PreConnectFetch.return_value = True
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+
+            with mock.patch("project.GitCommand") as mock_git_cmd:
+                mock_cmd_instance = mock.MagicMock()
+                mock_cmd_instance.Wait.return_value = 0
+                mock_git_cmd.return_value = mock_cmd_instance
+
+                res = proj._RemoteFetch(current_branch_only=True)
+
+                self.assertTrue(res)
+                mock_git_cmd.assert_called_once()
+                cmd_args = mock_git_cmd.call_args[0][1]
+                self.assertIn("+refs/heads/manifest-upstream:refs/remotes/origin/manifest-upstream", cmd_args)
+                self.assertNotIn("+refs/heads/*:refs/remotes/origin/*", cmd_args)
+
 
 
 class GetEnvVarsTests(unittest.TestCase):
