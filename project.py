@@ -2857,6 +2857,18 @@ class Project:
 
         return True
 
+    def _GetUpstreamFallback(self) -> Optional[str]:
+        """Resolve a fallback upstream ref when revisionExpr is a SHA-1."""
+        for cand in (
+            self.dest_branch,
+            self.manifest.default.upstreamExpr,
+            self.manifest.default.destBranchExpr,
+            self.manifest.default.revisionExpr,
+        ):
+            if cand and not IsId(cand):
+                return cand
+        return None
+
     def _RemoteFetch(
         self,
         name=None,
@@ -2890,14 +2902,31 @@ class Project:
             current_branch_only = True
 
         is_sha1 = IsId(self.revisionExpr)
+        upstream = self.upstream
 
         if current_branch_only:
+            if is_sha1 and not depth:
+                # When syncing a specific commit and --depth is not set:
+                # * if upstream is explicitly specified and is not a sha1, fetch
+                #   only upstream as users expect only upstream to be fetch.
+                #   Note: The commit might not be in upstream in which case the
+                #   sync will fail.
+                # * otherwise, fetch all branches to make sure we end up with
+                #   the specific commit.
+                if not upstream:
+                    upstream = self._GetUpstreamFallback()
+
+                if upstream:
+                    current_branch_only = not IsId(upstream)
+                else:
+                    current_branch_only = False
+
             if self.revisionExpr.startswith(R_TAGS):
                 # This is a tag and its commit id should never change.
                 tag_name = self.revisionExpr[len(R_TAGS) :]
-            elif self.upstream and self.upstream.startswith(R_TAGS):
+            elif upstream and upstream.startswith(R_TAGS):
                 # This is a tag and its commit id should never change.
-                tag_name = self.upstream[len(R_TAGS) :]
+                tag_name = upstream[len(R_TAGS) :]
 
             if is_sha1 or tag_name is not None:
                 has_shallow = os.path.exists(
@@ -2915,18 +2944,6 @@ class Project:
                             "persistent ref)" % self.name
                         )
                     return True
-            if is_sha1 and not depth:
-                # When syncing a specific commit and --depth is not set:
-                # * if upstream is explicitly specified and is not a sha1, fetch
-                #   only upstream as users expect only upstream to be fetch.
-                #   Note: The commit might not be in upstream in which case the
-                #   sync will fail.
-                # * otherwise, fetch all branches to make sure we end up with
-                #   the specific commit.
-                if self.upstream:
-                    current_branch_only = not IsId(self.upstream)
-                else:
-                    current_branch_only = False
 
         if not name:
             name = self.remote.name
@@ -3038,11 +3055,11 @@ class Project:
             # Shallow checkout of a specific commit, fetch from that commit and
             # not the heads only as the commit might be deeper in the history.
             spec.append(branch)
-            if self.upstream:
-                spec.append(self.upstream)
+            if upstream:
+                spec.append(upstream)
         else:
             if is_sha1:
-                branch = self.upstream
+                branch = upstream
             if branch is not None and branch.strip():
                 if not branch.startswith("refs/"):
                     branch = R_HEADS + branch
