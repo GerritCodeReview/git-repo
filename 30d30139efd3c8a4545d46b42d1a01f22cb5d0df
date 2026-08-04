@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89a32afa_8ad166ce",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2904,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-08-04T21:59:21Z",
+      "side": 1,
+      "message": "This could be sha256 too with git3.",
+      "range": {
+        "startLine": 2904,
+        "startChar": 8,
+        "endLine": 2904,
+        "endChar": 15
+      },
+      "revId": "30d30139efd3c8a4545d46b42d1a01f22cb5d0df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
