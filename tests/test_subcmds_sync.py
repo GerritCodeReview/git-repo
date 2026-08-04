@@ -21,6 +21,7 @@ import tempfile
 import time
 import unittest
 from unittest import mock
+from typing import Any
 
 import pytest
 
@@ -1912,3 +1913,149 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
             "Stderr was: debugging logs",
             str(context.exception),
         )
+
+
+class SyncTimesTest(unittest.TestCase):
+    """Test _SyncTimes latency recording and P90 calculation."""
+
+    def setUp(self) -> None:
+        self.tmpdir = tempfile.mkdtemp()
+        self.manifest = mock.MagicMock()
+        self.manifest.repodir = self.tmpdir
+
+    def tearDown(self) -> None:
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def test_p90_insufficient_samples(self) -> None:
+        st = sync._SyncTimes(self.manifest)
+        self.assertIsNone(st.GetP90())
+        for duration in [10.0, 20.0, 30.0, 40.0]:
+            st.Record(duration)
+        self.assertIsNone(st.GetP90())
+
+    def test_p90_calculation(self) -> None:
+        st = sync._SyncTimes(self.manifest)
+        for duration in [
+            10.0,
+            20.0,
+            30.0,
+            40.0,
+            50.0,
+            60.0,
+            70.0,
+            80.0,
+            90.0,
+            100.0,
+        ]:
+            st.Record(duration)
+        self.assertEqual(st.GetP90(), 90.0)
+
+    def test_max_samples_window(self) -> None:
+        st = sync._SyncTimes(self.manifest)
+        for i in range(1, 65):
+            st.Record(float(i))
+        st.Save()
+        st_loaded = sync._SyncTimes(self.manifest)
+        st_loaded._Load()
+        self.assertEqual(len(st_loaded._saved["history"]), 50)
+        self.assertEqual(st_loaded._saved["history"][0], 15.0)
+        self.assertEqual(st_loaded._saved["history"][-1], 64.0)
+
+    def test_corrupt_json_recovery(self) -> None:
+        path = os.path.join(self.manifest.repodir, ".repo_synctimes.json")
+        with open(path, "w") as f:
+            f.write("not valid json {")
+        st = sync._SyncTimes(self.manifest)
+        self.assertIsNone(st.GetP90())
+        self.assertEqual(st._saved, {"history": []})
+
+
+class SyncCheckLatencyTest(unittest.TestCase):
+    """Test Sync._CheckLatencyAndWarn."""
+
+    def setUp(self) -> None:
+        self.cmd = sync.Sync()
+        self.cmd._sync_times = mock.MagicMock()
+        self.cmd.git_event_log = mock.MagicMock()
+        self.opt = mock.MagicMock()
+
+    @mock.patch.object(sync, "GetEventTargetPath", return_value=None)
+    @mock.patch.object(sync.logger, "warning")
+    def test_warn_when_failed_and_above_p90(
+        self, mock_warn: mock.MagicMock, _mock_target: mock.MagicMock
+    ) -> None:
+        self.cmd._sync_times.GetP90.return_value = 100.0
+        self.cmd.git_event_log.full_sid = "sid-123"
+
+        self.cmd._CheckLatencyAndWarn(self.opt, 150.0, success=False)
+
+        mock_warn.assert_called_once()
+        warn_msg = mock_warn.call_args[0][0]
+        self.assertIn("exceeding typical P90 threshold (100.00s)", warn_msg)
+
+    @mock.patch.object(sync.logger, "warning")
+    def test_no_warn_when_failed_and_below_p90(
+        self, mock_warn: mock.MagicMock
+    ) -> None:
+        self.cmd._sync_times.GetP90.return_value = 100.0
+        self.cmd._CheckLatencyAndWarn(self.opt, 80.0, success=False)
+        mock_warn.assert_not_called()
+
+    @mock.patch.object(sync.logger, "warning")
+    def test_no_warn_when_below_p90(self, mock_warn: mock.MagicMock) -> None:
+        self.cmd._sync_times.GetP90.return_value = 100.0
+        self.cmd._CheckLatencyAndWarn(self.opt, 80.0, success=True)
+        mock_warn.assert_not_called()
+
+    @mock.patch.object(
+        sync, "GetEventTargetPath", return_value="/path/to/trace.json"
+    )
+    @mock.patch.object(sync.logger, "warning")
+    def test_warn_when_above_p90_with_trace2_log(
+        self, mock_warn: mock.MagicMock, _mock_target: mock.MagicMock
+    ) -> None:
+        self.cmd._sync_times.GetP90.return_value = 100.0
+        self.cmd.git_event_log.full_sid = "sid-123"
+
+        self.cmd._CheckLatencyAndWarn(self.opt, 120.0, success=True)
+
+        mock_warn.assert_called_once()
+        warn_msg = mock_warn.call_args[0][0]
+        self.assertIn("exceeding typical P90 threshold (100.00s)", warn_msg)
+        self.assertIn(
+            "Trace2 log: /path/to/trace.json (sid: sid-123)", warn_msg
+        )
+
+    @mock.patch.object(sync, "GetEventTargetPath", return_value=None)
+    @mock.patch.object(sync.logger, "warning")
+    def test_warn_when_above_p90_without_trace2_log(
+        self, mock_warn: mock.MagicMock, _mock_target: mock.MagicMock
+    ) -> None:
+        self.cmd._sync_times.GetP90.return_value = 100.0
+        self.cmd.git_event_log.full_sid = "sid-456"
+
+        self.cmd._CheckLatencyAndWarn(self.opt, 120.0, success=True)
+
+        mock_warn.assert_called_once()
+        warn_msg = mock_warn.call_args[0][0]
+        self.assertIn("exceeding typical P90 threshold (100.00s)", warn_msg)
+        self.assertIn(
+            "Enable Trace2 via: git config --global trace2.eventtarget",
+            warn_msg,
+        )
+        self.assertIn("(current sid: sid-456)", warn_msg)
+
+    @mock.patch.object(sync.logger, "warning")
+    def test_no_warn_or_record_on_repo_changed_exception(
+        self, mock_warn: mock.MagicMock
+    ) -> None:
+        cmd = sync.Sync()
+        cmd._sync_times = mock.MagicMock()
+        cmd._ExecuteHelper = mock.MagicMock(
+            side_effect=sync.RepoChangedException()
+        )
+        with self.assertRaises(sync.RepoChangedException):
+            cmd.Execute(mock.MagicMock(), [])
+        cmd._sync_times.GetP90.assert_not_called()
+        cmd._sync_times.Record.assert_not_called()
+        mock_warn.assert_not_called()
