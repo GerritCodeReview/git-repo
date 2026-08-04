@@ -28,7 +28,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from typing import List, NamedTuple, Optional, Set, Tuple, Union
+from typing import Any, List, NamedTuple, Optional, Set, Tuple, Union
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -65,6 +65,7 @@ from error import RepoUnhandledExceptionError
 from error import SyncError
 from error import UpdateManifestError
 import event_log
+from git_command import GetEventTargetPath
 from git_command import git_require
 from git_command import GitCommand
 from git_config import GetUrlCookieFile
@@ -2210,16 +2211,62 @@ later is required to fix a server side protocol bug.
     def Execute(self, opt, args):
         errors = []
         start_time = time.time()
+        success = False
+        # Suppress latency warnings during repo self-update restarts.
+        repo_changed = False
         try:
             self._ExecuteHelper(opt, args, errors)
-            sync_duration_seconds = time.time() - start_time
-        except (RepoExitError, RepoChangedException):
+            success = True
+        except RepoChangedException:
+            repo_changed = True
+            raise
+        except RepoExitError:
             raise
         except (KeyboardInterrupt, Exception) as e:
             raise RepoUnhandledExceptionError(e, aggregate_errors=errors)
+        finally:
+            sync_duration_seconds = time.time() - start_time
+            if getattr(self, "_sync_times", None) and not repo_changed:
+                self._CheckLatencyAndWarn(opt, sync_duration_seconds, success)
+                if success:
+                    self._sync_times.Record(sync_duration_seconds)
+                    self._sync_times.Save()
 
         # Run post-sync hook only after successful sync
         self._RunPostSyncHook(opt, sync_duration_seconds=sync_duration_seconds)
+
+    def _CheckLatencyAndWarn(
+        self,
+        opt: optparse.Values,
+        sync_duration_seconds: float,
+        success: bool,
+    ) -> None:
+        """Warn if sync duration exceeds typical P90 threshold."""
+        p90 = self._sync_times.GetP90()
+        if p90 is None or sync_duration_seconds <= p90:
+            return
+
+        log_path = GetEventTargetPath()
+        sid = (
+            self.git_event_log.full_sid
+            if self.git_event_log
+            else "unknown"
+        )
+        trace_info = (
+            f"Trace2 log: {log_path} (sid: {sid})"
+            if log_path
+            else (
+                "Enable Trace2 via: git config --global trace2.eventtarget "
+                f"<path> (current sid: {sid})"
+            )
+        )
+        warn_msg = (
+            f"warning: repo sync took {sync_duration_seconds:.2f}s, "
+            f"exceeding typical P90 threshold ({p90:.2f}s).\n"
+            "Please file a bug with traces for diagnostics.\n"
+            f"{trace_info}"
+        )
+        logger.warning(warn_msg)
 
     def _RunPostSyncHook(self, opt, sync_duration_seconds=None):
         """Run post-sync hook if configured in manifest <repo-hooks>."""
@@ -2375,6 +2422,7 @@ later is required to fix a server side protocol bug.
         )
 
         self._fetch_times = _FetchTimes(manifest)
+        self._sync_times = _SyncTimes(manifest)
         self._local_sync_state = LocalSyncState(manifest)
         self._bloated_projects = []
 
@@ -3113,6 +3161,13 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
 
 
 class _FetchTimes:
+    """Tracks per-project git fetch durations in .repo_fetchtimes.json.
+
+    Used by repo sync to sort slowest-fetching projects first in the network
+    fetch pool. Distinct from _SyncTimes, which tracks total wall-clock command
+    durations across sync runs.
+    """
+
     _ALPHA = 0.5
 
     def __init__(self, manifest):
@@ -3157,7 +3212,73 @@ class _FetchTimes:
             platform_utils.remove(self._path, missing_ok=True)
 
 
+class _SyncTimes:
+    """Tracks total wall-clock repo sync command durations in .repo_synctimes.json.
+
+    Maintains a rolling window of full sync execution times to calculate the P90
+    latency threshold for diagnostic warnings. Distinct from _FetchTimes (which
+    records per-project fetch EWMA for worker scheduling) and LocalSyncState
+    (which records timestamps of last project fetch/checkout).
+    """
+
+    _MIN_SAMPLES = 5
+    _MAX_SAMPLES = 50
+
+    def __init__(self, manifest: Any) -> None:
+        self._path = os.path.join(manifest.repodir, ".repo_synctimes.json")
+        self._saved = None
+
+    def _Load(self) -> None:
+        if self._saved is None:
+            try:
+                with open(self._path) as f:
+                    data = json.load(f)
+                    if isinstance(data, dict) and isinstance(
+                        data.get("history"), list
+                    ):
+                        self._saved = data
+                    else:
+                        raise ValueError("invalid format")
+            except (OSError, ValueError):
+                platform_utils.remove(self._path, missing_ok=True)
+                self._saved = {"history": []}
+
+    def GetP90(self) -> Optional[float]:
+        self._Load()
+        history = self._saved.get("history", [])
+        if len(history) < self._MIN_SAMPLES:
+            return None
+        sorted_history = sorted(history)
+        n = len(sorted_history)
+        idx = min(n - 1, max(0, (90 * n - 1) // 100))
+        return sorted_history[idx]
+
+    def Record(self, duration: float) -> None:
+        if duration <= 0:
+            return
+        self._Load()
+        history = self._saved.setdefault("history", [])
+        history.append(duration)
+        if len(history) > self._MAX_SAMPLES:
+            self._saved["history"] = history[-self._MAX_SAMPLES :]
+
+    def Save(self) -> None:
+        if self._saved is None:
+            return
+        try:
+            with open(self._path, "w") as f:
+                json.dump(self._saved, f, indent=2)
+        except (OSError, TypeError):
+            platform_utils.remove(self._path, missing_ok=True)
+
+
 class LocalSyncState:
+    """Tracks timestamps of last fetch/checkout per project in .repo_localsyncstate.json.
+
+    Records when a project was last fetched or checked out, rather than duration
+    metrics.
+    """
+
     _LAST_FETCH = "last_fetch"
     _LAST_CHECKOUT = "last_checkout"
 
