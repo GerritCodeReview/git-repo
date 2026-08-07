@@ -1278,8 +1278,43 @@ class Project:
             ref_spec = ref_spec + "%" + ",".join(opts)
         cmd.append(ref_spec)
 
-        GitCommand(self, cmd, bare=True, verify_command=True).Wait()
+        push_cmd = GitCommand(
+            self,
+            cmd,
+            bare=True,
+            verify_command=True,
+            capture_stdout=True,
+            capture_stderr=True,
+        )
+        push_cmd.Wait()
 
+        cls_urls = []
+        if push_cmd.stdout:
+            sys.stdout.write(push_cmd.stdout)
+        if push_cmd.stderr:
+            sys.stderr.write(push_cmd.stderr)
+            for match in re.finditer(
+                r"(https://[^/]+/c/[^/]+/\+/\d+)", push_cmd.stderr
+            ):
+                cls_urls.append(match.group(1))
+
+        try:
+            mod_files_out = self.bare_git.diff(
+                "--name-only", branch.LocalMerge, branch.name
+            )
+            modified_files_list = mod_files_out.splitlines()
+            if hasattr(self, "git_event_log") and self.git_event_log:
+                self.git_event_log.LogDataConfigEvents(
+                    {
+                        "cls": ",".join(cls_urls),
+                        "remote": branch.remote.name,
+                        "branch": branch.name,
+                        "files": ",".join(modified_files_list),
+                    },
+                    "repo.uploadstate",
+                )
+        except Exception as e:
+            logger.error("Tracing failed: %s", str(e))
         if not dryrun:
             msg = f"posted to {branch.remote.review} for {dest_branch}"
             self.bare_git.UpdateRef(
