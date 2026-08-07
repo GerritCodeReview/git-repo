@@ -82,6 +82,7 @@ class ReviewableBranchTests(unittest.TestCase):
             short, long = next(iter(d.items()))
             self.assertTrue(long.startswith(short))
             self.assertTrue(rb.base_exists)
+            self.assertEqual(["readme"], rb.modified_files)
             # Hard to assert anything useful about this.
             self.assertTrue(rb.date)
 
