@@ -1278,7 +1278,19 @@ class Project:
             ref_spec = ref_spec + "%" + ",".join(opts)
         cmd.append(ref_spec)
 
-        GitCommand(self, cmd, bare=True, verify_command=True).Wait()
+        push_cmd = GitCommand(self, cmd, bare=True, verify_command=True, capture_stdout=True, capture_stderr=True)
+        push_cmd.Wait()
+        
+        import re
+        import sys
+        cls_urls = []
+        if push_cmd.stdout:
+            sys.stdout.write(push_cmd.stdout)
+        if push_cmd.stderr:
+            sys.stderr.write(push_cmd.stderr)
+            for match in re.finditer(r'(https://[^/]+/c/[^/]+/\+/\d+)', push_cmd.stderr):
+                cls_urls.append(match.group(1))
+        
 
         if not dryrun:
             msg = f"posted to {branch.remote.review} for {dest_branch}"
