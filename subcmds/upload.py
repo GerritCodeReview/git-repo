@@ -649,6 +649,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             validate_certs=opt.validate_certs,
             push_options=push_options,
             patchset_description=opt.patchset_description,
+            git_event_log=self.git_event_log,
         )
 
         branch.uploaded = True
