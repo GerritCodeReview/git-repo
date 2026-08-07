@@ -29,6 +29,7 @@ import utils_for_test
 
 import error
 import git_config
+import git_trace2_event_log
 import manifest_xml
 import platform_utils
 import project
@@ -82,6 +83,7 @@ class ReviewableBranchTests(unittest.TestCase):
             short, long = next(iter(d.items()))
             self.assertTrue(long.startswith(short))
             self.assertTrue(rb.base_exists)
+            self.assertEqual(["readme"], rb.modified_files)
             # Hard to assert anything useful about this.
             self.assertTrue(rb.date)
 
@@ -95,6 +97,20 @@ class ReviewableBranchTests(unittest.TestCase):
             # Hard to assert anything useful about this.
             self.assertTrue(rb.date)
 
+    def test_upload_for_review_forwards_git_event_log(self) -> None:
+        """Check UploadForReview passes git_event_log to project."""
+        proj = mock.MagicMock(spec=project.Project)
+        branch = mock.MagicMock()
+        branch.name = "work"
+        rb = project.ReviewableBranch(proj, branch, "main")
+        mock_event_log = mock.MagicMock()
+
+        rb.UploadForReview(people=([], []), git_event_log=mock_event_log)
+
+        proj.UploadForReview.assert_called_once()
+        _, kwargs = proj.UploadForReview.call_args
+        self.assertEqual(kwargs.get("git_event_log"), mock_event_log)
+
 
 class ProjectTests(unittest.TestCase):
     """Check Project behavior."""
@@ -104,6 +120,255 @@ class ProjectTests(unittest.TestCase):
             project.Project._encode_patchset_description("abcd00!! +"),
             "abcd00%21%21_%2b",
         )
+
+    def test_find_gerrit_urls(self) -> None:
+        """Check _FindGerritUrls extracts review URLs from stderr."""
+        # Single CL URL from standard push output.
+        stderr = (
+            "remote:\n"
+            "remote: Processing changes: new: 1, refs: 1, done\n"
+            "remote:\n"
+            "remote: SUCCESS\n"
+            "remote:\n"
+            "remote:   https://gerrit-review.googlesource.com/c/git-repo/+/616581"
+            " Add telemetry [NEW]\n"
+            "remote:\n"
+            "To sso://gerrit/git-repo\n"
+            " * [new reference]   HEAD -> refs/for/main\n"
+        )
+        self.assertEqual(
+            project.Project._FindGerritUrls(stderr),
+            ["https://gerrit-review.googlesource.com/c/git-repo/+/616581"],
+        )
+
+        # Project names containing slashes and nested paths.
+        stderr_nested = (
+            "remote:   https://android-review.googlesource.com/c/platform/frameworks/base/+/12345\n"
+            "remote:   https://android-review.googlesource.com/c/platform/vendor/google_devices/raviole/prebuilts/+/987654 [NEW]\n"
+        )
+        self.assertEqual(
+            project.Project._FindGerritUrls(stderr_nested),
+            [
+                "https://android-review.googlesource.com/c/platform/frameworks/base/+/12345",
+                "https://android-review.googlesource.com/c/platform/vendor/google_devices/raviole/prebuilts/+/987654",
+            ],
+        )
+
+        # Multiple URLs on same line or custom ports / http schemas.
+        stderr_custom = (
+            "remote:   https://review.corp.com:8443/c/platform/manifest/+/4321\n"
+            "remote:   http://localhost:8080/c/test-project/+/555\n"
+        )
+        self.assertEqual(
+            project.Project._FindGerritUrls(stderr_custom),
+            [
+                "https://review.corp.com:8443/c/platform/manifest/+/4321",
+                "http://localhost:8080/c/test-project/+/555",
+            ],
+        )
+
+        # Non-matching outputs.
+        self.assertEqual(project.Project._FindGerritUrls(None), [])
+        self.assertEqual(project.Project._FindGerritUrls(""), [])
+        self.assertEqual(
+            project.Project._FindGerritUrls("Everything up-to-date\n"), []
+        )
+        self.assertEqual(
+            project.Project._FindGerritUrls(
+                "https://example.com/not/a/gerrit/url"
+            ),
+            [],
+        )
+
+    def _create_project_for_upload_test(
+        self,
+    ) -> Tuple[mock.MagicMock, mock.MagicMock]:
+        proj = mock.MagicMock(spec=project.Project)
+        proj.name = "test-project"
+        proj.UserEmail = "test@example.com"
+        proj.dest_branch = "refs/heads/main"
+        proj.bare_git = mock.MagicMock()
+        proj._FindGerritUrls = project.Project._FindGerritUrls
+
+        mock_branch = mock.MagicMock()
+        mock_branch.name = "test-branch"
+        mock_branch.LocalMerge = "refs/heads/main"
+        mock_branch.merge = "refs/heads/main"
+        mock_branch.remote.review = "http://review.example.com"
+        mock_branch.remote.name = "origin"
+        mock_branch.remote.projectname = "test-project"
+        mock_branch.remote.ReviewUrl.return_value = (
+            "https://review.example.com/test-project"
+        )
+
+        proj.GetBranch.return_value = mock_branch
+        return proj, mock_branch
+
+    def test_upload_for_review_event_emission(self) -> None:
+        """Check UploadForReview emits repo.uploadstate trace2 data events."""
+        proj, _ = self._create_project_for_upload_test()
+
+        with mock.patch("project.GitCommand") as mock_git_cmd, mock.patch(
+            "project.ReviewableBranch"
+        ) as mock_rb_cls:
+            mock_cmd = mock.MagicMock()
+            mock_cmd.Wait.return_value = 0
+            mock_cmd.stderr = (
+                "remote:   https://gerrit.example.com/c/test-project/+/123 [NEW]\n"
+                "remote:   https://gerrit.example.com/c/test-project/+/124 [NEW]\n"
+            )
+            mock_git_cmd.return_value = mock_cmd
+
+            mock_rb = mock.MagicMock()
+            mock_rb.modified_files = ["file1.txt", "file2.txt"]
+            mock_rb_cls.return_value = mock_rb
+
+            mock_event_log = mock.MagicMock()
+            project.Project.UploadForReview(
+                proj,
+                branch="test-branch",
+                dryrun=True,
+                git_event_log=mock_event_log,
+            )
+
+            mock_event_log.LogDataConfigEvents.assert_called_once_with(
+                {
+                    "cls": (
+                        "https://gerrit.example.com/c/test-project/+/123,"
+                        "https://gerrit.example.com/c/test-project/+/124"
+                    ),
+                    "remote": "origin",
+                    "branch": "test-branch",
+                    "files": "file1.txt,file2.txt",
+                },
+                "repo.uploadstate",
+            )
+
+    def test_upload_for_review_event_emission_no_cls(self) -> None:
+        """Check event emission when stderr contains no review URLs."""
+        proj, _ = self._create_project_for_upload_test()
+
+        with mock.patch("project.GitCommand") as mock_git_cmd, mock.patch(
+            "project.ReviewableBranch"
+        ) as mock_rb_cls:
+            mock_cmd = mock.MagicMock()
+            mock_cmd.Wait.return_value = 0
+            mock_cmd.stderr = "Everything up-to-date\n"
+            mock_git_cmd.return_value = mock_cmd
+
+            mock_rb = mock.MagicMock()
+            mock_rb.modified_files = ["dummy.txt"]
+            mock_rb_cls.return_value = mock_rb
+
+            mock_event_log = mock.MagicMock()
+            project.Project.UploadForReview(
+                proj,
+                branch="test-branch",
+                dryrun=True,
+                git_event_log=mock_event_log,
+            )
+
+            mock_event_log.LogDataConfigEvents.assert_called_once_with(
+                {
+                    "cls": "",
+                    "remote": "origin",
+                    "branch": "test-branch",
+                    "files": "dummy.txt",
+                },
+                "repo.uploadstate",
+            )
+
+    def test_upload_for_review_no_event_log(self) -> None:
+        """Check UploadForReview succeeds when git_event_log is None."""
+        proj, _ = self._create_project_for_upload_test()
+
+        with mock.patch("project.GitCommand") as mock_git_cmd, mock.patch(
+            "project.ReviewableBranch"
+        ) as mock_rb_cls:
+            mock_cmd = mock.MagicMock()
+            mock_cmd.Wait.return_value = 0
+            mock_cmd.stderr = "remote:   https://gerrit.example.com/c/test/+/1\n"
+            mock_git_cmd.return_value = mock_cmd
+
+            mock_rb = mock.MagicMock()
+            mock_rb.modified_files = ["file.txt"]
+            mock_rb_cls.return_value = mock_rb
+
+            project.Project.UploadForReview(
+                proj,
+                branch="test-branch",
+                dryrun=True,
+                git_event_log=None,
+            )
+
+    def test_upload_for_review_tracing_exception_handled(self) -> None:
+        """Check exceptions during tracing are caught and do not fail upload."""
+        proj, _ = self._create_project_for_upload_test()
+
+        with mock.patch("project.GitCommand") as mock_git_cmd, mock.patch(
+            "project.ReviewableBranch"
+        ) as mock_rb_cls, mock.patch(
+            "project.logger"
+        ) as mock_logger:
+            mock_cmd = mock.MagicMock()
+            mock_cmd.Wait.return_value = 0
+            mock_cmd.stderr = "remote:   https://gerrit.example.com/c/test/+/1\n"
+            mock_git_cmd.return_value = mock_cmd
+
+            mock_rb_cls.side_effect = Exception("failed to inspect branch")
+
+            mock_event_log = mock.MagicMock()
+            project.Project.UploadForReview(
+                proj,
+                branch="test-branch",
+                dryrun=True,
+                git_event_log=mock_event_log,
+            )
+
+            mock_logger.error.assert_called_once()
+            mock_event_log.LogDataConfigEvents.assert_not_called()
+
+    def test_upload_for_review_real_event_log(self) -> None:
+        """Check integration with real git_trace2_event_log.EventLog."""
+        proj, _ = self._create_project_for_upload_test()
+
+        with mock.patch("project.GitCommand") as mock_git_cmd, mock.patch(
+            "project.ReviewableBranch"
+        ) as mock_rb_cls:
+            mock_cmd = mock.MagicMock()
+            mock_cmd.Wait.return_value = 0
+            mock_cmd.stderr = (
+                "remote:   https://gerrit.example.com/c/test-project/+/456 [NEW]\n"
+            )
+            mock_git_cmd.return_value = mock_cmd
+
+            mock_rb = mock.MagicMock()
+            mock_rb.modified_files = ["file1.py", "file2.py"]
+            mock_rb_cls.return_value = mock_rb
+
+            event_log = git_trace2_event_log.EventLog(env={})
+            project.Project.UploadForReview(
+                proj,
+                branch="test-branch",
+                dryrun=True,
+                git_event_log=event_log,
+            )
+
+            data_events = [
+                e for e in event_log._log if e.get("event") == "data"
+            ]
+            data_map = {e["key"]: e["value"] for e in data_events}
+            self.assertEqual(
+                data_map.get("repo.uploadstate/cls"),
+                "https://gerrit.example.com/c/test-project/+/456",
+            )
+            self.assertEqual(data_map.get("repo.uploadstate/remote"), "origin")
+            self.assertEqual(
+                data_map.get("repo.uploadstate/branch"), "test-branch"
+            )
+            self.assertEqual(
+                data_map.get("repo.uploadstate/files"), "file1.py,file2.py"
+            )
 
     def test_get_head_revision_id(self):
         """Check GetHeadRevisionId behavior."""
