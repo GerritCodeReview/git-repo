@@ -240,6 +240,12 @@ class ReviewableBranch:
         )
 
     @property
+    def modified_files(self) -> List[str]:
+        return self.project.bare_git.diff(
+            "--name-only", f"{self.base}...{R_HEADS}{self.name}"
+        ).splitlines()
+
+    @property
     def base_exists(self):
         """Whether the branch we're tracking exists.
 
@@ -271,7 +277,8 @@ class ReviewableBranch:
         validate_certs=True,
         push_options=None,
         patchset_description=None,
-    ):
+        git_event_log: Optional[EventLog] = None,
+    ) -> None:
         self.project.UploadForReview(
             branch=self.name,
             people=people,
@@ -287,6 +294,7 @@ class ReviewableBranch:
             validate_certs=validate_certs,
             push_options=push_options,
             patchset_description=patchset_description,
+            git_event_log=git_event_log,
         )
 
     def GetPublishedRefs(self):
@@ -1193,7 +1201,8 @@ class Project:
         validate_certs=True,
         push_options=None,
         patchset_description=None,
-    ):
+        git_event_log: Optional[EventLog] = None,
+    ) -> None:
         """Uploads the named branch for code review."""
         if branch is None:
             branch = self.CurrentBranch
@@ -1282,13 +1291,46 @@ class Project:
             ref_spec = ref_spec + "%" + ",".join(opts)
         cmd.append(ref_spec)
 
-        GitCommand(self, cmd, bare=True, verify_command=True).Wait()
+        push_cmd = GitCommand(
+            self,
+            cmd,
+            bare=True,
+            verify_command=True,
+        )
+        push_cmd.Wait()
 
+        cls_urls = self._FindGerritUrls(push_cmd.stderr)
+
+        try:
+            rb = ReviewableBranch(self, branch, branch.LocalMerge)
+            modified_files_list = rb.modified_files
+            if git_event_log:
+                git_event_log.LogDataConfigEvents(
+                    {
+                        "cls": ",".join(cls_urls),
+                        "remote": branch.remote.name,
+                        "branch": branch.name,
+                        "files": ",".join(modified_files_list),
+                    },
+                    "repo.uploadstate",
+                )
+        except Exception as e:
+            logger.error("Tracing failed: %s", str(e))
         if not dryrun:
             msg = f"posted to {branch.remote.review} for {dest_branch}"
             self.bare_git.UpdateRef(
                 R_PUB + branch.name, R_HEADS + branch.name, message=msg
             )
+
+    @staticmethod
+    def _FindGerritUrls(stderr: Optional[str]) -> List[str]:
+        """Extracts Gerrit review URLs from git push output."""
+        if not stderr:
+            return []
+        return [
+            match.group(1)
+            for match in re.finditer(r"(https?://[^/]+/c/.+?/\+/\d+)", stderr)
+        ]
 
     @staticmethod
     def _encode_patchset_description(original):
