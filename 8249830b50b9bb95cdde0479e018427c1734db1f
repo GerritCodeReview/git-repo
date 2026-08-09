@@ -18,6 +18,41 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0f197dc_49aa02ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-09T20:06:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d50232b_131f50da",
+      "revId": "8249830b50b9bb95cdde0479e018427c1734db1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8114e2af_f2683a52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-09T20:06:57Z",
+      "side": 1,
+      "message": "@vapier@google.com alright, ready for another look!",
+      "revId": "8249830b50b9bb95cdde0479e018427c1734db1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc51b76a_fad31fc1",
@@ -31,6 +66,24 @@
       "writtenOn": "2026-07-31T15:49:30Z",
       "side": 1,
       "message": "do we need an attribute here ?\n\nis it valid to have `sparse-checkout\u003dtrue`, but no `sparse-path` elements declared ?\n\nconversely, is it valid to have `sparse-path` elements, but `sparse-checkout` not set to true ?\n\nif the only valid scenarios are:\n* `sparse-checkout` is true \u0026\u0026 `sparse-path` elements defined\n* `sparse-checkout` is not true \u0026\u0026 `sparse-path` elements not defined\n\nthen drop `sparse-checkout`.  key off the existence of the `sparse-path` child elements.",
+      "revId": "8249830b50b9bb95cdde0479e018427c1734db1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a8f690d_2a2e54f7",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 15
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-09T20:06:57Z",
+      "side": 1,
+      "message": "right, that would simplify things",
+      "parentUuid": "fc51b76a_fad31fc1",
       "revId": "8249830b50b9bb95cdde0479e018427c1734db1f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +105,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07c44669_575dc557",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 15
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-09T20:06:57Z",
+      "side": 1,
+      "message": "good point",
+      "parentUuid": "a2b560d6_c6419bfc",
+      "revId": "8249830b50b9bb95cdde0479e018427c1734db1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bec5c6b2_d770eec3",
@@ -69,6 +140,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01e9d70a_d0fc3107",
+        "filename": "manifest_xml.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2340,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-09T20:06:57Z",
+      "side": 1,
+      "message": "changed",
+      "parentUuid": "bec5c6b2_d770eec3",
+      "revId": "8249830b50b9bb95cdde0479e018427c1734db1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28f51e66_a32a0612",
@@ -82,6 +171,24 @@
       "writtenOn": "2026-07-31T15:49:30Z",
       "side": 1,
       "message": "iiuc, it isn\u0027t that git will reject/abort, it\u0027s that it treats these characters as literals.  if that\u0027s the case, then don\u0027t treat it specially.  document this in the manifest format doc.",
+      "revId": "8249830b50b9bb95cdde0479e018427c1734db1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a570a273_ed482ed7",
+        "filename": "manifest_xml.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2347,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-09T20:06:57Z",
+      "side": 1,
+      "message": "Right so between 2.25 and 2.35, Git would just treat them as literals. starting in Git 2.36, it actually started to reject these special characters unless --skip-checks was provided. But I think we can also just simplify this code and allow Git to throw an error?\n\nI changed it to pass through to Git and allow Git to handle it--and updated the documentation.",
+      "parentUuid": "28f51e66_a32a0612",
       "revId": "8249830b50b9bb95cdde0479e018427c1734db1f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -141,6 +248,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c349066_dcd6701a",
+        "filename": "tests/test_project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1367,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-09T20:06:57Z",
+      "side": 1,
+      "message": "ah, good to know. changed this",
+      "parentUuid": "24be2126_1d143d3b",
+      "revId": "8249830b50b9bb95cdde0479e018427c1734db1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7b95f25_8bc5f483",
@@ -154,6 +279,30 @@
       "writtenOn": "2026-07-31T15:49:30Z",
       "side": 1,
       "message": "it doesn\u0027t make sense to init the tempdir just to skip the test\n\nuse `@unittest.skipIf` decorators on the test itself",
+      "range": {
+        "startLine": 1368,
+        "startChar": 35,
+        "endLine": 1368,
+        "endChar": 41
+      },
+      "revId": "8249830b50b9bb95cdde0479e018427c1734db1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e39b69b4_5a207477",
+        "filename": "tests/test_project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1368,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-09T20:06:57Z",
+      "side": 1,
+      "message": "fixed",
+      "parentUuid": "d7b95f25_8bc5f483",
       "range": {
         "startLine": 1368,
         "startChar": 35,
