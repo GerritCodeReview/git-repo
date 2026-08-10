@@ -12,14 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import os
 import re
 import sys
 import traceback
+from typing import Optional
 import urllib.parse
 
 from error import HookError
 from git_refs import HEAD
+from git_trace2_event_log import EventLog
+import repo_trace
 
 
 # The API we've documented to hook authors.  Keep in sync with repo-hooks.md.
@@ -69,6 +73,7 @@ class RepoHook:
         ignore_hooks=False,
         abort_if_user_denies=False,
         yes=False,
+        git_event_log: Optional[EventLog] = None,
     ):
         """RepoHook constructor.
 
@@ -91,6 +96,7 @@ class RepoHook:
             abort_if_user_denies: If True, we'll abort running the hook if the
                 user doesn't allow us to run the hook.
             yes: If True, then 'Yes' is assumed for any prompts.
+            git_event_log: An EventLog instance to record trace events.
         """
         self._hook_type = hook_type
         self._hooks_project = hooks_project
@@ -102,6 +108,7 @@ class RepoHook:
         self._ignore_hooks = ignore_hooks
         self._abort_if_user_denies = abort_if_user_denies
         self._yes = yes
+        self._git_event_log = git_event_log
 
         # Store the full path to the script for convenience.
         self._script_fullpath = None
@@ -445,32 +452,55 @@ class RepoHook:
 
         # Do not do anything in case bypass_hooks is set, or
         # no-op if there is no hooks project or if hook is disabled.
-        if (
-            self._bypass_hooks
-            or not self._hooks_project
-            or not self._script_fullpath
-            or self._hook_type not in self._hooks_project.enabled_repo_hooks
-        ):
+        has_hook = bool(
+            self._hooks_project
+            and self._script_fullpath
+            and self._hook_type in self._hooks_project.enabled_repo_hooks
+        )
+
+        if self._bypass_hooks or not has_hook:
+            if self._bypass_hooks and has_hook:
+                event_log = self._git_event_log or EventLog()
+                event_log.LogDataConfigEvents(
+                    {"bypassed": "True"}, f"hook/{self._hook_type}"
+                )
             return True
 
         passed = True
-        try:
-            self._CheckHook()
+        event_log = self._git_event_log or EventLog()
+        with repo_trace.Trace("hook: %s", self._hook_type):
+            start_time = datetime.datetime.now(datetime.timezone.utc)
+            event_log.RegionEnterEvent("repo:hook", self._hook_type)
+            try:
+                self._CheckHook()
 
-            # Make sure the user is OK with running the hook.
-            if self._allow_all_hooks or self._CheckForHookApproval():
-                # Run the hook with the same version of python we're using.
-                self._ExecuteHook(**kwargs)
-        except SystemExit as e:
-            passed = False
-            print(
-                "ERROR: %s hooks exited with exit code: %s"
-                % (self._hook_type, str(e)),
-                file=sys.stderr,
-            )
-        except HookError as e:
-            passed = False
-            print("ERROR: %s" % str(e), file=sys.stderr)
+                # Make sure the user is OK with running the hook.
+                if self._allow_all_hooks or self._CheckForHookApproval():
+                    # Run the hook with the same version of python we're
+                    # using.
+                    self._ExecuteHook(**kwargs)
+            except SystemExit as e:
+                passed = False
+                print(
+                    "ERROR: %s hooks exited with exit code: %s"
+                    % (self._hook_type, str(e)),
+                    file=sys.stderr,
+                )
+            except HookError as e:
+                passed = False
+                print("ERROR: %s" % str(e), file=sys.stderr)
+            finally:
+                end_time = datetime.datetime.now(datetime.timezone.utc)
+                t_rel = (end_time - start_time).total_seconds()
+                event_log.RegionLeaveEvent(
+                    "repo:hook",
+                    self._hook_type,
+                    t_rel=t_rel,
+                    msg="passed" if passed else "failed",
+                )
+                event_log.LogDataConfigEvents(
+                    {"passed": str(passed)}, f"hook/{self._hook_type}"
+                )
 
         if not passed and self._ignore_hooks:
             print(
@@ -495,6 +525,7 @@ class RepoHook:
         """
         for key in ("bypass_hooks", "allow_all_hooks", "ignore_hooks"):
             kwargs.setdefault(key, getattr(opt, key))
+        kwargs.setdefault("git_event_log", getattr(opt, "git_event_log", None))
         kwargs.update(
             {
                 "hooks_project": manifest.repo_hooks_project,

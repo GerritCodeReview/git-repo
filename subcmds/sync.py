@@ -2228,6 +2228,7 @@ later is required to fix a server side protocol bug.
             manifest=self.manifest,
             opt=opt,
             abort_if_user_denies=False,
+            git_event_log=self.git_event_log,
         )
         success = hook.Run(
             repo_topdir=self.client.topdir,
