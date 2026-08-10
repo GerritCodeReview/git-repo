@@ -742,6 +742,30 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             )
             self.assertFalse(os.path.exists(manifest_path))
 
+    def test_get_upstream_fallback_metaproject_skips_manifest_load(self):
+        """MetaProjects must not parse manifest.xml during upstream fallback."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = self.setUpManifest(tempdir)
+            manifest_path = os.path.join(
+                tempdir, ".repo", manifest_xml.MANIFEST_FILE_NAME
+            )
+            self.assertFalse(os.path.exists(manifest_path))
+
+            self.assertIsNone(fakeproj._GetUpstreamFallback())
+            self.assertFalse(os.path.exists(manifest_path))
+
+    def test_sharing_project_has_shallow_metaproject_skips_manifest_load(self):
+        """MetaProjects must not parse manifest.xml during sharing shallow check."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = self.setUpManifest(tempdir)
+            manifest_path = os.path.join(
+                tempdir, ".repo", manifest_xml.MANIFEST_FILE_NAME
+            )
+            self.assertFalse(os.path.exists(manifest_path))
+
+            self.assertFalse(fakeproj._SharingProjectHasShallow())
+            self.assertFalse(os.path.exists(manifest_path))
+
     def test_sync_use_local_gitdirs_worktree_conflict(self):
         """Test that --use-local-gitdirs conflicts with --worktree."""
         with utils_for_test.TempGitTree() as tempdir:
@@ -1402,6 +1426,63 @@ class SyncOptimizationTests(unittest.TestCase):
                 self.assertNotIn(
                     "+refs/heads/*:refs/remotes/origin/*", cmd_args
                 )
+
+    def test_remote_fetch_sha1_metaproject_without_manifest_xml(self) -> None:
+        """Test MetaProject _RemoteFetch with SHA-1 falls back to fetching all branches."""
+        sha = "4f8a3c0000000000000000000000000000000000"
+        with utils_for_test.TempGitTree() as tempdir:
+            repodir = os.path.join(tempdir, ".repo")
+            manifest_dir = os.path.join(repodir, "manifests")
+            manifest_file = os.path.join(
+                repodir, manifest_xml.MANIFEST_FILE_NAME
+            )
+            os.mkdir(repodir)
+            os.mkdir(manifest_dir)
+            manifest = manifest_xml.XmlManifest(repodir, manifest_file)
+            proj = project.ManifestProject(
+                manifest,
+                "test/manifest",
+                os.path.join(tempdir, ".git"),
+                tempdir,
+            )
+            proj.revisionExpr = sha
+            proj.upstream = None
+            proj._CheckForImmutableRevision = mock.MagicMock(return_value=False)
+
+            mock_remote = mock.MagicMock()
+            mock_remote.name = "origin"
+
+            def _to_local(r: str) -> str:
+                if r.startswith("refs/heads/"):
+                    return "refs/remotes/origin/" + r[11:]
+                return r
+
+            mock_remote.ToLocal.side_effect = _to_local
+            mock_remote.PreConnectFetch.return_value = True
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+
+            with mock.patch("project.GitCommand") as mock_git_cmd:
+                mock_cmd_instance = mock.MagicMock()
+                mock_cmd_instance.Wait.return_value = 0
+                mock_git_cmd.return_value = mock_cmd_instance
+
+                res = proj._RemoteFetch(current_branch_only=True)
+
+                self.assertTrue(res)
+                mock_git_cmd.assert_called_once()
+                cmd_args = mock_git_cmd.call_args[0][1]
+                self.assertIn(
+                    "+refs/heads/*:refs/remotes/origin/*", cmd_args
+                )
+
+    def test_remote_fetch_sha1_none_manifest_default(self) -> None:
+        """Test _GetUpstreamFallback when manifest.default is None."""
+        sha = "4f8a3c0000000000000000000000000000000000"
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, revisionExpr=sha)
+            proj.dest_branch = None
+            proj.manifest.default = None
+            self.assertIsNone(proj._GetUpstreamFallback())
 
 
 class GetEnvVarsTests(unittest.TestCase):

@@ -2859,12 +2859,17 @@ class Project:
 
     def _GetUpstreamFallback(self) -> Optional[str]:
         """Resolve a fallback upstream ref when revisionExpr is a SHA-1."""
-        for cand in (
-            self.dest_branch,
-            self.manifest.default.upstreamExpr,
-            self.manifest.default.destBranchExpr,
-            self.manifest.default.revisionExpr,
-        ):
+        default = self.manifest.default
+        candidates = [self.dest_branch]
+        if default:
+            candidates.extend(
+                (
+                    default.upstreamExpr,
+                    default.destBranchExpr,
+                    default.revisionExpr,
+                )
+            )
+        for cand in candidates:
             if cand and not IsId(cand):
                 return cand
         return None
@@ -4733,6 +4738,20 @@ class MetaProject(Project):
     ) -> bool:
         # MetaProjects (the manifest repo and repo itself) never
         # participate in a superproject relationship. Returning False
+        # here also avoids loading the manifest during `repo init`,
+        # before manifest.xml has been linked into .repo/.
+        return False
+
+    def _GetUpstreamFallback(self) -> Optional[str]:
+        # MetaProjects (the manifest repo and repo itself) do not have
+        # defaults in a manifest. Returning None here also avoids
+        # loading the manifest during `repo init`, before manifest.xml
+        # has been linked into .repo/.
+        return None
+
+    def _SharingProjectHasShallow(self) -> bool:
+        # MetaProjects (the manifest repo and repo itself) are never
+        # shared with other projects in the manifest. Returning False
         # here also avoids loading the manifest during `repo init`,
         # before manifest.xml has been linked into .repo/.
         return False
