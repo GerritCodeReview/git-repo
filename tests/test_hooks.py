@@ -15,10 +15,12 @@
 """Unittests for the hooks.py module."""
 
 from io import StringIO
+from pathlib import Path
 import sys
 
 import pytest
 
+from git_trace2_event_log import EventLog
 import hooks
 
 
@@ -139,3 +141,86 @@ def main(project_list, **kwargs):
 
     assert res is True
     assert project_list == [yes_val]
+
+
+def test_hook_tracing_and_event_log(tmp_path: Path) -> None:
+    """Test that hook execution emits region_enter and region_leave events."""
+
+    class FakeProject:
+        def __init__(self, worktree: str) -> None:
+            self.worktree = worktree
+            self.enabled_repo_hooks = ["pre-upload"]
+            self.config = None
+
+    hook_file = tmp_path / "pre-upload.py"
+    hook_file.write_text("def main(project_list, **kwargs):\n    pass\n")
+
+    event_log = EventLog(env={})
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(str(tmp_path)),
+        repo_topdir=str(tmp_path),
+        manifest_url="https://gerrit",
+        allow_all_hooks=True,
+        git_event_log=event_log,
+    )
+
+    res = hook.Run(project_list=[], worktree_list=[])
+    assert res is True
+
+    events = event_log._log
+    region_enters = [
+        e
+        for e in events
+        if e.get("event") == "region_enter" and e.get("category") == "repo:hook"
+    ]
+    region_leaves = [
+        e
+        for e in events
+        if e.get("event") == "region_leave" and e.get("category") == "repo:hook"
+    ]
+
+    assert len(region_enters) == 1
+    assert region_enters[0]["label"] == "pre-upload"
+    assert region_enters[0]["nesting"] == 1
+
+    assert len(region_leaves) == 1
+    assert region_leaves[0]["label"] == "pre-upload"
+    assert region_leaves[0]["nesting"] == 1
+    assert isinstance(region_leaves[0]["t_rel"], float)
+
+
+def test_hook_bypass_event_log(tmp_path: Path) -> None:
+    """Test that bypassing hook logs a data event in EventLog."""
+
+    class FakeProject:
+        def __init__(self, worktree: str) -> None:
+            self.worktree = worktree
+            self.enabled_repo_hooks = ["pre-upload"]
+            self.config = None
+
+    hook_file = tmp_path / "pre-upload.py"
+    hook_file.write_text("def main(project_list, **kwargs):\n    pass\n")
+
+    event_log = EventLog(env={})
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(str(tmp_path)),
+        repo_topdir=str(tmp_path),
+        manifest_url="https://gerrit",
+        bypass_hooks=True,
+        git_event_log=event_log,
+    )
+
+    res = hook.Run(project_list=[], worktree_list=[])
+    assert res is True
+
+    events = event_log._log
+    bypassed_events = [
+        e
+        for e in events
+        if e.get("event") == "data"
+        and e.get("key") == "hook/pre-upload/bypassed"
+    ]
+    assert len(bypassed_events) == 1
+    assert bypassed_events[0]["value"] == "True"
