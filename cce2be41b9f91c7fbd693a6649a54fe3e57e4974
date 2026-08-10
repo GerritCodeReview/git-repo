@@ -16,6 +16,138 @@
       "message": "PTAL, addressed feedback in PS17. thank you!",
       "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503652da_aa1a8e04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-10T21:51:02Z",
+      "side": 1,
+      "message": "please add type annotations (see warnings by Repo Analyzer)",
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "337e4199_4a7917d9",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-10T21:51:02Z",
+      "side": 1,
+      "message": "aren\u0027t files in the toplevel dir included as well? https://git-scm.com/docs/git-sparse-checkout#_internalscone_mode_handling: \"if you specified the directory Documentation/technical/ then your sparse checkout would contain: all files in the toplevel-directory\"",
+      "range": {
+        "startLine": 484,
+        "startChar": 13,
+        "endLine": 485,
+        "endChar": 33
+      },
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c94962f3_d5b968c1",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-10T21:51:02Z",
+      "side": 1,
+      "message": "let\u0027s also state the git version requiement for this",
+      "range": {
+        "startLine": 486,
+        "startChar": 40,
+        "endLine": 486,
+        "endChar": 49
+      },
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "281d878c_5de6ee10",
+        "filename": "project.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 3001,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-10T21:51:02Z",
+      "side": 1,
+      "message": "let\u0027s make sure this behavior is documented somewhere since this overrides `--partial-clone-exclude` (do we want that anyway?)",
+      "range": {
+        "startLine": 3000,
+        "startChar": 8,
+        "endLine": 3001,
+        "endChar": 38
+      },
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32600bfb_cbfa4867",
+        "filename": "project.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 4021,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-10T21:51:02Z",
+      "side": 1,
+      "message": "since `_ConfigureSparseCheckout` is gated on `init_dotgit`, won\u0027t `sparse-path` changes in the manifest get ignored in existing checkouts?",
+      "range": {
+        "startLine": 4021,
+        "startChar": 0,
+        "endLine": 4021,
+        "endChar": 27
+      },
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "200e6ce7_57da8983",
+        "filename": "project.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 4026,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-10T21:51:02Z",
+      "side": 1,
+      "message": "should this go in the try/except below so the `platform_utils.remove(dotgit)` cleanup covers it?",
+      "range": {
+        "startLine": 4024,
+        "startChar": 16,
+        "endLine": 4026,
+        "endChar": 68
+      },
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
