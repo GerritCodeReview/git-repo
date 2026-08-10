@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "482add30_bf75a770",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-10T18:11:26Z",
+      "side": 1,
+      "message": "please also add some tests",
+      "revId": "c6aca972f45972aa563f74edff42c8458c377c0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a5f846c_686bb4fe",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1298,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-10T18:11:26Z",
+      "side": 1,
+      "message": "this feels unnecessary, what if we deleted these manual writes and the\n`capture_stdout\u003dTrue, capture_stderr\u003dTrue`? IIUC that would keep `push_cmd.stderr` with the tee intact",
+      "range": {
+        "startLine": 1295,
+        "startChar": 8,
+        "endLine": 1298,
+        "endChar": 45
+      },
+      "revId": "c6aca972f45972aa563f74edff42c8458c377c0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78850fab_17f5be06",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1300,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-10T18:11:26Z",
+      "side": 1,
+      "message": "this won\u0027t match if the project name has a slash (ie most projects)",
+      "range": {
+        "startLine": 1300,
+        "startChar": 19,
+        "endLine": 1300,
+        "endChar": 48
+      },
+      "revId": "c6aca972f45972aa563f74edff42c8458c377c0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c13c10b_edd741b9",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1308,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-10T18:11:26Z",
+      "side": 1,
+      "message": "it feels like this \"modified files\" logic should live in the `ReviewableBranch` layer. also should this be `git diff --name-only branch.LocalMerge...branch.name` instead?",
+      "range": {
+        "startLine": 1305,
+        "startChar": 12,
+        "endLine": 1308,
+        "endChar": 60
+      },
+      "revId": "c6aca972f45972aa563f74edff42c8458c377c0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
