@@ -247,6 +247,79 @@ def test_command_event(event_log: git_trace2_event_log.EventLog) -> None:
     assert command_event["name"] == "repo-init-this"
 
 
+def test_region_events(event_log: git_trace2_event_log.EventLog) -> None:
+    """Test and validate 'region_enter' and 'region_leave' events are valid.
+
+    Expected event log:
+    <version event>
+    <region_enter event>
+    <region_leave event>
+    """
+    event_log.RegionEnterEvent(
+        category="repo:hook", label="pre-upload", nesting=1, msg="commit-1"
+    )
+    event_log.RegionLeaveEvent(
+        category="repo:hook",
+        label="pre-upload",
+        nesting=1,
+        t_rel=0.123456,
+        msg="commit-1",
+    )
+
+    with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
+        log_path = event_log.Write(path=tempdir)
+        log_data = read_log(log_path)
+
+    assert len(log_data) == 3
+    enter_event = log_data[1]
+    leave_event = log_data[2]
+    verify_common_keys(enter_event, expected_event_name="region_enter")
+    assert enter_event["category"] == "repo:hook"
+    assert enter_event["label"] == "pre-upload"
+    assert enter_event["nesting"] == 1
+    assert enter_event["msg"] == "commit-1"
+
+    verify_common_keys(leave_event, expected_event_name="region_leave")
+    assert leave_event["category"] == "repo:hook"
+    assert leave_event["label"] == "pre-upload"
+    assert leave_event["nesting"] == 1
+    assert leave_event["t_rel"] == 0.123456
+    assert leave_event["msg"] == "commit-1"
+
+
+def test_record_region(event_log: git_trace2_event_log.EventLog) -> None:
+    """Test and validate RecordRegion context manager.
+
+    Expected event log:
+    <version event>
+    <region_enter event>
+    <region_leave event>
+    """
+    with event_log.RecordRegion(
+        category="repo:hook", label="post-sync", nesting=1
+    ):
+        pass
+
+    with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
+        log_path = event_log.Write(path=tempdir)
+        log_data = read_log(log_path)
+
+    assert len(log_data) == 3
+    enter_event = log_data[1]
+    leave_event = log_data[2]
+    verify_common_keys(enter_event, expected_event_name="region_enter")
+    assert enter_event["category"] == "repo:hook"
+    assert enter_event["label"] == "post-sync"
+    assert enter_event["nesting"] == 1
+
+    verify_common_keys(leave_event, expected_event_name="region_leave")
+    assert leave_event["category"] == "repo:hook"
+    assert leave_event["label"] == "post-sync"
+    assert leave_event["nesting"] == 1
+    assert isinstance(leave_event["t_rel"], float)
+    assert leave_event["t_rel"] >= 0.0
+
+
 def test_def_params_event_repo_config(
     event_log: git_trace2_event_log.EventLog,
 ) -> None:

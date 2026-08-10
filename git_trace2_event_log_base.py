@@ -28,6 +28,7 @@ https://git-scm.com/docs/api-trace2#_the_event_format_target
 """
 
 
+import contextlib
 import datetime
 import errno
 import json
@@ -36,6 +37,7 @@ import socket
 import sys
 import tempfile
 import threading
+from typing import Iterator, Optional
 
 
 # Timeout when sending events via socket (applies to connect, send)
@@ -218,6 +220,61 @@ class BaseEventLog:
             event["key"] = f"{prefix}/{key}"
             event["value"] = value
             self._log.append(event)
+
+    def RegionEnterEvent(
+        self,
+        category: str,
+        label: str,
+        nesting: int = 1,
+        msg: Optional[str] = None,
+    ) -> None:
+        """Append a 'region_enter' event to the current log."""
+        event = self._CreateEventDict("region_enter")
+        event["category"] = category
+        event["label"] = label
+        event["nesting"] = nesting
+        if msg:
+            event["msg"] = msg
+        self._log.append(event)
+
+    def RegionLeaveEvent(
+        self,
+        category: str,
+        label: str,
+        nesting: int = 1,
+        t_rel: Optional[float] = None,
+        msg: Optional[str] = None,
+    ) -> None:
+        """Append a 'region_leave' event to the current log."""
+        event = self._CreateEventDict("region_leave")
+        event["category"] = category
+        event["label"] = label
+        event["nesting"] = nesting
+        if t_rel is not None:
+            event["t_rel"] = t_rel
+        if msg:
+            event["msg"] = msg
+        self._log.append(event)
+
+    @contextlib.contextmanager
+    def RecordRegion(
+        self,
+        category: str,
+        label: str,
+        nesting: int = 1,
+        msg: Optional[str] = None,
+    ) -> Iterator[None]:
+        """Context manager to record region_enter and region_leave events."""
+        start_time = datetime.datetime.now(datetime.timezone.utc)
+        self.RegionEnterEvent(category, label, nesting=nesting, msg=msg)
+        try:
+            yield
+        finally:
+            end_time = datetime.datetime.now(datetime.timezone.utc)
+            t_rel = (end_time - start_time).total_seconds()
+            self.RegionLeaveEvent(
+                category, label, nesting=nesting, t_rel=t_rel, msg=msg
+            )
 
     def ErrorEvent(self, msg, fmt=None):
         """Append a 'error' event to the current log."""
