@@ -798,6 +798,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 manifest=manifest,
                 opt=opt,
                 abort_if_user_denies=True,
+                git_event_log=self.git_event_log,
             )
             if not hook.Run(
                 project_list=pending_proj_names, worktree_list=pending_worktrees
