@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b11d3955_bc2be54c",
+        "filename": "hooks.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1098470
+      },
+      "writtenOn": "2026-08-10T20:50:45Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Repo Analyzer: Missing type annotation for function argument `git_event_log`",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 0
+      },
+      "revId": "432fad8130d8d2b8d473ebc51972eedfbf216c46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fce06605_1a74e59d",
+        "filename": "tests/test_hooks.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1098470
+      },
+      "writtenOn": "2026-08-10T20:50:45Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Repo Analyzer: Missing type annotation for function argument `tmp_path`",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 0
+      },
+      "revId": "432fad8130d8d2b8d473ebc51972eedfbf216c46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "010a0c12_ded0a7df",
+        "filename": "tests/test_hooks.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1098470
+      },
+      "writtenOn": "2026-08-10T20:50:45Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Repo Analyzer: Missing type annotation for function argument `worktree`",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 0
+      },
+      "revId": "432fad8130d8d2b8d473ebc51972eedfbf216c46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b761ab0_e6ba92b5",
+        "filename": "tests/test_hooks.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1098470
+      },
+      "writtenOn": "2026-08-10T20:50:45Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Repo Analyzer: Missing type annotation for function argument `tmp_path`",
+      "range": {
+        "startLine": 192,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 0
+      },
+      "revId": "432fad8130d8d2b8d473ebc51972eedfbf216c46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7827ab4_c9538fa2",
+        "filename": "tests/test_hooks.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1098470
+      },
+      "writtenOn": "2026-08-10T20:50:45Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Repo Analyzer: Missing type annotation for function argument `worktree`",
+      "range": {
+        "startLine": 196,
+        "startChar": 0,
+        "endLine": 197,
+        "endChar": 0
+      },
+      "revId": "432fad8130d8d2b8d473ebc51972eedfbf216c46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
