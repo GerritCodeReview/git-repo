@@ -28,12 +28,16 @@ import subprocess
 import sys
 import tempfile
 import time
-from typing import List, NamedTuple, Optional, Set, Tuple, Union
+from typing import List, NamedTuple, Optional, Set, Tuple, TYPE_CHECKING, Union
 import urllib.error
 import urllib.parse
 import urllib.request
 import xml.parsers.expat
 import xmlrpc.client
+
+
+if TYPE_CHECKING:
+    from manifest_xml import XmlManifest
 
 
 try:
@@ -644,8 +648,15 @@ later is required to fix a server side protocol bug.
                 "-s",
                 "--smart-sync",
                 action="store_true",
+                default=None,
                 help="smart sync using manifest from the latest known good "
                 "build",
+            )
+            p.add_option(
+                "--no-smart-sync",
+                dest="smart_sync",
+                action="store_false",
+                help="disable smart sync and sync to ToT instead",
             )
             p.add_option(
                 "-t",
@@ -2083,7 +2094,7 @@ later is required to fix a server side protocol bug.
         if opt.manifest_name and opt.smart_tag:
             self.OptionParser.error("cannot combine -m and -t")
         if opt.manifest_server_username or opt.manifest_server_password:
-            if not (opt.smart_sync or opt.smart_tag):
+            if not (opt.smart_sync is not False or opt.smart_tag):
                 self.OptionParser.error(
                     "-u and -p may only be combined with -s or -t"
                 )
@@ -2247,6 +2258,20 @@ later is required to fix a server side protocol bug.
                 "failed to sync manifest project", aggregate_errors=[e]
             )
 
+    def _ResolveSmartSyncOption(
+        self, opt: optparse.Values, manifest: "XmlManifest"
+    ) -> None:
+        """Resolves smart_sync option value based on CLI flags and manifest
+        default.
+        """
+        if opt.smart_sync is None:
+            if opt.smart_tag or opt.manifest_name:
+                opt.smart_sync = False
+            else:
+                opt.smart_sync = (
+                    getattr(manifest.default, "sync_smartsync", False) is True
+                )
+
     def _ExecuteHelper(self, opt, args, errors):
         manifest = self.outer_manifest
         if not opt.outer_manifest:
@@ -2260,6 +2285,8 @@ later is required to fix a server side protocol bug.
 
         if opt.clone_bundle is None:
             opt.clone_bundle = manifest.CloneBundle
+
+        self._ResolveSmartSyncOption(opt, manifest)
 
         if opt.smart_sync or opt.smart_tag:
             manifest_name = self._SmartSyncSetup(

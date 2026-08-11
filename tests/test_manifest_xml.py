@@ -420,6 +420,28 @@ class TestXmlManifest:
             )
             manifest.ToXml()
 
+    def test_sync_smartsync(self, repo_client: RepoClient) -> None:
+        """Check sync-smartsync handling."""
+        manifest = repo_client.get_xml_manifest(
+            "<manifest><default /></manifest>"
+        )
+        assert manifest.default.sync_smartsync is False
+
+        manifest = repo_client.get_xml_manifest(
+            "<manifest><default sync-smartsync=\"true\" /></manifest>"
+        )
+        assert manifest.default.sync_smartsync is True
+        assert (
+            manifest.ToXml().toxml() == "<?xml version=\"1.0\" ?>"
+            "<manifest><default sync-smartsync=\"true\"/></manifest>"
+        )
+
+        manifest = repo_client.get_xml_manifest(
+            "<manifest><default sync-smartsync=\"false\" /></manifest>"
+        )
+        assert manifest.default.sync_smartsync is False
+        assert manifest.ToXml().toxml() == "<?xml version=\"1.0\" ?><manifest/>"
+
 
 class TestIncludeElement:
     """Tests for <include>."""
