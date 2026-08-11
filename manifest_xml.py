@@ -159,6 +159,7 @@ class _Default:
     sync_c = False
     sync_s = False
     sync_tags = True
+    sync_smartsync = False
 
     def __eq__(self, other):
         if not isinstance(other, _Default):
@@ -483,6 +484,17 @@ class XmlManifest:
         self.Unload()
         self._Load()
 
+    def ClearOverride(self):
+        """Stop overriding the manifest, reverting to the default one.
+
+        This is the inverse of Override(), and is a no-op if no override is in
+        effect.  It is useful to recover from a failed Override(), which
+        registers the override before parsing it.
+        """
+        self._outer_client.manifestFileOverrides.pop(self.path_prefix, None)
+        self._load_local_manifests = True
+        self.Unload()
+
     def Link(self, name):
         """Update the repo metadata to use a different manifest."""
         self.Override(name)
@@ -644,6 +656,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if not d.sync_tags:
             have_default = True
             e.setAttribute("sync-tags", "false")
+        if d.sync_smartsync:
+            have_default = True
+            e.setAttribute("sync-smartsync", "true")
         if have_default:
             root.appendChild(e)
             root.appendChild(doc.createTextNode(""))
@@ -1793,6 +1808,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         d.sync_c = XmlBool(node, "sync-c", False)
         d.sync_s = XmlBool(node, "sync-s", False)
         d.sync_tags = XmlBool(node, "sync-tags", True)
+        d.sync_smartsync = XmlBool(node, "sync-smartsync", False)
         return d
 
     def _ParseNotice(self, node):

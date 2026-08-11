@@ -28,12 +28,25 @@ import subprocess
 import sys
 import tempfile
 import time
-from typing import Dict, List, NamedTuple, Optional, Set, Tuple, Union
+from typing import (
+    Dict,
+    List,
+    NamedTuple,
+    Optional,
+    Set,
+    Tuple,
+    TYPE_CHECKING,
+    Union,
+)
 import urllib.error
 import urllib.parse
 import urllib.request
 import xml.parsers.expat
 import xmlrpc.client
+
+
+if TYPE_CHECKING:
+    from manifest_xml import XmlManifest
 
 
 try:
@@ -58,6 +71,7 @@ from command import DEFAULT_LOCAL_JOBS
 from command import MirrorSafeCommand
 from command import WORKER_BATCH_SIZE
 from error import GitError
+from error import ManifestParseError
 from error import RepoChangedException
 from error import RepoError
 from error import RepoExitError
@@ -755,8 +769,15 @@ later is required to fix a server side protocol bug.
                 "-s",
                 "--smart-sync",
                 action="store_true",
+                default=None,
                 help="smart sync using manifest from the latest known good "
                 "build",
+            )
+            p.add_option(
+                "--no-smart-sync",
+                dest="smart_sync",
+                action="store_false",
+                help="disable smart sync and sync to ToT instead",
             )
             p.add_option(
                 "-t",
@@ -2230,10 +2251,6 @@ later is required to fix a server side protocol bug.
         if opt.manifest_name and opt.smart_tag:
             self.OptionParser.error("cannot combine -m and -t")
         if opt.manifest_server_username or opt.manifest_server_password:
-            if not (opt.smart_sync or opt.smart_tag):
-                self.OptionParser.error(
-                    "-u and -p may only be combined with -s or -t"
-                )
             if None in [
                 opt.manifest_server_username,
                 opt.manifest_server_password,
@@ -2394,6 +2411,34 @@ later is required to fix a server side protocol bug.
                 "failed to sync manifest project", aggregate_errors=[e]
             )
 
+    def _ResolveImplicitSmartSyncOption(
+        self, opt: optparse.Values, manifest: "XmlManifest"
+    ) -> bool:
+        """Resolve opt.smart_sync from the CLI flags and manifest default.
+
+        Returns:
+            True if smart_sync was enabled implicitly by the manifest default,
+            False otherwise.
+        """
+        implicit = (
+            opt.smart_sync is None
+            and not opt.smart_tag
+            and not opt.manifest_name
+            and getattr(manifest.default, "sync_smartsync", False) is True
+        )
+        if opt.smart_sync is None:
+            opt.smart_sync = implicit
+
+        if (
+            opt.manifest_server_username or opt.manifest_server_password
+        ) and not (opt.smart_sync or opt.smart_tag):
+            raise SmartSyncError(
+                "-u and -p may only be used when smart syncing: pass -s or -t, "
+                'or use a manifest with sync-smartsync="true"'
+            )
+
+        return implicit
+
     def _ExecuteHelper(self, opt, args, errors):
         manifest = self.outer_manifest
         if not opt.outer_manifest:
@@ -2408,11 +2453,32 @@ later is required to fix a server side protocol bug.
         if opt.clone_bundle is None:
             opt.clone_bundle = manifest.CloneBundle
 
+        implicit_smart_sync = self._ResolveImplicitSmartSyncOption(
+            opt, manifest
+        )
+
         if opt.smart_sync or opt.smart_tag:
-            manifest_name = self._SmartSyncSetup(
-                opt, smart_sync_manifest_path, manifest
-            )
-        else:
+            try:
+                manifest_name = self._SmartSyncSetup(
+                    opt, smart_sync_manifest_path, manifest
+                )
+            except (SmartSyncError, ManifestParseError) as e:
+                if not implicit_smart_sync:
+                    raise
+                # The user did not ask for a smart sync, so failing to get a
+                # usable manifest from the server should not fail the sync.
+                # Fall back to a regular ToT sync instead.
+                opt.smart_sync = False
+                # Override() records the override before parsing it, so an
+                # unparsable manifest would otherwise leave the client pinned
+                # to a file it cannot load.
+                manifest.ClearOverride()
+                if opt.verbose:
+                    logger.warning(
+                        "warning: smart sync failed; falling back to ToT: %s", e
+                    )
+
+        if not (opt.smart_sync or opt.smart_tag):
             if os.path.isfile(smart_sync_manifest_path):
                 try:
                     platform_utils.remove(smart_sync_manifest_path)
