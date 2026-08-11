@@ -335,6 +335,7 @@ _repo() {
         '--auto-gc[Run auto gc]' \
         '--no-auto-gc[Do not run auto gc]' \
         '(-s --smart-sync)'{-s,--smart-sync}'[Smart sync]' \
+        '--no-smart-sync[Do not smart sync]' \
         '(-t --smart-tag)'{-t,--smart-tag=}'[Smart tag]:tag:' \
         '--no-repo-verify[Do not verify repo]' \
         '--no-verify[Do not verify]' \
