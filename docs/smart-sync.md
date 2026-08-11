@@ -138,9 +138,36 @@ copy into `.repo/manifests/smart_sync_override.xml` so users can examine it.
 The next time `repo sync` is run, this file is automatically replaced or removed
 based on the current set of options.
 
-### --smart-sync
+### sync-smartsync (Manifest Attribute)
 
-Repo will call `GetApprovedManifest(branch[, target])`.
+The manifest can enable Smart Sync by default for all `repo sync` invocations
+by setting `sync-smartsync="true"` on the `<default>` element:
+
+```xml
+  <default sync-smartsync="true" ... />
+```
+
+When enabled in the manifest, `repo sync` will automatically perform a Smart
+Sync unless explicitly overridden on the command line. Since the user did not
+ask for a Smart Sync, any failure to obtain a manifest from the manifest server
+(e.g. the server is unreachable, or it returns a manifest that cannot be parsed)
+is silently ignored and `repo sync` falls back to a regular ToT sync; pass
+`--verbose` to see the reason. This is only a fallback for the manifest-driven
+default: an explicit `-s`/`--smart-sync` or `-t`/`--smart-tag` still fails the
+sync, as before. Options that specify an explicit target or manifest source
+(such as `-t`/`--smart-tag`, `-m`/`--manifest-name` or
+`--superproject-revision`) will also disable the default Smart Sync behavior.
+
+With `-l`/`--local-only` or `--no-manifest-update`, the default Smart Sync does
+not contact the manifest server. Instead, repo keeps using the
+`smart_sync_override.xml` from the last Smart Sync, if there is one. Pass
+`--no-smart-sync` to discard it and use the default manifest instead. These
+options do not change the behavior of an explicit `-s`/`--smart-sync`.
+
+### --smart-sync / -s
+
+Explicitly enables Smart Sync. Repo will call
+`GetApprovedManifest(branch[, target])`.
 
 The `branch` is determined by the current manifest branch as specified by
 `--manifest-branch=BRANCH` when running `repo init`.
@@ -155,6 +182,11 @@ match the settings Android build environments automatically setup.
 3.  `${TARGET_PRODUCT}-${TARGET_BUILD_VARIANT}`: If these variables are all
     defined, then they are merged with `-` and used.
 
-### --smart-tag=TAG
+### --no-smart-sync
+
+Explicitly disables Smart Sync, overriding any `sync-smartsync="true"` setting
+declared in the manifest `<default>` element.
+
+### --smart-tag=TAG / -t
 
 Repo will call `GetManifest(TAG)`.

@@ -21,7 +21,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import time
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Type
 import unittest
 from unittest import mock
 
@@ -29,6 +29,7 @@ import pytest
 
 import command
 from error import GitError
+from error import ManifestParseError
 from error import RepoExitError
 import manifest_xml
 from project import SyncNetworkHalfResult
@@ -388,6 +389,90 @@ def test_cli_jobs_sync_j_max(
             assert opts.jobs == jobs
             assert opts.jobs_network == jobs_net
             assert opts.jobs_checkout == jobs_check
+
+
+@pytest.mark.parametrize(
+    "argv, sync_smartsync_manifest, expected_smart_sync, expected_implicit",
+    [
+        ([], False, False, False),
+        ([], None, False, False),
+        ([], True, True, True),
+        (["-s"], False, True, False),
+        (["--smart-sync"], False, True, False),
+        (["--smart-sync"], True, True, False),
+        (["--no-smart-sync"], True, False, False),
+        (["--no-smart-sync"], False, False, False),
+        (["-t", "tag123"], True, False, False),
+        (["--smart-tag=tag123"], True, False, False),
+        (["-m", "other.xml"], True, False, False),
+        (["--manifest-name=other.xml"], True, False, False),
+        (["-l"], True, False, False),
+        (["--local-only"], True, False, False),
+        (["--nmu"], True, False, False),
+        (["--no-manifest-update"], True, False, False),
+        (["--superproject-revision=abc"], True, False, False),
+        (["-s", "-l"], True, True, False),
+        (["-s", "--nmu"], True, True, False),
+        (["-s", "--superproject-revision=abc"], True, True, False),
+    ],
+)
+def test_cli_smart_sync(
+    argv: List[str],
+    sync_smartsync_manifest: Optional[bool],
+    expected_smart_sync: bool,
+    expected_implicit: bool,
+) -> None:
+    """Tests --smart-sync and --no-smart-sync option behavior with manifest
+    default.
+    """
+    manifest = mock.MagicMock()
+    manifest.default.sync_smartsync = sync_smartsync_manifest
+
+    cmd = sync.Sync(manifest=manifest)
+    opts, args = cmd.OptionParser.parse_args(argv)
+    cmd.ValidateOptions(opts, args)
+    implicit = cmd._ResolveSmartSyncOption(opts, manifest)
+    assert opts.smart_sync == expected_smart_sync
+    assert implicit == expected_implicit
+
+
+@pytest.mark.parametrize(
+    "argv, sync_smartsync_manifest, expected_exception",
+    [
+        (["-u", "user", "-p", "pass"], False, sync.SmartSyncError),
+        (["-u", "user", "-p", "pass"], True, None),
+        (["-s", "-u", "user", "-p", "pass"], False, None),
+        (["-t", "tag", "-u", "user", "-p", "pass"], False, None),
+        (
+            ["--no-smart-sync", "-u", "user", "-p", "pass"],
+            True,
+            sync.SmartSyncError,
+        ),
+        (["-l", "-u", "user", "-p", "pass"], True, sync.SmartSyncError),
+        (["--nmu", "-u", "user", "-p", "pass"], True, sync.SmartSyncError),
+        (["-s", "-l", "-u", "user", "-p", "pass"], True, None),
+        (["-u", "user"], False, SystemExit),
+        (["-p", "pass"], False, SystemExit),
+    ],
+)
+def test_cli_manifest_server_credentials(
+    argv: List[str],
+    sync_smartsync_manifest: bool,
+    expected_exception: Optional[Type[BaseException]],
+) -> None:
+    """Tests -u and -p validation rules."""
+    manifest = mock.MagicMock()
+    manifest.default.sync_smartsync = sync_smartsync_manifest
+
+    cmd = sync.Sync(manifest=manifest)
+    opts, args = cmd.OptionParser.parse_args(argv)
+    if expected_exception:
+        with pytest.raises(expected_exception):
+            cmd.ValidateOptions(opts, args)
+            cmd._ResolveSmartSyncOption(opts, manifest)
+    else:
+        cmd.ValidateOptions(opts, args)
+        cmd._ResolveSmartSyncOption(opts, manifest)
 
 
 class LocalSyncState(unittest.TestCase):
@@ -1484,6 +1569,193 @@ class SyncCommand(unittest.TestCase):
         phased, interleaved = self._ExecuteUntilSync([])
         self.assertTrue(phased.called or interleaved.called)
 
+    def test_implicit_smart_sync_fallback(self) -> None:
+        """Ensure implicit smart sync silently falls back to ToT."""
+        self.manifest.default.sync_smartsync = True
+        self.opt.smart_sync = None
+        mock.patch.object(self.cmd, "_UpdateAllManifestProjects").start()
+        self.opt.verbose = False
+        with mock.patch.object(
+            self.cmd,
+            "_SmartSyncSetup",
+            side_effect=sync.SmartSyncError("unreachable"),
+        ) as mock_setup:
+            with mock.patch.object(self.cmd, "_UpdateRepoProject"):
+                with mock.patch.object(
+                    self.cmd, "_ValidateOptionsWithManifest"
+                ):
+                    with mock.patch.object(self.cmd, "_SyncInterleaved"):
+                        with mock.patch.object(self.cmd, "_RunPostSyncHook"):
+                            with mock.patch.object(
+                                sync.logger, "warning"
+                            ) as mock_warn:
+                                self.cmd.Execute(self.opt, [])
+        mock_setup.assert_called_once()
+        self.assertFalse(self.opt.smart_sync)
+        self.assertFalse(mock_warn.called)
+
+    def test_implicit_smart_sync_fallback_verbose(self) -> None:
+        """Ensure the fallback reason is logged when --verbose is given."""
+        self.manifest.default.sync_smartsync = True
+        self.opt.smart_sync = None
+        mock.patch.object(self.cmd, "_UpdateAllManifestProjects").start()
+        self.opt.verbose = True
+        with mock.patch.object(
+            self.cmd,
+            "_SmartSyncSetup",
+            side_effect=sync.SmartSyncError("unreachable"),
+        ):
+            with mock.patch.object(self.cmd, "_UpdateRepoProject"):
+                with mock.patch.object(
+                    self.cmd, "_ValidateOptionsWithManifest"
+                ):
+                    with mock.patch.object(self.cmd, "_SyncInterleaved"):
+                        with mock.patch.object(self.cmd, "_RunPostSyncHook"):
+                            with mock.patch.object(
+                                sync.logger, "warning"
+                            ) as mock_warn:
+                                self.cmd.Execute(self.opt, [])
+        self.assertFalse(self.opt.smart_sync)
+        self.assertTrue(mock_warn.called)
+
+    def test_explicit_smart_sync_error(self) -> None:
+        """Ensure explicit smart sync raises SmartSyncError on failure."""
+        self.manifest.default.sync_smartsync = True
+        self.opt.smart_sync = True
+        self.opt.mp_update = False
+        with mock.patch.object(
+            self.cmd,
+            "_SmartSyncSetup",
+            side_effect=sync.SmartSyncError("unreachable"),
+        ):
+            with self.assertRaises(sync.SmartSyncError):
+                self.cmd.Execute(self.opt, [])
+
+    def test_implicit_smart_sync_unparsable_manifest(self) -> None:
+        """Ensure an unparsable smart sync manifest falls back to ToT."""
+        self.manifest.default.sync_smartsync = True
+        self.opt.smart_sync = None
+        mock.patch.object(self.cmd, "_UpdateAllManifestProjects").start()
+        self.opt.verbose = False
+        with mock.patch.object(
+            self.cmd,
+            "_SmartSyncSetup",
+            side_effect=ManifestParseError("mismatched tag"),
+        ):
+            with mock.patch.object(self.cmd, "_UpdateRepoProject"):
+                with mock.patch.object(
+                    self.cmd, "_ValidateOptionsWithManifest"
+                ):
+                    with mock.patch.object(self.cmd, "_SyncInterleaved"):
+                        with mock.patch.object(self.cmd, "_RunPostSyncHook"):
+                            self.cmd.Execute(self.opt, [])
+        self.assertFalse(self.opt.smart_sync)
+        # A half-applied override would pin the client to a broken manifest.
+        self.manifest.ClearOverride.assert_called_once_with()
+
+    def test_explicit_smart_sync_unparsable_manifest(self) -> None:
+        """Ensure explicit smart sync still reports the parse error."""
+        self.manifest.default.sync_smartsync = True
+        self.opt.smart_sync = True
+        self.opt.mp_update = False
+        with mock.patch.object(
+            self.cmd,
+            "_SmartSyncSetup",
+            side_effect=ManifestParseError("mismatched tag"),
+        ):
+            with self.assertRaises(ManifestParseError):
+                self.cmd.Execute(self.opt, [])
+
+    def _ExecuteWithSmartSyncOverride(
+        self, reload_error: Optional[Exception] = None
+    ) -> Tuple[str, mock.MagicMock, mock.MagicMock, mock.MagicMock]:
+        """Run Execute with an existing smart sync override on disk.
+
+        Returns:
+            The override path, and the _SmartSyncSetup, _ReloadManifest and
+            _UpdateAllManifestProjects mocks.
+        """
+        worktree = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, worktree)
+        self.manifest.manifestProject.worktree = worktree
+        # -l reloads the superproject manifest; keep that out of the way.
+        self.manifest.superproject = None
+        self.opt.verbose = False
+        override_path = os.path.join(worktree, "smart_sync_override.xml")
+        with open(override_path, "w") as f:
+            f.write("<manifest />")
+
+        with contextlib.ExitStack() as stack:
+            for name in (
+                "_UpdateRepoProject",
+                "_ValidateOptionsWithManifest",
+                "_SyncInterleaved",
+                "_RunPostSyncHook",
+            ):
+                stack.enter_context(mock.patch.object(self.cmd, name))
+            setup = stack.enter_context(
+                mock.patch.object(self.cmd, "_SmartSyncSetup")
+            )
+            reload = stack.enter_context(
+                mock.patch.object(
+                    self.cmd, "_ReloadManifest", side_effect=reload_error
+                )
+            )
+            update_mps = stack.enter_context(
+                mock.patch.object(self.cmd, "_UpdateAllManifestProjects")
+            )
+            self.cmd.Execute(self.opt, [])
+        return override_path, setup, reload, update_mps
+
+    def test_smart_sync_override_reused_offline(self) -> None:
+        """Ensure -l/--nmu reuse an onboarded client's smart sync manifest."""
+        for local_only, mp_update in ((True, True), (False, False)):
+            with self.subTest(local_only=local_only, mp_update=mp_update):
+                self.manifest.default.sync_smartsync = True
+                self.opt.smart_sync = None
+                self.opt.local_only = local_only
+                self.opt.mp_update = mp_update
+                path, setup, reload, update_mps = (
+                    self._ExecuteWithSmartSyncOverride()
+                )
+                setup.assert_not_called()
+                reload.assert_called_once_with(
+                    "smart_sync_override.xml", self.manifest
+                )
+                self.assertTrue(os.path.isfile(path))
+                if mp_update:
+                    self.assertEqual(
+                        update_mps.call_args[0][2], "smart_sync_override.xml"
+                    )
+
+    def test_smart_sync_override_removed_offline(self) -> None:
+        """Ensure -l still drops the override when reuse does not apply."""
+        cases = (
+            ("--no-smart-sync", False, True),
+            ("manifest without sync-smartsync", None, False),
+        )
+        for name, smart_sync, sync_smartsync in cases:
+            with self.subTest(name):
+                self.manifest.default.sync_smartsync = sync_smartsync
+                self.opt.smart_sync = smart_sync
+                self.opt.local_only = True
+                path, setup, reload, _ = self._ExecuteWithSmartSyncOverride()
+                setup.assert_not_called()
+                reload.assert_not_called()
+                self.assertFalse(os.path.isfile(path))
+
+    def test_smart_sync_override_unparsable_offline(self) -> None:
+        """Ensure an unloadable reused override falls back to ToT."""
+        self.manifest.default.sync_smartsync = True
+        self.opt.smart_sync = None
+        self.opt.local_only = True
+        path, _, _, update_mps = self._ExecuteWithSmartSyncOverride(
+            reload_error=ManifestParseError("mismatched tag")
+        )
+        self.manifest.ClearOverride.assert_called_once_with()
+        self.assertFalse(os.path.isfile(path))
+        self.assertIsNone(update_mps.call_args[0][2])
+
 
 class SyncUpdateRepoProject(unittest.TestCase):
     """Tests for Sync._UpdateRepoProject."""
@@ -2500,6 +2772,35 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         )
 
         self.assertEqual(manifest_name, "manifest.xml")
+
+    @mock.patch("xmlrpc.client.Server")
+    def test_smart_sync_setup_unparsable_manifest(
+        self, mock_server_class: mock.MagicMock
+    ) -> None:
+        """Test _SmartSyncSetup when the server returns a bad manifest.
+
+        The parse error is left alone so that an explicit smart sync keeps
+        reporting it as-is; recovering from it is up to the caller.
+        """
+        self.manifest.manifest_server = (
+            "http://android-smartsync.corp.google.com/manifestserver"
+        )
+        self.manifest.manifest_server_helper = None
+
+        mock_server = mock.MagicMock()
+        mock_server.GetApprovedManifest.return_value = [True, "<manifest>"]
+        mock_server_class.return_value = mock_server
+
+        self.cmd._GetBranch = mock.MagicMock(return_value="main")
+        self.cmd._ReloadManifest = mock.MagicMock(
+            side_effect=ManifestParseError("mismatched tag")
+        )
+
+        with mock.patch("builtins.open", mock.mock_open()):
+            with self.assertRaises(ManifestParseError):
+                self.cmd._SmartSyncSetup(
+                    self.opt, self.smart_sync_manifest_path, self.manifest
+                )
 
     @mock.patch("shutil.which")
     @mock.patch("subprocess.Popen")

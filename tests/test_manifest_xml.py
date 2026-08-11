@@ -420,6 +420,62 @@ class TestXmlManifest:
             )
             manifest.ToXml()
 
+    def test_sync_smartsync(self, repo_client: RepoClient) -> None:
+        """Check sync-smartsync handling."""
+        manifest = repo_client.get_xml_manifest(
+            "<manifest><default /></manifest>"
+        )
+        assert manifest.default.sync_smartsync is False
+
+        manifest = repo_client.get_xml_manifest(
+            '<manifest><default sync-smartsync="true" /></manifest>'
+        )
+        assert manifest.default.sync_smartsync is True
+        assert (
+            manifest.ToXml().toxml() == '<?xml version="1.0" ?>'
+            '<manifest><default sync-smartsync="true"/></manifest>'
+        )
+
+        manifest = repo_client.get_xml_manifest(
+            '<manifest><default sync-smartsync="false" /></manifest>'
+        )
+        assert manifest.default.sync_smartsync is False
+        assert manifest.ToXml().toxml() == '<?xml version="1.0" ?><manifest/>'
+
+    def test_clear_override(self, repo_client: RepoClient) -> None:
+        """Check ClearOverride reverts to the default manifest."""
+        manifest_xml_fmt = (
+            '<manifest><remote name="r" fetch="." />'
+            '<default remote="r" revision="main" />'
+            '<project name="%s" /></manifest>'
+        )
+        manifest = repo_client.get_xml_manifest(manifest_xml_fmt % "default")
+        (repo_client.manifest_dir / "good.xml").write_text(
+            manifest_xml_fmt % "override", encoding="utf-8"
+        )
+        (repo_client.manifest_dir / "bad.xml").write_text(
+            "<manifest>", encoding="utf-8"
+        )
+
+        # No override in effect: a no-op.
+        manifest.ClearOverride()
+        assert list(manifest.paths) == ["default"]
+
+        manifest.Override("good.xml")
+        assert list(manifest.paths) == ["override"]
+        manifest.ClearOverride()
+        assert not manifest.manifestFileOverrides
+        assert list(manifest.paths) == ["default"]
+
+        # Override() registers the override before parsing it, so a failed
+        # Override() leaves the client pinned until ClearOverride().
+        with pytest.raises(error.ManifestParseError):
+            manifest.Override("bad.xml")
+        with pytest.raises(error.ManifestParseError):
+            manifest.Load()
+        manifest.ClearOverride()
+        assert list(manifest.paths) == ["default"]
+
 
 class TestIncludeElement:
     """Tests for <include>."""
