@@ -644,8 +644,15 @@ later is required to fix a server side protocol bug.
                 "-s",
                 "--smart-sync",
                 action="store_true",
+                default=None,
                 help="smart sync using manifest from the latest known good "
                 "build",
+            )
+            p.add_option(
+                "--no-smart-sync",
+                dest="smart_sync",
+                action="store_false",
+                help="disable smart sync and sync to ToT instead",
             )
             p.add_option(
                 "-t",
@@ -2105,6 +2112,15 @@ later is required to fix a server side protocol bug.
             opt: The options to process.
             mp: The manifest project to pull defaults from.
         """
+        if opt.smart_sync is None:
+            if opt.smart_tag or opt.manifest_name:
+                opt.smart_sync = False
+            else:
+                opt.smart_sync = (
+                    getattr(mp.manifest.default, "sync_smartsync", False)
+                    is True
+                )
+
         if not opt.jobs:
             # If the user hasn't made a choice, use the manifest value.
             opt.jobs = mp.manifest.default.sync_j
@@ -2260,6 +2276,14 @@ later is required to fix a server side protocol bug.
 
         if opt.clone_bundle is None:
             opt.clone_bundle = manifest.CloneBundle
+
+        if opt.smart_sync is None:
+            if opt.smart_tag or opt.manifest_name:
+                opt.smart_sync = False
+            else:
+                opt.smart_sync = (
+                    getattr(manifest.default, "sync_smartsync", False) is True
+                )
 
         if opt.smart_sync or opt.smart_tag:
             manifest_name = self._SmartSyncSetup(
