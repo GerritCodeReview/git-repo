@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b9c36e8_8df91f4b",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1098470
+      },
+      "writtenOn": "2026-08-11T18:10:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22dd94c4_6cbcb17a",
+      "range": {
+        "startLine": 460,
+        "startChar": 15,
+        "endLine": 460,
+        "endChar": 33
+      },
+      "revId": "98b70dd0b7678ecba14d0ab1bb1fc79e1cbecbcf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3c0cb8c_567ef3a7",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d119565_750d9cb5",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1098470
+      },
+      "writtenOn": "2026-08-11T18:10:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3c0cb8c_567ef3a7",
+      "range": {
+        "startLine": 470,
+        "startChar": 17,
+        "endLine": 470,
+        "endChar": 70
+      },
+      "revId": "98b70dd0b7678ecba14d0ab1bb1fc79e1cbecbcf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c3da9be_56378214",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-08-11T17:44:43Z",
       "side": 1,
       "message": "`git_event_log` is an attribute of `Command`, so you\u0027ll need to pass it like w/ other args, eg https://cs.opensource.google/gerrit/gerrit/git-repo/+/main:subcmds/sync.py;l\u003d2226;drc\u003d4bec297eb6e5f30ea2fe2a2d8a92054cafa30e4f",
+      "range": {
+        "startLine": 522,
+        "startChar": 0,
+        "endLine": 522,
+        "endChar": 69
+      },
+      "revId": "98b70dd0b7678ecba14d0ab1bb1fc79e1cbecbcf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b4bae95_933712d1",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1098470
+      },
+      "writtenOn": "2026-08-11T18:10:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c3da9be_56378214",
       "range": {
         "startLine": 522,
         "startChar": 0,
