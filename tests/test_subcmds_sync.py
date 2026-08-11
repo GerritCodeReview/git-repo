@@ -18,6 +18,7 @@ import os
 import shutil
 import tempfile
 import time
+from typing import List, Optional
 import unittest
 from unittest import mock
 
@@ -155,6 +156,106 @@ def test_cli_jobs_sync_j_max(
             assert opts.jobs == jobs
             assert opts.jobs_network == jobs_net
             assert opts.jobs_checkout == jobs_check
+
+
+@pytest.mark.parametrize(
+    "argv, sync_smartsync_manifest, expected_smart_sync",
+    [
+        ([], False, False),
+        ([], None, False),
+        ([], True, True),
+        (["-s"], False, True),
+        (["--smart-sync"], False, True),
+        (["--smart-sync"], True, True),
+        (["--no-smart-sync"], True, False),
+        (["--no-smart-sync"], False, False),
+        (["-t", "tag123"], True, False),
+        (["--smart-tag=tag123"], True, False),
+        (["-m", "other.xml"], True, False),
+        (["--manifest-name=other.xml"], True, False),
+    ],
+)
+def test_cli_smart_sync(
+    argv: List[str],
+    sync_smartsync_manifest: Optional[bool],
+    expected_smart_sync: bool,
+) -> None:
+    """Tests --smart-sync and --no-smart-sync option behavior with manifest
+    default.
+    """
+    manifest = mock.MagicMock()
+    manifest.default.sync_smartsync = sync_smartsync_manifest
+    manifest.manifestProject.manifest.default.sync_j = None
+    manifest.manifestProject.manifest.default.sync_j_max = None
+
+    cmd = sync.Sync(
+        manifest=manifest,
+        outer_manifest=manifest,
+        git_event_log=mock.MagicMock(),
+    )
+    opts, args = cmd.OptionParser.parse_args(argv)
+    opts.quiet = True
+    cmd.ValidateOptions(opts, args)
+
+    with mock.patch.object(cmd, "_SmartSyncSetup"):
+        with mock.patch.object(cmd, "GetSmartSyncOverridePath"):
+            with mock.patch.object(os.path, "isfile", return_value=False):
+                with mock.patch.object(manifest.repoProject, "PreSync"):
+                    with mock.patch.object(
+                        manifest.repoProject, "CurrentBranch", None
+                    ):
+                        with mock.patch.object(
+                            cmd, "ManifestList", return_value=[]
+                        ):
+                            with mock.patch.object(
+                                cmd, "_UpdateAllManifestProjects"
+                            ):
+                                with mock.patch.object(
+                                    cmd, "_UpdateRepoProject"
+                                ):
+                                    with mock.patch.object(
+                                        cmd, "_UpdateProjectsRevisionId"
+                                    ):
+                                        with mock.patch.object(
+                                            cmd, "GetProjects", return_value=[]
+                                        ):
+                                            with mock.patch.object(
+                                                cmd, "_SyncInterleaved"
+                                            ):
+                                                with mock.patch.object(
+                                                    cmd, "_RunPostSyncHook"
+                                                ):
+                                                    cmd._ExecuteHelper(
+                                                        opts, args, []
+                                                    )
+                                                    assert (
+                                                        opts.smart_sync
+                                                        == expected_smart_sync
+                                                    )
+
+
+@pytest.mark.parametrize(
+    "argv, should_raise",
+    [
+        (["-u", "user", "-p", "pass"], False),
+        (["-s", "-u", "user", "-p", "pass"], False),
+        (["-t", "tag", "-u", "user", "-p", "pass"], False),
+        (["--no-smart-sync", "-u", "user", "-p", "pass"], True),
+        (["-u", "user"], True),
+        (["-p", "pass"], True),
+    ],
+)
+def test_cli_manifest_server_credentials(
+    argv: List[str], should_raise: bool
+) -> None:
+    """Tests -u and -p validation rules."""
+    cmd = sync.Sync()
+    opts, args = cmd.OptionParser.parse_args(argv)
+    if should_raise:
+        with pytest.raises(SystemExit):
+            cmd.ValidateOptions(opts, args)
+    else:
+        cmd.ValidateOptions(opts, args)
 
 
 class LocalSyncState(unittest.TestCase):
