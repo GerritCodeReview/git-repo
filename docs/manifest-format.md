@@ -55,6 +55,7 @@ following DTD:
   <!ATTLIST default sync-c      CDATA #IMPLIED>
   <!ATTLIST default sync-s      CDATA #IMPLIED>
   <!ATTLIST default sync-tags   CDATA #IMPLIED>
+  <!ATTLIST default sync-smartsync CDATA #IMPLIED>
 
   <!ELEMENT manifest-server EMPTY>
   <!ATTLIST manifest-server url CDATA #REQUIRED>
@@ -230,6 +231,8 @@ Attribute `sync-s`: Set to true to also sync sub-projects.
 Attribute `sync-tags`: Set to false to only sync the given Git
 branch (specified in the `revision` attribute) rather than
 the other ref tags.
+
+Attribute `sync-smartsync`: Set to true to enable smart sync by default.
 
 
 ### Element manifest-server
