@@ -19,7 +19,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import time
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Type
 import unittest
 from unittest import mock
 
@@ -295,6 +295,79 @@ def test_cli_jobs_sync_j_max(
             assert opts.jobs == jobs
             assert opts.jobs_network == jobs_net
             assert opts.jobs_checkout == jobs_check
+
+
+@pytest.mark.parametrize(
+    "argv, sync_smartsync_manifest, expected_smart_sync, expected_implicit",
+    [
+        ([], False, False, False),
+        ([], None, False, False),
+        ([], True, True, True),
+        (["-s"], False, True, False),
+        (["--smart-sync"], False, True, False),
+        (["--smart-sync"], True, True, False),
+        (["--no-smart-sync"], True, False, False),
+        (["--no-smart-sync"], False, False, False),
+        (["-t", "tag123"], True, False, False),
+        (["--smart-tag=tag123"], True, False, False),
+        (["-m", "other.xml"], True, False, False),
+        (["--manifest-name=other.xml"], True, False, False),
+    ],
+)
+def test_cli_smart_sync(
+    argv: List[str],
+    sync_smartsync_manifest: Optional[bool],
+    expected_smart_sync: bool,
+    expected_implicit: bool,
+) -> None:
+    """Tests --smart-sync and --no-smart-sync option behavior with manifest
+    default.
+    """
+    manifest = mock.MagicMock()
+    manifest.default.sync_smartsync = sync_smartsync_manifest
+
+    cmd = sync.Sync(manifest=manifest)
+    opts, args = cmd.OptionParser.parse_args(argv)
+    cmd.ValidateOptions(opts, args)
+    implicit = cmd._IsImplicitSmartSync(opts, manifest)
+    assert opts.smart_sync == expected_smart_sync
+    assert implicit == expected_implicit
+
+
+@pytest.mark.parametrize(
+    "argv, sync_smartsync_manifest, expected_exception",
+    [
+        (["-u", "user", "-p", "pass"], False, sync.SmartSyncError),
+        (["-u", "user", "-p", "pass"], True, None),
+        (["-s", "-u", "user", "-p", "pass"], False, None),
+        (["-t", "tag", "-u", "user", "-p", "pass"], False, None),
+        (
+            ["--no-smart-sync", "-u", "user", "-p", "pass"],
+            True,
+            sync.SmartSyncError,
+        ),
+        (["-u", "user"], False, SystemExit),
+        (["-p", "pass"], False, SystemExit),
+    ],
+)
+def test_cli_manifest_server_credentials(
+    argv: List[str],
+    sync_smartsync_manifest: bool,
+    expected_exception: Optional[Type[BaseException]],
+) -> None:
+    """Tests -u and -p validation rules."""
+    manifest = mock.MagicMock()
+    manifest.default.sync_smartsync = sync_smartsync_manifest
+
+    cmd = sync.Sync(manifest=manifest)
+    opts, args = cmd.OptionParser.parse_args(argv)
+    if expected_exception:
+        with pytest.raises(expected_exception):
+            cmd.ValidateOptions(opts, args)
+            cmd._IsImplicitSmartSync(opts, manifest)
+    else:
+        cmd.ValidateOptions(opts, args)
+        cmd._IsImplicitSmartSync(opts, manifest)
 
 
 class LocalSyncState(unittest.TestCase):
@@ -1136,6 +1209,42 @@ class SyncCommand(unittest.TestCase):
         self.cmd.GetProjects.assert_called()
         _, kwargs = self.cmd.GetProjects.call_args
         self.assertEqual(kwargs.get("groups"), "my_group")
+
+    def test_implicit_smart_sync_fallback(self) -> None:
+        """Ensure implicit smart sync falls back to ToT on SmartSyncError."""
+        self.manifest.default.sync_smartsync = True
+        self.opt.smart_sync = None
+        self.opt.mp_update = False
+        with mock.patch.object(
+            self.cmd,
+            "_SmartSyncSetup",
+            side_effect=sync.SmartSyncError("unreachable"),
+        ):
+            with mock.patch.object(self.cmd, "_UpdateRepoProject"):
+                with mock.patch.object(
+                    self.cmd, "_ValidateOptionsWithManifest"
+                ):
+                    with mock.patch.object(self.cmd, "_SyncInterleaved"):
+                        with mock.patch.object(self.cmd, "_RunPostSyncHook"):
+                            with mock.patch.object(
+                                sync.logger, "warning"
+                            ) as mock_warn:
+                                self.cmd.Execute(self.opt, [])
+        self.assertFalse(self.opt.smart_sync)
+        self.assertTrue(mock_warn.called)
+
+    def test_explicit_smart_sync_error(self) -> None:
+        """Ensure explicit smart sync raises SmartSyncError on failure."""
+        self.manifest.default.sync_smartsync = True
+        self.opt.smart_sync = True
+        self.opt.mp_update = False
+        with mock.patch.object(
+            self.cmd,
+            "_SmartSyncSetup",
+            side_effect=sync.SmartSyncError("unreachable"),
+        ):
+            with self.assertRaises(sync.SmartSyncError):
+                self.cmd.Execute(self.opt, [])
 
 
 class SyncUpdateRepoProject(unittest.TestCase):
