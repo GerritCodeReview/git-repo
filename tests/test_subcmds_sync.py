@@ -157,6 +157,38 @@ def test_cli_jobs_sync_j_max(
             assert opts.jobs_checkout == jobs_check
 
 
+@pytest.mark.parametrize(
+    "argv, sync_smartsync_manifest, expected_smart_sync",
+    [
+        ([], False, False),
+        ([], None, False),
+        ([], True, True),
+        (["-s"], False, True),
+        (["--smart-sync"], False, True),
+        (["--smart-sync"], True, True),
+        (["--no-smart-sync"], True, False),
+        (["--no-smart-sync"], False, False),
+    ],
+)
+def test_cli_smart_sync(argv, sync_smartsync_manifest, expected_smart_sync):
+    """Tests --smart-sync and --no-smart-sync option behavior with manifest
+    default.
+    """
+    mp = mock.MagicMock()
+    mp.manifest.default.sync_j = None
+    mp.manifest.default.sync_j_max = None
+    mp.manifest.default.sync_smartsync = sync_smartsync_manifest
+
+    cmd = sync.Sync()
+    opts, args = cmd.OptionParser.parse_args(argv)
+    cmd.ValidateOptions(opts, args)
+
+    with mock.patch.object(sync, "_rlimit_nofile", return_value=(256, 256)):
+        with mock.patch.object(os, "cpu_count", return_value=OS_CPU_COUNT):
+            cmd._ValidateOptionsWithManifest(opts, mp)
+            assert opts.smart_sync == expected_smart_sync
+
+
 class LocalSyncState(unittest.TestCase):
     """Tests for LocalSyncState."""
 
