@@ -138,9 +138,24 @@ copy into `.repo/manifests/smart_sync_override.xml` so users can examine it.
 The next time `repo sync` is run, this file is automatically replaced or removed
 based on the current set of options.
 
-### --smart-sync
+### sync-smartsync (Manifest Attribute)
 
-Repo will call `GetApprovedManifest(branch[, target])`.
+The manifest can enable Smart Sync by default for all `repo sync` invocations
+by setting `sync-smartsync="true"` on the `<default>` element:
+
+```xml
+  <default sync-smartsync="true" ... />
+```
+
+When enabled in the manifest, `repo sync` will automatically perform a Smart
+Sync unless explicitly overridden on the command line. Options that specify
+an explicit target or manifest source (such as `-t`/`--smart-tag` or
+`-m`/`--manifest-name`) will also disable the default Smart Sync behavior.
+
+### --smart-sync / -s
+
+Explicitly enables Smart Sync. Repo will call
+`GetApprovedManifest(branch[, target])`.
 
 The `branch` is determined by the current manifest branch as specified by
 `--manifest-branch=BRANCH` when running `repo init`.
@@ -155,6 +170,11 @@ match the settings Android build environments automatically setup.
 3.  `${TARGET_PRODUCT}-${TARGET_BUILD_VARIANT}`: If these variables are all
     defined, then they are merged with `-` and used.
 
-### --smart-tag=TAG
+### --no-smart-sync
+
+Explicitly disables Smart Sync, overriding any `sync-smartsync="true"` setting
+declared in the manifest `<default>` element.
+
+### --smart-tag=TAG / -t
 
 Repo will call `GetManifest(TAG)`.
