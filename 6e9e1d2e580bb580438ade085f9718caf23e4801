@@ -1,0 +1,91 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb9cfac5_62e516a5",
+        "filename": "git_trace2_event_log_base.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-11T23:33:53Z",
+      "side": 1,
+      "message": "this isn\u0027t used anywhere outside of tests",
+      "range": {
+        "startLine": 260,
+        "startChar": 8,
+        "endLine": 260,
+        "endChar": 20
+      },
+      "revId": "6e9e1d2e580bb580438ade085f9718caf23e4801",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2423050c_b27ff5b6",
+        "filename": "hooks.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-11T23:33:53Z",
+      "side": 1,
+      "message": "if hooks aren\u0027t approved (ie `not _CheckForHookApproval`) then it\u0027ll still show \"passed\". also if someone KeyboardInterrupts during hook execution, it\u0027ll also show \"passed\" since it isn\u0027t caught anywhere else\n\nWDYT about having an enum or something instead like passed/failed/bypassed/not_approved/aborted?",
+      "range": {
+        "startLine": 499,
+        "startChar": 20,
+        "endLine": 499,
+        "endChar": 57
+      },
+      "revId": "6e9e1d2e580bb580438ade085f9718caf23e4801",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23de82bf_51f87254",
+        "filename": "hooks.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-11T23:33:53Z",
+      "side": 1,
+      "message": "this is unused now",
+      "range": {
+        "startLine": 528,
+        "startChar": 8,
+        "endLine": 528,
+        "endChar": 79
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8343187f_b436eacd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "hooks.py",
+              "range": {
+                "startLine": 528,
+                "startChar": 0,
+                "endLine": 529,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "6e9e1d2e580bb580438ade085f9718caf23e4801",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
