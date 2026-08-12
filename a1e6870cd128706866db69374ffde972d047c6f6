@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a616574e_6272e50b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-12T00:03:11Z",
+      "side": 1,
+      "message": "let\u0027s update the completion files and smart-sync.md",
+      "revId": "a1e6870cd128706866db69374ffde972d047c6f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d45fd064_604e65bf",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-12T00:03:11Z",
+      "side": 1,
+      "message": "reformat these lines for column alignment",
+      "range": {
+        "startLine": 49,
+        "startChar": 34,
+        "endLine": 58,
+        "endChar": 36
+      },
+      "revId": "a1e6870cd128706866db69374ffde972d047c6f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e095fa0b_e9f2a0f0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 2093,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-12T00:03:11Z",
+      "side": 1,
+      "message": "won\u0027t -u and -p be rejected when smart sync comes from the manifest since opt.smart_sync will be None here still?",
+      "revId": "a1e6870cd128706866db69374ffde972d047c6f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0726e748_e96c76a8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 2116,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-12T00:03:11Z",
+      "side": 1,
+      "message": "IIUC this block will never be reached since _ExecuteHelper resolves opt.smart_sync already",
+      "revId": "a1e6870cd128706866db69374ffde972d047c6f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
