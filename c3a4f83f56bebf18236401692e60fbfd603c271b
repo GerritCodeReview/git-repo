@@ -1,0 +1,86 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2006b0de_b28729cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-08-12T13:45:14Z",
+      "side": 1,
+      "message": "Done. Updated completion.zsh, docs/smart-sync.md, and regenerated man pages.",
+      "parentUuid": "a616574e_6272e50b",
+      "isAi": true,
+      "revId": "c3a4f83f56bebf18236401692e60fbfd603c271b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "096e27d2_df721e54",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-08-12T13:45:14Z",
+      "side": 1,
+      "message": "Done. Realigned DTD attribute columns.",
+      "parentUuid": "d45fd064_604e65bf",
+      "range": {
+        "startLine": 49,
+        "startChar": 34,
+        "endLine": 58,
+        "endChar": 36
+      },
+      "isAi": true,
+      "revId": "c3a4f83f56bebf18236401692e60fbfd603c271b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "780aecf9_81dc8449",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 2093,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-08-12T13:45:14Z",
+      "side": 1,
+      "message": "Done. Updated validation condition to allow credentials when opt.smart_sync is not explicitly False, and added unit test cases.",
+      "parentUuid": "e095fa0b_e9f2a0f0",
+      "isAi": true,
+      "revId": "c3a4f83f56bebf18236401692e60fbfd603c271b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cccda7a9_6af811d7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 2116,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-08-12T13:45:14Z",
+      "side": 1,
+      "message": "Done. Removed redundant resolution block from _ValidateOptionsWithManifest and extracted _ResolveSmartSyncOption.",
+      "parentUuid": "0726e748_e96c76a8",
+      "isAi": true,
+      "revId": "c3a4f83f56bebf18236401692e60fbfd603c271b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
