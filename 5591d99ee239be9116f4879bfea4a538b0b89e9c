@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "673b8188_25d10a00",
+        "filename": "release/update-hooks",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5079758
+      },
+      "writtenOn": "2026-08-12T03:21:13Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "revId": "5591d99ee239be9116f4879bfea4a538b0b89e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
