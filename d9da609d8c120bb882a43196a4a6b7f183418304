@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6cda253_380213d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-08-12T13:02:59Z",
+      "side": 1,
+      "message": "Hey guys, unfortunately this commit breaks sync for manifests that has same project used twice in different paths, if clone-depth is different for them, in our case because prebuilts/asuite has depth 1 from you, but not from uhm ... another big SOC supplier manifest.\n\nSomething with the project lookup fails, so master sync breaks with this commit on stable, giving this error:\nfatal: couldn\u0027t find remote ref refs/heads/master\n\nWe can of course update this in the supplier manifests, but it works great with this commit reverted.",
+      "revId": "d9da609d8c120bb882a43196a4a6b7f183418304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
