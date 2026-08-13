@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bc379f6_1d746afc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-08-13T10:10:40Z",
+      "side": 1,
+      "message": "Filed a bug b/545941712 for the incorrect warnings given by AI code-review-workflow.",
+      "revId": "3bb9a5d9d3c7a0a385bb2f4145e86f80eb5ddac8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
