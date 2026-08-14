@@ -139,3 +139,36 @@ def main(project_list, **kwargs):
 
     assert res is True
     assert project_list == [yes_val]
+
+def test_repo_upload_yes_ignore_hooks_arg(tmp_path) -> None:
+    """Test that yes is False in kwargs when ignore_hooks is True."""
+
+    class FakeProject:
+        def __init__(self, worktree):
+            self.worktree = worktree
+            self.enabled_repo_hooks = ["pre-upload"]
+            self.config = None
+
+    hook_file = tmp_path / "pre-upload.py"
+
+    hook_content = """
+def main(project_list, **kwargs):
+    project_list.append(kwargs.get("yes"))
+"""
+    hook_file.write_text(hook_content)
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(str(tmp_path)),
+        repo_topdir=str(tmp_path),
+        manifest_url="https://gerrit",
+        allow_all_hooks=True,
+        yes=True,
+        ignore_hooks=True,
+    )
+
+    project_list = []
+    res = hook.Run(project_list=project_list, worktree_list=[])
+
+    assert res is True
+    assert project_list == [False]
