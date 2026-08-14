@@ -126,7 +126,7 @@ This hook runs when people run `repo upload`.
 The `pre-upload.py` file should be defined like:
 
 ```py
-def main(project_list, worktree_list=None, yes=False, **kwargs):
+def main(project_list, worktree_list=None, fix=False, yes=False, **kwargs):
     """Main function invoked directly by repo.
 
     We must use the name "main" as that is what repo requires.
@@ -137,6 +137,7 @@ def main(project_list, worktree_list=None, yes=False, **kwargs):
           project_list, so that each entry in project_list matches with a
           directory in worktree_list.  If None, we will attempt to calculate
           the directories automatically.
+      fix: Whether to automatically apply fixes without prompting.
       yes: Whether to answer yes to all safe prompts (see
           [Safe Prompts](#safe-prompts)).
       kwargs: Leave this here for forward-compatibility.
