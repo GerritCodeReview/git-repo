@@ -380,7 +380,7 @@ class RepoHook:
             kwargs = {
                 **kwargs,
                 "hook_should_take_kwargs": True,
-                "yes": self._yes,
+                "yes": self._yes and not self._ignore_hooks,
             }
 
             # See what version of python the hook has been written against.
