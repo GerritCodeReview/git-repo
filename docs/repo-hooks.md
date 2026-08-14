@@ -88,7 +88,14 @@ be useful when deploying automatic fixes.
 If the repo command that triggered the hook supports a "yes" option (e.g.,
 `repo upload --yes`), this option is propagated to the hook's `main` function
 as `yes` parameter (defaulting to `False`).  Hooks can use this to bypass
-interactive confirmation prompts when they can automatically fix issues.
+interactive confirmation prompts for safe non-modifying operations.
+
+### Automated Fixes
+
+If the repo command that triggered the hook supports a "fix" option (e.g.,
+`repo upload --fix`), this option is propagated to the hook's `main` function
+as `fix` parameter (defaulting to `False`).  Hooks can use this to automatically
+apply fixes without prompting the user.
 
 ### Shebang Handling
 
@@ -126,7 +133,7 @@ This hook runs when people run `repo upload`.
 The `pre-upload.py` file should be defined like:
 
 ```py
-def main(project_list, worktree_list=None, yes=False, **kwargs):
+def main(project_list, worktree_list=None, fix=False, yes=False, **kwargs):
     """Main function invoked directly by repo.
 
     We must use the name "main" as that is what repo requires.
@@ -137,6 +144,7 @@ def main(project_list, worktree_list=None, yes=False, **kwargs):
           project_list, so that each entry in project_list matches with a
           directory in worktree_list.  If None, we will attempt to calculate
           the directories automatically.
+      fix: Whether to automatically apply fixes without prompting.
       yes: Whether to answer yes to all safe prompts (see
           [Safe Prompts](#safe-prompts)).
       kwargs: Leave this here for forward-compatibility.
