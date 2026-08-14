@@ -15,6 +15,7 @@
 """Unittests for the hooks.py module."""
 
 from io import StringIO
+from pathlib import Path
 import sys
 
 import pytest
@@ -108,11 +109,11 @@ def test_post_sync_argument_validation() -> None:
 
 
 @pytest.mark.parametrize("yes_val", (True, False))
-def test_repo_upload_yes_arg(tmp_path, yes_val: bool) -> None:
+def test_repo_upload_yes_arg(tmp_path: Path, yes_val: bool) -> None:
     """Test that yes is passed in kwargs during hook execution."""
 
     class FakeProject:
-        def __init__(self, worktree):
+        def __init__(self, worktree: str) -> None:
             self.worktree = worktree
             self.enabled_repo_hooks = ["pre-upload"]
             self.config = None
@@ -139,3 +140,64 @@ def main(project_list, **kwargs):
 
     assert res is True
     assert project_list == [yes_val]
+
+
+@pytest.mark.parametrize("fix_val", (True, False))
+def test_repo_upload_fix_arg(tmp_path: Path, fix_val: bool) -> None:
+    """Test that fix is passed in kwargs during hook execution."""
+
+    class FakeProject:
+        def __init__(self, worktree: str) -> None:
+            self.worktree = worktree
+            self.enabled_repo_hooks = ["pre-upload"]
+            self.config = None
+
+    hook_file = tmp_path / "pre-upload.py"
+
+    hook_content = """
+def main(project_list, **kwargs):
+    project_list.append(kwargs.get("fix"))
+"""
+    hook_file.write_text(hook_content)
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(str(tmp_path)),
+        repo_topdir=str(tmp_path),
+        manifest_url="https://gerrit",
+        allow_all_hooks=True,
+        fix=fix_val,
+    )
+
+    project_list = []
+    res = hook.Run(project_list=project_list, worktree_list=[])
+
+    assert res is True
+    assert project_list == [fix_val]
+
+
+def test_from_subcmd_without_fix_option() -> None:
+    """Test that FromSubcmd works when opt does not have fix attribute."""
+
+    class Remote:
+        url = "https://gerrit"
+
+    class FakeManifest:
+        repo_hooks_project = None
+        topdir = "/fake/topdir"
+
+        class manifestProject:
+            @staticmethod
+            def GetRemote(name: str) -> "Remote":
+                return Remote()
+
+        class contactinfo:
+            bugurl = "https://bugs"
+
+    class FakeOpt:
+        bypass_hooks = False
+        allow_all_hooks = False
+        ignore_hooks = False
+
+    hook = hooks.RepoHook.FromSubcmd(FakeManifest(), FakeOpt(), "post-sync")
+    assert hook._fix is False
