@@ -52,6 +52,41 @@
       "parentUuid": "2ed9c7aa_b7e07dc9",
       "revId": "d9da609d8c120bb882a43196a4a6b7f183418304",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1010467_301c5907",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-08-14T15:05:05Z",
+      "side": 1,
+      "message": "Or possibly the clone depth is unrelated, maybe it is related to having another default branch set ... maybe. \u003d)",
+      "parentUuid": "c6cda253_380213d9",
+      "revId": "d9da609d8c120bb882a43196a4a6b7f183418304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02b657c1_26fc052b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-08-14T15:05:05Z",
+      "side": 1,
+      "message": "We ran the 2.66.1, same issue.\n\nThen we tried with flags like trace and git trace on, but it didnt really contain anything useful or explaining of the manifest, so we figured we could give a simple manifest that gives you same issue and then time ran out, can do that Monday perhaps. Cheers ...",
+      "revId": "d9da609d8c120bb882a43196a4a6b7f183418304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
