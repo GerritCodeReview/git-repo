@@ -379,7 +379,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             default=True,
             help="disable verifying ssl certs (unsafe)",
         )
-        RepoHook.AddOptionGroup(p, "pre-upload")
+        RepoHook.AddOptionGroup(p, "pre-upload", allow_fix=True)
 
     def _SingleBranch(self, opt, branch, people):
         project = branch.project

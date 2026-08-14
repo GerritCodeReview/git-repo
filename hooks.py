@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import optparse
 import os
 import re
 import sys
@@ -69,6 +70,7 @@ class RepoHook:
         ignore_hooks=False,
         abort_if_user_denies=False,
         yes=False,
+        fix=False,
     ):
         """RepoHook constructor.
 
@@ -91,6 +93,7 @@ class RepoHook:
             abort_if_user_denies: If True, we'll abort running the hook if the
                 user doesn't allow us to run the hook.
             yes: If True, then 'Yes' is assumed for any prompts.
+            fix: If True, then 'Fix' is assumed for any fixup prompts.
         """
         self._hook_type = hook_type
         self._hooks_project = hooks_project
@@ -102,6 +105,7 @@ class RepoHook:
         self._ignore_hooks = ignore_hooks
         self._abort_if_user_denies = abort_if_user_denies
         self._yes = yes
+        self._fix = fix
 
         # Store the full path to the script for convenience.
         self._script_fullpath = None
@@ -380,6 +384,7 @@ class RepoHook:
             kwargs = {
                 **kwargs,
                 "hook_should_take_kwargs": True,
+                "fix": self._fix,
                 "yes": self._yes,
             }
 
@@ -504,12 +509,17 @@ class RepoHook:
                 ).url,
                 "bug_url": manifest.contactinfo.bugurl,
                 "yes": getattr(opt, "yes", False),
+                "fix": getattr(opt, "fix", False),
             }
         )
         return cls(*args, **kwargs)
 
     @staticmethod
-    def AddOptionGroup(parser, name):
+    def AddOptionGroup(
+        parser: optparse.OptionParser,
+        name: str,
+        allow_fix: bool = False,
+    ) -> None:
         """Help options relating to the various hooks."""
 
         # Note that verify and no-verify are NOT opposites of each other, which
@@ -533,3 +543,10 @@ class RepoHook:
             action="store_true",
             help="Do not abort if %s hooks fail." % name,
         )
+        if allow_fix:
+            group.add_option(
+                "--fix",
+                action="store_true",
+                default=False,
+                help="Automatically apply %s fixes without prompting." % name,
+            )
