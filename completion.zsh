@@ -400,6 +400,7 @@ _repo() {
         '--no-verify[Do not verify]' \
         '--verify[Verify]' \
         '--ignore-hooks[Ignore hooks]' \
+        '--fix[Automatically fix]' \
         '*: :->project'
       ;;
     version)
