@@ -571,6 +571,7 @@ class Project:
         dest_branch=None,
         optimized_fetch=False,
         retry_fetches=0,
+        sparse_paths: Optional[List[str]] = None,
     ):
         """Init a Project object.
 
@@ -603,6 +604,8 @@ class Project:
                 only fetch from the remote if the sha1 is not present locally.
             retry_fetches: Retry remote fetches n times upon receiving transient
                 error with exponential backoff and jitter.
+            sparse_paths: List of paths from manifest.xml's `sparse-path` child
+                elements.  A non-empty list enables sparse checkout.
         """
         self.client = self.manifest = manifest
         self.name = name
@@ -626,6 +629,7 @@ class Project:
         self.is_derived = is_derived
         self.optimized_fetch = optimized_fetch
         self.retry_fetches = max(0, retry_fetches)
+        self.sparse_paths = sparse_paths if sparse_paths is not None else []
         self.subprojects = []
 
         self.snapshots = {}
@@ -1456,6 +1460,12 @@ class Project:
         # already.
         if clone_bundle and os.path.exists(self.objdir):
             clone_bundle = False
+
+        # Sparse checkout only prunes the working tree, so pair it with a
+        # partial clone by default to avoid fetching blobs that will never be
+        # checked out.  An explicit filter or exclusion still wins below.
+        if self.sparse_paths and not clone_filter:
+            clone_filter = "blob:none"
 
         if partial_clone_exclude is None:
             partial_clone_exclude = set()
@@ -3920,7 +3930,7 @@ class Project:
         self.bare_git.worktree(
             "add",
             "-ff",
-            "--checkout",
+            "--no-checkout" if self.sparse_paths else "--checkout",
             "--detach",
             "--lock",
             self.worktree,
@@ -3958,6 +3968,19 @@ class Project:
                 os.path.join(git_worktree_path, "gitdir"), "w", newline="\n"
             ) as fp:
                 print(os.path.relpath(dotgit, git_worktree_path), file=fp)
+
+        # Configure sparse-checkout before populating the worktree.  Like the
+        # non-worktree path, this only runs when the worktree is first created,
+        # so later changes to `sparse-path` in the manifest are not applied to
+        # existing checkouts.  See docs/manifest-format.md.
+        if self.sparse_paths:
+            self._ConfigureSparseCheckout(self.sparse_paths)
+            cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
+            if GitCommand(self, cmd).Wait() != 0:
+                raise GitError(
+                    "Cannot initialize work tree for " + self.name,
+                    project=self.name,
+                )
 
         self._InitMRef()
 
@@ -4012,24 +4035,46 @@ class Project:
             if init_dotgit:
                 self.work_git.UpdateRef(HEAD, self.GetRevisionId(), detach=True)
 
-                # Finish checking out the worktree.
-                cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
                 try:
+                    # Configure sparse-checkout before checking out the
+                    # worktree.  This only runs when the worktree is first
+                    # created, so later changes to `sparse-path` in the
+                    # manifest are not applied to existing checkouts.  See
+                    # docs/manifest-format.md.
+                    if self.sparse_paths:
+                        self._ConfigureSparseCheckout(self.sparse_paths)
+
+                    # Finish checking out the worktree.
+                    cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
                     if GitCommand(self, cmd).Wait() != 0:
                         raise GitError(
                             "Cannot initialize work tree for " + self.name,
                             project=self.name,
                         )
                 except Exception as e:
-                    # Something went wrong with read-tree (perhaps fetching
-                    # missing blobs), so remove .git to avoid half initialized
-                    # workspace from which repo can't recover on its own.
+                    # Something went wrong with sparse-checkout or read-tree
+                    # (perhaps fetching missing blobs), so remove .git to avoid
+                    # a half initialized workspace from which repo can't recover
+                    # on its own.
                     platform_utils.remove(dotgit)
                     raise e
 
                 if submodules:
                     self._SyncSubmodules(quiet=True)
                 self._CopyAndLinkFiles()
+
+    def _ConfigureSparseCheckout(self, sparse_paths: List[str]) -> None:
+        """Configure sparse-checkout for the project.
+
+        Args:
+            sparse_paths: List of paths to include in sparse-checkout.
+        """
+        if not sparse_paths:
+            return
+
+        git_require((2, 25, 0), fail=True, msg="Sparse Checkout")
+        self.work_git.sparse_checkout("init", "--cone")
+        self.work_git.sparse_checkout("set", *sparse_paths)
 
     def _createDotGit(self, dotgit):
         """Initialize .git path.

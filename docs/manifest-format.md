@@ -73,20 +73,21 @@ following DTD:
   <!ELEMENT project (annotation*,
                      project*,
                      copyfile*,
-                     linkfile*)>
-  <!ATTLIST project name          CDATA #REQUIRED>
-  <!ATTLIST project path          CDATA #IMPLIED>
-  <!ATTLIST project remote        IDREF #IMPLIED>
-  <!ATTLIST project revision      CDATA #IMPLIED>
-  <!ATTLIST project dest-branch   CDATA #IMPLIED>
-  <!ATTLIST project groups        CDATA #IMPLIED>
-  <!ATTLIST project sync-c        CDATA #IMPLIED>
-  <!ATTLIST project sync-s        CDATA #IMPLIED>
-  <!ATTLIST project sync-tags     CDATA #IMPLIED>
-  <!ATTLIST project upstream      CDATA #IMPLIED>
-  <!ATTLIST project clone-depth   CDATA #IMPLIED>
-  <!ATTLIST project force-path    CDATA #IMPLIED>
-  <!ATTLIST project sync-strategy CDATA #IMPLIED>
+                     linkfile*,
+                     sparse-path*)>
+  <!ATTLIST project name            CDATA #REQUIRED>
+  <!ATTLIST project path            CDATA #IMPLIED>
+  <!ATTLIST project remote          IDREF #IMPLIED>
+  <!ATTLIST project revision        CDATA #IMPLIED>
+  <!ATTLIST project dest-branch     CDATA #IMPLIED>
+  <!ATTLIST project groups          CDATA #IMPLIED>
+  <!ATTLIST project sync-c          CDATA #IMPLIED>
+  <!ATTLIST project sync-s          CDATA #IMPLIED>
+  <!ATTLIST project sync-tags       CDATA #IMPLIED>
+  <!ATTLIST project upstream        CDATA #IMPLIED>
+  <!ATTLIST project clone-depth     CDATA #IMPLIED>
+  <!ATTLIST project force-path      CDATA #IMPLIED>
+  <!ATTLIST project sync-strategy   CDATA #IMPLIED>
 
   <!ELEMENT annotation EMPTY>
   <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -101,9 +102,13 @@ following DTD:
   <!ATTLIST linkfile src  CDATA #REQUIRED>
   <!ATTLIST linkfile dest CDATA #REQUIRED>
 
+  <!ELEMENT sparse-path EMPTY>
+  <!ATTLIST sparse-path path CDATA #REQUIRED>
+
   <!ELEMENT extend-project (annotation*,
                             copyfile*,
-                            linkfile*)>
+                            linkfile*,
+                            sparse-path*)>
   <!ATTLIST extend-project name        CDATA #REQUIRED>
   <!ATTLIST extend-project path        CDATA #IMPLIED>
   <!ATTLIST extend-project dest-path   CDATA #IMPLIED>
@@ -421,10 +426,11 @@ attributes of an existing project without completely replacing the
 existing project definition.  This makes the local manifest more robust
 against changes to the original manifest.
 
-The `extend-project` element can also contain `annotation`, `copyfile`, and
-`linkfile` child elements. These are added to the project's definition. A
-`copyfile` or `linkfile` with a `dest` that already exists in the project
-will overwrite the original.
+The `extend-project` element can also contain `annotation`, `copyfile`,
+`linkfile`, and `sparse-path` child elements. These are added to the project's
+definition. A `copyfile` or `linkfile` with a `dest` that already exists in the
+project will overwrite the original. There is no way to remove a `sparse-path`
+that the original project definition declared.
 
 Attribute `path`: If specified, limit the change to projects checked out
 at the specified path, rather than all projects with the given name.
@@ -467,6 +473,46 @@ command, prefixed with `REPO__`.  In addition, there is an optional
 attribute "keep" which accepts the case insensitive values "true"
 (default) or "false". This attribute determines whether or not the
 annotation will be kept when exported with the manifest subcommand.
+
+### Element sparse-path
+
+Zero or more sparse-path elements may be specified as children of a
+project element or an extend-project element. Each element specifies a
+path to include in the working directory.
+
+Requires Git 2.25.0 or later, which is when `git sparse-checkout` and cone mode
+were introduced.  Declaring a sparse-path with an older Git fails the sync for
+that project.
+
+Declaring at least one sparse-path is what enables Git sparse-checkout for
+the project: the listed paths are checked out, and other directories are left
+out of the working directory. Cone mode also checks out the files sitting
+directly in the project's top-level directory and in each leading directory of
+a sparse-path, so `src/backend` brings along the top-level files and the files
+directly under `src/` too. A project with no sparse-path elements is checked
+out in full.
+The checkout uses [cone mode](https://git-scm.com/docs/git-sparse-checkout#_internalscone_mode_handling)
+for better performance, which means only directory paths are supported;
+individual files and globs are not. Cone mode does no pattern matching, so `*`,
+`?`, `[`, `]`, and `\` are not glob syntax in a `path`. In fact, Git 2.36.0 and
+later reject them with `specify directories rather than patterns`, which
+surfaces as a sync failure for the project. Earlier versions starting with
+2.25.0 have no such check and are treated as literals.
+
+Sparse-checkout is configured only when the project's working directory is
+first created.  Changes to `sparse-path` in the manifest (added, changed, or
+removed) are not applied to a project that is already checked out.  To change
+the paths in an existing checkout, run `git sparse-checkout` in the project
+directly, or remove the project's working directory and sync again.
+
+Because sparse-checkout only prunes the working directory, a project with at
+least one sparse-path is fetched with `--filter=blob:none` so that blobs which
+will never be checked out are not downloaded.  The filter from
+`repo init --partial-clone --clone-filter` takes precedence, and projects listed
+in `repo init --partial-clone-exclude` are fetched in full as usual.
+
+Attribute `path`: A path relative to the project root to include in the
+sparse-checkout.
 
 ### Element copyfile
 

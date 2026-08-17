@@ -28,6 +28,7 @@ import pytest
 import utils_for_test
 
 import error
+import git_command
 import git_config
 import manifest_xml
 import platform_utils
@@ -37,9 +38,11 @@ import project
 class FakeProject:
     """A fake for Project for basic functionality."""
 
-    def __init__(self, worktree):
+    def __init__(self, worktree: str, gitdir: Optional[str] = None) -> None:
         self.worktree = worktree
-        self.gitdir = os.path.join(worktree, ".git")
+        self.gitdir = (
+            gitdir if gitdir is not None else os.path.join(worktree, ".git")
+        )
         self.name = "fakeproject"
         self.work_git = project.Project._GitGetByExec(
             self, bare=False, gitdir=self.gitdir
@@ -1559,3 +1562,275 @@ class FetchCmdTests(unittest.TestCase):
 
             result = fakeproj.Sync(use_local_gitdirs=False)
             self.assertFalse(result)
+
+
+class SparseCheckoutTests(unittest.TestCase):
+    """Check sparse-checkout handling."""
+
+    @unittest.skipUnless(
+        git_command.git_require((2, 25, 0)),
+        "git 2.25.0+ is required for sparse-checkout",
+    )
+    def test_configure_sparse_checkout_with_list(self) -> None:
+        """Test configuring sparse-checkout with list of paths."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = FakeProject(tempdir)
+
+            sparse_paths = ["src/backend", "src/shared"]
+            fakeproj._ConfigureSparseCheckout = (
+                project.Project._ConfigureSparseCheckout.__get__(
+                    fakeproj, FakeProject
+                )
+            )
+            fakeproj._ConfigureSparseCheckout(sparse_paths)
+
+            result = fakeproj.work_git.sparse_checkout("list")
+            paths = result.strip().split("\n")
+            self.assertIn("src/backend", paths)
+            self.assertIn("src/shared", paths)
+
+    @unittest.skipUnless(
+        git_command.git_require((2, 25, 0)),
+        "git 2.25.0+ is required for sparse-checkout",
+    )
+    def test_sparse_checkout_filters_worktree(self) -> None:
+        """Test that sparse-checkout filters files from worktree."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = FakeProject(tempdir)
+
+            os.makedirs(os.path.join(tempdir, "src/main"))
+            os.makedirs(os.path.join(tempdir, "src/tests"))
+            os.makedirs(os.path.join(tempdir, "docs"))
+
+            with open(os.path.join(tempdir, "src/main/app.py"), "w") as f:
+                f.write("print('Hello')\n")
+            with open(os.path.join(tempdir, "src/tests/test.py"), "w") as f:
+                f.write("def test(): pass\n")
+            with open(os.path.join(tempdir, "docs/guide.md"), "w") as f:
+                f.write("# Guide\n")
+
+            fakeproj.work_git.add(".")
+            fakeproj.work_git.commit("-mInitial commit")
+
+            fakeproj._ConfigureSparseCheckout = (
+                project.Project._ConfigureSparseCheckout.__get__(
+                    fakeproj, FakeProject
+                )
+            )
+            fakeproj._ConfigureSparseCheckout(["src/main", "docs"])
+
+            fakeproj.work_git.read_tree("-mu", "HEAD")
+
+            self.assertTrue(
+                os.path.exists(os.path.join(tempdir, "src/main/app.py"))
+            )
+            self.assertTrue(
+                os.path.exists(os.path.join(tempdir, "docs/guide.md"))
+            )
+            self.assertFalse(
+                os.path.exists(os.path.join(tempdir, "src/tests/test.py"))
+            )
+
+    @unittest.skipUnless(
+        git_command.git_require((2, 25, 0)),
+        "git 2.25.0+ is required for sparse-checkout",
+    )
+    def test_init_git_worktree_applies_sparse_checkout(self) -> None:
+        """Test that git-worktree checkouts honor sparse-path."""
+        with utils_for_test.TempGitTree() as tempdir:
+            srcproj = FakeProject(tempdir)
+
+            os.makedirs(os.path.join(tempdir, "src/main"))
+            os.makedirs(os.path.join(tempdir, "src/tests"))
+
+            with open(os.path.join(tempdir, "src/main/app.py"), "w") as f:
+                f.write("print('Hello')\n")
+            with open(os.path.join(tempdir, "src/tests/test.py"), "w") as f:
+                f.write("def test(): pass\n")
+            with open(os.path.join(tempdir, "README"), "w") as f:
+                f.write("readme\n")
+            with open(os.path.join(tempdir, "src/version.txt"), "w") as f:
+                f.write("1.0\n")
+
+            srcproj.work_git.add(".")
+            srcproj.work_git.commit("-mInitial commit")
+            revid = srcproj.work_git.rev_parse("HEAD").strip()
+
+            with tempfile.TemporaryDirectory() as wtdir:
+                # Resolve symlinks (e.g. /var -> /private/var on macOS) so the
+                # worktree<->gitdir relative paths git records stay valid.
+                worktree = os.path.join(os.path.realpath(wtdir), "proj")
+                wtproj = FakeProject(
+                    worktree,
+                    gitdir=os.path.join(os.path.realpath(tempdir), ".git"),
+                )
+                wtproj.sparse_paths = ["src/main"]
+                wtproj.GetRevisionId = lambda: revid
+                wtproj._InitMRef = lambda: None
+                wtproj._ConfigureSparseCheckout = (
+                    project.Project._ConfigureSparseCheckout.__get__(
+                        wtproj, FakeProject
+                    )
+                )
+                wtproj._InitGitWorktree = (
+                    project.Project._InitGitWorktree.__get__(
+                        wtproj, FakeProject
+                    )
+                )
+
+                wtproj._InitGitWorktree()
+
+                self.assertTrue(
+                    os.path.exists(os.path.join(worktree, "src/main/app.py"))
+                )
+                self.assertFalse(
+                    os.path.exists(os.path.join(worktree, "src/tests/test.py"))
+                )
+                # Cone mode also keeps the files directly in the top-level
+                # directory and in each leading directory of a sparse-path.
+                self.assertTrue(
+                    os.path.exists(os.path.join(worktree, "README"))
+                )
+                self.assertTrue(
+                    os.path.exists(os.path.join(worktree, "src/version.txt"))
+                )
+
+    def _setup_work_tree_project(
+        self, tempdir: str, wtdir: str, sparse_paths: List[str]
+    ) -> FakeProject:
+        """Build a project whose .git symlinks to an existing gitdir."""
+        srcproj = FakeProject(tempdir)
+
+        os.makedirs(os.path.join(tempdir, "src/main"))
+        os.makedirs(os.path.join(tempdir, "src/tests"))
+        with open(os.path.join(tempdir, "src/main/app.py"), "w") as f:
+            f.write("print('Hello')\n")
+        with open(os.path.join(tempdir, "src/tests/test.py"), "w") as f:
+            f.write("def test(): pass\n")
+
+        srcproj.work_git.add(".")
+        srcproj.work_git.commit("-mInitial commit")
+        revid = srcproj.work_git.rev_parse("HEAD").strip()
+
+        # Resolve symlinks (e.g. /var -> /private/var on macOS) so the
+        # worktree<->gitdir paths git records stay valid.
+        worktree = os.path.join(os.path.realpath(wtdir), "proj")
+        os.makedirs(worktree)
+        gitdir = os.path.join(os.path.realpath(tempdir), ".git")
+
+        proj = FakeProject(worktree, gitdir=gitdir)
+        proj.sparse_paths = sparse_paths
+        proj.parent = None
+        proj.use_git_worktrees = False
+        proj.manifest = mock.MagicMock()
+        proj.GetRevisionId = lambda: revid
+        proj._CopyAndLinkFiles = lambda: None
+        proj._createDotGit = lambda dotgit: platform_utils.symlink(
+            os.path.relpath(gitdir, worktree), dotgit
+        )
+        proj._ConfigureSparseCheckout = (
+            project.Project._ConfigureSparseCheckout.__get__(proj, FakeProject)
+        )
+        proj._InitWorkTree = project.Project._InitWorkTree.__get__(
+            proj, FakeProject
+        )
+        return proj
+
+    @unittest.skipUnless(
+        git_command.git_require((2, 25, 0)),
+        "git 2.25.0+ is required for sparse-checkout",
+    )
+    def test_init_work_tree_applies_sparse_checkout(self) -> None:
+        """Test that plain (non-worktree) checkouts honor sparse-path."""
+        with utils_for_test.TempGitTree() as tempdir:
+            with tempfile.TemporaryDirectory() as wtdir:
+                proj = self._setup_work_tree_project(
+                    tempdir, wtdir, ["src/main"]
+                )
+
+                proj._InitWorkTree()
+
+                self.assertTrue(
+                    os.path.exists(
+                        os.path.join(proj.worktree, "src/main/app.py")
+                    )
+                )
+                self.assertFalse(
+                    os.path.exists(
+                        os.path.join(proj.worktree, "src/tests/test.py")
+                    )
+                )
+
+    def test_init_work_tree_removes_dotgit_on_sparse_failure(self) -> None:
+        """Test that a sparse-checkout failure cleans up .git."""
+        with utils_for_test.TempGitTree() as tempdir:
+            with tempfile.TemporaryDirectory() as wtdir:
+                proj = self._setup_work_tree_project(
+                    tempdir, wtdir, ["src/main"]
+                )
+                proj._ConfigureSparseCheckout = mock.MagicMock(
+                    side_effect=error.GitError("sparse-checkout failed")
+                )
+
+                with self.assertRaises(error.GitError):
+                    proj._InitWorkTree()
+
+                self.assertFalse(
+                    os.path.lexists(os.path.join(proj.worktree, ".git"))
+                )
+
+
+class SparseCheckoutFetchFilterTests(unittest.TestCase):
+    """Check the partial clone filter used for sparse-checkout projects."""
+
+    def _get_project(
+        self, tempdir: str, sparse_paths: List[str]
+    ) -> project.Project:
+        proj = _create_mock_project(tempdir, revisionExpr="1234abcd")
+        proj.sparse_paths = sparse_paths
+        proj._CheckForImmutableRevision = mock.MagicMock(return_value=False)
+        proj.bare_git.rev_parse.return_value = "5678abcd"
+        proj._InitGitDir = mock.MagicMock()
+        proj._InitRemote = mock.MagicMock()
+        proj._InitMRef = mock.MagicMock()
+        proj._ApplyCloneBundle = mock.MagicMock(return_value=False)
+        proj._RemoteFetch = mock.MagicMock(return_value=True)
+        return proj
+
+    def _fetch_filter(
+        self, proj: project.Project, **kwargs: object
+    ) -> Optional[str]:
+        """Return the clone_filter Sync_NetworkHalf passes down to fetch."""
+        res = proj.Sync_NetworkHalf(clone_bundle=False, **kwargs)
+        self.assertTrue(res.success)
+        proj._RemoteFetch.assert_called_once()
+        return proj._RemoteFetch.call_args.kwargs["clone_filter"]
+
+    def test_no_sparse_paths_keeps_no_filter(self) -> None:
+        """A project without sparse-path is not filtered."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, [])
+            self.assertIsNone(self._fetch_filter(proj))
+
+    def test_sparse_paths_default_to_blob_none(self) -> None:
+        """sparse-path implies a blob:none partial clone."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, ["src/main"])
+            self.assertEqual("blob:none", self._fetch_filter(proj))
+
+    def test_explicit_clone_filter_wins(self) -> None:
+        """An explicit filter is not replaced by the default."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, ["src/main"])
+            self.assertEqual(
+                "blob:limit=1m",
+                self._fetch_filter(proj, clone_filter="blob:limit=1m"),
+            )
+
+    def test_partial_clone_exclude_wins(self) -> None:
+        """An excluded project is fetched in full despite sparse-path."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, ["src/main"])
+            self.assertIsNone(
+                self._fetch_filter(proj, partial_clone_exclude={proj.name})
+            )
