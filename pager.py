@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import os
 import select
 import subprocess
@@ -42,20 +43,39 @@ def RunPager(globalConfig):
 def TerminatePager():
     global pager_process
     if pager_process:
-        sys.stdout.flush()
-        sys.stderr.flush()
-        pager_process.stdin.close()
-        pager_process.wait()
-        pager_process = None
-        # Restore initial stdout/err in case there is more output in this
-        # process after shutting down the pager process.
-        sys.stdout = old_stdout
-        sys.stderr = old_stderr
+        try:
+            sys.stdout.flush()
+            sys.stderr.flush()
+        except OSError:
+            pass
+        try:
+            pager_process.stdin.close()
+        except OSError:
+            pass
+        try:
+            pager_process.wait()
+        except KeyboardInterrupt:
+            try:
+                pager_process.terminate()
+                pager_process.wait()
+            except OSError:
+                pass
+        finally:
+            pager_process = None
+            # Restore initial stdout/err in case there is more output in this
+            # process after shutting down the pager process.
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
 
 
 def _PipePager(pager):
     global pager_process, old_stdout, old_stderr
     assert pager_process is None, "Only one active pager process at a time"
+
+    # Match git behavior and ensure MSYS2 less on Windows can query terminal.
+    os.environ.setdefault("LESS", "FRX")
+    os.environ.setdefault("TERM", "xterm-256color")
+
     # Create pager process, piping stdout/err into its stdin.
     try:
         pager_process = subprocess.Popen(
@@ -65,8 +85,12 @@ def _PipePager(pager):
         sys.exit(f'fatal: cannot start pager "{pager}"')
     old_stdout = sys.stdout
     old_stderr = sys.stderr
-    sys.stdout = pager_process.stdin
-    sys.stderr = pager_process.stdin
+    encoding = getattr(sys.stdout, "encoding", None) or "utf-8"
+    text_pipe = io.TextIOWrapper(
+        pager_process.stdin, encoding=encoding, errors="replace", write_through=True
+    )
+    sys.stdout = text_pipe
+    sys.stderr = text_pipe
 
 
 def _ForkPager(pager):
