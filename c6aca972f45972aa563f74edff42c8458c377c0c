@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f4af443_f8643bfe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-08-17T15:36:59Z",
+      "side": 1,
+      "message": "Added test coverage for the new modified_files behavior under ReviewableBranchTests in test_project.py.",
+      "parentUuid": "482add30_bf75a770",
+      "revId": "c6aca972f45972aa563f74edff42c8458c377c0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a5f846c_686bb4fe",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-08-10T18:11:26Z",
       "side": 1,
       "message": "this feels unnecessary, what if we deleted these manual writes and the\n`capture_stdout\u003dTrue, capture_stderr\u003dTrue`? IIUC that would keep `push_cmd.stderr` with the tee intact",
+      "range": {
+        "startLine": 1295,
+        "startChar": 8,
+        "endLine": 1298,
+        "endChar": 45
+      },
+      "revId": "c6aca972f45972aa563f74edff42c8458c377c0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92f46782_ca620a0a",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1298,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-08-17T15:36:59Z",
+      "side": 1,
+      "message": "Removed the explicit capture_stdout/capture_stderr arguments and the manual sys.stdout/sys.stderr writes. It now relies on GitCommand\u0027s innate tee_stderr logic.",
+      "parentUuid": "4a5f846c_686bb4fe",
       "range": {
         "startLine": 1295,
         "startChar": 8,
@@ -66,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a08e91c0_db1f81b9",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1300,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-08-17T15:36:59Z",
+      "side": 1,
+      "message": "Updated the regex to use `.+?` instead of `[^/]+` for the project name to properly handle names with slashes.",
+      "parentUuid": "78850fab_17f5be06",
+      "range": {
+        "startLine": 1300,
+        "startChar": 19,
+        "endLine": 1300,
+        "endChar": 48
+      },
+      "revId": "c6aca972f45972aa563f74edff42c8458c377c0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c13c10b_edd741b9",
         "filename": "project.py",
         "patchSetId": 5
@@ -77,6 +143,30 @@
       "writtenOn": "2026-08-10T18:11:26Z",
       "side": 1,
       "message": "it feels like this \"modified files\" logic should live in the `ReviewableBranch` layer. also should this be `git diff --name-only branch.LocalMerge...branch.name` instead?",
+      "range": {
+        "startLine": 1305,
+        "startChar": 12,
+        "endLine": 1308,
+        "endChar": 60
+      },
+      "revId": "c6aca972f45972aa563f74edff42c8458c377c0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d949cf18_41cec908",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1308,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-08-17T15:36:59Z",
+      "side": 1,
+      "message": "Moved this logic into a new modified_files property on ReviewableBranch, and updated the diff command to use the triple-dot syntax (...) to isolate changes strictly to this branch.",
+      "parentUuid": "9c13c10b_edd741b9",
       "range": {
         "startLine": 1305,
         "startChar": 12,
