@@ -593,6 +593,7 @@ class Project:
         dest_branch=None,
         optimized_fetch=False,
         retry_fetches=0,
+        sparse_paths: Optional[List[str]] = None,
     ):
         """Init a Project object.
 
@@ -627,6 +628,8 @@ class Project:
                 only fetch from the remote if the sha1 is not present locally.
             retry_fetches: Retry remote fetches n times upon receiving transient
                 error with exponential backoff and jitter.
+            sparse_paths: List of paths from manifest.xml's `sparse-path` child
+                elements. A non-empty list enables sparse checkout.
         """
         self.client = self.manifest = manifest
         self.name = name
@@ -651,6 +654,7 @@ class Project:
         self.gitlink_path = gitlink_path
         self.optimized_fetch = optimized_fetch
         self.retry_fetches = max(0, retry_fetches)
+        self.sparse_paths = sparse_paths if sparse_paths is not None else []
         self.subprojects = []
 
         self.snapshots = {}
@@ -1568,6 +1572,16 @@ class Project:
         # a clone bundle download.  We should have the majority of objects
         # already.
         if clone_bundle and os.path.exists(self.objdir):
+            clone_bundle = False
+
+        # Sparse checkout only prunes the working tree, so include a partial
+        # clone by default to avoid fetching blobs that will never be
+        # checked out. The clone bundle is an unfiltered pack of every object,
+        # so downloading it would undo the filter; skip it to match how
+        # `repo init` pairs the two. Explicitly configured partial clones or
+        # exclusions still take precedence.
+        if self.sparse_paths and not clone_filter:
+            clone_filter = "blob:none"
             clone_bundle = False
 
         if partial_clone_exclude is None:
@@ -4342,46 +4356,84 @@ class Project:
         self.bare_git.worktree(
             "add",
             "-ff",
-            "--checkout",
+            "--no-checkout" if self.sparse_paths else "--checkout",
             "--detach",
             "--lock",
             self.worktree,
             self.GetRevisionId(),
         )
 
-        # Rewrite the internal state files to use relative paths between the
-        # checkouts & worktrees.
-        dotgit = os.path.join(self.worktree, ".git")
-        with open(dotgit) as fp:
-            # Figure out the checkout->worktree path.
-            setting = fp.read()
-            assert setting.startswith("gitdir:")
-            git_worktree_path = setting.split(":", 1)[1].strip()
+        # `worktree add` has registered and locked the worktree, so any
+        # failure from here on has to unwind it.  Leaving a populated
+        # directory behind would wedge the project: `worktree prune` skips
+        # locked entries and `worktree add` refuses a non-empty path even
+        # with -ff, so every later sync would fail until the user cleaned
+        # up by hand.  Catch BaseException so a Ctrl-C during the
+        # (potentially slow, blob-fetching) checkout unwinds too.
+        try:
+            # Rewrite the internal state files to use relative paths between the
+            # checkouts & worktrees.
+            dotgit = os.path.join(self.worktree, ".git")
+            with open(dotgit) as fp:
+                # Figure out the checkout->worktree path.
+                setting = fp.read()
+                assert setting.startswith("gitdir:")
+                git_worktree_path = setting.split(":", 1)[1].strip()
 
-        # `gitdir` maybe be either relative or absolute depending on the
-        # behavior of the local copy of git, so only convert the path to
-        # relative if it needs to be converted.
-        if os.path.isabs(git_worktree_path):
-            # Some platforms (e.g. Windows) won't let us update dotgit in situ
-            # because of file permissions.  Delete it and recreate it from
-            # scratch to avoid.
-            platform_utils.remove(dotgit)
-            # Use relative path from checkout->worktree & maintain Unix line
-            # endings on all OS's to match git behavior.
-            with open(dotgit, "w", newline="\n") as fp:
-                print(
-                    "gitdir:",
-                    os.path.relpath(git_worktree_path, self.worktree),
-                    file=fp,
+            # `gitdir` maybe be either relative or absolute depending on the
+            # behavior of the local copy of git, so only convert the path to
+            # relative if it needs to be converted.
+            if os.path.isabs(git_worktree_path):
+                # Some platforms (e.g. Windows) won't let us update
+                # dotgit in situ because of file permissions.  Delete it
+                # and recreate it from scratch to avoid.
+                platform_utils.remove(dotgit)
+                # Use relative path from checkout->worktree & maintain Unix line
+                # endings on all OS's to match git behavior.
+                with open(dotgit, "w", newline="\n") as fp:
+                    print(
+                        "gitdir:",
+                        os.path.relpath(git_worktree_path, self.worktree),
+                        file=fp,
+                    )
+                # Use relative path from worktree->checkout & maintain Unix line
+                # endings on all OS's to match git behavior.
+                with open(
+                    os.path.join(git_worktree_path, "gitdir"), "w", newline="\n"
+                ) as fp:
+                    print(os.path.relpath(dotgit, git_worktree_path), file=fp)
+
+            # Configure sparse-checkout before populating the worktree. This
+            # only runs when the worktree is first created, so later changes to
+            # `sparse-path` in the manifest are not applied to existing
+            # checkouts. See docs/manifest-format.md.  There is no stale state
+            # to clear first: git keeps both core.sparseCheckout and the
+            # pattern file under the per-worktree directory that the
+            # `worktree add` above just recreated.
+            if self.sparse_paths:
+                self._ConfigureSparseCheckout(self.sparse_paths)
+                cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
+                if GitCommand(self, cmd).Wait() != 0:
+                    raise GitError(
+                        "Cannot initialize work tree for " + self.name,
+                        project=self.name,
+                    )
+
+            self._InitMRef()
+        except BaseException:
+            try:
+                self.bare_git.worktree(
+                    "remove", "--force", "--force", self.worktree
                 )
-            # Use relative path from worktree->checkout & maintain Unix line
-            # endings on all OS's to match git behavior.
-            with open(
-                os.path.join(git_worktree_path, "gitdir"), "w", newline="\n"
-            ) as fp:
-                print(os.path.relpath(dotgit, git_worktree_path), file=fp)
-
-        self._InitMRef()
+            except Exception as e:
+                # Never let a cleanup failure mask the original error.
+                logger.warning(
+                    "warn: %s: cannot remove work tree %s: %s",
+                    self.name,
+                    self.worktree,
+                    e,
+                )
+            raise
 
     def _InitWorkTree(self, force_sync=False, submodules=False):
         """Setup the worktree .git path.
@@ -4434,24 +4486,81 @@ class Project:
             if init_dotgit:
                 self.work_git.UpdateRef(HEAD, self.GetRevisionId(), detach=True)
 
-                # Finish checking out the worktree.
-                cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
                 try:
+                    # Configure sparse-checkout before checking out the
+                    # worktree. This only runs when the worktree is first
+                    # created, so later changes to `sparse-path` in the
+                    # manifest are not applied to existing checkouts. See
+                    # docs/manifest-format.md.
+                    if self.sparse_paths:
+                        self._ConfigureSparseCheckout(self.sparse_paths)
+                    elif self._IsSparseCheckoutConfigured():
+                        # The gitdir outlives the worktree, so a project that
+                        # dropped `sparse-path` would otherwise keep checking
+                        # out a pruned tree from the stale config.
+                        self.work_git.sparse_checkout("disable")
+
+                    # Finish checking out the worktree.
+                    cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
                     if GitCommand(self, cmd).Wait() != 0:
                         raise GitError(
                             "Cannot initialize work tree for " + self.name,
                             project=self.name,
                         )
-                except Exception as e:
-                    # Something went wrong with read-tree (perhaps fetching
-                    # missing blobs), so remove .git to avoid half initialized
-                    # workspace from which repo can't recover on its own.
-                    platform_utils.remove(dotgit)
-                    raise e
+                except BaseException:
+                    # Something went wrong with sparse-checkout or read-tree
+                    # (perhaps fetching missing blobs), so remove .git to avoid
+                    # a half initialized workspace from which repo can't recover
+                    # on its own.  BaseException so a Ctrl-C mid-checkout
+                    # unwinds too.
+                    try:
+                        platform_utils.remove(dotgit)
+                    except Exception as e:
+                        # Never let a cleanup failure mask the original error.
+                        logger.warning(
+                            "warn: %s: cannot remove %s: %s",
+                            self.name,
+                            dotgit,
+                            e,
+                        )
+                    raise
 
                 if submodules:
                     self._SyncSubmodules(quiet=True)
                 self._CopyAndLinkFiles()
+
+    def _IsSparseCheckoutConfigured(self) -> bool:
+        """Whether this checkout carries leftover sparse-checkout state.
+
+        `git sparse-checkout` records core.sparseCheckout in worktree-scoped
+        config, which self.config cannot see: that reads $GITDIR/config
+        directly, while git keeps the setting in $GITDIR/config.worktree once
+        it turns on extensions.worktreeConfig.  The pattern file sits at a
+        fixed path though, so use it as the signal.  `sparse-checkout disable`
+        leaves the file behind, so this stays true afterwards; that is fine
+        because disabling twice is a no-op.
+        """
+        if not git_require((2, 25, 0)):
+            # Without the builtin there is nothing that could have written
+            # the file, and no `sparse-checkout disable` to undo it with.
+            return False
+
+        return os.path.exists(
+            os.path.join(self.gitdir, "info", "sparse-checkout")
+        )
+
+    def _ConfigureSparseCheckout(self, sparse_paths: List[str]) -> None:
+        """Configure sparse-checkout for the project.
+
+        Args:
+            sparse_paths: List of paths to include in sparse-checkout.
+        """
+        if not sparse_paths:
+            return
+
+        git_require((2, 25, 0), fail=True, msg="Sparse Checkout")
+        self.work_git.sparse_checkout("init", "--cone")
+        self.work_git.sparse_checkout("set", "--", *sparse_paths)
 
     def _createDotGit(self, dotgit):
         """Initialize .git path.
