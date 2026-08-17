@@ -754,6 +754,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 le.setAttribute("dest", lf.dest)
                 e.appendChild(le)
 
+            for sp in p.sparse_paths:
+                se = doc.createElement("sparse-path")
+                se.setAttribute("path", sp)
+                e.appendChild(se)
+
             groups = p.groups - {"all", f"name:{p.name}", f"path:{p.relpath}"}
             if groups:
                 e.setAttribute("groups", ",".join(sorted(groups)))
@@ -846,6 +851,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             "annotation",
             "copyfile",
             "linkfile",
+            "sparse-path",
         }
 
         doc = self.ToXml(**kwargs)
@@ -1569,6 +1575,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                             self._ParseLinkFile(p, n)
                         elif n.nodeName == "annotation":
                             self._ParseAnnotation(p, n)
+                        elif n.nodeName == "sparse-path":
+                            self._ParseSparsePath(p, n)
 
             if node.nodeName == "repo-hooks":
                 # Only one project can be the hooks project
@@ -2033,6 +2041,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 self._ParseLinkFile(project, n)
             elif n.nodeName == "annotation":
                 self._ParseAnnotation(project, n)
+            elif n.nodeName == "sparse-path":
+                self._ParseSparsePath(project, n)
             elif n.nodeName == "project":
                 project.subprojects.append(
                     self._ParseProject(n, parent=project)
@@ -2306,6 +2316,29 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 'optional "keep" attribute must be ' '"true" or "false"'
             )
         element.AddAnnotation(name, value, keep)
+
+    def _ParseSparsePath(
+        self, project: Project, node: xml.dom.minidom.Element
+    ) -> None:
+        """Parses a <sparse-path> element and adds it to the project.
+
+        Args:
+            project: The Project object to add the sparse path to.
+            node: The XML node representing the <sparse-path> element.
+
+        Raises:
+            ManifestInvalidPathError: |path| is not usable as a project
+                relative path.
+        """
+        path = self._reqatt(node, "path")
+        # Sparse paths name directories inside the project checkout, so they
+        # get the same scrutiny as <copyfile> & <linkfile> sources.
+        msg = self._CheckLocalPath(path, dir_ok=True)
+        if msg:
+            raise error.ManifestInvalidPathError(
+                f'<sparse-path> invalid "path": {path}: {msg}'
+            )
+        project.sparse_paths.append(path)
 
     def _get_remote(self, node):
         name = node.getAttribute("remote")
