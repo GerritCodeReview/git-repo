@@ -16,6 +16,24 @@
       "message": "Wait, why would you ever have `dest-branch` set to something under `refs/tags/`? You can\u0027t upload tags as changes.\n\ndest-branch is a reasonable guess for an upstream because it\u0027s the location changes are intended to be uploaded to for review. Removing it from the fallback list hurts that reasonable assumption.",
       "revId": "c093f86c52443568cbb02b6147c8ef88d6633935",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef28085d_626a2212",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-08-18T20:45:42Z",
+      "side": 1,
+      "message": "See the manifest in this comment https://gerrit-review.git.corp.google.com/c/git-repo/+/614762/comments/9ecc48c1_f6831445",
+      "parentUuid": "de762128_1eddb590",
+      "revId": "c093f86c52443568cbb02b6147c8ef88d6633935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
