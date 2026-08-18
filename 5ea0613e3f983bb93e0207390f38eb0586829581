@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "222cf280_2add7b4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-08-18T06:40:55Z",
+      "side": 1,
+      "message": "Me and another guy tried this, Patch set 3, still fails with same error message, also on the test manifest I sent up.\n\nThe below diff makes it work, perhaps that can be of help?\ndiff --git a/project.py b/project.py\nindex 67e3fe6..8e44772 100644\n--- a/project.py\n+++ b/project.py\n@@ -2860,12 +2860,11 @@ class Project:\n     def _GetUpstreamFallback(self) -\u003e Optional[str]:\n         \"\"\"Resolve a fallback upstream ref when revisionExpr is a SHA-1.\"\"\"\n         default \u003d self.manifest.default\n-        candidates \u003d [self.dest_branch]\n+        candidates \u003d []\n         if default:\n             candidates.extend(\n                 (\n                     default.upstreamExpr,\n-                    default.destBranchExpr,\n                     default.revisionExpr,\n                 )\n             )",
+      "revId": "5ea0613e3f983bb93e0207390f38eb0586829581",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
