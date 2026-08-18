@@ -34,6 +34,24 @@
       "parentUuid": "de762128_1eddb590",
       "revId": "c093f86c52443568cbb02b6147c8ef88d6633935",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "879ca4c9_87026a5f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-08-18T21:11:43Z",
+      "side": 1,
+      "message": "Ok, but to my point, isn\u0027t that a manifest with broken content? I agree repo shouldn\u0027t fail on it, but don\u0027t remove a feature to fix that.",
+      "parentUuid": "ef28085d_626a2212",
+      "revId": "c093f86c52443568cbb02b6147c8ef88d6633935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
