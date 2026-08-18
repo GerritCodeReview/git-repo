@@ -104,6 +104,24 @@
       "message": "git-repo launcher and local repo at latest stable, in new folder, fresh init:\nrepo init -u https://android.googlesource.com/platform/manifest -b android-17.0.0_r1\n\nReplace default.xml with this:\n\u003c?xml version\u003d\"1.0\" encoding\u003d\"UTF-8\"?\u003e\n\u003cmanifest\u003e\n  \u003cremote  name\u003d\"aosp\"\n           fetch\u003d\"..\"\n           review\u003d\"https://android-review.googlesource.com/\" /\u003e\n  \u003cdefault dest-branch\u003d\"refs/tags/android-17.0.0_r1\" remote\u003d\"aosp\" sync-j\u003d\"4\" /\u003e\n\n  \u003cproject clone-depth\u003d\"1\" name\u003d\"platform/prebuilts/asuite\" path\u003d\"prebuilts/asuite\" revision\u003d\"f7c894b12c39ad8ca93f43776e1cece37ef026b2\" /\u003e\n  \u003cproject path\u003d\"art\" name\u003d\"platform/art\" revision\u003d\"b753cf97923c3695338d21466fa14c57b480a59a\" /\u003e\n  \u003cproject name\u003d\"platform/prebuilts/asuite\" path\u003d\"kernel_platform/prebuilts/asuite\" revision\u003d\"d01762464df405e9f1a9057f966b82ca46512be1\" /\u003e\n\n\u003c/manifest\u003e\n\nrepo sync --nmu\n\nI get this error:\nFailing repos (checkout):\nkernel_platform/prebuilts/asuite\nprebuilts/asuite\nTry re-running with \"-j1 --fail-fast\" to exit at the first error.\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\nRepo command failed due to the following `SyncError` errors:\nGitCommandError: \u0027rev-list ^d01762464df405e9f1a9057f966b82ca46512be1 HEAD --\u0027 on platform/prebuilts/asuite failed\nstderr: fatal: bad revision \u0027HEAD\u0027\n\nGitCommandError: \u0027rev-list ^f7c894b12c39ad8ca93f43776e1cece37ef026b2 HEAD --\u0027 on platform/prebuilts/asuite failed\nstderr: fatal: bad revision \u0027HEAD\u0027\n\n\nWorks if this commit is reverted.",
       "revId": "d9da609d8c120bb882a43196a4a6b7f183418304",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9884b00_b0d8a363",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-08-18T05:21:08Z",
+      "side": 1,
+      "message": "Addressed in https://gerrit-review.git.corp.google.com/c/git-repo/+/620101",
+      "parentUuid": "9ecc48c1_f6831445",
+      "revId": "d9da609d8c120bb882a43196a4a6b7f183418304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
