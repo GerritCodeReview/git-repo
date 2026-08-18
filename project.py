@@ -2860,12 +2860,11 @@ class Project:
     def _GetUpstreamFallback(self) -> Optional[str]:
         """Resolve a fallback upstream ref when revisionExpr is a SHA-1."""
         default = self.manifest.default
-        candidates = [self.dest_branch]
+        candidates = []
         if default:
             candidates.extend(
                 (
                     default.upstreamExpr,
-                    default.destBranchExpr,
                     default.revisionExpr,
                 )
             )

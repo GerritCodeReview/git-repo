@@ -1314,14 +1314,16 @@ class SyncOptimizationTests(unittest.TestCase):
                 self.assertTrue(res)
                 mock_git_cmd.assert_not_called()
 
-    def test_remote_fetch_sha1_upstream_fallback(self) -> None:
-        """Test _RemoteFetch resolves upstream fallback for SHA-1 revisions."""
+    def test_remote_fetch_sha1_dest_branch_ignored(self) -> None:
+        """Test _RemoteFetch ignores dest_branch and fetches all branches."""
         sha = "4f8a3c0000000000000000000000000000000000"
         with utils_for_test.TempGitTree() as tempdir:
             proj = self._get_project(tempdir, revisionExpr=sha)
-            proj._CheckForImmutableRevision.side_effect = [False, True]
+            proj._CheckForImmutableRevision.return_value = False
             proj.upstream = None
             proj.dest_branch = "my-dest-branch"
+            proj.manifest.default.upstreamExpr = None
+            proj.manifest.default.revisionExpr = None
 
             mock_remote = mock.MagicMock()
             mock_remote.name = "origin"
@@ -1345,14 +1347,7 @@ class SyncOptimizationTests(unittest.TestCase):
                 self.assertTrue(res)
                 mock_git_cmd.assert_called_once()
                 cmd_args = mock_git_cmd.call_args[0][1]
-                self.assertIn(
-                    "+refs/heads/my-dest-branch:"
-                    "refs/remotes/origin/my-dest-branch",
-                    cmd_args,
-                )
-                self.assertNotIn(
-                    "+refs/heads/*:refs/remotes/origin/*", cmd_args
-                )
+                self.assertIn("+refs/heads/*:refs/remotes/origin/*", cmd_args)
 
     def test_remote_fetch_sha1_manifest_default_fallback(self) -> None:
         """Test _RemoteFetch upstream fallback from manifest defaults."""
@@ -1402,7 +1397,9 @@ class SyncOptimizationTests(unittest.TestCase):
             proj = self._get_project(tempdir, revisionExpr=sha)
             proj._CheckForImmutableRevision.side_effect = [False, True]
             proj.upstream = None
-            proj.dest_branch = "refs/tags/v1.0"
+            proj.dest_branch = None
+            proj.manifest.default.upstreamExpr = None
+            proj.manifest.default.revisionExpr = "refs/tags/v1.0"
 
             mock_remote = mock.MagicMock()
             mock_remote.name = "origin"
