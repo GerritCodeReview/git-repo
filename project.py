@@ -2870,7 +2870,7 @@ class Project:
                 )
             )
         for cand in candidates:
-            if cand and not IsId(cand):
+            if cand and not IsId(cand) and not cand.startswith(R_TAGS):
                 return cand
         return None
 
@@ -3093,7 +3093,9 @@ class Project:
         ok = prune_tried = False
         try:
             for try_n in range(retry_fetches):
-                verify_command = try_n == retry_fetches - 1
+                verify_command = (try_n == retry_fetches - 1) and not (
+                    current_branch_only and is_sha1
+                )
                 gitcmd = GitCommand(
                     self,
                     cmd,

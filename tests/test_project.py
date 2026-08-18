@@ -20,7 +20,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Sequence, Tuple, Union
 import unittest
 from unittest import mock
 
@@ -1094,6 +1094,11 @@ class SyncOptimizationTests(unittest.TestCase):
         proj._InitGitDir = mock.MagicMock()
         proj._InitRemote = mock.MagicMock()
         proj._InitMRef = mock.MagicMock()
+        # Provide realistic (unset) manifest defaults so _GetUpstreamFallback
+        # does not treat auto-generated mock attributes as candidate refs.
+        proj.manifest.default.upstreamExpr = None
+        proj.manifest.default.destBranchExpr = None
+        proj.manifest.default.revisionExpr = None
         return proj
 
     def _create_sharing_project(self, tempdir, proj, share_objdir=True):
@@ -1120,6 +1125,51 @@ class SyncOptimizationTests(unittest.TestCase):
         )
         proj.manifest.GetProjectsWithName.return_value.append(other)
         return other
+
+    def _mock_remote(self, proj) -> mock.MagicMock:
+        """Attach a mock remote to proj with a realistic ToLocal mapping."""
+        remote = mock.MagicMock()
+        remote.name = "origin"
+
+        def _to_local(ref: str) -> str:
+            if ref.startswith("refs/heads/"):
+                return f"refs/remotes/origin/{ref[len('refs/heads/'):]}"
+            return ref
+
+        remote.ToLocal.side_effect = _to_local
+        remote.PreConnectFetch.return_value = True
+        proj.GetRemote = mock.MagicMock(return_value=remote)
+        return remote
+
+    @contextlib.contextmanager
+    def _mock_git_command(self, return_code: Union[int, Sequence[int]] = 0):
+        """Patch project.GitCommand with a stub returning the given code."""
+        with mock.patch("project.GitCommand") as mock_git_cmd:
+            codes = (
+                list(return_code)
+                if isinstance(return_code, (list, tuple))
+                else [return_code]
+            )
+
+            def _create_instance(proj, cmdv, **kwargs):
+                instance = mock.MagicMock()
+                verify = kwargs.get("verify_command", False)
+                rc = codes.pop(0) if len(codes) > 1 else codes[0]
+
+                def _wait() -> int:
+                    if verify and rc != 0:
+                        raise error.GitCommandError(
+                            project=proj.name if proj else None,
+                            command_args=cmdv,
+                            git_rc=rc,
+                        )
+                    return rc
+
+                instance.Wait.side_effect = _wait
+                return instance
+
+            mock_git_cmd.side_effect = _create_instance
+            yield mock_git_cmd
 
     def test_sync_network_half_shallow_missing_fetches(self):
         """Test Sync_NetworkHalf fetches if shallow file is missing."""
@@ -1322,24 +1372,9 @@ class SyncOptimizationTests(unittest.TestCase):
             proj._CheckForImmutableRevision.side_effect = [False, True]
             proj.upstream = None
             proj.dest_branch = "my-dest-branch"
+            self._mock_remote(proj)
 
-            mock_remote = mock.MagicMock()
-            mock_remote.name = "origin"
-
-            def _to_local(r: str) -> str:
-                if r.startswith("refs/heads/"):
-                    return "refs/remotes/origin/" + r[11:]
-                return r
-
-            mock_remote.ToLocal.side_effect = _to_local
-            mock_remote.PreConnectFetch.return_value = True
-            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
-
-            with mock.patch("project.GitCommand") as mock_git_cmd:
-                mock_cmd_instance = mock.MagicMock()
-                mock_cmd_instance.Wait.return_value = 0
-                mock_git_cmd.return_value = mock_cmd_instance
-
+            with self._mock_git_command() as mock_git_cmd:
                 res = proj._RemoteFetch(current_branch_only=True)
 
                 self.assertTrue(res)
@@ -1363,24 +1398,9 @@ class SyncOptimizationTests(unittest.TestCase):
             proj.upstream = None
             proj.dest_branch = None
             proj.manifest.default.upstreamExpr = "manifest-upstream"
+            self._mock_remote(proj)
 
-            mock_remote = mock.MagicMock()
-            mock_remote.name = "origin"
-
-            def _to_local(r: str) -> str:
-                if r.startswith("refs/heads/"):
-                    return "refs/remotes/origin/" + r[11:]
-                return r
-
-            mock_remote.ToLocal.side_effect = _to_local
-            mock_remote.PreConnectFetch.return_value = True
-            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
-
-            with mock.patch("project.GitCommand") as mock_git_cmd:
-                mock_cmd_instance = mock.MagicMock()
-                mock_cmd_instance.Wait.return_value = 0
-                mock_git_cmd.return_value = mock_cmd_instance
-
+            with self._mock_git_command() as mock_git_cmd:
                 res = proj._RemoteFetch(current_branch_only=True)
 
                 self.assertTrue(res)
@@ -1395,41 +1415,88 @@ class SyncOptimizationTests(unittest.TestCase):
                     "+refs/heads/*:refs/remotes/origin/*", cmd_args
                 )
 
-    def test_remote_fetch_sha1_tag_fallback(self) -> None:
-        """Test _RemoteFetch resolves upstream fallback to tag correctly."""
+    def test_remote_fetch_sha1_tag_fallback_ignored(self) -> None:
+        """Test _RemoteFetch ignores tag fallback and fetches all branches."""
         sha = "4f8a3c0000000000000000000000000000000000"
         with utils_for_test.TempGitTree() as tempdir:
             proj = self._get_project(tempdir, revisionExpr=sha)
-            proj._CheckForImmutableRevision.side_effect = [False, True]
+            # The tag candidate is rejected, so we never reach the post-fetch
+            # verification; a single immutable-revision check is expected.
+            proj._CheckForImmutableRevision.return_value = False
             proj.upstream = None
             proj.dest_branch = "refs/tags/v1.0"
+            self._mock_remote(proj)
 
-            mock_remote = mock.MagicMock()
-            mock_remote.name = "origin"
-
-            def _to_local(r: str) -> str:
-                if r.startswith("refs/tags/"):
-                    return "refs/tags/" + r[10:]
-                return r
-
-            mock_remote.ToLocal.side_effect = _to_local
-            mock_remote.PreConnectFetch.return_value = True
-            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
-
-            with mock.patch("project.GitCommand") as mock_git_cmd:
-                mock_cmd_instance = mock.MagicMock()
-                mock_cmd_instance.Wait.return_value = 0
-                mock_git_cmd.return_value = mock_cmd_instance
-
+            with self._mock_git_command() as mock_git_cmd:
                 res = proj._RemoteFetch(current_branch_only=True)
 
                 self.assertTrue(res)
                 mock_git_cmd.assert_called_once()
                 cmd_args = mock_git_cmd.call_args[0][1]
-                self.assertIn("tag", cmd_args)
-                self.assertIn("v1.0", cmd_args)
-                self.assertNotIn(
-                    "+refs/heads/*:refs/remotes/origin/*", cmd_args
+                self.assertIn("+refs/heads/*:refs/remotes/origin/*", cmd_args)
+                self.assertNotIn("tag", cmd_args)
+
+    def test_remote_fetch_sha1_upstream_fallback_retry_all_branches(
+        self,
+    ) -> None:
+        """Test _RemoteFetch fetches all branches when fallback lacks SHA."""
+        sha = "4f8a3c0000000000000000000000000000000000"
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, revisionExpr=sha)
+            # First check clears the early-return; the second reports the
+            # candidate branch lacks the commit, triggering a full-branch retry.
+            proj._CheckForImmutableRevision.side_effect = [False, False]
+            proj.upstream = None
+            proj.dest_branch = "my-dest-branch"
+            self._mock_remote(proj)
+
+            with self._mock_git_command() as mock_git_cmd:
+                res = proj._RemoteFetch(current_branch_only=True)
+
+                self.assertTrue(res)
+                self.assertEqual(mock_git_cmd.call_count, 2)
+                first_args = mock_git_cmd.call_args_list[0][0][1]
+                self.assertIn(
+                    "+refs/heads/my-dest-branch:"
+                    "refs/remotes/origin/my-dest-branch",
+                    first_args,
+                )
+                second_args = mock_git_cmd.call_args_list[1][0][1]
+                self.assertIn(
+                    "+refs/heads/*:refs/remotes/origin/*", second_args
+                )
+
+    def test_remote_fetch_sha1_fallback_error_retries_all_branches(
+        self,
+    ) -> None:
+        """Test _RemoteFetch falls back to all branches when fetch fails."""
+        sha = "4f8a3c0000000000000000000000000000000000"
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, revisionExpr=sha)
+            # 1st check: initial check before fetch (False)
+            # 2nd check: check before retry fetch (False)
+            # 3rd check: post-retry verification (True)
+            proj._CheckForImmutableRevision.side_effect = [False, False, True]
+            proj.upstream = None
+            proj.dest_branch = "my-dest-branch"
+            self._mock_remote(proj)
+
+            # First fetch (single branch) fails with 128 (does not raise
+            # GitCommandError); second fetch (all branches) succeeds with 0.
+            with self._mock_git_command(return_code=[128, 0]) as mock_git_cmd:
+                res = proj._RemoteFetch(current_branch_only=True)
+
+                self.assertTrue(res)
+                self.assertEqual(mock_git_cmd.call_count, 2)
+                first_args = mock_git_cmd.call_args_list[0][0][1]
+                self.assertIn(
+                    "+refs/heads/my-dest-branch:"
+                    "refs/remotes/origin/my-dest-branch",
+                    first_args,
+                )
+                second_args = mock_git_cmd.call_args_list[1][0][1]
+                self.assertIn(
+                    "+refs/heads/*:refs/remotes/origin/*", second_args
                 )
 
     def test_remote_fetch_sha1_metaproject_without_manifest_xml(self) -> None:
@@ -1453,24 +1520,9 @@ class SyncOptimizationTests(unittest.TestCase):
             proj.revisionExpr = sha
             proj.upstream = None
             proj._CheckForImmutableRevision = mock.MagicMock(return_value=False)
+            self._mock_remote(proj)
 
-            mock_remote = mock.MagicMock()
-            mock_remote.name = "origin"
-
-            def _to_local(r: str) -> str:
-                if r.startswith("refs/heads/"):
-                    return "refs/remotes/origin/" + r[11:]
-                return r
-
-            mock_remote.ToLocal.side_effect = _to_local
-            mock_remote.PreConnectFetch.return_value = True
-            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
-
-            with mock.patch("project.GitCommand") as mock_git_cmd:
-                mock_cmd_instance = mock.MagicMock()
-                mock_cmd_instance.Wait.return_value = 0
-                mock_git_cmd.return_value = mock_cmd_instance
-
+            with self._mock_git_command() as mock_git_cmd:
                 res = proj._RemoteFetch(current_branch_only=True)
 
                 self.assertTrue(res)
