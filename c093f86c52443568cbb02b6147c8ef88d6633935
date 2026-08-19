@@ -52,6 +52,23 @@
       "parentUuid": "ef28085d_626a2212",
       "revId": "c093f86c52443568cbb02b6147c8ef88d6633935",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37056ba5_d5783eb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-08-19T07:07:16Z",
+      "side": 1,
+      "message": "Seems I added dest-branch by mistake in the test manifest in the other commit, apologies if that confused you.\n\nIn my defense though, it still fails with below setup, which is similar to the public android-17.0.0_r1:default.xml | head, and with a better paste too: 😊\n\n\t\u003c?xml version\u003d\"1.0\" encoding\u003d\"UTF-8\"?\u003e\n\t\u003cmanifest\u003e\n\t  \u003cremote name\u003d\"aosp\"\n\t\t\t   fetch\u003d\"..\"\n\t\t\t   review\u003d\"https://android-review.googlesource.com/\" /\u003e\n\t  \u003cdefault revision\u003d\"refs/tags/android-17.0.0_r1\" remote\u003d\"aosp\" sync-j\u003d\"4\" /\u003e\n\n\t  \u003cproject clone-depth\u003d\"1\" name\u003d\"platform/prebuilts/asuite\" path\u003d\"prebuilts/asuite\" revision\u003d\"f7c894b12c39ad8ca93f43776e1cece37ef026b2\" /\u003e\n\t  \u003cproject path\u003d\"art\" name\u003d\"platform/art\" revision\u003d\"b753cf97923c3695338d21466fa14c57b480a59a\" /\u003e\n\t  \u003cproject name\u003d\"platform/prebuilts/asuite\" path\u003d\"kernel_platform/prebuilts/asuite\" revision\u003d\"d01762464df405e9f1a9057f966b82ca46512be1\" /\u003e\n\n\t\u003c/manifest\u003e",
+      "revId": "c093f86c52443568cbb02b6147c8ef88d6633935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
