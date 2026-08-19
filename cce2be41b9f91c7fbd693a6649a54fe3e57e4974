@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5aff30f_888ee03c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-19T01:55:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "503652da_aa1a8e04",
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "337e4199_4a7917d9",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-08-10T21:51:02Z",
       "side": 1,
       "message": "aren\u0027t files in the toplevel dir included as well? https://git-scm.com/docs/git-sparse-checkout#_internalscone_mode_handling: \"if you specified the directory Documentation/technical/ then your sparse checkout would contain: all files in the toplevel-directory\"",
+      "range": {
+        "startLine": 484,
+        "startChar": 13,
+        "endLine": 485,
+        "endChar": 33
+      },
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd974810_747ea89d",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-19T01:55:37Z",
+      "side": 1,
+      "message": "yeah that\u0027s right. That\u0027s assumed about sparse checkout, but the language is a bit confusing. I\u0027ll fix it.",
+      "parentUuid": "337e4199_4a7917d9",
       "range": {
         "startLine": 484,
         "startChar": 13,
@@ -81,6 +123,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5975885_4932c434",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-19T01:55:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c94962f3_d5b968c1",
+      "range": {
+        "startLine": 486,
+        "startChar": 40,
+        "endLine": 486,
+        "endChar": 49
+      },
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "281d878c_5de6ee10",
@@ -94,6 +160,30 @@
       "writtenOn": "2026-08-10T21:51:02Z",
       "side": 1,
       "message": "let\u0027s make sure this behavior is documented somewhere since this overrides `--partial-clone-exclude` (do we want that anyway?)",
+      "range": {
+        "startLine": 3000,
+        "startChar": 8,
+        "endLine": 3001,
+        "endChar": 38
+      },
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c8b6d04_bd54f764",
+        "filename": "project.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 3001,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-19T01:55:37Z",
+      "side": 1,
+      "message": "I changed this so that partial clone exclude is honored. blob:none will be the default if no partial clone config is set.",
+      "parentUuid": "281d878c_5de6ee10",
       "range": {
         "startLine": 3000,
         "startChar": 8,
@@ -129,6 +219,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7f3bde9a_8f87b330",
+        "filename": "project.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 4021,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-19T01:55:37Z",
+      "side": 1,
+      "message": "that\u0027s true. I explored the option of enabling sparse-paths for existing projects but it does introduce more code changes.\n\nHow do you feel about only supporting sparse-paths for new checkouts in this first version?",
+      "parentUuid": "32600bfb_cbfa4867",
+      "range": {
+        "startLine": 4021,
+        "startChar": 0,
+        "endLine": 4021,
+        "endChar": 27
+      },
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "200e6ce7_57da8983",
         "filename": "project.py",
         "patchSetId": 17
@@ -140,6 +254,30 @@
       "writtenOn": "2026-08-10T21:51:02Z",
       "side": 1,
       "message": "should this go in the try/except below so the `platform_utils.remove(dotgit)` cleanup covers it?",
+      "range": {
+        "startLine": 4024,
+        "startChar": 16,
+        "endLine": 4026,
+        "endChar": 68
+      },
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3edca1a1_a398618b",
+        "filename": "project.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 4026,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-08-19T01:55:37Z",
+      "side": 1,
+      "message": "good point",
+      "parentUuid": "200e6ce7_57da8983",
       "range": {
         "startLine": 4024,
         "startChar": 16,
