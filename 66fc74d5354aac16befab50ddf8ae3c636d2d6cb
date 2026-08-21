@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b14f6a24_6e91dfc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-21T19:57:16Z",
+      "side": 1,
+      "message": "the reporter says in the bug \"The choice of formatting files should be separate from the choice of submitting a CL.\"\n\nthis CL feels like it\u0027s overloading flags and not really addressing the problem. `--ignore-hooks` implies no fix, while `--yes` implies fix. why not go with the reporter\u0027s suggestion and add a `--fix` flag independent of `--yes` and `--ignore-hooks`?",
+      "revId": "66fc74d5354aac16befab50ddf8ae3c636d2d6cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
