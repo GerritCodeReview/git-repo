@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c04d91bd_99cbecd8",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1303,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-21T19:35:25Z",
+      "side": 1,
+      "message": "can we add more tests to cover url regex and event emission",
+      "range": {
+        "startLine": 1299,
+        "startChar": 8,
+        "endLine": 1303,
+        "endChar": 47
+      },
+      "revId": "d74fe71c627cb1e70223c18362d64dd1b4623515",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
