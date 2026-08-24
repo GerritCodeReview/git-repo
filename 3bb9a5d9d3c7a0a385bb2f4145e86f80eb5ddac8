@@ -16,6 +16,46 @@
       "message": "Filed a bug b/545941712 for the incorrect warnings given by AI code-review-workflow.",
       "revId": "3bb9a5d9d3c7a0a385bb2f4145e86f80eb5ddac8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bd71c36_92e6eccb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-24T19:56:08Z",
+      "side": 1,
+      "message": "thinking about this a bit more, should a -l or --no-manifest-update suppress an implicit smartsync? and if an implicit smartsync can\u0027t reach the server, should it warn and fall back to ToT instead of aborting?",
+      "revId": "3bb9a5d9d3c7a0a385bb2f4145e86f80eb5ddac8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dc5ea0f_ab98bad6",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-24T19:56:08Z",
+      "side": 1,
+      "message": "shouldn\u0027t this raise? the line that says `-u and -p may only be combined with -s or -t` is now incorrect since the code now permits -u and -p without -s or -t\n\nWDYT about getting rid of the `if not (opt.smart_sync is not False or opt.smart_tag):` block and having something like\n```\nif (opt.manifest_server_username or opt.manifest_server_password) and not (opt.smart_sync or opt.smart_tag):\n    raise SmartSyncError(\"-u and -p may only be combined with -s or -t\")\n```\nat the end of `_ResolveSmartSyncOption`?",
+      "range": {
+        "startLine": 199,
+        "startChar": 8,
+        "endLine": 199,
+        "endChar": 46
+      },
+      "revId": "3bb9a5d9d3c7a0a385bb2f4145e86f80eb5ddac8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
