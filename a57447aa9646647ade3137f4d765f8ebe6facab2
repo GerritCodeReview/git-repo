@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88e8b2b4_2a95ac16",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3002,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-24T22:22:39Z",
+      "side": 1,
+      "message": "this rereads once per level, and each sibling submodule is given its own level",
+      "range": {
+        "startLine": 3002,
+        "startChar": 32,
+        "endLine": 3002,
+        "endChar": 56
+      },
+      "revId": "a57447aa9646647ade3137f4d765f8ebe6facab2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
