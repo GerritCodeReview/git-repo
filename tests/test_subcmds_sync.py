@@ -628,6 +628,21 @@ class SafeCheckoutOrder(unittest.TestCase):
         )
 
 
+class ParentFirstBatches(unittest.TestCase):
+    def test_no_submodules(self):
+        p_a = FakeProject("a")
+        p_a_b = FakeProject("a/b")
+        out = sync._ParentFirstBatches([p_a, p_a_b])
+        self.assertEqual(out, [[p_a, p_a_b]])
+
+    def test_submodules_follow_their_parent(self):
+        p_a = FakeProject("a")
+        p_a_b = FakeProject("a/b", parent=p_a, is_derived=True)
+        p_a_b_c = FakeProject("a/b/c", parent=p_a_b, is_derived=True)
+        out = sync._ParentFirstBatches([p_a_b_c, p_a, p_a_b])
+        self.assertEqual(out, [[p_a], [p_a_b], [p_a_b_c]])
+
+
 class RefreshDerivedRevisions(unittest.TestCase):
     def test_refreshes_once_per_parent(self):
         p_a = FakeProject("a")
@@ -646,6 +661,37 @@ class RefreshDerivedRevisions(unittest.TestCase):
         sync._RefreshDerivedRevisions([p_a])
 
         p_a.RefreshSubmoduleRevisions.assert_not_called()
+
+
+class FetchParentFirst(unittest.TestCase):
+    def test_submodules_are_refreshed_and_fetched_after_their_parent(self):
+        cmd = sync.Sync()
+        cmd._fetch_times = mock.Mock()
+        cmd._fetch_times.Get = mock.Mock(return_value=0)
+
+        calls = []
+        p_a = FakeProject("a")
+        p_a.RefreshSubmoduleRevisions = mock.Mock(
+            side_effect=lambda subprojects: calls.append(
+                ("refresh", [p.relpath for p in subprojects])
+            )
+        )
+        p_a_b = FakeProject("a/b", parent=p_a, is_derived=True)
+
+        def fake_fetch(projects, opt, err_event, ssh_proxy, errors):
+            calls.append(("fetch", [p.relpath for p in projects]))
+            return sync._FetchResult(True, {p.objdir for p in projects})
+
+        opt = mock.Mock(fail_fast=False)
+        with mock.patch.object(cmd, "_Fetch", side_effect=fake_fetch):
+            result = cmd._FetchParentFirst([p_a_b, p_a], opt, None, None, [])
+
+        self.assertTrue(result.success)
+        self.assertEqual(result.projects, {"a", "a/b"})
+        self.assertEqual(
+            calls,
+            [("fetch", ["a"]), ("refresh", ["a/b"]), ("fetch", ["a/b"])],
+        )
 
 
 class Chunksize(unittest.TestCase):
