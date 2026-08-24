@@ -2577,7 +2577,9 @@ class Project:
             return []
         return get_submodules(self.gitdir, rev)
 
-    def RefreshSubmoduleRevisions(self, subprojects: List["Project"]) -> None:
+    def RefreshSubmoduleRevisions(
+        self, subprojects: List["Project"]
+    ) -> List["Project"]:
         """Re-read the gitlinks of |subprojects| from our current revision.
 
         Discovered submodules are derived from the revision this project was
@@ -2587,14 +2589,29 @@ class Project:
 
         Args:
             subprojects: The derived subprojects of this project to refresh.
+
+        Returns:
+            The subprojects that our current revision no longer holds a
+            gitlink for, i.e. the submodules that have been removed.
         """
+        try:
+            self.GetRevisionId()
+        except (GitError, ManifestInvalidRevisionError):
+            # Without a revision, a missing gitlink cannot be told apart from
+            # a submodule that was removed, so leave the subprojects alone.
+            return []
+
         revisions = {
             path: rev for rev, path, _url, _shallow in self._GetSubmodules()
         }
+        removed = []
         for subproject in subprojects:
             rev = revisions.get(subproject.gitlink_path)
             if rev:
                 subproject.SetRevision(rev, revisionId=rev)
+            else:
+                removed.append(subproject)
+        return removed
 
     def GetDerivedSubprojects(self):
         result = []
