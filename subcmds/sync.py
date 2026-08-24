@@ -156,6 +156,26 @@ def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
     return res
 
 
+def _ParentFirstBatches(projects: List[Project]) -> List[List[Project]]:
+    """Group |projects| so that a parent is fetched before its submodules.
+
+    A discovered submodule can only be fetched at the right revision once the
+    project holding its gitlink has been fetched, so it is held back to a later
+    batch than its parent. Projects that are not discovered submodules all end
+    up in the first batch, which keeps manifests without submodules on a single
+    batch.
+    """
+    batches = collections.defaultdict(list)
+    for project in projects:
+        depth = 0
+        ancestor = project
+        while ancestor.Derived and ancestor.parent:
+            depth += 1
+            ancestor = ancestor.parent
+        batches[depth].append(project)
+    return [batches[depth] for depth in sorted(batches)]
+
+
 def _RefreshDerivedRevisions(projects: List[Project]) -> None:
     """Re-resolve the gitlinks of the discovered submodules in |projects|.
 
@@ -1083,6 +1103,38 @@ later is required to fix a server side protocol bug.
 
         return _FetchResult(ret, fetched)
 
+    def _FetchParentFirst(
+        self,
+        projects: List[Project],
+        opt: optparse.Values,
+        err_event: _threading.Event,
+        ssh_proxy: ssh.ProxyManager,
+        errors: List[Exception],
+    ) -> _FetchResult:
+        """Fetch |projects|, holding submodules back until their parent is done.
+
+        Args:
+            projects: Projects to fetch.
+            opt: Program options returned from optparse. See _Options().
+            err_event: Whether an error was hit while processing.
+            ssh_proxy: SSH manager for clients & masters.
+            errors: A list to accumulate errors.
+
+        Returns:
+            _FetchResult for all the batches combined.
+        """
+        success = True
+        fetched = set()
+        for batch in _ParentFirstBatches(projects):
+            _RefreshDerivedRevisions(batch)
+            batch.sort(key=self._fetch_times.Get, reverse=True)
+            result = self._Fetch(batch, opt, err_event, ssh_proxy, errors)
+            success = success and result.success
+            fetched.update(result.projects)
+            if not success and opt.fail_fast:
+                break
+        return _FetchResult(success, fetched)
+
     def _FetchMain(
         self, opt, args, all_projects, err_event, ssh_proxy, manifest, errors
     ):
@@ -1099,12 +1151,10 @@ later is required to fix a server side protocol bug.
         Returns:
             List of all projects that should be checked out.
         """
-        to_fetch = []
-        to_fetch.extend(all_projects)
-        to_fetch.sort(key=self._fetch_times.Get, reverse=True)
-
         try:
-            result = self._Fetch(to_fetch, opt, err_event, ssh_proxy, errors)
+            result = self._FetchParentFirst(
+                all_projects, opt, err_event, ssh_proxy, errors
+            )
             success = result.success
             fetched = result.projects
             if not success:
@@ -1147,7 +1197,9 @@ later is required to fix a server side protocol bug.
                 if previously_missing_set == missing_set:
                     break
                 previously_missing_set = missing_set
-                result = self._Fetch(missing, opt, err_event, ssh_proxy, errors)
+                result = self._FetchParentFirst(
+                    missing, opt, err_event, ssh_proxy, errors
+                )
                 success = result.success
                 new_fetched = result.projects
                 if not success:
