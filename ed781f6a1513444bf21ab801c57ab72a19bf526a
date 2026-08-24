@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ba03c82_dd7ba2f8",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2598,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-24T22:29:17Z",
+      "side": 1,
+      "message": "this returns a cached revisionId without checking the object exists. WDYT about having something similar to _CheckForImmutableRevision like:\n```\nrev \u003d self.GetRevisionId()\nself.bare_git.rev_list(\"-1\", \"--missing\u003dallow-any\", f\"{rev}^0\", \"--\", log_as_error\u003dFalse)\n```",
+      "range": {
+        "startLine": 2598,
+        "startChar": 17,
+        "endLine": 2598,
+        "endChar": 30
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "57706021_63ec8b66",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 2598,
+                "startChar": 0,
+                "endLine": 2599,
+                "endChar": 0
+              },
+              "replacement": "            rev \u003d self.GetRevisionId()\n            self.bare_git.rev_list(\n                \"-1\", \"--missing\u003dallow-any\", f\"{rev}^0\", \"--\", log_as_error\u003dFalse\n            )\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ed781f6a1513444bf21ab801c57ab72a19bf526a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
