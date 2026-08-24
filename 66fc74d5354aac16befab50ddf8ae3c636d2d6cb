@@ -16,6 +16,24 @@
       "message": "the reporter says in the bug \"The choice of formatting files should be separate from the choice of submitting a CL.\"\n\nthis CL feels like it\u0027s overloading flags and not really addressing the problem. `--ignore-hooks` implies no fix, while `--yes` implies fix. why not go with the reporter\u0027s suggestion and add a `--fix` flag independent of `--yes` and `--ignore-hooks`?",
       "revId": "66fc74d5354aac16befab50ddf8ae3c636d2d6cb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26ca06bb_0b9f7111",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-08-24T10:57:47Z",
+      "side": 1,
+      "message": "You\u0027re right it is overloaded now. \n\nOriginally the intent was to avoid the hanging of terminal in agentic/CI contexts. Problem was that pre-upload only had two modes \"all\" or \"some\". With the updated changes, we\u0027ll have the following:\n\n* `repo upload` - interactive prompt.\n* `repo upload --fix --yes` - apply all fixups, no prompt.\n* `repo upload --yes` - do not apply fixups (fail on hook failure), no prompt.\n* `repo upload --yes --ignore-hooks` - do not apply fixups (ignore hook failures), no prompt.\n\nUpdated the change to add the --fix flag. Relevant change required in git-repohooks: https://gerrit-review.git.corp.google.com/c/git-repohooks/+/621761.",
+      "parentUuid": "b14f6a24_6e91dfc1",
+      "revId": "66fc74d5354aac16befab50ddf8ae3c636d2d6cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
