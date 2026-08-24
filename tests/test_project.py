@@ -948,6 +948,31 @@ def _create_mock_project(
     return proj
 
 
+class RefreshSubmoduleRevisions(unittest.TestCase):
+    """Tests for Project.RefreshSubmoduleRevisions."""
+
+    def test_only_known_gitlinks_are_updated(self):
+        with utils_for_test.TempGitTree() as tempdir:
+            parent = _create_mock_project(tempdir)
+            parent._GetSubmodules = mock.MagicMock(
+                return_value=[("1234abcd", "sub", "http://example.com/sub", "")]
+            )
+
+            sub = _create_mock_project(tempdir)
+            sub.gitlink_path = "sub"
+            sub.SetRevision("5678abcd", revisionId="5678abcd")
+            dropped = _create_mock_project(tempdir)
+            dropped.gitlink_path = "dropped"
+            dropped.SetRevision("5678abcd", revisionId="5678abcd")
+
+            parent.RefreshSubmoduleRevisions([sub, dropped])
+
+            self.assertEqual(sub.revisionExpr, "1234abcd")
+            self.assertEqual(sub.revisionId, "1234abcd")
+            self.assertEqual(dropped.revisionExpr, "5678abcd")
+            self.assertEqual(dropped.revisionId, "5678abcd")
+
+
 class StatelessSyncTests(unittest.TestCase):
     """Tests for stateless sync strategy."""
 
