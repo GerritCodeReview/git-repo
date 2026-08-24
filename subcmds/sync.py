@@ -156,6 +156,22 @@ def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
     return res
 
 
+def _RefreshDerivedRevisions(projects: List[Project]) -> None:
+    """Re-resolve the gitlinks of the discovered submodules in |projects|.
+
+    The revision of a discovered submodule is read from its parent when the
+    manifest is loaded, so it is stale as soon as the parent gets fetched. It
+    has to be resolved again once the parent is up-to-date, and before the
+    submodule itself is fetched and checked out.
+    """
+    subprojects_by_parent = collections.defaultdict(list)
+    for project in projects:
+        if project.Derived and project.parent:
+            subprojects_by_parent[project.parent].append(project)
+    for parent, subprojects in subprojects_by_parent.items():
+        parent.RefreshSubmoduleRevisions(subprojects)
+
+
 def _chunksize(projects: int, jobs: int) -> int:
     """Calculate chunk size for the given number of projects and jobs."""
     return min(max(1, projects // jobs), WORKER_BATCH_SIZE)
@@ -2982,6 +2998,8 @@ later is required to fix a server side protocol bug.
                             ):
                                 if not level_projects:
                                     continue
+
+                                _RefreshDerivedRevisions(level_projects)
 
                                 objdir_project_map = collections.defaultdict(
                                     list

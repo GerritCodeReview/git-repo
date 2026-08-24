@@ -19,6 +19,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import time
+from typing import List, Optional
 import unittest
 from unittest import mock
 
@@ -491,12 +492,22 @@ class LocalSyncState(unittest.TestCase):
 
 
 class FakeProject:
-    def __init__(self, relpath, name=None, objdir=None):
+    def __init__(
+        self,
+        relpath: str,
+        name: Optional[str] = None,
+        objdir: Optional[str] = None,
+        parent: Optional["FakeProject"] = None,
+        is_derived: bool = False,
+        revisionId: Optional[str] = None,
+    ) -> None:
         self.relpath = relpath
         self.name = name or relpath
         self.objdir = objdir or relpath
         self.worktree = relpath
-        self.parent = None
+        self.parent = parent
+        self.is_derived = is_derived
+        self.revisionId = revisionId
 
         self.use_git_worktrees = False
         self.UseAlternates = False
@@ -504,6 +515,10 @@ class FakeProject:
         self.manifest.GetProjectsWithName.return_value = [self]
         self.config = mock.MagicMock()
         self.EnableRepositoryExtension = mock.MagicMock()
+
+    @property
+    def Derived(self) -> bool:
+        return self.is_derived
 
     def RelPath(self, local=None):
         return self.relpath
@@ -612,6 +627,26 @@ class SafeCheckoutOrder(unittest.TestCase):
                 [p_parent_sub2_nested],
             ],
         )
+
+
+class RefreshDerivedRevisions(unittest.TestCase):
+    def test_refreshes_once_per_parent(self) -> None:
+        p_a = FakeProject("a")
+        p_a.RefreshSubmoduleRevisions = mock.Mock()
+        p_a_b = FakeProject("a/b", parent=p_a, is_derived=True)
+        p_a_c = FakeProject("a/c", parent=p_a, is_derived=True)
+
+        sync._RefreshDerivedRevisions([p_a, p_a_b, p_a_c])
+
+        p_a.RefreshSubmoduleRevisions.assert_called_once_with([p_a_b, p_a_c])
+
+    def test_ignores_projects_from_the_manifest(self) -> None:
+        p_a = FakeProject("a")
+        p_a.RefreshSubmoduleRevisions = mock.Mock()
+
+        sync._RefreshDerivedRevisions([p_a])
+
+        p_a.RefreshSubmoduleRevisions.assert_not_called()
 
 
 class Chunksize(unittest.TestCase):
@@ -1157,6 +1192,63 @@ class InterleavedSyncTest(unittest.TestCase):
             )
 
         execute_mock.assert_called_once()
+
+    def test_interleaved_refreshes_submodule_revision(self) -> None:
+        """Test submodules are synced at the revision of the fetched parent."""
+        opt, args = self.cmd.OptionParser.parse_args(["--interleaved", "-j4"])
+        opt.quiet = True
+
+        submodule = FakeProject(
+            "projA/sub",
+            name="projA_sub",
+            objdir="objA_sub",
+            parent=self.projA,
+            is_derived=True,
+            revisionId="stale",
+        )
+        all_projects = [self.projA, submodule]
+        mock.patch.object(
+            self.cmd, "GetProjects", return_value=all_projects
+        ).start()
+
+        def refresh(subprojects: List[FakeProject]) -> List[FakeProject]:
+            for subproject in subprojects:
+                subproject.revisionId = "fetched"
+
+        self.projA.RefreshSubmoduleRevisions = mock.Mock(side_effect=refresh)
+
+        synced = []
+
+        def execute_side_effect(
+            jobs: int,
+            target: object,
+            work_items: List[List[int]],
+            **kwargs: object,
+        ) -> bool:
+            synced_relpaths_set = kwargs["callback"].args[0]
+            projects_in_pass = self.cmd.get_parallel_context()["projects"]
+            for item in work_items:
+                for project_idx in item:
+                    project = projects_in_pass[project_idx]
+                    synced.append((project.relpath, project.revisionId))
+                    synced_relpaths_set.add(project.relpath)
+            return True
+
+        mock.patch.object(
+            self.cmd, "ExecuteInParallel", side_effect=execute_side_effect
+        ).start()
+
+        self.cmd._SyncInterleaved(
+            opt,
+            args,
+            [],
+            self.manifest,
+            self.manifest.manifestProject,
+            all_projects,
+            {},
+        )
+
+        self.assertIn(("projA/sub", "fetched"), synced)
 
     def test_interleaved_shared_objdir_serial(self):
         """Test that projects with shared objdir are processed serially."""
