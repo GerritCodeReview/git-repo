@@ -176,20 +176,33 @@ def _ParentFirstBatches(projects: List[Project]) -> List[List[Project]]:
     return [batches[depth] for depth in sorted(batches)]
 
 
-def _RefreshDerivedRevisions(projects: List[Project]) -> None:
+def _RefreshDerivedRevisions(projects: List[Project]) -> List[Project]:
     """Re-resolve the gitlinks of the discovered submodules in |projects|.
 
     The revision of a discovered submodule is read from its parent when the
     manifest is loaded, so it is stale as soon as the parent gets fetched. It
     has to be resolved again once the parent is up-to-date, and before the
     submodule itself is fetched and checked out.
+
+    Returns:
+        The submodules that their parent no longer holds a gitlink for.
     """
     subprojects_by_parent = collections.defaultdict(list)
     for project in projects:
         if project.Derived and project.parent:
             subprojects_by_parent[project.parent].append(project)
+    removed = []
     for parent, subprojects in subprojects_by_parent.items():
-        parent.RefreshSubmoduleRevisions(subprojects)
+        removed.extend(parent.RefreshSubmoduleRevisions(subprojects))
+    return removed
+
+
+def _WithoutProjects(projects, unwanted):
+    """Return |projects| without the projects in |unwanted|."""
+    if not unwanted:
+        return projects
+    unwanted_relpaths = {project.relpath for project in unwanted}
+    return [p for p in projects if p.relpath not in unwanted_relpaths]
 
 
 def _chunksize(projects: int, jobs: int) -> int:
@@ -1119,7 +1132,9 @@ later is required to fix a server side protocol bug.
         success = True
         fetched = set()
         for batch in _ParentFirstBatches(projects):
-            _RefreshDerivedRevisions(batch)
+            batch = _WithoutProjects(batch, _RefreshDerivedRevisions(batch))
+            if not batch:
+                continue
             batch.sort(key=self._fetch_times.Get, reverse=True)
             result = self._Fetch(batch, opt, err_event, ssh_proxy, errors)
             success = success and result.success
@@ -3044,7 +3059,12 @@ later is required to fix a server side protocol bug.
                                 if not level_projects:
                                     continue
 
-                                _RefreshDerivedRevisions(level_projects)
+                                level_projects = _WithoutProjects(
+                                    level_projects,
+                                    _RefreshDerivedRevisions(level_projects),
+                                )
+                                if not level_projects:
+                                    continue
 
                                 objdir_project_map = collections.defaultdict(
                                     list

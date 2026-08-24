@@ -646,7 +646,7 @@ class ParentFirstBatches(unittest.TestCase):
 class RefreshDerivedRevisions(unittest.TestCase):
     def test_refreshes_once_per_parent(self):
         p_a = FakeProject("a")
-        p_a.RefreshSubmoduleRevisions = mock.Mock()
+        p_a.RefreshSubmoduleRevisions = mock.Mock(return_value=[])
         p_a_b = FakeProject("a/b", parent=p_a, is_derived=True)
         p_a_c = FakeProject("a/c", parent=p_a, is_derived=True)
 
@@ -656,11 +656,20 @@ class RefreshDerivedRevisions(unittest.TestCase):
 
     def test_ignores_projects_from_the_manifest(self):
         p_a = FakeProject("a")
-        p_a.RefreshSubmoduleRevisions = mock.Mock()
+        p_a.RefreshSubmoduleRevisions = mock.Mock(return_value=[])
 
         sync._RefreshDerivedRevisions([p_a])
 
         p_a.RefreshSubmoduleRevisions.assert_not_called()
+
+    def test_reports_submodules_removed_from_their_parent(self):
+        p_a = FakeProject("a")
+        p_a_b = FakeProject("a/b", parent=p_a, is_derived=True)
+        p_a.RefreshSubmoduleRevisions = mock.Mock(return_value=[p_a_b])
+
+        removed = sync._RefreshDerivedRevisions([p_a, p_a_b])
+
+        self.assertEqual(removed, [p_a_b])
 
 
 class FetchParentFirst(unittest.TestCase):
@@ -671,11 +680,12 @@ class FetchParentFirst(unittest.TestCase):
 
         calls = []
         p_a = FakeProject("a")
-        p_a.RefreshSubmoduleRevisions = mock.Mock(
-            side_effect=lambda subprojects: calls.append(
-                ("refresh", [p.relpath for p in subprojects])
-            )
-        )
+
+        def fake_refresh(subprojects):
+            calls.append(("refresh", [p.relpath for p in subprojects]))
+            return []
+
+        p_a.RefreshSubmoduleRevisions = mock.Mock(side_effect=fake_refresh)
         p_a_b = FakeProject("a/b", parent=p_a, is_derived=True)
 
         def fake_fetch(projects, opt, err_event, ssh_proxy, errors):
@@ -692,6 +702,14 @@ class FetchParentFirst(unittest.TestCase):
             calls,
             [("fetch", ["a"]), ("refresh", ["a/b"]), ("fetch", ["a/b"])],
         )
+
+
+class WithoutProjects(unittest.TestCase):
+    def test_drops_by_path(self):
+        p_a = FakeProject("a")
+        p_a_b = FakeProject("a/b")
+        self.assertEqual(sync._WithoutProjects([p_a, p_a_b], [p_a_b]), [p_a])
+        self.assertEqual(sync._WithoutProjects([p_a, p_a_b], []), [p_a, p_a_b])
 
 
 class Chunksize(unittest.TestCase):
@@ -1259,6 +1277,7 @@ class InterleavedSyncTest(unittest.TestCase):
         def refresh(subprojects):
             for subproject in subprojects:
                 subproject.revisionId = "fetched"
+            return []
 
         self.projA.RefreshSubmoduleRevisions = mock.Mock(side_effect=refresh)
 
@@ -1289,6 +1308,55 @@ class InterleavedSyncTest(unittest.TestCase):
         )
 
         self.assertIn(("projA/sub", "fetched"), synced)
+
+    def test_interleaved_skips_removed_submodule(self):
+        """Test submodules dropped by their parent are not checked out."""
+        opt, args = self.cmd.OptionParser.parse_args(["--interleaved", "-j4"])
+        opt.quiet = True
+
+        submodule = FakeProject(
+            "projA/sub",
+            name="projA_sub",
+            objdir="objA_sub",
+            parent=self.projA,
+            is_derived=True,
+            revisionId="stale",
+        )
+        self.projA.RefreshSubmoduleRevisions = mock.Mock(
+            return_value=[submodule]
+        )
+        # The reloaded manifest no longer derives the removed submodule.
+        mock.patch.object(
+            self.cmd, "GetProjects", return_value=[self.projA]
+        ).start()
+
+        synced = []
+
+        def execute_side_effect(jobs, target, work_items, **kwargs):
+            synced_relpaths_set = kwargs["callback"].args[0]
+            projects_in_pass = self.cmd.get_parallel_context()["projects"]
+            for item in work_items:
+                for project_idx in item:
+                    project = projects_in_pass[project_idx]
+                    synced.append(project.relpath)
+                    synced_relpaths_set.add(project.relpath)
+            return True
+
+        mock.patch.object(
+            self.cmd, "ExecuteInParallel", side_effect=execute_side_effect
+        ).start()
+
+        self.cmd._SyncInterleaved(
+            opt,
+            args,
+            [],
+            self.manifest,
+            self.manifest.manifestProject,
+            [self.projA, submodule],
+            {},
+        )
+
+        self.assertEqual(synced, ["projA"])
 
     def test_interleaved_shared_objdir_serial(self):
         """Test that projects with shared objdir are processed serially."""

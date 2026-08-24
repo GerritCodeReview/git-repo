@@ -954,6 +954,7 @@ class RefreshSubmoduleRevisions(unittest.TestCase):
     def test_only_known_gitlinks_are_updated(self):
         with utils_for_test.TempGitTree() as tempdir:
             parent = _create_mock_project(tempdir)
+            parent.GetRevisionId = mock.MagicMock(return_value="cafe1234")
             parent._GetSubmodules = mock.MagicMock(
                 return_value=[("1234abcd", "sub", "http://example.com/sub", "")]
             )
@@ -965,12 +966,29 @@ class RefreshSubmoduleRevisions(unittest.TestCase):
             dropped.gitlink_path = "dropped"
             dropped.SetRevision("5678abcd", revisionId="5678abcd")
 
-            parent.RefreshSubmoduleRevisions([sub, dropped])
+            removed = parent.RefreshSubmoduleRevisions([sub, dropped])
 
             self.assertEqual(sub.revisionExpr, "1234abcd")
             self.assertEqual(sub.revisionId, "1234abcd")
             self.assertEqual(dropped.revisionExpr, "5678abcd")
             self.assertEqual(dropped.revisionId, "5678abcd")
+            self.assertEqual(removed, [dropped])
+
+    def test_nothing_is_removed_without_a_revision(self):
+        with utils_for_test.TempGitTree() as tempdir:
+            parent = _create_mock_project(tempdir)
+            parent.GetRevisionId = mock.MagicMock(
+                side_effect=error.ManifestInvalidRevisionError("no revision")
+            )
+
+            sub = _create_mock_project(tempdir)
+            sub.gitlink_path = "sub"
+            sub.SetRevision("5678abcd", revisionId="5678abcd")
+
+            removed = parent.RefreshSubmoduleRevisions([sub])
+
+            self.assertEqual(removed, [])
+            self.assertEqual(sub.revisionId, "5678abcd")
 
 
 class StatelessSyncTests(unittest.TestCase):
