@@ -22,6 +22,24 @@
       },
       "revId": "a57447aa9646647ade3137f4d765f8ebe6facab2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e27b440e_ea1e0702",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3002,
+      "author": {
+        "id": 5087317
+      },
+      "writtenOn": "2026-08-25T04:04:27Z",
+      "side": 1,
+      "message": "Good catch, thanks. The gitlinks read for one level are now kept for the rest of the pass, so a project is read once per pass instead of once per sibling submodule. _SyncInterleaved() holds the dict for the pass and hands it to _RefreshDerivedRevisions().",
+      "parentUuid": "88e8b2b4_2a95ac16",
+      "revId": "a57447aa9646647ade3137f4d765f8ebe6facab2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
