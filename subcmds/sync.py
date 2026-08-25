@@ -1614,10 +1614,23 @@ later is required to fix a server side protocol bug.
         # Only check dirty or locally modified projects. These can't be
         # freshly cloned and will accumulate garbage.
         try:
-            is_dirty = project.IsDirty(consider_untracked=True)
+            status = project._GetStatusSnapshot(
+                untracked_files="normal", branch=True
+            )
+            if status is not None:
+                is_dirty = status.is_dirty(consider_untracked=True)
+                head_rev = status.branch_oid
+            else:
+                is_dirty = project.IsDirty(consider_untracked=True)
+                head_rev = project.work_git.rev_parse(HEAD)
+
+            if head_rev is None:
+                # Porcelain v2 reports an unborn branch as "(initial)".  The
+                # legacy rev-parse path failed here and skipped the bloat
+                # calculation, so preserve that behavior.
+                return None
 
             manifest_rev = project.GetRevisionId(project.bare_ref.all)
-            head_rev = project.work_git.rev_parse(HEAD)
             has_local_commits = manifest_rev != head_rev
 
             if not (is_dirty or has_local_commits):
