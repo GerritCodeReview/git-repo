@@ -283,6 +283,7 @@ class GitCommand:
         bare=False,
         input=None,
         capture_stdout=False,
+        capture_stdout_bytes: bool = False,
         capture_stderr=False,
         merge_output=False,
         disable_editor=False,
@@ -304,6 +305,12 @@ class GitCommand:
         self.cmdv = cmdv
         self.verify_command = verify_command
         self.stdout, self.stderr = None, None
+        if capture_stdout_bytes:
+            if merge_output:
+                raise ValueError(
+                    "capture_stdout_bytes cannot be combined with merge_output"
+                )
+            capture_stdout = True
 
         # Git on Windows wants its paths only using / for reliability.
         if platform_utils.isWindows():
@@ -347,6 +354,7 @@ class GitCommand:
                 command,
                 env,
                 capture_stdout=capture_stdout,
+                capture_stdout_bytes=capture_stdout_bytes,
                 capture_stderr=capture_stderr,
                 merge_output=merge_output,
                 ssh_proxy=ssh_proxy,
@@ -380,6 +388,7 @@ class GitCommand:
         command,
         env,
         capture_stdout=False,
+        capture_stdout_bytes: bool = False,
         capture_stderr=False,
         merge_output=False,
         ssh_proxy=None,
@@ -412,6 +421,10 @@ class GitCommand:
         # See go/tee-repo-stderr for more context.
         tee_stderr = False
         kwargs = {"encoding": "utf-8", "errors": "backslashreplace"}
+        if capture_stdout_bytes:
+            kwargs = {}
+            if isinstance(input, str):
+                input = input.encode("utf-8", "surrogateescape")
         if not (stdin or stdout or stderr):
             tee_stderr = True
             # stderr will be written back to sys.stderr even though it is
@@ -490,6 +503,10 @@ class GitCommand:
                     self.stderr = self._Tee(p.stderr, sys.stderr)
                 else:
                     self.stdout, self.stderr = p.communicate(input=input)
+                    if capture_stdout_bytes and isinstance(self.stderr, bytes):
+                        self.stderr = self.stderr.decode(
+                            "utf-8", "backslashreplace"
+                        ).replace("\r\n", "\n")
             finally:
                 if ssh_proxy:
                     ssh_proxy.remove_client(p)
@@ -541,17 +558,35 @@ class GitCommand:
             env.pop(key, None)
         return env
 
-    def VerifyCommand(self):
+    def VerifyCommand(self) -> None:
         if self.rc == 0:
             return None
-        stdout = (
-            "\n".join(self.stdout.split("\n")[:GIT_ERROR_STDOUT_LINES])
-            if self.stdout
-            else None
-        )
+        raw_stdout = self.stdout
+        if isinstance(raw_stdout, bytes):
+            first_records = re.split(
+                rb"\r\n|[\r\n\0]", raw_stdout, maxsplit=GIT_ERROR_STDOUT_LINES
+            )[:GIT_ERROR_STDOUT_LINES]
+            stdout = (
+                "\n".join(
+                    r.decode("utf-8", "backslashreplace") for r in first_records
+                )
+                if raw_stdout
+                else None
+            )
+        elif raw_stdout:
+            first_records = re.split(
+                r"\r\n|[\r\n\0]", raw_stdout, maxsplit=GIT_ERROR_STDOUT_LINES
+            )[:GIT_ERROR_STDOUT_LINES]
+            stdout = "\n".join(first_records)
+        else:
+            stdout = None
+
+        raw_stderr = self.stderr
+        if isinstance(raw_stderr, bytes):
+            raw_stderr = raw_stderr.decode("utf-8", "backslashreplace")
         stderr = (
-            "\n".join(self.stderr.split("\n")[:GIT_ERROR_STDERR_LINES])
-            if self.stderr
+            "\n".join(raw_stderr.split("\n")[:GIT_ERROR_STDERR_LINES])
+            if raw_stderr
             else None
         )
         project = self.project.name if self.project else None
