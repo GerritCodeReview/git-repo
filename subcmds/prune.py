@@ -80,7 +80,7 @@ class Prune(PagedCommand):
             print(
                 "%s %-33s "
                 % (
-                    branch.name == project.CurrentBranch and "*" or " ",
+                    branch.current and "*" or " ",
                     branch.name,
                 ),
                 end="",
