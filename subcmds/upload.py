@@ -721,13 +721,14 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     def _GatherOne(cls, opt, project_idx):
         """Figure out the upload status for |project|."""
         project = cls.get_parallel_context()["projects"][project_idx]
+        cbr = None
         if opt.current_branch:
             cbr = project.CurrentBranch
             up_branch = project.GetUploadableBranch(cbr)
             avail = [up_branch] if up_branch else None
         else:
             avail = project.GetUploadableBranches(opt.branch)
-        return (project_idx, avail)
+        return (project_idx, avail, cbr)
 
     def Execute(self, opt, args):
         projects = self.GetProjects(
@@ -737,7 +738,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         def _ProcessResults(_pool, _out, results):
             pending = []
             for result in results:
-                project_idx, avail = result
+                project_idx, avail, current_branch = result
                 project = projects[project_idx]
                 if avail is None:
                     logger.error(
@@ -745,7 +746,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                         "You might be able to fix the branch by running:\n"
                         "  git branch --set-upstream-to m/%s",
                         project.RelPath(local=opt.this_manifest_only),
-                        project.CurrentBranch,
+                        current_branch,
                         project.manifest.branch,
                     )
                 elif avail:
