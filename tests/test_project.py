@@ -1708,26 +1708,34 @@ _CONFIG_CMD: List[str] = ["config", "--get", "init.defaultBranch"]
 
 
 @pytest.mark.parametrize(
-    "responses, expected_ref, expected_calls",
+    "supports_git_var, responses, expected_ref, expected_calls",
     (
         # git >= 2.35 answers `git var GIT_DEFAULT_BRANCH`.
-        ({"var": (0, "jellybean\n")}, "refs/heads/jellybean", [_VAR_CMD]),
+        (
+            True,
+            {"var": (0, "jellybean\n")},
+            "refs/heads/jellybean",
+            [_VAR_CMD],
+        ),
         # Older git: `git var` fails, so read init.defaultBranch instead.
         (
-            {"var": (1, ""), "config": (0, "custom\n")},
+            False,
+            {"config": (0, "custom\n")},
             "refs/heads/custom",
-            [_VAR_CMD, _CONFIG_CMD],
+            [_CONFIG_CMD],
         ),
         # Nothing configured anywhere: git's historical built-in default.
         (
-            {"var": (1, ""), "config": (1, "")},
+            False,
+            {"config": (1, "")},
             "refs/heads/master",
-            [_VAR_CMD, _CONFIG_CMD],
+            [_CONFIG_CMD],
         ),
     ),
     ids=("git_var", "old_git_reads_config", "unconfigured_defaults_to_master"),
 )
 def test_default_branch_fallback(
+    supports_git_var: bool,
     responses: Dict[str, Tuple[int, str]],
     expected_ref: str,
     expected_calls: List[List[str]],
@@ -1750,7 +1758,9 @@ def test_default_branch_fallback(
     # value) and after (so the mocked value doesn't leak to other tests).
     project._DefaultBranchFallback.cache_clear()
     try:
-        with mock.patch.object(project, "GitCommand", FakeGitCommand):
+        with mock.patch.object(
+            project, "git_require", return_value=supports_git_var
+        ), mock.patch.object(project, "GitCommand", FakeGitCommand):
             assert project._DefaultBranchFallback() == expected_ref
         assert seen == expected_calls
     finally:
