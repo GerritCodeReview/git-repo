@@ -19,7 +19,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import time
-from typing import List, Optional
+from typing import Dict, List, Optional
 import unittest
 from unittest import mock
 
@@ -637,6 +637,21 @@ class SafeCheckoutOrder(unittest.TestCase):
         )
 
 
+class ParentFirstBatches(unittest.TestCase):
+    def test_no_submodules(self) -> None:
+        p_a = FakeProject("a")
+        p_a_b = FakeProject("a/b")
+        out = sync._ParentFirstBatches([p_a, p_a_b])
+        self.assertEqual(out, [[p_a, p_a_b]])
+
+    def test_submodules_follow_their_parent(self) -> None:
+        p_a = FakeProject("a")
+        p_a_b = FakeProject("a/b", parent=p_a, is_derived=True)
+        p_a_b_c = FakeProject("a/b/c", parent=p_a_b, is_derived=True)
+        out = sync._ParentFirstBatches([p_a_b_c, p_a, p_a_b])
+        self.assertEqual(out, [[p_a], [p_a_b], [p_a_b_c]])
+
+
 class RefreshDerivedRevisions(unittest.TestCase):
     def _parent_with_submodules(self, **gitlinks: str) -> FakeProject:
         p_a = FakeProject("a")
@@ -692,6 +707,46 @@ class RefreshDerivedRevisions(unittest.TestCase):
         sync._RefreshDerivedRevisions([p_a, p_a_b])
 
         self.assertEqual(p_a_b.revisionId, "stale")
+
+
+class FetchParentFirst(unittest.TestCase):
+    def test_submodules_are_fetched_after_their_parent(self) -> None:
+        cmd = sync.Sync()
+        cmd._fetch_times = mock.Mock()
+        cmd._fetch_times.Get = mock.Mock(return_value=0)
+
+        calls = []
+        p_a = FakeProject("a")
+
+        def fake_read() -> Dict[str, str]:
+            calls.append(("read gitlinks of", p_a.relpath))
+            return {"b": "beef1234"}
+
+        p_a.GetSubmoduleRevisions = mock.Mock(side_effect=fake_read)
+        p_a_b = FakeProject(
+            "a/b", parent=p_a, is_derived=True, gitlink_path="b"
+        )
+
+        def fake_fetch(
+            projects: List[FakeProject], *_args: object
+        ) -> sync._FetchResult:
+            calls.append(("fetch", [p.relpath for p in projects]))
+            return sync._FetchResult(True, {p.objdir for p in projects})
+
+        opt = mock.Mock(fail_fast=False)
+        with mock.patch.object(cmd, "_Fetch", side_effect=fake_fetch):
+            result = cmd._FetchParentFirst([p_a_b, p_a], opt, None, None, [])
+
+        self.assertTrue(result.success)
+        self.assertEqual(result.projects, {"a", "a/b"})
+        self.assertEqual(
+            calls,
+            [
+                ("fetch", ["a"]),
+                ("read gitlinks of", "a"),
+                ("fetch", ["a/b"]),
+            ],
+        )
 
 
 class Chunksize(unittest.TestCase):
