@@ -775,6 +775,29 @@ class ProjectTests(unittest.TestCase):
             )
             self.assertEqual(2, proj.work_git.DiffZ.call_count)
 
+    def test_fast_forward_always_rejects_merge_commits(self) -> None:
+        """The fast-forward helper always passes --ff-only to Git."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            with mock.patch.object(
+                project, "GitCommand", autospec=True
+            ) as run_git:
+                run_git.return_value.Wait.return_value = 0
+                proj._FastForward("revision")
+                run_git.assert_called_once_with(
+                    proj, ["merge", "--no-stat", "--ff-only", "-q", "revision"]
+                )
+
+                run_git.reset_mock()
+                proj._FastForward("revision", quiet=False)
+                run_git.assert_called_once_with(
+                    proj, ["merge", "--no-stat", "--ff-only", "revision"]
+                )
+
+                run_git.return_value.Wait.return_value = 1
+                with self.assertRaises(error.GitError):
+                    proj._FastForward("revision")
+
     @unittest.skipUnless(
         utils_for_test.supports_reftable(),
         "git reftable support is required for this test",

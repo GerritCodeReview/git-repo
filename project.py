@@ -3959,14 +3959,15 @@ class Project:
         if GitCommand(self, cmd).Wait() != 0:
             raise GitError(f"{self.name} rebase {upstream} ", project=self.name)
 
-    def _FastForward(self, head, ffonly=False, quiet=True):
-        cmd = ["merge", "--no-stat", head]
-        if ffonly:
-            cmd.append("--ff-only")
+    def _FastForward(self, head: str, quiet: bool = True) -> None:
+        cmd = ["merge", "--no-stat", "--ff-only"]
         if quiet:
             cmd.append("-q")
+        cmd.append(head)
         if GitCommand(self, cmd).Wait() != 0:
-            raise GitError(f"{self.name} merge {head} ", project=self.name)
+            raise GitError(
+                f"{self.name} merge --ff-only {head}", project=self.name
+            )
 
     def _ReprojectCheckout(
         self, revid: str, head: Optional[str], verbose: bool = False

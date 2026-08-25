@@ -195,7 +195,7 @@ If no project is specified try to use current directory as a project.
                 elif opt.revert:
                     project._Revert(dl.commit)
                 elif opt.ffonly:
-                    project._FastForward(dl.commit, ffonly=True)
+                    project._FastForward(dl.commit)
                 else:
                     if opt.branch:
                         project.StartBranch(opt.branch, revision=dl.commit)
