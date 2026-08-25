@@ -166,6 +166,66 @@ class GitCommandStreamLogsTest(unittest.TestCase):
         self.mock_process.communicate.assert_called_once_with(input=None)
         self.mock_process.stderr.read1.assert_not_called()
 
+    def test_captures_stdout_as_bytes(self) -> None:
+        self.mock_process.communicate.return_value = (b"\xff\x00", b"error")
+
+        cmd = git_command.GitCommand(
+            None,
+            ["status"],
+            capture_stdout=True,
+            capture_stdout_bytes=True,
+            capture_stderr=True,
+        )
+
+        self.mock_popen.assert_called_once_with(
+            ["git", "status"],
+            cwd=None,
+            env=mock.ANY,
+            stdin=None,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertEqual(cmd.stdout, b"\xff\x00")
+        self.assertEqual(cmd.stderr, "error")
+
+    def test_capture_stdout_bytes_requires_capture_stdout(self) -> None:
+        with self.assertRaises(ValueError):
+            git_command.GitCommand(
+                None,
+                ["status"],
+                capture_stdout=False,
+                capture_stdout_bytes=True,
+            )
+
+    def test_captures_stdout_as_bytes_encodes_str_input(self) -> None:
+        self.mock_process.communicate.return_value = (b"output", b"")
+
+        git_command.GitCommand(
+            None,
+            ["status"],
+            input="hello world",
+            capture_stdout=True,
+            capture_stdout_bytes=True,
+        )
+
+        self.mock_process.communicate.assert_called_once_with(
+            input=b"hello world"
+        )
+
+    def test_verify_command_decodes_bytes_stdout(self) -> None:
+        cmd = git_command.GitCommand(
+            None,
+            ["status"],
+            capture_stdout=True,
+            capture_stdout_bytes=True,
+        )
+        cmd.rc = 1
+        cmd.stdout = b"error\xff\nline2"
+        cmd.stderr = "stderr"
+        with self.assertRaises(git_command.GitCommandError) as cm:
+            cmd.VerifyCommand()
+        self.assertIn("error\\xff", cm.exception.git_stdout)
+
     def test_does_not_stream_logs_when_stderr_is_set(self):
         git_command.GitCommand(None, ["status"], capture_stderr=True)
 
