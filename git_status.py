@@ -91,8 +91,10 @@ def GetStatus(
     ]
     if branch:
         cmd.append("--branch")
-        if ahead_behind and git_require((2, 17, 0)):
-            cmd.append("--ahead-behind")
+        if git_require((2, 17, 0)):
+            cmd.append(
+                "--ahead-behind" if ahead_behind else "--no-ahead-behind"
+            )
     if git_require((2, 18, 0)):
         # Match the existing staged diff's explicit rename detection even if
         # status.renames is disabled in the user's config.
