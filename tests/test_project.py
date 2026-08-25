@@ -713,6 +713,49 @@ class ProjectTests(unittest.TestCase):
             ):
                 self.assertIsNone(proj._GetStatusSnapshot())
 
+    def test_dirty_or_stash_uses_status_stash_header(self) -> None:
+        """A normal stash is detected without a second Git process."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            status = git_status.StatusSnapshot()
+            status.stash_count = 1
+            proj._GetStatusSnapshot = mock.MagicMock(return_value=status)
+            proj.HasStash = mock.MagicMock()
+
+            with mock.patch.object(project, "git_require", return_value=True):
+                self.assertTrue(proj._HasDirtyOrStash())
+
+            proj.HasStash.assert_not_called()
+
+    def test_dirty_or_stash_clean_no_stash_on_git_2_35(self) -> None:
+        """A clean tree requires no second Git process on Git 2.35+."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            status = git_status.StatusSnapshot()
+            proj._GetStatusSnapshot = mock.MagicMock(return_value=status)
+            proj.HasStash = mock.MagicMock()
+
+            with mock.patch.object(project, "git_require", return_value=True):
+                self.assertFalse(proj._HasDirtyOrStash())
+
+            proj.HasStash.assert_not_called()
+
+    def test_dirty_or_stash_before_2_35_checks_stash_ref(self) -> None:
+        """Older porcelain v2 output is not assumed to contain stash data."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            status = git_status.StatusSnapshot()
+            proj._GetStatusSnapshot = mock.MagicMock(return_value=status)
+            proj.HasStash = mock.MagicMock(return_value=True)
+
+            with mock.patch.object(project, "git_require", return_value=False):
+                self.assertTrue(proj._HasDirtyOrStash())
+
+            proj._GetStatusSnapshot.assert_called_once_with(
+                untracked_files="normal", show_stash=False
+            )
+            proj.HasStash.assert_called_once_with()
+
     def test_old_git_dirty_check_uses_legacy_plumbing(self) -> None:
         """Git clients before 2.11 retain the existing dirty-check path."""
         with utils_for_test.TempGitTree() as tempdir:
@@ -2186,7 +2229,7 @@ class StatelessSyncTests(unittest.TestCase):
         """Test stateless sync skips if stash exists."""
         with utils_for_test.TempGitTree() as tempdir:
             proj = self._get_project(tempdir)
-            proj.HasStash = mock.MagicMock(return_value=True)
+            proj._HasDirtyOrStash = mock.MagicMock(return_value=True)
 
             res = proj.Sync_NetworkHalf()
 
