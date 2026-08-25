@@ -542,14 +542,15 @@ class SuperprojectTestCase(unittest.TestCase):
             with mock.patch(
                 "git_superproject.GitCommand", autospec=True
             ) as mock_git_command:
-                with mock.patch(
-                    "git_superproject.GitRefs.get", autospec=True
-                ) as mock_git_refs:
+                with mock.patch.object(
+                    self._superproject, "_GetRef"
+                ) as get_ref:
                     instance = mock_git_command.return_value
                     instance.Wait.return_value = 0
-                    mock_git_refs.side_effect = ["", "1234"]
+                    get_ref.side_effect = ["", "1234"]
 
                     self.assertTrue(self._superproject._Fetch())
+                    get_ref.assert_called_with("refs/heads/main")
                     self.assertEqual(
                         # TODO: Once we require Python 3.8+,
                         #  use 'mock_git_command.call_args.args'.
@@ -572,6 +573,7 @@ class SuperprojectTestCase(unittest.TestCase):
 
                     # If branch for revision exists, set as --negotiation-tip.
                     self.assertTrue(self._superproject._Fetch())
+                    get_ref.assert_called_with("refs/heads/main")
                     self.assertEqual(
                         # TODO: Once we require Python 3.8+,
                         #  use 'mock_git_command.call_args.args'.
@@ -593,3 +595,21 @@ class SuperprojectTestCase(unittest.TestCase):
                             ],
                         ),
                     )
+
+    def test_GetRef_resolves_only_the_requested_ref(self) -> None:
+        command = mock.MagicMock(stdout="1234\n")
+        command.Wait.return_value = 0
+        with mock.patch(
+            "git_superproject.GitCommand", return_value=command
+        ) as git_command:
+            self.assertEqual("1234", self._superproject._GetRef("HEAD"))
+
+        git_command.assert_called_once_with(
+            None,
+            ["rev-parse", "--verify", "--quiet", "HEAD"],
+            gitdir=self._superproject._work_git,
+            bare=True,
+            capture_stdout=True,
+            capture_stderr=True,
+            log_as_error=False,
+        )
