@@ -1039,6 +1039,58 @@ class ProjectTests(unittest.TestCase):
                     self._get_derived_subproject_url(submodule_url),
                 )
 
+    def test_set_revision_object_id_lengths(self) -> None:
+        """SetRevision only treats exact 40- or 64-char hex as immutable IDs."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+
+            # SHA-1 (40 hex chars) is recorded as revisionId directly.
+            sha1 = "a" * 40
+            proj.SetRevision(sha1)
+            self.assertEqual(proj.revisionId, sha1)
+
+            # SHA-256 (64 hex chars) is recorded as revisionId directly.
+            sha256 = "b" * 64
+            proj.SetRevision(sha256)
+            self.assertEqual(proj.revisionId, sha256)
+
+            # Intermediate hex strings (41-63 chars) must not be treated
+            # as commit IDs.
+            for length in (41, 48, 63):
+                proj.SetRevision("c" * length)
+                self.assertIsNone(proj.revisionId)
+
+    def test_remote_fetch_intermediate_hex_not_fetched_as_commit_id(
+        self,
+    ) -> None:
+        """41-char hex revisions are not fetched as raw commit IDs on shallow
+        fetch."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj.config.GetRemote("origin").ResetFetch()
+            hex41 = "a" * 41
+            proj.SetRevision(hex41)
+
+            with mock.patch("project.GitCommand") as mock_git:
+                mock_cmd = mock.MagicMock()
+                mock_cmd.Wait.return_value = 0
+                mock_git.return_value = mock_cmd
+
+                proj._RemoteFetch(depth=1, current_branch_only=True)
+
+                fetch_args = mock_git.call_args[0][1]
+                # When depth is set, commit IDs are passed directly to
+                # git fetch.
+                # Since 41 hex chars is not an ID, it must not appear as a
+                # standalone argument.
+                self.assertNotIn(hex41, fetch_args)
+                # Instead, it is treated as a branch ref and formatted
+                # as a refspec.
+                self.assertIn(
+                    f"+refs/heads/{hex41}:refs/remotes/origin/{hex41}",
+                    fetch_args,
+                )
+
 
 class CopyLinkTestCase(unittest.TestCase):
     """TestCase for stub repo client checkouts.
