@@ -111,6 +111,15 @@ class ReviewableBranchTests(unittest.TestCase):
         _, kwargs = proj.UploadForReview.call_args
         self.assertEqual(kwargs.get("git_event_log"), mock_event_log)
 
+    def test_current_comes_from_branch_snapshot(self):
+        """Reviewable branches carry current state into report consumers."""
+        branch = mock.MagicMock()
+        branch.current = True
+
+        rb = project.ReviewableBranch(mock.MagicMock(), branch, "main")
+
+        self.assertTrue(rb.current)
+
 
 class ProjectTests(unittest.TestCase):
     """Check Project behavior."""
