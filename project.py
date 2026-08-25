@@ -930,6 +930,21 @@ class Project:
         )
         return p.Wait() == 0
 
+    def _HasDirtyOrStash(self) -> bool:
+        """Check dirty and normal stash state with one status when possible."""
+        has_status_stash = git_require((2, 35, 0))
+        status = self._GetStatusSnapshot(
+            untracked_files="normal",
+            show_stash=has_status_stash,
+        )
+        if status is not None:
+            if status.is_dirty(consider_untracked=True):
+                return True
+            if has_status_stash:
+                return bool(status.stash_count)
+            return self.HasStash()
+        return self.IsDirty(consider_untracked=True) or self.HasStash()
+
     _userident_name = None
     _userident_email = None
 
@@ -1670,7 +1685,7 @@ class Project:
         except (GitError, IndexError, ValueError):
             return False
 
-        if self.IsDirty(consider_untracked=True) or self.HasStash():
+        if self._HasDirtyOrStash():
             return False
 
         return True
