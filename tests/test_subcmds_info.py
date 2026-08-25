@@ -208,7 +208,7 @@ def test_get_project_data_uses_head_revision() -> None:
     project.name = "foo"
     project.worktree = "/path/to/foo"
     project.revisionExpr = "refs/heads/main"
-    project.GetBranches.return_value = []
+    project.GetBranches.return_value = {}
 
     # GetHeadRevisionId() returns a SHA, it should be used.
     project.GetHeadRevisionId.return_value = "head_sha_12345"
@@ -235,7 +235,9 @@ def test_json_with_projects(capsys) -> None:
     project.name = "foo"
     project.worktree = "/path/to/foo"
     project.revisionExpr = "refs/heads/main"
-    project.GetBranches.return_value = {"branch1": mock.MagicMock()}
+    branch = mock.MagicMock()
+    branch.current = True
+    project.GetBranches.return_value = {"branch1": branch}
     project.GetHeadRevisionId.return_value = "head_sha_12345"
     project.CurrentBranch = "branch1"
 
@@ -253,3 +255,115 @@ def test_json_with_projects(capsys) -> None:
     assert project_data["manifest_revision"] == "refs/heads/main"
     assert project_data["local_branches"] == ["branch1"]
     assert project_data["current_branch"] == "branch1"
+
+
+def test_diff_commits_uses_one_left_right_walk() -> None:
+    """Local and remote commits are partitioned from one rev-list."""
+    project = mock.MagicMock()
+    project.work_git.rev_list.return_value = [
+        "<11111111 local commit",
+        ">22222222 remote commit",
+    ]
+
+    local, remote = info.Info._GetDiffCommits(project, "refs/remotes/m/main")
+
+    assert local == ["11111111 local commit"]
+    assert remote == ["22222222 remote commit"]
+    project.work_git.rev_list.assert_called_once_with(
+        "--left-right",
+        "--abbrev=8",
+        "--abbrev-commit",
+        "--pretty=oneline",
+        "HEAD...refs/remotes/m/main",
+        "--",
+    )
+
+
+def test_diff_commits_falls_back_to_bare_git_when_no_worktree() -> None:
+    """Bare or worktree-less projects fall back to bare_git for history walk."""
+    project = mock.MagicMock()
+    project.work_git = None
+    project.bare_git.rev_list.return_value = [
+        "<11111111 local commit",
+        ">22222222 remote commit",
+    ]
+
+    local, remote = info.Info._GetDiffCommits(project, "refs/remotes/m/main")
+
+    assert local == ["11111111 local commit"]
+    assert remote == ["22222222 remote commit"]
+    project.bare_git.rev_list.assert_called_once_with(
+        "--left-right",
+        "--abbrev=8",
+        "--abbrev-commit",
+        "--pretty=oneline",
+        "HEAD...refs/remotes/m/main",
+        "--",
+    )
+
+
+def test_diff_commits_empty_output() -> None:
+    """Empty rev-list output produces empty local and remote commit lists."""
+    project = mock.MagicMock()
+    project.work_git.rev_list.return_value = []
+
+    local, remote = info.Info._GetDiffCommits(project, "refs/remotes/m/main")
+
+    assert local == []
+    assert remote == []
+
+
+def test_get_current_branch() -> None:
+    """_GetCurrentBranch identifies the branch with current=True."""
+    b1 = mock.MagicMock(current=False)
+    b2 = mock.MagicMock(current=True)
+    assert info.Info._GetCurrentBranch({"b1": b1, "b2": b2}) == "b2"
+    assert info.Info._GetCurrentBranch({"b1": b1}) is None
+    assert info.Info._GetCurrentBranch({}) is None
+
+
+def test_overview_helper_current_branch_filters_before_uploadable(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """_OverviewHelper only checks uploadable state for the current branch."""
+    project = mock.MagicMock()
+    project.RelPath.return_value = "proj"
+    b1 = mock.MagicMock(current=False)
+    b2 = mock.MagicMock(current=True)
+    project.GetBranches.return_value = {"b1": b1, "b2": b2}
+    uploadable = mock.MagicMock(commits=["c1"], date="2026-09-21")
+    uploadable.name = "b2"
+    project.GetUploadableBranch.return_value = uploadable
+    monkeypatch.setattr(
+        info.Info,
+        "get_parallel_context",
+        lambda: {"projects": [project]},
+    )
+    opt = mock.MagicMock(current_branch=True, this_manifest_only=False)
+
+    result = info.Info._OverviewHelper(0, opt)
+
+    project.GetUploadableBranch.assert_called_once_with("b2")
+    assert len(result) == 1
+    assert result[0].name == "b2"
+    assert result[0].is_current is True
+
+
+def test_overview_helper_current_branch_detached_head_skips_uploadable(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """_OverviewHelper skips GetUploadableBranch when detached with -b."""
+    project = mock.MagicMock()
+    b1 = mock.MagicMock(current=False)
+    project.GetBranches.return_value = {"b1": b1}
+    monkeypatch.setattr(
+        info.Info,
+        "get_parallel_context",
+        lambda: {"projects": [project]},
+    )
+    opt = mock.MagicMock(current_branch=True, this_manifest_only=False)
+
+    result = info.Info._OverviewHelper(0, opt)
+
+    project.GetUploadableBranch.assert_not_called()
+    assert result == []

@@ -18,7 +18,7 @@ import io
 import json
 import optparse
 import sys
-from typing import Any, Dict, List, NamedTuple
+from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
 from color import Coloring
 from command import DEFAULT_LOCAL_JOBS
@@ -189,18 +189,26 @@ class Info(PagedCommand):
             "superproject_revision": srev,
         }
 
+    @staticmethod
+    def _GetCurrentBranch(branches: Dict[str, Any]) -> Optional[str]:
+        """Return the name of the current branch from a GetBranches mapping."""
+        return next(
+            (name for name, branch in branches.items() if branch.current), None
+        )
+
     @classmethod
     def _getProjectData(cls, project) -> Dict[str, Any]:
         """Gather project data as a dict."""
+        branches = project.GetBranches()
+        currentBranch = cls._GetCurrentBranch(branches)
         data = {
             "name": project.name,
             "mount_path": project.worktree,
             "current_revision": project.GetHeadRevisionId()
             or project.GetRevisionId(),
             "manifest_revision": project.revisionExpr,
-            "local_branches": list(project.GetBranches()),
+            "local_branches": list(branches),
         }
-        currentBranch = project.CurrentBranch
         if currentBranch:
             data["current_branch"] = currentBranch
         return data
@@ -285,6 +293,9 @@ class Info(PagedCommand):
         text = out.nofmt_printer("text")
         dimtext = out.printer("dimtext", attr="dim")
 
+        branches = project.GetBranches()
+        currentBranch = cls._GetCurrentBranch(branches)
+
         heading("Project: ")
         headtext(project.name)
         out.nl()
@@ -297,7 +308,6 @@ class Info(PagedCommand):
         headtext(project.GetHeadRevisionId() or project.GetRevisionId())
         out.nl()
 
-        currentBranch = project.CurrentBranch
         if currentBranch:
             heading("Current branch: ")
             headtext(currentBranch)
@@ -307,7 +317,7 @@ class Info(PagedCommand):
         headtext(project.revisionExpr)
         out.nl()
 
-        localBranches = list(project.GetBranches().keys())
+        localBranches = list(branches)
         heading("Local Branches: ")
         redtext(str(len(localBranches)))
         if localBranches:
@@ -327,24 +337,9 @@ class Info(PagedCommand):
                 branch = branch[len(R_HEADS) :]
             logTarget = R_M + branch
 
-            bareTmp = project.bare_git._bare
-            project.bare_git._bare = False
-            localCommits = project.bare_git.rev_list(
-                "--abbrev=8",
-                "--abbrev-commit",
-                "--pretty=oneline",
-                logTarget + "..",
-                "--",
+            localCommits, originCommits = cls._GetDiffCommits(
+                project, logTarget
             )
-
-            originCommits = project.bare_git.rev_list(
-                "--abbrev=8",
-                "--abbrev-commit",
-                "--pretty=oneline",
-                ".." + logTarget,
-                "--",
-            )
-            project.bare_git._bare = bareTmp
 
             heading("Local Commits: ")
             redtext(str(len(localCommits)))
@@ -375,6 +370,35 @@ class Info(PagedCommand):
 
         return buf.getvalue()
 
+    @classmethod
+    def _GetDiffCommits(
+        cls, project: Any, log_target: str
+    ) -> Tuple[List[str], List[str]]:
+        """Return local-only and remote-only commits from one history walk."""
+        git = getattr(project, "work_git", None) or getattr(
+            project, "bare_git", None
+        )
+        if git is None:
+            return [], []
+        commits = git.rev_list(
+            "--left-right",
+            "--abbrev=8",
+            "--abbrev-commit",
+            "--pretty=oneline",
+            f"HEAD...{log_target}",
+            "--",
+        )
+        if isinstance(commits, str):
+            commits = commits.splitlines()
+        local = []
+        remote = []
+        for commit in commits:
+            if commit.startswith("<"):
+                local.append(commit[1:])
+            elif commit.startswith(">"):
+                remote.append(commit[1:])
+        return local, remote
+
     def _printDiffInfo(self, opt, args):
         projs = self.GetProjects(args, all_manifests=not opt.this_manifest_only)
 
@@ -404,10 +428,18 @@ class Info(PagedCommand):
         project = cls.get_parallel_context()["projects"][project_idx]
 
         branches = []
-        br = [project.GetUploadableBranch(x) for x in project.GetBranches()]
-        br = [x for x in br if x]
+        local_branches = project.GetBranches()
+        current_branch = cls._GetCurrentBranch(local_branches)
         if opt.current_branch:
-            br = [x for x in br if x.name == project.CurrentBranch]
+            candidate_branches = (
+                [current_branch]
+                if current_branch and current_branch in local_branches
+                else []
+            )
+        else:
+            candidate_branches = local_branches
+        br = [project.GetUploadableBranch(x) for x in candidate_branches]
+        br = [x for x in br if x]
 
         for b in br:
             branches.append(
@@ -416,7 +448,7 @@ class Info(PagedCommand):
                     name=b.name,
                     commits=b.commits,
                     date=b.date,
-                    is_current=b.name == project.CurrentBranch,
+                    is_current=b.name == current_branch,
                 )
             )
         return branches
