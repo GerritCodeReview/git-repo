@@ -638,6 +638,57 @@ class ProjectTests(unittest.TestCase):
 
             self.assertEqual(["new", "old"], proj.UncommittedFiles())
 
+    def test_quiet_divergent_status_uses_quick_snapshot(self) -> None:
+        """Unknown quick counts do not force the legacy status pipeline."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            Path(tempdir, "base").write_text("base")
+            proj.work_git.add("base")
+            proj.work_git.commit("-m", "base")
+            proj.work_git.checkout("-b", "topic")
+            proj.work_git.config("branch.topic.remote", ".")
+            proj.work_git.config("branch.topic.merge", "refs/heads/main")
+            Path(tempdir, "topic").write_text("topic")
+            proj.work_git.add("topic")
+            proj.work_git.commit("-m", "topic")
+            proj.work_git.checkout("main")
+            Path(tempdir, "main").write_text("main")
+            proj.work_git.add("main")
+            proj.work_git.commit("-m", "main")
+            proj.work_git.checkout("topic")
+            proj._PrintWorkTreeStatusLegacy = mock.MagicMock(
+                side_effect=AssertionError("unexpected legacy status")
+            )
+
+            with tempfile.TemporaryFile(mode="w+") as output:
+                self.assertEqual(
+                    "DIRTY",
+                    proj.PrintWorkTreeStatus(output_redir=output, quiet=True),
+                )
+
+            proj._PrintWorkTreeStatusLegacy.assert_not_called()
+
+    def test_quiet_legacy_dirty_status_skips_branch_lookup(self) -> None:
+        """Old Git keeps the dirty fast return ahead of branch resolution."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj.work_git = mock.MagicMock()
+            proj.work_git.DiffZ.side_effect = [
+                {"tracked": mock.sentinel.change},
+                {},
+            ]
+            proj.work_git.LsOthers.return_value = []
+
+            with tempfile.TemporaryFile(mode="w+") as output:
+                self.assertEqual(
+                    "DIRTY",
+                    proj._PrintWorkTreeStatusLegacy(
+                        output_redir=output, quiet=True
+                    ),
+                )
+
+            proj.work_git.GetHead.assert_not_called()
+
     def test_has_changes_includes_rebase_from_status_snapshot(self) -> None:
         """HasChanges keeps treating an in-progress rebase as a change."""
         with utils_for_test.TempGitTree() as tempdir:

@@ -185,6 +185,96 @@ def test_status_without_orphans(
     assert lines[1] == " -m\tREADME"
 
 
+def test_status_staged_and_unstaged_same_path(
+    repo_client_checkout: Tuple[Path, manifest_xml.XmlManifest],
+) -> None:
+    """A path changed on both sides of the index renders both states."""
+    topdir, manifest = repo_client_checkout
+    project_path = next(iter(manifest.paths.keys()))
+    project_worktree = topdir / project_path
+    readme = project_worktree / "README"
+    readme.write_text("staged")
+    subprocess.check_call(["git", "add", "README"], cwd=project_worktree)
+    readme.write_text("unstaged")
+
+    with contextlib.redirect_stdout(io.StringIO()) as stdout:
+        _run_status(manifest, [])
+
+    lines = _status_lines(stdout.getvalue())
+    assert lines[1] == " Mm\tREADME"
+
+
+def test_status_forces_staged_rename_detection(
+    repo_client_checkout: Tuple[Path, manifest_xml.XmlManifest],
+) -> None:
+    """The snapshot preserves rename scores despite user status config."""
+    topdir, manifest = repo_client_checkout
+    project_path = next(iter(manifest.paths.keys()))
+    project_worktree = topdir / project_path
+    subprocess.check_call(
+        ["git", "config", "status.renames", "false"], cwd=project_worktree
+    )
+    subprocess.check_call(
+        ["git", "mv", "README", "RENAMED"], cwd=project_worktree
+    )
+
+    with contextlib.redirect_stdout(io.StringIO()) as stdout:
+        _run_status(manifest, [])
+
+    lines = _status_lines(stdout.getvalue())
+    assert lines[1] == " R-\tREADME => RENAMED (100%)"
+
+
+def test_detached_clean_status_is_suppressed(
+    repo_client_checkout: Tuple[Path, manifest_xml.XmlManifest],
+) -> None:
+    """A clean detached checkout keeps returning CLEAN without output."""
+    topdir, manifest = repo_client_checkout
+    project_path = next(iter(manifest.paths.keys()))
+    subprocess.check_call(
+        ["git", "checkout", "-q", "--detach", "HEAD"],
+        cwd=topdir / project_path,
+    )
+
+    with contextlib.redirect_stdout(io.StringIO()) as stdout:
+        _run_status(manifest, [])
+
+    assert _status_lines(stdout.getvalue()) == [
+        "nothing to commit (working directory clean)"
+    ]
+
+
+def test_status_unmerged_path_matches_legacy_display(
+    repo_client_checkout: Tuple[Path, manifest_xml.XmlManifest],
+) -> None:
+    """Porcelain-v2 unmerged records render as index U and worktree u."""
+    topdir, manifest = repo_client_checkout
+    project_path = next(iter(manifest.paths.keys()))
+    worktree = topdir / project_path
+    subprocess.check_call(
+        ["git", "checkout", "-q", "-b", "other"], cwd=worktree
+    )
+    (worktree / "README").write_text("other")
+    subprocess.check_call(["git", "commit", "-qam", "other"], cwd=worktree)
+    subprocess.check_call(["git", "checkout", "-q", "main"], cwd=worktree)
+    (worktree / "README").write_text("main")
+    subprocess.check_call(["git", "commit", "-qam", "main"], cwd=worktree)
+    merge = subprocess.run(
+        ["git", "merge", "other"],
+        cwd=worktree,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    assert merge.returncode != 0
+
+    with contextlib.redirect_stdout(io.StringIO()) as stdout:
+        _run_status(manifest, [])
+
+    lines = _status_lines(stdout.getvalue())
+    assert lines[1] == " Uu\tREADME"
+
+
 def test_status_with_orphans_and_modified_file(
     repo_client_checkout: Tuple[Path, manifest_xml.XmlManifest],
 ) -> None:
@@ -304,6 +394,10 @@ def test_status_branch_ahead_of_upstream(
     project_worktree = topdir / project_path
 
     _setup_remote_tracking_branch(manifest, "feature")
+    subprocess.check_call(
+        ["git", "config", "status.aheadBehind", "false"],
+        cwd=project_worktree,
+    )
     subprocess.check_call(
         ["git", "commit", "-q", "--allow-empty", "-m", "c1"],
         cwd=project_worktree,
@@ -451,3 +545,20 @@ def test_status_branch_synced_no_ahead_behind(
     lines = _status_lines(stdout.getvalue())
     assert len(lines) == 1
     _assert_project_header(lines[0], project_path, "synced")
+
+
+def test_status_non_utf8_path(
+    repo_client_checkout: Tuple[Path, manifest_xml.XmlManifest],
+) -> None:
+    """Non-UTF-8 pathnames render without crashing."""
+    topdir, manifest = repo_client_checkout
+    project_path = next(iter(manifest.paths.keys()))
+    project_worktree = topdir / project_path
+    bad_path = project_worktree / os.fsdecode(b"bad-\xff-name")
+    bad_path.write_bytes(b"content")
+
+    with contextlib.redirect_stdout(io.StringIO()) as stdout:
+        _run_status(manifest, [])
+
+    lines = _status_lines(stdout.getvalue())
+    assert any("bad-" in line for line in lines)
