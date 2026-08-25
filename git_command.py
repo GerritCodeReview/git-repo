@@ -70,6 +70,19 @@ class _GitCall:
 git = _GitCall()
 
 
+def IsValidBranchName(name: str) -> bool:
+    """Return whether |name| is valid where Git expects a branch name."""
+    p = GitCommand(
+        None,
+        ["check-ref-format", "--branch", name],
+        capture_stdout=True,
+        capture_stderr=True,
+        add_event_log=False,
+        log_as_error=False,
+    )
+    return p.Wait() == 0
+
+
 def RepoSourceVersion():
     """Return the version of the repo.git tree."""
     ver = getattr(RepoSourceVersion, "version", None)

@@ -18,7 +18,7 @@ from typing import NamedTuple
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
 from error import RepoExitError
-from git_command import git
+from git_command import IsValidBranchName
 from git_config import IsImmutable
 from progress import Progress
 from repo_logging import RepoLogger
@@ -75,7 +75,7 @@ revision specified in the manifest.
             self.Usage()
 
         nb = args[0]
-        if not git.check_ref_format("heads/%s" % nb):
+        if not IsValidBranchName(nb):
             self.OptionParser.error("'%s' is not a valid name" % nb)
 
     @classmethod
