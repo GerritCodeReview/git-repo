@@ -14,6 +14,7 @@
 
 import os
 
+from git_command import git_require
 from git_command import GitCommand
 import platform_utils
 from repo_trace import Trace
@@ -40,6 +41,12 @@ class GitRefs:
     def all(self):
         self._EnsureLoaded()
         return self._phyref
+
+    @property
+    def head(self) -> str:
+        """Return HEAD's symbolic target or detached object ID."""
+        self._EnsureLoaded()
+        return self._symref.get(HEAD) or self._phyref.get(HEAD, "")
 
     def get(self, name):
         try:
@@ -87,8 +94,12 @@ class GitRefs:
             self._symref = {}
             self._mtime = {}
 
-            self._ReadRefs()
-            self._ReadSymbolicRef(HEAD)
+            root_refs_loaded = self._ReadRefs()
+            if not root_refs_loaded or (
+                HEAD not in self._phyref and HEAD not in self._symref
+            ):
+                # --include-root-refs does not report an unborn HEAD.
+                self._ReadSymbolicRef(HEAD)
 
             scan = self._symref
             attempts = 0
@@ -113,18 +124,32 @@ class GitRefs:
         """Check if a ref_id is a null object ID."""
         return ref_id and all(ch == "0" for ch in ref_id)
 
-    def _ReadRefs(self) -> None:
-        """Read all references using git for-each-ref."""
+    def _ReadRefs(self) -> bool:
+        """Read all references using git for-each-ref.
+
+        Returns:
+            Whether root refs, including HEAD when it exists, were requested.
+        """
+        include_root_refs = git_require((2, 45, 0))
+        cmd = [
+            "for-each-ref",
+            "--format=%(objectname)%00%(refname)%00%(symref)",
+        ]
+        if include_root_refs:
+            cmd.insert(1, "--include-root-refs")
+            # Avoid caching volatile root refs such as ORIG_HEAD.  HEAD and
+            # refs/* are the only namespaces GitRefs exposes to callers.
+            cmd.extend([HEAD, "refs"])
         p = GitCommand(
             None,
-            ["for-each-ref", "--format=%(objectname)%00%(refname)%00%(symref)"],
+            cmd,
             capture_stdout=True,
             capture_stderr=True,
             bare=True,
             gitdir=self._gitdir,
         )
         if p.Wait() != 0:
-            return
+            return include_root_refs
 
         for line in p.stdout.splitlines():
             ref_id, name, symref = line.split("\0")
@@ -132,6 +157,7 @@ class GitRefs:
                 self._symref[name] = symref
             elif ref_id and not self._IsNullRef(ref_id):
                 self._phyref[name] = ref_id
+        return include_root_refs
 
     def _ReadSymbolicRef(self, name: str) -> None:
         """Read a symbolic reference."""
