@@ -386,6 +386,78 @@ class ProjectTests(unittest.TestCase):
             proj.work_git.checkout("HEAD~0")
             self.assertEqual(commit_sha, proj.GetHeadRevisionId())
 
+    def test_get_branches_reuses_ref_snapshot_for_current_branch(self) -> None:
+        """GetBranches derives the current branch from the loaded refs."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj.work_git = mock.MagicMock()
+            proj.bare_ref = mock.MagicMock()
+            proj.bare_ref.all = {
+                "HEAD": "1" * 40,
+                "refs/heads/topic": "1" * 40,
+            }
+            proj.bare_ref.head = "refs/heads/topic"
+
+            branches = proj.GetBranches()
+
+            self.assertTrue(branches["topic"].current)
+            proj.work_git.GetHead.assert_not_called()
+
+    def test_get_branches_reads_worktree_head_for_git_worktrees(self) -> None:
+        """A shared repository HEAD is not a linked worktree's HEAD."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj.use_git_worktrees = True
+            proj.work_git = mock.MagicMock()
+            proj.work_git.GetHead.return_value = "refs/heads/worktree"
+            proj.bare_ref = mock.MagicMock()
+            proj.bare_ref.all = {
+                "HEAD": "1" * 40,
+                "refs/heads/common": "1" * 40,
+                "refs/heads/worktree": "1" * 40,
+            }
+            proj.bare_ref.head = "refs/heads/common"
+
+            branches = proj.GetBranches()
+
+            self.assertFalse(branches["common"].current)
+            self.assertTrue(branches["worktree"].current)
+            proj.work_git.GetHead.assert_called_once_with()
+
+    def test_get_branches_tolerates_unreadable_head(self) -> None:
+        """An incomplete checkout still reports its local branches."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj.bare_ref = mock.MagicMock()
+            proj.bare_ref.all = {"refs/heads/topic": "1" * 40}
+
+            with mock.patch.object(
+                proj,
+                "_GetHead",
+                side_effect=error.NoManifestException("HEAD", "unreadable"),
+            ):
+                branches = proj.GetBranches()
+
+            self.assertFalse(branches["topic"].current)
+
+    def test_get_head_returns_none_when_work_git_is_none(self) -> None:
+        """Bare and mirror checkouts without work_git do not crash."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj.work_git = None
+
+            self.assertIsNone(proj._GetHead())
+            self.assertIsNone(proj.CurrentBranch)
+
+    def test_current_branch_returns_none_when_get_head_returns_none(
+        self,
+    ) -> None:
+        """CurrentBranch safely returns None when _GetHead returns None."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            with mock.patch.object(proj, "_GetHead", return_value=None):
+                self.assertIsNone(proj.CurrentBranch)
+
     @unittest.skipUnless(
         utils_for_test.supports_reftable(),
         "git reftable support is required for this test",
@@ -1621,12 +1693,11 @@ class StatelessSyncTests(unittest.TestCase):
             proj.IsCherryPickInProgress = mock.MagicMock(return_value=False)
             proj.bare_ref = mock.MagicMock()
             proj.bare_ref.all = {}
+            proj.bare_ref.head = "5678abcd"
             proj.GetRevisionId = mock.MagicMock(return_value="1234abcd")
             proj._CopyAndLinkFiles = mock.MagicMock()
 
             proj.work_git = mock.MagicMock()
-            proj.work_git.GetHead.return_value = "5678abcd"
-
             syncbuf = project.SyncBuffer(proj.config)
 
             with mock.patch("project.GitCommand") as mock_git_cmd:

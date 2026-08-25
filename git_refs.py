@@ -48,6 +48,11 @@ class GitRefs:
         self._EnsureLoaded()
         return self._symref.get(HEAD) or self._phyref.get(HEAD, "")
 
+    @property
+    def is_loaded(self) -> bool:
+        """Whether a ref snapshot has already been loaded."""
+        return self._phyref is not None
+
     def get(self, name):
         try:
             return self.all[name]

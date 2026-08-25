@@ -770,14 +770,27 @@ class Project:
         work_git is otheriwse inaccessible (e.g. an incomplete sync).
         """
         try:
-            b = self.work_git.GetHead()
+            b = self._GetHead()
         except NoManifestException:
             # If the local checkout is in a bad state, don't barf.  Let the
             # callers process this like the head is unreadable.
             return None
-        if b.startswith(R_HEADS):
+        if b and b.startswith(R_HEADS):
             return b[len(R_HEADS) :]
         return None
+
+    def _GetHead(self) -> Optional[str]:
+        """Return worktree HEAD, reusing a compatible loaded ref snapshot."""
+        if not self.work_git:
+            return None
+        # Git worktrees keep the checkout's HEAD in the worktree admin dir,
+        # while bare_ref reads the shared repository.  Its HEAD is not the
+        # checked-out worktree's HEAD and must not be reused here.
+        if not self.use_git_worktrees and self.bare_ref.is_loaded:
+            head = self.bare_ref.head
+            if head:
+                return head
+        return self.work_git.GetHead()
 
     def IsRebaseInProgress(self):
         """Returns true if a rebase or "am" is in progress"""
@@ -877,8 +890,8 @@ class Project:
 
     def GetBranches(self):
         """Get all existing local branches."""
-        current = self.CurrentBranch
         all_refs = self._allrefs
+        current = self.CurrentBranch
         heads = {}
 
         for name, ref_id in all_refs.items():
@@ -1766,6 +1779,10 @@ class Project:
         Returns None if worktree is not checked out or HEAD cannot be resolved.
         """
         if self.work_git:
+            if not self.use_git_worktrees and self.bare_ref.is_loaded:
+                head = self.bare_ref.get(HEAD)
+                if head:
+                    return head
             try:
                 return self.work_git.rev_parse("HEAD")
             except GitError:
@@ -1879,8 +1896,8 @@ class Project:
             if p.Wait() != 0:
                 logger.warning("warn: %s: stateless gc failed", self.name)
 
-        head = self.work_git.GetHead()
-        if head.startswith(R_HEADS):
+        head = self._GetHead()
+        if head and head.startswith(R_HEADS):
             branch = head[len(R_HEADS) :]
             try:
                 head = all_refs[head]
