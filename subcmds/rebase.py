@@ -139,6 +139,8 @@ branch but need to incorporate new upstream changes "underneath" them.
             common_args.append("--autosquash")
         if opt.interactive:
             common_args.append("-i")
+        if opt.auto_stash:
+            common_args.append("--autostash")
 
         config = self.manifest.manifestProject.config
         out = RebaseColoring(config)
@@ -188,28 +190,9 @@ branch but need to incorporate new upstream changes "underneath" them.
             out.nl()
             out.flush()
 
-            needs_stash = False
-            if opt.auto_stash:
-                stash_args = ["update-index", "--refresh", "-q"]
-
-                if GitCommand(project, stash_args).Wait() != 0:
-                    needs_stash = True
-                    # Dirty index, requires stash...
-                    stash_args = ["stash"]
-
-                    if GitCommand(project, stash_args).Wait() != 0:
-                        ret += 1
-                        continue
-
             if GitCommand(project, args).Wait() != 0:
                 ret += 1
                 continue
-
-            if needs_stash:
-                stash_args.append("pop")
-                stash_args.append("--quiet")
-                if GitCommand(project, stash_args).Wait() != 0:
-                    ret += 1
 
         if ret:
             msg_fmt = "%d projects had errors"

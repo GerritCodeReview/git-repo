@@ -14,6 +14,9 @@
 
 """Unittests for the subcmds/rebase.py module."""
 
+import contextlib
+import io
+from types import SimpleNamespace
 from unittest import mock
 
 from error import GitError
@@ -48,3 +51,41 @@ def test_resolve_onto_manifest_fallback() -> None:
     assert res == "main"
     project.GetRemote.assert_called_once()
     remote.ToLocal.assert_called_once_with("main")
+
+
+def test_execute_delegates_autostash_to_rebase() -> None:
+    """--auto-stash is one rebase process, including staged-only changes."""
+    cmd = rebase.Rebase()
+    cmd.manifest = mock.MagicMock()
+    cmd.git_event_log = mock.MagicMock()
+    project = mock.MagicMock()
+    project.CurrentBranch = "topic"
+    project.RelPath.return_value = "project"
+    branch = mock.MagicMock()
+    branch.LocalMerge = "refs/remotes/origin/main"
+    project.GetBranch.return_value = branch
+    cmd.GetProjects = mock.MagicMock(return_value=[project])
+    opt = SimpleNamespace(
+        interactive=False,
+        fail_fast=False,
+        whitespace=None,
+        quiet=False,
+        force_rebase=False,
+        ff=True,
+        autosquash=False,
+        auto_stash=True,
+        onto_manifest=False,
+        this_manifest_only=False,
+    )
+    git_command = mock.MagicMock()
+    git_command.Wait.return_value = 0
+
+    with mock.patch.object(
+        rebase, "GitCommand", return_value=git_command
+    ) as run_git, contextlib.redirect_stdout(io.StringIO()):
+        assert cmd.Execute(opt, []) == 0
+
+    run_git.assert_called_once_with(
+        project,
+        ["rebase", "--autostash", "refs/remotes/origin/main"],
+    )
