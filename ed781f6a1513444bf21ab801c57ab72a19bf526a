@@ -40,6 +40,24 @@
       ],
       "revId": "ed781f6a1513444bf21ab801c57ab72a19bf526a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c073190f_8d0bd043",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2598,
+      "author": {
+        "id": 5087317
+      },
+      "writtenOn": "2026-08-25T04:04:42Z",
+      "side": 1,
+      "message": "Thanks, this was a real hole. A discovered submodule that is itself a parent has its revisionId set, so a missing object went unnoticed and _GetSubmodules() then returned nothing, which made every one of its submodules look removed.\n\nAdded the rev_list check you suggested. It now lives in Project.GetSubmoduleRevisions() in the first change of the chain (I4f35d53), which reads the gitlinks and returns None when the objects are not there; _RefreshDerivedRevisions() leaves those submodules alone. Also added a test for that case.",
+      "parentUuid": "3ba03c82_dd7ba2f8",
+      "revId": "ed781f6a1513444bf21ab801c57ab72a19bf526a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
