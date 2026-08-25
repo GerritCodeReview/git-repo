@@ -36,7 +36,6 @@ from git_command import git_require
 from git_command import GitCommand
 from git_config import IsId
 from git_config import RepoConfig
-from git_refs import GitRefs
 import platform_utils
 
 
@@ -189,7 +188,7 @@ class Superproject:
             if netloc:
                 parts = netloc.split("-review", 1)
                 host = parts[0]
-                rev = GitRefs(self._work_git).get("HEAD")
+                rev = self._GetRef("HEAD")
                 return f"{host}/{self.name}@{rev}"
         return None
 
@@ -314,7 +313,10 @@ class Superproject:
         # We use --negotiation-tip to speed up the fetch. Superproject branches
         # do not share commits. So this lets git know it only needs to send
         # commits reachable from the specified local refs.
-        rev_commit = GitRefs(self._work_git).get(f"refs/heads/{self.revision}")
+        negotiation_ref = self.revision
+        if negotiation_ref and not negotiation_ref.startswith("refs/"):
+            negotiation_ref = f"refs/heads/{negotiation_ref}"
+        rev_commit = self._GetRef(negotiation_ref) if negotiation_ref else ""
         if rev_commit:
             cmd.extend(["--negotiation-tip", rev_commit])
 
@@ -346,6 +348,21 @@ class Superproject:
             )
             return False
         return True
+
+    def _GetRef(self, ref: str) -> str:
+        """Resolve one local ref without loading the entire ref namespace."""
+        p = GitCommand(
+            None,
+            ["rev-parse", "--verify", "--quiet", ref],
+            gitdir=self._work_git,
+            bare=True,
+            capture_stdout=True,
+            capture_stderr=True,
+            log_as_error=False,
+        )
+        if p.Wait() == 0:
+            return p.stdout.strip()
+        return ""
 
     def _LsTree(self):
         """Gets the commit ids for all projects.
