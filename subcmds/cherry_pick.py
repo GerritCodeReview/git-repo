@@ -14,6 +14,7 @@
 
 import re
 import sys
+from typing import Tuple
 
 from command import Command
 from error import GitError
@@ -43,36 +44,8 @@ change id will be added.
 
     def Execute(self, opt, args):
         reference = args[0]
-
-        p = GitCommand(
-            None,
-            ["rev-parse", "--verify", reference],
-            capture_stdout=True,
-            capture_stderr=True,
-            verify_command=True,
-        )
-        try:
-            p.Wait()
-        except GitError:
-            logger.error(p.stderr)
-            raise
-
-        sha1 = p.stdout.strip()
-
-        p = GitCommand(
-            None,
-            ["cat-file", "commit", sha1],
-            capture_stdout=True,
-            verify_command=True,
-        )
-
-        try:
-            p.Wait()
-        except GitError:
-            logger.error("error: Failed to retrieve old commit message")
-            raise
-
-        old_msg = self._StripHeader(p.stdout)
+        sha1, commit = self._ResolveReference(reference)
+        old_msg = self._StripHeader(commit)
 
         p = GitCommand(
             None,
@@ -116,6 +89,40 @@ change id will be added.
         except GitError:
             logger.error("error: Failed to update commit message")
             raise
+
+    def _ResolveReference(self, reference: str) -> Tuple[str, str]:
+        """Resolve a commit and read it through one cat-file batch request."""
+        expression = f"{reference}^{{commit}}"
+        p = GitCommand(
+            None,
+            ["cat-file", "--batch"],
+            input=expression + "\n",
+            capture_stdout=True,
+            capture_stdout_bytes=True,
+            capture_stderr=True,
+            verify_command=True,
+        )
+        try:
+            p.Wait()
+            header, separator, output = p.stdout.partition(b"\n")
+            if not separator:
+                raise ValueError("missing cat-file header")
+            sha1, object_type, size = header.split(b" ", 2)
+            size = int(size)
+            if object_type != b"commit":
+                raise ValueError(f"unexpected object type {object_type!r}")
+            if len(output) != size + 1 or output[-1:] != b"\n":
+                raise ValueError("truncated cat-file object")
+        except (GitError, ValueError) as e:
+            logger.error(
+                "error: Failed to resolve or read commit %s", reference
+            )
+            if isinstance(e, GitError):
+                raise
+            raise GitError(str(e)) from e
+
+        commit = output[:size].decode("utf-8", "backslashreplace")
+        return sha1.decode("ascii"), commit
 
     def _IsChangeId(self, line):
         return CHANGE_ID_RE.match(line)
