@@ -14,10 +14,12 @@
 
 import platform
 import sys
+from typing import Any, Tuple
 
 from command import Command
 from command import MirrorSafeCommand
 from git_command import git
+from git_command import git_require
 from git_command import RepoSourceVersion
 from git_command import user_agent
 from git_refs import HEAD
@@ -34,6 +36,22 @@ class Version(Command, MirrorSafeCommand):
 %prog
 """
 
+    @staticmethod
+    def _RepoVersion(project: Any) -> Tuple[str, str]:
+        """Return repo's describe string and commit date."""
+        if git_require((2, 32, 0)):
+            output = project.bare_git.log(
+                "-1", "--format=%(describe)%n%cD", HEAD
+            )
+            description, commit_date = output.rstrip("\n").split("\n", 1)
+            if description:
+                return description, commit_date
+
+        return (
+            project.bare_git.describe(HEAD),
+            project.bare_git.log("-1", "--format=%cD", HEAD),
+        )
+
     def Execute(self, opt, args):
         rp = self.manifest.repoProject
         rem = rp.GetRemote()
@@ -41,11 +59,11 @@ class Version(Command, MirrorSafeCommand):
 
         # These might not be the same.  Report them both.
         src_ver = RepoSourceVersion()
-        rp_ver = rp.bare_git.describe(HEAD)
+        rp_ver, commit_date = self._RepoVersion(rp)
         print(f"repo version {rp_ver}")
         print(f"       (from {rem.url})")
         print(f"       (tracking {branch.merge})")
-        print(f"       ({rp.bare_git.log('-1', '--format=%cD', HEAD)})")
+        print(f"       ({commit_date})")
 
         if self.wrapper_path is not None:
             print(f"repo launcher version {self.wrapper_version}")
