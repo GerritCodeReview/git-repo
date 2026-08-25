@@ -4884,9 +4884,11 @@ def _DefaultBranchFallback() -> str:
         )
         return p.stdout.strip() if p.Wait() == 0 else ""
 
-    branch = _git(["var", "GIT_DEFAULT_BRANCH"]) or _git(
-        ["config", "--get", "init.defaultBranch"]
-    )
+    branch = ""
+    if git_require((2, 35, 0)):
+        branch = _git(["var", "GIT_DEFAULT_BRANCH"])
+    if not branch:
+        branch = _git(["config", "--get", "init.defaultBranch"])
     return f"refs/heads/{branch or 'master'}"
 
 
