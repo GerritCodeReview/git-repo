@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7d42dd1_34067cc5",
+        "filename": "hooks.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-25T18:02:36Z",
+      "side": 1,
+      "message": "I\u0027m getting this on a regular repo sync:\n```\nChecking for bloat: 100% (709/709), done in 4.930s\nrepo sync has finished successfully.\nTraceback (most recent call last):\n  File \"/usr/local/google/home/gavinmak/git-repo/main.py\", line 970, in \u003cmodule\u003e\n    _Main(sys.argv[1:])\n    ~~~~~^^^^^^^^^^^^^^\n  File \"/usr/local/google/home/gavinmak/git-repo/main.py\", line 946, in _Main\n    result \u003d repo._Run(name, gopts, argv) or 0\n             ~~~~~~~~~^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/google/home/gavinmak/git-repo/main.py\", line 294, in _Run\n    result \u003d run()\n  File \"/usr/local/google/home/gavinmak/git-repo/main.py\", line 275, in \u003clambda\u003e\n    lambda: self._RunLong(name, gopts, argv, git_trace2_event_log) or 0\n            ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/google/home/gavinmak/git-repo/main.py\", line 538, in _RunLong\n    execute_command()\n    ~~~~~~~~~~~~~~~^^\n  File \"/usr/local/google/home/gavinmak/git-repo/main.py\", line 504, in execute_command\n    execute_command_helper()\n    ~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/usr/local/google/home/gavinmak/git-repo/main.py\", line 470, in execute_command_helper\n    result \u003d cmd.Execute(copts, cargs)\n  File \"/usr/local/google/home/gavinmak/git-repo/subcmds/sync.py\", line 2222, in Execute\n    self._RunPostSyncHook(opt, sync_duration_seconds\u003dsync_duration_seconds)\n    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/google/home/gavinmak/git-repo/subcmds/sync.py\", line 2226, in _RunPostSyncHook\n    hook \u003d RepoHook.FromSubcmd(\n        hook_type\u003d\"post-sync\",\n    ...\u003c2 lines\u003e...\n        abort_if_user_denies\u003dFalse,\n    )\n  File \"/usr/local/google/home/gavinmak/git-repo/hooks.py\", line 501, in FromSubcmd\n    kwargs.setdefault(key, getattr(opt, key))\n                           ~~~~~~~^^^^^^^^^^\nAttributeError: \u0027Values\u0027 object has no attribute \u0027fix\u0027\n```\n\ndoes `fix` need a default? ie why not just add `\"fix\": getattr(opt, \"fix\", False),` below?",
+      "range": {
+        "startLine": 500,
+        "startChar": 72,
+        "endLine": 500,
+        "endChar": 75
+      },
+      "revId": "46c638cfb667c9939337a02fdd90fac5bc4911e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6512ff09_8aae853e",
+        "filename": "hooks.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-25T18:02:36Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Repo Analyzer: Missing return type annotation for staticmethod `AddOptionGroup`",
+      "range": {
+        "startLine": 516,
+        "startChar": 0,
+        "endLine": 517,
+        "endChar": 0
+      },
+      "revId": "46c638cfb667c9939337a02fdd90fac5bc4911e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
