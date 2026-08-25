@@ -568,6 +568,7 @@ class Project:
         parent=None,
         use_git_worktrees=False,
         is_derived=False,
+        gitlink_path: Optional[str] = None,
         dest_branch=None,
         optimized_fetch=False,
         retry_fetches=0,
@@ -597,6 +598,8 @@ class Project:
             use_git_worktrees: Whether to use `git worktree` for this project.
             is_derived: False if the project was explicitly defined in the
                 manifest; True if the project is a discovered submodule.
+            gitlink_path: For a discovered submodule, its path inside the
+                parent project.
             dest_branch: The branch to which to push changes for review by
                 default.
             optimized_fetch: If True, when a project is set to a sha1 revision,
@@ -624,6 +627,7 @@ class Project:
         # See the XmlManifest init code for more info.
         self.use_git_worktrees = use_git_worktrees
         self.is_derived = is_derived
+        self.gitlink_path = gitlink_path
         self.optimized_fetch = optimized_fetch
         self.retry_fetches = max(0, retry_fetches)
         self.subprojects = []
@@ -2573,6 +2577,37 @@ class Project:
             return []
         return get_submodules(self.gitdir, rev)
 
+    def GetSubmoduleRevisions(self) -> Optional[Dict[str, str]]:
+        """Read the gitlinks of our submodules at our current revision.
+
+        Discovered submodules are derived from the revision their parent was
+        at when the manifest was loaded, which is before it gets fetched.
+        Once it is up-to-date, its gitlinks have to be read again, otherwise
+        the submodules would be synced to the revisions of the previous sync.
+
+        Returns:
+            The revision of every submodule, keyed by its path inside this
+            project, or None if our revision is not available locally. A
+            revision that is merely set does not have to be fetched yet, and
+            without its objects a removed submodule cannot be told apart from
+            one that was never fetched.
+        """
+        try:
+            rev = self.GetRevisionId()
+            self.bare_git.rev_list(
+                "-1",
+                "--missing=allow-any",
+                f"{rev}^0",
+                "--",
+                log_as_error=False,
+            )
+        except (GitError, ManifestInvalidRevisionError):
+            return None
+
+        return {
+            path: sha for sha, path, _url, _shallow in self._GetSubmodules()
+        }
+
     def GetDerivedSubprojects(self):
         result = []
         if not self.Exists:
@@ -2620,6 +2655,7 @@ class Project:
                 parent=self,
                 clone_depth=clone_depth,
                 is_derived=True,
+                gitlink_path=path,
             )
             result.append(subproject)
             result.extend(subproject.GetDerivedSubprojects())
