@@ -196,6 +196,10 @@ class ReviewableBranch:
         return self.branch.name
 
     @property
+    def current(self) -> bool:
+        return getattr(self.branch, "current", False)
+
+    @property
     def commits(self):
         if self._commit_cache is None:
             args = (
@@ -1178,29 +1182,26 @@ class Project:
             if pub_id and pub_id == head_id:
                 return []
             rb = self.GetUploadableBranch(selected_branch)
-            return [rb] if rb else []
+            if rb:
+                rb.branch.current = selected_branch == self.CurrentBranch
+                return [rb]
+            return []
 
         # Optimization: Skip scanning _allrefs (which spawns git processes)
         # if no local branches with upstream tracking exist in .git/config.
         if not any(self.config.GetSubSections("branch")):
             return []
 
-        heads = {}
-        pubed = {}
-
-        for name, ref_id in self._allrefs.items():
-            if name.startswith(R_HEADS):
-                heads[name[len(R_HEADS) :]] = ref_id
-            elif name.startswith(R_PUB):
-                pubed[name[len(R_PUB) :]] = ref_id
+        branches = self.GetBranches()
 
         ready = []
-        for branch, ref_id in heads.items():
-            if branch in pubed and pubed[branch] == ref_id:
+        for branch, branch_config in branches.items():
+            if branch_config.published == branch_config.revision:
                 continue
 
             rb = self.GetUploadableBranch(branch)
             if rb:
+                rb.branch.current = branch_config.current
                 ready.append(rb)
         return ready
 
@@ -2521,6 +2522,7 @@ class Project:
         for branch in kill:
             if R_HEADS + branch in left:
                 branch = self.GetBranch(branch)
+                branch.current = branch.name == cb
                 base = branch.LocalMerge
                 if not base:
                     base = rev

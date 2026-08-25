@@ -59,10 +59,15 @@ are displayed.
         for project in self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
         ):
-            br = [project.GetUploadableBranch(x) for x in project.GetBranches()]
-            br = [x for x in br if x]
+            local_branches = project.GetBranches()
+            br = []
+            for name, branch in local_branches.items():
+                uploadable = project.GetUploadableBranch(name)
+                if uploadable:
+                    uploadable.branch.current = branch.current
+                    br.append(uploadable)
             if opt.current_branch:
-                br = [x for x in br if x.name == project.CurrentBranch]
+                br = [x for x in br if x.current]
             all_branches.extend(br)
 
         if not all_branches:
@@ -97,7 +102,7 @@ are displayed.
             print(
                 "%s %-33s (%2d commit%s, %s)"
                 % (
-                    branch.name == project.CurrentBranch and "*" or " ",
+                    branch.current and "*" or " ",
                     branch.name,
                     len(commits),
                     len(commits) != 1 and "s" or " ",
