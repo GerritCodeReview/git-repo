@@ -97,3 +97,45 @@ def test_ssh_sock(monkeypatch: pytest.MonkeyPatch) -> None:
             with proxy as ssh_proxy:
                 assert ssh_proxy.sock().endswith("%C")
         proxy._sock_path = None
+
+
+@pytest.mark.parametrize(
+    "url, expected_args",
+    (
+        ("ssh://host/repo", ("host", None)),
+        ("ssh://user@host/repo", ("user@host", None)),
+        ("ssh://user@host:29418/repo", ("user@host", "29418")),
+        ("git+ssh://host:22/repo", ("host", "22")),
+        ("ssh+git://user@host/repo", ("user@host", None)),
+        ("user@host:repo", ("user@host",)),
+        ("host:repo", ("host",)),
+        ("https://host/repo", None),
+        ("https://host:443/repo", None),
+        ("https://user:token@host:443/repo", None),
+        ("http://host/repo", None),
+        ("git://host/repo", None),
+        ("file:///path/to/repo", None),
+        ("/path/to/repo", None),
+    ),
+)
+def test_preconnect(url: str, expected_args: Tuple[str, ...]) -> None:
+    """Check preconnect() only opens a master for ssh URLs."""
+    with multiprocessing.Manager() as manager:
+        proxy = ssh.ProxyManager(manager)
+        proxy._ssh_installed = True
+        with mock.patch.object(proxy, "_open", return_value=True) as m:
+            assert proxy.preconnect(url) == (expected_args is not None)
+        if expected_args is None:
+            m.assert_not_called()
+        else:
+            m.assert_called_once_with(*expected_args)
+
+
+def test_preconnect_ssh_not_installed() -> None:
+    """Check preconnect() does nothing when ssh is not installed."""
+    with multiprocessing.Manager() as manager:
+        proxy = ssh.ProxyManager(manager)
+        proxy._ssh_installed = False
+        with mock.patch.object(proxy, "_open") as m:
+            assert not proxy.preconnect("ssh://host/repo")
+        m.assert_not_called()

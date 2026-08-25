@@ -298,13 +298,13 @@ class ProxyManager:
         if m:
             scheme = m.group(1)
             host = m.group(2)
+            if scheme not in ("ssh", "git+ssh", "ssh+git"):
+                return False
             if ":" in host:
                 host, port = host.split(":")
             else:
                 port = None
-            if scheme in ("ssh", "git+ssh", "ssh+git"):
-                return self._open(host, port)
-            return False
+            return self._open(host, port)
 
         m = URI_SCP.match(url)
         if m:
