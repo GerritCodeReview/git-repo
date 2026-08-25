@@ -20,7 +20,7 @@ from command import Command
 from command import DEFAULT_LOCAL_JOBS
 from error import RepoError
 from error import RepoExitError
-from git_command import git
+from git_command import IsValidBranchName
 from progress import Progress
 from repo_logging import RepoLogger
 
@@ -59,7 +59,7 @@ It is equivalent to "git branch -D <branchname>".
         if not opt.all:
             branches = args[0].split()
             invalid_branches = [
-                x for x in branches if not git.check_ref_format(f"heads/{x}")
+                x for x in branches if not IsValidBranchName(x)
             ]
 
             if invalid_branches:
