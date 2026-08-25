@@ -58,6 +58,7 @@ def test_reads_refs(tmp_path, reftable):
     branch = _run(repo, "symbolic-ref", "--short", "HEAD")
     head = _run(repo, "rev-parse", "HEAD")
     assert refs.symref("HEAD") == f"refs/heads/{branch}"
+    assert refs.head == f"refs/heads/{branch}"
     assert refs.get("HEAD") == head
     assert refs.get(f"refs/heads/{branch}") == head
 
