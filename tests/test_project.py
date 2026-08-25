@@ -386,6 +386,49 @@ class ProjectTests(unittest.TestCase):
             proj.work_git.checkout("HEAD~0")
             self.assertEqual(commit_sha, proj.GetHeadRevisionId())
 
+    def test_resolve_commit_uses_end_of_options_when_supported(self) -> None:
+        """Commit resolution separates user revisions from options."""
+        proj = mock.MagicMock(name="project")
+        proj.name = "project"
+        git = project.Project._GitGetByExec(proj, bare=True, gitdir="gitdir")
+        command = mock.MagicMock()
+        command.stdout = "1" * 40 + "\n"
+        command.Wait.return_value = 0
+
+        with mock.patch.object(
+            project, "git_require", return_value=True
+        ), mock.patch.object(
+            project, "GitCommand", return_value=command
+        ) as cmd:
+            self.assertEqual("1" * 40, git.ResolveCommit("topic"))
+
+        cmd.assert_called_once_with(
+            proj,
+            [
+                "rev-parse",
+                "--verify",
+                "--quiet",
+                "--end-of-options",
+                "topic^{commit}",
+            ],
+            bare=True,
+            gitdir="gitdir",
+            capture_stdout=True,
+            capture_stderr=True,
+            verify_command=True,
+            log_as_error=False,
+        )
+
+    def test_resolve_commit_rejects_option_on_old_git(self) -> None:
+        """Old Git never receives a revision that looks like an option."""
+        proj = mock.MagicMock(name="project")
+        proj.name = "project"
+        git = project.Project._GitGetByExec(proj, bare=True, gitdir="gitdir")
+
+        with mock.patch.object(project, "git_require", return_value=False):
+            with self.assertRaises(error.GitError):
+                git.ResolveCommit("--not-a-revision")
+
     def test_get_branches_reuses_ref_snapshot_for_current_branch(self) -> None:
         """GetBranches derives the current branch from the loaded refs."""
         with utils_for_test.TempGitTree() as tempdir:

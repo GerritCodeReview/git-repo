@@ -231,6 +231,24 @@ class GitCommandStreamLogsTest(unittest.TestCase):
 class GitCallUnitTest(unittest.TestCase):
     """Tests the _GitCall class (via git_command.git)."""
 
+    def test_valid_branch_name_uses_branch_mode(self) -> None:
+        """Branch validation applies Git's branch-specific restrictions."""
+        command = mock.MagicMock()
+        command.Wait.return_value = 1
+        with mock.patch.object(
+            git_command, "GitCommand", return_value=command
+        ) as check:
+            self.assertFalse(git_command.IsValidBranchName("-topic"))
+
+        check.assert_called_once_with(
+            None,
+            ["check-ref-format", "--branch", "-topic"],
+            capture_stdout=True,
+            capture_stderr=True,
+            add_event_log=False,
+            log_as_error=False,
+        )
+
     def test_version_tuple(self):
         """Check git.version_tuple() handling."""
         ver = git_command.git.version_tuple()
