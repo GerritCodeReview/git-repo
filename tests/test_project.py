@@ -2248,6 +2248,97 @@ class StatelessSyncTests(unittest.TestCase):
             )
             proj._CopyAndLinkFiles.assert_called_once_with()
 
+    def test_sync_local_half_skips_unused_detached_history_walk(self) -> None:
+        """Non-verbose detached sync does not enumerate discarded commits."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj._InitWorkTree = mock.MagicMock()
+            proj.CleanPublishedCache = mock.MagicMock()
+            proj.GetRevisionId = mock.MagicMock(return_value="new")
+            proj._Checkout = mock.MagicMock()
+            proj._CopyAndLinkFiles = mock.MagicMock()
+            proj.IsRebaseInProgress = mock.MagicMock(return_value=False)
+            proj.IsCherryPickInProgress = mock.MagicMock(return_value=False)
+            proj._revlist = mock.MagicMock()
+            proj.bare_ref = mock.MagicMock()
+            proj.bare_ref.all = {"HEAD": "old"}
+            proj.bare_ref.head = "old"
+            proj.work_git = mock.MagicMock()
+            proj.work_git.GetHead.return_value = "old"
+
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf, verbose=False)
+
+            proj._revlist.assert_not_called()
+            proj._Checkout.assert_called_once_with(
+                "new", force_checkout=False, quiet=True
+            )
+
+    def test_sync_local_half_verbose_detached_uses_count(self) -> None:
+        """Verbose detached sync queries commit count with --count."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj._InitWorkTree = mock.MagicMock()
+            proj.CleanPublishedCache = mock.MagicMock()
+            proj.GetRevisionId = mock.MagicMock(return_value="new")
+            proj._Checkout = mock.MagicMock()
+            proj._CopyAndLinkFiles = mock.MagicMock()
+            proj.IsRebaseInProgress = mock.MagicMock(return_value=False)
+            proj.IsCherryPickInProgress = mock.MagicMock(return_value=False)
+            proj._revlist = mock.MagicMock(return_value=["3"])
+            proj.bare_ref = mock.MagicMock()
+            proj.bare_ref.all = {"HEAD": "old"}
+            proj.bare_ref.head = "old"
+            proj.work_git = mock.MagicMock()
+            proj.work_git.GetHead.return_value = "old"
+
+            syncbuf = mock.MagicMock()
+            syncbuf.detach_head = False
+            proj.Sync_LocalHalf(syncbuf, verbose=True)
+
+            proj._revlist.assert_called_once_with("--count", "^new", "HEAD")
+            syncbuf.info.assert_called_once_with(
+                proj, "discarding %d commits", 3
+            )
+
+    def test_sync_local_half_uses_count_and_limit_for_published_branch(
+        self,
+    ) -> None:
+        """Published sync uses --count for gain and -1 for probe."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj._InitWorkTree = mock.MagicMock()
+            proj.CleanPublishedCache = mock.MagicMock()
+            proj.GetRevisionId = mock.MagicMock(return_value="new")
+            proj._CopyAndLinkFiles = mock.MagicMock()
+            proj.IsRebaseInProgress = mock.MagicMock(return_value=False)
+            proj.IsCherryPickInProgress = mock.MagicMock(return_value=False)
+            proj._revlist = mock.MagicMock(side_effect=[["2"], ["pub-sha"]])
+            proj.bare_ref = mock.MagicMock()
+            proj.bare_ref.all = {"refs/heads/topic": "old"}
+            proj.bare_ref.head = "refs/heads/topic"
+            proj.work_git = mock.MagicMock()
+            proj.work_git.GetHead.return_value = "refs/heads/topic"
+            proj.work_git.merge_base.side_effect = project.GitError("diverged")
+            branch = mock.MagicMock()
+            branch.name = "topic"
+            branch.LocalMerge = "refs/remotes/origin/main"
+            proj.GetBranch = mock.MagicMock(return_value=branch)
+            proj.WasPublished = mock.MagicMock(return_value="pub-sha")
+
+            syncbuf = mock.MagicMock()
+            syncbuf.detach_head = False
+            proj.Sync_LocalHalf(syncbuf, force_rebase=False)
+
+            self.assertEqual(
+                proj._revlist.call_args_list,
+                [
+                    mock.call("--count", "^HEAD", "new"),
+                    mock.call("-1", "^new", "pub-sha"),
+                ],
+            )
+            syncbuf.fail.assert_called_once()
+
     def test_sync_network_half_stateless_skips_if_stash(self):
         """Test stateless sync skips if stash exists."""
         with utils_for_test.TempGitTree() as tempdir:
@@ -3351,9 +3442,11 @@ class ReprojectCmdTests(unittest.TestCase):
         def _revlist(*args: Any, **kwargs: Any) -> List[str]:
             if kwargs.get("format"):
                 return list(local_changes)
-            if args[0] == project.not_rev(project.HEAD):
+            if project.not_rev(project.HEAD) in args:
+                if "--count" in args:
+                    return [str(len(upstream_gain))]
                 return list(upstream_gain)
-            if args[1] == self.PUB_ID:
+            if self.PUB_ID in args:
                 return [self.PUB_ID]
             return []
 

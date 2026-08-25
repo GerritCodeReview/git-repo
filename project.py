@@ -2053,13 +2053,13 @@ class Project:
 
     def Sync_LocalHalf(
         self,
-        syncbuf,
-        force_sync=False,
-        force_checkout=False,
-        force_rebase=False,
-        submodules=False,
-        verbose=False,
-    ):
+        syncbuf: Any,
+        force_sync: bool = False,
+        force_checkout: bool = False,
+        force_rebase: bool = False,
+        submodules: bool = False,
+        verbose: bool = False,
+    ) -> None:
         """Perform only the local IO portion of the sync process.
 
         Network access is not required.
@@ -2203,9 +2203,11 @@ class Project:
                     self._CopyAndLinkFiles()
                     return
             else:
-                lost = self._revlist(not_rev(revid), HEAD)
-                if lost and verbose:
-                    syncbuf.info(self, "discarding %d commits", len(lost))
+                if verbose:
+                    lost_output = self._revlist("--count", not_rev(revid), HEAD)
+                    lost = int(lost_output[0]) if lost_output else 0
+                    if lost:
+                        syncbuf.info(self, "discarding %d commits", lost)
 
             try:
                 _checkout()
@@ -2244,7 +2246,8 @@ class Project:
             self._CopyAndLinkFiles()
             return
 
-        upstream_gain = self._revlist(not_rev(HEAD), revid)
+        gain_output = self._revlist("--count", not_rev(HEAD), revid)
+        upstream_gain = int(gain_output[0]) if gain_output else 0
 
         # See if we can perform a fast forward merge.  This can happen if our
         # branch isn't in the exact same state as we last published.
@@ -2258,7 +2261,7 @@ class Project:
             pub = self.WasPublished(branch.name, all_refs)
 
         if pub:
-            not_merged = self._revlist(not_rev(revid), pub)
+            not_merged = self._revlist("-1", not_rev(revid), pub)
             if not_merged:
                 if upstream_gain:
                     if force_rebase:
@@ -2274,7 +2277,7 @@ class Project:
                                 "branch %s is published (but not merged) and "
                                 "is now %d commits behind. Fix this manually "
                                 "or rerun with the --rebase option to force a "
-                                "rebase." % (branch.name, len(upstream_gain)),
+                                "rebase." % (branch.name, upstream_gain),
                                 project=self.name,
                             )
                         )
