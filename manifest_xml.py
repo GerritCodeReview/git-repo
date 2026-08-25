@@ -692,9 +692,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 e.setAttribute("remote", remoteName)
             if peg_rev:
                 if self.IsMirror:
-                    value = p.bare_git.rev_parse(p.revisionExpr + "^0")
+                    value = p.bare_git.ResolveCommit(p.revisionExpr)
                 else:
-                    value = p.work_git.rev_parse(HEAD + "^0")
+                    value = p.work_git.ResolveCommit(HEAD)
                 e.setAttribute("revision", value)
                 if peg_rev_upstream:
                     if p.upstream:

@@ -1751,7 +1751,7 @@ class Project:
             return self.GetRevisionId(self._allrefs)
 
         try:
-            return self.bare_git.rev_list(self.revisionExpr, "-1")[0]
+            return self.bare_git.ResolveCommit(self.revisionExpr)
         except GitError:
             raise ManifestInvalidRevisionError(
                 f"revision {self.revisionExpr} in {self.name} not found"
@@ -1784,7 +1784,7 @@ class Project:
             return all_refs[rev]
 
         try:
-            return self.bare_git.rev_parse("--verify", "%s^0" % rev)
+            return self.bare_git.ResolveCommit(rev)
         except GitError:
             raise ManifestInvalidRevisionError(
                 f"revision {self.revisionExpr} in {self.name} not found"
@@ -4519,6 +4519,19 @@ class Project:
                 if ref == R_HEADS + ".invalid":
                     raise NoManifestException(path, str(e))
                 return ref
+
+        def ResolveCommit(self, revision: str) -> str:
+            """Resolve |revision| to a commit without option ambiguity."""
+            cmdv = ["--verify", "--quiet"]
+            if git_require((2, 30, 0)):
+                cmdv.append("--end-of-options")
+            elif revision.startswith("-"):
+                raise GitError(
+                    f"invalid revision: {revision}",
+                    project=self._project.name,
+                )
+            cmdv.append(f"{revision}^{{commit}}")
+            return self.rev_parse(*cmdv, log_as_error=False)
 
         def SetHead(self, ref, message=None):
             cmdv = []
