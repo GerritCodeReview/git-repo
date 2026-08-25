@@ -104,6 +104,11 @@ elif sys.version_info < MIN_PYTHON_VERSION_SOFT:
 KEYBOARD_INTERRUPT_EXIT = 128 + signal.SIGINT
 MAX_PRINT_ERRORS = 5
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(errors="surrogateescape")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(errors="surrogateescape")
+
 global_options = optparse.OptionParser(
     usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]",
     add_help_option=False,
