@@ -948,6 +948,45 @@ def _create_mock_project(
     return proj
 
 
+class GetSubmoduleRevisions(unittest.TestCase):
+    """Tests for Project.GetSubmoduleRevisions."""
+
+    def test_gitlinks_are_keyed_by_their_path(self) -> None:
+        with utils_for_test.TempGitTree() as tempdir:
+            parent = _create_mock_project(tempdir)
+            parent.GetRevisionId = mock.MagicMock(return_value="cafe1234")
+            parent._GetSubmodules = mock.MagicMock(
+                return_value=[("1234abcd", "sub", "http://example.com/sub", "")]
+            )
+
+            self.assertEqual(
+                parent.GetSubmoduleRevisions(), {"sub": "1234abcd"}
+            )
+
+    def test_none_when_the_revision_is_not_fetched(self) -> None:
+        with utils_for_test.TempGitTree() as tempdir:
+            parent = _create_mock_project(tempdir)
+            parent.GetRevisionId = mock.MagicMock(return_value="cafe1234")
+            parent.bare_git.rev_list = mock.MagicMock(
+                side_effect=error.GitError("missing object")
+            )
+            parent._GetSubmodules = mock.MagicMock()
+
+            self.assertIsNone(parent.GetSubmoduleRevisions())
+            parent._GetSubmodules.assert_not_called()
+
+    def test_none_without_a_revision(self) -> None:
+        with utils_for_test.TempGitTree() as tempdir:
+            parent = _create_mock_project(tempdir)
+            parent.GetRevisionId = mock.MagicMock(
+                side_effect=error.ManifestInvalidRevisionError("no revision")
+            )
+            parent._GetSubmodules = mock.MagicMock()
+
+            self.assertIsNone(parent.GetSubmoduleRevisions())
+            parent._GetSubmodules.assert_not_called()
+
+
 class StatelessSyncTests(unittest.TestCase):
     """Tests for stateless sync strategy."""
 
