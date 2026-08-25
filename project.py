@@ -1736,7 +1736,9 @@ class Project:
         for linkfile in self.linkfiles:
             linkfile._Link()
 
-    def GetCommitRevisionId(self):
+    def GetCommitRevisionId(
+        self, all_refs: Optional[Dict[str, str]] = None
+    ) -> str:
         """Get revisionId of a commit.
 
         Use this method instead of GetRevisionId to get the id of the commit
@@ -1746,7 +1748,9 @@ class Project:
         if self.revisionId:
             return self.revisionId
         if not self.revisionExpr.startswith(R_TAGS):
-            return self.GetRevisionId(self._allrefs)
+            if all_refs is None:
+                all_refs = self._allrefs
+            return self.GetRevisionId(all_refs)
 
         try:
             return self.bare_git.ResolveCommit(self.revisionExpr)
@@ -2410,7 +2414,7 @@ class Project:
             # Doesn't exist
             return None
 
-        head = self.work_git.GetHead()
+        head = self._GetHead()
         if head == rev:
             # We can't destroy the branch while we are sitting
             # on it.  Switch to a detached HEAD.
@@ -2432,9 +2436,9 @@ class Project:
 
     def PruneHeads(self):
         """Prune any topic branches already merged into upstream."""
-        cb = self.CurrentBranch
         kill = []
         left = self._allrefs
+        cb = self.CurrentBranch
         for name in left.keys():
             if name.startswith(R_HEADS):
                 name = name[len(R_HEADS) :]
@@ -2446,17 +2450,23 @@ class Project:
         if not kill and not cb:
             return []
 
-        rev = self.GetRevisionId(left)
+        rev = self.GetCommitRevisionId(left)
+        head = left.get(R_HEADS + cb) if cb is not None else None
         if (
             cb is not None
-            and not self._revlist(HEAD + "..." + rev)
+            and head == rev
             and not self.IsDirty(consider_untracked=False)
         ):
             self.work_git.DetachHead(HEAD)
             kill.append(cb)
 
         if kill:
-            old = self.bare_git.GetHead()
+            if cb in kill:
+                old = head
+            elif not self.use_git_worktrees:
+                old = self.bare_ref.head or self.bare_git.GetHead()
+            else:
+                old = self.bare_git.GetHead()
 
             try:
                 self.bare_git.DetachHead(rev)
@@ -2471,7 +2481,11 @@ class Project:
                 if IsId(old):
                     self.bare_git.DetachHead(old)
                 else:
-                    self.bare_git.SetHead(old)
+                    branch = (
+                        old[len(R_HEADS) :] if old.startswith(R_HEADS) else old
+                    )
+                    if branch not in kill:
+                        self.bare_git.SetHead(old)
                 left = self._allrefs
 
             for branch in kill:
@@ -4867,7 +4881,7 @@ class MetaProject(Project):
 
         all_refs = self.bare_ref.all
         revid = self.GetRevisionId(all_refs)
-        head = self.work_git.GetHead()
+        head = self._GetHead()
         if head.startswith(R_HEADS):
             try:
                 head = all_refs[head]
@@ -4876,7 +4890,7 @@ class MetaProject(Project):
 
         if revid == head:
             return False
-        elif self._revlist(not_rev(HEAD), revid):
+        elif self._revlist("-1", not_rev(HEAD), revid):
             return True
         return False
 

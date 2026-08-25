@@ -483,6 +483,78 @@ class ProjectTests(unittest.TestCase):
 
             self.assertFalse(branches["topic"].current)
 
+    def test_prune_heads_reuses_refs_and_avoids_revision_walk(self) -> None:
+        """Pruning uses snapshot OIDs to recognize an exact manifest HEAD."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            Path(tempdir, "tracked").write_text("initial")
+            proj.work_git.add("tracked")
+            proj.work_git.commit("-m", "initial")
+            revision = proj.work_git.rev_parse("HEAD")
+            proj.work_git.branch("merged")
+            proj.work_git.checkout("-b", "unmerged")
+            Path(tempdir, "tracked").write_text("topic")
+            proj.work_git.commit("-am", "topic")
+            proj.work_git.checkout("main")
+            proj.work_git.config("branch.unmerged.remote", ".")
+            proj.work_git.config("branch.unmerged.merge", "refs/heads/main")
+            proj.revisionId = revision
+            proj.bare_git = project.Project._GitGetByExec(
+                proj, bare=True, gitdir=proj.gitdir
+            )
+            proj._revlist = mock.MagicMock(
+                side_effect=AssertionError("unexpected revision walk")
+            )
+
+            kept = proj.PruneHeads()
+
+            self.assertEqual(["unmerged"], [branch.name for branch in kept])
+            self.assertEqual("", proj.bare_ref.get("refs/heads/merged"))
+            proj._revlist.assert_not_called()
+
+    def test_prune_heads_compares_peeled_tag_commit(self) -> None:
+        """A branch at an annotated manifest tag can be pruned."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(
+                tempdir, revisionExpr="refs/tags/release"
+            )
+            Path(tempdir, "tracked").write_text("initial")
+            proj.work_git.add("tracked")
+            proj.work_git.commit("-m", "initial")
+            proj.work_git.tag("-a", "release", "-m", "release")
+            proj.bare_git = project.Project._GitGetByExec(
+                proj, bare=True, gitdir=proj.gitdir
+            )
+
+            kept = proj.PruneHeads()
+
+            self.assertEqual([], kept)
+            self.assertIsNone(proj.CurrentBranch)
+            self.assertEqual("", proj.bare_ref.get("refs/heads/main"))
+
+    def test_prune_heads_preserves_detached_head_when_current_branch_pruned(
+        self,
+    ) -> None:
+        """Pruning current branch keeps HEAD detached at target commit."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            Path(tempdir, "tracked").write_text("initial")
+            proj.work_git.add("tracked")
+            proj.work_git.commit("-m", "initial")
+            revision = proj.work_git.rev_parse("HEAD")
+            proj.revisionId = revision
+            proj.bare_git = project.Project._GitGetByExec(
+                proj, bare=True, gitdir=proj.gitdir
+            )
+            proj.bare_ref.head
+
+            kept = proj.PruneHeads()
+
+            self.assertEqual([], kept)
+            self.assertIsNone(proj.CurrentBranch)
+            self.assertEqual("", proj.bare_ref.get("refs/heads/main"))
+            self.assertEqual(revision, proj.bare_git.rev_parse("HEAD"))
+
     @unittest.skipUnless(
         utils_for_test.supports_reftable(),
         "git reftable support is required for this test",
@@ -1252,6 +1324,21 @@ def test_default_branch_fallback(
         assert seen == expected_calls
     finally:
         project._DefaultBranchFallback.cache_clear()
+
+
+def test_metaproject_has_changes_bounds_revision_walk() -> None:
+    """MetaProject only asks whether one remote-only commit exists."""
+    meta = mock.MagicMock()
+    meta.remote = mock.sentinel.remote
+    meta.revisionExpr = "refs/remotes/origin/main"
+    meta.bare_ref.all = {"HEAD": "local"}
+    meta.GetRevisionId.return_value = "remote"
+    meta._GetHead.return_value = "local"
+    meta._revlist.return_value = ["remote"]
+
+    assert project.MetaProject.HasChanges.fget(meta)
+
+    meta._revlist.assert_called_once_with("-1", "^HEAD", "remote")
 
 
 def _create_mock_project(
