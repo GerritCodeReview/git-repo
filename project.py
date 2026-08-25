@@ -29,7 +29,7 @@ import sys
 import tarfile
 import tempfile
 import time
-from typing import Dict, List, NamedTuple, Optional
+from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 import urllib.parse
 
 from color import Coloring
@@ -1106,7 +1106,12 @@ class Project:
         """Returns true if there are uncommitted changes."""
         return bool(self.UncommittedFiles(get_all=False))
 
-    def PrintWorkTreeStatus(self, output_redir=None, quiet=False, local=False):
+    def PrintWorkTreeStatus(
+        self,
+        output_redir: Any = None,
+        quiet: bool = False,
+        local: bool = False,
+    ) -> Optional[str]:
         """Prints the status of the repository to stdout.
 
         Args:
@@ -1125,12 +1130,103 @@ class Project:
             print('  missing (run "repo sync")', file=output_redir)
             return
 
+        status = self._GetStatusSnapshot(
+            untracked_files="all",
+            branch=True,
+            ahead_behind=not quiet,
+        )
+        if status is not None:
+            ahead = status.ahead
+            behind = status.behind
+            if (
+                not quiet
+                and status.current_branch is not None
+                and not status.has_ahead_behind
+            ):
+                ahead, behind = self._GetBranchAheadBehind(
+                    status.current_branch
+                )
+            return self._RenderWorkTreeStatus(
+                status.index_changes,
+                status.worktree_changes,
+                status.untracked,
+                self.IsRebaseInProgress(),
+                status.current_branch,
+                ahead,
+                behind,
+                output_redir=output_redir,
+                quiet=quiet,
+                local=local,
+            )
+
+        return self._PrintWorkTreeStatusLegacy(
+            output_redir=output_redir, quiet=quiet, local=local
+        )
+
+    def _PrintWorkTreeStatusLegacy(
+        self, output_redir: Any = None, quiet: bool = False, local: bool = False
+    ) -> str:
+        """Render status using plumbing supported by older Git."""
         self._RefreshIndexStatCache()
         rb = self.IsRebaseInProgress()
         di = self.work_git.DiffZ("diff-index", "-M", "--cached", HEAD)
         df = self.work_git.DiffZ("diff-files")
         do = self.work_git.LsOthers()
-        if not rb and not di and not df and not do and not self.CurrentBranch:
+        if quiet and (rb or di or df or do):
+            branch_name = None
+        else:
+            branch_name = self.CurrentBranch
+        ahead = behind = 0
+        if branch_name is not None and not quiet:
+            ahead, behind = self._GetBranchAheadBehind(branch_name)
+
+        return self._RenderWorkTreeStatus(
+            di,
+            df,
+            do,
+            rb,
+            branch_name,
+            ahead,
+            behind,
+            output_redir=output_redir,
+            quiet=quiet,
+            local=local,
+        )
+
+    def _GetBranchAheadBehind(self, branch_name: str) -> Tuple[int, int]:
+        """Return divergence when status could not supply branch.ab."""
+        ahead = behind = 0
+        branch_obj = self.GetBranch(branch_name)
+        try:
+            local_merge = branch_obj.LocalMerge
+            if local_merge:
+                left_right = self.work_git.rev_list(
+                    "--left-right",
+                    "--count",
+                    f"{local_merge}...{R_HEADS}{branch_name}",
+                )
+                left, right = left_right[0].split()
+                behind = int(left)
+                ahead = int(right)
+        except (GitError, IndexError, ValueError):
+            pass
+        return ahead, behind
+
+    def _RenderWorkTreeStatus(
+        self,
+        di: Any,
+        df: Any,
+        do: Any,
+        rb: bool,
+        branch_name: Optional[str],
+        ahead: int,
+        behind: int,
+        output_redir: Any = None,
+        quiet: bool = False,
+        local: bool = False,
+    ) -> str:
+        """Render a normalized worktree snapshot."""
+        if not rb and not di and not df and not do and branch_name is None:
             return "CLEAN"
 
         out = StatusColoring(self.config)
@@ -1142,37 +1238,35 @@ class Project:
             out.nl()
             return "DIRTY"
 
-        branch_name = self.CurrentBranch
         if branch_name is None:
             out.nobranch("(*** NO BRANCH ***)")
         else:
-            branch_obj = self.GetBranch(branch_name)
             ahead_behind = ""
-            try:
-                local_merge = branch_obj.LocalMerge
-                if local_merge:
-                    left_right = self.work_git.rev_list(
-                        "--left-right",
-                        "--count",
-                        f"{local_merge}...{R_HEADS}{branch_name}",
-                    )
-                    left, right = left_right[0].split()
-                    behind = int(left)
-                    ahead = int(right)
-                    if ahead and behind:
-                        ahead_behind = f" [ahead {ahead}, behind {behind}]"
-                    elif ahead:
-                        ahead_behind = f" [ahead {ahead}]"
-                    elif behind:
-                        ahead_behind = f" [behind {behind}]"
-            except GitError:
-                pass
+            if ahead and behind:
+                ahead_behind = f" [ahead {ahead}, behind {behind}]"
+            elif ahead:
+                ahead_behind = f" [ahead {ahead}]"
+            elif behind:
+                ahead_behind = f" [behind {behind}]"
             out.branch("branch %s%s", branch_name, ahead_behind)
         out.nl()
 
         if rb:
             out.important("prior sync failed; rebase still in progress")
             out.nl()
+
+        def _SafePath(path_str: str) -> str:
+            stream = output_redir if output_redir is not None else sys.stdout
+            encoding = getattr(stream, "encoding", None) or "utf-8"
+            errors = getattr(stream, "errors", None)
+            if errors not in ("surrogateescape", "backslashreplace", "replace"):
+                try:
+                    path_str.encode(encoding)
+                except UnicodeEncodeError:
+                    return path_str.encode(encoding, "backslashreplace").decode(
+                        encoding
+                    )
+            return path_str
 
         paths = []
         paths.extend(di.keys())
@@ -1200,12 +1294,15 @@ class Project:
             else:
                 f_status = "-"
 
+            disp_p = _SafePath(p)
             if i and i.src_path:
+                disp_src = _SafePath(i.src_path)
                 line = (
-                    f" {i_status}{f_status}\t{i.src_path} => {p} ({i.level}%)"
+                    f" {i_status}{f_status}\t"
+                    f"{disp_src} => {disp_p} ({i.level}%)"
                 )
             else:
-                line = f" {i_status}{f_status}\t{p}"
+                line = f" {i_status}{f_status}\t{disp_p}"
 
             if i and not f:
                 out.added("%s", line)
