@@ -97,3 +97,23 @@ def test_GetMergeBranch_none_when_no_branch(cmd: upload.Upload) -> None:
 
     res = cmd._GetMergeBranch(mock_project, local_branch=None)
     assert res == ""
+
+
+def test_GatherOne_returns_resolved_current_branch(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Upload error reporting reuses the branch gathered by the worker."""
+    project = mock.MagicMock()
+    project.CurrentBranch = "topic"
+    branch = mock.sentinel.branch
+    project.GetUploadableBranch.return_value = branch
+    monkeypatch.setattr(
+        upload.Upload,
+        "get_parallel_context",
+        lambda: {"projects": [project]},
+    )
+    opt = mock.MagicMock(current_branch=True)
+
+    assert upload.Upload._GatherOne(opt, 0) == (0, [branch], "topic")
+
+    project.GetUploadableBranch.assert_called_once_with("topic")
