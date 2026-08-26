@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "132b90ec_2244bb2e",
+        "filename": "hooks.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-08-26T14:07:15Z",
+      "side": 1,
+      "message": "Yeah caught this in my testing as well. Fixed.",
+      "parentUuid": "b7d42dd1_34067cc5",
+      "range": {
+        "startLine": 500,
+        "startChar": 72,
+        "endLine": 500,
+        "endChar": 75
+      },
+      "revId": "46c638cfb667c9939337a02fdd90fac5bc4911e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6512ff09_8aae853e",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-25T18:02:36Z",
       "side": 1,
       "message": "Please fix this WARNING reported by Repo Analyzer: Missing return type annotation for staticmethod `AddOptionGroup`",
+      "range": {
+        "startLine": 516,
+        "startChar": 0,
+        "endLine": 517,
+        "endChar": 0
+      },
+      "revId": "46c638cfb667c9939337a02fdd90fac5bc4911e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34616805_9b50cf10",
+        "filename": "hooks.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-08-26T14:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6512ff09_8aae853e",
       "range": {
         "startLine": 516,
         "startChar": 0,
