@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc17da68_6bc2955e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-08-26T20:26:22Z",
+      "side": 1,
+      "message": "What about doing what https://gerrit-review.googlesource.com/c/git-repo/+/499482 implements and fetching the SHA-1 directly?",
+      "revId": "d9da609d8c120bb882a43196a4a6b7f183418304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6cda253_380213d9",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
