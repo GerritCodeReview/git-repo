@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8385692e_f6a74242",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-26T20:55:25Z",
+      "side": 1,
+      "message": "repo does try this sometimes: https://cs.opensource.google/gerrit/gerrit/git-repo/+/main:project.py;l\u003d3137-3142;drc\u003d09914bcab7d1d5570c20a52d1861957145da8a5a\n\nbut that isn\u0027t guaranteed to work on all remotes, as noted in https://cs.opensource.google/gerrit/gerrit/git-repo/+/main:project.py;l\u003d3275-3281;drc\u003d09914bcab7d1d5570c20a52d1861957145da8a5a",
+      "parentUuid": "cc17da68_6bc2955e",
+      "revId": "d9da609d8c120bb882a43196a4a6b7f183418304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6cda253_380213d9",
