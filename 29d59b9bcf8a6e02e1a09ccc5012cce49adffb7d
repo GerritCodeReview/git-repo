@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ed1f37a_3ad17626",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-26T14:57:34Z",
+      "side": 1,
+      "message": "IIUC relpath isn\u0027t unique across submanifests, WDYT about just using `parent` here and L192?",
+      "range": {
+        "startLine": 186,
+        "startChar": 44,
+        "endLine": 186,
+        "endChar": 58
+      },
+      "revId": "29d59b9bcf8a6e02e1a09ccc5012cce49adffb7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
