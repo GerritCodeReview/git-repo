@@ -708,6 +708,14 @@ class RefreshDerivedRevisions(unittest.TestCase):
 
         p_a.GetSubmoduleRevisions.assert_not_called()
 
+    def test_reports_submodules_removed_from_their_parent(self) -> None:
+        p_a = self._parent_with_submodules(b="beef1234")
+        p_a_c = self._submodule(p_a, "c")
+
+        removed = sync._RefreshDerivedRevisions([p_a, p_a_c])
+
+        self.assertEqual(removed, [p_a_c])
+
     def test_keeps_submodules_of_an_unreadable_parent(self) -> None:
         p_a = FakeProject("a")
         p_a.GetSubmoduleRevisions = mock.Mock(return_value=None)
@@ -719,8 +727,9 @@ class RefreshDerivedRevisions(unittest.TestCase):
             gitlink_path="b",
         )
 
-        sync._RefreshDerivedRevisions([p_a, p_a_b])
+        removed = sync._RefreshDerivedRevisions([p_a, p_a_b])
 
+        self.assertEqual(removed, [])
         self.assertEqual(p_a_b.revisionId, "stale")
 
 
@@ -761,6 +770,23 @@ class FetchParentFirst(unittest.TestCase):
                 ("read gitlinks of", "a"),
                 ("fetch", ["a/b"]),
             ],
+        )
+
+
+class WithoutProjects(unittest.TestCase):
+    def test_drops_the_unwanted_projects(self) -> None:
+        p_a = FakeProject("a")
+        p_a_b = FakeProject("a/b")
+        self.assertEqual(sync._WithoutProjects([p_a, p_a_b], [p_a_b]), [p_a])
+        self.assertEqual(sync._WithoutProjects([p_a, p_a_b], []), [p_a, p_a_b])
+
+    def test_keeps_projects_with_the_same_path(self) -> None:
+        # Paths are relative to their own (sub)manifest, so two projects can
+        # share one.
+        first = FakeProject("a/b")
+        second = FakeProject("a/b")
+        self.assertEqual(
+            sync._WithoutProjects([first, second], [second]), [first]
         )
 
 
@@ -1363,6 +1389,60 @@ class InterleavedSyncTest(unittest.TestCase):
         )
 
         self.assertIn(("projA/sub", "fetched"), synced)
+
+    def test_interleaved_skips_removed_submodule(self) -> None:
+        """Test submodules dropped by their parent are not checked out."""
+        opt, args = self.cmd.OptionParser.parse_args(["--interleaved", "-j4"])
+        opt.quiet = True
+
+        submodule = FakeProject(
+            "projA/sub",
+            name="projA_sub",
+            objdir="objA_sub",
+            parent=self.projA,
+            is_derived=True,
+            revisionId="stale",
+            gitlink_path="sub",
+        )
+        # The parent no longer holds a gitlink for the submodule.
+        self.projA.GetSubmoduleRevisions = mock.Mock(return_value={})
+        # The reloaded manifest no longer derives the removed submodule.
+        mock.patch.object(
+            self.cmd, "GetProjects", return_value=[self.projA]
+        ).start()
+
+        synced = []
+
+        def execute_side_effect(
+            jobs: int,
+            target: object,
+            work_items: List[List[int]],
+            **kwargs: object,
+        ) -> bool:
+            synced_relpaths_set = kwargs["callback"].args[0]
+            projects_in_pass = self.cmd.get_parallel_context()["projects"]
+            for item in work_items:
+                for project_idx in item:
+                    project = projects_in_pass[project_idx]
+                    synced.append(project.relpath)
+                    synced_relpaths_set.add(project.relpath)
+            return True
+
+        mock.patch.object(
+            self.cmd, "ExecuteInParallel", side_effect=execute_side_effect
+        ).start()
+
+        self.cmd._SyncInterleaved(
+            opt,
+            args,
+            [],
+            self.manifest,
+            self.manifest.manifestProject,
+            [self.projA, submodule],
+            {},
+        )
+
+        self.assertEqual(synced, ["projA"])
 
     def test_interleaved_shared_objdir_serial(self):
         """Test that projects with shared objdir are processed serially."""
