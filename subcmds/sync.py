@@ -28,7 +28,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from typing import List, NamedTuple, Optional, Set, Tuple, Union
+from typing import Dict, List, NamedTuple, Optional, Set, Tuple, Union
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -154,6 +154,46 @@ def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
         depth_stack.append((checkout_path, level))
 
     return res
+
+
+def _RefreshDerivedRevisions(
+    projects: List[Project],
+    submodule_revisions: Optional[Dict[Project, Dict[str, str]]] = None,
+) -> None:
+    """Re-resolve the gitlinks of the discovered submodules in |projects|.
+
+    The revision of a discovered submodule is read from its parent when the
+    manifest is loaded, so it is stale as soon as the parent gets fetched. It
+    has to be resolved again once the parent is up-to-date, and before the
+    submodule itself is fetched and checked out.
+
+    Args:
+        projects: The projects whose discovered submodules to resolve.
+        submodule_revisions: Gitlinks already read, keyed by the project
+            holding them. Passing the same dict for project sets that follow
+            the same fetches, e.g. the levels of one checkout order, keeps a
+            project from being read more than once.
+    """
+    if submodule_revisions is None:
+        submodule_revisions = {}
+
+    subprojects_by_parent = collections.defaultdict(list)
+    for project in projects:
+        if project.Derived and project.parent:
+            subprojects_by_parent[project.parent].append(project)
+
+    for parent, subprojects in subprojects_by_parent.items():
+        revisions = submodule_revisions.get(parent)
+        if revisions is None:
+            revisions = parent.GetSubmoduleRevisions()
+            if revisions is None:
+                # Leave the submodules of a parent we cannot read alone.
+                continue
+            submodule_revisions[parent] = revisions
+        for subproject in subprojects:
+            rev = revisions.get(subproject.gitlink_path)
+            if rev:
+                subproject.SetRevision(rev, revisionId=rev)
 
 
 def _chunksize(projects: int, jobs: int) -> int:
@@ -2977,11 +3017,16 @@ later is required to fix a server side protocol bug.
                             # projects in one level can be processed in
                             # parallel, but we must wait for a level to complete
                             # before starting the next.
+                            submodule_revisions = {}
                             for level_projects in _SafeCheckoutOrder(
                                 projects_to_sync
                             ):
                                 if not level_projects:
                                     continue
+
+                                _RefreshDerivedRevisions(
+                                    level_projects, submodule_revisions
+                                )
 
                                 objdir_project_map = collections.defaultdict(
                                     list
