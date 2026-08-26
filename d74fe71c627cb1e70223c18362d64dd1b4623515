@@ -22,6 +22,30 @@
       },
       "revId": "d74fe71c627cb1e70223c18362d64dd1b4623515",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8da1974_17d06d5f",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1303,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-08-26T17:06:21Z",
+      "side": 1,
+      "message": "Added comprehensive test coverage for _FindGerritUrls across multiple URL formats. PTAL.",
+      "parentUuid": "c04d91bd_99cbecd8",
+      "range": {
+        "startLine": 1299,
+        "startChar": 8,
+        "endLine": 1303,
+        "endChar": 47
+      },
+      "revId": "d74fe71c627cb1e70223c18362d64dd1b4623515",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
