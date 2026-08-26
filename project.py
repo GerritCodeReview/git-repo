@@ -2936,19 +2936,16 @@ class Project:
         return True
 
     def _GetUpstreamFallback(self) -> Optional[str]:
-        """Resolve a fallback upstream ref when revisionExpr is a SHA-1."""
+        """Resolve a fallback upstream branch when revisionExpr is a SHA-1.
+
+        Returns manifest default upstream or revision if it names a branch,
+        or None to fall back to fetching all heads.
+        """
         default = self.manifest.default
-        candidates = [self.dest_branch]
-        if default:
-            candidates.extend(
-                (
-                    default.upstreamExpr,
-                    default.destBranchExpr,
-                    default.revisionExpr,
-                )
-            )
-        for cand in candidates:
-            if cand and not IsId(cand):
+        if not default:
+            return None
+        for cand in (default.upstreamExpr, default.revisionExpr):
+            if cand and not IsId(cand) and not cand.startswith(R_TAGS):
                 return cand
         return None
 

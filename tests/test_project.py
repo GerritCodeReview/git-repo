@@ -1612,14 +1612,16 @@ class SyncOptimizationTests(unittest.TestCase):
                 self.assertTrue(res)
                 mock_git_cmd.assert_not_called()
 
-    def test_remote_fetch_sha1_upstream_fallback(self) -> None:
-        """Test _RemoteFetch resolves upstream fallback for SHA-1 revisions."""
+    def test_remote_fetch_sha1_dest_branch_not_fetched(self) -> None:
+        """Test _RemoteFetch ignores dest-branch for SHA-1 revisions."""
         sha = "4f8a3c0000000000000000000000000000000000"
         with utils_for_test.TempGitTree() as tempdir:
             proj = self._get_project(tempdir, revisionExpr=sha)
-            proj._CheckForImmutableRevision.side_effect = [False, True]
+            proj._CheckForImmutableRevision.return_value = False
             proj.upstream = None
             proj.dest_branch = "my-dest-branch"
+            proj.manifest.default.upstreamExpr = None
+            proj.manifest.default.revisionExpr = None
 
             mock_remote = mock.MagicMock()
             mock_remote.name = "origin"
@@ -1643,13 +1645,11 @@ class SyncOptimizationTests(unittest.TestCase):
                 self.assertTrue(res)
                 mock_git_cmd.assert_called_once()
                 cmd_args = mock_git_cmd.call_args[0][1]
-                self.assertIn(
+                self.assertIn("+refs/heads/*:refs/remotes/origin/*", cmd_args)
+                self.assertNotIn(
                     "+refs/heads/my-dest-branch:"
                     "refs/remotes/origin/my-dest-branch",
                     cmd_args,
-                )
-                self.assertNotIn(
-                    "+refs/heads/*:refs/remotes/origin/*", cmd_args
                 )
 
     def test_remote_fetch_sha1_manifest_default_fallback(self) -> None:
@@ -1693,21 +1693,23 @@ class SyncOptimizationTests(unittest.TestCase):
                     "+refs/heads/*:refs/remotes/origin/*", cmd_args
                 )
 
-    def test_remote_fetch_sha1_tag_fallback(self) -> None:
-        """Test _RemoteFetch resolves upstream fallback to tag correctly."""
+    def test_remote_fetch_sha1_tag_not_fetched(self) -> None:
+        """Test _RemoteFetch ignores tag defaults for SHA-1 revisions."""
         sha = "4f8a3c0000000000000000000000000000000000"
         with utils_for_test.TempGitTree() as tempdir:
             proj = self._get_project(tempdir, revisionExpr=sha)
-            proj._CheckForImmutableRevision.side_effect = [False, True]
+            proj._CheckForImmutableRevision.return_value = False
             proj.upstream = None
-            proj.dest_branch = "refs/tags/v1.0"
+            proj.dest_branch = None
+            proj.manifest.default.upstreamExpr = None
+            proj.manifest.default.revisionExpr = "refs/tags/v1.0"
 
             mock_remote = mock.MagicMock()
             mock_remote.name = "origin"
 
             def _to_local(r: str) -> str:
-                if r.startswith("refs/tags/"):
-                    return "refs/tags/" + r[10:]
+                if r.startswith("refs/heads/"):
+                    return "refs/remotes/origin/" + r[11:]
                 return r
 
             mock_remote.ToLocal.side_effect = _to_local
@@ -1724,11 +1726,9 @@ class SyncOptimizationTests(unittest.TestCase):
                 self.assertTrue(res)
                 mock_git_cmd.assert_called_once()
                 cmd_args = mock_git_cmd.call_args[0][1]
-                self.assertIn("tag", cmd_args)
-                self.assertIn("v1.0", cmd_args)
-                self.assertNotIn(
-                    "+refs/heads/*:refs/remotes/origin/*", cmd_args
-                )
+                self.assertIn("+refs/heads/*:refs/remotes/origin/*", cmd_args)
+                self.assertNotIn("tag", cmd_args)
+                self.assertNotIn("v1.0", cmd_args)
 
     def test_remote_fetch_sha1_metaproject_without_manifest_xml(self) -> None:
         """Test MetaProject _RemoteFetch with SHA-1 fetches all branches."""
@@ -1784,6 +1784,105 @@ class SyncOptimizationTests(unittest.TestCase):
             proj.dest_branch = None
             proj.manifest.default = None
             self.assertIsNone(proj._GetUpstreamFallback())
+
+    def test_get_upstream_fallback_ignores_dest_branch(self) -> None:
+        """dest_branch alone yields no fallback upstream."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(
+                tempdir,
+                revisionExpr="0123456789abcdef0123456789abcdef01234567",
+            )
+            proj.dest_branch = "main"
+            proj.manifest.default.upstreamExpr = None
+            proj.manifest.default.revisionExpr = None
+            self.assertIsNone(proj._GetUpstreamFallback())
+
+    def test_get_upstream_fallback_ignores_tag(self) -> None:
+        """A tag default is not returned as a fallback upstream."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(
+                tempdir,
+                revisionExpr="0123456789abcdef0123456789abcdef01234567",
+            )
+            proj.dest_branch = None
+            proj.manifest.default.upstreamExpr = None
+            proj.manifest.default.revisionExpr = "refs/tags/v1.0"
+            self.assertIsNone(proj._GetUpstreamFallback())
+
+    def test_get_upstream_fallback_uses_revision_branch(self) -> None:
+        """A branch revision default is a valid fallback upstream."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(
+                tempdir,
+                revisionExpr="0123456789abcdef0123456789abcdef01234567",
+            )
+            proj.dest_branch = "dest-should-be-ignored"
+            proj.manifest.default.upstreamExpr = None
+            proj.manifest.default.revisionExpr = "main"
+            self.assertEqual(proj._GetUpstreamFallback(), "main")
+
+    def test_remote_fetch_sha1_missing_upstream_falls_back_to_all_heads(
+        self,
+    ) -> None:
+        """A missing upstream remote branch falls back to fetching all heads."""
+        sha = "4f8a3c0000000000000000000000000000000000"
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, revisionExpr=sha)
+            proj._CheckForImmutableRevision = mock.MagicMock(return_value=False)
+            proj.upstream = None
+            proj.dest_branch = None
+            proj.manifest.default.upstreamExpr = None
+            proj.manifest.default.revisionExpr = "master"
+
+            mock_remote = mock.MagicMock()
+            mock_remote.name = "origin"
+
+            def _to_local(r: str) -> str:
+                if r.startswith("refs/heads/"):
+                    return "refs/remotes/origin/" + r[11:]
+                return r
+
+            mock_remote.ToLocal.side_effect = _to_local
+            mock_remote.PreConnectFetch.return_value = True
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+
+            fetched_specs: List[List[str]] = []
+
+            def _fake_git_command(
+                _proj: Optional[project.Project],
+                cmd: List[str],
+                **kwargs,
+            ) -> mock.MagicMock:
+                fetched_specs.append(cmd)
+                inst = mock.MagicMock()
+                if "+refs/heads/master:refs/remotes/origin/master" in cmd:
+                    inst.Wait.return_value = 128
+                    inst.stdout = (
+                        "fatal: couldn't find remote ref refs/heads/master\n"
+                    )
+                else:
+                    inst.Wait.return_value = 0
+                    inst.stdout = ""
+                return inst
+
+            with mock.patch(
+                "project.GitCommand", side_effect=_fake_git_command
+            ):
+                res = proj._RemoteFetch(current_branch_only=True)
+
+            self.assertTrue(res)
+            self.assertTrue(
+                any(
+                    "+refs/heads/master:refs/remotes/origin/master" in c
+                    for c in fetched_specs
+                )
+            )
+            self.assertTrue(
+                any(
+                    "+refs/heads/*:refs/remotes/origin/*" in c
+                    for c in fetched_specs
+                )
+            )
 
 
 class GetEnvVarsTests(unittest.TestCase):
