@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9313787d_c11bcb85",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-26T15:02:53Z",
+      "side": 1,
+      "message": "this will also need updating if we make the change in  https://gerrit-review.git.corp.google.com/c/git-repo/+/621662/comment/4ed1f37a_3ad17626/",
+      "range": {
+        "startLine": 232,
+        "startChar": 4,
+        "endLine": 233,
+        "endChar": 70
+      },
+      "revId": "2e9fb51b871aeb0c0c5902ef8edc88764b01d931",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
