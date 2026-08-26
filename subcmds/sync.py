@@ -179,7 +179,7 @@ def _ParentFirstBatches(projects: List[Project]) -> List[List[Project]]:
 def _RefreshDerivedRevisions(
     projects: List[Project],
     submodule_revisions: Optional[Dict[Project, Dict[str, str]]] = None,
-) -> None:
+) -> List[Project]:
     """Re-resolve the gitlinks of the discovered submodules in |projects|.
 
     The revision of a discovered submodule is read from its parent when the
@@ -193,6 +193,9 @@ def _RefreshDerivedRevisions(
             holding them. Passing the same dict for project sets that follow
             the same fetches, e.g. the levels of one checkout order, keeps a
             project from being read more than once.
+
+    Returns:
+        The submodules that their parent no longer holds a gitlink for.
     """
     if submodule_revisions is None:
         submodule_revisions = {}
@@ -202,6 +205,7 @@ def _RefreshDerivedRevisions(
         if project.Derived and project.parent:
             subprojects_by_parent[project.parent].append(project)
 
+    removed = []
     for parent, subprojects in subprojects_by_parent.items():
         revisions = submodule_revisions.get(parent)
         if revisions is None:
@@ -214,6 +218,19 @@ def _RefreshDerivedRevisions(
             rev = revisions.get(subproject.gitlink_path)
             if rev:
                 subproject.SetRevision(rev, revisionId=rev)
+            else:
+                removed.append(subproject)
+    return removed
+
+
+def _WithoutProjects(
+    projects: List[Project], unwanted: List[Project]
+) -> List[Project]:
+    """Return |projects| without the projects in |unwanted|."""
+    if not unwanted:
+        return projects
+    dropped = set(unwanted)
+    return [p for p in projects if p not in dropped]
 
 
 def _chunksize(projects: int, jobs: int) -> int:
@@ -1150,7 +1167,9 @@ later is required to fix a server side protocol bug.
         success = True
         fetched = set()
         for batch in _ParentFirstBatches(projects):
-            _RefreshDerivedRevisions(batch)
+            batch = _WithoutProjects(batch, _RefreshDerivedRevisions(batch))
+            if not batch:
+                continue
             batch.sort(key=self._fetch_times.Get, reverse=True)
             result = self._Fetch(batch, opt, err_event, ssh_proxy, errors)
             success = success and result.success
@@ -3076,9 +3095,14 @@ later is required to fix a server side protocol bug.
                                 if not level_projects:
                                     continue
 
-                                _RefreshDerivedRevisions(
-                                    level_projects, submodule_revisions
+                                level_projects = _WithoutProjects(
+                                    level_projects,
+                                    _RefreshDerivedRevisions(
+                                        level_projects, submodule_revisions
+                                    ),
                                 )
+                                if not level_projects:
+                                    continue
 
                                 objdir_project_map = collections.defaultdict(
                                     list
