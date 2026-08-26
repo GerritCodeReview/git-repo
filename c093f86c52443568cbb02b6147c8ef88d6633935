@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96f48d3a_a460bb75",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-08-26T20:08:33Z",
+      "side": 1,
+      "message": "That is a broken manifest, but since this is a new repo feature causing a failure, I agree it\u0027s better to revert that part of the new feature.",
+      "parentUuid": "879ca4c9_87026a5f",
+      "revId": "c093f86c52443568cbb02b6147c8ef88d6633935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37056ba5_d5783eb2",
@@ -85,6 +103,24 @@
       "side": 1,
       "message": "\u003e Seems I added dest-branch by mistake in the test manifest in the other commit, apologies if that confused you.\n\u003e \n\u003e In my defense though, it still fails with below setup, which is similar to the public android-17.0.0_r1:default.xml | head, and with a better paste too: 😊\n\nThanks for clarifying and providing the updated example.\n\nHowever, I\u0027d still like to see a solution that doesn\u0027t remove the dest-branch fallback, since that has existed for a while and does seem to be the root cause of a recent breakage.",
       "parentUuid": "37056ba5_d5783eb2",
+      "revId": "c093f86c52443568cbb02b6147c8ef88d6633935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9916876b_c54ab988",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-08-26T20:08:33Z",
+      "side": 1,
+      "message": "\u003e However, I\u0027d still like to see a solution that doesn\u0027t remove the dest-branch fallback, since that has existed for a while and does seem to be the root cause of a recent breakage.\n\nOk, I take this back. For some reason I thought dest-branch had been used as a fallback since long ago, but it looks like that was only added recently in https://gerrit-review.googlesource.com/c/git-repo/+/614762 so I guess not. If that introduction caused breakage, I agree removing it is the correct path.",
+      "parentUuid": "498b3e0f_02864f06",
       "revId": "c093f86c52443568cbb02b6147c8ef88d6633935",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
