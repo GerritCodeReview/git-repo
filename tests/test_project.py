@@ -409,6 +409,114 @@ class ProjectTests(unittest.TestCase):
             ).strip()
             self.assertEqual(expected, fakeproj.work_git.GetHead())
 
+    def test_get_head_in_memory_fast_path(self):
+        """Verify GetHead reads HEAD in-memory without spawning subprocesses."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            dotgit = os.path.join(tempdir, ".git")
+            os.makedirs(dotgit, exist_ok=True)
+            head_file = os.path.join(dotgit, "HEAD")
+            fakeproj = FakeProject(tempdir)
+
+            # 1. Standard symbolic ref (on a branch)
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write("ref: refs/heads/feature-branch\n")
+
+            with mock.patch.object(
+                fakeproj.work_git, "symbolic_ref"
+            ) as mock_sym, mock.patch.object(
+                fakeproj.work_git, "rev_parse"
+            ) as mock_parse:
+                self.assertEqual(
+                    fakeproj.work_git.GetHead(), "refs/heads/feature-branch"
+                )
+                mock_sym.assert_not_called()
+                mock_parse.assert_not_called()
+
+            # 2. Whitespace, tabs, and CRLF handling
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write("ref:\t refs/heads/feature-branch  \r\n")
+
+            with mock.patch.object(
+                fakeproj.work_git, "symbolic_ref"
+            ) as mock_sym, mock.patch.object(
+                fakeproj.work_git, "rev_parse"
+            ) as mock_parse:
+                self.assertEqual(
+                    fakeproj.work_git.GetHead(), "refs/heads/feature-branch"
+                )
+                mock_sym.assert_not_called()
+                mock_parse.assert_not_called()
+
+            # 3. Detached HEAD with 40-character SHA-1
+            fake_sha1 = "0123456789abcdef0123456789abcdef01234567"
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write(f"{fake_sha1}\n")
+
+            with mock.patch.object(
+                fakeproj.work_git, "symbolic_ref"
+            ) as mock_sym, mock.patch.object(
+                fakeproj.work_git, "rev_parse"
+            ) as mock_parse:
+                self.assertEqual(fakeproj.work_git.GetHead(), fake_sha1)
+                mock_sym.assert_not_called()
+                mock_parse.assert_not_called()
+
+            # 4. Detached HEAD with 64-character SHA-256
+            fake_sha256 = "0123456789abcdef" * 4
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write(f"{fake_sha256}\n")
+
+            with mock.patch.object(
+                fakeproj.work_git, "symbolic_ref"
+            ) as mock_sym, mock.patch.object(
+                fakeproj.work_git, "rev_parse"
+            ) as mock_parse:
+                self.assertEqual(fakeproj.work_git.GetHead(), fake_sha256)
+                mock_sym.assert_not_called()
+                mock_parse.assert_not_called()
+
+            # 5. Uppercase SHA normalized to lowercase
+            fake_upper = fake_sha1.upper()
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write(f"{fake_upper}\n")
+
+            with mock.patch.object(
+                fakeproj.work_git, "symbolic_ref"
+            ) as mock_sym, mock.patch.object(
+                fakeproj.work_git, "rev_parse"
+            ) as mock_parse:
+                self.assertEqual(fakeproj.work_git.GetHead(), fake_sha1)
+                mock_sym.assert_not_called()
+                mock_parse.assert_not_called()
+
+    def test_get_head_symlink_and_fallback(self):
+        """Verify GetHead handles symlinks and invalid files via fallback."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            dotgit = os.path.join(tempdir, ".git")
+            os.makedirs(dotgit, exist_ok=True)
+            head_file = os.path.join(dotgit, "HEAD")
+            fakeproj = FakeProject(tempdir)
+
+            # Symlink HEAD should fall back to symbolic_ref
+            os.symlink("refs/heads/main", head_file)
+            with mock.patch.object(
+                fakeproj.work_git,
+                "symbolic_ref",
+                return_value="refs/heads/main",
+            ) as mock_sym:
+                self.assertEqual(fakeproj.work_git.GetHead(), "refs/heads/main")
+                mock_sym.assert_called_once()
+
+    def test_get_head_worktree_corrupted_fallback(self):
+        """Verify GetHead raises NoManifestException on corrupted worktrees."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            dotgit = os.path.join(tempdir, ".git")
+            with open(dotgit, "w", encoding="utf-8", newline="") as fp:
+                fp.write("malformed without gitdir prefix\n")
+            fakeproj = FakeProject(tempdir)
+            with self.assertRaises(error.NoManifestException):
+                fakeproj.work_git.GetHead()
+
     def _get_derived_subproject_url(self, submodule_url):
         with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
 
