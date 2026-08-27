@@ -22,6 +22,24 @@
       },
       "revId": "29d59b9bcf8a6e02e1a09ccc5012cce49adffb7d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ad17b7f_691b9ed9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5087317
+      },
+      "writtenOn": "2026-08-27T01:27:02Z",
+      "side": 1,
+      "message": "You are right, thanks. relpath is relative to the local (sub)manifest, and GetProjects() itself keys derived projects by RelPath(local\u003dFalse) for that reason, so two submanifests can collide here.\n\nSwitched the cache to the parent project itself, which also matches how subprojects_by_parent is keyed just above. Project has no __eq__/__hash__ of its own, so this is identity based, and the objects are the same ones across the levels of a pass. Added a test with two parents that share a path; it fails with the relpath key and passes with this one.\n\nWhile here: _SyncInterleaved tracks finished_relpaths by relpath too, and project_list can span submanifests when --this-manifest-only is not set, so that lookup looks like it has the same weakness. Out of scope for this chain, but happy to send a separate change if you want.",
+      "parentUuid": "4ed1f37a_3ad17626",
+      "revId": "29d59b9bcf8a6e02e1a09ccc5012cce49adffb7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
