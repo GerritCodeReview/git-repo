@@ -301,7 +301,8 @@ class _SyncResult(NamedTuple):
 
     Attributes:
       project_index (int): The index of the project in the shared list.
-      relpath (str): The project's relative path from the repo client top.
+      relpath (str): The project's path relative to the tree being synced.
+          Unlike Project.relpath, it is unique across submanifests.
       remote_fetched (bool): True if the remote was actually queried.
       fetch_success (bool): True if the fetch operation was successful.
       fetch_errors (List[Exception]): The Exceptions from a failed fetch.
@@ -2869,7 +2870,7 @@ later is required to fix a server side protocol bug.
 
         return _SyncResult(
             project_index=project_index,
-            relpath=project.relpath,
+            relpath=project.RelPath(local=opt.this_manifest_only),
             fetch_success=fetch_success,
             remote_fetched=remote_fetched,
             checkout_success=checkout_success,
@@ -3017,6 +3018,10 @@ later is required to fix a server side protocol bug.
         self._interleaved_err_checkout = False
         self._interleaved_err_checkout_results = []
 
+        # Project.relpath is relative to its own (sub)manifest, so it does not
+        # tell apart projects of different manifests being synced together.
+        _RelPath = lambda p: p.RelPath(local=opt.this_manifest_only)
+
         err_event = multiprocessing.Event()
         finished_relpaths = set()
         project_list = list(all_projects)
@@ -3053,13 +3058,13 @@ later is required to fix a server side protocol bug.
                             projects_to_sync = [
                                 p
                                 for p in project_list
-                                if p.relpath not in finished_relpaths
+                                if _RelPath(p) not in finished_relpaths
                             ]
                             if not projects_to_sync:
                                 break
 
                             pending_relpaths = {
-                                p.relpath for p in projects_to_sync
+                                _RelPath(p) for p in projects_to_sync
                             }
                             if previously_pending_relpaths == pending_relpaths:
                                 stalled_projects_str = "\n".join(
