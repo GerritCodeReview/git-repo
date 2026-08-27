@@ -114,3 +114,70 @@ def test_removedirs_regular_file_noop(tmp_path: Path) -> None:
     f.write_text("data")
     platform_utils.removedirs(f)
     assert f.exists()
+
+
+@pytest.mark.parametrize(
+    "env_var",
+    (
+        "GEMINI_CLI",
+        "ANTIGRAVITY_AGENT",
+        "INVOKER_INFO_NAME",
+        "AGENT_INVOCATION",
+    ),
+)
+def test_is_agentic_invocation_individual_vars(
+    monkeypatch: pytest.MonkeyPatch, env_var: str
+) -> None:
+    """Check detection of each agent environment variable."""
+    for var in (
+        "GEMINI_CLI",
+        "ANTIGRAVITY_AGENT",
+        "INVOKER_INFO_NAME",
+        "AGENT_INVOCATION",
+        "REPO_AGENT_MODE",
+    ):
+        monkeypatch.delenv(var, raising=False)
+
+    assert not platform_utils.is_agentic_invocation()
+    monkeypatch.setenv(env_var, "1")
+    assert platform_utils.is_agentic_invocation()
+
+
+@pytest.mark.parametrize(
+    "val, expected",
+    (
+        ("1", True),
+        ("true", True),
+        ("yes", True),
+        ("on", True),
+        ("0", False),
+        ("false", False),
+        ("no", False),
+        ("off", False),
+    ),
+)
+def test_is_agentic_invocation_repo_agent_mode(
+    monkeypatch: pytest.MonkeyPatch, val: str, expected: bool
+) -> None:
+    """Check REPO_AGENT_MODE truthy/falsy values."""
+    for var in (
+        "GEMINI_CLI",
+        "ANTIGRAVITY_AGENT",
+        "INVOKER_INFO_NAME",
+        "AGENT_INVOCATION",
+        "REPO_AGENT_MODE",
+    ):
+        monkeypatch.delenv(var, raising=False)
+
+    monkeypatch.setenv("REPO_AGENT_MODE", val)
+    assert platform_utils.is_agentic_invocation() is expected
+
+
+def test_is_agentic_invocation_opt_out_precedence(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """REPO_AGENT_MODE=0 should override other active agent variables."""
+    monkeypatch.setenv("GEMINI_CLI", "1")
+    monkeypatch.setenv("ANTIGRAVITY_AGENT", "1")
+    monkeypatch.setenv("REPO_AGENT_MODE", "0")
+    assert not platform_utils.is_agentic_invocation()

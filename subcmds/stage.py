@@ -17,8 +17,8 @@ import sys
 from color import Coloring
 from command import InteractiveCommand
 from git_command import GitCommand
+import platform_utils
 from repo_logging import RepoLogger
-
 
 logger = RepoLogger(__file__)
 
@@ -57,6 +57,13 @@ The '%prog' command stages files to prepare the next commit.
             self.Usage()
 
     def _Interactive(self, opt, args):
+        if platform_utils.is_agentic_invocation():
+            logger.error(
+                "repo: error: interactive staging is not supported in an "
+                "agentic environment."
+            )
+            return
+
         all_projects = [
             p
             for p in self.GetProjects(
