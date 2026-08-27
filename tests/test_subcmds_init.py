@@ -15,6 +15,7 @@
 """Unittests for the subcmds/init.py module."""
 
 from typing import List
+from unittest import mock
 
 import pytest
 
@@ -47,3 +48,31 @@ def test_cli_parser_bad(argv: List[str]) -> None:
     opts, args = cmd.OptionParser.parse_args(argv)
     with pytest.raises(SystemExit):
         cmd.ValidateOptions(opts, args)
+
+
+def test_configure_user_agentic(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Check that _ConfigureUser does not block in agentic environment."""
+    monkeypatch.setenv("REPO_AGENT_MODE", "1")
+    cmd = init.Init()
+    cmd.manifest = mock.MagicMock()
+    mp = mock.MagicMock()
+    mp.UserName = "Agent Name"
+    mp.UserEmail = "agent@example.com"
+    cmd.manifest.manifestProject = mp
+
+    opts, _ = cmd.OptionParser.parse_args([])
+    with mock.patch("sys.stdin.readline") as mock_readline:
+        cmd._ConfigureUser(opts)
+        mock_readline.assert_not_called()
+
+
+def test_configure_color_agentic(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Check that _ConfigureColor returns early in agentic environment."""
+    monkeypatch.setenv("REPO_AGENT_MODE", "1")
+    cmd = init.Init()
+    cmd.client = mock.MagicMock()
+    cmd._HasColorSet = mock.MagicMock(return_value=False)
+
+    with mock.patch("builtins.print") as mock_print:
+        cmd._ConfigureColor()
+        mock_print.assert_not_called()
