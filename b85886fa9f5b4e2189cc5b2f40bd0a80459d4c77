@@ -22,6 +22,30 @@
       },
       "revId": "b85886fa9f5b4e2189cc5b2f40bd0a80459d4c77",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7636e9c7_2ade8215",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 2874,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-27T19:42:51Z",
+      "side": 0,
+      "message": "if you pass multiple refspecs to `git fetch` and one of them is invalid, the entire command fails and nothing is fetched. so projec.py would end up discarding the attempt and do the full fetch anyway",
+      "parentUuid": "1cba4570_1fedaa3f",
+      "range": {
+        "startLine": 2874,
+        "startChar": 0,
+        "endLine": 2874,
+        "endChar": 27
+      },
+      "revId": "b85886fa9f5b4e2189cc5b2f40bd0a80459d4c77",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
