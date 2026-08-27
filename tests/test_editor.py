@@ -17,11 +17,20 @@
 import pytest
 
 from editor import Editor
+from error import EditorError
 
 
 @pytest.fixture(autouse=True)
-def reset_editor() -> None:
+def reset_editor(monkeypatch: pytest.MonkeyPatch) -> None:
     """Take care of resetting Editor state across tests."""
+    for var in (
+        "GEMINI_CLI",
+        "ANTIGRAVITY_AGENT",
+        "INVOKER_INFO_NAME",
+        "AGENT_INVOCATION",
+        "REPO_AGENT_MODE",
+    ):
+        monkeypatch.delenv(var, raising=False)
     Editor._editor = None
     yield
     Editor._editor = None
@@ -43,3 +52,10 @@ def test_cat_editor() -> None:
     """Check behavior when editor is `cat`."""
     Editor._editor = "cat"
     assert Editor.EditString("foo") == "foo"
+
+
+def test_agentic_editor_blocked(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Check that EditString raises EditorError in agentic environments."""
+    monkeypatch.setenv("REPO_AGENT_MODE", "1")
+    with pytest.raises(EditorError, match="agentic environment"):
+        Editor.EditString("foo")

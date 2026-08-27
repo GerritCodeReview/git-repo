@@ -14,6 +14,7 @@
 
 """Unittests for the subcmds/gc.py module."""
 
+import os
 import unittest
 from unittest import mock
 
@@ -23,7 +24,7 @@ from subcmds import gc
 class GcCommand(unittest.TestCase):
     """Tests for gc command."""
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.cmd = gc.Gc(manifest=mock.MagicMock())
         self.opt, self.args = self.cmd.OptionParser.parse_args([])
         self.opt.this_manifest_only = False
@@ -41,10 +42,10 @@ class GcCommand(unittest.TestCase):
             self.cmd, "repack_projects", return_value=0
         ).start()
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         mock.patch.stopall()
 
-    def test_gc_no_args(self):
+    def test_gc_no_args(self) -> None:
         """Test gc without specific projects."""
         self.mock_get_projects.return_value = ["all_projects"]
 
@@ -54,7 +55,7 @@ class GcCommand(unittest.TestCase):
         self.mock_delete.assert_called_once_with(["all_projects"], self.opt)
         self.mock_repack.assert_not_called()
 
-    def test_gc_with_args(self):
+    def test_gc_with_args(self) -> None:
         """Test gc with specific projects uses all_projects for delete."""
         self.mock_get_projects.side_effect = [["projA"], ["all_projects"]]
         self.opt.repack = True
@@ -71,7 +72,7 @@ class GcCommand(unittest.TestCase):
         self.mock_delete.assert_called_once_with(["all_projects"], self.opt)
         self.mock_repack.assert_called_once_with(["projA"], self.opt)
 
-    def test_gc_exit_on_delete_failure(self):
+    def test_gc_exit_on_delete_failure(self) -> None:
         """Test gc exits if delete_unused_projects fails."""
         self.mock_get_projects.return_value = ["all_projects"]
         self.mock_delete.return_value = 1
@@ -80,3 +81,19 @@ class GcCommand(unittest.TestCase):
         ret = self.cmd.Execute(self.opt, [])
         self.assertEqual(ret, 1)
         self.mock_repack.assert_not_called()
+
+    def test_delete_unused_projects_agentic_no_yes_fails_fast(self) -> None:
+        """delete_unused_projects fails fast without -y in agent mode."""
+        cmd = gc.Gc(manifest=mock.MagicMock())
+        cmd.repodir = "/fake/repo"
+        with mock.patch.dict(
+            os.environ, {"REPO_AGENT_MODE": "1"}
+        ), mock.patch.object(
+            cmd, "_find_git_to_delete", return_value={"/fake/unused.git"}
+        ), mock.patch(
+            "builtins.input"
+        ) as mock_input:
+            self.opt.yes = False
+            ret = cmd.delete_unused_projects([], self.opt)
+            self.assertEqual(ret, 1)
+            mock_input.assert_not_called()
