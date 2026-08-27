@@ -14,6 +14,7 @@
 """Unittests for the subcmds/sync.py module."""
 
 import json
+import optparse
 import os
 from pathlib import Path
 import shutil
@@ -501,8 +502,10 @@ class FakeProject:
         is_derived: bool = False,
         revisionId: Optional[str] = None,
         gitlink_path: Optional[str] = None,
+        path_prefix: str = "",
     ) -> None:
         self.relpath = relpath
+        self.path_prefix = path_prefix
         self.name = name or relpath
         self.objdir = objdir or relpath
         self.worktree = relpath
@@ -528,8 +531,10 @@ class FakeProject:
         self.revisionExpr = revisionExpr
         self.revisionId = revisionId or revisionExpr
 
-    def RelPath(self, local=None):
-        return self.relpath
+    def RelPath(self, local: bool = True) -> str:
+        if local:
+            return self.relpath
+        return os.path.join(self.path_prefix, self.relpath)
 
     def __str__(self):
         return f"project: {self.relpath}"
@@ -1444,6 +1449,93 @@ class InterleavedSyncTest(unittest.TestCase):
 
         self.assertEqual(synced, ["projA"])
 
+    def _make_syncable(self, project: FakeProject) -> FakeProject:
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        return project
+
+    def _run_interleaved(
+        self,
+        opt: optparse.Values,
+        initial_projects: List[FakeProject],
+        reloaded_projects: List[FakeProject],
+    ) -> None:
+        """Run _SyncInterleaved with the real workers and callback.
+
+        |initial_projects| make up the first pass, |reloaded_projects| every
+        later one, the way reloading the manifest between passes does.
+        """
+        mock.patch.object(
+            self.cmd, "GetProjects", return_value=reloaded_projects
+        ).start()
+        mock.patch.object(self.cmd, "event_log").start()
+
+        def execute_side_effect(
+            jobs: int,
+            target: object,
+            work_items: List[List[int]],
+            **kwargs: object,
+        ) -> bool:
+            results = [target(item) for item in work_items]
+            return kwargs["callback"](None, kwargs["output"], results)
+
+        mock.patch.object(
+            self.cmd, "ExecuteInParallel", side_effect=execute_side_effect
+        ).start()
+
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buffer.return_value.Finish.return_value = True
+            mock_sync_buffer.return_value.errors = []
+            self.cmd._SyncInterleaved(
+                opt,
+                [],
+                [],
+                self.manifest,
+                self.manifest.manifestProject,
+                initial_projects,
+                {},
+            )
+
+    def test_interleaved_syncs_same_path_projects_of_every_manifest(
+        self,
+    ) -> None:
+        """Test a project is not skipped because another shares its path."""
+        opt = self._get_opts(["--interleaved", "-j4"])
+        outer = self._make_syncable(
+            FakeProject("foo", name="outer", objdir="a")
+        )
+        sub = self._make_syncable(
+            FakeProject("foo", name="sub", objdir="b", path_prefix="sub")
+        )
+
+        # |sub| is only discovered once the manifest is reloaded after the
+        # first pass has synced |outer|.
+        self._run_interleaved(opt, [outer], [outer, sub])
+
+        outer.Sync_LocalHalf.assert_called_once()
+        sub.Sync_LocalHalf.assert_called_once()
+
+    def test_interleaved_reports_failures_by_a_unique_path(self) -> None:
+        """Test failing projects are listed by a path that is theirs alone."""
+        opt = self._get_opts(["--interleaved", "-j4"])
+        outer = self._make_syncable(
+            FakeProject("foo", name="outer", objdir="a")
+        )
+        sub = self._make_syncable(
+            FakeProject("foo", name="sub", objdir="b", path_prefix="sub")
+        )
+        sub.Sync_LocalHalf.side_effect = GitError("checkout failed")
+        self.cmd.git_event_log = mock.MagicMock()
+
+        with self.assertRaises(sync.SyncError):
+            self._run_interleaved(opt, [outer, sub], [outer, sub])
+
+        self.assertEqual(
+            self.cmd._interleaved_err_checkout_results, ["sub/foo"]
+        )
+
     def test_interleaved_shared_objdir_serial(self):
         """Test that projects with shared objdir are processed serially."""
         opt, args = self.cmd.OptionParser.parse_args(["--interleaved", "-j4"])
@@ -1537,6 +1629,23 @@ class InterleavedSyncTest(unittest.TestCase):
             self.assertEqual(result.checkout_errors, [])
             project.Sync_NetworkHalf.assert_called_once()
             project.Sync_LocalHalf.assert_called_once()
+
+    def test_worker_reports_a_path_unique_across_manifests(self) -> None:
+        """Test _SyncResult.relpath tells apart same-path projects."""
+        project = FakeProject("foo", objdir="objA", path_prefix="sub")
+        self._make_syncable(project)
+        self.mock_context["projects"] = [project]
+
+        for this_manifest_only, expected in ((False, "sub/foo"), (True, "foo")):
+            with self.subTest(this_manifest_only=this_manifest_only):
+                opt = self._get_opts()
+                opt.this_manifest_only = this_manifest_only
+                with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+                    mock_sync_buffer.return_value.Finish.return_value = True
+                    mock_sync_buffer.return_value.errors = []
+                    result_obj = self.cmd._SyncProjectList(opt, [0])
+
+                self.assertEqual(result_obj.results[0].relpath, expected)
 
     def test_worker_fetch_fails(self):
         """Test _SyncProjectList with a failed fetch."""
