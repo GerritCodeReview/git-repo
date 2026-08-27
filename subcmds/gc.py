@@ -103,6 +103,12 @@ class Gc(Command):
         print("\n".join(to_delete))
         print("")
         if not opt.yes:
+            if platform_utils.is_agentic_invocation():
+                print(
+                    "repo: error: running gc requires explicit confirmation in "
+                    "agentic environments. Pass -y / --yes to proceed."
+                )
+                return 1
             print(
                 "If you proceed, any local commits in those projects will be "
                 "destroyed!"

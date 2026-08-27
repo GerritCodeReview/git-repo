@@ -92,3 +92,16 @@ def setup_user_identity(monkeysession, scope="session"):
     monkeysession.setenv("GIT_COMMITTER_NAME", "Foo Bar")
     monkeysession.setenv("GIT_AUTHOR_EMAIL", "foo@bar.baz")
     monkeysession.setenv("GIT_COMMITTER_EMAIL", "foo@bar.baz")
+
+
+@pytest.fixture(autouse=True)
+def clean_agent_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Clear agent environment variables by default in unit tests."""
+    for var in (
+        "GEMINI_CLI",
+        "ANTIGRAVITY_AGENT",
+        "INVOKER_INFO_NAME",
+        "AGENT_INVOCATION",
+        "REPO_AGENT_MODE",
+    ):
+        monkeypatch.delenv(var, raising=False)
