@@ -4467,6 +4467,24 @@ class Project:
         def GetHead(self):
             """Return the ref that HEAD points to."""
             try:
+                path = self.GetDotgitPath(subpath=HEAD)
+                if not os.path.islink(path):
+                    with open(
+                        path, "r", encoding="utf-8", errors="replace"
+                    ) as fd:
+                        line = fd.readline().strip()
+                    if line.startswith("ref:"):
+                        ref = line[4:].strip()
+                        if ref and ref != R_HEADS + ".invalid":
+                            return ref
+                    else:
+                        line_lower = line.lower()
+                        if IsId(line_lower):
+                            return line_lower
+            except (OSError, AssertionError):
+                pass
+
+            try:
                 return self.symbolic_ref("-q", HEAD, log_as_error=False)
             except GitError:
                 pass
@@ -4485,22 +4503,24 @@ class Project:
 
                 # Fallback to direct file reading for compatibility with broken
                 # repos, e.g. if HEAD points to an unborn branch.
-                path = self.GetDotgitPath(subpath=HEAD)
                 try:
-                    with open(path) as fd:
-                        line = fd.readline()
-                except OSError:
-                    raise NoManifestException(path, str(e))
-                try:
-                    line = line.decode()
-                except AttributeError:
-                    pass
-                if line.startswith("ref: "):
-                    ref = line[5:-1]
+                    path = self.GetDotgitPath(subpath=HEAD)
+                    with open(
+                        path, "r", encoding="utf-8", errors="replace"
+                    ) as fd:
+                        line = fd.readline().strip()
+                except (OSError, AssertionError):
+                    raise NoManifestException(
+                        self._project.RelPath(local=False), str(e)
+                    )
+                if line.startswith("ref:"):
+                    ref = line[4:].strip()
                 else:
-                    ref = line[:-1]
-                if ref == R_HEADS + ".invalid":
-                    raise NoManifestException(path, str(e))
+                    ref = line.lower()
+                if not ref or ref == R_HEADS + ".invalid":
+                    raise NoManifestException(
+                        self._project.RelPath(local=False), str(e)
+                    )
                 return ref
 
         def SetHead(self, ref, message=None):
