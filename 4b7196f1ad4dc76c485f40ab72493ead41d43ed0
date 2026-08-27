@@ -63,6 +63,30 @@
       },
       "revId": "4b7196f1ad4dc76c485f40ab72493ead41d43ed0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7c7d6b3_7c360d37",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-08-27T04:20:54Z",
+      "side": 1,
+      "message": "Ok, sounds like this is less about it being a tag and more about it coming from the `\u003cdefault\u003e` section. Your updated message helps, thanks.",
+      "parentUuid": "8e764d86_1f1cd5dc",
+      "range": {
+        "startLine": 13,
+        "startChar": 63,
+        "endLine": 13,
+        "endChar": 67
+      },
+      "revId": "4b7196f1ad4dc76c485f40ab72493ead41d43ed0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

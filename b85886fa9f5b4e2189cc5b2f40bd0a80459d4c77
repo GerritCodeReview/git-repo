@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cba4570_1fedaa3f",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 2874,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2026-08-27T04:20:54Z",
+      "side": 0,
+      "message": "Why not return all of them? Fetching 4 things is still better than fetching everything, so you\u0027ve still significantly improved `-c`.",
+      "range": {
+        "startLine": 2874,
+        "startChar": 0,
+        "endLine": 2874,
+        "endChar": 27
+      },
+      "revId": "b85886fa9f5b4e2189cc5b2f40bd0a80459d4c77",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
