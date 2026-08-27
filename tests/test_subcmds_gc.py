@@ -14,6 +14,7 @@
 
 """Unittests for the subcmds/gc.py module."""
 
+import os
 import unittest
 from unittest import mock
 
@@ -80,3 +81,19 @@ class GcCommand(unittest.TestCase):
         ret = self.cmd.Execute(self.opt, [])
         self.assertEqual(ret, 1)
         self.mock_repack.assert_not_called()
+
+    def test_delete_unused_projects_agentic_no_yes_fails_fast(self):
+        """delete_unused_projects fails fast without -y in agent mode."""
+        cmd = gc.Gc(manifest=mock.MagicMock())
+        cmd.repodir = "/fake/repo"
+        with mock.patch.dict(
+            os.environ, {"REPO_AGENT_MODE": "1"}
+        ), mock.patch.object(
+            cmd, "_find_git_to_delete", return_value={"/fake/unused.git"}
+        ), mock.patch(
+            "builtins.input"
+        ) as mock_input:
+            self.opt.yes = False
+            ret = cmd.delete_unused_projects([], self.opt)
+            self.assertEqual(ret, 1)
+            mock_input.assert_not_called()

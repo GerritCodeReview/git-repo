@@ -114,3 +114,145 @@ def test_removedirs_regular_file_noop(tmp_path: Path) -> None:
     f.write_text("data")
     platform_utils.removedirs(f)
     assert f.exists()
+
+
+@pytest.fixture(autouse=True)
+def clean_agent_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Clear all agent-related environment variables before each test."""
+    for var in (
+        "GEMINI_CLI",
+        "ANTIGRAVITY_AGENT",
+        "INVOKER_INFO_NAME",
+        "AGENT_INVOCATION",
+        "REPO_AGENT_MODE",
+    ):
+        monkeypatch.delenv(var, raising=False)
+
+
+@pytest.mark.parametrize(
+    "env_var",
+    (
+        "GEMINI_CLI",
+        "ANTIGRAVITY_AGENT",
+        "AGENT_INVOCATION",
+    ),
+)
+@pytest.mark.parametrize(
+    "val, expected",
+    (
+        ("1", True),
+        ("true", True),
+        ("yes", True),
+        ("TRUE", True),
+        ("Yes", True),
+        ("0", False),
+        ("false", False),
+        ("no", False),
+        ("off", False),
+        ("", False),
+        ("random", False),
+    ),
+)
+def test_is_agentic_invocation_boolean_vars(
+    monkeypatch: pytest.MonkeyPatch, env_var: str, val: str, expected: bool
+) -> None:
+    """Check boolean agent environment variables with truthy/falsy values."""
+    monkeypatch.setenv(env_var, val)
+    assert platform_utils.is_agentic_invocation() is expected
+
+
+@pytest.mark.parametrize(
+    "name, expected",
+    (
+        ("jetski", True),
+        ("gemini_cli", True),
+        ("gemini", True),
+        ("Jetski", True),
+        ("GEMINI_CLI", True),
+        ("gcert", False),
+        ("0", False),
+        ("1", False),
+        ("random_agent", False),
+        ("", False),
+    ),
+)
+def test_is_agentic_invocation_invoker_info_name(
+    monkeypatch: pytest.MonkeyPatch, name: str, expected: bool
+) -> None:
+    """Check INVOKER_INFO_NAME against allowed agent identifiers."""
+    monkeypatch.setenv("INVOKER_INFO_NAME", name)
+    assert platform_utils.is_agentic_invocation() is expected
+
+
+@pytest.mark.parametrize(
+    "val, expected",
+    (
+        ("1", True),
+        ("true", True),
+        ("yes", True),
+        ("on", True),
+        ("TRUE", True),
+        ("Yes", True),
+        ("0", False),
+        ("false", False),
+        ("no", False),
+        ("off", False),
+        ("FALSE", False),
+        ("Off", False),
+    ),
+)
+def test_is_agentic_invocation_repo_agent_mode(
+    monkeypatch: pytest.MonkeyPatch, val: str, expected: bool
+) -> None:
+    """Check REPO_AGENT_MODE truthy/falsy values."""
+    monkeypatch.setenv("REPO_AGENT_MODE", val)
+    assert platform_utils.is_agentic_invocation() is expected
+
+
+def test_is_agentic_invocation_opt_out_precedence(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """REPO_AGENT_MODE=0 should override other active agent variables."""
+    monkeypatch.setenv("GEMINI_CLI", "1")
+    monkeypatch.setenv("ANTIGRAVITY_AGENT", "1")
+    monkeypatch.setenv("INVOKER_INFO_NAME", "jetski")
+    monkeypatch.setenv("AGENT_INVOCATION", "1")
+    monkeypatch.setenv("REPO_AGENT_MODE", "0")
+    assert not platform_utils.is_agentic_invocation()
+
+
+def test_is_agentic_invocation_edge_cases(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Explicitly verify required edge cases."""
+    # GEMINI_CLI="0" -> False
+    monkeypatch.setenv("GEMINI_CLI", "0")
+    assert not platform_utils.is_agentic_invocation()
+    monkeypatch.delenv("GEMINI_CLI")
+
+    # ANTIGRAVITY_AGENT="false" -> False
+    monkeypatch.setenv("ANTIGRAVITY_AGENT", "false")
+    assert not platform_utils.is_agentic_invocation()
+    monkeypatch.delenv("ANTIGRAVITY_AGENT")
+
+    # INVOKER_INFO_NAME="gcert" -> False
+    monkeypatch.setenv("INVOKER_INFO_NAME", "gcert")
+    assert not platform_utils.is_agentic_invocation()
+    monkeypatch.delenv("INVOKER_INFO_NAME")
+
+    # INVOKER_INFO_NAME="jetski" -> True
+    monkeypatch.setenv("INVOKER_INFO_NAME", "jetski")
+    assert platform_utils.is_agentic_invocation()
+    monkeypatch.delenv("INVOKER_INFO_NAME")
+
+    # REPO_AGENT_MODE="0" with GEMINI_CLI="1" -> False (override check)
+    monkeypatch.setenv("REPO_AGENT_MODE", "0")
+    monkeypatch.setenv("GEMINI_CLI", "1")
+    assert not platform_utils.is_agentic_invocation()
+    monkeypatch.delenv("REPO_AGENT_MODE")
+    monkeypatch.delenv("GEMINI_CLI")
+
+    # AGENT_INVOCATION="1" -> True
+    monkeypatch.setenv("AGENT_INVOCATION", "1")
+    assert platform_utils.is_agentic_invocation()
+    monkeypatch.delenv("AGENT_INVOCATION")

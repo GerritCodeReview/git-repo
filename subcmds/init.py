@@ -21,10 +21,10 @@ from command import MirrorSafeCommand
 from error import RepoUnhandledExceptionError
 from error import UpdateManifestError
 from git_command import git_require
+import platform_utils
 from repo_logging import RepoLogger
 from wrapper import Wrapper
 from wrapper import WrapperDir
-
 
 logger = RepoLogger(__file__)
 
@@ -214,19 +214,23 @@ to update the working directory files.
     def _ConfigureUser(self, opt):
         mp = self.manifest.manifestProject
 
-        while True:
-            if not opt.quiet:
-                print()
-            name = self._Prompt("Your Name", mp.UserName)
-            email = self._Prompt("Your Email", mp.UserEmail)
+        if platform_utils.is_agentic_invocation():
+            name = mp.UserName
+            email = mp.UserEmail
+        else:
+            while True:
+                if not opt.quiet:
+                    print()
+                name = self._Prompt("Your Name", mp.UserName)
+                email = self._Prompt("Your Email", mp.UserEmail)
 
-            if not opt.quiet:
-                print()
-            print(f"Your identity is: {name} <{email}>")
-            print("is this correct [y/N]? ", end="", flush=True)
-            a = sys.stdin.readline().strip().lower()
-            if a in ("yes", "y", "t", "true"):
-                break
+                if not opt.quiet:
+                    print()
+                print(f"Your identity is: {name} <{email}>")
+                print("is this correct [y/N]? ", end="", flush=True)
+                a = sys.stdin.readline().strip().lower()
+                if a in ("yes", "y", "t", "true"):
+                    break
 
         if name != mp.UserName:
             mp.config.SetString("user.name", name)
@@ -241,7 +245,7 @@ to update the working directory files.
 
     def _ConfigureColor(self):
         gc = self.client.globalConfig
-        if self._HasColorSet(gc):
+        if self._HasColorSet(gc) or platform_utils.is_agentic_invocation():
             return
 
         class _Test(Coloring):
