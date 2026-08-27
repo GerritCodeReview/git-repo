@@ -14,6 +14,7 @@
 
 """Unittests for the subcmds/upload.py module."""
 
+from typing import List, Optional
 from unittest import mock
 
 import pytest
@@ -97,3 +98,99 @@ def test_GetMergeBranch_none_when_no_branch(cmd: upload.Upload) -> None:
 
     res = cmd._GetMergeBranch(mock_project, local_branch=None)
     assert res == ""
+
+
+def _create_mock_branch(
+    name: str = "main",
+    commits: Optional[List[str]] = None,
+    project_relpath: str = "project-a",
+) -> mock.MagicMock:
+    """Helper to construct a mock ReviewableBranch."""
+    branch = mock.MagicMock()
+    branch.name = name
+    branch.commits = commits if commits is not None else ["commit1"]
+
+    project = mock.MagicMock()
+    project.RelPath.return_value = project_relpath
+    branch.project = project
+    return branch
+
+
+def test_MultipleBranches_yes_with_current_branch_flag_bypasses_editor(
+    cmd: upload.Upload,
+) -> None:
+    """_MultipleBranches with --yes and -c flag bypasses editor."""
+    opt, _ = cmd.OptionParser.parse_args(["-c", "-y"])
+    branch1 = _create_mock_branch("b1", project_relpath="p1")
+    branch2 = _create_mock_branch("b2", project_relpath="p2")
+    pending = [(branch1.project, [branch1]), (branch2.project, [branch2])]
+
+    with mock.patch.object(cmd, "_UploadAndReport") as mock_upload, mock.patch(
+        "editor.Editor.EditString"
+    ) as mock_edit:
+        cmd._MultipleBranches(opt, pending, _STUB_PEOPLE)
+        mock_edit.assert_not_called()
+        mock_upload.assert_called_once_with(
+            opt, [branch1, branch2], _STUB_PEOPLE
+        )
+
+
+def test_MultipleBranches_yes_with_branch_flag_bypasses_editor(
+    cmd: upload.Upload,
+) -> None:
+    """_MultipleBranches with --yes and --br flag bypasses editor."""
+    opt, _ = cmd.OptionParser.parse_args(["--br", "feature", "-y"])
+    branch1 = _create_mock_branch("feature", project_relpath="p1")
+    branch2 = _create_mock_branch("feature", project_relpath="p2")
+    pending = [(branch1.project, [branch1]), (branch2.project, [branch2])]
+
+    with mock.patch.object(cmd, "_UploadAndReport") as mock_upload, mock.patch(
+        "editor.Editor.EditString"
+    ) as mock_edit:
+        cmd._MultipleBranches(opt, pending, _STUB_PEOPLE)
+        mock_edit.assert_not_called()
+        mock_upload.assert_called_once_with(
+            opt, [branch1, branch2], _STUB_PEOPLE
+        )
+
+
+def test_MultipleBranches_yes_with_branch_flag_empty_pending_dies(
+    cmd: upload.Upload,
+) -> None:
+    """_MultipleBranches with --yes and empty pending branches dies."""
+    opt, _ = cmd.OptionParser.parse_args(["--br", "feature", "-y"])
+    mock_project = mock.MagicMock()
+    pending = [(mock_project, [])]
+
+    with pytest.raises(
+        upload.UploadExitError, match="nothing ready for upload"
+    ):
+        cmd._MultipleBranches(opt, pending, _STUB_PEOPLE)
+
+
+def test_MultipleBranches_yes_without_branch_or_cbr_uses_editor(
+    cmd: upload.Upload,
+) -> None:
+    """_MultipleBranches with -y but no -c/--br falls back to editor."""
+    opt, _ = cmd.OptionParser.parse_args(["-y"])
+    branch1 = _create_mock_branch("b1", project_relpath="p1")
+    branch1.date = "2026-08-26"
+    mock_remote = mock.MagicMock()
+    branch1.project.dest_branch = None
+    branch1.project.revisionExpr = "refs/heads/main"
+    branch_config = mock.MagicMock()
+    branch_config.remote = mock_remote
+    branch1.project.GetBranch.return_value = branch_config
+    pending = [(branch1.project, [branch1])]
+
+    edited_script = (
+        "project p1/:\n"
+        "  branch b1 ( 1 commit, 2026-08-26) to remote branch "
+        "refs/heads/main:\n"
+    )
+    with mock.patch.object(cmd, "_UploadAndReport") as mock_upload, mock.patch(
+        "editor.Editor.EditString", return_value=edited_script
+    ) as mock_edit:
+        cmd._MultipleBranches(opt, pending, _STUB_PEOPLE)
+        mock_edit.assert_called_once()
+        mock_upload.assert_called_once_with(opt, [branch1], _STUB_PEOPLE)
