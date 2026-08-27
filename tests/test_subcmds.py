@@ -16,11 +16,13 @@
 
 import optparse
 from typing import Type
+from unittest import mock
 
 import pytest
 
 from command import Command
 import subcmds
+from subcmds import stage
 
 
 # NB: We don't test all subcommands as we want to avoid "change detection"
@@ -176,3 +178,16 @@ def test_attribute_error_repro() -> None:
 
     cmd.CommonValidateOptions(opts, args)
     assert hasattr(opts, "verbose")
+
+
+def test_stage_agentic_blocks_interactive(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Check that stage -i returns early in an agentic environment."""
+    monkeypatch.setenv("REPO_AGENT_MODE", "1")
+    cmd = stage.Stage()
+    opt, args = cmd.OptionParser.parse_args(["-i"])
+
+    with mock.patch.object(cmd, "GetProjects") as mock_get_projects:
+        cmd.Execute(opt, args)
+        mock_get_projects.assert_not_called()

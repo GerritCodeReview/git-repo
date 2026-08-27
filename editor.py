@@ -75,8 +75,14 @@ least one of these before using this command.""",  # noqa: E501
             New value of edited text.
 
         Raises:
-            EditorError: The editor failed to run.
+            EditorError: The editor failed to run or cannot run in an agentic
+                environment.
         """
+        if platform_utils.is_agentic_invocation():
+            raise EditorError(
+                "interactive editor cannot be used in an agentic environment"
+            )
+
         editor = cls._GetEditor()
         if editor == ":":
             return data
