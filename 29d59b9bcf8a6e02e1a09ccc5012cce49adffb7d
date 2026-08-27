@@ -40,6 +40,24 @@
       "parentUuid": "4ed1f37a_3ad17626",
       "revId": "29d59b9bcf8a6e02e1a09ccc5012cce49adffb7d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5858f18c_e62d77ba",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5087317
+      },
+      "writtenOn": "2026-08-27T01:57:05Z",
+      "side": 1,
+      "message": "Uploaded the separate change: https://gerrit-review.googlesource.com/c/git-repo/+/622641 (on top of this chain). The finished/pending sets and the failure lists of interleaved sync now use RelPath(local\u003dopt.this_manifest_only) as well.\n\nIt turned out to be reproducible rather than theoretical: an outer project a with sync-s holding a submodule at b, plus a submanifest project at path a/b, leaves a/b unsynced on a fresh sync while reporting success. The derived a/b only shows up in the second pass, and its relpath is already recorded as finished by then. The change comes with tests that drive the real workers and callback, and one that checks the reported path.\n\n_SafeCheckoutOrder orders by the local relpath too, but there a shared path only affects which level a project lands on, not whether it is synced, so I left it alone.",
+      "parentUuid": "4ed1f37a_3ad17626",
+      "revId": "29d59b9bcf8a6e02e1a09ccc5012cce49adffb7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
