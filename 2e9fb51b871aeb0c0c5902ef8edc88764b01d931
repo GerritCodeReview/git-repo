@@ -22,6 +22,24 @@
       },
       "revId": "2e9fb51b871aeb0c0c5902ef8edc88764b01d931",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6df95df1_09114f6e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5087317
+      },
+      "writtenOn": "2026-08-27T01:27:19Z",
+      "side": 1,
+      "message": "Right, same problem here. _WithoutProjects now compares the projects themselves instead of their paths, so a project that merely shares a path with a removed submodule is kept. Added a test for that case too.",
+      "parentUuid": "9313787d_c11bcb85",
+      "revId": "2e9fb51b871aeb0c0c5902ef8edc88764b01d931",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
