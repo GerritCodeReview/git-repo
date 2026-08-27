@@ -15,7 +15,9 @@
 """Unittests for the hooks.py module."""
 
 from io import StringIO
+import pathlib
 import sys
+from typing import Any, Optional
 
 import pytest
 
@@ -67,8 +69,7 @@ def test_post_sync_argument_validation() -> None:
     """Test that post-sync hook requires exact API arguments."""
 
     class FakeProject:
-
-        def __init__(self):
+        def __init__(self) -> None:
             self.worktree = "/some/path"
             self.enabled_repo_hooks = ["post-sync"]
 
@@ -94,7 +95,7 @@ def test_post_sync_argument_validation() -> None:
 
         executed_kwargs = {}
 
-        def fake_execute(**kw):
+        def fake_execute(**kw: Any) -> None:
             executed_kwargs.update(kw)
 
         hook._ExecuteHook = fake_execute
@@ -108,11 +109,11 @@ def test_post_sync_argument_validation() -> None:
 
 
 @pytest.mark.parametrize("yes_val", (True, False))
-def test_repo_upload_yes_arg(tmp_path, yes_val: bool) -> None:
+def test_repo_upload_yes_arg(tmp_path: pathlib.Path, yes_val: bool) -> None:
     """Test that yes is passed in kwargs during hook execution."""
 
     class FakeProject:
-        def __init__(self, worktree):
+        def __init__(self, worktree: str) -> None:
             self.worktree = worktree
             self.enabled_repo_hooks = ["pre-upload"]
             self.config = None
@@ -139,3 +140,88 @@ def main(project_list, **kwargs):
 
     assert res is True
     assert project_list == [yes_val]
+
+
+def test_hook_approval_yes() -> None:
+    """Test that yes=True automatically approves the hook."""
+
+    class FakeConfig:
+        def GetString(self, key: str) -> Optional[str]:
+            return None
+
+    class FakeProject:
+        def __init__(self) -> None:
+            self.config = FakeConfig()
+            self.worktree = "/fake/worktree"
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(),
+        repo_topdir="/topdir",
+        manifest_url="https://gerrit",
+        yes=True,
+    )
+    assert (
+        hook._CheckForHookApprovalHelper(
+            "subkey", "new_val", "prompt", "changed"
+        )
+        is True
+    )
+
+
+def test_hook_approval_agentic_abort(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test agentic invocation raises HookError if abort_if_user_denies."""
+    monkeypatch.setenv("REPO_AGENT_MODE", "1")
+
+    class FakeConfig:
+        def GetString(self, key: str) -> Optional[str]:
+            return None
+
+    class FakeProject:
+        def __init__(self) -> None:
+            self.config = FakeConfig()
+            self.worktree = "/fake/worktree"
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(),
+        repo_topdir="/topdir",
+        manifest_url="https://gerrit",
+        abort_if_user_denies=True,
+        yes=False,
+    )
+    with pytest.raises(hooks.HookError, match="must allow the pre-upload hook"):
+        hook._CheckForHookApprovalHelper(
+            "subkey", "new_val", "prompt", "changed"
+        )
+
+
+def test_hook_approval_agentic_no_abort(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Test agentic invocation returns False if not abort_if_user_denies."""
+    monkeypatch.setenv("REPO_AGENT_MODE", "1")
+
+    class FakeConfig:
+        def GetString(self, key: str) -> Optional[str]:
+            return None
+
+    class FakeProject:
+        def __init__(self) -> None:
+            self.config = FakeConfig()
+            self.worktree = "/fake/worktree"
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(),
+        repo_topdir="/topdir",
+        manifest_url="https://gerrit",
+        abort_if_user_denies=False,
+        yes=False,
+    )
+    assert (
+        hook._CheckForHookApprovalHelper(
+            "subkey", "new_val", "prompt", "changed"
+        )
+        is False
+    )

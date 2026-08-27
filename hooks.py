@@ -20,6 +20,7 @@ import urllib.parse
 
 from error import HookError
 from git_refs import HEAD
+import platform_utils
 
 
 # The API we've documented to hook authors.  Keep in sync with repo-hooks.md.
@@ -208,6 +209,17 @@ class RepoHook:
                 prompt = f"WARNING: {changed_prompt}\n\n"
         else:
             prompt = ""
+
+        if self._yes:
+            return True
+
+        if platform_utils.is_agentic_invocation():
+            if self._abort_if_user_denies:
+                raise HookError(
+                    "You must allow the %s hook or use --no-verify."
+                    % self._hook_type
+                )
+            return False
 
         # Prompt the user if we're not on a tty; on a tty we'll assume "no".
         if sys.stdout.isatty():

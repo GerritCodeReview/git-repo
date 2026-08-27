@@ -29,6 +29,7 @@ from git_command import GitCommand
 from git_refs import R_HEADS
 import git_superproject
 from hooks import RepoHook
+import platform_utils
 from project import ReviewableBranch
 from repo_logging import RepoLogger
 from subcmds.sync import LocalSyncState
@@ -86,6 +87,13 @@ def _VerifyPendingCommits(branches: List[ReviewableBranch]) -> bool:
             "YOU PROBABLY DO NOT MEAN TO DO THIS. (Did you rebase across "
             "branches?)"
         )
+        if platform_utils.is_agentic_invocation():
+            logger.error(
+                "repo: error: upload contains an unusually high number of "
+                "commits in an agentic environment.\n"
+                "To proceed anyway, re-run with --yes (or -y)."
+            )
+            return False
         answer = input(
             "If you are sure you intend to do this, type 'yes': "
         ).strip()
@@ -423,6 +431,12 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             if opt.yes:
                 print("<--yes>")
                 answer = True
+            elif platform_utils.is_agentic_invocation():
+                print()
+                _die(
+                    "interactive prompt blocked in agentic environment. "
+                    "Re-run with --yes (or -y) to upload automatically."
+                )
             else:
                 answer = sys.stdin.readline().strip().lower()
                 answer = answer in ("y", "yes", "1", "true", "t")
@@ -436,6 +450,67 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         self._UploadAndReport(opt, [branch], people)
 
     def _MultipleBranches(self, opt, pending, people):
+        is_unambiguous = (
+            bool(opt.current_branch)
+            or (opt.branch is not None)
+            or all(len(avail) == 1 for _, avail in pending)
+        )
+
+        if opt.yes and is_unambiguous:
+            todo = [
+                branch
+                for _, avail in pending
+                for branch in avail
+                if branch is not None
+            ]
+            if not todo:
+                _die("nothing ready for upload")
+            self._UploadAndReport(opt, todo, people)
+            return
+
+        if platform_utils.is_agentic_invocation():
+            if is_unambiguous:
+                logger.error(
+                    "repo: error: upload requires confirmation in an agentic "
+                    "environment.\n"
+                    "To upload all ready branches across these projects, "
+                    "re-run with --yes (or -y):\n"
+                    "  repo upload --yes\n"
+                    "Or specify individual projects/branches:\n"
+                )
+            else:
+                logger.error(
+                    "repo: error: multiple branches available for upload; "
+                    "interactive editor blocked in agentic environment.\n"
+                    "Please specify which branch to upload using one of the "
+                    "following commands:\n"
+                )
+
+            for project, avail in pending:
+                project_path = project.RelPath(local=opt.this_manifest_only)
+                logger.error("  Project %s/:", project_path)
+                for branch in avail:
+                    if branch is None:
+                        continue
+                    commits_cnt = len(branch.commits)
+                    commits_str = (
+                        f"{commits_cnt} commit"
+                        f"{'s' if commits_cnt != 1 else ''}"
+                    )
+                    logger.error(
+                        "    Branch '%s' (%s):\n"
+                        "      repo upload --br %s %s --yes",
+                        branch.name,
+                        commits_str,
+                        branch.name,
+                        project_path,
+                    )
+            logger.error(
+                "\nTo upload the current checked-out branch of all projects, "
+                "run:\n  repo upload -c --yes"
+            )
+            _die("interactive branch selection blocked in agentic environment")
+
         projects = {}
         branches = {}
 
