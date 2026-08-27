@@ -435,6 +435,18 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         self._UploadAndReport(opt, [branch], people)
 
     def _MultipleBranches(self, opt, pending, people):
+        if opt.yes and (opt.current_branch or opt.branch is not None):
+            todo = [
+                branch
+                for _, avail in pending
+                for branch in avail
+                if branch is not None
+            ]
+            if not todo:
+                _die("nothing ready for upload")
+            self._UploadAndReport(opt, todo, people)
+            return
+
         projects = {}
         branches = {}
 
