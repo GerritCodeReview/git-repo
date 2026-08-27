@@ -294,3 +294,26 @@ def readlink(path):
         return platform_utils_win32.readlink(_makelongpath(path))
     else:
         return os.readlink(path)
+
+
+def is_agentic_invocation() -> bool:
+    """Returns True when running in an agentic / non-interactive AI environment.
+
+    Checks environment variables such as GEMINI_CLI, ANTIGRAVITY_AGENT,
+    INVOKER_INFO_NAME, AGENT_INVOCATION, and REPO_AGENT_MODE.
+    """
+    if "REPO_AGENT_MODE" in os.environ:
+        val = os.environ["REPO_AGENT_MODE"].strip().lower()
+        if val in ("0", "false", "no", "off"):
+            return False
+        if val in ("1", "true", "yes", "on") or val:
+            return True
+    return any(
+        bool(os.environ.get(var))
+        for var in (
+            "GEMINI_CLI",
+            "ANTIGRAVITY_AGENT",
+            "INVOKER_INFO_NAME",
+            "AGENT_INVOCATION",
+        )
+    )

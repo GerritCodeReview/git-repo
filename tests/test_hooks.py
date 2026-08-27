@@ -139,3 +139,88 @@ def main(project_list, **kwargs):
 
     assert res is True
     assert project_list == [yes_val]
+
+
+def test_hook_approval_yes() -> None:
+    """Test that yes=True automatically approves the hook."""
+
+    class FakeConfig:
+        def GetString(self, key):
+            return None
+
+    class FakeProject:
+        def __init__(self):
+            self.config = FakeConfig()
+            self.worktree = "/fake/worktree"
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(),
+        repo_topdir="/topdir",
+        manifest_url="https://gerrit",
+        yes=True,
+    )
+    assert (
+        hook._CheckForHookApprovalHelper(
+            "subkey", "new_val", "prompt", "changed"
+        )
+        is True
+    )
+
+
+def test_hook_approval_agentic_abort(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test agentic invocation raises HookError if abort_if_user_denies."""
+    monkeypatch.setenv("REPO_AGENT_MODE", "1")
+
+    class FakeConfig:
+        def GetString(self, key):
+            return None
+
+    class FakeProject:
+        def __init__(self):
+            self.config = FakeConfig()
+            self.worktree = "/fake/worktree"
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(),
+        repo_topdir="/topdir",
+        manifest_url="https://gerrit",
+        abort_if_user_denies=True,
+        yes=False,
+    )
+    with pytest.raises(hooks.HookError, match="must allow the pre-upload hook"):
+        hook._CheckForHookApprovalHelper(
+            "subkey", "new_val", "prompt", "changed"
+        )
+
+
+def test_hook_approval_agentic_no_abort(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Test agentic invocation returns False if not abort_if_user_denies."""
+    monkeypatch.setenv("REPO_AGENT_MODE", "1")
+
+    class FakeConfig:
+        def GetString(self, key):
+            return None
+
+    class FakeProject:
+        def __init__(self):
+            self.config = FakeConfig()
+            self.worktree = "/fake/worktree"
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(),
+        repo_topdir="/topdir",
+        manifest_url="https://gerrit",
+        abort_if_user_denies=False,
+        yes=False,
+    )
+    assert (
+        hook._CheckForHookApprovalHelper(
+            "subkey", "new_val", "prompt", "changed"
+        )
+        is False
+    )
