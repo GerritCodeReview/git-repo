@@ -631,6 +631,117 @@ class ProjectTests(unittest.TestCase):
                         cm.exception.path, fakeproj.RelPath(local=False)
                     )
 
+    def test_get_uploadable_branches_pruned_when_no_configured_branches(
+        self,
+    ) -> None:
+        """Verify GetUploadableBranches returns [] without reading all refs when
+        no branches are configured in .git/config."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            proj = _create_mock_project(tempdir)
+            with mock.patch.object(
+                project.Project, "_allrefs", new_callable=mock.PropertyMock
+            ) as mock_allrefs:
+                res = proj.GetUploadableBranches()
+                self.assertEqual(res, [])
+                mock_allrefs.assert_not_called()
+
+    def test_get_uploadable_branches_pruned_when_only_2part_branch_keys(
+        self,
+    ) -> None:
+        """Verify GetUploadableBranches returns [] without reading all refs when
+        config contains 2-part keys like branch.autosetupmerge."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            proj = _create_mock_project(tempdir)
+            with mock.patch.object(
+                proj.config, "GetSubSections", return_value={""}
+            ), mock.patch.object(
+                project.Project, "_allrefs", new_callable=mock.PropertyMock
+            ) as mock_allrefs:
+                res = proj.GetUploadableBranches()
+                self.assertEqual(res, [])
+                mock_allrefs.assert_not_called()
+
+    def test_get_uploadable_branches_selected_branch_pruned_when_not_configured(
+        self,
+    ) -> None:
+        """Verify GetUploadableBranches(selected_branch) returns [] without
+        reading all refs when selected branch has no LocalMerge."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            proj = _create_mock_project(tempdir)
+            fake_branch = mock.MagicMock()
+            fake_branch.LocalMerge = None
+            with mock.patch.object(
+                proj, "GetBranch", return_value=fake_branch
+            ), mock.patch.object(
+                project.Project, "_allrefs", new_callable=mock.PropertyMock
+            ) as mock_allrefs:
+                res = proj.GetUploadableBranches("nonexistent-branch")
+                self.assertEqual(res, [])
+                mock_allrefs.assert_not_called()
+
+    def test_get_uploadable_branches_selected_branch_already_published(
+        self,
+    ) -> None:
+        """Verify GetUploadableBranches(selected_branch) returns [] when the
+        branch tip matches refs/published/<branch>."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            proj = _create_mock_project(tempdir)
+            fake_branch = mock.MagicMock()
+            fake_branch.LocalMerge = "refs/remotes/origin/main"
+            fake_branch.name = "feature"
+
+            sha1 = "0123456789abcdef0123456789abcdef01234567"
+
+            def get_ref(name: str) -> str:
+                if name in ("refs/heads/feature", "refs/published/feature"):
+                    return sha1
+                return ""
+
+            with mock.patch.object(
+                proj, "GetBranch", return_value=fake_branch
+            ), mock.patch.object(
+                proj.bare_ref, "get", side_effect=get_ref
+            ), mock.patch.object(
+                proj, "GetUploadableBranch"
+            ) as mock_get_up:
+                res = proj.GetUploadableBranches("feature")
+                self.assertEqual(res, [])
+                mock_get_up.assert_not_called()
+
+    def test_get_uploadable_branches_selected_branch_uploadable(
+        self,
+    ) -> None:
+        """Verify GetUploadableBranches(selected_branch) returns the uploadable
+        branch when new commits exist."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            proj = _create_mock_project(tempdir)
+            fake_branch = mock.MagicMock()
+            fake_branch.LocalMerge = "refs/remotes/origin/main"
+            fake_branch.name = "feature"
+
+            head_sha = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            pub_sha = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            mock_rb = mock.MagicMock()
+            mock_rb.name = "feature"
+
+            def get_ref(name: str) -> str:
+                if name == "refs/heads/feature":
+                    return head_sha
+                if name == "refs/published/feature":
+                    return pub_sha
+                return ""
+
+            with mock.patch.object(
+                proj, "GetBranch", return_value=fake_branch
+            ), mock.patch.object(
+                proj.bare_ref, "get", side_effect=get_ref
+            ), mock.patch.object(
+                proj, "GetUploadableBranch", return_value=mock_rb
+            ) as mock_get_up:
+                res = proj.GetUploadableBranches("feature")
+                self.assertEqual(res, [mock_rb])
+                mock_get_up.assert_called_once_with("feature")
+
     def _get_derived_subproject_url(self, submodule_url):
         with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
 
