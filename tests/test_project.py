@@ -409,6 +409,229 @@ class ProjectTests(unittest.TestCase):
             ).strip()
             self.assertEqual(expected, fakeproj.work_git.GetHead())
 
+    def test_parse_head(self) -> None:
+        """Verify _ParseHead parses refs, hashes, whitespace, and invalid
+        refs.
+        """
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            fakeproj = FakeProject(tempdir)
+            work_git = fakeproj.work_git
+
+            # Standard symbolic ref
+            self.assertEqual(
+                work_git._ParseHead("ref: refs/heads/main\n"),
+                "refs/heads/main",
+            )
+
+            # Tabs and extra whitespace
+            self.assertEqual(
+                work_git._ParseHead("ref:\t  refs/heads/branch  \r\n"),
+                "refs/heads/branch",
+            )
+
+            # Reftables placeholder should return None
+            self.assertIsNone(work_git._ParseHead("ref: refs/heads/.invalid\n"))
+
+            # 40-character SHA-1
+            sha1 = "0123456789abcdef0123456789abcdef01234567"
+            self.assertEqual(work_git._ParseHead(f"{sha1}\n"), sha1)
+
+            # Uppercase SHA-1 normalized to lowercase
+            sha_upper = "4B825DC642CB6EB9A060E54BF8D69288FBEE4904"
+            self.assertEqual(
+                work_git._ParseHead(f"{sha_upper}\r\n"), sha_upper.lower()
+            )
+
+            # 64-character SHA-256
+            sha256 = "0123456789abcdef" * 4
+            self.assertEqual(work_git._ParseHead(f"{sha256}\n"), sha256)
+
+            # 40-character string with invalid hex characters (e.g. 'g'-'z')
+            invalid_sha = "0123456789abcdef0123456789abcdef0123456z"
+            self.assertIsNone(work_git._ParseHead(f"{invalid_sha}\n"))
+
+            # Empty or unparseable lines
+            self.assertIsNone(work_git._ParseHead(""))
+            self.assertIsNone(work_git._ParseHead("   \n"))
+            self.assertIsNone(work_git._ParseHead("corrupted-not-a-hash"))
+
+    def test_get_head_in_memory_fast_path(self) -> None:
+        """Verify GetHead reads HEAD in-memory without spawning subprocesses."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            dotgit = os.path.join(tempdir, ".git")
+            os.makedirs(dotgit, exist_ok=True)
+            head_file = os.path.join(dotgit, "HEAD")
+            fakeproj = FakeProject(tempdir)
+
+            # 1. Standard symbolic ref (on a branch)
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write("ref: refs/heads/feature-branch\n")
+
+            with mock.patch.object(
+                fakeproj.work_git, "symbolic_ref"
+            ) as mock_sym, mock.patch.object(
+                fakeproj.work_git, "rev_parse"
+            ) as mock_parse:
+                self.assertEqual(
+                    fakeproj.work_git.GetHead(), "refs/heads/feature-branch"
+                )
+                mock_sym.assert_not_called()
+                mock_parse.assert_not_called()
+
+            # 2. Whitespace, tabs, and CRLF handling
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write("ref:\t refs/heads/feature-branch  \r\n")
+
+            with mock.patch.object(
+                fakeproj.work_git, "symbolic_ref"
+            ) as mock_sym, mock.patch.object(
+                fakeproj.work_git, "rev_parse"
+            ) as mock_parse:
+                self.assertEqual(
+                    fakeproj.work_git.GetHead(), "refs/heads/feature-branch"
+                )
+                mock_sym.assert_not_called()
+                mock_parse.assert_not_called()
+
+            # 3. Detached HEAD with 40-character SHA-1
+            fake_sha1 = "0123456789abcdef0123456789abcdef01234567"
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write(f"{fake_sha1}\n")
+
+            with mock.patch.object(
+                fakeproj.work_git, "symbolic_ref"
+            ) as mock_sym, mock.patch.object(
+                fakeproj.work_git, "rev_parse"
+            ) as mock_parse:
+                self.assertEqual(fakeproj.work_git.GetHead(), fake_sha1)
+                mock_sym.assert_not_called()
+                mock_parse.assert_not_called()
+
+            # 4. Detached HEAD with 64-character SHA-256
+            fake_sha256 = "0123456789abcdef" * 4
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write(f"{fake_sha256}\n")
+
+            with mock.patch.object(
+                fakeproj.work_git, "symbolic_ref"
+            ) as mock_sym, mock.patch.object(
+                fakeproj.work_git, "rev_parse"
+            ) as mock_parse:
+                self.assertEqual(fakeproj.work_git.GetHead(), fake_sha256)
+                mock_sym.assert_not_called()
+                mock_parse.assert_not_called()
+
+            # 5. Uppercase SHA normalized to lowercase
+            fake_upper = fake_sha1.upper()
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write(f"{fake_upper}\n")
+
+            with mock.patch.object(
+                fakeproj.work_git, "symbolic_ref"
+            ) as mock_sym, mock.patch.object(
+                fakeproj.work_git, "rev_parse"
+            ) as mock_parse:
+                self.assertEqual(fakeproj.work_git.GetHead(), fake_sha1)
+                mock_sym.assert_not_called()
+                mock_parse.assert_not_called()
+
+    def test_get_head_symlink_and_fallback(self) -> None:
+        """Verify GetHead handles symlinks and invalid files via fallback."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            dotgit = os.path.join(tempdir, ".git")
+            os.makedirs(dotgit, exist_ok=True)
+            head_file = os.path.join(dotgit, "HEAD")
+            fakeproj = FakeProject(tempdir)
+
+            # Symlink HEAD should fall back to symbolic_ref
+            platform_utils.symlink("refs/heads/main", head_file)
+            with mock.patch.object(
+                fakeproj.work_git,
+                "symbolic_ref",
+                return_value="refs/heads/main",
+            ) as mock_sym:
+                self.assertEqual(fakeproj.work_git.GetHead(), "refs/heads/main")
+                mock_sym.assert_called_once()
+
+    def test_get_head_worktree_corrupted_fallback(self) -> None:
+        """Verify GetHead raises NoManifestException on corrupted worktrees."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            dotgit = os.path.join(tempdir, ".git")
+            with open(dotgit, "w", encoding="utf-8", newline="") as fp:
+                fp.write("malformed without gitdir prefix\n")
+            fakeproj = FakeProject(tempdir)
+            with self.assertRaises(error.NoManifestException) as cm:
+                fakeproj.work_git.GetHead()
+            self.assertEqual(
+                cm.exception.path, fakeproj.RelPath(local=False)
+            )
+
+    def test_get_head_fallback_robustness(self) -> None:
+        """Verify GetHead fallback handles CRLF, tabs, and lowercase hashes."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
+            dotgit = os.path.join(tempdir, ".git")
+            os.makedirs(dotgit, exist_ok=True)
+            head_file = os.path.join(dotgit, "HEAD")
+            fakeproj = FakeProject(tempdir)
+
+            # 1. Fallback strips tabs, extra whitespace, and CRLF
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write("ref:\t  refs/heads/fallback-branch\r\n")
+
+            with mock.patch("platform_utils.islink", return_value=True):
+                with mock.patch.object(
+                    fakeproj.work_git,
+                    "symbolic_ref",
+                    side_effect=error.GitError("sym error"),
+                ), mock.patch.object(
+                    fakeproj.work_git,
+                    "rev_parse",
+                    side_effect=error.GitError("parse error"),
+                ):
+                    self.assertEqual(
+                        fakeproj.work_git.GetHead(),
+                        "refs/heads/fallback-branch",
+                    )
+
+            # 2. Fallback normalizes uppercase hashes to lowercase
+            sha_upper = "4B825DC642CB6EB9A060E54BF8D69288FBEE4904"
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write(f"{sha_upper}\r\n")
+
+            with mock.patch("platform_utils.islink", return_value=True):
+                with mock.patch.object(
+                    fakeproj.work_git,
+                    "symbolic_ref",
+                    side_effect=error.GitError("sym error"),
+                ), mock.patch.object(
+                    fakeproj.work_git,
+                    "rev_parse",
+                    side_effect=error.GitError("parse error"),
+                ):
+                    self.assertEqual(
+                        fakeproj.work_git.GetHead(), sha_upper.lower()
+                    )
+
+            # 3. Fallback raises NoManifestException with RelPath on .invalid
+            with open(head_file, "w", encoding="utf-8", newline="") as fp:
+                fp.write("ref: refs/heads/.invalid\r\n")
+
+            with mock.patch("platform_utils.islink", return_value=True):
+                with mock.patch.object(
+                    fakeproj.work_git,
+                    "symbolic_ref",
+                    side_effect=error.GitError("sym error"),
+                ), mock.patch.object(
+                    fakeproj.work_git,
+                    "rev_parse",
+                    side_effect=error.GitError("parse error"),
+                ):
+                    with self.assertRaises(error.NoManifestException) as cm:
+                        fakeproj.work_git.GetHead()
+                    self.assertEqual(
+                        cm.exception.path, fakeproj.RelPath(local=False)
+                    )
+
     def _get_derived_subproject_url(self, submodule_url):
         with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
 
