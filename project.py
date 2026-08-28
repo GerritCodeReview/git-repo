@@ -1154,6 +1154,22 @@ class Project:
 
     def GetUploadableBranches(self, selected_branch=None):
         """List any branches which can be uploaded for review."""
+        if selected_branch:
+            branch = self.GetBranch(selected_branch)
+            if not branch.LocalMerge:
+                return []
+            head_id = self.bare_ref.get(R_HEADS + selected_branch)
+            if not head_id:
+                return []
+            pub_id = self.bare_ref.get(R_PUB + selected_branch)
+            if pub_id and pub_id == head_id:
+                return []
+            rb = self.GetUploadableBranch(selected_branch)
+            return [rb] if rb else []
+
+        if not any(self.config.GetSubSections("branch")):
+            return []
+
         heads = {}
         pubed = {}
 
@@ -1166,8 +1182,6 @@ class Project:
         ready = []
         for branch, ref_id in heads.items():
             if branch in pubed and pubed[branch] == ref_id:
-                continue
-            if selected_branch and branch != selected_branch:
                 continue
 
             rb = self.GetUploadableBranch(branch)
