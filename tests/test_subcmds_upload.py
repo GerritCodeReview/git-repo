@@ -63,3 +63,37 @@ def test_UploadAndReport_UnhandledError(cmd: upload.Upload) -> None:
     with mock.patch.object(cmd, "_UploadBranch", side_effect=UnexpectedError):
         with pytest.raises(UnexpectedError):
             cmd._UploadAndReport(opt, [mock.MagicMock()], _STUB_PEOPLE)
+
+
+def test_GetMergeBranch_explicit_branch(cmd: upload.Upload) -> None:
+    """Verify _GetMergeBranch reads branch.merge for explicit local_branch."""
+    mock_project = mock.MagicMock()
+    mock_branch = mock.MagicMock()
+    mock_branch.merge = "refs/heads/main"
+    mock_project.GetBranch.return_value = mock_branch
+
+    res = cmd._GetMergeBranch(mock_project, local_branch="feature")
+    assert res == "refs/heads/main"
+    mock_project.GetBranch.assert_called_once_with("feature")
+
+
+def test_GetMergeBranch_current_branch(cmd: upload.Upload) -> None:
+    """Verify _GetMergeBranch falls back to project.CurrentBranch."""
+    mock_project = mock.MagicMock()
+    mock_project.CurrentBranch = "auto-cbr"
+    mock_branch = mock.MagicMock()
+    mock_branch.merge = "refs/heads/master"
+    mock_project.GetBranch.return_value = mock_branch
+
+    res = cmd._GetMergeBranch(mock_project, local_branch=None)
+    assert res == "refs/heads/master"
+    mock_project.GetBranch.assert_called_once_with("auto-cbr")
+
+
+def test_GetMergeBranch_none_when_no_branch(cmd: upload.Upload) -> None:
+    """Verify _GetMergeBranch returns empty string when detached HEAD."""
+    mock_project = mock.MagicMock()
+    mock_project.CurrentBranch = None
+
+    res = cmd._GetMergeBranch(mock_project, local_branch=None)
+    assert res == ""
