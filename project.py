@@ -4464,8 +4464,50 @@ class Project:
 
             return dotgit if subpath is None else os.path.join(dotgit, subpath)
 
+        @staticmethod
+        def _ParseHead(line: str) -> Optional[str]:
+            """Parse the content of a .git/HEAD file.
+
+            Handles both symbolic refs (e.g. 'ref: refs/heads/...') and raw
+            commit IDs (40-hex SHA-1 or 64-hex SHA-256).
+
+            Returns:
+                The ref name (e.g. 'refs/heads/main') or lowercase commit hash
+                if valid, or None if empty or invalid.
+            """
+            line = line.strip()
+            if line.startswith("ref:"):
+                ref = line[4:].strip()
+                # Ensure the ref is not empty, pure whitespace, or the reftable
+                # placeholder for unborn branches / empty repositories.
+                if not ref or ref == R_HEADS + ".invalid":
+                    return None
+                return ref
+            else:
+                # Normalize commit IDs to canonical lowercase hexadecimal,
+                # matching the output format of `git rev-parse`.
+                line_lower = line.lower()
+                if IsId(line_lower):
+                    return line_lower
+            return None
+
         def GetHead(self):
             """Return the ref that HEAD points to."""
+            path = None
+            try:
+                # Catch AssertionError raised by GetDotgitPath when worktree
+                # .git pointer file is malformed (e.g. missing 'gitdir:').
+                path = self.GetDotgitPath(subpath=HEAD)
+                if not platform_utils.islink(path):
+                    with open(
+                        path, "r", encoding="utf-8", errors="replace"
+                    ) as fd:
+                        ref = self._ParseHead(fd.readline())
+                    if ref:
+                        return ref
+            except (OSError, AssertionError):
+                pass
+
             try:
                 return self.symbolic_ref("-q", HEAD, log_as_error=False)
             except GitError:
@@ -4485,22 +4527,23 @@ class Project:
 
                 # Fallback to direct file reading for compatibility with broken
                 # repos, e.g. if HEAD points to an unborn branch.
-                path = self.GetDotgitPath(subpath=HEAD)
+                if not path:
+                    raise NoManifestException(
+                        self._project.RelPath(local=False), str(e)
+                    )
                 try:
-                    with open(path) as fd:
-                        line = fd.readline()
+                    with open(
+                        path, "r", encoding="utf-8", errors="replace"
+                    ) as fd:
+                        ref = self._ParseHead(fd.readline())
                 except OSError:
-                    raise NoManifestException(path, str(e))
-                try:
-                    line = line.decode()
-                except AttributeError:
-                    pass
-                if line.startswith("ref: "):
-                    ref = line[5:-1]
-                else:
-                    ref = line[:-1]
-                if ref == R_HEADS + ".invalid":
-                    raise NoManifestException(path, str(e))
+                    raise NoManifestException(
+                        self._project.RelPath(local=False), str(e)
+                    )
+                if not ref:
+                    raise NoManifestException(
+                        self._project.RelPath(local=False), str(e)
+                    )
                 return ref
 
         def SetHead(self, ref, message=None):
