@@ -25,7 +25,6 @@ from editor import Editor
 from error import GitError
 from error import SilentRepoExitError
 from error import UploadError
-from git_command import GitCommand
 from git_refs import R_HEADS
 import git_superproject
 from hooks import RepoHook
@@ -705,24 +704,18 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             raise UploadExitError(aggregate_errors=aggregate_errors)
 
     def _GetMergeBranch(self, project, local_branch=None):
+        """Get the merge branch name for a local branch.
+
+        Resolves the merge branch in-memory via project configuration to
+        avoid git subprocess overhead during upload.
+        """
         if local_branch is None:
-            p = GitCommand(
-                project,
-                ["rev-parse", "--abbrev-ref", "HEAD"],
-                capture_stdout=True,
-                capture_stderr=True,
-            )
-            p.Wait()
-            local_branch = p.stdout.strip()
-        p = GitCommand(
-            project,
-            ["config", "--get", "branch.%s.merge" % local_branch],
-            capture_stdout=True,
-            capture_stderr=True,
-        )
-        p.Wait()
-        merge_branch = p.stdout.strip()
-        return merge_branch
+            local_branch = project.CurrentBranch
+        if local_branch:
+            branch = project.GetBranch(local_branch)
+            if branch.merge:
+                return branch.merge
+        return ""
 
     @classmethod
     def _GatherOne(cls, opt, project_idx):
