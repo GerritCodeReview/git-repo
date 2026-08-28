@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f95b07b4_484e6489",
+        "filename": "project.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 4481,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-08-28T17:42:24Z",
+      "side": 1,
+      "message": "Add to this comment that the head file also will contain \"refs/heads/.invalid\" when the reftables backend is used, which will be the default in git3.",
+      "range": {
+        "startLine": 4481,
+        "startChar": 16,
+        "endLine": 4481,
+        "endChar": 17
+      },
+      "revId": "92f092ab5c44643bc8ba147a1bfc3d61375a9766",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
