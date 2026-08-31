@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad92d275_39bdfb61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-31T23:39:57Z",
+      "side": 1,
+      "message": "http://b/553024110 isn\u0027t specific to agents, ie interactive editor blocking despite passing `--cbr` and `--yes` is a bug for humans too. what if we just had `subcmds/upload.py` to `--yes` if specific branches were requested",
+      "revId": "e82867d7ac3328de1839799ce17f47b7ffa75bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13ea25bb_a5e5e575",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-08-31T23:39:57Z",
+      "side": 1,
+      "message": "we should keep this chunk, revert everything else, and delete `or all(len(avail) \u003d\u003d 1 for _, avail in pending)`",
+      "range": {
+        "startLine": 453,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 18
+      },
+      "revId": "e82867d7ac3328de1839799ce17f47b7ffa75bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
