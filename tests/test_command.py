@@ -14,6 +14,8 @@
 
 """Unittests for the command.py module."""
 
+from typing import Iterable, List, Optional
+
 import pytest
 
 from command import Command
@@ -33,6 +35,8 @@ class FakeProject:
     ):
         self.name = name
         self.relpath = relpath
+        self.worktree = f"/work/{relpath}"
+        self.manifest = None
         self.gitdir = gitdir or f"/git/{relpath}"
         self.sync_s = sync_s
         self.Exists = True
@@ -51,11 +55,58 @@ class FakeProject:
 class FakeManifest:
     """Minimal manifest double for Command.GetProjects tests."""
 
-    def __init__(self, projects):
-        self.projects = projects
+    def __init__(
+        self,
+        projects: Iterable[FakeProject],
+        *,
+        all_projects: Optional[Iterable[FakeProject]] = None,
+        effective_groups: str = "default",
+    ):
+        self.projects = list(projects)
+        self.all_projects = (
+            list(self.projects) if all_projects is None else list(all_projects)
+        )
+        self._effective_groups = effective_groups
+
+        # all_projects may include projects owned by child manifests,
+        # so only set this manifest on its direct projects.
+        for project in self.projects:
+            self._set_project_manifest(project)
+
+    def _set_project_manifest(self, project: FakeProject) -> None:
+        project.manifest = self
+        for subproject in project.GetDerivedSubprojects():
+            self._set_project_manifest(subproject)
 
     def GetManifestGroupsStr(self):
-        return "default"
+        return self._effective_groups
+
+    def GetProjectsWithName(
+        self, name: str, all_manifests: bool = False
+    ) -> List[FakeProject]:
+        projects = self.all_projects if all_manifests else self.projects
+        return [project for project in projects if project.name == name]
+
+
+class GroupMatchingFakeProject(FakeProject):
+    """Fake project with predictable group matches for GetProjects tests.
+
+    This lets the tests check which groups GetProjects uses without
+    reimplementing Project.MatchesGroups.
+    """
+
+    def __init__(
+        self,
+        name: str,
+        relpath: str,
+        *,
+        matching_groups: Iterable[str],
+    ):
+        super().__init__(name, relpath)
+        self._matching_groups = set(matching_groups)
+
+    def MatchesGroups(self, groups: Iterable[str]) -> bool:
+        return bool(self._matching_groups.intersection(groups))
 
 
 def test_get_projects_keeps_derived_subprojects_for_repeated_repo():
@@ -117,3 +168,93 @@ def test_get_projects_submodule_override(
     projects = cmd.GetProjects([], submodules_ok=submodules_ok)
 
     assert (submodule in projects) is includes_submodule
+
+
+@pytest.mark.parametrize(
+    ("groups", "expected_relpaths"),
+    [
+        (None, ["outer", "sub/child"]),
+        ("", ["outer", "sub/child"]),
+        ("override-group", ["sub/override"]),
+    ],
+    ids=("groups-omitted", "groups-empty", "explicit-override"),
+)
+def test_get_projects_uses_groups_from_each_manifest_unless_overridden(
+    groups: Optional[str],
+    expected_relpaths: List[str],
+) -> None:
+    """Use each manifest's effective groups unless the caller overrides them."""
+    outer_project = GroupMatchingFakeProject(
+        "outer",
+        "outer",
+        matching_groups={"outer-group"},
+    )
+
+    # Both child projects also match "outer". Reusing the outer manifest's
+    # groups would therefore select both child projects.
+    child_project = GroupMatchingFakeProject(
+        "child",
+        "sub/child",
+        matching_groups={"outer-group", "child-group"},
+    )
+    override_project = GroupMatchingFakeProject(
+        "override",
+        "sub/override",
+        matching_groups={"outer-group", "override-group"},
+    )
+
+    child_manifest = FakeManifest(
+        [child_project, override_project],
+        effective_groups="child-group",
+    )
+    outer_manifest = FakeManifest(
+        [outer_project],
+        all_projects=[outer_project, *child_manifest.projects],
+        effective_groups="outer-group",
+    )
+    cmd = Command(manifest=outer_manifest)
+
+    projects = cmd.GetProjects(
+        [],
+        manifest=outer_manifest,
+        groups=groups,
+        all_manifests=True,
+    )
+
+    assert [project.relpath for project in projects] == expected_relpaths
+
+
+def test_get_projects_by_name_uses_groups_from_each_manifest() -> None:
+    """Name matches use the groups from each project's owning manifest."""
+    outer_project = GroupMatchingFakeProject(
+        "shared",
+        "outer/shared",
+        matching_groups={"outer-group"},
+    )
+    child_project = GroupMatchingFakeProject(
+        "shared",
+        "sub/shared",
+        matching_groups={"child-group"},
+    )
+
+    child_manifest = FakeManifest(
+        [child_project],
+        effective_groups="child-group",
+    )
+    outer_manifest = FakeManifest(
+        [outer_project],
+        all_projects=[outer_project, *child_manifest.projects],
+        effective_groups="outer-group",
+    )
+    cmd = Command(manifest=outer_manifest)
+
+    projects = cmd.GetProjects(
+        ["shared"],
+        manifest=outer_manifest,
+        all_manifests=True,
+    )
+
+    assert [project.relpath for project in projects] == [
+        "outer/shared",
+        "sub/shared",
+    ]
