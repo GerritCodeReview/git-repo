@@ -1623,11 +1623,7 @@ class Project:
 
         # If the project has been manually unshallowed (e.g. via
         # `git fetch --unshallow`), don't re-shallow it during sync.
-        if (
-            depth
-            and not is_new
-            and not os.path.exists(os.path.join(self.gitdir, "shallow"))
-        ):
+        if depth and not is_new and not self._HasShallow():
             depth = None
 
         if depth and clone_filter_for_depth:
@@ -1663,17 +1659,15 @@ class Project:
                 )
         else:
             # See if we can skip the standard network fetch entirely.
-            has_shallow = os.path.exists(os.path.join(self.gitdir, "shallow"))
+            has_shallow = self._HasShallow()
             skip_fetch = (
                 optimized_fetch
                 and IsId(self.revisionExpr)
                 and self._CheckForImmutableRevision(
-                    use_superproject=use_superproject
+                    use_superproject=use_superproject,
+                    depth=depth,
                 )
-                and (
-                    has_shallow
-                    or (not depth and not self._SharingProjectHasShallow())
-                )
+                and (has_shallow or not self._IsShallow(depth))
             )
 
             if not skip_fetch:
@@ -2797,19 +2791,22 @@ class Project:
         return None
 
     def _CheckForImmutableRevision(
-        self, use_superproject: Optional[bool] = None
+        self,
+        use_superproject: Optional[bool] = None,
+        depth: Optional[int] = None,
     ) -> bool:
         try:
             # if revision (sha or tag) is not present then following function
             # throws an error.
             revs = [f"{self.revisionExpr}^0"]
             upstream_rev = None
-            use_superproject_for_upstream = self.upstream and (
-                self._UseSuperprojectForUpstream(use_superproject)
+            verify_upstream = self._ShouldVerifyUpstream(
+                use_superproject=use_superproject,
+                depth=depth,
             )
 
-            # Only check upstream when using superproject.
-            if use_superproject_for_upstream:
+            # Ensure the local upstream tracking ref also exists in the ODB.
+            if verify_upstream:
                 upstream_rev = self.GetRemote().ToLocal(self.upstream)
                 revs.append(upstream_rev)
 
@@ -2821,9 +2818,8 @@ class Project:
                 log_as_error=False,
             )
 
-            # Only verify upstream relationship for superproject scenarios
-            # without affecting plain usage.
-            if use_superproject_for_upstream:
+            # Verify revision is an ancestor of the upstream tracking ref.
+            if verify_upstream:
                 self.bare_git.merge_base(
                     "--is-ancestor",
                     self.revisionExpr,
@@ -2834,6 +2830,31 @@ class Project:
         except GitError:
             # There is no such persistent revision. We have to fetch it.
             return False
+
+    def _HasShallow(self) -> bool:
+        """Check if this project has a shallow file in its gitdir."""
+        return bool(
+            self.gitdir and os.path.exists(os.path.join(self.gitdir, "shallow"))
+        )
+
+    def _IsShallow(self, depth: Optional[int] = None) -> bool:
+        """Check if the project is shallow or sharing shallow objects."""
+        return bool(
+            self._HasShallow() or self._SharingProjectHasShallow() or depth
+        )
+
+    def _ShouldVerifyUpstream(
+        self,
+        use_superproject: Optional[bool] = None,
+        depth: Optional[int] = None,
+    ) -> bool:
+        """Whether to verify upstream ancestry during immutable revision
+        check."""
+        if not (IsId(self.revisionExpr) and self.upstream):
+            return False
+        if self._UseSuperprojectForUpstream(use_superproject):
+            return True
+        return not self._IsShallow(depth)
 
     def _SharingProjectHasShallow(self) -> bool:
         """Check if another project sharing this objdir has a "shallow" file.
@@ -2848,18 +2869,14 @@ class Project:
         )
         for proj in other_projects:
             if proj.objdir == self.objdir and proj.gitdir != self.gitdir:
-                if os.path.exists(os.path.join(proj.gitdir, "shallow")):
+                if proj._HasShallow():
                     return True
         return False
 
     def _UseSuperprojectForUpstream(
         self, use_superproject: Optional[bool] = None
     ) -> bool:
-        """Whether to include upstream in the immutability check.
-
-        The upstream ancestry check is only meaningful for projects
-        that participate in a superproject relationship.
-        """
+        """Whether to check upstream for superprojects."""
         return git_superproject.UseSuperproject(use_superproject, self.manifest)
 
     def _FetchArchive(self, tarpath, cwd=None):
@@ -3060,15 +3077,11 @@ class Project:
                 tag_name = upstream[len(R_TAGS) :]
 
             if is_sha1 or tag_name is not None:
-                has_shallow = os.path.exists(
-                    os.path.join(self.gitdir, "shallow")
-                )
+                has_shallow = self._HasShallow()
                 if self._CheckForImmutableRevision(
-                    use_superproject=use_superproject
-                ) and (
-                    has_shallow
-                    or (not depth and not self._SharingProjectHasShallow())
-                ):
+                    use_superproject=use_superproject,
+                    depth=depth,
+                ) and (has_shallow or not self._IsShallow(depth)):
                     if verbose:
                         print(
                             "Skipped fetching project %s (already have "
@@ -3134,7 +3147,7 @@ class Project:
             # have shallow objects or not. Tell git to unshallow all fetched
             # refs.  Don't do this with projects that don't have shallow
             # objects, since it is less efficient.
-            if os.path.exists(os.path.join(self.gitdir, "shallow")):
+            if self._HasShallow():
                 cmd.append("--depth=2147483647")
 
         # Use clone-depth="1" as a heuristic for repositories containing
@@ -3377,7 +3390,8 @@ class Project:
             # got what we wanted, else trigger a second run of all
             # refs.
             if not self._CheckForImmutableRevision(
-                use_superproject=use_superproject
+                use_superproject=use_superproject,
+                depth=depth,
             ):
                 # Sync the current branch only with depth set to None.
                 # We always pass depth=None down to avoid infinite recursion.
@@ -4938,6 +4952,16 @@ class MetaProject(Project):
         # shared with other projects in the manifest. Returning False
         # here also avoids loading the manifest during `repo init`,
         # before manifest.xml has been linked into .repo/.
+        return False
+
+    def _ShouldVerifyUpstream(
+        self,
+        use_superproject: Optional[bool] = None,
+        depth: Optional[int] = None,
+    ) -> bool:
+        """MetaProjects (manifest repo and repo itself) do not verify upstream
+        ancestry.
+        """
         return False
 
     @property
