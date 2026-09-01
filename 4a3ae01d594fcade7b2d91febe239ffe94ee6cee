@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14d801c7_301c79d6",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 2821,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-01T18:52:34Z",
+      "side": 1,
+      "message": "we added similar logic a while back because people manually unshallow dirs (see https://gerrit-review.git.corp.google.com/c/git-repo/+/558743). we should consolidate that logic into a new helper `_IsShallow` in project.py and use that rather than repeatedly checking .git/shallow and calling _SharingProjectHasShallow() across Sync_NetworkHalf, _RemoteFetch, and _CheckForImmutableRevision. then have a method like:\n```\ndef _ShouldVerifyUpstream(\n    self, use_superproject: Optional[bool] \u003d None, depth: Optional[int] \u003d None,\n) -\u003e bool:\n    \"\"\"Whether to verify upstream ancestry during immutable revision check.\"\"\"\n    if not (IsId(self.revisionExpr) and self.upstream):\n        return False\n    if self._UseSuperprojectForUpstream(use_superproject):\n        return True\n    return not self._IsShallow(depth)\n```\nthat gets overriden in MetaProjects to return false. that\u0027s simplify _CheckForImmutableRevision a good amount\n\nalso we should drop the `self.clone_depth` part and MetaProject check since MetaProject already overrides _SharingProjectHasShallow  to return False",
+      "range": {
+        "startLine": 2810,
+        "startChar": 12,
+        "endLine": 2821,
+        "endChar": 13
+      },
+      "revId": "4a3ae01d594fcade7b2d91febe239ffe94ee6cee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c0336e0_3b3bd5dc",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 2822,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-01T18:52:34Z",
+      "side": 1,
+      "message": "WDYT about adding `IsId(self.revisionExpr) and` to prevent passing tags? since checking ancestry of tags and upstream doesn\u0027t seem relevant and would most likely fail in the `git merge-base --is-ancestor` call below",
+      "range": {
+        "startLine": 2822,
+        "startChar": 30,
+        "endLine": 2822,
+        "endChar": 32
+      },
+      "revId": "4a3ae01d594fcade7b2d91febe239ffe94ee6cee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
