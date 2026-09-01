@@ -398,7 +398,11 @@ class Command:
         Args:
             args: a list of (case-insensitive) strings, projects to search for.
             manifest: an XmlManifest, the manifest to use, or None for default.
-            groups: a string, the manifest groups in use.
+            groups: a string, the manifest group selection to apply.
+                Non-empty values apply to all candidate projects in this call.
+                When empty or omitted, single-manifest calls use the selected
+                manifest's effective groups; all-manifest calls use each
+                candidate project's owning manifest's effective groups.
             missing_ok: a boolean, whether to allow missing projects.
             submodules_ok: whether to allow submodules. True allows them for
                 all projects, False disallows them for all projects, and None
@@ -425,9 +429,33 @@ class Command:
                 return project.sync_s
             return submodules_ok
 
-        if not groups:
-            groups = manifest.GetManifestGroupsStr()
-        groups = [x for x in re.split(r"[,\s]+", groups) if x]
+        def parse_groups(value):
+            return [x for x in re.split(r"[,\s]+", value) if x]
+
+        if groups:
+            groups_for_all_projects = parse_groups(groups)
+        elif all_manifests:
+            # In all-manifest mode, each project uses its owning
+            # manifest's effective groups.
+            groups_for_all_projects = None
+        else:
+            groups_for_all_projects = parse_groups(
+                manifest.GetManifestGroupsStr()
+            )
+
+        groups_by_manifest = {}
+
+        def matches_groups(project: "Project") -> bool:
+            if groups_for_all_projects is not None:
+                return project.MatchesGroups(groups_for_all_projects)
+
+            project_manifest = project.manifest
+            if project_manifest not in groups_by_manifest:
+                groups_by_manifest[project_manifest] = parse_groups(
+                    project_manifest.GetManifestGroupsStr()
+                )
+
+            return project.MatchesGroups(groups_by_manifest[project_manifest])
 
         if not args:
             derived_projects = {}
@@ -439,9 +467,7 @@ class Command:
                     )
             all_projects_list.extend(derived_projects.values())
             for project in all_projects_list:
-                if (missing_ok or project.Exists) and project.MatchesGroups(
-                    groups
-                ):
+                if (missing_ok or project.Exists) and matches_groups(project):
                     result.append(project)
         else:
             self._ResetPathToProjectMap(all_projects_list)
@@ -455,7 +481,7 @@ class Command:
                     for project in manifest.GetProjectsWithName(
                         arg, all_manifests=all_manifests
                     )
-                    if project.MatchesGroups(groups)
+                    if matches_groups(project)
                 ]
 
                 if not projects:
@@ -498,7 +524,7 @@ class Command:
                             "%s (%s)"
                             % (arg, project.RelPath(local=not all_manifests))
                         )
-                    if not project.MatchesGroups(groups):
+                    if not matches_groups(project):
                         raise InvalidProjectGroupsError(arg)
 
                 result.extend(projects)
