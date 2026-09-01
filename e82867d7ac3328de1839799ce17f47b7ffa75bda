@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36544d8f_5db9ac7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-01T21:07:08Z",
+      "side": 1,
+      "message": "(deduping this thread with the other one)",
+      "parentUuid": "26dacd34_45acc52e",
+      "revId": "e82867d7ac3328de1839799ce17f47b7ffa75bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13ea25bb_a5e5e575",
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "The issue with removing the agent check is that when an agent does forget --cbr or --yes, it still hangs in vi or on stdin until timeout.\n\nthe goal is to never hang headless tools. If there\u0027s ambiguity, fail fast with copy-pasteable commands so the agent can recover.",
       "parentUuid": "13ea25bb_a5e5e575",
+      "range": {
+        "startLine": 453,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 18
+      },
+      "revId": "e82867d7ac3328de1839799ce17f47b7ffa75bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5529419_a9ff8bfb",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-01T21:07:08Z",
+      "side": 1,
+      "message": "\u003e when an agent does forget --cbr or --yes, it still hangs in vi or on stdin until timeout. the goal is to never hang headless tools\n\nthis feels like scope creep compared to addressing https://crbug.com/gerrit/553024110. proper headless execution shouldn\u0027t rely on detecting proprietary/internal envvars, it should rely on standard streams and intentional, generic flags like `-y`\n\nrepo already checks for headless environments by checking `isatty` natively:\nhttps://cs.opensource.google/gerrit/gerrit/git-repo/+/main:hooks.py;l\u003d216-217;drc\u003de6ad7080098a0db0cb304812c8603856da2bebf2\n\nif a headless tool (agent or not) forgets to pass `--yes` or `--cbr`, fixing the caller is the right approach, rather than modifying repo to guess the intent",
+      "parentUuid": "f86205ce_d19d6f3a",
       "range": {
         "startLine": 453,
         "startChar": 0,
