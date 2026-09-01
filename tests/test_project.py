@@ -2174,6 +2174,105 @@ class SyncOptimizationTests(unittest.TestCase):
                 self.assertTrue(res)
                 mock_git_cmd.assert_not_called()
 
+    def test_check_immutable_revision_plain_project_upstream_ancestor(
+        self,
+    ) -> None:
+        """Non-shallow projects verify upstream ancestry for immutable revisions."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj.bare_git = project.Project._GitGetByExec(
+                proj, bare=True, gitdir=proj.gitdir
+            )
+            proj.upstream = "refs/heads/main"
+            proj.work_git.config("remote.origin.url", "http://example.com/repo")
+            proj.work_git.config(
+                "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*"
+            )
+
+            test_file = os.path.join(tempdir, "file.txt")
+            with open(test_file, "w") as f:
+                f.write("commit1")
+            proj.work_git.add("file.txt")
+            proj.work_git.commit("-m", "commit 1")
+            commit1 = proj.work_git.rev_parse("HEAD")
+
+            proj.work_git.update_ref("refs/remotes/origin/main", commit1)
+
+            with open(test_file, "w") as f:
+                f.write("commit2")
+            proj.work_git.add("file.txt")
+            proj.work_git.commit("-m", "commit 2")
+            commit2 = proj.work_git.rev_parse("HEAD")
+
+            # 1. When revision is commit1 and upstream tracking ref is at commit2:
+            # commit1 is an ancestor of refs/remotes/origin/main -> True
+            proj.revisionExpr = commit1
+            proj.work_git.update_ref("refs/remotes/origin/main", commit2)
+            self.assertTrue(
+                proj._CheckForImmutableRevision(use_superproject=False)
+            )
+
+            # 2. When revision is commit2 and upstream tracking ref is at commit1 (behind):
+            # commit2 is NOT an ancestor of refs/remotes/origin/main -> False
+            proj.revisionExpr = commit2
+            proj.work_git.update_ref("refs/remotes/origin/main", commit1)
+            self.assertFalse(
+                proj._CheckForImmutableRevision(use_superproject=False)
+            )
+
+            # 3. In shallow mode (depth passed), upstream ancestry is skipped:
+            # commit2 exists in ODB, so shallow returns True even if upstream is behind.
+            self.assertTrue(
+                proj._CheckForImmutableRevision(use_superproject=False, depth=1)
+            )
+
+            # 4. If gitdir has shallow file, shallow check also skips upstream ancestry.
+            with open(os.path.join(proj.gitdir, "shallow"), "w") as f:
+                f.write("")
+            self.assertTrue(
+                proj._CheckForImmutableRevision(use_superproject=False)
+            )
+
+    def test_sync_network_half_stale_upstream_fetches(self) -> None:
+        """Sync_NetworkHalf does not skip fetch when upstream ref is behind."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj.bare_git = project.Project._GitGetByExec(
+                proj, bare=True, gitdir=proj.gitdir
+            )
+            proj.upstream = "refs/heads/main"
+            proj.work_git.config("remote.origin.url", "http://example.com/repo")
+            proj.work_git.config(
+                "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*"
+            )
+
+            test_file = os.path.join(tempdir, "file.txt")
+            with open(test_file, "w") as f:
+                f.write("commit1")
+            proj.work_git.add("file.txt")
+            proj.work_git.commit("-m", "commit 1")
+            commit1 = proj.work_git.rev_parse("HEAD")
+
+            with open(test_file, "w") as f:
+                f.write("commit2")
+            proj.work_git.add("file.txt")
+            proj.work_git.commit("-m", "commit 2")
+            commit2 = proj.work_git.rev_parse("HEAD")
+
+            # Upstream ref is at commit1 (behind commit2).
+            proj.work_git.update_ref("refs/remotes/origin/main", commit1)
+            proj.revisionExpr = commit2
+
+            proj._InitRemote = mock.MagicMock()
+            proj._InitMRef = mock.MagicMock()
+            proj._RemoteFetch = mock.MagicMock(
+                return_value=project.SyncNetworkHalfResult(True)
+            )
+
+            res = proj.Sync_NetworkHalf(optimized_fetch=True)
+            self.assertTrue(res.success)
+            proj._RemoteFetch.assert_called_once()
+
     def test_remote_fetch_sha1_dest_branch_not_fetched(self) -> None:
         """Test _RemoteFetch ignores dest-branch for SHA-1 revisions."""
         sha = "4f8a3c0000000000000000000000000000000000"

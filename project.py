@@ -1668,7 +1668,8 @@ class Project:
                 optimized_fetch
                 and IsId(self.revisionExpr)
                 and self._CheckForImmutableRevision(
-                    use_superproject=use_superproject
+                    use_superproject=use_superproject,
+                    depth=depth,
                 )
                 and (
                     has_shallow
@@ -2797,19 +2798,34 @@ class Project:
         return None
 
     def _CheckForImmutableRevision(
-        self, use_superproject: Optional[bool] = None
+        self,
+        use_superproject: Optional[bool] = None,
+        depth: Optional[int] = None,
     ) -> bool:
         try:
             # if revision (sha or tag) is not present then following function
             # throws an error.
             revs = [f"{self.revisionExpr}^0"]
             upstream_rev = None
-            use_superproject_for_upstream = self.upstream and (
+            is_shallow = bool(
+                self.clone_depth
+                or depth
+                or (
+                    self.gitdir
+                    and os.path.exists(os.path.join(self.gitdir, "shallow"))
+                )
+                or (
+                    not isinstance(self, MetaProject)
+                    and self._SharingProjectHasShallow()
+                )
+            )
+            verify_upstream = self.upstream and (
                 self._UseSuperprojectForUpstream(use_superproject)
+                or (not isinstance(self, MetaProject) and not is_shallow)
             )
 
-            # Only check upstream when using superproject.
-            if use_superproject_for_upstream:
+            # Check upstream when using superproject or for non-shallow clones with upstream.
+            if verify_upstream:
                 upstream_rev = self.GetRemote().ToLocal(self.upstream)
                 revs.append(upstream_rev)
 
@@ -2821,9 +2837,8 @@ class Project:
                 log_as_error=False,
             )
 
-            # Only verify upstream relationship for superproject scenarios
-            # without affecting plain usage.
-            if use_superproject_for_upstream:
+            # Verify upstream relationship for superproject scenarios or non-shallow clones.
+            if verify_upstream:
                 self.bare_git.merge_base(
                     "--is-ancestor",
                     self.revisionExpr,
@@ -2855,11 +2870,7 @@ class Project:
     def _UseSuperprojectForUpstream(
         self, use_superproject: Optional[bool] = None
     ) -> bool:
-        """Whether to include upstream in the immutability check.
-
-        The upstream ancestry check is only meaningful for projects
-        that participate in a superproject relationship.
-        """
+        """Whether to include upstream in the immutability check via superproject."""
         return git_superproject.UseSuperproject(use_superproject, self.manifest)
 
     def _FetchArchive(self, tarpath, cwd=None):
@@ -3064,7 +3075,8 @@ class Project:
                     os.path.join(self.gitdir, "shallow")
                 )
                 if self._CheckForImmutableRevision(
-                    use_superproject=use_superproject
+                    use_superproject=use_superproject,
+                    depth=depth,
                 ) and (
                     has_shallow
                     or (not depth and not self._SharingProjectHasShallow())
@@ -3377,7 +3389,8 @@ class Project:
             # got what we wanted, else trigger a second run of all
             # refs.
             if not self._CheckForImmutableRevision(
-                use_superproject=use_superproject
+                use_superproject=use_superproject,
+                depth=depth,
             ):
                 # Sync the current branch only with depth set to None.
                 # We always pass depth=None down to avoid infinite recursion.
