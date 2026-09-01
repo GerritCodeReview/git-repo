@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "26dacd34_45acc52e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3385516
+      },
+      "writtenOn": "2026-09-01T20:05:28Z",
+      "side": 1,
+      "message": "Totally agree, launching an editor on --cbr --yes is broken for humans too, and this fixes that for everyone. The rest of the CL just keeps headless runs from hanging when --yes is missing",
+      "parentUuid": "ad92d275_39bdfb61",
+      "revId": "e82867d7ac3328de1839799ce17f47b7ffa75bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "13ea25bb_a5e5e575",
         "filename": "subcmds/upload.py",
         "patchSetId": 7
@@ -31,6 +49,30 @@
       "writtenOn": "2026-08-31T23:39:57Z",
       "side": 1,
       "message": "we should keep this chunk, revert everything else, and delete `or all(len(avail) \u003d\u003d 1 for _, avail in pending)`",
+      "range": {
+        "startLine": 453,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 18
+      },
+      "revId": "e82867d7ac3328de1839799ce17f47b7ffa75bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f86205ce_d19d6f3a",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 3385516
+      },
+      "writtenOn": "2026-09-01T20:05:28Z",
+      "side": 1,
+      "message": "The issue with removing the agent check is that when an agent does forget --cbr or --yes, it still hangs in vi or on stdin until timeout.\n\nthe goal is to never hang headless tools. If there\u0027s ambiguity, fail fast with copy-pasteable commands so the agent can recover.",
+      "parentUuid": "13ea25bb_a5e5e575",
       "range": {
         "startLine": 453,
         "startChar": 0,
