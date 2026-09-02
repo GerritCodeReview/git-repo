@@ -79,6 +79,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "36d1ead7_a637405d",
+        "filename": "platform_utils.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 3385516
+      },
+      "writtenOn": "2026-09-02T09:26:42Z",
+      "side": 1,
+      "message": "Not necessarily internal, but google specfiic. Imo we can make repo work better with our tooling. And nothing is stoping folks to add other (non-google) agentic flags too.",
+      "parentUuid": "98563a65_94583fb6",
+      "range": {
+        "startLine": 302,
+        "startChar": 41,
+        "endLine": 303,
+        "endChar": 39
+      },
+      "revId": "e82867d7ac3328de1839799ce17f47b7ffa75bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "13ea25bb_a5e5e575",
         "filename": "subcmds/upload.py",
         "patchSetId": 7
