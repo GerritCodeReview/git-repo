@@ -56,6 +56,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98563a65_94583fb6",
+        "filename": "platform_utils.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-09-02T09:15:53Z",
+      "side": 1,
+      "message": "These are all Google internal things and probably don\u0027t belong in repo. I think agents should be configured to export `REPO_AGENT_MODE\u003d1` before they invoke `repo`.",
+      "range": {
+        "startLine": 302,
+        "startChar": 41,
+        "endLine": 303,
+        "endChar": 39
+      },
+      "revId": "e82867d7ac3328de1839799ce17f47b7ffa75bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "13ea25bb_a5e5e575",
         "filename": "subcmds/upload.py",
         "patchSetId": 7
