@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c747c03_212e83fb",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 4961,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-02T20:35:49Z",
+      "side": 1,
+      "message": "nit: let\u0027s also add a docstring here documenting why it returns false",
+      "range": {
+        "startLine": 4961,
+        "startChar": 9,
+        "endLine": 4961,
+        "endChar": 13
+      },
+      "revId": "e28d4149ce1f6779d674d633aac296955e2269b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6dde4f1_95f201f6",
+        "filename": "tests/test_project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 2251,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-02T20:35:49Z",
+      "side": 1,
+      "message": "before this step, we should remove the shallow file we just made, since otherwise the checks below don\u0027t actually check tags",
+      "range": {
+        "startLine": 2251,
+        "startChar": 0,
+        "endLine": 2251,
+        "endChar": 71
+      },
+      "revId": "e28d4149ce1f6779d674d633aac296955e2269b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
