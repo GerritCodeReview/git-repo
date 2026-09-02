@@ -1,6 +1,42 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dac731b4_db85f9de",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-09-02T09:13:30Z",
+      "side": 1,
+      "message": "Done. Added _HasShallow, _IsShallow, and _ShouldVerifyUpstream, and overrode _ShouldVerifyUpstream in MetaProject.",
+      "parentUuid": "14d801c7_301c79d6",
+      "revId": "4a3ae01d594fcade7b2d91febe239ffe94ee6cee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7deaf8a_fefb930b",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-09-02T09:13:30Z",
+      "side": 1,
+      "message": "Done. Added IsId(self.revisionExpr) check in _ShouldVerifyUpstream.",
+      "parentUuid": "5c0336e0_3b3bd5dc",
+      "revId": "4a3ae01d594fcade7b2d91febe239ffe94ee6cee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14d801c7_301c79d6",
