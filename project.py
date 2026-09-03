@@ -1175,7 +1175,9 @@ class Project:
 
     @staticmethod
     def DeleteTmpPackFiles(
-        path: str, max_age_sec: Optional[float] = None
+        path: str,
+        max_age_sec: Optional[float] = None,
+        dryrun: bool = False,
     ) -> int:
         """Deletes temporary Git pack files in the given directory.
 
@@ -1186,10 +1188,13 @@ class Project:
         Args:
             path: Path to the repository directory (e.g. objdir or gitdir) or
                 directly to its pack directory.
-            max_age_sec: If set, only delete files older than this many seconds.
+            max_age_sec: If set and greater than 0, only delete files older than
+                this many seconds.
+            dryrun: If True, only count files that would be deleted without
+                removing them.
 
         Returns:
-            Number of temporary pack files removed.
+            Number of temporary pack files removed (or that would be removed).
         """
         if (
             os.path.basename(path) == "pack"
@@ -1225,6 +1230,9 @@ class Project:
                         continue
                 except OSError:
                     continue
+            if dryrun:
+                deleted += 1
+                continue
             try:
                 if platform_utils.isdir(full_path):
                     platform_utils.rmtree(full_path)
@@ -1244,24 +1252,33 @@ class Project:
     def CleanTempPackFiles(
         self,
         max_age_sec: Optional[float] = _DEFAULT_TEMP_PACK_MAX_AGE,
+        dryrun: bool = False,
     ) -> int:
         """Prunes stale temporary pack files from objdir and gitdir.
 
         Args:
             max_age_sec: Maximum age in seconds for files to be considered
-                active. Defaults to 24 hours. If None, deletes all temporary
-                pack files.
+                active. Defaults to 24 hours. If None or <= 0, deletes all
+                temporary pack files.
+            dryrun: If True, only count files that would be deleted without
+                removing them.
 
         Returns:
-            Total number of temporary pack files removed.
+            Total number of temporary pack files removed (or that would be
+            removed).
         """
-        dirs = {self.objdir}
+        dirs = set()
+        if self.objdir:
+            dirs.add(self.objdir)
         if self.gitdir:
             dirs.add(self.gitdir)
-        total_deleted = 0
+        pack_dirs = set()
         for d in dirs:
+            pack_dirs.add(os.path.realpath(os.path.join(d, "objects", "pack")))
+        total_deleted = 0
+        for p in pack_dirs:
             total_deleted += Project.DeleteTmpPackFiles(
-                d, max_age_sec=max_age_sec
+                p, max_age_sec=max_age_sec, dryrun=dryrun
             )
         return total_deleted
 

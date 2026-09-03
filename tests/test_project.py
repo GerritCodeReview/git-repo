@@ -2713,6 +2713,19 @@ class TempPackFilesTests(unittest.TestCase):
             project.Project.DeleteTmpPackFiles("/nonexistent/path"), 0
         )
 
+    def test_delete_tmp_pack_files_dryrun(self):
+        """Test DeleteTmpPackFiles with dryrun=True."""
+        with tempfile.TemporaryDirectory() as tempdir:
+            pack_dir = os.path.join(tempdir, "objects", "pack")
+            os.makedirs(pack_dir)
+            tmp_pack = os.path.join(pack_dir, "tmp_pack_dryrun")
+            with open(tmp_pack, "w") as fp:
+                fp.write("content")
+
+            deleted = project.Project.DeleteTmpPackFiles(tempdir, dryrun=True)
+            self.assertEqual(deleted, 1)
+            self.assertTrue(os.path.exists(tmp_pack))
+
     def test_delete_tmp_pack_files_max_age(self):
         """Test DeleteTmpPackFiles respects max_age_sec."""
         with tempfile.TemporaryDirectory() as tempdir:

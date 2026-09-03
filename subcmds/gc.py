@@ -135,6 +135,37 @@ class Gc(Command):
 
         return 0
 
+    def clean_temp_pack_files(self, projects: List[Project], opt) -> int:
+        """Purges orphaned temporary pack files from project object
+        directories.
+        """
+        pack_dirs = set()
+        for project in projects:
+            if hasattr(project, "objdir") and project.objdir:
+                pack_dirs.add(
+                    os.path.realpath(
+                        os.path.join(project.objdir, "objects", "pack")
+                    )
+                )
+            if hasattr(project, "gitdir") and project.gitdir:
+                pack_dirs.add(
+                    os.path.realpath(
+                        os.path.join(project.gitdir, "objects", "pack")
+                    )
+                )
+
+        total_cleaned = 0
+        for d in sorted(pack_dirs):
+            total_cleaned += Project.DeleteTmpPackFiles(
+                d, max_age_sec=None, dryrun=opt.dryrun
+            )
+
+        if opt.dryrun and total_cleaned:
+            print(f"Would have deleted {total_cleaned} temporary pack files.")
+        elif total_cleaned:
+            print(f"Deleted {total_cleaned} temporary pack files.")
+        return total_cleaned
+
     def _generate_promisor_files(self, pack_dir: str):
         """Generates promisor files for all pack files in the given directory.
 
@@ -304,6 +335,8 @@ class Gc(Command):
         ret = self.delete_unused_projects(all_projects, opt)
         if ret != 0:
             return ret
+
+        self.clean_temp_pack_files(projects, opt)
 
         if opt.repack:
             git_require((2, 17, 0), fail=True, msg="--repack")
