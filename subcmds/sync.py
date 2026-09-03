@@ -528,6 +528,11 @@ later is required to fix a server side protocol bug.
             help="number of network jobs to run in parallel (defaults to "
             "--jobs or 1). Ignored unless --no-interleaved is set",
         )
+
+        jobs_checkout_default = self._FormatHelpDefault(
+            str(DEFAULT_LOCAL_JOBS),
+            "a value based on the number of CPU cores",
+        )
         p.add_option(
             "--jobs-checkout",
             default=None,
@@ -535,7 +540,7 @@ later is required to fix a server side protocol bug.
             metavar="JOBS",
             help=(
                 "number of local checkout jobs to run in parallel (defaults "
-                f"to --jobs or {DEFAULT_LOCAL_JOBS}). Ignored unless "
+                f"to --jobs or {jobs_checkout_default}). Ignored unless "
                 "--no-interleaved is set"
             ),
         )
