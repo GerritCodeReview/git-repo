@@ -17,7 +17,7 @@ import multiprocessing
 import optparse
 import os
 import re
-from typing import List, TYPE_CHECKING
+from typing import List, Optional, TYPE_CHECKING
 
 from error import InvalidProjectGroupsError
 from error import NoSuchProjectError
@@ -152,6 +152,20 @@ class Command:
             self._Options(self._optparse)
         return self._optparse
 
+    @staticmethod
+    def _GetHelpForCpuJobCount(
+        default_jobs: Optional[int] = None,
+    ) -> str:
+        """Return CPU-based job help, with an explicit default when needed.
+
+        Specify default_jobs when additional logic computes effective default.
+        """
+        if GENERATE_MANPAGES:
+            return "based on number of CPU cores"
+
+        default = "%default" if default_jobs is None else str(default_jobs)
+        return f"{default}; based on number of CPU cores"
+
     def _CommonOptions(self, p, opt_v=True):
         """Initialize the option parser with common options.
 
@@ -176,11 +190,7 @@ class Command:
         )
 
         if self.PARALLEL_JOBS is not None:
-            default = "based on number of CPU cores"
-            if not GENERATE_MANPAGES:
-                # Only include active cpu count if we aren't generating man
-                # pages.
-                default = f"%default; {default}"
+            default = self._GetHelpForCpuJobCount()
             p.add_option(
                 "-j",
                 "--jobs",
