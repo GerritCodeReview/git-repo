@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c1a9dabf_dda4323d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2123,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-03T20:29:40Z",
+      "side": 1,
+      "message": "we can lower the version requirements here to 2.17.0  (`fetch --no-filter` was released in https://github.com/git/git/blob/v2.17.0/Documentation/RelNotes/2.17.0.txt#L103-L107 by https://github.com/git/git/commit/aa57b871dad3cca07abead9a8d1fefceffe7578d)\n```suggestion\n        if git_require((2, 17, 0)):\n```",
+      "range": {
+        "startLine": 2123,
+        "startChar": 24,
+        "endLine": 2123,
+        "endChar": 32
+      },
+      "revId": "80460d6df7a93ba23aa89ed59e5be09df8319102",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e753474a_c3f79b86",
         "filename": "tests/test_project.py",
         "patchSetId": 4
