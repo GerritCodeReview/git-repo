@@ -2753,3 +2753,135 @@ class TempPackFilesTests(unittest.TestCase):
             )
             self.assertEqual(deleted, 1)
             self.assertFalse(os.path.exists(tmp_pack))
+
+    def test_remote_fetch_cleans_tmp_pack_on_retry(self):
+        """Test _RemoteFetch cleans temporary pack files between retries."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(
+                tempdir,
+                gitdir=os.path.join(tempdir, "gitdir"),
+                objdir=os.path.join(tempdir, "objdir"),
+            )
+            os.makedirs(proj.gitdir, exist_ok=True)
+            pack_dir = os.path.join(proj.objdir, "objects", "pack")
+            os.makedirs(pack_dir, exist_ok=True)
+            proj._CheckForImmutableRevision = mock.MagicMock(return_value=False)
+            mock_remote = mock.MagicMock()
+            mock_remote.PreConnectFetch.return_value = True
+            mock_remote.ToLocal.side_effect = (
+                lambda r: "refs/remotes/origin/main"
+            )
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+
+            attempts = []
+
+            def _fake_git_command(*args, **kwargs):
+                cmd_mock = mock.MagicMock()
+                attempt_num = len(attempts) + 1
+                attempts.append(attempt_num)
+                tmp_file = os.path.join(
+                    pack_dir, f"tmp_pack_attempt_{attempt_num}"
+                )
+                with open(tmp_file, "w") as fp:
+                    fp.write("data")
+                if attempt_num == 1:
+                    cmd_mock.Wait.return_value = 1
+                    cmd_mock.stdout = "error: RPC failed; HTTP 429\n"
+                else:
+                    self.assertFalse(
+                        os.path.exists(
+                            os.path.join(pack_dir, "tmp_pack_attempt_1")
+                        )
+                    )
+                    cmd_mock.Wait.return_value = 0
+                    cmd_mock.stdout = ""
+                return cmd_mock
+
+            with mock.patch(
+                "project.GitCommand", side_effect=_fake_git_command
+            ), mock.patch("time.sleep"):
+                res = proj._RemoteFetch(
+                    current_branch_only=True,
+                    retry_fetches=2,
+                    retry_sleep_initial_sec=0,
+                )
+
+            self.assertTrue(res)
+            self.assertEqual(len(attempts), 2)
+
+    def test_remote_fetch_cleans_tmp_pack_on_failure(self):
+        """Test _RemoteFetch cleans temporary pack files on final failure."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(
+                tempdir,
+                gitdir=os.path.join(tempdir, "gitdir"),
+                objdir=os.path.join(tempdir, "objdir"),
+            )
+            os.makedirs(proj.gitdir, exist_ok=True)
+            pack_dir = os.path.join(proj.objdir, "objects", "pack")
+            os.makedirs(pack_dir, exist_ok=True)
+            proj._CheckForImmutableRevision = mock.MagicMock(return_value=False)
+            mock_remote = mock.MagicMock()
+            mock_remote.PreConnectFetch.return_value = True
+            mock_remote.ToLocal.side_effect = (
+                lambda r: "refs/remotes/origin/main"
+            )
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+
+            def _fake_git_command(*args, **kwargs):
+                cmd_mock = mock.MagicMock()
+                tmp_file = os.path.join(pack_dir, "tmp_pack_failed")
+                with open(tmp_file, "w") as fp:
+                    fp.write("data")
+                cmd_mock.Wait.return_value = 128
+                cmd_mock.stdout = "fatal: error\n"
+                return cmd_mock
+
+            with mock.patch(
+                "project.GitCommand", side_effect=_fake_git_command
+            ):
+                res = proj._RemoteFetch(
+                    current_branch_only=True,
+                    retry_fetches=1,
+                )
+
+            self.assertFalse(res)
+            self.assertFalse(
+                os.path.exists(os.path.join(pack_dir, "tmp_pack_failed"))
+            )
+
+    def test_apply_clone_bundle_cleans_tmp_pack_on_failure(self):
+        """Test _ApplyCloneBundle cleans temporary pack files on failure."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(
+                tempdir,
+                gitdir=os.path.join(tempdir, "gitdir"),
+                objdir=os.path.join(tempdir, "objdir"),
+            )
+            pack_dir = os.path.join(proj.objdir, "objects", "pack")
+            os.makedirs(pack_dir, exist_ok=True)
+            proj._FetchBundle = mock.MagicMock(return_value=True)
+            mock_remote = mock.MagicMock()
+            mock_remote.url = "http://example.com/repo"
+            mock_remote.fetch = []
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+            mock_user_cfg = mock.MagicMock()
+            mock_user_cfg.UrlInsteadOf.side_effect = lambda u: u
+
+            def _fake_git_command(*args, **kwargs):
+                cmd_mock = mock.MagicMock()
+                tmp_file = os.path.join(pack_dir, "tmp_pack_bundle")
+                with open(tmp_file, "w") as fp:
+                    fp.write("data")
+                cmd_mock.Wait.return_value = 1
+                return cmd_mock
+
+            with mock.patch(
+                "git_config.GitConfig.ForUser", return_value=mock_user_cfg
+            ), mock.patch("project.GitCommand", side_effect=_fake_git_command):
+                res = proj._ApplyCloneBundle()
+
+            self.assertFalse(res)
+            self.assertFalse(
+                os.path.exists(os.path.join(pack_dir, "tmp_pack_bundle"))
+            )

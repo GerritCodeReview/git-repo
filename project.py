@@ -1218,7 +1218,7 @@ class Project:
             ):
                 continue
             full_path = os.path.join(pack_dir, f)
-            if max_age_sec is not None:
+            if max_age_sec is not None and max_age_sec > 0:
                 try:
                     st = os.stat(full_path)
                     if (now - st.st_mtime) < max_age_sec:
@@ -3334,8 +3334,10 @@ class Project:
                     ok = True
                     break
 
+                self.CleanTempPackFiles(max_age_sec=None)
+
                 # Retry later due to HTTP 429 Too Many Requests.
-                elif (
+                if (
                     gitcmd.stdout
                     and "error:" in gitcmd.stdout
                     and "HTTP 429" in gitcmd.stdout
@@ -3451,6 +3453,8 @@ class Project:
                         -RETRY_JITTER_PERCENT, RETRY_JITTER_PERCENT
                     )
         finally:
+            if not ok:
+                self.CleanTempPackFiles(max_age_sec=None)
             if initial:
                 if alt_tmp_refs:
                     delete_cmds = "".join(
@@ -3551,6 +3555,8 @@ class Project:
         )
         platform_utils.remove(bundle_dst, missing_ok=True)
         platform_utils.remove(bundle_tmp, missing_ok=True)
+        if not ok:
+            self.CleanTempPackFiles(max_age_sec=None)
         return ok
 
     def _FetchBundle(self, srcUrl, tmpPath, dstPath, quiet, verbose):
