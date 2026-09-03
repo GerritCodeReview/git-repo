@@ -104,6 +104,10 @@ MAXIMUM_RETRY_SLEEP_SEC = 3600.0
 # +-10% random jitter is added to each Fetches retry sleep duration.
 RETRY_JITTER_PERCENT = 0.1
 
+# Default maximum age (in seconds) for temporary pack files to be considered
+# active before being pruned as stale.
+_DEFAULT_TEMP_PACK_MAX_AGE = 24 * 60 * 60
+
 # Whether to use alternates.  Switching back and forth is *NOT* supported.
 # TODO(vapier): Remove knob once behavior is verified.
 _ALTERNATES = os.environ.get("REPO_USE_ALTERNATES") == "1"
@@ -1169,6 +1173,98 @@ class Project:
             if R_HEADS + n not in heads:
                 self.bare_git.DeleteRef(name, ref_id)
 
+    @staticmethod
+    def DeleteTmpPackFiles(
+        path: str, max_age_sec: Optional[float] = None
+    ) -> int:
+        """Deletes temporary Git pack files in the given directory.
+
+        Git operations (fetch, index-pack, repack) create temporary files in
+        `objects/pack/` prefixed with `tmp_pack_`, `tmp_idx_`, or `.tmp-`.
+        If the operation is interrupted, these files become orphaned.
+
+        Args:
+            path: Path to the repository directory (e.g. objdir or gitdir) or
+                directly to its pack directory.
+            max_age_sec: If set, only delete files older than this many seconds.
+
+        Returns:
+            Number of temporary pack files removed.
+        """
+        if (
+            os.path.basename(path) == "pack"
+            and os.path.basename(os.path.dirname(path)) == "objects"
+        ):
+            pack_dir = path
+        else:
+            pack_dir = os.path.join(path, "objects", "pack")
+
+        if not platform_utils.isdir(pack_dir):
+            return 0
+
+        now = time.time()
+        deleted = 0
+        try:
+            entries = os.listdir(pack_dir)
+        except OSError:
+            return 0
+
+        for f in entries:
+            if not (
+                f.startswith("tmp_pack_")
+                or f.startswith("tmp_idx_")
+                or f.startswith(".tmp-")
+                or f.startswith("tmp_")
+            ):
+                continue
+            full_path = os.path.join(pack_dir, f)
+            if max_age_sec is not None:
+                try:
+                    st = os.stat(full_path)
+                    if (now - st.st_mtime) < max_age_sec:
+                        continue
+                except OSError:
+                    continue
+            try:
+                if platform_utils.isdir(full_path):
+                    platform_utils.rmtree(full_path)
+                else:
+                    platform_utils.remove(full_path)
+                deleted += 1
+                logger.debug("Deleted stale temporary pack file: %s", full_path)
+            except OSError as e:
+                logger.warning(
+                    "Unable to delete temporary pack file %s: %s",
+                    full_path,
+                    e,
+                )
+
+        return deleted
+
+    def CleanTempPackFiles(
+        self,
+        max_age_sec: Optional[float] = _DEFAULT_TEMP_PACK_MAX_AGE,
+    ) -> int:
+        """Prunes stale temporary pack files from objdir and gitdir.
+
+        Args:
+            max_age_sec: Maximum age in seconds for files to be considered
+                active. Defaults to 24 hours. If None, deletes all temporary
+                pack files.
+
+        Returns:
+            Total number of temporary pack files removed.
+        """
+        dirs = {self.objdir}
+        if self.gitdir:
+            dirs.add(self.gitdir)
+        total_deleted = 0
+        for d in dirs:
+            total_deleted += Project.DeleteTmpPackFiles(
+                d, max_age_sec=max_age_sec
+            )
+        return total_deleted
+
     def GetUploadableBranches(self, selected_branch=None):
         """List any branches which can be uploaded for review."""
         if selected_branch:
@@ -1564,6 +1660,7 @@ class Project:
                 # Let _InitGitDir fix the issue, force_sync is always True here.
                 self._InitGitDir(force_sync=True, quiet=quiet)
         self._InitRemote()
+        self.CleanTempPackFiles()
 
         if self.UseAlternates:
             # If gitdir/objects is a symlink, migrate it from the old layout.

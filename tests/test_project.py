@@ -20,6 +20,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+import time
 from typing import Dict, List, Optional, Tuple
 import unittest
 from unittest import mock
@@ -2664,3 +2665,91 @@ class FetchCmdTests(unittest.TestCase):
 
             result = fakeproj.Sync(use_local_gitdirs=False)
             self.assertFalse(result)
+
+
+class TempPackFilesTests(unittest.TestCase):
+    """Tests for temporary pack file cleanup."""
+
+    def test_delete_tmp_pack_files(self):
+        """Test DeleteTmpPackFiles removes tmp files and keeps valid packs."""
+        with tempfile.TemporaryDirectory() as tempdir:
+            pack_dir = os.path.join(tempdir, "objects", "pack")
+            os.makedirs(pack_dir)
+
+            tmp_pack = os.path.join(pack_dir, "tmp_pack_1234")
+            tmp_idx = os.path.join(pack_dir, "tmp_idx_1234")
+            dot_tmp = os.path.join(pack_dir, ".tmp-1234-pack")
+            valid_pack = os.path.join(pack_dir, "pack-1234.pack")
+            valid_idx = os.path.join(pack_dir, "pack-1234.idx")
+
+            for p in (tmp_pack, tmp_idx, dot_tmp, valid_pack, valid_idx):
+                with open(p, "w") as fp:
+                    fp.write("content")
+
+            deleted = project.Project.DeleteTmpPackFiles(tempdir)
+            self.assertEqual(deleted, 3)
+            self.assertFalse(os.path.exists(tmp_pack))
+            self.assertFalse(os.path.exists(tmp_idx))
+            self.assertFalse(os.path.exists(dot_tmp))
+            self.assertTrue(os.path.exists(valid_pack))
+            self.assertTrue(os.path.exists(valid_idx))
+
+    def test_delete_tmp_pack_files_direct_pack_dir(self):
+        """Test DeleteTmpPackFiles when given the pack directory directly."""
+        with tempfile.TemporaryDirectory() as tempdir:
+            pack_dir = os.path.join(tempdir, "objects", "pack")
+            os.makedirs(pack_dir)
+            tmp_pack = os.path.join(pack_dir, "tmp_pack_abcd")
+            with open(tmp_pack, "w") as fp:
+                fp.write("content")
+
+            deleted = project.Project.DeleteTmpPackFiles(pack_dir)
+            self.assertEqual(deleted, 1)
+            self.assertFalse(os.path.exists(tmp_pack))
+
+    def test_delete_tmp_pack_files_nonexistent_dir(self):
+        """Test DeleteTmpPackFiles with nonexistent directory."""
+        self.assertEqual(
+            project.Project.DeleteTmpPackFiles("/nonexistent/path"), 0
+        )
+
+    def test_delete_tmp_pack_files_max_age(self):
+        """Test DeleteTmpPackFiles respects max_age_sec."""
+        with tempfile.TemporaryDirectory() as tempdir:
+            pack_dir = os.path.join(tempdir, "objects", "pack")
+            os.makedirs(pack_dir)
+
+            old_file = os.path.join(pack_dir, "tmp_pack_old")
+            new_file = os.path.join(pack_dir, "tmp_pack_new")
+            for p in (old_file, new_file):
+                with open(p, "w") as fp:
+                    fp.write("content")
+
+            now = time.time()
+            os.utime(old_file, (now - 5000, now - 5000))
+            os.utime(new_file, (now, now))
+
+            deleted = project.Project.DeleteTmpPackFiles(
+                tempdir, max_age_sec=3600
+            )
+            self.assertEqual(deleted, 1)
+            self.assertFalse(os.path.exists(old_file))
+            self.assertTrue(os.path.exists(new_file))
+
+    def test_clean_temp_pack_files(self):
+        """Test CleanTempPackFiles cleans objdir and gitdir."""
+        with tempfile.TemporaryDirectory() as tempdir:
+            fakeproj = FakeProject(tempdir)
+            fakeproj.objdir = os.path.join(tempdir, "objdir")
+            pack_dir = os.path.join(fakeproj.objdir, "objects", "pack")
+            os.makedirs(pack_dir)
+            tmp_pack = os.path.join(pack_dir, "tmp_pack_9999")
+            with open(tmp_pack, "w") as fp:
+                fp.write("junk")
+            os.utime(tmp_pack, (0, 0))
+
+            deleted = project.Project.CleanTempPackFiles(
+                fakeproj, max_age_sec=3600
+            )
+            self.assertEqual(deleted, 1)
+            self.assertFalse(os.path.exists(tmp_pack))
