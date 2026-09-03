@@ -20,7 +20,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 import unittest
 from unittest import mock
 
@@ -1798,6 +1798,7 @@ def _create_mock_project(
     tempdir,
     use_local_gitdirs=False,
     fetch_cmd=None,
+    reproject_cmd: Optional[str] = None,
     depth=None,
     gitdir=None,
     objdir=None,
@@ -1807,6 +1808,7 @@ def _create_mock_project(
     manifest = mock.MagicMock()
     manifest.manifestProject.use_local_gitdirs = use_local_gitdirs
     manifest.manifestProject.fetch_cmd = fetch_cmd
+    manifest.manifestProject.reproject_cmd = reproject_cmd
     manifest.manifestProject.depth = depth
     manifest.manifestProject.dissociate = False
     manifest.manifestProject.clone_filter = None
@@ -2771,20 +2773,25 @@ class GetEnvVarsTests(unittest.TestCase):
             self.assertEqual(env["REPO_LREV"], "")
 
 
+def _create_manifest_project(tempdir: str) -> project.ManifestProject:
+    """Return a ManifestProject for a new .repo/ under |tempdir|."""
+    repodir = os.path.join(tempdir, ".repo")
+    manifest_dir = os.path.join(repodir, "manifests")
+    manifest_file = os.path.join(repodir, manifest_xml.MANIFEST_FILE_NAME)
+    os.mkdir(repodir)
+    os.mkdir(manifest_dir)
+    manifest = manifest_xml.XmlManifest(repodir, manifest_file)
+
+    return project.ManifestProject(
+        manifest, "test/manifest", os.path.join(tempdir, ".git"), tempdir
+    )
+
+
 class FetchCmdTests(unittest.TestCase):
     """Tests for fetch_cmd feature."""
 
     def setUpManifest(self, tempdir):
-        repodir = os.path.join(tempdir, ".repo")
-        manifest_dir = os.path.join(repodir, "manifests")
-        manifest_file = os.path.join(repodir, manifest_xml.MANIFEST_FILE_NAME)
-        os.mkdir(repodir)
-        os.mkdir(manifest_dir)
-        manifest = manifest_xml.XmlManifest(repodir, manifest_file)
-
-        return project.ManifestProject(
-            manifest, "test/manifest", os.path.join(tempdir, ".git"), tempdir
-        )
+        return _create_manifest_project(tempdir)
 
     def _get_project(self, tempdir):
         proj = _create_mock_project(
@@ -2837,3 +2844,752 @@ class FetchCmdTests(unittest.TestCase):
 
             result = fakeproj.Sync(use_local_gitdirs=False)
             self.assertFalse(result)
+
+
+class ReprojectCmdTests(unittest.TestCase):
+    """Tests for the repo.reprojectcmd feature."""
+
+    REVID = "1234abcd" * 5
+    HEAD_ID = "5678abcd" * 5
+    HEAD_TREE = "cafe0000" * 5
+    OTHER_ID = "9abcdef0" * 5
+    PUB_ID = "0fedcba9" * 5
+
+    def _get_project(self, tempdir: str) -> project.Project:
+        proj = _create_mock_project(
+            tempdir, use_local_gitdirs=True, reproject_cmd="echo reproject"
+        )
+        proj.manifest.path_prefix = ""
+        proj.GetRevisionId = mock.MagicMock(return_value=self.REVID)
+        proj.IsRebaseInProgress = mock.MagicMock(return_value=False)
+        proj.IsCherryPickInProgress = mock.MagicMock(return_value=False)
+        proj.work_git = mock.MagicMock()
+        proj.work_git.GetHead.return_value = self.HEAD_ID
+        proj.work_git.rev_parse.return_value = self.HEAD_TREE
+        proj.work_git.GetDotgitPath.side_effect = lambda subpath: os.path.join(
+            tempdir, ".git", subpath
+        )
+        return proj
+
+    @staticmethod
+    def _z(*items: str) -> str:
+        """Return |items| as NUL-delimited Git output."""
+        return "".join(item + "\0" for item in items)
+
+    @staticmethod
+    def _git_command(
+        staged: str = "", diff: str = "", returncode: int = 0
+    ) -> Callable[..., mock.MagicMock]:
+        """Return a GitCommand stand-in answering the reproject queries.
+
+        Args:
+            staged: `git diff-index -z --cached` or `git ls-files -z` output.
+            diff: `git diff-index --cached` postcondition output.
+            returncode: exit code of GitCommand.
+        """
+
+        def make(
+            project: project.Project, cmdv: List[str], **kwargs: Any
+        ) -> mock.MagicMock:
+            cmd = mock.MagicMock()
+            cmd.stderr = ""
+            if cmdv[0] == "diff-index":
+                if any("^{tree}" in arg for arg in cmdv):
+                    cmd.stdout = diff
+                else:
+                    cmd.stdout = staged
+            elif cmdv[0] == "ls-files":
+                cmd.stdout = staged
+            else:
+                cmd.stdout = ""
+            cmd.Wait.return_value = returncode
+            return cmd
+
+        return make
+
+    def _reproject(
+        self, proj: project.Project, **outputs: Any
+    ) -> mock.MagicMock:
+        """Run _Reproject against mocked Git; return the subprocess mock."""
+        with mock.patch(
+            "project.GitCommand", side_effect=self._git_command(**outputs)
+        ), mock.patch("subprocess.run") as mock_run:
+            mock_run.return_value = mock.MagicMock(returncode=0, stdout="")
+            proj._Reproject(self.REVID)
+        return mock_run
+
+    def test_reproject_runs_the_command_with_project_env(self) -> None:
+        """Test the command runs from the client root with REPO_TREV set."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            with mock.patch(
+                "project.GitCommand", side_effect=self._git_command()
+            ), mock.patch("subprocess.run") as mock_run:
+                mock_run.return_value = mock.MagicMock(returncode=0, stdout="")
+                proj._Reproject(self.REVID)
+
+            mock_run.assert_called_once()
+            args, kwargs = mock_run.call_args
+            self.assertEqual(args[0], "echo reproject")
+            self.assertTrue(kwargs["shell"])
+            self.assertEqual(kwargs["cwd"], tempdir)
+            self.assertEqual(kwargs["env"]["REPO_TREV"], self.REVID)
+            self.assertEqual(kwargs["env"]["REPO_PATH"], "test-project")
+
+    def test_reproject_rejects_a_staged_change(self) -> None:
+        """Test a staged change fails before the command runs."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            with self.assertRaises(project.LocalSyncFail) as e:
+                self._reproject(proj, staged=self._z("lib/a.c"))
+            self.assertIn(
+                "reprojectcmd cannot run with staged changes", str(e.exception)
+            )
+            self.assertIn("lib/a.c", str(e.exception))
+
+    def test_reproject_unborn_head_rejects_a_staged_change(self) -> None:
+        """Test a staged change on unborn HEAD fails before command runs."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.work_git.rev_parse.side_effect = error.GitError("unborn")
+            with self.assertRaises(project.LocalSyncFail) as e:
+                self._reproject(proj, staged=self._z("lib/a.c"))
+            self.assertIn(
+                "reprojectcmd cannot run with staged changes", str(e.exception)
+            )
+            self.assertIn("lib/a.c", str(e.exception))
+
+    def test_reproject_unborn_head_runs_clean(self) -> None:
+        """Test a clean unborn HEAD allows the command to run."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.work_git.rev_parse.side_effect = error.GitError("unborn")
+            mock_run = self._reproject(proj)
+            mock_run.assert_called_once()
+
+    def test_reproject_rejects_an_operation_in_progress(self) -> None:
+        """Test an unfinished rebase fails the sync before the command runs."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.IsRebaseInProgress.return_value = True
+            with mock.patch("subprocess.run") as mock_run:
+                with self.assertRaises(project.LocalSyncFail) as e:
+                    proj._Reproject(self.REVID)
+            self.assertIn("rebase in progress", str(e.exception))
+            mock_run.assert_not_called()
+
+    def test_reproject_surfaces_a_failed_command(self) -> None:
+        """Test a non-zero exit fails the sync with the command's output."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            with mock.patch(
+                "project.GitCommand", side_effect=self._git_command()
+            ), mock.patch("subprocess.run") as mock_run:
+                mock_run.return_value = mock.MagicMock(
+                    returncode=3, stdout="disk on fire\n"
+                )
+                with self.assertRaises(project.LocalSyncFail) as e:
+                    proj._Reproject(self.REVID)
+            self.assertIn("exited with 3", str(e.exception))
+            self.assertIn("disk on fire", str(e.exception))
+
+    def test_reproject_rejects_a_moved_head_ref(self) -> None:
+        """Test a command that wrote HEAD fails the sync."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.work_git.GetHead.side_effect = [self.HEAD_ID, self.REVID]
+            with mock.patch(
+                "project.GitCommand", side_effect=self._git_command()
+            ), mock.patch("subprocess.run") as mock_run:
+                mock_run.return_value = mock.MagicMock(returncode=0, stdout="")
+                with self.assertRaises(project.LocalSyncFail) as e:
+                    proj._Reproject(self.REVID)
+            self.assertIn("moved HEAD", str(e.exception))
+
+    def test_reproject_rejects_a_moved_head_oid_on_branch(self) -> None:
+        """Test a command that moved a branch pointer fails the sync."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.work_git.GetHead.return_value = "refs/heads/main"
+            proj.work_git.rev_parse.side_effect = [
+                "tree123",  # HEAD^{tree}
+                self.HEAD_ID,  # HEAD before command
+                self.REVID,  # HEAD after command
+            ]
+            with mock.patch(
+                "project.GitCommand", side_effect=self._git_command()
+            ), mock.patch("subprocess.run") as mock_run:
+                mock_run.return_value = mock.MagicMock(returncode=0, stdout="")
+                with self.assertRaises(project.LocalSyncFail) as e:
+                    proj._Reproject(self.REVID)
+            self.assertIn("moved HEAD", str(e.exception))
+
+    def test_reproject_rejects_an_index_mismatch(self) -> None:
+        """Test a command that left the index off the target fails the sync."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            with mock.patch(
+                "project.GitCommand",
+                side_effect=self._git_command(diff="lib/a.c\n"),
+            ), mock.patch("subprocess.run") as mock_run:
+                mock_run.return_value = mock.MagicMock(returncode=0, stdout="")
+                with self.assertRaises(project.LocalSyncFail) as e:
+                    proj._Reproject(self.REVID)
+            self.assertIn(self.REVID, str(e.exception))
+            self.assertIn("lib/a.c", str(e.exception))
+
+    def _get_synced_project(
+        self,
+        tempdir: str,
+        head: Optional[str],
+        branch: Optional[str] = None,
+        upstream_gain: Sequence[str] = (),
+        local_changes: Sequence[str] = (),
+    ) -> project.Project:
+        """Return a project ready for Sync_LocalHalf with Git mocked out.
+
+        Args:
+            head: The commit HEAD is at, or None for an unborn branch.
+            branch: The name of the checked out branch, or None if detached.
+            upstream_gain: The commits the target has that HEAD lacks.
+            local_changes: The "<sha> <email>" lines HEAD has that the target
+                lacks.
+        """
+        proj = self._get_project(tempdir)
+        for name in (
+            "_InitWorkTree",
+            "CleanPublishedCache",
+            "_CopyAndLinkFiles",
+            "_Reproject",
+            "_Checkout",
+            "_FastForward",
+            "_ResetHard",
+            "_Rebase",
+        ):
+            setattr(proj, name, mock.MagicMock())
+        proj.IsDirty = mock.MagicMock(return_value=False)
+        proj._userident_name = "Me"
+        proj._userident_email = "me@example.com"
+
+        proj.bare_ref = mock.MagicMock()
+        if branch:
+            proj.bare_ref.head = project.R_HEADS + branch
+            proj.bare_ref.all = {project.R_HEADS + branch: head} if head else {}
+            # A branch that does not track upstream; tests that need one
+            # tracking upstream replace this with _tracking_branch().
+            proj.GetBranch = mock.MagicMock(
+                return_value=self._tracking_branch(branch, merge=None)
+            )
+        else:
+            proj.bare_ref.head = head
+            proj.bare_ref.all = {}
+
+        def _revlist(*args: Any, **kwargs: Any) -> List[str]:
+            if kwargs.get("format"):
+                return list(local_changes)
+            if args[0] == project.not_rev(project.HEAD):
+                return list(upstream_gain)
+            if args[1] == self.PUB_ID:
+                return [self.PUB_ID]
+            return []
+
+        proj._revlist = mock.MagicMock(side_effect=_revlist)
+        return proj
+
+    @staticmethod
+    def _tracking_branch(
+        name: str = "topic", merge: Optional[str] = "main"
+    ) -> mock.MagicMock:
+        """Return a branch tracking |merge| upstream, or nothing if None."""
+        branch = mock.MagicMock()
+        branch.name = name
+        branch.merge = merge
+        branch.LocalMerge = f"refs/remotes/origin/{merge}" if merge else None
+        return branch
+
+    def test_sync_local_half_materializes_a_fresh_project(self) -> None:
+        """Test a project with an unborn HEAD is checked out by the command."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_synced_project(tempdir, head=None, branch="main")
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+
+            self.assertTrue(syncbuf.Finish())
+            proj._Reproject.assert_called_once_with(self.REVID, verbose=False)
+            proj.work_git.DetachHead.assert_called_once_with(
+                self.REVID,
+                message=f"checkout: moving from main to {self.REVID}",
+            )
+            proj._Checkout.assert_not_called()
+            proj._CopyAndLinkFiles.assert_called_once_with()
+
+    def test_sync_local_half_detached_head_uses_the_command(self) -> None:
+        """Test a detached HEAD is moved to the target by the command."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_synced_project(tempdir, head=self.HEAD_ID)
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+
+            self.assertTrue(syncbuf.Finish())
+            proj._Reproject.assert_called_once_with(self.REVID, verbose=False)
+            proj.work_git.DetachHead.assert_called_once_with(
+                self.REVID,
+                message=f"checkout: moving from {self.HEAD_ID} to {self.REVID}",
+            )
+            proj._Checkout.assert_not_called()
+
+    def test_sync_local_half_head_at_target_skips_the_command(self) -> None:
+        """Test `repo sync -d` at the target only detaches HEAD."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_synced_project(
+                tempdir, head=self.REVID, branch="topic"
+            )
+            syncbuf = project.SyncBuffer(proj.config, detach_head=True)
+            proj.Sync_LocalHalf(syncbuf)
+
+            self.assertTrue(syncbuf.Finish())
+            proj._Reproject.assert_not_called()
+            proj.work_git.DetachHead.assert_called_once()
+            self.assertEqual(
+                proj.work_git.DetachHead.call_args[0][0], self.REVID
+            )
+
+    def test_sync_local_half_command_failure_fails_the_project(self) -> None:
+        """Test a failed command is reported and leaves the ref alone."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_synced_project(tempdir, head=self.HEAD_ID)
+            proj._Reproject.side_effect = project.LocalSyncFail(
+                "reprojectcmd exited with 1", project=proj.name
+            )
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+
+            self.assertFalse(syncbuf.Finish())
+            self.assertEqual(len(syncbuf.errors), 1)
+            self.assertIn("exited with 1", str(syncbuf.errors[0]))
+            proj.work_git.DetachHead.assert_not_called()
+            proj._CopyAndLinkFiles.assert_not_called()
+
+    def test_sync_local_half_fast_forward_uses_the_command(self) -> None:
+        """Test a branch behind the target is fast-forwarded by the command."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_synced_project(
+                tempdir,
+                head=self.HEAD_ID,
+                branch="topic",
+                upstream_gain=[self.REVID],
+            )
+            proj.GetBranch = mock.MagicMock(
+                return_value=self._tracking_branch()
+            )
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+
+            self.assertTrue(syncbuf.Finish())
+            proj._Reproject.assert_called_once_with(self.REVID, verbose=False)
+            proj.work_git.UpdateRef.assert_called_once_with(
+                project.HEAD,
+                self.REVID,
+                old=self.HEAD_ID,
+                message=f"merge {self.REVID}: Fast-forward",
+            )
+            proj._FastForward.assert_not_called()
+            proj._CopyAndLinkFiles.assert_called_once_with()
+
+    def test_sync_local_half_head_ahead_skips_the_command(self) -> None:
+        """Test a published branch ahead of the target is left alone."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_synced_project(
+                tempdir, head=self.HEAD_ID, branch="topic"
+            )
+            proj.GetBranch = mock.MagicMock(
+                return_value=self._tracking_branch()
+            )
+            proj.work_git.merge_base.side_effect = error.GitError("no")
+            proj.WasPublished = mock.MagicMock(return_value=self.PUB_ID)
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+
+            self.assertTrue(syncbuf.Finish())
+            proj._Reproject.assert_not_called()
+            proj.work_git.UpdateRef.assert_not_called()
+            proj._FastForward.assert_not_called()
+            proj._CopyAndLinkFiles.assert_called_once_with()
+
+    def test_sync_local_half_hard_reset_uses_the_command(self) -> None:
+        """Test a branch whose commits upstream dropped is reset by it."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_synced_project(
+                tempdir,
+                head=self.HEAD_ID,
+                branch="topic",
+                upstream_gain=[self.REVID],
+                local_changes=[f"{self.OTHER_ID} other@example.com"],
+            )
+            proj.GetBranch = mock.MagicMock(
+                return_value=self._tracking_branch()
+            )
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+
+            self.assertTrue(syncbuf.Finish())
+            proj._Reproject.assert_called_once_with(self.REVID, verbose=False)
+            proj.work_git.UpdateRef.assert_called_once_with(
+                project.HEAD,
+                self.REVID,
+                old=self.HEAD_ID,
+                message=f"reset: moving to {self.REVID}",
+            )
+            proj._ResetHard.assert_not_called()
+
+    def test_sync_local_half_rebase_is_not_delegated(self) -> None:
+        """Test a branch carrying the user's commits is rebased by Git."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_synced_project(
+                tempdir,
+                head=self.HEAD_ID,
+                branch="topic",
+                upstream_gain=[self.REVID],
+                local_changes=[f"{self.OTHER_ID} me@example.com"],
+            )
+            proj.GetBranch = mock.MagicMock(
+                return_value=self._tracking_branch()
+            )
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+
+            self.assertTrue(syncbuf.Finish())
+            proj._Rebase.assert_called_once_with(
+                upstream=f"{self.OTHER_ID}^1", onto=self.REVID
+            )
+            proj._Reproject.assert_not_called()
+            proj.work_git.UpdateRef.assert_not_called()
+
+    def test_sync_local_half_rejects_a_nested_project(self) -> None:
+        """Test a submodule or nested project fails before any checkout."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_synced_project(tempdir, head=self.HEAD_ID)
+            proj.parent = mock.MagicMock()
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+
+            self.assertFalse(syncbuf.Finish())
+            self.assertIn("nested", str(syncbuf.errors[0]))
+            proj._InitWorkTree.assert_not_called()
+            proj._Reproject.assert_not_called()
+
+    def test_sync_local_half_without_the_command_uses_git(self) -> None:
+        """Test Git keeps doing the checkout when the command is not set."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_synced_project(tempdir, head=self.HEAD_ID)
+            proj.manifest.manifestProject.reproject_cmd = None
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+
+            self.assertTrue(syncbuf.Finish())
+            proj._Checkout.assert_called_once_with(
+                self.REVID, force_checkout=False, quiet=True
+            )
+            proj._Reproject.assert_not_called()
+            proj.work_git.DetachHead.assert_not_called()
+
+    def test_metaproject_never_uses_the_command(self) -> None:
+        """Test .repo/manifests and .repo/repo are checked out by Git."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = _create_manifest_project(tempdir)
+            fakeproj.config.SetString("repo.reprojectcmd", "echo hi")
+            fakeproj.config.SetBoolean("repo.uselocalgitdirs", True)
+            self.assertFalse(fakeproj.UseReprojectCmd)
+
+    def test_sync_reproject_cmd_requires_use_local_gitdirs(self) -> None:
+        """Test that repo.reprojectcmd requires repo.uselocalgitdirs."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = _create_manifest_project(tempdir)
+
+            class DummyManifest:
+                is_submanifest = False
+
+                def GetDefaultGroupsStr(
+                    self, with_platform: bool = False
+                ) -> str:
+                    return ""
+
+            fakeproj.manifest = DummyManifest()
+
+            fakeproj.config.SetString("repo.reprojectcmd", "echo hi")
+            fakeproj.config.SetBoolean("repo.uselocalgitdirs", False)
+
+            result = fakeproj.Sync(use_local_gitdirs=False)
+            self.assertFalse(result)
+
+
+class ReprojectCmdGitTests(unittest.TestCase):
+    """Tests running the reprojectcmd contract against a real Git checkout."""
+
+    READ_TREE = "git -C $REPO_PATH read-tree -m -u $REPO_TREV"
+
+    @staticmethod
+    def _git(cwd: str, *args: str) -> str:
+        return subprocess.run(
+            ["git", "-C", cwd] + list(args),
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+        ).stdout.rstrip("\n")
+
+    def _make_client(
+        self, topdir: str, reproject_cmd: Optional[str]
+    ) -> Tuple[project.Project, str]:
+        """Set up a fetched, never checked out project under |topdir|.
+
+        Returns:
+            The project and the commit its manifest revision names.
+        """
+        # A remote holding the history the project fetches.
+        remote = os.path.join(topdir, "remote")
+        os.mkdir(remote)
+        self._git(remote, "init", "-q")
+        self._git(remote, "symbolic-ref", "HEAD", "refs/heads/main")
+        for msg, files in (
+            ("one", {"one.txt": "one\n", "keep.txt": "keep\n"}),
+            ("two", {"one.txt": "one, revised\n", "two.txt": "two\n"}),
+        ):
+            for name, content in files.items():
+                with open(os.path.join(remote, name), "w") as fp:
+                    fp.write(content)
+                self._git(remote, "add", name)
+            self._git(
+                remote,
+                "-c",
+                "user.name=Test",
+                "-c",
+                "user.email=test@example.com",
+                "commit",
+                "-q",
+                "-m",
+                msg,
+            )
+        revid = self._git(remote, "rev-parse", "HEAD")
+
+        # The project as repo.fetchcmd leaves it: objects fetched, HEAD on an
+        # unborn branch, nothing in the index or the worktree.
+        worktree = os.path.join(topdir, "proj")
+        os.mkdir(worktree)
+        self._git(worktree, "init", "-q")
+        self._git(worktree, "symbolic-ref", "HEAD", "refs/heads/main")
+        self._git(worktree, "fetch", "-q", remote, "refs/heads/main")
+
+        manifest = mock.MagicMock()
+        manifest.manifestProject.use_local_gitdirs = True
+        manifest.manifestProject.reproject_cmd = reproject_cmd
+        manifest.UseLocalGitDirs = True
+        manifest.IsMirror = False
+        manifest.is_multimanifest = False
+        manifest.topdir = topdir
+        manifest.path_prefix = ""
+        manifest.globalConfig = None
+
+        remote_spec = mock.MagicMock()
+        remote_spec.name = "origin"
+        remote_spec.url = remote
+
+        proj = project.Project(
+            manifest=manifest,
+            name="proj",
+            remote=remote_spec,
+            gitdir=os.path.join(worktree, ".git"),
+            objdir=os.path.join(worktree, ".git"),
+            worktree=worktree,
+            relpath="proj",
+            revisionExpr="main",
+            revisionId=revid,
+        )
+        proj._Checkout = mock.MagicMock(
+            side_effect=AssertionError("Git must not do the checkout")
+        )
+        return proj, revid
+
+    def _sync(self, proj: project.Project) -> Tuple[bool, List[Any]]:
+        """Run Sync_LocalHalf; return whether it succeeded and its errors."""
+        syncbuf = project.SyncBuffer(proj.config)
+        proj.Sync_LocalHalf(syncbuf)
+        return syncbuf.Finish(), syncbuf.errors
+
+    def _step_back(self, proj: project.Project, revid: str) -> str:
+        """Put the project cleanly at the commit before |revid|, with Git."""
+        parent = self._git(proj.worktree, "rev-parse", revid + "~1")
+        self._git(proj.worktree, "update-ref", "--no-deref", "HEAD", parent)
+        self._git(proj.worktree, "read-tree", "-u", "--reset", "HEAD")
+        return parent
+
+    def test_sync_local_half_checks_out_a_fresh_project(self) -> None:
+        """Test the read-tree command materializes a project like Git would."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            marker = os.path.join(topdir, "ran")
+            proj, revid = self._make_client(
+                topdir, f"{self.READ_TREE} && touch {marker}"
+            )
+            worktree = proj.worktree
+
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+            self.assertTrue(syncbuf.Finish(), syncbuf.errors)
+
+            self.assertTrue(os.path.exists(marker))
+            self.assertEqual(self._git(worktree, "rev-parse", "HEAD"), revid)
+            with self.assertRaises(subprocess.CalledProcessError):
+                self._git(worktree, "symbolic-ref", "-q", "HEAD")
+            self.assertEqual(self._git(worktree, "status", "--porcelain"), "")
+            with open(os.path.join(worktree, "one.txt")) as fp:
+                self.assertEqual(fp.read(), "one, revised\n")
+            with open(os.path.join(worktree, "two.txt")) as fp:
+                self.assertEqual(fp.read(), "two\n")
+
+            # Syncing again finds HEAD at the target and leaves it alone.
+            os.remove(marker)
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+            self.assertTrue(syncbuf.Finish(), syncbuf.errors)
+            self.assertFalse(os.path.exists(marker))
+            self.assertEqual(self._git(worktree, "rev-parse", "HEAD"), revid)
+
+    def test_sync_local_half_leaves_an_untracked_file_in_the_way_alone(
+        self,
+    ) -> None:
+        """Test an untracked file the target adds fails without any change."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            proj, revid = self._make_client(topdir, self.READ_TREE)
+            worktree = proj.worktree
+            with open(os.path.join(worktree, "two.txt"), "w") as fp:
+                fp.write("mine\n")
+
+            clean, errors = self._sync(proj)
+            self.assertFalse(clean)
+            self.assertIn("two.txt", str(errors[0]))
+
+            self.assertEqual(
+                self._git(worktree, "symbolic-ref", "HEAD"), "refs/heads/main"
+            )
+            self.assertEqual(sorted(os.listdir(worktree)), [".git", "two.txt"])
+            with open(os.path.join(worktree, "two.txt")) as fp:
+                self.assertEqual(fp.read(), "mine\n")
+
+    def test_sync_local_half_keeps_local_changes_out_of_the_way(self) -> None:
+        """Test edits and untracked files the target leaves alone survive."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            proj, revid = self._make_client(topdir, self.READ_TREE)
+            worktree = proj.worktree
+            self.assertTrue(self._sync(proj)[0])
+            self._step_back(proj, revid)
+            with open(os.path.join(worktree, "keep.txt"), "w") as fp:
+                fp.write("edited\n")
+            with open(os.path.join(worktree, "junk"), "w") as fp:
+                fp.write("junk\n")
+
+            clean, errors = self._sync(proj)
+            self.assertTrue(clean, errors)
+
+            self.assertEqual(self._git(worktree, "rev-parse", "HEAD"), revid)
+            with open(os.path.join(worktree, "one.txt")) as fp:
+                self.assertEqual(fp.read(), "one, revised\n")
+            with open(os.path.join(worktree, "keep.txt")) as fp:
+                self.assertEqual(fp.read(), "edited\n")
+            self.assertEqual(
+                self._git(worktree, "status", "--porcelain").splitlines(),
+                [" M keep.txt", "?? junk"],
+            )
+
+    def test_sync_local_half_rejects_a_local_change_in_the_way(self) -> None:
+        """Test an edit to a file the target changes fails without a change."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            proj, revid = self._make_client(topdir, self.READ_TREE)
+            worktree = proj.worktree
+            self.assertTrue(self._sync(proj)[0])
+            parent = self._step_back(proj, revid)
+            with open(os.path.join(worktree, "one.txt"), "w") as fp:
+                fp.write("edited\n")
+
+            clean, errors = self._sync(proj)
+            self.assertFalse(clean)
+            self.assertIn("one.txt", str(errors[0]))
+
+            self.assertEqual(self._git(worktree, "rev-parse", "HEAD"), parent)
+            with open(os.path.join(worktree, "one.txt")) as fp:
+                self.assertEqual(fp.read(), "edited\n")
+            self.assertNotIn("two.txt", os.listdir(worktree))
+
+    def test_sync_local_half_rejects_a_command_that_moves_head(self) -> None:
+        """Test a command that writes HEAD fails the postcondition."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            proj, revid = self._make_client(
+                topdir,
+                f"{self.READ_TREE} && git -C $REPO_PATH update-ref "
+                "--no-deref HEAD $REPO_TREV",
+            )
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+            self.assertFalse(syncbuf.Finish())
+            self.assertIn("moved HEAD", str(syncbuf.errors[0]))
+
+    def test_sync_local_half_rejects_staged_changes(self) -> None:
+        """Test a staged change fails before the command runs."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            proj, revid = self._make_client(topdir, self.READ_TREE)
+            worktree = proj.worktree
+            self.assertTrue(self._sync(proj)[0])
+            self._step_back(proj, revid)
+            with open(os.path.join(worktree, "keep.txt"), "w") as fp:
+                fp.write("staged\n")
+            self._git(worktree, "add", "keep.txt")
+
+            clean, errors = self._sync(proj)
+            self.assertFalse(clean)
+            self.assertIn("staged changes", str(errors[0]))
+            self.assertIn("keep.txt", str(errors[0]))
+
+    def test_sync_local_half_rejects_a_command_that_moves_branch_tip(
+        self,
+    ) -> None:
+        """Test a command that moves the branch commit fails postcondition."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            proj, revid = self._make_client(
+                topdir,
+                f"{self.READ_TREE} && git -C $REPO_PATH update-ref "
+                "refs/heads/main $REPO_TREV",
+            )
+            clean, errors = self._sync(proj)
+            self.assertFalse(clean)
+            self.assertIn("moved HEAD", str(errors[0]))
+
+    def test_sync_local_half_keeps_local_changes_on_tracking_branch(
+        self,
+    ) -> None:
+        """Test benign edits survive fast-forward on a tracking branch."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            proj, revid = self._make_client(topdir, self.READ_TREE)
+            worktree = proj.worktree
+            self.assertTrue(self._sync(proj)[0])
+            parent = self._step_back(proj, revid)
+            self._git(worktree, "checkout", "-q", "-b", "main", parent)
+            self._git(worktree, "config", "branch.main.remote", "origin")
+            self._git(
+                worktree, "config", "branch.main.merge", "refs/heads/main"
+            )
+            with open(os.path.join(worktree, "keep.txt"), "w") as fp:
+                fp.write("edited\n")
+            with open(os.path.join(worktree, "junk"), "w") as fp:
+                fp.write("junk\n")
+
+            clean, errors = self._sync(proj)
+            self.assertTrue(clean, errors)
+
+            self.assertEqual(self._git(worktree, "rev-parse", "HEAD"), revid)
+            with open(os.path.join(worktree, "one.txt")) as fp:
+                self.assertEqual(fp.read(), "one, revised\n")
+            with open(os.path.join(worktree, "keep.txt")) as fp:
+                self.assertEqual(fp.read(), "edited\n")
+            self.assertEqual(
+                self._git(worktree, "status", "--porcelain").splitlines(),
+                [" M keep.txt", "?? junk"],
+            )

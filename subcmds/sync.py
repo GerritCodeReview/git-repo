@@ -72,6 +72,7 @@ from git_refs import HEAD
 from git_refs import R_HEADS
 import git_superproject
 from hooks import RepoHook
+from manifest_xml import XmlManifest
 import platform_utils
 from progress import elapsed_str
 from progress import jobs_str
@@ -154,6 +155,11 @@ def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
         depth_stack.append((checkout_path, level))
 
     return res
+
+
+def _NestedProjects(projects: List[Project]) -> List[Project]:
+    """Return the projects in |projects| living inside another one's path."""
+    return [p for level in _SafeCheckoutOrder(projects)[1:] for p in level]
 
 
 def _ParentFirstBatches(projects: List[Project]) -> List[List[Project]]:
@@ -2478,6 +2484,7 @@ later is required to fix a server side protocol bug.
             manifest=manifest,
             all_manifests=not opt.this_manifest_only,
         )
+        self._CheckReprojectCmdNesting(opt, args, manifest, all_projects)
 
         # Log the repo projects by existing and new.
         existing = [x for x in all_projects if x.Exists]
@@ -2540,6 +2547,46 @@ later is required to fix a server side protocol bug.
 
         if not opt.quiet:
             print("repo sync has finished successfully.")
+
+    def _CheckReprojectCmdNesting(
+        self,
+        opt: optparse.Values,
+        args: List[str],
+        manifest: XmlManifest,
+        all_projects: List[Project],
+    ) -> None:
+        """Fail when repo.reprojectcmd is used on a manifest nesting projects.
+
+        The command materializes a project's tree without Git, so nothing
+        keeps it from clobbering a project or submodule checked out inside
+        that tree. See docs/reproject-cmd.md.
+        """
+        if not any(p.UseReprojectCmd for p in all_projects):
+            return
+        projects = all_projects
+        if args:
+            # Nesting is a property of the manifest, not of the projects
+            # picked on the command line.
+            projects = self.GetProjects(
+                [],
+                groups=opt.groups,
+                missing_ok=True,
+                submodules_ok=opt.recurse_submodules,
+                manifest=manifest,
+                all_manifests=not opt.this_manifest_only,
+            )
+        nested = _NestedProjects(projects)
+        if not nested:
+            return
+        e = SyncError(
+            "error: repo.reprojectcmd does not support nested projects or "
+            "submodules; found:\n"
+            + "\n".join(
+                f" - {p.RelPath(local=opt.this_manifest_only)}" for p in nested
+            )
+        )
+        logger.error(e)
+        raise e
 
     def _CreateSyncProgressThread(
         self, pm: Progress, stop_event: _threading.Event
