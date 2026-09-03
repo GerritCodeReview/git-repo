@@ -2119,7 +2119,11 @@ class Project:
         """Download a single patch set of a single change to FETCH_HEAD."""
         remote = self.GetRemote()
 
-        cmd = ["fetch", remote.name]
+        cmd = ["fetch"]
+        if git_require((2, 20, 0)):
+            cmd.append("--no-filter")
+        cmd.append("--no-tags")
+        cmd.append(remote.name)
         cmd.append(
             "refs/changes/%2.2d/%d/%d" % (change_id % 100, change_id, patch_id)
         )

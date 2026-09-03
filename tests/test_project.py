@@ -2837,3 +2837,65 @@ class FetchCmdTests(unittest.TestCase):
 
             result = fakeproj.Sync(use_local_gitdirs=False)
             self.assertFalse(result)
+
+
+class DownloadPatchSetTests(unittest.TestCase):
+    """Tests for Project.DownloadPatchSet."""
+
+    def setUp(self):
+        self.proj = mock.MagicMock()
+        self.proj.GetRevisionId.return_value = "base_rev_123"
+        self.proj.bare_git.rev_parse.return_value = "commit_sha_456"
+        mock_remote = mock.MagicMock()
+        mock_remote.name = "origin"
+        self.proj.GetRemote.return_value = mock_remote
+
+    def test_download_patch_set_with_no_filter_and_no_tags(self):
+        """Test DownloadPatchSet includes --no-filter and --no-tags on git >= 2.20."""
+        with (
+            mock.patch("project.git_require", return_value=True),
+            mock.patch("project.GitCommand") as mock_git_cmd,
+        ):
+            mock_cmd_instance = mock.MagicMock()
+            mock_cmd_instance.Wait.return_value = 0
+            mock_git_cmd.return_value = mock_cmd_instance
+
+            dl = project.Project.DownloadPatchSet(self.proj, 12345, 2)
+
+            mock_git_cmd.assert_called_once_with(
+                self.proj,
+                [
+                    "fetch",
+                    "--no-filter",
+                    "--no-tags",
+                    "origin",
+                    "refs/changes/45/12345/2",
+                ],
+                bare=True,
+                verify_command=True,
+            )
+            self.assertEqual(dl.change_id, 12345)
+            self.assertEqual(dl.ps_id, 2)
+            self.assertEqual(dl.commit, "commit_sha_456")
+
+    def test_download_patch_set_legacy_git_omits_no_filter(self):
+        """Test DownloadPatchSet omits --no-filter on git < 2.20."""
+        with (
+            mock.patch("project.git_require", return_value=False),
+            mock.patch("project.GitCommand") as mock_git_cmd,
+        ):
+            mock_cmd_instance = mock.MagicMock()
+            mock_cmd_instance.Wait.return_value = 0
+            mock_git_cmd.return_value = mock_cmd_instance
+
+            dl = project.Project.DownloadPatchSet(self.proj, 54321, 1)
+
+            mock_git_cmd.assert_called_once_with(
+                self.proj,
+                ["fetch", "--no-tags", "origin", "refs/changes/21/54321/1"],
+                bare=True,
+                verify_command=True,
+            )
+            self.assertEqual(dl.change_id, 54321)
+            self.assertEqual(dl.ps_id, 1)
+
