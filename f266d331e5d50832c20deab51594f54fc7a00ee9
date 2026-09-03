@@ -119,6 +119,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f9f4f50d_687bd4a9",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-03T20:04:58Z",
+      "side": 1,
+      "message": "I mean like `f\" base {base_revision} vs revision {p.revisionExpr}` so it\u0027s obvious which id is which",
+      "parentUuid": "ca700497_efeb2a94",
+      "range": {
+        "startLine": 1521,
+        "startChar": 32,
+        "endLine": 1524,
+        "endChar": 33
+      },
+      "revId": "f266d331e5d50832c20deab51594f54fc7a00ee9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9570cb19_1876ab59",
         "filename": "manifest_xml.py",
         "patchSetId": 1
