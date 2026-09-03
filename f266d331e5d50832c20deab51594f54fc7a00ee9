@@ -95,6 +95,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ca700497_efeb2a94",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-09-03T11:24:38Z",
+      "side": 1,
+      "message": "I converted to f-strings, but don\u0027t understand what you meant with keeping labels? Want me to print something more?",
+      "parentUuid": "76e792da_4206194d",
+      "range": {
+        "startLine": 1521,
+        "startChar": 32,
+        "endLine": 1524,
+        "endChar": 33
+      },
+      "revId": "f266d331e5d50832c20deab51594f54fc7a00ee9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9570cb19_1876ab59",
         "filename": "manifest_xml.py",
         "patchSetId": 1
@@ -106,6 +130,30 @@
       "writtenOn": "2026-09-02T20:19:11Z",
       "side": 1,
       "message": "we shouldn\u0027t print to stderr directly, `main.py` will catch this and print the info in the error. but we can reformat the errors as a single multi-line string so it\u0027s more readable",
+      "range": {
+        "startLine": 1664,
+        "startChar": 12,
+        "endLine": 1669,
+        "endChar": 13
+      },
+      "revId": "f266d331e5d50832c20deab51594f54fc7a00ee9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3ace5c7_7f8e7898",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1669,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-09-03T11:24:38Z",
+      "side": 1,
+      "message": "Yupp, hope you like this better?",
+      "parentUuid": "9570cb19_1876ab59",
       "range": {
         "startLine": 1664,
         "startChar": 12,
