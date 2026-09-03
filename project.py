@@ -109,6 +109,14 @@ RETRY_JITTER_PERCENT = 0.1
 _ALTERNATES = os.environ.get("REPO_USE_ALTERNATES") == "1"
 
 
+def _FirstLines(lines: List[str], limit: int = 10) -> str:
+    """Join |lines|, eliding all but the first |limit| of them."""
+    shown = list(lines[:limit])
+    if len(lines) > limit:
+        shown.append(f"... and {len(lines) - limit} more")
+    return "\n".join(shown)
+
+
 def _lwrite(path, content):
     lock = "%s.lock" % path
 
@@ -809,6 +817,17 @@ class Project:
     def IsCherryPickInProgress(self):
         """Returns True if a cherry-pick is in progress."""
         return os.path.exists(self.work_git.GetDotgitPath("CHERRY_PICK_HEAD"))
+
+    def _OperationInProgress(self) -> Optional[str]:
+        """Return the name of the Git operation in progress, if any."""
+        if self.IsRebaseInProgress():
+            return "rebase"
+        if self.IsCherryPickInProgress():
+            return "cherry-pick"
+        for state, name in (("MERGE_HEAD", "merge"), ("REVERT_HEAD", "revert")):
+            if os.path.exists(self.work_git.GetDotgitPath(state)):
+                return name
+        return None
 
     def _AbortRebase(self):
         """Abort ongoing rebase, cherry-pick or patch apply (am).
@@ -1811,6 +1830,18 @@ class Project:
 
         self.revisionId = revisionId
 
+    @property
+    def UseReprojectCmd(self) -> bool:
+        """Whether repo.reprojectcmd materializes this project's tree.
+
+        MetaProjects (repo itself and the manifests) always use Git. See
+        docs/reproject-cmd.md.
+        """
+        if isinstance(self, MetaProject):
+            return False
+        mp = self.manifest.manifestProject
+        return bool(mp.use_local_gitdirs and mp.reproject_cmd)
+
     def Sync_LocalHalf(
         self,
         syncbuf,
@@ -1833,6 +1864,29 @@ class Project:
                 LocalSyncFail(
                     "Cannot checkout %s due to missing network sync; Run "
                     "`repo sync -n %s` first." % (self.name, self.name),
+                    project=self.name,
+                )
+            )
+            return
+
+        if not isinstance(self, MetaProject):
+            mp = self.manifest.manifestProject
+            if mp.reproject_cmd and not mp.use_local_gitdirs:
+                fail(
+                    LocalSyncFail(
+                        "repo.reprojectcmd requires repo.uselocalgitdirs to be "
+                        "enabled",
+                        project=self.name,
+                    )
+                )
+                return
+
+        reproject = self.UseReprojectCmd
+        if reproject and self.parent:
+            fail(
+                LocalSyncFail(
+                    "repo.reprojectcmd does not support nested projects or "
+                    "submodules",
                     project=self.name,
                 )
             )
@@ -1868,8 +1922,30 @@ class Project:
                 )
                 return
 
+        head = self._GetHead()
+        if head and head.startswith(R_HEADS):
+            branch = head[len(R_HEADS) :]
+            try:
+                head = all_refs[head]
+            except KeyError:
+                head = None
+        else:
+            branch = None
+
+        def _checkout() -> None:
+            """Detach HEAD at revid, like `git checkout <revid>`."""
+            if reproject:
+                self._ReprojectCheckout(revid, head, verbose=verbose)
+            else:
+                self._Checkout(revid, force_checkout=force_checkout, quiet=True)
+
         def _doff():
-            self._FastForward(revid)
+            if reproject:
+                self._ReprojectBranch(
+                    revid, head, f"merge {revid}: Fast-forward", verbose=verbose
+                )
+            else:
+                self._FastForward(revid)
             self._CopyAndLinkFiles()
 
         def _dorebase():
@@ -1894,16 +1970,6 @@ class Project:
             )
             if p.Wait() != 0:
                 logger.warning("warn: %s: stateless gc failed", self.name)
-
-        head = self._GetHead()
-        if head and head.startswith(R_HEADS):
-            branch = head[len(R_HEADS) :]
-            try:
-                head = all_refs[head]
-            except KeyError:
-                head = None
-        else:
-            branch = None
 
         if branch is None or syncbuf.detach_head:
             # Currently on a detached HEAD.  The user is assumed to
@@ -1933,10 +1999,10 @@ class Project:
                     syncbuf.info(self, "discarding %d commits", len(lost))
 
             try:
-                self._Checkout(revid, force_checkout=force_checkout, quiet=True)
+                _checkout()
                 if submodules:
                     self._SyncSubmodules(quiet=True)
-            except GitError as e:
+            except (GitError, LocalSyncFail) as e:
                 fail(e)
                 return
             self._CopyAndLinkFiles()
@@ -1960,10 +2026,10 @@ class Project:
                 self, "leaving %s; does not track upstream", branch.name
             )
             try:
-                self._Checkout(revid, force_checkout=force_checkout, quiet=True)
+                _checkout()
                 if submodules:
                     self._SyncSubmodules(quiet=True)
-            except GitError as e:
+            except (GitError, LocalSyncFail) as e:
                 fail(e)
                 return
             self._CopyAndLinkFiles()
@@ -2004,7 +2070,12 @@ class Project:
                             )
                         )
                     return
-                syncbuf.later1(self, _doff, not verbose)
+                if reproject:
+                    # HEAD is ahead of revid, so there is no tree to
+                    # materialize: Git's fast-forward would be a no-op.
+                    self._CopyAndLinkFiles()
+                else:
+                    syncbuf.later1(self, _doff, not verbose)
                 return
             elif pub == head:
                 # All published commits are merged, and thus we are a
@@ -2030,7 +2101,9 @@ class Project:
             self._CopyAndLinkFiles()
             return
 
-        if self.IsDirty(consider_untracked=False):
+        if (not reproject or (cnt_mine > 0 and self.rebase)) and self.IsDirty(
+            consider_untracked=False
+        ):
             fail(_DirtyError(project=self.name))
             return
 
@@ -2076,11 +2149,19 @@ class Project:
             syncbuf.later2(self, _docopyandlink, not verbose)
         elif local_changes:
             try:
-                self._ResetHard(revid)
+                if reproject:
+                    self._ReprojectBranch(
+                        revid,
+                        head,
+                        f"reset: moving to {revid}",
+                        verbose=verbose,
+                    )
+                else:
+                    self._ResetHard(revid)
                 if submodules:
                     self._SyncSubmodules(quiet=True)
                 self._CopyAndLinkFiles()
-            except GitError as e:
+            except (GitError, LocalSyncFail) as e:
                 fail(e)
                 return
         else:
@@ -3678,6 +3759,184 @@ class Project:
         if GitCommand(self, cmd).Wait() != 0:
             raise GitError(f"{self.name} merge {head} ", project=self.name)
 
+    def _ReprojectCheckout(
+        self, revid: str, head: Optional[str], verbose: bool = False
+    ) -> None:
+        """Detach HEAD at |revid| with repo.reprojectcmd.
+
+        This stands in for `git checkout <revid>`. |head| is the commit HEAD
+        names now, or None. The command is not run when that is already
+        |revid|, since there is then nothing to materialize.
+        """
+        old = self._GetHead()
+        if old and old.startswith(R_HEADS):
+            old = old[len(R_HEADS) :]
+        if head != revid:
+            self._Reproject(revid, verbose=verbose)
+        self.work_git.DetachHead(
+            revid, message=f"checkout: moving from {old or revid} to {revid}"
+        )
+
+    def _ReprojectBranch(
+        self,
+        revid: str,
+        head: Optional[str],
+        message: str,
+        verbose: bool = False,
+    ) -> None:
+        """Move the checked out branch to |revid| with repo.reprojectcmd.
+
+        This stands in for a fast-forward merge or a hard reset. |head| is the
+        commit the branch is at; the ref write fails if it moved meanwhile.
+        """
+        self._Reproject(revid, verbose=verbose)
+        self.work_git.UpdateRef(HEAD, revid, old=head, message=message)
+
+    def _Reproject(self, revid: str, verbose: bool = False) -> None:
+        """Make the index and worktree match |revid| with repo.reprojectcmd.
+
+        The command stands in for the tree materialization of a checkout, a
+        fast-forward or a hard reset. It must leave every ref alone; the
+        caller writes the ref Git would have written.
+
+        For the contract the command has to honor, see docs/reproject-cmd.md.
+
+        Raises:
+            LocalSyncFail: An operation is in progress, the index has staged
+                changes, the command failed, or it left the project in a state
+                that breaks the contract.
+        """
+        in_progress = self._OperationInProgress()
+        if in_progress:
+            raise LocalSyncFail(
+                f"{in_progress} in progress; reprojectcmd cannot run",
+                project=self.name,
+            )
+
+        try:
+            head_tree = self.work_git.rev_parse(
+                "-q", "--verify", "HEAD^{tree}", log_as_error=False
+            )
+        except GitError:
+            head_tree = None
+
+        if head_tree:
+            p = GitCommand(
+                self,
+                ["diff-index", "-z", "--cached", "--name-only", head_tree],
+                capture_stdout=True,
+                capture_stderr=True,
+            )
+            if p.Wait() != 0:
+                raise LocalSyncFail(
+                    f"cannot check the index for staged changes: "
+                    f"{p.stderr.strip()}",
+                    project=self.name,
+                )
+            staged = p.stdout.split("\0")[:-1]
+        else:
+            p = GitCommand(
+                self,
+                ["ls-files", "-z", "--cached"],
+                capture_stdout=True,
+                capture_stderr=True,
+            )
+            if p.Wait() != 0:
+                raise LocalSyncFail(
+                    f"cannot check the index for staged changes: "
+                    f"{p.stderr.strip()}",
+                    project=self.name,
+                )
+            staged = p.stdout.split("\0")[:-1]
+
+        if staged:
+            raise LocalSyncFail(
+                "reprojectcmd cannot run with staged changes:\n"
+                + _FirstLines(staged),
+                project=self.name,
+            )
+
+        head = self.work_git.GetHead()
+        try:
+            head_oid = self.work_git.rev_parse(
+                "-q", "--verify", "HEAD", log_as_error=False
+            )
+        except GitError:
+            head_oid = None
+
+        env = os.environ.copy()
+        env.update(self.GetEnvVars())
+        env["REPO_TREV"] = revid
+        cmd_str = self.manifest.manifestProject.reproject_cmd
+        if verbose:
+            print(f"Running reprojectcmd: {cmd_str} for {self.name}")
+
+        output = None if verbose else subprocess.PIPE
+        try:
+            p = subprocess.run(
+                cmd_str,
+                shell=True,
+                cwd=self.manifest.topdir,
+                env=env,
+                stdout=output,
+                stderr=None if verbose else subprocess.STDOUT,
+                text=True,
+            )
+        except OSError as e:
+            raise LocalSyncFail(
+                f"failed to run reprojectcmd: {e}", project=self.name
+            )
+        if p.returncode != 0:
+            msg = f"reprojectcmd exited with {p.returncode}"
+            if p.stdout:
+                msg += ":\n" + p.stdout.rstrip()
+            raise LocalSyncFail(msg, project=self.name)
+
+        new_head = self.work_git.GetHead()
+        try:
+            new_head_oid = self.work_git.rev_parse(
+                "-q", "--verify", "HEAD", log_as_error=False
+            )
+        except GitError:
+            new_head_oid = None
+
+        if new_head != head or new_head_oid != head_oid:
+            from_desc = (
+                f"{head} ({head_oid})"
+                if head_oid and head != head_oid
+                else f"{head}"
+            )
+            to_desc = (
+                f"{new_head} ({new_head_oid})"
+                if new_head_oid and new_head != new_head_oid
+                else f"{new_head}"
+            )
+            raise LocalSyncFail(
+                f"reprojectcmd moved HEAD from {from_desc} to {to_desc}; repo "
+                "owns every ref write",
+                project=self.name,
+            )
+
+        p = GitCommand(
+            self,
+            ["diff-index", "--cached", "--name-only", f"{revid}^{{tree}}"],
+            capture_stdout=True,
+            capture_stderr=True,
+        )
+        if p.Wait() != 0:
+            raise LocalSyncFail(
+                f"cannot compare the index against {revid}: "
+                f"{p.stderr.strip()}",
+                project=self.name,
+            )
+        mismatched = p.stdout.splitlines()
+        if mismatched:
+            raise LocalSyncFail(
+                f"reprojectcmd left the index different from {revid}:\n"
+                + _FirstLines(mismatched),
+                project=self.name,
+            )
+
     def _InitGitDir(self, mirror_git=None, force_sync=False, quiet=False):
         # Prefix for temporary directories created during gitdir initialization.
         TMP_GITDIR_PREFIX = ".tmp-project-initgitdir-"
@@ -4788,7 +5047,7 @@ class _Later:
             if not self.quiet:
                 out.nl()
             return True
-        except GitError as e:
+        except (GitError, LocalSyncFail) as e:
             syncbuf.fail(self.project, e)
             out.nl()
             return False
@@ -5066,6 +5325,11 @@ class ManifestProject(MetaProject):
     def fetch_cmd(self):
         """The fetch command to use."""
         return self.config.GetString("repo.fetchcmd")
+
+    @property
+    def reproject_cmd(self) -> Optional[str]:
+        """The command that materializes a project's tree instead of Git."""
+        return self.config.GetString("repo.reprojectcmd")
 
     @property
     def clone_bundle(self):
@@ -5483,6 +5747,15 @@ class ManifestProject(MetaProject):
         if self.fetch_cmd and not (use_local_gitdirs or self.use_local_gitdirs):
             logger.error(
                 "fatal: repo.fetchcmd is set but repo.uselocalgitdirs is "
+                "not enabled"
+            )
+            return False
+
+        if self.reproject_cmd and not (
+            use_local_gitdirs or self.use_local_gitdirs
+        ):
+            logger.error(
+                "fatal: repo.reprojectcmd is set but repo.uselocalgitdirs is "
                 "not enabled"
             )
             return False

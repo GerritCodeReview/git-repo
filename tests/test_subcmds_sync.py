@@ -13,6 +13,7 @@
 # limitations under the License.
 """Unittests for the subcmds/sync.py module."""
 
+import contextlib
 import json
 import optparse
 import os
@@ -20,7 +21,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import time
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 import unittest
 from unittest import mock
 
@@ -516,6 +517,7 @@ class FakeProject:
 
         self.use_git_worktrees = False
         self.UseAlternates = False
+        self.UseReprojectCmd = False
         self.manifest = mock.MagicMock()
         self.manifest.GetProjectsWithName.return_value = [self]
         self.config = mock.MagicMock()
@@ -640,6 +642,27 @@ class SafeCheckoutOrder(unittest.TestCase):
                 [p_parent_sub2_nested],
             ],
         )
+
+
+class NestedProjects(unittest.TestCase):
+    def test_flat_manifest(self) -> None:
+        p_foo = FakeProject("foo")
+        p_foo_bar = FakeProject("foo-bar")
+        self.assertEqual(sync._NestedProjects([p_foo, p_foo_bar]), [])
+
+    def test_nested_paths(self) -> None:
+        p_foo = FakeProject("foo")
+        p_foo_bar = FakeProject("foo/bar")
+        p_foo_bar_baz = FakeProject("foo/bar/baz")
+        self.assertEqual(
+            sync._NestedProjects([p_foo_bar_baz, p_foo, p_foo_bar]),
+            [p_foo_bar, p_foo_bar_baz],
+        )
+
+    def test_submodule_of_a_parent(self) -> None:
+        parent = FakeProject("foo")
+        sub = FakeProject("foo/sub", parent=parent, is_derived=True)
+        self.assertEqual(sync._NestedProjects([parent, sub]), [sub])
 
 
 class ParentFirstBatches(unittest.TestCase):
@@ -1083,7 +1106,10 @@ class SyncCommand(unittest.TestCase):
         self.project = p = mock.MagicMock(
             use_git_worktrees=False,
             UseAlternates=False,
+            UseReprojectCmd=False,
             name="project",
+            relpath="rel_path",
+            parent=None,
             Sync_NetworkHalf=Sync_NetworkHalf,
             Sync_LocalHalf=Sync_LocalHalf,
             RelPath=mock.Mock(return_value="rel_path"),
@@ -1141,6 +1167,78 @@ class SyncCommand(unittest.TestCase):
         self.cmd.GetProjects.assert_called()
         _, kwargs = self.cmd.GetProjects.call_args
         self.assertEqual(kwargs.get("groups"), "my_group")
+
+    def _ExecuteUntilSync(
+        self, args: List[str]
+    ) -> Tuple[mock.MagicMock, mock.MagicMock]:
+        """Run Execute up to the sync itself, returning the sync mocks."""
+        self.opt.mp_update = False
+        with contextlib.ExitStack() as stack:
+            for name in (
+                "_UpdateRepoProject",
+                "_UpdateProjectsRevisionId",
+                "_ValidateOptionsWithManifest",
+                "_RunPostSyncHook",
+            ):
+                stack.enter_context(mock.patch.object(self.cmd, name))
+            phased = stack.enter_context(
+                mock.patch.object(self.cmd, "_SyncPhased")
+            )
+            interleaved = stack.enter_context(
+                mock.patch.object(self.cmd, "_SyncInterleaved")
+            )
+            self.cmd.Execute(self.opt, args)
+        return phased, interleaved
+
+    def test_reproject_cmd_allows_a_flat_manifest(self) -> None:
+        """Ensure repo.reprojectcmd syncs a manifest without nesting."""
+        self.project.UseReprojectCmd = True
+        phased, interleaved = self._ExecuteUntilSync([])
+        self.assertTrue(phased.called or interleaved.called)
+
+    def test_reproject_cmd_rejects_nested_projects(self) -> None:
+        """Ensure repo.reprojectcmd fails a manifest with nested projects."""
+        p_foo = FakeProject("foo")
+        p_foo_bar = FakeProject("foo/bar")
+        p_foo.UseReprojectCmd = p_foo_bar.UseReprojectCmd = True
+        self.cmd.GetProjects.return_value = [p_foo, p_foo_bar]
+        with self.assertRaises(sync.SyncError) as e:
+            self._ExecuteUntilSync([])
+        self.assertIn("foo/bar", str(e.exception))
+        self.assertNotIn(" - foo\n", str(e.exception))
+
+    def test_reproject_cmd_rejects_a_submodule(self) -> None:
+        """Ensure repo.reprojectcmd fails a manifest with a submodule."""
+        p_foo = FakeProject("foo")
+        p_sub = FakeProject("foo/sub", parent=p_foo, is_derived=True)
+        p_foo.UseReprojectCmd = p_sub.UseReprojectCmd = True
+        self.cmd.GetProjects.return_value = [p_foo, p_sub]
+        with self.assertRaises(sync.SyncError) as e:
+            self._ExecuteUntilSync([])
+        self.assertIn("foo/sub", str(e.exception))
+
+    def test_reproject_cmd_checks_the_whole_manifest(self) -> None:
+        """Ensure nesting is checked beyond the projects given as args."""
+        p_foo = FakeProject("foo")
+        p_foo_bar = FakeProject("foo/bar")
+        p_foo.UseReprojectCmd = p_foo_bar.UseReprojectCmd = True
+        self.cmd.GetProjects.side_effect = lambda args, **kwargs: (
+            [p_foo_bar] if args else [p_foo, p_foo_bar]
+        )
+        with self.assertRaises(sync.SyncError):
+            self._ExecuteUntilSync(["foo/bar"])
+        self.assertEqual(self.cmd.GetProjects.call_count, 2)
+        _, kwargs = self.cmd.GetProjects.call_args
+        self.assertEqual(kwargs.get("missing_ok"), True)
+
+    def test_reproject_cmd_off_ignores_nested_projects(self) -> None:
+        """Ensure nesting is only checked with repo.reprojectcmd in use."""
+        projects = [FakeProject("foo"), FakeProject("foo/bar")]
+        for p in projects:
+            p.Exists = False
+        self.cmd.GetProjects.return_value = projects
+        phased, interleaved = self._ExecuteUntilSync([])
+        self.assertTrue(phased.called or interleaved.called)
 
 
 class SyncUpdateRepoProject(unittest.TestCase):
