@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1456b9c_715dac25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-03T20:08:24Z",
+      "side": 1,
+      "message": "merge this logic with command.py:Command so things aren\u0027t duplicated.  should be easy to a class constant or helper method or something.",
+      "revId": "d95492415c01cd79e77d03a9d677b11d26a38888",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
