@@ -6,6 +6,9 @@ executed during `repo sync` to fetch objects, instead of using standard
 filesystems or lazy checkouts where fetching metadata and downloading file
 contents should be decoupled.
 
+The checkout half of a sync has a counterpart, `repo.reprojectcmd`; see
+`docs/reproject-cmd.md`.
+
 ## Configuration
 
 To use this feature, set the following in `.repo/manifests.git/config`:
