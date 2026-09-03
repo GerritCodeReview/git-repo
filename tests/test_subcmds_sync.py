@@ -214,6 +214,28 @@ def test_sync_update_projects_revision_id_respects_groups(tmp_path: Path):
             assert kwargs.get("groups") == "group1"
 
 
+@pytest.mark.parametrize(
+    "generate_manpages, expected_default",
+    [
+        (False, "7"),
+        (True, "a value based on the number of CPU cores"),
+    ],
+    ids=("interactive", "manpages"),
+)
+def test_jobs_checkout_help_default(generate_manpages, expected_default):
+    """Test checkout-jobs default help in interactive and manpage modes."""
+    with mock.patch.object(sync, "DEFAULT_LOCAL_JOBS", 7), mock.patch.object(
+        sync,
+        "GENERATE_MANPAGES",
+        generate_manpages,
+    ):
+        help_text = " ".join(sync.Sync().OptionParser.format_help().split())
+
+    assert f"defaults to --jobs or {expected_default}" in help_text
+    if generate_manpages:
+        assert "defaults to --jobs or 7" not in help_text
+
+
 # Used to patch os.cpu_count() for reliable results.
 OS_CPU_COUNT = 24
 
