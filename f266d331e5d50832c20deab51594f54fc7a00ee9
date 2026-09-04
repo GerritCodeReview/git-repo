@@ -141,6 +141,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53f2186b_99b58e9a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-09-04T14:04:54Z",
+      "side": 1,
+      "message": "Doh! 😄\n\nI thought I had filtered some other labels or something complicated, but now I understand, updated, I agree it looks more clear now too ...\n\n(second update, flake8 line length)",
+      "parentUuid": "f9f4f50d_687bd4a9",
+      "range": {
+        "startLine": 1521,
+        "startChar": 32,
+        "endLine": 1524,
+        "endChar": 33
+      },
+      "revId": "f266d331e5d50832c20deab51594f54fc7a00ee9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9570cb19_1876ab59",
