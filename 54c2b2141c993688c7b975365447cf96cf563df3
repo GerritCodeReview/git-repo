@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc97ddd8_f32a60d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4006507
+      },
+      "writtenOn": "2026-09-04T15:39:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51b70934_56a9f5bf",
+      "revId": "54c2b2141c993688c7b975365447cf96cf563df3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21d4477a_067a3645",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-09-03T22:05:12Z",
       "side": 1,
       "message": "let\u0027s also test with `(None, [\"outer\", \"sub/child\"]),` for if you omit `-g`",
+      "range": {
+        "startLine": 166,
+        "startChar": 8,
+        "endLine": 166,
+        "endChar": 37
+      },
+      "revId": "54c2b2141c993688c7b975365447cf96cf563df3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e1aafd3_2902e713",
+        "filename": "tests/test_command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 4006507
+      },
+      "writtenOn": "2026-09-04T15:39:44Z",
+      "side": 1,
+      "message": "Agreed, done.",
+      "parentUuid": "21d4477a_067a3645",
       "range": {
         "startLine": 166,
         "startChar": 8,
