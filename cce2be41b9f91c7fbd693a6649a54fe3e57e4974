@@ -243,6 +243,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5ac5805e_738e7d7d",
+        "filename": "project.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 4021,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-05T04:45:19Z",
+      "side": 1,
+      "message": "i think that\u0027s fine to start with as long as we document the behavior",
+      "parentUuid": "7f3bde9a_8f87b330",
+      "range": {
+        "startLine": 4021,
+        "startChar": 0,
+        "endLine": 4021,
+        "endChar": 27
+      },
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "200e6ce7_57da8983",
         "filename": "project.py",
         "patchSetId": 17

@@ -193,6 +193,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbc07c7c_70f6d492",
+        "filename": "manifest_xml.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 2347,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-05T04:45:19Z",
+      "side": 1,
+      "message": "agreed -- let git do the dirty work for us",
+      "parentUuid": "a570a273_ed482ed7",
+      "revId": "8249830b50b9bb95cdde0479e018427c1734db1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24be2126_1d143d3b",
