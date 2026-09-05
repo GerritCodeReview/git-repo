@@ -170,6 +170,30 @@
       },
       "revId": "e82867d7ac3328de1839799ce17f47b7ffa75bda",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd1a4b95_c326db85",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 3385516
+      },
+      "writtenOn": "2026-09-05T12:14:05Z",
+      "side": 1,
+      "message": "chatted offline. This will be scoped to just this bug fix.",
+      "parentUuid": "c5529419_a9ff8bfb",
+      "range": {
+        "startLine": 453,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 18
+      },
+      "revId": "e82867d7ac3328de1839799ce17f47b7ffa75bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
