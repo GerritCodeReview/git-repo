@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1126ef39_a0252bbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-05T00:29:44Z",
+      "side": 1,
+      "message": "Tested with:\n```\n\u003e ~/git-repo/repo init -u https://android-review.googlesource.com/platform/manifest \\\n    --repo-url file:///usr/local/google/home/gavinmak/git-repo \\\n    --repo-rev reproject-cmd \\\n    --groups developers \\\n    --platform none \\\n    --no-repo-verify \\\n    --use-local-gitdirs\n\n\u003e git config --file .repo/manifests.git/config repo.fetchcmd \u0027mkdir -p $REPO_PATH \u0026\u0026 cd $REPO_PATH \u0026\u0026 if [ ! -d .git ]; then git init -q \u0026\u0026 git remote add $REPO_REMOTE $REPO_PROJECT_FETCH_URL; fi \u0026\u0026 git fetch -q $REPO_REMOTE $REPO_TREV \u0026\u0026 git update-ref refs/remotes/$REPO_REMOTE/$REPO_RREV $REPO_TREV\u0027\n\n\u003e git config --file .repo/manifests.git/config repo.reprojectcmd \u0027git -C $REPO_PATH read-tree -m -u $REPO_TREV\u0027\n\n\u003e ~/git-repo/repo sync -j32\nFinalizing sync state...\nrepo sync has finished successfully.\n\n\u003e ~/git-repo/repo forall -c \u0027echo \"$REPO_PATH: HEAD\u003d$(git rev-parse HEAD) target\u003d$REPO_LREV $(git symbolic-ref -q HEAD || echo detached) $(git status --porcelain | wc -l | tr -d \" \") changes; reflog: $(git reflog -1 --format\u003d%gs)\"\u0027\ndevelopers/build: HEAD\u003d31d9b329ddc56636a279c7340e154e0d67d9a6fb target\u003d detached 0 changes; reflog: checkout: moving from main to 31d9b329ddc56636a279c7340e154e0d67d9a6fb\ndevelopers/samples/android: HEAD\u003da00c10b20f4d2ceaca5b153b6b275563f128afbd target\u003d detached 0 changes; reflog: checkout: moving from main to a00c10b20f4d2ceaca5b153b6b275563f128afbd\ndevelopment: HEAD\u003d4dafd114fab3c3d9543a5aff0ad097f479915176 target\u003d detached 0 changes; reflog: checkout: moving from main to 4dafd114fab3c3d9543a5aff0ad097f479915176\ntools/repohooks: HEAD\u003d2f92d46c54eef64e69fbd09f0d8e2f7f68d7a262 target\u003d detached 0 changes; reflog: checkout: moving from main to 2f92d46c54eef64e69fbd09f0d8e2f7f68d7a262\n\n# Benign untracked files and unstaged edits survive checkout\n\u003e git -C developers/build update-ref --no-deref HEAD HEAD~1\n\u003e git -C developers/build read-tree -m -u HEAD\n\u003e echo \"my personal notes\" \u003e developers/build/my_notes.txt\n\u003e echo \"// benign edit\" \u003e\u003e developers/build/build.gradle\n\u003e ~/git-repo/repo sync -l developers/build\nrepo sync has finished successfully.\n\u003e git -C developers/build status --porcelain\n M build.gradle\n?? my_notes.txt\n\n# Colliding untracked files fail without touching the worktree\n\u003e git -C developers/build update-ref --no-deref HEAD HEAD~1\n\u003e git -C developers/build read-tree -m -u HEAD\n\u003e echo \"collision\" \u003e developers/build/Android.bp\n\u003e ~/git-repo/repo sync -l developers/build\nreprojectcmd exited with 128:\nerror: Untracked working tree file \u0027Android.bp\u0027 would be overwritten by merge.\n\n# Staged changes fail before reprojectcmd runs\n\u003e rm developers/build/Android.bp\n\u003e git -C developers/build add build.gradle\n\u003e ~/git-repo/repo sync -l developers/build\nreprojectcmd cannot run with staged changes:\nbuild.gradle\n```",
+      "revId": "144a85a2d5fb5c5dec221f97b5d77ed77311b2e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
