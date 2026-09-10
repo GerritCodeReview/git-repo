@@ -14,9 +14,11 @@
 
 """Unittests for the subcmds/gc.py module."""
 
+from pathlib import Path
 import unittest
 from unittest import mock
 
+import manifest_xml
 from subcmds import gc
 
 
@@ -80,3 +82,108 @@ class GcCommand(unittest.TestCase):
         ret = self.cmd.Execute(self.opt, [])
         self.assertEqual(ret, 1)
         self.mock_repack.assert_not_called()
+
+
+def test_gc_keep_manifest_projects(tmp_path: Path) -> None:
+    """Keep inactive projects that are still in the manifest."""
+    repodir = tmp_path / ".repo"
+    manifest_dir = repodir / "manifests"
+    manifest_file = repodir / manifest_xml.MANIFEST_FILE_NAME
+
+    repodir.mkdir()
+    manifest_dir.mkdir()
+
+    manifest_gitdir = repodir / "manifests.git"
+    manifest_gitdir.mkdir()
+    (manifest_gitdir / "config").write_text(
+        """[remote "origin"]
+        url = https://localhost:0/manifest
+        """,
+        encoding="utf-8",
+    )
+
+    manifest_file.write_text(
+        """\
+        <manifest>
+        <remote name="origin" fetch="http://localhost" />
+        <default remote="origin" revision="refs/heads/main" />
+        <project name="included" groups="active-group" />
+        <project name="excluded" groups="other-group" />
+        </manifest>
+        """,
+        encoding="utf-8",
+    )
+
+    manifest = manifest_xml.XmlManifest(str(repodir), str(manifest_file))
+    manifest.manifestProject.config.SetString(
+        "manifest.groups",
+        "active-group",
+    )
+
+    projects = {project.name: project for project in manifest.projects}
+    included = projects["included"]
+    excluded = projects["excluded"]
+
+    Path(included.gitdir).mkdir(parents=True)
+    Path(included.objdir).mkdir(parents=True)
+
+    # Simulate an inactive project with only its object cache left.
+    Path(excluded.objdir).mkdir(parents=True)
+    assert not excluded.Exists
+
+    orphan_gitdir = repodir / "projects" / "orphan.git"
+    orphan_objdir = repodir / "project-objects" / "orphan.git"
+    orphan_gitdir.mkdir()
+    orphan_objdir.mkdir()
+
+    cmd = gc.Gc(repodir=str(repodir), manifest=manifest)
+
+    opt, args = cmd.OptionParser.parse_args(
+        ["--yes", "--keep-manifest-projects"]
+    )
+    opt.quiet = True
+
+    selected_projects = cmd.GetProjects([], all_manifests=True)
+    assert included in selected_projects
+    assert excluded not in selected_projects
+
+    cmd.Execute(opt, args)
+
+    assert included.Exists
+    assert Path(excluded.objdir).exists()
+    assert not orphan_gitdir.exists()
+    assert not orphan_objdir.exists()
+
+
+def test_gc_keep_manifest_projects_preserves_repack_targets() -> None:
+    """Keep manifest projects without expanding repack targets."""
+    cmd = gc.Gc()
+    opt, _ = cmd.OptionParser.parse_args(
+        ["--keep-manifest-projects", "--repack"]
+    )
+    opt.this_manifest_only = False
+
+    with mock.patch.object(
+        cmd,
+        "GetProjects",
+        side_effect=[["projA"], ["manifest_projects"]],
+    ) as get_projects, mock.patch.object(
+        cmd, "delete_unused_projects", return_value=0
+    ) as delete, mock.patch.object(
+        cmd, "repack_projects", return_value=0
+    ) as repack:
+        cmd.Execute(opt, ["projA"])
+
+    get_projects.assert_has_calls(
+        [
+            mock.call(["projA"], all_manifests=True),
+            mock.call(
+                [],
+                groups="all",
+                missing_ok=True,
+                all_manifests=True,
+            ),
+        ]
+    )
+    delete.assert_called_once_with(["manifest_projects"], opt)
+    repack.assert_called_once_with(["projA"], opt)

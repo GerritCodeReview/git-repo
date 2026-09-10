@@ -29,6 +29,14 @@ class Gc(Command):
     helpUsage = """
 %prog
 """
+    helpDescription = """
+The '%prog' command removes internal Git data for projects that are no
+longer active in the current configuration.
+
+Projects excluded by the configured manifest groups are inactive by
+default. Use --keep-manifest-projects to keep Git data for projects that
+are still in the manifests.
+"""
 
     def _Options(self, p):
         p.add_option(
@@ -52,6 +60,12 @@ class Gc(Command):
             action="store_true",
             help="repack all projects that use partial clone with "
             "filter=blob:none",
+        )
+        p.add_option(
+            "--keep-manifest-projects",
+            default=False,
+            action="store_true",
+            help="keep Git data for projects still in the manifests",
         )
 
     def _find_git_to_delete(
@@ -292,16 +306,21 @@ class Gc(Command):
             args, all_manifests=not opt.this_manifest_only
         )
 
-        # If the user specified projects, fetch the global list separately
-        # to avoid deleting untargeted projects.
-        if args:
-            all_projects = self.GetProjects(
+        if opt.keep_manifest_projects:
+            projects_to_keep = self.GetProjects(
+                [],
+                groups="all",
+                missing_ok=True,
+                all_manifests=not opt.this_manifest_only,
+            )
+        elif args:
+            projects_to_keep = self.GetProjects(
                 [], all_manifests=not opt.this_manifest_only
             )
         else:
-            all_projects = projects
+            projects_to_keep = projects
 
-        ret = self.delete_unused_projects(all_projects, opt)
+        ret = self.delete_unused_projects(projects_to_keep, opt)
         if ret != 0:
             return ret
 
