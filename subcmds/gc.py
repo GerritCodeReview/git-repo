@@ -292,14 +292,13 @@ class Gc(Command):
             args, all_manifests=not opt.this_manifest_only
         )
 
-        # If the user specified projects, fetch the global list separately
-        # to avoid deleting untargeted projects.
-        if args:
-            all_projects = self.GetProjects(
-                [], all_manifests=not opt.this_manifest_only
-            )
-        else:
-            all_projects = projects
+        # Include projects from all groups so projects outside the current
+        # group selection are not treated as unused.
+        all_projects = self.GetProjects(
+            [],
+            all_manifests=not opt.this_manifest_only,
+            groups="all",
+        )
 
         ret = self.delete_unused_projects(all_projects, opt)
         if ret != 0:
