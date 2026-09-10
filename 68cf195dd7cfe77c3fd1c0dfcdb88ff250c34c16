@@ -33,6 +33,24 @@
       "message": "i don\u0027t think you need to re-indent these.  the spacing is based on the ATTLIST lines, not ELEMENT.",
       "revId": "68cf195dd7cfe77c3fd1c0dfcdb88ff250c34c16",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbb69f16_80ad9dcc",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 19
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-09-10T21:06:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96b71b52_ffaf654c",
+      "revId": "68cf195dd7cfe77c3fd1c0dfcdb88ff250c34c16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
