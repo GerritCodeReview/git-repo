@@ -20,6 +20,7 @@ import re
 import sys
 import urllib.parse
 import xml.dom.minidom
+from typing import Optional
 
 from error import ManifestInvalidPathError
 from error import ManifestInvalidRevisionError
@@ -2312,7 +2313,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             )
         return v
 
-    def projectsDiff(self, manifest):
+    def projectsDiff(self, manifest, groups: Optional[str] = None):
         """return the projects differences between two manifests.
 
         The diff will be from self to given manifest.
@@ -2320,6 +2321,18 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         """
         fromProjects = self.paths
         toProjects = manifest.paths
+        if groups:
+            groups = self._ParseList(groups)
+            fromProjects = {
+                path: project
+                for path, project in fromProjects.items()
+                if project.MatchesGroups(groups)
+            }
+            toProjects = {
+                path: project
+                for path, project in toProjects.items()
+                if project.MatchesGroups(groups)
+            }
 
         fromKeys = sorted(fromProjects.keys())
         toKeys = set(toProjects.keys())
