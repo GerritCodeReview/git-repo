@@ -709,6 +709,35 @@ class TestProjectElement:
         manifest.manifestProject.config.SetString("manifest.groups", groupstr)
         assert manifest.GetManifestGroupsStr() == groupstr
 
+    def test_projects_diff_groups(self, repo_client: RepoClient) -> None:
+        """Check that project diffs honor manifest group expressions."""
+        manifest1 = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="keep-old" path="keep-old" groups="group1" />
+  <project name="drop-old" path="drop-old" groups="group2" />
+</manifest>
+"""
+        )
+        assert len(manifest1.projects) == 2
+        manifest2 = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="keep-new" path="keep-new" groups="group1" />
+  <project name="drop-new" path="drop-new" groups="group2" />
+</manifest>
+"""
+        )
+
+        diff = manifest1.projectsDiff(manifest2, groups="group1,-group2")
+
+        assert [project.name for project in diff["removed"]] == ["keep-old"]
+        assert [project.name for project in diff["added"]] == ["keep-new"]
+
     def test_set_revision_id(self, repo_client: RepoClient) -> None:
         """Check setting of project's revisionId."""
         manifest = repo_client.get_xml_manifest(
