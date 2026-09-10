@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "895beac8_6c72719c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-09-10T08:29:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b75ee40_77054c4b",
+      "revId": "1c4360bd9b581cbf6884ce401992c0e5d0fe648b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "833dbf4f_b67f5b9c",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
@@ -58,6 +76,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "395ea0e2_a4103a16",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-09-10T08:29:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83d5f4df_ef3c4638",
+      "range": {
+        "startLine": 1523,
+        "startChar": 36,
+        "endLine": 1524,
+        "endChar": 65
+      },
+      "revId": "1c4360bd9b581cbf6884ce401992c0e5d0fe648b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2b375f8_440b245c",
@@ -71,6 +113,30 @@
       "writtenOn": "2026-09-09T18:05:22Z",
       "side": 1,
       "message": "```suggestion\n            fail_string \u003d \"\\n\".join(failed_revision_changes)\n```",
+      "range": {
+        "startLine": 1663,
+        "startChar": 12,
+        "endLine": 1665,
+        "endChar": 44
+      },
+      "revId": "1c4360bd9b581cbf6884ce401992c0e5d0fe648b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a3a644e_1fd660cd",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1665,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-09-10T08:29:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2b375f8_440b245c",
       "range": {
         "startLine": 1663,
         "startChar": 12,
