@@ -67,6 +67,12 @@ synced and their revisions won't be found.
 
     def _Options(self, p):
         p.add_option(
+            "-g",
+            "--groups",
+            help="diff projects matching the specific groups",
+            metavar="GROUP",
+        )
+        p.add_option(
             "--raw",
             action="store_true",
             help="display raw diff",
@@ -246,7 +252,7 @@ synced and their revisions won't be found.
             manifest2 = RepoClient(self.repodir)
             manifest2.Override(args[1], load_local_manifests=False)
 
-        diff = manifest1.projectsDiff(manifest2)
+        diff = manifest1.projectsDiff(manifest2, groups=opt.groups)
         if opt.raw:
             self._printRawDiff(
                 diff,

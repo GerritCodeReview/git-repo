@@ -2312,7 +2312,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             )
         return v
 
-    def projectsDiff(self, manifest):
+    def projectsDiff(self, manifest, groups=None):
         """return the projects differences between two manifests.
 
         The diff will be from self to given manifest.
@@ -2320,6 +2320,18 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         """
         fromProjects = self.paths
         toProjects = manifest.paths
+        if groups:
+            groups = [x for x in re.split(r"[,\s]+", groups) if x]
+            fromProjects = {
+                path: project
+                for path, project in fromProjects.items()
+                if project.MatchesGroups(groups)
+            }
+            toProjects = {
+                path: project
+                for path, project in toProjects.items()
+                if project.MatchesGroups(groups)
+            }
 
         fromKeys = sorted(fromProjects.keys())
         toKeys = set(toProjects.keys())
