@@ -70,6 +70,24 @@
       "parentUuid": "b71b97ae_f92e458b",
       "revId": "75f4ddb378e864fafaa34998637beb4b21e34c8a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3f796de_07b98101",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-11T17:02:26Z",
+      "side": 1,
+      "message": "still not addressed.  did you look at my code suggestion ?",
+      "parentUuid": "0aff78dc_cf80c7ab",
+      "revId": "75f4ddb378e864fafaa34998637beb4b21e34c8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
