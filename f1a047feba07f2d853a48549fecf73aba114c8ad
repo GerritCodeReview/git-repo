@@ -16,6 +16,24 @@
       "message": "isn\u0027t the current behavior correct ?",
       "revId": "f1a047feba07f2d853a48549fecf73aba114c8ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bb6d917_d3e9d589",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4006507
+      },
+      "writtenOn": "2026-09-13T16:44:27Z",
+      "side": 1,
+      "message": "You\u0027re right: I think I was using the wrong definition of \"unused\" here. \n\nI assumed that any project still present in the manifest should be preserved, even if it is excluded by the configured groups.\n\nBut the configured groups define the active project set, and `repo sync` follows that same selection. \n\nSo this change would make gc keep projects that are no longer active in the current configuration.\n\nIs the intended behavior for `repo gc` to preserve the active project set (defined by the configured groups), rather than every project still present in the manifest? Correct me if I\u0027m wrong.",
+      "parentUuid": "450a88a5_208312a0",
+      "revId": "f1a047feba07f2d853a48549fecf73aba114c8ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
