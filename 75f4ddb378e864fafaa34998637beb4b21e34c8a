@@ -88,6 +88,24 @@
       "parentUuid": "0aff78dc_cf80c7ab",
       "revId": "75f4ddb378e864fafaa34998637beb4b21e34c8a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee818ca6_36fcef5a",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 4006507
+      },
+      "writtenOn": "2026-09-13T13:34:50Z",
+      "side": 1,
+      "message": "Sorry, I somehow completely missed the code suggestion :/ \nI understand the point now and have updated the patch accordingly..",
+      "parentUuid": "c3f796de_07b98101",
+      "revId": "75f4ddb378e864fafaa34998637beb4b21e34c8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
