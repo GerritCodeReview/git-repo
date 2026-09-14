@@ -45,6 +45,7 @@ from error import UploadError
 import fetch
 from git_command import git_require
 from git_command import GitCommand
+from git_command import GitCommandError
 from git_config import GetSchemeFromUrl
 from git_config import GetUrlCookieFile
 from git_config import GitConfig
@@ -825,11 +826,32 @@ class Project:
         _git("rebase", "--abort")
         _git("am", "--abort")
 
+    def _RefreshIndexStatCache(self) -> None:
+        """Refresh the index's cached stat information."""
+        args = ["--unmerged", "--ignore-missing", "--refresh"]
+
+        # Run twice because -q is needed and unhelpful in equal measure. It
+        # keeps git quiet about uncommitted changes, which would otherwise
+        # exit 1 and report a failure to telemetry for every modified project,
+        # but it also suppresses the reason a refresh failed, leaving a bare
+        # exit 128. So refresh with it, and repeat without it only to get
+        # the reason.
+        try:
+            self.work_git.update_index("-q", *args, log_as_error=False)
+            return
+        except GitError:
+            pass
+
+        # Exit code 1 means there are modified files, which is okay.
+        try:
+            self.work_git.update_index(*args)
+        except GitCommandError as e:
+            if e.git_rc != 1:
+                raise
+
     def IsDirty(self, consider_untracked=True):
         """Is the working directory modified in some way?"""
-        self.work_git.update_index(
-            "-q", "--unmerged", "--ignore-missing", "--refresh"
-        )
+        self._RefreshIndexStatCache()
         if self.work_git.DiffZ("diff-index", "-M", "--cached", HEAD):
             return True
         if self.work_git.DiffZ("diff-files"):
@@ -954,9 +976,7 @@ class Project:
                 uncommitted files is detected.
         """
         details = []
-        self.work_git.update_index(
-            "-q", "--unmerged", "--ignore-missing", "--refresh"
-        )
+        self._RefreshIndexStatCache()
         if self.IsRebaseInProgress():
             details.append("rebase in progress")
             if not get_all:
@@ -1007,9 +1027,7 @@ class Project:
             print('  missing (run "repo sync")', file=output_redir)
             return
 
-        self.work_git.update_index(
-            "-q", "--unmerged", "--ignore-missing", "--refresh"
-        )
+        self._RefreshIndexStatCache()
         rb = self.IsRebaseInProgress()
         di = self.work_git.DiffZ("diff-index", "-M", "--cached", HEAD)
         df = self.work_git.DiffZ("diff-files")
