@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "940a20a3_577d026b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-09-14T19:59:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f06f479c_dc05e81d",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 72
+      },
+      "revId": "02d9acffda69c48764d26ca89aa5d8e634d163d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73a3527f_198fa70a",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49b6ccac_a4a6ac5a",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-09-14T19:59:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73a3527f_198fa70a",
+      "range": {
+        "startLine": 829,
+        "startChar": 8,
+        "endLine": 829,
+        "endChar": 30
+      },
+      "revId": "02d9acffda69c48764d26ca89aa5d8e634d163d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8aeca9b5_024584ea",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-09-14T17:37:00Z",
       "side": 1,
       "message": "iiuc in this case the second update-index call is skipped since `_RefreshIndexStatCache` returns if the first update-index -q call succeeds. the comment is true when not -q, but having -q makes update-index return 0 on modified files (incl suppressing output). we should make sure to test the `if e.git_rc !\u003d 1` branch",
+      "range": {
+        "startLine": 1801,
+        "startChar": 8,
+        "endLine": 1804,
+        "endChar": 28
+      },
+      "revId": "02d9acffda69c48764d26ca89aa5d8e634d163d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c2ee1b0_c9236ea8",
+        "filename": "tests/test_project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1804,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-09-14T19:59:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8aeca9b5_024584ea",
       "range": {
         "startLine": 1801,
         "startChar": 8,
