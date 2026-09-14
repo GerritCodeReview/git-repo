@@ -39,7 +39,7 @@ class Manifest(PagedCommand):
     COMMON = False
     helpSummary = "Manifest inspection utility"
     helpUsage = """
-%prog [-o {-|NAME.xml}] [-m MANIFEST.xml] [-r]
+%prog [-o {-|NAME.xml}] [-m MANIFEST.xml] [-g GROUP] [-r]
 """
     _helpDescription = """
 
@@ -83,6 +83,12 @@ human-readable variations.
             "--manifest-name",
             help="temporary manifest to use for this sync",
             metavar="NAME.xml",
+        )
+        p.add_option(
+            "-g",
+            "--groups",
+            help="only include projects in the specified groups",
+            metavar="GROUP",
         )
         p.add_option(
             "--suppress-upstream-revision",
@@ -167,6 +173,7 @@ human-readable variations.
                     peg_rev=opt.peg_rev,
                     peg_rev_upstream=opt.peg_rev_upstream,
                     peg_rev_dest_branch=opt.peg_rev_dest_branch,
+                    filter_groups=opt.groups,
                 )
 
                 json_settings = {
@@ -185,6 +192,7 @@ human-readable variations.
                     peg_rev=opt.peg_rev,
                     peg_rev_upstream=opt.peg_rev_upstream,
                     peg_rev_dest_branch=opt.peg_rev_dest_branch,
+                    filter_groups=opt.groups,
                 )
             if output_file != "-":
                 fd.close()
