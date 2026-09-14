@@ -103,6 +103,34 @@ def test_output_format_xml_stdout(tmp_path, capsys):
     )
 
 
+def test_output_format_xml_groups(tmp_path, capsys):
+    """Test filtering XML output by project groups."""
+    path = tmp_path / "manifest.xml"
+    path.write_text(
+        _EXAMPLE_MANIFEST.replace(
+            '<project name="repohooks" path="src/repohooks"/>',
+            '<project name="repohooks" path="src/repohooks" groups="hooks"/>\n'
+            '<project name="other" groups="other"/>',
+        )
+    )
+    cmd = _get_cmd(tmp_path)
+    opt, args = cmd.OptionParser.parse_args(["-g", "hooks"])
+    cmd.Execute(opt, args)
+    stdout = capsys.readouterr().out
+    assert stdout == (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<manifest>\n'
+        '  <remote name="test-remote" fetch="http://localhost"/>\n'
+        '  \n'
+        '  <default remote="test-remote" revision="refs/heads/main"/>\n'
+        '  \n'
+        '  <project name="repohooks" path="src/repohooks" groups="hooks"/>\n'
+        '  \n'
+        '  <repo-hooks in-project="repohooks" enabled-list="a b"/>\n'
+        '</manifest>\n'
+    )
+
+
 def test_output_format_json(tmp_path, capsys):
     """Test writing JSON."""
     path = tmp_path / "manifest.xml"
