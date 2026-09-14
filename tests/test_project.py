@@ -28,6 +28,7 @@ import pytest
 import utils_for_test
 
 import error
+import git_command
 import git_config
 import git_trace2_event_log
 import manifest_xml
@@ -1792,6 +1793,73 @@ def test_metaproject_has_changes_bounds_revision_walk() -> None:
     assert project.MetaProject.HasChanges.fget(meta)
 
     meta._revlist.assert_called_once_with("-1", "^HEAD", "remote")
+
+
+@pytest.mark.parametrize(
+    "state,expect_failure",
+    [
+        ("clean", False),
+        # -q makes git exit 0 here rather than 1, so the repeat is never
+        # reached. That is the point of it: an ordinary modified tree must
+        # not be reported as a failure.
+        ("modified", False),
+        ("locked", True),
+    ],
+)
+def test_refresh_index_stat_cache(state: str, expect_failure: bool) -> None:
+    """Refreshing tolerates local changes but reports a real failure."""
+    with utils_for_test.TempGitTree() as tempdir:
+        proj = _create_mock_project(tempdir)
+        readme = Path(tempdir) / "readme"
+        readme.write_text("hello")
+        proj.work_git.add("readme")
+        proj.work_git.commit("-m", "initial commit")
+
+        if state == "modified":
+            readme.write_text("different contents")
+        elif state == "locked":
+            # git only needs the lock when the index has to be rewritten, so
+            # age the cached stat data while leaving the contents alone.
+            os.utime(readme, (1, 1))
+            (Path(proj.gitdir) / "index.lock").write_text("")
+
+        if not expect_failure:
+            proj._RefreshIndexStatCache()
+            return
+
+        with pytest.raises(error.GitError) as excinfo:
+            proj._RefreshIndexStatCache()
+        # Omitting -q is what lets git name the file it could not create.
+        assert "index.lock" in str(excinfo.value)
+
+
+@pytest.mark.parametrize(
+    "repeat_rc,expect_raise",
+    [
+        # Whatever blocked the quiet attempt cleared in between, leaving the
+        # repeat to report nothing worse than uncommitted changes.
+        (1, False),
+        (128, True),
+    ],
+)
+def test_refresh_index_stat_cache_repeat(
+    repeat_rc: int, expect_raise: bool
+) -> None:
+    """The repeat re-raises unless it failed with an ordinary exit 1."""
+    proj = mock.MagicMock()
+    proj.work_git.update_index.side_effect = [
+        git_command.GitCommandError("quiet attempt failed", git_rc=128),
+        git_command.GitCommandError("repeat failed", git_rc=repeat_rc),
+    ]
+
+    if expect_raise:
+        with pytest.raises(git_command.GitCommandError):
+            project.Project._RefreshIndexStatCache(proj)
+    else:
+        project.Project._RefreshIndexStatCache(proj)
+
+    # The quiet attempt ran, then the repeat that explains it.
+    assert proj.work_git.update_index.call_count == 2
 
 
 def _create_mock_project(
