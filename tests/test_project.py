@@ -1794,6 +1794,44 @@ def test_metaproject_has_changes_bounds_revision_walk() -> None:
     meta._revlist.assert_called_once_with("-1", "^HEAD", "remote")
 
 
+@pytest.mark.parametrize(
+    "state,expect_failure",
+    [
+        ("clean", False),
+        # git exits 1 when paths hold real changes and so cannot be
+        # refreshed. That is ordinary, not a failure: the caller is about to
+        # report those paths anyway.
+        ("modified", False),
+        ("locked", True),
+    ],
+)
+def test_refresh_index_stat_cache(state: str, expect_failure: bool) -> None:
+    """Refreshing tolerates local changes but reports a real failure."""
+    with utils_for_test.TempGitTree() as tempdir:
+        proj = _create_mock_project(tempdir)
+        readme = Path(tempdir) / "readme"
+        readme.write_text("hello")
+        proj.work_git.add("readme")
+        proj.work_git.commit("-m", "initial commit")
+
+        if state == "modified":
+            readme.write_text("different contents")
+        elif state == "locked":
+            # git only needs the lock when the index has to be rewritten, so
+            # age the cached stat data while leaving the contents alone.
+            os.utime(readme, (1, 1))
+            (Path(proj.gitdir) / "index.lock").write_text("")
+
+        if not expect_failure:
+            proj._RefreshIndexStatCache()
+            return
+
+        with pytest.raises(error.GitError) as excinfo:
+            proj._RefreshIndexStatCache()
+        # Omitting -q is what lets git name the file it could not create.
+        assert "index.lock" in str(excinfo.value)
+
+
 def _create_mock_project(
     tempdir,
     use_local_gitdirs=False,
