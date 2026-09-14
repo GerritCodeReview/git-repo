@@ -85,6 +85,12 @@ human-readable variations.
             metavar="NAME.xml",
         )
         p.add_option(
+            "-g",
+            "--groups",
+            help="only include projects in the specified groups",
+            metavar="GROUP",
+        )
+        p.add_option(
             "--suppress-upstream-revision",
             dest="peg_rev_upstream",
             default=True,
@@ -167,6 +173,7 @@ human-readable variations.
                     peg_rev=opt.peg_rev,
                     peg_rev_upstream=opt.peg_rev_upstream,
                     peg_rev_dest_branch=opt.peg_rev_dest_branch,
+                    filter_groups=opt.groups,
                 )
 
                 json_settings = {
@@ -185,6 +192,7 @@ human-readable variations.
                     peg_rev=opt.peg_rev,
                     peg_rev_upstream=opt.peg_rev_upstream,
                     peg_rev_dest_branch=opt.peg_rev_dest_branch,
+                    filter_groups=opt.groups,
                 )
             if output_file != "-":
                 fd.close()
