@@ -33,6 +33,13 @@ _EXAMPLE_MANIFEST = """\
 """
 
 
+def test_groups_option_parsing():
+  """Test --groups / -g option parsing."""
+  cmd = manifest.Manifest()
+  opts, _ = cmd.OptionParser.parse_args(["-g", "groupA,groupB"])
+  assert opts.groups == "groupA,groupB"
+
+
 def _get_cmd(repodir: Path) -> manifest.Manifest:
     """Instantiate a manifest command object to test."""
     manifests_git = repodir / "manifests.git"
@@ -101,6 +108,24 @@ def test_output_format_xml_stdout(tmp_path, capsys):
 <repo-hooks in-project="repohooks" enabled-list="a b"/>
 </manifest>"""
     )
+
+
+def test_output_format_xml_groups(tmp_path, capsys):
+    """Test filtering XML output by project groups."""
+    path = tmp_path / "manifest.xml"
+    path.write_text(
+        _EXAMPLE_MANIFEST.replace(
+            '<project name="repohooks" path="src/repohooks"/>',
+            '<project name="repohooks" path="src/repohooks" groups="hooks"/>\n'
+            '  <project name="other" groups="other"/>',
+        )
+    )
+    cmd = _get_cmd(tmp_path)
+    opt, args = cmd.OptionParser.parse_args(["-g", "hooks"])
+    cmd.Execute(opt, args)
+    stdout = capsys.readouterr().out
+    assert 'name="repohooks"' in stdout
+    assert 'name="other"' not in stdout
 
 
 def test_output_format_json(tmp_path, capsys):
