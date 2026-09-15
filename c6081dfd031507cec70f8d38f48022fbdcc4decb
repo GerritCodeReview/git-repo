@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3414b37a_b8e71484",
+        "filename": "command.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-15T16:11:26Z",
+      "side": 1,
+      "message": "add a one line docstring to new funcs\n\nalthough i would a bit more detail like:\n\u003e Specify default_jobs only if the option does not default to the exact value already. This is helpful for options that require more complicated logic to compute their default value.",
+      "revId": "c6081dfd031507cec70f8d38f48022fbdcc4decb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
