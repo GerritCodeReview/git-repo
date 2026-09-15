@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3b2d992_dd78b821",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-09-15T08:50:54Z",
+      "side": 1,
+      "message": "I seem to have dropped this one, so tried to cast spell resurrect on it...\n\nThe test code is refactored a lot, but it still fails with trace disabled and passes with this commit rebased and updated.",
+      "revId": "6656f6e721b0bb2886efe6dc4c081eb0a47a617f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

@@ -122,6 +122,24 @@
       "parentUuid": "ef4fe649_87b49d2d",
       "revId": "03d87848b21ef1e3fbe41920813cfbf1b0d36edb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09515c62_6cb9ab6e",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-09-15T08:50:54Z",
+      "side": 1,
+      "message": "Done, I hope?",
+      "parentUuid": "9b400176_ab0f3373",
+      "revId": "03d87848b21ef1e3fbe41920813cfbf1b0d36edb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
