@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4036b2d_ae4c9522",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-15T21:40:34Z",
+      "side": 1,
+      "message": "i\u0027m able to repro with `REPO_TRACE\u003d0 vpython3 -vpython-spec run_tests.vpython3.8 -m pytest tests/test_repo_trace.py` on main",
+      "parentUuid": "e6322899_dd293ff6",
+      "revId": "6656f6e721b0bb2886efe6dc4c081eb0a47a617f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d3b2d992_dd78b821",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-09-15T16:08:03Z",
       "side": 1,
       "message": "```suggestion\n    repo_trace.SetTrace()\n```",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 29
+      },
+      "revId": "6656f6e721b0bb2886efe6dc4c081eb0a47a617f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b6ac22b_035c7463",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-15T21:40:34Z",
+      "side": 1,
+      "message": "can we just replace this line with `monkeypatch.setattr(repo_trace, \"_TRACE\", True)` and revert the changes to `SetTrace`? that method mutates the global `_TRACE` and this test doesn\u0027t restore it",
+      "parentUuid": "231d270e_a3b5e9ec",
       "range": {
         "startLine": 28,
         "startChar": 0,
