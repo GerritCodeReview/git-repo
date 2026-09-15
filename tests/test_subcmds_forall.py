@@ -17,7 +17,9 @@
 import contextlib
 import io
 from pathlib import Path
+from unittest import mock
 
+import pytest
 import utils_for_test
 
 import manifest_xml
@@ -105,3 +107,57 @@ def test_forall_all_projects_called_once(tmp_path: Path) -> None:
     line_count = sum(1 for x in output.splitlines() if x)
     # Verify that we didn't get more lines than expected.
     assert line_count == 8
+
+
+@pytest.mark.parametrize(
+    ("regex_option", "inverse"),
+    [
+        ("-r", False),
+        ("-i", True),
+    ],
+    ids=("regex", "inverse-regex"),
+)
+def test_forall_regex_modes_pass_groups_to_find_projects(
+    tmp_path: Path,
+    regex_option: str,
+    inverse: bool,
+) -> None:
+    """Pass --groups through in regex modes."""
+    manifest = _create_manifest_with_8_projects(tmp_path)
+
+    cmd = subcmds.forall.Forall()
+    cmd.manifest = manifest
+
+    opts, args = cmd.OptionParser.parse_args(
+        [
+            regex_option,
+            "--groups",
+            "special",
+            "project",
+            "-c",
+            "true",
+        ]
+    )
+
+    with mock.patch.object(
+        cmd,
+        "FindProjects",
+        return_value=[],
+    ) as find_projects, mock.patch.object(
+        cmd,
+        "ExecuteInParallel",
+        return_value=0,
+    ):
+        cmd.Execute(opts, args)
+
+    expected_kwargs = {
+        "groups": "special",
+        "all_manifests": True,
+    }
+    if inverse:
+        expected_kwargs["inverse"] = True
+
+    find_projects.assert_called_once_with(
+        ["project"],
+        **expected_kwargs,
+    )
