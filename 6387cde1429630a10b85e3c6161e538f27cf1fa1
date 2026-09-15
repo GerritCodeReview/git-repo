@@ -16,6 +16,121 @@
       "message": "@gavinmak@google.com @vapier@google.com fixed the indentation issue, which should be the last feedback item. PTAL, thank you!",
       "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cda8895_875cfc22",
+        "filename": "manifest_xml.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2314,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-15T23:18:28Z",
+      "side": 1,
+      "message": "this method should also validate paths using `self._CheckLocalPath` and raise a `ManifestInvalidPathError` if it\u0027s invalid (e.g. absolute or a path outside the workspace)",
+      "range": {
+        "startLine": 2314,
+        "startChar": 36,
+        "endLine": 2314,
+        "endChar": 62
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41e2ac7f_4897b262",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1469,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-15T23:18:28Z",
+      "side": 1,
+      "message": "do we want to set `clone_bundle \u003d False`?",
+      "range": {
+        "startLine": 1469,
+        "startChar": 0,
+        "endLine": 1469,
+        "endChar": 38
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2437737_0cac0aff",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 3985,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-15T23:18:28Z",
+      "side": 1,
+      "message": "`_InitWorkTree` has a try/except for cleaning up `dotgit` on failure, should we do the same here?",
+      "range": {
+        "startLine": 3980,
+        "startChar": 12,
+        "endLine": 3985,
+        "endChar": 0
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33c882f3_93d248cd",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 4046,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-15T23:18:28Z",
+      "side": 1,
+      "message": "iiuc the .repo/projects/\u003cname\u003e.git/config would still have `core.sparseCheckout \u003d true`. WDYT about something like this when re-initing without `sparse-path`?\n```suggestion\n                        self._ConfigureSparseCheckout(self.sparse_paths)\n                    elif self.bare_git.GetBoolean(\"core.sparseCheckout\"):\n                        self.work_git.sparse_checkout(\"disable\")\n```",
+      "range": {
+        "startLine": 4046,
+        "startChar": 0,
+        "endLine": 4046,
+        "endChar": 72
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b58342c7_e1eec668",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 4078,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-15T23:18:28Z",
+      "side": 1,
+      "message": "add a `--` delimiter here",
+      "range": {
+        "startLine": 4078,
+        "startChar": 44,
+        "endLine": 4078,
+        "endChar": 45
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
