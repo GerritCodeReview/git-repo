@@ -109,7 +109,10 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
             )
         else:
             projects = self.FindProjects(
-                args, all_manifests=not opt.this_manifest_only
+                args,
+                groups=opt.groups,
+                missing_ok=opt.all,
+                all_manifests=not opt.this_manifest_only,
             )
 
         def _getpath(x):
