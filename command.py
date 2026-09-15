@@ -545,7 +545,14 @@ class Command:
         result.sort(key=_getpath)
         return result
 
-    def FindProjects(self, args, inverse=False, all_manifests=False):
+    def FindProjects(
+        self,
+        args: List[str],
+        inverse: bool = False,
+        all_manifests: bool = False,
+        groups: Optional[str] = "",
+        missing_ok: Optional[bool] = False,
+    ) -> List["Project"]:
         """Find projects from command line arguments.
 
         Args:
@@ -555,10 +562,18 @@ class Command:
             all_manifests: a boolean, if True then all manifests and
                 submanifests are used. If False, then only the local
                 (sub)manifest is used.
+            groups: a string specifying manifest groups. If empty or None, use
+                each manifest's effective groups.
+            missing_ok: a boolean, whether to allow missing projects.
         """
         result = []
         patterns = [re.compile(r"%s" % a, re.IGNORECASE) for a in args]
-        for project in self.GetProjects("", all_manifests=all_manifests):
+        for project in self.GetProjects(
+            "",
+            groups=groups,
+            missing_ok=missing_ok,
+            all_manifests=all_manifests,
+        ):
             paths = [project.name, project.RelPath(local=not all_manifests)]
             for pattern in patterns:
                 match = any(pattern.search(x) for x in paths)

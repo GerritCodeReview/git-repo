@@ -32,6 +32,7 @@ class FakeProject:
         gitdir=None,
         derived_subprojects=None,
         sync_s=False,
+        exists: bool = True,
     ):
         self.name = name
         self.relpath = relpath
@@ -39,7 +40,7 @@ class FakeProject:
         self.manifest = None
         self.gitdir = gitdir or f"/git/{relpath}"
         self.sync_s = sync_s
-        self.Exists = True
+        self.Exists = exists
         self._derived_subprojects = derived_subprojects or []
 
     def GetDerivedSubprojects(self):
@@ -67,6 +68,7 @@ class FakeManifest:
             list(self.projects) if all_projects is None else list(all_projects)
         )
         self._effective_groups = effective_groups
+        self.path_prefix = ""
 
         # all_projects may include projects owned by child manifests,
         # so only set this manifest on its direct projects.
@@ -258,3 +260,90 @@ def test_get_projects_by_name_uses_groups_from_each_manifest() -> None:
         "outer/shared",
         "sub/shared",
     ]
+
+
+def test_find_projects_uses_groups_from_each_manifest() -> None:
+    """Use each manifest's effective groups for regex selection."""
+    outer_project = GroupMatchingFakeProject(
+        "match-outer",
+        "outer",
+        matching_groups={"outer-group"},
+    )
+    child_project = GroupMatchingFakeProject(
+        "match-child",
+        "sub/child",
+        matching_groups={"child-group"},
+    )
+    excluded_project = GroupMatchingFakeProject(
+        "match-excluded",
+        "sub/excluded",
+        matching_groups={"other-group"},
+    )
+
+    child_manifest = FakeManifest(
+        [child_project, excluded_project],
+        effective_groups="child-group",
+    )
+    child_manifest.path_prefix = "sub"
+
+    outer_manifest = FakeManifest(
+        [outer_project],
+        all_projects=[
+            outer_project,
+            *child_manifest.projects,
+        ],
+        effective_groups="outer-group",
+    )
+    outer_manifest.outer_client = outer_manifest
+
+    cmd = Command(manifest=outer_manifest)
+
+    projects = cmd.FindProjects(["match"], all_manifests=True)
+
+    assert [project.relpath for project in projects] == [
+        "outer",
+        "sub/child",
+    ]
+
+
+def test_find_projects_uses_explicit_groups() -> None:
+    """Use explicit groups for regex selection."""
+    default_project = GroupMatchingFakeProject(
+        "default",
+        "default",
+        matching_groups={"default-group"},
+    )
+    override_project = GroupMatchingFakeProject(
+        "override",
+        "override",
+        matching_groups={"override-group"},
+    )
+    manifest = FakeManifest(
+        [default_project, override_project],
+        effective_groups="default-group",
+    )
+    cmd = Command(manifest=manifest)
+
+    projects = cmd.FindProjects(
+        ["override"],
+        groups="override-group",
+    )
+
+    assert projects == [override_project]
+
+
+def test_find_projects_allows_missing_projects() -> None:
+    """Allow regex selection to include projects without a checkout."""
+    project = FakeProject(
+        "missing",
+        "missing",
+        exists=False,
+    )
+    cmd = Command(manifest=FakeManifest([project]))
+
+    projects = cmd.FindProjects(
+        ["missing"],
+        missing_ok=True,
+    )
+
+    assert projects == [project]

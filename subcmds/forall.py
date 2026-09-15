@@ -244,10 +244,14 @@ without iterating through the remaining projects.
         mirror = self.manifest.IsMirror
 
         if opt.regex:
-            projects = self.FindProjects(args, all_manifests=all_trees)
+            projects = self.FindProjects(
+                args,
+                groups=opt.groups,
+                all_manifests=all_trees,
+            )
         elif opt.inverse_regex:
             projects = self.FindProjects(
-                args, inverse=True, all_manifests=all_trees
+                args, inverse=True, groups=opt.groups, all_manifests=all_trees
             )
         else:
             projects = self.GetProjects(
