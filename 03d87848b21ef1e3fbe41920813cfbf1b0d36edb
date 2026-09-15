@@ -140,6 +140,24 @@
       "parentUuid": "9b400176_ab0f3373",
       "revId": "03d87848b21ef1e3fbe41920813cfbf1b0d36edb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d309c89b_ff72684e",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-15T16:08:03Z",
+      "side": 1,
+      "message": "the latest PS doesn\u0027t seem to include my suggestion ?  we want to make sure tracing is always disabled to start with, not just because you happened to have `REPO_TRACE\u003d0` in your env.  this prevents breakage in the future if we add more tests that assume tracing is defaulting to on.\n\nalthough i see my last suggestion was inverted -- it should be set to `False`, not `True`.",
+      "parentUuid": "09515c62_6cb9ab6e",
+      "revId": "03d87848b21ef1e3fbe41920813cfbf1b0d36edb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
