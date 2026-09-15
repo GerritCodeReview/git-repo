@@ -34,6 +34,24 @@
       "parentUuid": "450a88a5_208312a0",
       "revId": "f1a047feba07f2d853a48549fecf73aba114c8ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78ff0b75_591c8686",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-15T17:53:58Z",
+      "side": 1,
+      "message": "i think one could reasonably argue for both ways.  but i think the current is the better/expected default.  if i `repo init \u0026\u0026 repo sync` and get all the default groups, then later change to `repo init -g foo \u0026\u0026 repo sync`, i would expect `repo gc` to match internal state to how i\u0027ve configured my checkout.\n\nif you want to add some options to control the behavior, and add some more text to the gc help to clarify things, that would prob be fine.",
+      "parentUuid": "2bb6d917_d3e9d589",
+      "revId": "f1a047feba07f2d853a48549fecf73aba114c8ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
