@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ea1acf21_14e986d4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-16T00:15:48Z",
+      "side": 1,
+      "message": "yeah i meant to delete this comment because i could repro",
+      "parentUuid": "f4036b2d_ae4c9522",
+      "revId": "6656f6e721b0bb2886efe6dc4c081eb0a47a617f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d3b2d992_dd78b821",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 6
@@ -90,6 +108,30 @@
       "side": 1,
       "message": "can we just replace this line with `monkeypatch.setattr(repo_trace, \"_TRACE\", True)` and revert the changes to `SetTrace`? that method mutates the global `_TRACE` and this test doesn\u0027t restore it",
       "parentUuid": "231d270e_a3b5e9ec",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 29
+      },
+      "revId": "6656f6e721b0bb2886efe6dc4c081eb0a47a617f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c48ee459_9baf7b0a",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-16T00:15:48Z",
+      "side": 1,
+      "message": "not a bad idea, but if we update disable_repo_trace as i suggest in another comment thread, it would be redundant",
+      "parentUuid": "3b6ac22b_035c7463",
       "range": {
         "startLine": 28,
         "startChar": 0,
