@@ -52,6 +52,24 @@
       "parentUuid": "2bb6d917_d3e9d589",
       "revId": "f1a047feba07f2d853a48549fecf73aba114c8ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee15c28e_97e6fd8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4006507
+      },
+      "writtenOn": "2026-09-17T11:41:06Z",
+      "side": 1,
+      "message": "That makes sense.\nI agree the current behavior should stay the default: if the configured groups define the active project set, `repo gc` should normally clean up projects outside that set.\n\nThe case I had in mind is a large checkout where the group selection changes from time to time. For example, a developer might switch between product or platform groups in the same checkout. A project can still be in the manifests but be inactive only because the current groups exclude it.\n\nIn that case, deleting its internal git data is still consistent with the current configuration, but it also throws away a useful local cache for a project that may be needed again later. For large projects or prebuilts, keeping that data can save a significant refetch when switching back.\n\nSo instead of changing default logic, I could add an opt-in option such as `--keep-manifest-projects`. It would keep internal git data for projects that are still in the manifests even if configured groups exclude them, while projects that are gone from manifests would still be removed.\n\nA more selective alternative could be something like `--keep-groups`, to keep projects from specific additional groups. That is more flexible, but also more complex, so I would probably start with the simpler manifest-wide option unless you think group-specific form makes more sense.\n\nI would also update `repo gc` help to make the default behavior clear: `projects excluded by configured groups are considered inactive and may be removed`.\n\nWould something like that make sense?",
+      "parentUuid": "78ff0b75_591c8686",
+      "revId": "f1a047feba07f2d853a48549fecf73aba114c8ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
