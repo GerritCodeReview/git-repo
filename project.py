@@ -57,6 +57,7 @@ from git_refs import R_M
 from git_refs import R_PUB
 from git_refs import R_TAGS
 from git_refs import R_WORKTREE_M
+import git_status
 import git_superproject
 from git_trace2_event_log import EventLog
 import platform_utils
@@ -868,8 +869,46 @@ class Project:
             if e.git_rc != 1:
                 raise
 
-    def IsDirty(self, consider_untracked=True):
+    def IsDirty(self, consider_untracked: bool = True) -> bool:
         """Is the working directory modified in some way?"""
+        status = self._GetStatusSnapshot(
+            untracked_files="normal" if consider_untracked else "no"
+        )
+        if status is not None:
+            return status.is_dirty(consider_untracked=consider_untracked)
+
+        return self._IsDirtyLegacy(consider_untracked=consider_untracked)
+
+    def _GetStatusSnapshot(
+        self,
+        untracked_files: str = "all",
+        branch: bool = False,
+        ahead_behind: bool = False,
+        show_stash: bool = False,
+    ) -> Optional[git_status.StatusSnapshot]:
+        """Read one porcelain-v2 snapshot, or select the legacy path."""
+        if not git_require((2, 11, 0)):
+            return None
+        try:
+            return git_status.GetStatus(
+                self,
+                self.gitdir,
+                untracked_files=untracked_files,
+                branch=branch,
+                ahead_behind=ahead_behind,
+                show_stash=show_stash,
+            )
+        except (GitError, ValueError, git_status.UnsupportedStatusError) as e:
+            logger.warning(
+                "project %s: porcelain v2 status failed; using legacy "
+                "status: %s",
+                self.RelPath(local=False),
+                e,
+            )
+            return None
+
+    def _IsDirtyLegacy(self, consider_untracked: bool = True) -> bool:
+        """Check dirty state with plumbing supported by older Git."""
         self._RefreshIndexStatCache()
         if self.work_git.DiffZ("diff-index", "-M", "--cached", HEAD):
             return True
@@ -994,6 +1033,46 @@ class Project:
                 uncommitted files. If False - return as soon as any kind of
                 uncommitted files is detected.
         """
+        status = self._GetStatusSnapshot(untracked_files="all")
+        if status is not None:
+            return self._UncommittedFilesFromStatus(status, get_all=get_all)
+
+        return self._UncommittedFilesLegacy(get_all=get_all)
+
+    def _UncommittedFilesFromStatus(
+        self, status: git_status.StatusSnapshot, get_all: bool = True
+    ) -> List[str]:
+        """Format uncommitted paths from a porcelain-v2 snapshot."""
+        details = []
+        if self.IsRebaseInProgress():
+            details.append("rebase in progress")
+            if not get_all:
+                return details
+
+        changes = []
+        for path, entry in status.index_changes.items():
+            changes.append(path)
+            # The legacy diff-index call did not enable rename detection, so
+            # it reported a staged rename as delete(source) plus add(target).
+            if entry.status == "R" and entry.src_path:
+                changes.append(entry.src_path)
+        changes.sort()
+        if changes:
+            details.extend(changes)
+            if not get_all:
+                return details
+
+        changes = list(status.worktree_changes)
+        if changes:
+            details.extend(changes)
+            if not get_all:
+                return details
+
+        details.extend(status.untracked)
+        return details
+
+    def _UncommittedFilesLegacy(self, get_all: bool = True) -> List[str]:
+        """List uncommitted paths with plumbing supported by older Git."""
         details = []
         self._RefreshIndexStatCache()
         if self.IsRebaseInProgress():
