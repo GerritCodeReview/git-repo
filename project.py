@@ -986,7 +986,7 @@ class Project:
 
         return matched
 
-    def UncommitedFiles(self, get_all=True):
+    def UncommittedFiles(self, get_all: bool = True) -> List[str]:
         """Returns a list of strings, uncommitted files in the git tree.
 
         Args:
@@ -1023,9 +1023,9 @@ class Project:
         """Returns a list of strings, untracked files in the git tree."""
         return self.work_git.LsOthers()
 
-    def HasChanges(self):
+    def HasChanges(self) -> bool:
         """Returns true if there are uncommitted changes."""
-        return bool(self.UncommitedFiles(get_all=False))
+        return bool(self.UncommittedFiles(get_all=False))
 
     def PrintWorkTreeStatus(self, output_redir=None, quiet=False, local=False):
         """Prints the status of the repository to stdout.
