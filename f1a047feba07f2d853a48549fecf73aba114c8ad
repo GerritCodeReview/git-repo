@@ -70,6 +70,24 @@
       "parentUuid": "78ff0b75_591c8686",
       "revId": "f1a047feba07f2d853a48549fecf73aba114c8ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac4609d2_7d78e0c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-17T14:21:00Z",
+      "side": 1,
+      "message": "`--keep-manifest-projects` would be fine for now.  i fear trying to expand the groups related options would run into further confusion and deviation from how `--groups` is defined for other subcommands.  certainly possible, but would require a lot more thought/care/bike-shedding.",
+      "parentUuid": "ee15c28e_97e6fd8e",
+      "revId": "f1a047feba07f2d853a48549fecf73aba114c8ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
