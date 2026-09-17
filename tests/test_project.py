@@ -30,6 +30,7 @@ import utils_for_test
 import error
 import git_command
 import git_config
+import git_status
 import git_trace2_event_log
 import manifest_xml
 import platform_utils
@@ -601,6 +602,84 @@ class ProjectTests(unittest.TestCase):
             self.assertEqual([], kept)
             proj.bare_git.SetHead.assert_called_once_with("refs/heads/manifest")
             proj.bare_git.DetachHead.assert_called_once_with(revision)
+
+    def test_dirty_status_snapshot(self) -> None:
+        """Dirty checks cover staged, unstaged, and optional untracked files."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            Path(tempdir, "tracked").write_text("initial")
+            proj.work_git.add("tracked")
+            proj.work_git.commit("-m", "initial")
+
+            self.assertFalse(proj.IsDirty())
+
+            Path(tempdir, "tracked").write_text("staged")
+            proj.work_git.add("tracked")
+            self.assertTrue(proj.IsDirty(consider_untracked=False))
+
+            Path(tempdir, "tracked").write_text("unstaged")
+            self.assertEqual(
+                ["tracked", "tracked"], proj.UncommittedFiles(get_all=True)
+            )
+
+            proj.work_git.reset("--hard", "HEAD")
+            Path(tempdir, "untracked").write_text("new")
+            self.assertTrue(proj.IsDirty())
+            self.assertFalse(proj.IsDirty(consider_untracked=False))
+
+    def test_uncommitted_files_preserve_staged_rename_paths(self) -> None:
+        """The snapshot returns both paths reported by legacy diff-index."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            Path(tempdir, "old").write_text("tracked")
+            proj.work_git.add("old")
+            proj.work_git.commit("-m", "initial")
+            proj.work_git.mv("old", "new")
+
+            self.assertEqual(["new", "old"], proj.UncommittedFiles())
+
+    def test_has_changes_includes_rebase_from_status_snapshot(self) -> None:
+        """HasChanges keeps treating an in-progress rebase as a change."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            status = git_status.StatusSnapshot()
+            proj._GetStatusSnapshot = mock.MagicMock(return_value=status)
+            proj.IsRebaseInProgress = mock.MagicMock(return_value=True)
+
+            self.assertTrue(proj.HasChanges())
+            self.assertEqual(
+                ["rebase in progress"], proj.UncommittedFiles(get_all=False)
+            )
+
+    def test_get_status_snapshot_handles_unsupported_status_error(self) -> None:
+        """UnsupportedStatusError triggers the legacy status fallback."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            with mock.patch.object(
+                git_status,
+                "GetStatus",
+                side_effect=git_status.UnsupportedStatusError,
+            ):
+                self.assertIsNone(proj._GetStatusSnapshot())
+
+    def test_old_git_dirty_check_uses_legacy_plumbing(self) -> None:
+        """Git clients before 2.11 retain the existing dirty-check path."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj.work_git = mock.MagicMock()
+            proj.work_git.DiffZ.side_effect = [{}, {"tracked": mock.sentinel}]
+
+            with mock.patch.object(project, "git_require", return_value=False):
+                self.assertTrue(proj.IsDirty())
+
+            proj.work_git.update_index.assert_called_once_with(
+                "-q",
+                "--unmerged",
+                "--ignore-missing",
+                "--refresh",
+                log_as_error=False,
+            )
+            self.assertEqual(2, proj.work_git.DiffZ.call_count)
 
     @unittest.skipUnless(
         utils_for_test.supports_reftable(),
