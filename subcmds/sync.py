@@ -3310,13 +3310,13 @@ class LocalSyncState:
 
     def _Get(self, project, key):
         self._Load()
-        p = project.relpath
+        p = project.RelPath(local=False)
         if p not in self._state:
             return
         return self._state[p].get(key)
 
     def _Set(self, project, key):
-        p = project.relpath
+        p = project.RelPath(local=False)
         if p not in self._state:
             self._state[p] = {}
         self._state[p][key] = self._time
@@ -3344,8 +3344,9 @@ class LocalSyncState:
         if not self._state:
             return
         delete = set()
+        outer_topdir = os.path.dirname(self._manifest.repodir)
         for path in self._state:
-            gitdir = os.path.join(self._manifest.topdir, path, ".git")
+            gitdir = os.path.join(outer_topdir, path, ".git")
             if not os.path.exists(gitdir) or os.path.islink(gitdir):
                 delete.add(path)
         if not delete:

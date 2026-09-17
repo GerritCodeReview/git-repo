@@ -312,7 +312,7 @@ class LocalSyncState(unittest.TestCase):
         self.manifest = mock.MagicMock(
             topdir=self.topdir,
             repodir=self.repodir,
-            repoProject=mock.MagicMock(relpath=".repo/repo"),
+            repoProject=FakeProject(".repo/repo"),
         )
         self.state = self._new_state()
 
@@ -326,7 +326,7 @@ class LocalSyncState(unittest.TestCase):
 
     def test_set(self):
         """Times are set."""
-        p = mock.MagicMock(relpath="projA")
+        p = FakeProject("projA")
         self.state.SetFetchTime(p)
         self.state.SetCheckoutTime(p)
         self.assertEqual(self.state.GetFetchTime(p), self._TIME)
@@ -348,8 +348,8 @@ class LocalSyncState(unittest.TestCase):
 
         # Initialize state to read from the new file.
         self.state = self._new_state()
-        projA = mock.MagicMock(relpath="projA")
-        projB = mock.MagicMock(relpath="projB")
+        projA = FakeProject("projA")
+        projB = FakeProject("projB")
         self.assertEqual(self.state.GetFetchTime(projA), None)
         self.assertEqual(self.state.GetFetchTime(projB), 5)
         self.assertEqual(self.state.GetCheckoutTime(projB), 7)
@@ -360,9 +360,43 @@ class LocalSyncState(unittest.TestCase):
         self.assertEqual(self.state.GetFetchTime(projB), self._TIME)
         self.assertEqual(self.state.GetCheckoutTime(projB), 7)
 
+    def test_same_relpath_projects_keep_separate_state(self):
+        """Projects with the same relpath keep separate sync state."""
+        outer = FakeProject("proj")
+        child = FakeProject("proj", path_prefix="sub")
+
+        self.state.SetFetchTime(outer)
+        self.state.Save()
+
+        self.state = self._new_state(self._TIME + 1)
+        self.state.SetFetchTime(child)
+
+        self.assertEqual(self.state.GetFetchTime(outer), self._TIME)
+        self.assertEqual(
+            self.state.GetFetchTime(child),
+            self._TIME + 1,
+        )
+
+    def test_partial_sync_with_same_relpath_projects(self):
+        """Projects with the same relpath keep independent partial sync."""
+        outer = FakeProject("proj")
+        child = FakeProject("proj", path_prefix="sub")
+
+        for project in (outer, child):
+            self.state.SetFetchTime(project)
+            self.state.SetCheckoutTime(project)
+        self.state.Save()
+        self.assertFalse(self.state.IsPartiallySynced())
+
+        self.state = self._new_state(self._TIME + 1)
+        self.state.SetFetchTime(outer)
+        self.state.SetCheckoutTime(outer)
+
+        self.assertTrue(self.state.IsPartiallySynced())
+
     def test_save_to_file(self):
         """Data is saved under repodir."""
-        p = mock.MagicMock(relpath="projA")
+        p = FakeProject("projA")
         self.state.SetFetchTime(p)
         self.state.Save()
         self.assertEqual(
@@ -389,7 +423,7 @@ class LocalSyncState(unittest.TestCase):
 
         # Initialize state to read from the new file.
         self.state = self._new_state()
-        projB = mock.MagicMock(relpath="projB")
+        projB = FakeProject("projB")
         self.assertEqual(self.state.IsPartiallySynced(), False)
 
         self.state.SetFetchTime(projB)
@@ -398,7 +432,7 @@ class LocalSyncState(unittest.TestCase):
 
     def test_ignore_repo_project(self):
         """Sync data for repo project is ignored when checking partial sync."""
-        p = mock.MagicMock(relpath="projA")
+        p = FakeProject("projA")
         self.state.SetFetchTime(p)
         self.state.SetCheckoutTime(p)
         self.state.SetFetchTime(self.manifest.repoProject)
@@ -415,7 +449,7 @@ class LocalSyncState(unittest.TestCase):
 
     def test_nonexistent_project(self):
         """Unsaved projects don't have data."""
-        p = mock.MagicMock(relpath="projC")
+        p = FakeProject("projC")
         self.assertEqual(self.state.GetFetchTime(p), None)
         self.assertEqual(self.state.GetCheckoutTime(p), None)
 
@@ -440,8 +474,8 @@ class LocalSyncState(unittest.TestCase):
                 return False
             return True
 
-        projA = mock.MagicMock(relpath="projA")
-        projB = mock.MagicMock(relpath="projB")
+        projA = FakeProject("projA")
+        projB = FakeProject("projB")
         self.state = self._new_state()
         self.assertEqual(self.state.GetFetchTime(projA), 5)
         self.assertEqual(self.state.GetFetchTime(projB), 7)
@@ -452,6 +486,38 @@ class LocalSyncState(unittest.TestCase):
         self.state = self._new_state()
         self.assertIsNone(self.state.GetFetchTime(projA))
         self.assertEqual(self.state.GetFetchTime(projB), 7)
+
+    def test_prune_keeps_submanifest_project(self):
+        """Existing submanifest projects are not pruned."""
+        project = FakeProject("proj", path_prefix="sub")
+        os.makedirs(
+            os.path.join(self.topdir, "sub", "proj", ".git"),
+        )
+
+        self.state.SetFetchTime(project)
+        self.state.PruneRemovedProjects()
+
+        self.assertEqual(self.state.GetFetchTime(project), self._TIME)
+
+    def test_prune_from_submanifest_keeps_project(self):
+        """Existing projects are not pruned during a submanifest sync."""
+        child_topdir = os.path.join(self.topdir, "sub")
+        project = FakeProject("proj", path_prefix="sub")
+        os.makedirs(os.path.join(child_topdir, "proj", ".git"))
+
+        child_manifest = mock.MagicMock(
+            topdir=child_topdir,
+            repodir=self.repodir,
+        )
+        child_manifest.outer_client.topdir = self.topdir
+
+        with mock.patch("time.time", return_value=self._TIME):
+            state = sync.LocalSyncState(child_manifest)
+
+        state.SetFetchTime(project)
+        state.PruneRemovedProjects()
+
+        self.assertEqual(state.GetFetchTime(project), self._TIME)
 
     def test_prune_removed_and_symlinked_projects(self):
         """Removed projects that still exists on disk as symlink are pruned."""
@@ -477,8 +543,8 @@ class LocalSyncState(unittest.TestCase):
                 return True
             return False
 
-        projA = mock.MagicMock(relpath="projA")
-        projB = mock.MagicMock(relpath="projB")
+        projA = FakeProject("projA")
+        projB = FakeProject("projB")
         self.state = self._new_state()
         self.assertEqual(self.state.GetFetchTime(projA), 5)
         self.assertEqual(self.state.GetFetchTime(projB), 7)
