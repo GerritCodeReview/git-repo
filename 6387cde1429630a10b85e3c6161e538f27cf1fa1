@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8e4ad1d_8a5b7599",
+        "filename": "manifest_xml.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2314,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-17T13:36:55Z",
+      "side": 1,
+      "message": "i assume git already asserts this ?  i can\u0027t imagine git allowing paths outside the current checkout.",
+      "parentUuid": "5cda8895_875cfc22",
+      "range": {
+        "startLine": 2314,
+        "startChar": 36,
+        "endLine": 2314,
+        "endChar": 62
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "41e2ac7f_4897b262",
         "filename": "project.py",
         "patchSetId": 20
