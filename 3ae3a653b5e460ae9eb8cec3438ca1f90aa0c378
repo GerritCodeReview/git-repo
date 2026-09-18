@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c05da20_0c47c4eb",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3347,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-18T01:01:48Z",
+      "side": 1,
+      "message": "i don\u0027t understand this change.  `manifest.topdir` is literally defined as `os.path.dirname(self.repodir)`.  so this is a nop.",
+      "revId": "3ae3a653b5e460ae9eb8cec3438ca1f90aa0c378",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
