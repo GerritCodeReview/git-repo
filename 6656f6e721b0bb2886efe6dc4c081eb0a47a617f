@@ -140,6 +140,30 @@
       },
       "revId": "6656f6e721b0bb2886efe6dc4c081eb0a47a617f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c72733a4_ae6db13e",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-09-18T19:24:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c48ee459_9baf7b0a",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 29
+      },
+      "revId": "6656f6e721b0bb2886efe6dc4c081eb0a47a617f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
