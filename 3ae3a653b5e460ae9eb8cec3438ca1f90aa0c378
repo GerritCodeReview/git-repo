@@ -16,6 +16,24 @@
       "message": "i don\u0027t understand this change.  `manifest.topdir` is literally defined as `os.path.dirname(self.repodir)`.  so this is a nop.",
       "revId": "3ae3a653b5e460ae9eb8cec3438ca1f90aa0c378",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "837bc8da_c4c42a9a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3347,
+      "author": {
+        "id": 4006507
+      },
+      "writtenOn": "2026-09-18T16:44:49Z",
+      "side": 1,
+      "message": "That\u0027s true for the outer manifest. \nFor a submanifest, `XmlManifest.__init__()` then adjusts `topdir`:\n```\nself.topdir \u003d os.path.dirname(self.repodir)\nif submanifest_path:\n    self.topdir \u003d os.path.join(self.topdir, submanifest_path)\n```\nSubmanifests still share the same `repodir`, so for one at `sub`:\n```\ndirname(manifest.repodir) \u003d \u003croot\u003e\nmanifest.topdir           \u003d \u003croot\u003e/sub\n```\n`LocalSyncState` now stores `Project.RelPath(local\u003dFalse)`, for example `sub/proj`. \nCombining that with the submanifest `topdir` would produce `\u003croot\u003e/sub/sub/proj` instead of `\u003croot\u003e/sub/proj`.\n\n`dirname(repodir)` does give the right base here, but I agree it\u0027s not obvious why. \nI\u0027ve already switched it to `self._manifest.outer_client.topdir`, to make that explicit.",
+      "parentUuid": "4c05da20_0c47c4eb",
+      "revId": "3ae3a653b5e460ae9eb8cec3438ca1f90aa0c378",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
