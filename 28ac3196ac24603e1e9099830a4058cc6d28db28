@@ -16,6 +16,41 @@
       "message": "The monkeypatch suggestion I am not familiar with, but I added the other suggestion by Mike, test still passes for me with this instead. Yes? No?",
       "revId": "28ac3196ac24603e1e9099830a4058cc6d28db28",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b6a07ab_94bd85f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-18T15:00:54Z",
+      "side": 1,
+      "message": "monkeypatch is just pytest style of using unittest.mock to patch modules/etc...",
+      "parentUuid": "5ae26089_0cdd379c",
+      "revId": "28ac3196ac24603e1e9099830a4058cc6d28db28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c356e05a_02d6a801",
+        "filename": "tests/conftest.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-18T15:00:54Z",
+      "side": 1,
+      "message": "```suggestion\n    repo_trace.SetTrace(False)\n```\n\nthen restore your other change to enable tracing for the one test",
+      "revId": "28ac3196ac24603e1e9099830a4058cc6d28db28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
