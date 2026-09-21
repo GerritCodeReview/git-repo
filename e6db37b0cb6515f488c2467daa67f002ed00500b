@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a32dc091_b5ece956",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-21T17:47:03Z",
+      "side": 1,
+      "message": "```suggestion\n    # Enable trace for the test, in case users have it disabled.\n```",
+      "revId": "e6db37b0cb6515f488c2467daa67f002ed00500b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
