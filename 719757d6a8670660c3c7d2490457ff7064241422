@@ -50,6 +50,23 @@
       "message": "\u003e Patch Set 1:\n\u003e \n\u003e Oh, ok. Not quite sure how this works here, but verified is set.\n\n",
       "revId": "719757d6a8670660c3c7d2490457ff7064241422",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85e56337_961cb327",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5175738
+      },
+      "writtenOn": "2026-09-22T10:20:48Z",
+      "side": 1,
+      "message": "https://gerrit-review.googlesource.com/c/git-repo/+/53185/comments/1df7ab29_6de42640",
+      "revId": "719757d6a8670660c3c7d2490457ff7064241422",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
