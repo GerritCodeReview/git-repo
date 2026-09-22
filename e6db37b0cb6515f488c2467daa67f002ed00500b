@@ -16,6 +16,24 @@
       "message": "```suggestion\n    # Enable trace for the test, in case users have it disabled.\n```",
       "revId": "e6db37b0cb6515f488c2467daa67f002ed00500b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec016630_fde1b208",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2026-09-22T07:28:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a32dc091_b5ece956",
+      "revId": "e6db37b0cb6515f488c2467daa67f002ed00500b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
