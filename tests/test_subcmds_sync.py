@@ -30,7 +30,6 @@ import pytest
 import command
 from error import GitError
 from error import RepoExitError
-import git_status
 import manifest_xml
 from project import SyncNetworkHalfResult
 from subcmds import sync
@@ -990,11 +989,9 @@ class CheckForBloatedProjects(unittest.TestCase):
         self.cmd.git_event_log = mock.MagicMock()
         self.cmd._bloated_projects = []
 
-    def test_one_project_reuses_status_head_oid(self) -> None:
-        """The bloat scan gets dirty state and HEAD from one snapshot."""
-        status = git_status.StatusSnapshot()
-        status.branch_oid = "local"
-        self.project._GetStatusSnapshot.return_value = status
+    def test_one_project_uses_dirty_and_head(self) -> None:
+        """A project whose HEAD left the manifest revision is measured."""
+        self.project.GetDirtyAndHead.return_value = (False, "local")
         self.project.GetRevisionId.return_value = "manifest"
         self.project.bare_git.count_objects.return_value = (
             "packs: 0\nsize-pack: 0\nsize-garbage: 0\n"
@@ -1006,15 +1003,28 @@ class CheckForBloatedProjects(unittest.TestCase):
         ):
             self.assertIsNone(self.cmd._CheckOneBloatedProject(0))
 
-        self.project.IsDirty.assert_not_called()
-        self.project.work_git.rev_parse.assert_not_called()
+        self.project.GetDirtyAndHead.assert_called_once_with()
+        self.project.bare_git.count_objects.assert_called_once_with("-v")
+
+    def test_one_dirty_project_is_measured(self) -> None:
+        """A dirty project is measured even if HEAD matches the manifest."""
+        self.project.GetDirtyAndHead.return_value = (True, "local")
+        self.project.GetRevisionId.return_value = "local"
+        self.project.bare_git.count_objects.return_value = (
+            "packs: 0\nsize-pack: 0\nsize-garbage: 0\n"
+        )
+        with mock.patch.object(
+            sync.Sync,
+            "get_parallel_context",
+            return_value={"projects": [self.project]},
+        ):
+            self.assertIsNone(self.cmd._CheckOneBloatedProject(0))
+
         self.project.bare_git.count_objects.assert_called_once_with("-v")
 
     def test_one_unborn_project_skips_bloat_check(self) -> None:
-        """A porcelain initial branch behaves like failed rev-parse HEAD."""
-        status = git_status.StatusSnapshot()
-        status.index_changes["staged"] = git_status.StatusEntry("staged", "M")
-        self.project._GetStatusSnapshot.return_value = status
+        """A project without a resolvable HEAD is skipped."""
+        self.project.GetDirtyAndHead.return_value = (True, None)
 
         with mock.patch.object(
             sync.Sync,

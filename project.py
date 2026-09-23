@@ -943,7 +943,26 @@ class Project:
             if has_status_stash:
                 return bool(status.stash_count)
             return self.HasStash()
-        return self.IsDirty(consider_untracked=True) or self.HasStash()
+        # The snapshot already failed; don't run git status again.
+        return self._IsDirtyLegacy(consider_untracked=True) or self.HasStash()
+
+    def GetDirtyAndHead(self) -> Tuple[bool, Optional[str]]:
+        """Return whether the worktree is dirty, and the commit at HEAD.
+
+        Untracked files count as dirty. HEAD is None when it can't be
+        resolved, e.g. on an unborn branch. Both come from one status
+        snapshot when possible.
+        """
+        status = self._GetStatusSnapshot(untracked_files="normal", branch=True)
+        if status is not None:
+            return status.is_dirty(consider_untracked=True), status.branch_oid
+        # The snapshot already failed; don't run git status again.
+        is_dirty = self._IsDirtyLegacy(consider_untracked=True)
+        try:
+            head = self.work_git.rev_parse(HEAD)
+        except GitError:
+            head = None
+        return is_dirty, head
 
     _userident_name = None
     _userident_email = None
