@@ -981,10 +981,13 @@ class CheckForBloatedProjects(unittest.TestCase):
         self.opt = mock.Mock()
         self.opt.quiet = True
         self.opt.jobs = 1
+        self.opt.network_only = False
+        self.tempdirobj = tempfile.TemporaryDirectory(prefix="repo_tests")
+        self.addCleanup(self.tempdirobj.cleanup)
         self.project = mock.MagicMock(clone_depth="1")
         self.project.name = "project"
         self.project.Exists = True
-        self.project.worktree = "worktree"
+        self.project.worktree = self.tempdirobj.name
         self.project.stateless_prune_needed = False
         self.cmd.git_event_log = mock.MagicMock()
         self.cmd._bloated_projects = []
@@ -1050,6 +1053,42 @@ class CheckForBloatedProjects(unittest.TestCase):
         self.project.clone_depth = None
         self.cmd._CheckForBloatedProjects([self.project], self.opt)
         self.assertFalse(self.cmd.git_event_log.ErrorEvent.called)
+
+    @mock.patch("subcmds.sync.git_require", return_value=True)
+    @mock.patch("subcmds.sync.Progress")
+    def test_network_only_skips_check(
+        self, mock_progress: mock.Mock, mock_git_require: mock.Mock
+    ) -> None:
+        """--network-only doesn't read any worktree state."""
+        self.opt.network_only = True
+        self.cmd.ExecuteInParallel = mock.Mock()
+
+        self.cmd._CheckForBloatedProjects([self.project], self.opt)
+
+        mock_progress.assert_not_called()
+        self.cmd.ExecuteInParallel.assert_not_called()
+
+    @mock.patch("subcmds.sync.git_require", return_value=True)
+    @mock.patch("subcmds.sync.Progress")
+    def test_projects_without_worktree_excluded(
+        self, mock_progress: mock.Mock, mock_git_require: mock.Mock
+    ) -> None:
+        """Projects without a checked-out worktree are never scanned."""
+        self.cmd.ExecuteInParallel = mock.Mock()
+        missing = os.path.join(self.tempdirobj.name, "missing")
+        for attr, value in (
+            ("worktree", missing),
+            ("worktree", None),
+            ("Exists", False),
+        ):
+            with self.subTest(attr=attr, value=value):
+                mock_progress.reset_mock()
+                self.cmd.ExecuteInParallel.reset_mock()
+                with mock.patch.object(self.project, attr, value):
+                    self.cmd._CheckForBloatedProjects([self.project], self.opt)
+
+                mock_progress.assert_not_called()
+                self.cmd.ExecuteInParallel.assert_not_called()
 
     @mock.patch("subcmds.sync.git_require")
     @mock.patch("subcmds.sync.Progress")
