@@ -53,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1f5fc50_1fea03c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-09-23T13:45:37Z",
+      "side": 1,
+      "message": "Correction to my comment above: the fallback is silent, not warned.\n\nContext: we\u0027re planning on onboarding teams slowly to default smartsync. So while all sync attempts will try to contact the server, if we run into SmartSyncError/ManfiestParseError - we silently fall back to a regular sync (to keep the behavior the same for people who didn\u0027t explicitly pass in `-s`).\n\nSo the behavior is:\n- Implicit smart sync (manifest sync-smartsync\u003dtrue, no -s/-t): any failure reaching the manifest server, or parsing the manifest it returns, is swallowed and repo does a regular ToT sync. No warning unless --verbose.\n- Explicit -s/-t: unchanged, the sync still fails.",
+      "parentUuid": "2bd71c36_92e6eccb",
+      "revId": "3bb9a5d9d3c7a0a385bb2f4145e86f80eb5ddac8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9dc5ea0f_ab98bad6",
