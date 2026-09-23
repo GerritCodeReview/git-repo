@@ -756,6 +756,26 @@ class ProjectTests(unittest.TestCase):
             )
             proj.HasStash.assert_called_once_with()
 
+    def test_dirty_or_stash_fallback_uses_plumbing_without_second_snapshot(
+        self,
+    ) -> None:
+        """Failed snapshot falls back to _IsDirtyPlumbing without retrying."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj._GetStatusSnapshot = mock.MagicMock(return_value=None)
+            proj._IsDirtyPlumbing = mock.MagicMock(return_value=False)
+            proj.HasStash = mock.MagicMock(return_value=False)
+
+            with mock.patch.object(project, "git_require", return_value=True):
+                self.assertFalse(proj._HasDirtyOrStash())
+
+            proj._GetStatusSnapshot.assert_called_once_with(
+                untracked_files="normal", show_stash=True
+            )
+            proj._IsDirtyPlumbing.assert_called_once_with(
+                consider_untracked=True
+            )
+
     def test_old_git_dirty_check_uses_legacy_plumbing(self) -> None:
         """Git clients before 2.11 retain the existing dirty-check path."""
         with utils_for_test.TempGitTree() as tempdir:

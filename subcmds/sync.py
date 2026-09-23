@@ -1621,7 +1621,10 @@ later is required to fix a server side protocol bug.
                 is_dirty = status.is_dirty(consider_untracked=True)
                 head_rev = status.branch_oid
             else:
-                is_dirty = project.IsDirty(consider_untracked=True)
+                # _GetStatusSnapshot() already returned None. Call
+                # _IsDirtyPlumbing() instead of IsDirty() to avoid a second
+                # `git status` attempt.
+                is_dirty = project._IsDirtyPlumbing(consider_untracked=True)
                 head_rev = project.work_git.rev_parse(HEAD)
 
             if head_rev is None:

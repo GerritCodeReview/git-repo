@@ -1007,8 +1007,35 @@ class CheckForBloatedProjects(unittest.TestCase):
             self.assertIsNone(self.cmd._CheckOneBloatedProject(0))
 
         self.project.IsDirty.assert_not_called()
+        self.project._IsDirtyPlumbing.assert_not_called()
         self.project.work_git.rev_parse.assert_not_called()
         self.project.bare_git.count_objects.assert_called_once_with("-v")
+
+    def test_one_project_fallback_uses_plumbing_without_second_snapshot(
+        self,
+    ) -> None:
+        """Failed snapshot falls back to _IsDirtyPlumbing without retrying."""
+        self.project._GetStatusSnapshot.return_value = None
+        self.project._IsDirtyPlumbing.return_value = True
+        self.project.work_git.rev_parse.return_value = "local"
+        self.project.GetRevisionId.return_value = "local"
+        self.project.bare_git.count_objects.return_value = (
+            "packs: 0\nsize-pack: 0\nsize-garbage: 0\n"
+        )
+        with mock.patch.object(
+            sync.Sync,
+            "get_parallel_context",
+            return_value={"projects": [self.project]},
+        ):
+            self.assertIsNone(self.cmd._CheckOneBloatedProject(0))
+
+        self.project._GetStatusSnapshot.assert_called_once_with(
+            untracked_files="normal", branch=True
+        )
+        self.project.IsDirty.assert_not_called()
+        self.project._IsDirtyPlumbing.assert_called_once_with(
+            consider_untracked=True
+        )
 
     def test_one_unborn_project_skips_bloat_check(self) -> None:
         """A porcelain initial branch behaves like failed rev-parse HEAD."""
