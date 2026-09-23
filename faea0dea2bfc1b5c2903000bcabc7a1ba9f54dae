@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76b2eee2_ccc4db25",
+        "filename": "manifest_xml.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-23T23:35:20Z",
+      "side": 1,
+      "message": "add a test to cover this method",
+      "range": {
+        "startLine": 487,
+        "startChar": 8,
+        "endLine": 487,
+        "endChar": 21
+      },
+      "revId": "faea0dea2bfc1b5c2903000bcabc7a1ba9f54dae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e1ebbbb_6b5a1a57",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 2435,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-23T23:35:20Z",
+      "side": 1,
+      "message": "add these so `--superproject-revision`, `--local-only`, and `--no-manifest-update` don\u0027t break (would also be good to add unittests for these flags w/ sync_smartsync\u003dTrue\n```suggestion\n            and not opt.manifest_name\n            and not opt.superproject_revision\n            and not opt.local_only\n            and opt.mp_update\n```",
+      "range": {
+        "startLine": 2435,
+        "startChar": 12,
+        "endLine": 2435,
+        "endChar": 37
+      },
+      "revId": "faea0dea2bfc1b5c2903000bcabc7a1ba9f54dae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14ecc045_06a59567",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 2497,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-23T23:35:20Z",
+      "side": 1,
+      "message": "repo should reuse any existing smart_sync_override if using `--local-only` or `not opt.mp_update` (and `--no-smart-sync` wasn\u0027t provided)",
+      "range": {
+        "startLine": 2489,
+        "startChar": 12,
+        "endLine": 2497,
+        "endChar": 21
+      },
+      "revId": "faea0dea2bfc1b5c2903000bcabc7a1ba9f54dae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
