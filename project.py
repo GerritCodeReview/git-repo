@@ -877,7 +877,7 @@ class Project:
         if status is not None:
             return status.is_dirty(consider_untracked=consider_untracked)
 
-        return self._IsDirtyLegacy(consider_untracked=consider_untracked)
+        return self._IsDirtyPlumbing(consider_untracked=consider_untracked)
 
     def _GetStatusSnapshot(
         self,
@@ -886,8 +886,10 @@ class Project:
         ahead_behind: bool = False,
         show_stash: bool = False,
     ) -> Optional[git_status.StatusSnapshot]:
-        """Read one porcelain-v2 snapshot, or select the legacy path."""
+        """Read one porcelain-v2 snapshot, or select the fallback path."""
         if not git_require((2, 11, 0)):
+            return None
+        if not self.worktree or not platform_utils.isdir(self.worktree):
             return None
         try:
             return git_status.GetStatus(
@@ -907,8 +909,12 @@ class Project:
             )
             return None
 
-    def _IsDirtyLegacy(self, consider_untracked: bool = True) -> bool:
-        """Check dirty state with plumbing supported by older Git."""
+    def _IsDirtyPlumbing(self, consider_untracked: bool = True) -> bool:
+        """Check dirty state with Git diff/ls-files plumbing.
+
+        Used on Git versions prior to 2.11, or as the direct fallback when
+        _GetStatusSnapshot() has already returned None.
+        """
         self._RefreshIndexStatCache()
         if self.work_git.DiffZ("diff-index", "-M", "--cached", HEAD):
             return True
@@ -932,6 +938,8 @@ class Project:
 
     def _HasDirtyOrStash(self) -> bool:
         """Check dirty and normal stash state with one status when possible."""
+        if not self.worktree or not platform_utils.isdir(self.worktree):
+            return self.HasStash()
         has_status_stash = git_require((2, 35, 0))
         status = self._GetStatusSnapshot(
             untracked_files="normal",
@@ -943,7 +951,9 @@ class Project:
             if has_status_stash:
                 return bool(status.stash_count)
             return self.HasStash()
-        return self.IsDirty(consider_untracked=True) or self.HasStash()
+        # _GetStatusSnapshot() already returned None. Call _IsDirtyPlumbing()
+        # directly to avoid a second `git status` attempt.
+        return self._IsDirtyPlumbing(consider_untracked=True) or self.HasStash()
 
     _userident_name = None
     _userident_email = None

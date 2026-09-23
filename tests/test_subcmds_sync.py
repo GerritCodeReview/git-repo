@@ -977,15 +977,18 @@ class KeyboardInterruptTest(unittest.TestCase):
 class CheckForBloatedProjects(unittest.TestCase):
     """Tests for Sync._CheckForBloatedProjects."""
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.cmd = sync.Sync()
         self.opt = mock.Mock()
         self.opt.quiet = True
         self.opt.jobs = 1
+        self.opt.network_only = False
+        self.tempdir = tempfile.mkdtemp(prefix="repo-bloat-tests")
+        self.addCleanup(shutil.rmtree, self.tempdir, ignore_errors=True)
         self.project = mock.MagicMock(clone_depth="1")
         self.project.name = "project"
         self.project.Exists = True
-        self.project.worktree = "worktree"
+        self.project.worktree = self.tempdir
         self.project.stateless_prune_needed = False
         self.cmd.git_event_log = mock.MagicMock()
         self.cmd._bloated_projects = []
@@ -1007,8 +1010,48 @@ class CheckForBloatedProjects(unittest.TestCase):
             self.assertIsNone(self.cmd._CheckOneBloatedProject(0))
 
         self.project.IsDirty.assert_not_called()
+        self.project._IsDirtyPlumbing.assert_not_called()
         self.project.work_git.rev_parse.assert_not_called()
         self.project.bare_git.count_objects.assert_called_once_with("-v")
+
+    def test_one_project_fallback_uses_plumbing_without_second_snapshot(
+        self,
+    ) -> None:
+        """Failed snapshot falls back to _IsDirtyPlumbing without retrying."""
+        self.project._GetStatusSnapshot.return_value = None
+        self.project._IsDirtyPlumbing.return_value = True
+        self.project.work_git.rev_parse.return_value = "local"
+        self.project.GetRevisionId.return_value = "local"
+        self.project.bare_git.count_objects.return_value = (
+            "packs: 0\nsize-pack: 0\nsize-garbage: 0\n"
+        )
+        with mock.patch.object(
+            sync.Sync,
+            "get_parallel_context",
+            return_value={"projects": [self.project]},
+        ):
+            self.assertIsNone(self.cmd._CheckOneBloatedProject(0))
+
+        self.project._GetStatusSnapshot.assert_called_once_with(
+            untracked_files="normal", branch=True
+        )
+        self.project.IsDirty.assert_not_called()
+        self.project._IsDirtyPlumbing.assert_called_once_with(
+            consider_untracked=True
+        )
+
+    def test_one_project_missing_worktree_dir_skips_bloat_check(self) -> None:
+        """Projects whose worktree directory does not exist are skipped."""
+        self.project.worktree = os.path.join(self.tempdir, "missing")
+        with mock.patch.object(
+            sync.Sync,
+            "get_parallel_context",
+            return_value={"projects": [self.project]},
+        ):
+            self.assertIsNone(self.cmd._CheckOneBloatedProject(0))
+
+        self.project._GetStatusSnapshot.assert_not_called()
+        self.project._IsDirtyPlumbing.assert_not_called()
 
     def test_one_unborn_project_skips_bloat_check(self) -> None:
         """A porcelain initial branch behaves like failed rev-parse HEAD."""
@@ -1040,6 +1083,36 @@ class CheckForBloatedProjects(unittest.TestCase):
         self.project.clone_depth = None
         self.cmd._CheckForBloatedProjects([self.project], self.opt)
         self.assertFalse(self.cmd.git_event_log.ErrorEvent.called)
+
+    @mock.patch("subcmds.sync.git_require")
+    @mock.patch("subcmds.sync.Progress")
+    def test_network_only_skips_bloat_check(
+        self, mock_progress: mock.MagicMock, mock_git_require: mock.MagicMock
+    ) -> None:
+        """Test that --network-only skips the bloat check completely."""
+        mock_git_require.return_value = True
+        self.opt.network_only = True
+        self.cmd.ExecuteInParallel = mock.Mock()
+
+        self.cmd._CheckForBloatedProjects([self.project], self.opt)
+
+        mock_progress.assert_not_called()
+        self.assertFalse(self.cmd.ExecuteInParallel.called)
+
+    @mock.patch("subcmds.sync.git_require")
+    @mock.patch("subcmds.sync.Progress")
+    def test_missing_worktree_excluded(
+        self, mock_progress: mock.MagicMock, mock_git_require: mock.MagicMock
+    ) -> None:
+        """Test that projects without an existing worktree dir are excluded."""
+        mock_git_require.return_value = True
+        self.project.worktree = os.path.join(self.tempdir, "missing")
+        self.cmd.ExecuteInParallel = mock.Mock()
+
+        self.cmd._CheckForBloatedProjects([self.project], self.opt)
+
+        mock_progress.assert_not_called()
+        self.assertFalse(self.cmd.ExecuteInParallel.called)
 
     @mock.patch("subcmds.sync.git_require")
     @mock.patch("subcmds.sync.Progress")

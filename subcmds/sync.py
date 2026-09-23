@@ -1608,7 +1608,11 @@ later is required to fix a server side protocol bug.
         """
         project = cls.get_parallel_context()["projects"][project_index]
 
-        if not project.Exists or not project.worktree:
+        if (
+            not project.Exists
+            or not project.worktree
+            or not platform_utils.isdir(project.worktree)
+        ):
             return None
 
         # Only check dirty or locally modified projects. These can't be
@@ -1621,7 +1625,10 @@ later is required to fix a server side protocol bug.
                 is_dirty = status.is_dirty(consider_untracked=True)
                 head_rev = status.branch_oid
             else:
-                is_dirty = project.IsDirty(consider_untracked=True)
+                # _GetStatusSnapshot() already returned None. Call
+                # _IsDirtyPlumbing() directly to avoid a second `git status`
+                # attempt.
+                is_dirty = project._IsDirtyPlumbing(consider_untracked=True)
                 head_rev = project.work_git.rev_parse(HEAD)
 
             if head_rev is None:
@@ -1664,13 +1671,18 @@ later is required to fix a server side protocol bug.
             return project.name
         return None
 
-    def _CheckForBloatedProjects(self, projects, opt):
+    def _CheckForBloatedProjects(
+        self, projects: List[Project], opt: optparse.Values
+    ) -> None:
         """Check for shallow projects that are accumulating unoptimized data.
 
         For projects with clone-depth="1" that are dirty (have local changes),
         run 'git count-objects -v' and warn if the repository is accumulating
         excessive pack files or garbage.
         """
+        if opt.network_only:
+            return
+
         # We only care about bloated projects if we have a git version that
         # supports --no-auto-gc (2.23.0+) since what we use to disable auto-gc
         # in Project._RemoteFetch.
@@ -1680,7 +1692,11 @@ later is required to fix a server side protocol bug.
         projects = [
             p
             for p in projects
-            if p.clone_depth and not p.stateless_prune_needed
+            if p.clone_depth
+            and not p.stateless_prune_needed
+            and p.Exists
+            and p.worktree
+            and platform_utils.isdir(p.worktree)
         ]
         if not projects:
             return

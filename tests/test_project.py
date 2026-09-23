@@ -713,6 +713,22 @@ class ProjectTests(unittest.TestCase):
             ):
                 self.assertIsNone(proj._GetStatusSnapshot())
 
+    def test_get_status_snapshot_missing_worktree_returns_none_quietly(
+        self,
+    ) -> None:
+        """A missing worktree directory does not run git status or warn."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj.worktree = os.path.join(tempdir, "missing-worktree")
+            with (
+                mock.patch.object(git_status, "GetStatus") as mock_get_status,
+                mock.patch.object(project.logger, "warning") as mock_warning,
+            ):
+                self.assertIsNone(proj._GetStatusSnapshot())
+
+            mock_get_status.assert_not_called()
+            mock_warning.assert_not_called()
+
     def test_dirty_or_stash_uses_status_stash_header(self) -> None:
         """A normal stash is detected without a second Git process."""
         with utils_for_test.TempGitTree() as tempdir:
@@ -755,6 +771,26 @@ class ProjectTests(unittest.TestCase):
                 untracked_files="normal", show_stash=False
             )
             proj.HasStash.assert_called_once_with()
+
+    def test_dirty_or_stash_fallback_uses_plumbing_without_second_snapshot(
+        self,
+    ) -> None:
+        """Failed snapshot falls back to _IsDirtyPlumbing without retrying."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj._GetStatusSnapshot = mock.MagicMock(return_value=None)
+            proj._IsDirtyPlumbing = mock.MagicMock(return_value=False)
+            proj.HasStash = mock.MagicMock(return_value=False)
+
+            with mock.patch.object(project, "git_require", return_value=True):
+                self.assertFalse(proj._HasDirtyOrStash())
+
+            proj._GetStatusSnapshot.assert_called_once_with(
+                untracked_files="normal", show_stash=True
+            )
+            proj._IsDirtyPlumbing.assert_called_once_with(
+                consider_untracked=True
+            )
 
     def test_old_git_dirty_check_uses_legacy_plumbing(self) -> None:
         """Git clients before 2.11 retain the existing dirty-check path."""
