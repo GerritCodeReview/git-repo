@@ -1667,6 +1667,12 @@ class Project:
         if not self.Exists:
             return False
 
+        # Local changes can't be checked without a worktree, and pruning drops
+        # every reflog. Sync_LocalHalf() recreates the worktree, so a later
+        # sync can decide.
+        if not self.worktree or not platform_utils.isdir(self.worktree):
+            return False
+
         if self._CheckForImmutableRevision(use_superproject=use_superproject):
             return False
 
@@ -3916,7 +3922,7 @@ class Project:
 
     def _LsRemote(self, refs):
         cmd = ["ls-remote", self.remote.name, refs]
-        p = GitCommand(self, cmd, capture_stdout=True)
+        p = GitCommand(self, cmd, bare=True, capture_stdout=True)
         if p.Wait() == 0:
             return p.stdout
         return None
