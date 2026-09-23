@@ -886,8 +886,15 @@ class Project:
         ahead_behind: bool = False,
         show_stash: bool = False,
     ) -> Optional[git_status.StatusSnapshot]:
-        """Read one porcelain-v2 snapshot, or select the legacy path."""
+        """Read one porcelain-v2 snapshot, or select the legacy path.
+
+        Returns None on Git older than 2.11, when git status fails, or when
+        the worktree directory is missing. A missing worktree isn't logged:
+        status can't run there, and the legacy path raises its own error.
+        """
         if not git_require((2, 11, 0)):
+            return None
+        if not self.worktree or not platform_utils.isdir(self.worktree):
             return None
         try:
             return git_status.GetStatus(
