@@ -2420,6 +2420,33 @@ class StatelessSyncTests(unittest.TestCase):
             self.assertTrue(res.success)
             self.assertFalse(getattr(proj, "stateless_prune_needed", False))
 
+    def test_sync_network_half_stateless_skips_without_worktree(self) -> None:
+        """Test stateless sync doesn't prune a project with no worktree."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.worktree = os.path.join(tempdir, "missing")
+            proj._HasDirtyOrStash = mock.MagicMock(return_value=False)
+
+            res = proj.Sync_NetworkHalf()
+
+            self.assertTrue(res.success)
+            self.assertFalse(proj.stateless_prune_needed)
+            proj._LsRemote.assert_not_called()
+            proj._HasDirtyOrStash.assert_not_called()
+
+    def test_ls_remote_runs_without_worktree(self) -> None:
+        """Test ls-remote only needs the gitdir's remote config."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj.work_git.commit("--allow-empty", "-m", "initial")
+            proj.work_git.config("remote.origin.url", tempdir)
+            head = proj.work_git.rev_parse("HEAD")
+            proj.worktree = os.path.join(tempdir, "missing")
+            # _create_mock_project() stubs this out.
+            del proj._LsRemote
+
+            self.assertEqual(f"{head}\tHEAD\n", proj._LsRemote("HEAD"))
+
     def test_sync_network_half_stateless_skips_if_local_commits(self):
         """Test stateless sync skips if there are local-only commits."""
         with utils_for_test.TempGitTree() as tempdir:
