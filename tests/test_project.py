@@ -756,6 +756,64 @@ class ProjectTests(unittest.TestCase):
             )
             proj.HasStash.assert_called_once_with()
 
+    def test_dirty_and_head_agree_across_status_paths(self) -> None:
+        """Porcelain v2 and legacy plumbing report the same state."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+
+            def check(expected: Tuple[bool, Optional[str]]) -> None:
+                for use_status in (True, False):
+                    with self.subTest(expected=expected, status=use_status):
+                        with mock.patch.object(
+                            project, "git_require", return_value=use_status
+                        ):
+                            self.assertEqual(expected, proj.GetDirtyAndHead())
+
+            check((False, None))
+            Path(tempdir, "untracked").write_text("new")
+            check((True, None))
+
+            Path(tempdir, "tracked").write_text("initial")
+            proj.work_git.add("tracked")
+            proj.work_git.commit("-m", "initial")
+            head = proj.work_git.rev_parse("HEAD")
+            check((True, head))
+            os.remove(os.path.join(tempdir, "untracked"))
+            check((False, head))
+
+    def test_dirty_and_head_fallback_skips_second_snapshot(self) -> None:
+        """A failed snapshot goes straight to the legacy plumbing."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj._GetStatusSnapshot = mock.MagicMock(return_value=None)
+            proj._IsDirtyLegacy = mock.MagicMock(return_value=False)
+            proj.work_git = mock.MagicMock()
+            proj.work_git.rev_parse.return_value = "head"
+
+            self.assertEqual((False, "head"), proj.GetDirtyAndHead())
+
+            proj._GetStatusSnapshot.assert_called_once_with(
+                untracked_files="normal", branch=True
+            )
+            proj._IsDirtyLegacy.assert_called_once_with(consider_untracked=True)
+            proj.work_git.rev_parse.assert_called_once_with("HEAD")
+
+    def test_dirty_or_stash_fallback_skips_second_snapshot(self) -> None:
+        """A failed snapshot goes straight to the legacy dirty check."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj._GetStatusSnapshot = mock.MagicMock(return_value=None)
+            proj._IsDirtyLegacy = mock.MagicMock(return_value=False)
+            proj.HasStash = mock.MagicMock(return_value=False)
+
+            with mock.patch.object(project, "git_require", return_value=True):
+                self.assertFalse(proj._HasDirtyOrStash())
+
+            proj._GetStatusSnapshot.assert_called_once_with(
+                untracked_files="normal", show_stash=True
+            )
+            proj._IsDirtyLegacy.assert_called_once_with(consider_untracked=True)
+
     def test_old_git_dirty_check_uses_legacy_plumbing(self) -> None:
         """Git clients before 2.11 retain the existing dirty-check path."""
         with utils_for_test.TempGitTree() as tempdir:
