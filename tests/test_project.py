@@ -713,6 +713,22 @@ class ProjectTests(unittest.TestCase):
             ):
                 self.assertIsNone(proj._GetStatusSnapshot())
 
+    def test_get_status_snapshot_missing_worktree_returns_none_quietly(
+        self,
+    ) -> None:
+        """A missing worktree directory does not run git status or warn."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir)
+            proj.worktree = os.path.join(tempdir, "missing-worktree")
+            with (
+                mock.patch.object(git_status, "GetStatus") as mock_get_status,
+                mock.patch.object(project.logger, "warning") as mock_warning,
+            ):
+                self.assertIsNone(proj._GetStatusSnapshot())
+
+            mock_get_status.assert_not_called()
+            mock_warning.assert_not_called()
+
     def test_dirty_or_stash_uses_status_stash_header(self) -> None:
         """A normal stash is detected without a second Git process."""
         with utils_for_test.TempGitTree() as tempdir:

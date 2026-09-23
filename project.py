@@ -889,6 +889,8 @@ class Project:
         """Read one porcelain-v2 snapshot, or select the fallback path."""
         if not git_require((2, 11, 0)):
             return None
+        if not self.worktree or not platform_utils.isdir(self.worktree):
+            return None
         try:
             return git_status.GetStatus(
                 self,
@@ -936,6 +938,8 @@ class Project:
 
     def _HasDirtyOrStash(self) -> bool:
         """Check dirty and normal stash state with one status when possible."""
+        if not self.worktree or not platform_utils.isdir(self.worktree):
+            return self.HasStash()
         has_status_stash = git_require((2, 35, 0))
         status = self._GetStatusSnapshot(
             untracked_files="normal",
