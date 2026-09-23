@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "824f378d_9255cc91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-09-23T13:36:37Z",
+      "side": 1,
+      "message": "I think -l and -nmu should suppress both implicit and explicit smartsync. I don\u0027t think we should do a special casing here. I\u0027ll make this change in a separate CL.\n\nRe failing to reach server, yes we should fall back to ToT sync and print a warning both at the top and bottom of the sync. Updated the change to do this.",
+      "parentUuid": "2bd71c36_92e6eccb",
+      "revId": "3bb9a5d9d3c7a0a385bb2f4145e86f80eb5ddac8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9dc5ea0f_ab98bad6",
@@ -54,6 +72,31 @@
         "endLine": 199,
         "endChar": 46
       },
+      "revId": "3bb9a5d9d3c7a0a385bb2f4145e86f80eb5ddac8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdaa0982_bbf20325",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-09-23T13:36:37Z",
+      "side": 1,
+      "message": "Done, adopted your suggestion. The check now lives at the end of _ResolveSmartSyncOption, after the manifest default has been folded into opt.smart_sync, and the test at :199 now expects SmartSyncError.\n\nI also reworded the message, since -s/-t are no longer the only ways to end up smart syncing: \"-u and -p may only be used when smart syncing: pass -s or -t, or use a manifest with sync-smartsync\u003dtrue\".\n\nOne consequence worth calling out: this diagnostic used to come from OptionParser.error at parse time, so it printed usage and exited 2. It is now a SmartSyncError raised partway through _ExecuteHelper, after manifest.Override() and GetSmartSyncOverridePath() have already run. That seems unavoidable if the check has to see the manifest-resolved value of smart_sync, but the exit code and output format do change for this case. Happy to move it back to a usage error if you would rather keep that, at the cost of it not accounting for the manifest default.",
+      "parentUuid": "9dc5ea0f_ab98bad6",
+      "range": {
+        "startLine": 199,
+        "startChar": 8,
+        "endLine": 199,
+        "endChar": 46
+      },
+      "isAi": true,
       "revId": "3bb9a5d9d3c7a0a385bb2f4145e86f80eb5ddac8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
