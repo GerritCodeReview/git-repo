@@ -99,6 +99,30 @@
       "isAi": true,
       "revId": "3bb9a5d9d3c7a0a385bb2f4145e86f80eb5ddac8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b4bca24_a625b72a",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-09-23T13:41:10Z",
+      "side": 1,
+      "message": "resolving - please reopen if we should still have the optionparser error somehow.",
+      "parentUuid": "cdaa0982_bbf20325",
+      "range": {
+        "startLine": 199,
+        "startChar": 8,
+        "endLine": 199,
+        "endChar": 46
+      },
+      "revId": "3bb9a5d9d3c7a0a385bb2f4145e86f80eb5ddac8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
