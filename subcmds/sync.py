@@ -925,9 +925,7 @@ later is required to fix a server side protocol bug.
                     logger.warning(
                         "%s: warning: Update of revisionId from superproject "
                         "has failed, repo sync will not use superproject to "
-                        "fetch the source. Please resync with the "
-                        "--no-use-superproject option to avoid this repo "
-                        "warning.",
+                        "fetch the source.",
                         m.path_prefix,
                     )
                 if update_result.fatal and opt.use_superproject is not None:
