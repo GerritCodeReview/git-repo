@@ -924,10 +924,11 @@ later is required to fix a server side protocol bug.
                 if print_messages:
                     logger.warning(
                         "%s: warning: Update of revisionId from superproject "
-                        "has failed, repo sync will not use superproject to "
-                        "fetch the source. Please resync with the "
-                        "--no-use-superproject option to avoid this repo "
-                        "warning.",
+                        "has failed, so this repo sync will not use the "
+                        "superproject to fetch the source. This is often "
+                        "temporary (e.g. the superproject lagging behind a "
+                        "manifest change); retry the sync later. If the "
+                        "problem persists, please file a bug.",
                         m.path_prefix,
                     )
                 if update_result.fatal and opt.use_superproject is not None:
