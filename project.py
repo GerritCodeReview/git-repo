@@ -6187,9 +6187,8 @@ class ManifestProject(MetaProject):
                 logger.warning(
                     "warning: git update of superproject %s failed, "
                     "repo sync will not use superproject to fetch source; "
-                    "while this error is not fatal, and you can continue to "
-                    "run repo sync, please run repo init with the "
-                    "--no-use-superproject option to stop seeing this warning",
+                    "this error is not fatal, and you can continue to "
+                    "run repo sync",
                     submanifest,
                 )
                 if sync_result.fatal and use_superproject is not None:
