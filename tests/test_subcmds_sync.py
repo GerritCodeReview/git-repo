@@ -215,6 +215,72 @@ def test_sync_update_projects_revision_id_respects_groups(tmp_path: Path):
             assert kwargs.get("groups") == "group1"
 
 
+def test_sync_update_projects_revision_id_populates_logging_data(
+    tmp_path: Path,
+) -> None:
+    """Test that _UpdateProjectsRevisionId fills in the caller's dict."""
+    manifest = _create_manifest_with_groups(tmp_path)
+    cmd = sync.Sync()
+    cmd.manifest = manifest
+
+    superproject = mock.MagicMock()
+    superproject.UpdateProjectsRevisionId.return_value = mock.MagicMock(
+        manifest_path=None
+    )
+    manifest._superproject = superproject
+
+    opts, args = cmd.OptionParser.parse_args([])
+    opts.this_manifest_only = True
+    opts.local_only = False
+
+    superproject_logging_data = {}
+    with mock.patch.object(
+        cmd, "ManifestList", return_value=[manifest]
+    ), mock.patch.object(
+        cmd, "_ConfigureSuperproject", return_value=False
+    ), mock.patch.object(
+        sync.git_superproject, "UseSuperproject", return_value=True
+    ):
+        cmd._UpdateProjectsRevisionId(
+            opts, args, superproject_logging_data, manifest
+        )
+
+    assert superproject_logging_data == {
+        "superproject": True,
+        "haslocalmanifests": False,
+        "hassuperprojecttag": True,
+        "updatedrevisionid": False,
+    }
+
+
+def test_sync_update_projects_revision_id_logs_without_superproject_tag(
+    tmp_path: Path,
+) -> None:
+    """Test that sync state is recorded when the manifest has no superproject.
+
+    SyncAnalysisState never removes keys, so values from an earlier sync would
+    otherwise persist in the config.
+    """
+    manifest = _create_manifest_with_groups(tmp_path)
+    cmd = sync.Sync()
+    cmd.manifest = manifest
+
+    opts, args = cmd.OptionParser.parse_args([])
+    opts.this_manifest_only = True
+    opts.local_only = False
+
+    superproject_logging_data = {}
+    cmd._UpdateProjectsRevisionId(
+        opts, args, superproject_logging_data, manifest
+    )
+
+    assert superproject_logging_data == {
+        "superproject": False,
+        "haslocalmanifests": False,
+        "hassuperprojecttag": False,
+    }
+
+
 @pytest.mark.parametrize(
     "generate_manpages, expected_default",
     [
