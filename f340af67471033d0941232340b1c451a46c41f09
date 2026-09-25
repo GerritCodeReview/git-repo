@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4af42341_4ec971e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4800821
+      },
+      "writtenOn": "2026-09-25T06:41:54Z",
+      "side": 1,
+      "message": "francois.gaffie@ampere.cars",
+      "revId": "f340af67471033d0941232340b1c451a46c41f09",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
