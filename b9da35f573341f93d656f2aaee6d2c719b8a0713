@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fcad15b_a77290c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-25T17:37:15Z",
+      "side": 1,
+      "message": "we don\u0027t use s-o-b tags",
+      "revId": "b9da35f573341f93d656f2aaee6d2c719b8a0713",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0639ac52_28a103bc",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-25T17:37:15Z",
+      "side": 1,
+      "message": "i\u0027m not sure `-g` is used often enough to warrant mentioning it here",
+      "revId": "b9da35f573341f93d656f2aaee6d2c719b8a0713",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c99e2a04_b6e846b1",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-25T17:37:15Z",
+      "side": 1,
+      "message": "```suggestion\n            help\u003d\"only include projects in the specified groups\",\n```",
+      "revId": "b9da35f573341f93d656f2aaee6d2c719b8a0713",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba2384e6_7f027f1f",
+        "filename": "tests/test_subcmds_manifest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-25T17:37:15Z",
+      "side": 1,
+      "message": "i don\u0027t think there\u0027s value in this test",
+      "revId": "b9da35f573341f93d656f2aaee6d2c719b8a0713",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec092efa_eb62424c",
+        "filename": "tests/test_subcmds_manifest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-25T17:37:15Z",
+      "side": 1,
+      "message": "`repo manifest` produces an XML, so parse it rather than doing substring matching",
+      "revId": "b9da35f573341f93d656f2aaee6d2c719b8a0713",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
