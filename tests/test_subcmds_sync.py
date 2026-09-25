@@ -215,6 +215,44 @@ def test_sync_update_projects_revision_id_respects_groups(tmp_path: Path):
             assert kwargs.get("groups") == "group1"
 
 
+def test_sync_update_projects_revision_id_populates_logging_data(
+    tmp_path: Path,
+):
+    """Test that _UpdateProjectsRevisionId fills in the caller's dict."""
+    manifest = _create_manifest_with_groups(tmp_path)
+    cmd = sync.Sync()
+    cmd.manifest = manifest
+
+    superproject = mock.MagicMock()
+    superproject.UpdateProjectsRevisionId.return_value = mock.MagicMock(
+        manifest_path=None
+    )
+    manifest._superproject = superproject
+
+    opts, args = cmd.OptionParser.parse_args([])
+    opts.this_manifest_only = True
+    opts.local_only = False
+
+    superproject_logging_data = {}
+    with mock.patch.object(
+        cmd, "ManifestList", return_value=[manifest]
+    ), mock.patch.object(
+        cmd, "_ConfigureSuperproject", return_value=False
+    ), mock.patch.object(
+        sync.git_superproject, "UseSuperproject", return_value=True
+    ):
+        cmd._UpdateProjectsRevisionId(
+            opts, args, superproject_logging_data, manifest
+        )
+
+    assert superproject_logging_data == {
+        "superproject": True,
+        "haslocalmanifests": False,
+        "hassuperprojecttag": True,
+        "updatedrevisionid": False,
+    }
+
+
 @pytest.mark.parametrize(
     "generate_manpages, expected_default",
     [

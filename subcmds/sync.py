@@ -882,7 +882,6 @@ later is required to fix a server side protocol bug.
             for p in all_projects:
                 per_manifest[p.manifest.path_prefix].append(p)
 
-        superproject_logging_data = {}
         need_unload = False
         for m in self.ManifestList(opt):
             if m.path_prefix not in per_manifest:
