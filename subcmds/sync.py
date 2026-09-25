@@ -858,6 +858,11 @@ later is required to fix a server side protocol bug.
             m.superproject for m in manifest.all_children
         )
         if not have_superproject:
+            superproject_logging_data.update(
+                superproject=False,
+                haslocalmanifests=bool(manifest.HasLocalManifests),
+                hassuperprojecttag=False,
+            )
             return
 
         if opt.local_only and manifest.superproject:
@@ -882,7 +887,6 @@ later is required to fix a server side protocol bug.
             for p in all_projects:
                 per_manifest[p.manifest.path_prefix].append(p)
 
-        superproject_logging_data = {}
         need_unload = False
         for m in self.ManifestList(opt):
             if m.path_prefix not in per_manifest:
