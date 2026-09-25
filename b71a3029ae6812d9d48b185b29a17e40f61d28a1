@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "953beb0a_f723edbd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-25T17:45:41Z",
+      "side": 1,
+      "message": "we don\u0027t use s-o-b tags",
+      "revId": "b71a3029ae6812d9d48b185b29a17e40f61d28a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a2ea8a0_b2af6de4",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2316,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-25T17:45:41Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Repo Analyzer: Missing type annotation for function argument `groups`",
+      "range": {
+        "startLine": 2315,
+        "startChar": 0,
+        "endLine": 2316,
+        "endChar": 0
+      },
+      "revId": "b71a3029ae6812d9d48b185b29a17e40f61d28a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65faaa35_d8cd6860",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2324,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-25T17:45:41Z",
+      "side": 1,
+      "message": "do not split yourself, we already have a `_ParseList` helper to do this",
+      "fixSuggestions": [
+        {
+          "fixId": "8dd5722a_5e544fa4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 2324,
+                "startChar": 0,
+                "endLine": 2325,
+                "endChar": 0
+              },
+              "replacement": "            groups \u003d self._ParseList(groups)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b71a3029ae6812d9d48b185b29a17e40f61d28a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cb68f38_27ee6fc7",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-25T17:45:41Z",
+      "side": 1,
+      "message": "```suggestion\n            help\u003d\"only diff projects in the specified groups\",\n```",
+      "revId": "b71a3029ae6812d9d48b185b29a17e40f61d28a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
