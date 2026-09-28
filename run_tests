@@ -135,7 +135,7 @@ def run_isort():
         cwd=ROOT_DIR,
     )
 
-    argv = ["--check", ROOT_DIR]
+    argv = ["--check", "--diff", ROOT_DIR]
     log_cmd("isort", argv)
     return subprocess.run(
         [sys.executable, "-m", "isort"] + argv,
