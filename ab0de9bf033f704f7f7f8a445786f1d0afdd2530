@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6479deeb_aeaf1192",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1133595
+      },
+      "writtenOn": "2026-09-28T13:30:33Z",
+      "side": 1,
+      "message": "Tests are complaining about this, not sure what\u0027s expected to change?\n\n```\nERROR: /b/s/w/ir/x/w/git-repo/subcmds/diffmanifests.py Imports are incorrectly sorted and/or formatted.\n```\n\nTests pass with this:\n\n```\nfrom command import MirrorSafeCommand\nfrom command import PagedCommand\n```\n\nWhich doesn\u0027t seem to be the desired formatting either to me.",
+      "revId": "ab0de9bf033f704f7f7f8a445786f1d0afdd2530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
