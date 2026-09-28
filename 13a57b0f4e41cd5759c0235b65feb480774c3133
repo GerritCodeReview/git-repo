@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "861ad199_fde804a1",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-09-28T22:34:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5461eace_e7b29dd5",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 0
+      },
+      "revId": "13a57b0f4e41cd5759c0235b65feb480774c3133",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "743c991e_20630b9a",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-28T22:25:23Z",
       "side": 1,
       "message": "Please fix this WARNING reported by Repo Analyzer: Missing return type annotation for public function `test_sync_update_projects_re...\n\nMissing return type annotation for public function `test_sync_update_projects_revision_id_logs_without_superproject_tag`",
+      "range": {
+        "startLine": 256,
+        "startChar": 0,
+        "endLine": 257,
+        "endChar": 0
+      },
+      "revId": "13a57b0f4e41cd5759c0235b65feb480774c3133",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "421f4db1_79bbac03",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-09-28T22:34:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "743c991e_20630b9a",
       "range": {
         "startLine": 256,
         "startChar": 0,
