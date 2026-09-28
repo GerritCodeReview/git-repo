@@ -16,6 +16,8 @@
 
 from pathlib import Path
 from typing import Any
+import unittest.mock
+import urllib.error
 
 import pytest
 import utils_for_test
@@ -268,3 +270,49 @@ def test_remote_save_with_push_url_without_projectname(
 def test_is_id(rev: str, expected: bool) -> None:
     """Test IsId identifies both SHA-1 and SHA-256 hashes."""
     assert git_config.IsId(rev) == expected
+
+
+def test_remote_review_url_instead_of(rw_config_file: Path) -> None:
+    """Test ReviewUrl applies url.<base>.insteadOf configuration."""
+    config = git_config.GitConfig(str(rw_config_file))
+    remote = config.GetRemote("origin")
+    remote.review = "https://example.com/gerrit"
+    remote.projectname = "test/project"
+
+    mock_glob_cfg = unittest.mock.MagicMock()
+    mock_glob_cfg.GetSubSections.return_value = ["sso://example/"]
+    mock_glob_cfg.GetString.return_value = ["https://example.com/gerrit/"]
+
+    with unittest.mock.patch.object(
+        git_config.GitConfig, "ForUser", return_value=mock_glob_cfg
+    ):
+        review_url = remote.ReviewUrl("user@google.com", validate_certs=True)
+
+    assert review_url == "sso://example/test/project"
+
+
+@pytest.mark.parametrize("status_code", (404, 503))
+def test_remote_review_url_ssh_info_fallback(
+    rw_config_file: Path, status_code: int
+) -> None:
+    """Test ReviewUrl falls back to http_url when ssh_info returns 404 or 503."""
+    config = git_config.GitConfig(str(rw_config_file))
+    remote = config.GetRemote("origin")
+    remote.review = "https://example.com/gerrit"
+    remote.projectname = "test/project"
+
+    http_error = urllib.error.HTTPError(
+        url="https://example.com/gerrit/ssh_info",
+        code=status_code,
+        msg="Error",
+        hdrs={},
+        fp=None,
+    )
+
+    with unittest.mock.patch.object(
+        git_config.urllib.request, "urlopen", side_effect=http_error
+    ):
+        review_url = remote.ReviewUrl("user@google.com", validate_certs=True)
+
+    assert review_url == "https://example.com/gerrit/test/project"
+

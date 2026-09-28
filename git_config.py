@@ -576,27 +576,29 @@ class Remote:
         )
         self._review_url = None
 
-    def _InsteadOf(self):
+    def _InsteadOf(self, url=None):
+        if url is None:
+            url = self.url
+        if url is None:
+            return None
         globCfg = GitConfig.ForUser()
         urlList = globCfg.GetSubSections("url")
         longest = ""
         longestUrl = ""
 
-        for url in urlList:
-            key = "url." + url + ".insteadOf"
+        for u in urlList:
+            key = "url." + u + ".insteadOf"
             insteadOfList = globCfg.GetString(key, all_keys=True)
 
             for insteadOf in insteadOfList:
-                if self.url.startswith(insteadOf) and len(insteadOf) > len(
-                    longest
-                ):
+                if url.startswith(insteadOf) and len(insteadOf) > len(longest):
                     longest = insteadOf
-                    longestUrl = url
+                    longestUrl = u
 
         if len(longest) == 0:
-            return self.url
+            return url
 
-        return self.url.replace(longest, longestUrl, 1)
+        return url.replace(longest, longestUrl, 1)
 
     def PreConnectFetch(self, ssh_proxy):
         """Run any setup for this remote before we connect to it.
@@ -632,6 +634,7 @@ class Remote:
                 u = u[: len(u) - len("/ssh_info")]
             if not u.endswith("/"):
                 u += "/"
+            u = self._InsteadOf(u)
             http_url = u
 
             if u in REVIEW_CACHE:
@@ -671,7 +674,10 @@ class Remote:
                             userEmail, host, port
                         )
                 except urllib.error.HTTPError as e:
-                    raise UploadError(f"{self.review}: {str(e)}")
+                    if e.code in (404, 503):
+                        self._review_url = http_url
+                    else:
+                        raise UploadError(f"{self.review}: {str(e)}")
                 except urllib.error.URLError as e:
                     raise UploadError(f"{self.review}: {str(e)}")
                 except http.client.HTTPException as e:
