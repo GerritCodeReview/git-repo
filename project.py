@@ -5370,7 +5370,11 @@ class Project:
 
             try:
                 log = git_command.GitCommand(
-                    self, cmd, capture_stdout=True, capture_stderr=True
+                    self,
+                    cmd,
+                    bare=True,
+                    capture_stdout=True,
+                    capture_stderr=True,
                 )
                 if log.Wait() == 0:
                     return log.stdout

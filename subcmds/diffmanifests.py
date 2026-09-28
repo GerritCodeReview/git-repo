@@ -22,7 +22,7 @@ class _Coloring(color.Coloring):
         super().__init__(config, "status")
 
 
-class Diffmanifests(command.PagedCommand):
+class Diffmanifests(command.PagedCommand, command.MirrorSafeCommand):
     """A command to see logs in projects represented by manifests
 
     This is used to see deeper differences between manifests. Where a simple
