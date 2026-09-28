@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from color import Coloring
-from command import PagedCommand
+from command import MirrorSafeCommand, PagedCommand
 from manifest_xml import RepoClient
 
 
@@ -22,7 +22,7 @@ class _Coloring(Coloring):
         Coloring.__init__(self, config, "status")
 
 
-class Diffmanifests(PagedCommand):
+class Diffmanifests(PagedCommand, MirrorSafeCommand):
     """A command to see logs in projects represented by manifests
 
     This is used to see deeper differences between manifests. Where a simple
