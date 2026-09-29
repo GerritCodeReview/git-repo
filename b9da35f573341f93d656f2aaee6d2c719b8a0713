@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46aed4ff_4fade682",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 4800821
+      },
+      "writtenOn": "2026-09-29T06:58:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fcad15b_a77290c6",
+      "revId": "b9da35f573341f93d656f2aaee6d2c719b8a0713",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0639ac52_28a103bc",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-09-25T17:37:15Z",
       "side": 1,
       "message": "i\u0027m not sure `-g` is used often enough to warrant mentioning it here",
+      "revId": "b9da35f573341f93d656f2aaee6d2c719b8a0713",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42755120_d6f43b8e",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 4800821
+      },
+      "writtenOn": "2026-09-29T06:58:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0639ac52_28a103bc",
       "revId": "b9da35f573341f93d656f2aaee6d2c719b8a0713",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d9bdfb9_17ade9d4",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 4800821
+      },
+      "writtenOn": "2026-09-29T06:58:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c99e2a04_b6e846b1",
+      "revId": "b9da35f573341f93d656f2aaee6d2c719b8a0713",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba2384e6_7f027f1f",
@@ -69,6 +123,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52c382df_dcc35060",
+        "filename": "tests/test_subcmds_manifest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4800821
+      },
+      "writtenOn": "2026-09-29T06:58:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba2384e6_7f027f1f",
+      "revId": "b9da35f573341f93d656f2aaee6d2c719b8a0713",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec092efa_eb62424c",
@@ -82,6 +154,24 @@
       "writtenOn": "2026-09-25T17:37:15Z",
       "side": 1,
       "message": "`repo manifest` produces an XML, so parse it rather than doing substring matching",
+      "revId": "b9da35f573341f93d656f2aaee6d2c719b8a0713",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d89bb43_f23f16bd",
+        "filename": "tests/test_subcmds_manifest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 4800821
+      },
+      "writtenOn": "2026-09-29T06:58:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec092efa_eb62424c",
       "revId": "b9da35f573341f93d656f2aaee6d2c719b8a0713",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
