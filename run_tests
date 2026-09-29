@@ -13,6 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# /// script
+# requires-python = '>=3.11,<3.12'
+# dependencies = [
+#   'pytest==8.3.4',
+#   'black==25.1.0',
+#   'flake8==6.0.0',
+#   'flake8-bugbear==24.12.12',
+#   'flake8-comprehensions==3.16.0',
+#   'isort==5.10.1'
+# ]
+# ///
+
 """Wrapper to run linters and pytest with the right settings."""
 
 import functools
