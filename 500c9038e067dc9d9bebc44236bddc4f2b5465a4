@@ -69,6 +69,24 @@
       "parentUuid": "b6bd0fe8_03e4bcc8",
       "revId": "500c9038e067dc9d9bebc44236bddc4f2b5465a4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e02f6d68_bde7d2f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-29T14:26:58Z",
+      "side": 1,
+      "message": "did you forget to `git add` it ?",
+      "parentUuid": "2bcac201_06476f95",
+      "revId": "500c9038e067dc9d9bebc44236bddc4f2b5465a4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
