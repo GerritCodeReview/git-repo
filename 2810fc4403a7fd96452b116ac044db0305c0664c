@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dee8c56_c92dbd31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-09-29T15:11:16Z",
+      "side": 1,
+      "message": "you\u0027ll need to fix the unittest errors.  keep in mind that we still support Python 3.6, so we cannot require newer syntax.",
+      "revId": "2810fc4403a7fd96452b116ac044db0305c0664c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
