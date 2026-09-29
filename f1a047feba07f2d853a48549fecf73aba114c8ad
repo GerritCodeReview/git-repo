@@ -88,6 +88,24 @@
       "parentUuid": "ee15c28e_97e6fd8e",
       "revId": "f1a047feba07f2d853a48549fecf73aba114c8ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad46f82b_d73a2c35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4006507
+      },
+      "writtenOn": "2026-09-29T15:04:44Z",
+      "side": 1,
+      "message": "Thanks.\nI\u0027ve updated the change to keep the current behavior as the default and add `--keep-manifest-projects` and clarified the gc help.\nAlso added tests for the new behavior, including projects with only cached Git data left.",
+      "parentUuid": "ac4609d2_7d78e0c4",
+      "revId": "f1a047feba07f2d853a48549fecf73aba114c8ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
