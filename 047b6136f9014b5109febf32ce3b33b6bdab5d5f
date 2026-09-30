@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21fd9a96_be94e2eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-30T18:27:29Z",
+      "side": 1,
+      "message": "please also fix the commit msg warning: \"The following line is too long (limit: 72 chars):\nrules, unlike git clone/fetch. Furthermore, probing \u003creview_url\u003e/ssh_inf... (73 chars)\"",
+      "revId": "047b6136f9014b5109febf32ce3b33b6bdab5d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f46c3980_377f15d3",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-30T18:27:29Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Repo Analyzer: Missing return type annotation for private function `_InsteadOf`",
+      "range": {
+        "startLine": 579,
+        "startChar": 0,
+        "endLine": 580,
+        "endChar": 0
+      },
+      "revId": "047b6136f9014b5109febf32ce3b33b6bdab5d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4652e2a_0cad1aea",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-09-30T18:27:29Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Repo Analyzer: Missing type annotation for function argument `url`",
+      "range": {
+        "startLine": 579,
+        "startChar": 0,
+        "endLine": 580,
+        "endChar": 0
+      },
+      "revId": "047b6136f9014b5109febf32ce3b33b6bdab5d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
