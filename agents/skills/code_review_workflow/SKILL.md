@@ -554,6 +554,14 @@ regressions.
 :           :                          :          : library imports, causing  :
 :           :                          :          : linting tools to fail the :
 :           :                          :          : CQ job.                   :
+| **T4-04** | Mandatory Type           | High     | Introducing new functions  |
+:           : Annotations for New or   :          : or modifying existing     :
+:           : Modified Functions (Repo :          : function signatures       :
+:           : Analyzer)                :          : without return type       :
+:           :                          :          : annotations (e.g. -> None):
+:           :                          :          : or parameter types,       :
+:           :                          :          : triggering Repo Analyzer  :
+:           :                          :          : Gerrit warnings.          :
 
 --------------------------------------------------------------------------------
 
@@ -667,6 +675,87 @@ import sys
 
 import my_local_module
 ```
+
+--------------------------------------------------------------------------------
+
+#### T4-04: Mandatory Type Annotations for New or Modified Functions (Repo Analyzer)
+
+> **Rule:** Always provide complete parameter and return type annotations for
+> all new or modified functions and methods (including private functions,
+> modified legacy function signatures, and test methods) to satisfy Gerrit Repo
+> Analyzer checks.
+>
+> **What:** Gerrit runs the automated 'Repo Analyzer' check on incoming
+> patchsets for git-repo, enforcing Ruff's flake8-annotations rules (ANN001,
+> ANN201, ANN202, ANN205, ANN206) on all added lines in modified Python files.
+> Any added or modified function—including newly introduced helpers, test
+> methods, or existing functions whose signatures/definitions are touched—must
+> have explicit parameter annotations and return type annotations (e.g.,
+> `-> None`).
+>
+> **Applies To:** All Python source and test files modified in git-repo.
+>
+> **Why:** Contributors and coding agents often introduce new functions or
+> modify existing functions without adding type annotations, assuming private
+> methods or functions returning None do not need annotations. Because Repo
+> Analyzer flags any violation whose line range intersects added lines,
+> modifying an existing function's signature or adding a new function triggers
+> non-blocking `WARN` findings in Gerrit (e.g., `ANN202: Missing return type
+> annotation for private function` or `ANN001: Missing type annotation for
+> function argument`). Failing to adhere to this typically results in **Repo
+> Analyzer Findings / Unannotated Function Warnings**.
+
+**Trap 1: Omitting return type annotations on private helper functions or test methods.**
+
+**Don't:**
+
+```python
+def _setup_manifest(self, opt, path):
+    ...
+
+def test_resolve_helper(self, mock_obj):
+    ...
+```
+
+**Do:**
+
+```python
+def _setup_manifest(
+    self, opt: optparse.Values, path: str
+) -> tuple[str, PersistentTransport]:
+    ...
+
+def test_resolve_helper(self, mock_obj: mock.MagicMock) -> None:
+    ...
+```
+
+**Trap 2: Modifying an existing unannotated function's signature or definition without adding type annotations.**
+
+**Don't:**
+
+```python
+# BAD: Adding a parameter to an existing unannotated private function leaves it unannotated
+def _ResolveManifestServerTransport(
+    self, opt, manifest, smart_sync_mode=_SMARTSYNC_MODE_EXPLICIT
+):
+    ...
+```
+
+**Do:**
+
+```python
+# GOOD: Fully annotate parameters and return type when modifying an existing function
+def _ResolveManifestServerTransport(
+    self,
+    opt: optparse.Values,
+    manifest: RepoManifest,
+    smart_sync_mode: str = _SMARTSYNC_MODE_EXPLICIT,
+) -> tuple[str, PersistentTransport]:
+    ...
+```
+
+**Exceptions:** Pre-existing lines that are untouched by the patchset are not
+flagged by Repo Analyzer's differential check.
 
 --------------------------------------------------------------------------------
 
