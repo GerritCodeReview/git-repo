@@ -34,6 +34,24 @@
       "parentUuid": "6479deeb_aeaf1192",
       "revId": "ab0de9bf033f704f7f7f8a445786f1d0afdd2530",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bed3cf3_5eee5227",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1133595
+      },
+      "writtenOn": "2026-10-01T08:14:15Z",
+      "side": 1,
+      "message": "What would be your suggested setup, using `command.MirrorSafeCommand` below? This would be inconsistent with the rest of the codebase, so from my perspective if I change it here, we\u0027d have to change it everywhere to stay consistent?",
+      "parentUuid": "0bb7f84e_8e55f912",
+      "revId": "ab0de9bf033f704f7f7f8a445786f1d0afdd2530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
