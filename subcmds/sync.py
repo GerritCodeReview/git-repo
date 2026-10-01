@@ -28,7 +28,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from typing import Dict, List, NamedTuple, Optional, Set, Tuple, Union
+from typing import Any, Dict, List, NamedTuple, Optional, Set, Tuple, Union
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -95,6 +95,10 @@ _REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
 _BLOAT_PACK_COUNT_THRESHOLD = 10
 _BLOAT_SIZE_PACK_THRESHOLD_KB = 10 * 1024 * 1024  # 10 GiB in KiB
 _BLOAT_SIZE_GARBAGE_THRESHOLD_KB = 1 * 1024 * 1024  # 1 GiB in KiB
+
+_SMARTSYNC_MODE_HEADER = "X-Repo-Smart-Sync-Mode"
+_SMARTSYNC_MODE_EXPLICIT = "explicit"
+_SMARTSYNC_MODE_IMPLICIT = "implicit"
 
 logger = RepoLogger(__file__)
 
@@ -1921,8 +1925,23 @@ later is required to fix a server side protocol bug.
 
         return True
 
-    def _ResolveManifestServerTransport(self, opt, manifest):
+    def _ResolveManifestServerTransport(
+        self,
+        opt: optparse.Values,
+        manifest: XmlManifest,
+        smart_sync_mode: str = _SMARTSYNC_MODE_EXPLICIT,
+    ) -> Tuple[str, xmlrpc.client.Transport]:
         """Resolves the manifest server URL and transport.
+
+        If a manifest_server_helper is defined, it will be executed to retrieve
+        a proxy server. Otherwise, normal URL parsing and netrc lookup will be
+        performed.
+
+        Args:
+            opt: Program options returned from optparse.
+            manifest: The manifest instance.
+            smart_sync_mode: The smart sync mode header value ('explicit' or
+                'implicit').
 
         Returns:
             Tuple[str, xmlrpc.client.Transport]: The resolved server URL and
@@ -2002,7 +2021,11 @@ later is required to fix a server side protocol bug.
                 raise SmartSyncError(err_msg)
 
             proxy_url = msg
-            transport = PersistentTransport(manifest_server, proxy=proxy_url)
+            transport = PersistentTransport(
+                manifest_server,
+                proxy=proxy_url,
+                smart_sync_mode=smart_sync_mode,
+            )
             server_url = manifest_server
             if server_url.startswith("persistent-"):
                 server_url = server_url[len("persistent-") :]
@@ -2052,14 +2075,22 @@ later is required to fix a server side protocol bug.
                     "://", f"://{username}:{password}@", 1
                 )
 
-        transport = PersistentTransport(manifest_server)
+        transport = PersistentTransport(
+            manifest_server, smart_sync_mode=smart_sync_mode
+        )
         server_url = manifest_server
         if server_url.startswith("persistent-"):
             server_url = server_url[len("persistent-") :]
 
         return server_url, transport
 
-    def _SmartSyncSetup(self, opt, smart_sync_manifest_path, manifest):
+    def _SmartSyncSetup(
+        self,
+        opt: optparse.Values,
+        smart_sync_manifest_path: str,
+        manifest: XmlManifest,
+        is_implicit: Optional[bool] = None,
+    ) -> str:
         if not manifest.manifest_server:
             raise SmartSyncError(
                 "error: cannot smart sync: no manifest server defined in "
@@ -2069,8 +2100,18 @@ later is required to fix a server side protocol bug.
         if not opt.quiet:
             print("Using manifest server %s" % manifest.manifest_server)
 
+        if is_implicit is None:
+            is_implicit = getattr(opt, "smart_sync_implicit", False) is True
+        else:
+            is_implicit = is_implicit is True
+
+        mode = (
+            _SMARTSYNC_MODE_IMPLICIT
+            if is_implicit
+            else _SMARTSYNC_MODE_EXPLICIT
+        )
         server_url, transport = self._ResolveManifestServerTransport(
-            opt, manifest
+            opt, manifest, smart_sync_mode=mode
         )
 
         # Changes in behavior should update docs/smart-sync.md accordingly.
@@ -2437,6 +2478,7 @@ later is required to fix a server side protocol bug.
         )
         if opt.smart_sync is None:
             opt.smart_sync = implicit
+        opt.smart_sync_implicit = implicit
 
         if (
             opt.manifest_server_username or opt.manifest_server_password
@@ -2478,7 +2520,10 @@ later is required to fix a server side protocol bug.
         if opt.smart_sync or opt.smart_tag:
             try:
                 manifest_name = self._SmartSyncSetup(
-                    opt, smart_sync_manifest_path, manifest
+                    opt,
+                    smart_sync_manifest_path,
+                    manifest,
+                    is_implicit=implicit_smart_sync,
                 )
             except (SmartSyncError, ManifestParseError) as e:
                 if not implicit_smart_sync:
@@ -3516,10 +3561,16 @@ class LocalSyncState:
 # request to request like the normal transport, the real url
 # is passed during initialization.
 class PersistentTransport(xmlrpc.client.Transport):
-    def __init__(self, orig_host, proxy=None):
+    def __init__(
+        self,
+        orig_host: str,
+        proxy: Optional[str] = None,
+        smart_sync_mode: Optional[str] = None,
+    ) -> None:
         super().__init__()
         self.orig_host = orig_host
         self.proxy = proxy
+        self.smart_sync_mode = smart_sync_mode
 
     def request(self, host, handler, request_body, verbose=False):
         with GetUrlCookieFile(self.orig_host, not verbose) as (
@@ -3597,6 +3648,10 @@ class PersistentTransport(xmlrpc.client.Transport):
                 for name, header in extra_headers:
                     request.add_header(name, header)
             request.add_header("Content-Type", "text/xml")
+            if self.smart_sync_mode:
+                request.add_header(
+                    _SMARTSYNC_MODE_HEADER, self.smart_sync_mode
+                )
             try:
                 response = opener.open(request)
             except urllib.error.HTTPError as e:
