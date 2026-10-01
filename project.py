@@ -2055,7 +2055,14 @@ class Project:
         rem = self.GetRemote()
         rev = rem.ToLocal(self.revisionExpr)
 
-        if all_refs is not None and rev in all_refs:
+        # Tags may be annotated, in which case all_refs holds the tag object
+        # SHA rather than the peeled commit SHA. Fall through to ResolveCommit
+        # so GetRevisionId always returns a commit SHA.
+        if (
+            all_refs is not None
+            and not rev.startswith(R_TAGS)
+            and rev in all_refs
+        ):
             return all_refs[rev]
 
         try:
