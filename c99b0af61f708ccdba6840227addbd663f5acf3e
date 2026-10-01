@@ -16,6 +16,24 @@
       "message": "this change feels unnecessary (though I don\u0027t doubt we need to update/prune a lot of these skills) since code_review_workflow/AI code review and the Repo Analyzer both work to independently provide results on the CL. not sure the reasoning behind the two needing to know about each other, and afaict this would duplicate results",
       "revId": "c99b0af61f708ccdba6840227addbd663f5acf3e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc699f6b_f7ff299f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-10-01T20:37:39Z",
+      "side": 1,
+      "message": "I think in general agents working on the repo code don\u0027t know about the specific checks Repo analyzer is doing (like type annotation) which leads to round trips which could be avoided. \n\nI guess this SKILL isn\u0027t the right place for this instruction. But I\u0027m not sure what is. CONTRIBUTING.md doesn\u0027t seem like a good place to add this either. And AGENTS.md was removed some time ago.",
+      "parentUuid": "cb953d91_ec46756f",
+      "revId": "c99b0af61f708ccdba6840227addbd663f5acf3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
