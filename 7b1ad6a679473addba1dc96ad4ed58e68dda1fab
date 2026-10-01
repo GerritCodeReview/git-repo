@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f1904cf_656fd55c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-01T17:33:07Z",
+      "side": 1,
+      "message": "please fix `Verify git-repo CL`",
+      "revId": "7b1ad6a679473addba1dc96ad4ed58e68dda1fab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
