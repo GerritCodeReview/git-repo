@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "037bc89f_65ec7f15",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2481,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-01T22:28:23Z",
+      "side": 1,
+      "message": "what if we remove this new opt entirely and instead give `_SmartSyncSetup` a `is_implicit: bool \u003d False` so we just have the `mode \u003d (...)`",
+      "range": {
+        "startLine": 2481,
+        "startChar": 8,
+        "endLine": 2481,
+        "endChar": 42
+      },
+      "revId": "f4a8b627604262aaaeb7d3b47ad921d1ed1b3ae5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
