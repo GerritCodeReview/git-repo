@@ -52,6 +52,24 @@
       "parentUuid": "0bb7f84e_8e55f912",
       "revId": "ab0de9bf033f704f7f7f8a445786f1d0afdd2530",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f16a3362_bcfba9f4",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-01T17:22:11Z",
+      "side": 1,
+      "message": "if you want to migrate all the existing code to `import command` in a sep change, i\u0027d approve that",
+      "parentUuid": "3bed3cf3_5eee5227",
+      "revId": "ab0de9bf033f704f7f7f8a445786f1d0afdd2530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
