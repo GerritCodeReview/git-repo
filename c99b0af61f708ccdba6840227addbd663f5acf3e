@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb953d91_ec46756f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-01T16:42:06Z",
+      "side": 1,
+      "message": "this change feels unnecessary (though I don\u0027t doubt we need to update/prune a lot of these skills) since code_review_workflow/AI code review and the Repo Analyzer both work to independently provide results on the CL. not sure the reasoning behind the two needing to know about each other, and afaict this would duplicate results",
+      "revId": "c99b0af61f708ccdba6840227addbd663f5acf3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
