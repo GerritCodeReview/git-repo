@@ -2012,25 +2012,12 @@ class Project:
     def GetCommitRevisionId(
         self, all_refs: Optional[Dict[str, str]] = None
     ) -> str:
-        """Get revisionId of a commit.
-
-        Use this method instead of GetRevisionId to get the id of the commit
-        rather than the id of the current git object (for example, a tag)
-
-        """
+        """Get revisionId of a commit."""
         if self.revisionId:
             return self.revisionId
-        if not self.revisionExpr.startswith(R_TAGS):
-            if all_refs is None:
-                all_refs = self._allrefs
-            return self.GetRevisionId(all_refs)
-
-        try:
-            return self.bare_git.ResolveCommit(self.revisionExpr)
-        except GitError:
-            raise ManifestInvalidRevisionError(
-                f"revision {self.revisionExpr} in {self.name} not found"
-            )
+        if all_refs is None and not self.revisionExpr.startswith(R_TAGS):
+            all_refs = self._allrefs
+        return self.GetRevisionId(all_refs)
 
     def GetHeadRevisionId(self) -> Optional[str]:
         """Get the commit revision of the checked out HEAD.
@@ -2055,7 +2042,14 @@ class Project:
         rem = self.GetRemote()
         rev = rem.ToLocal(self.revisionExpr)
 
-        if all_refs is not None and rev in all_refs:
+        # Tags may be annotated, in which case all_refs holds the tag object
+        # SHA rather than the peeled commit SHA. Fall through to ResolveCommit
+        # so GetRevisionId always returns a commit SHA.
+        if (
+            all_refs is not None
+            and not rev.startswith(R_TAGS)
+            and rev in all_refs
+        ):
             return all_refs[rev]
 
         try:

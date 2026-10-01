@@ -3932,6 +3932,51 @@ class ReprojectCmdTests(unittest.TestCase):
             result = fakeproj.Sync(use_local_gitdirs=False)
             self.assertFalse(result)
 
+    def test_get_revision_id_peels_tags_even_with_all_refs(self) -> None:
+        """Test GetRevisionId resolves tags via ResolveCommit, not all_refs."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = _create_mock_project(tempdir, use_local_gitdirs=True)
+            proj.revisionId = None
+            mock_remote = mock.MagicMock()
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+            proj.bare_git.ResolveCommit.return_value = self.REVID
+
+            # Branch ref in all_refs returns cached commit SHA directly.
+            proj.revisionExpr = "main"
+            mock_remote.ToLocal.return_value = "refs/remotes/origin/main"
+            all_refs = {
+                "refs/remotes/origin/main": self.HEAD_ID,
+                "refs/tags/v1.0": self.OTHER_ID,
+            }
+            self.assertEqual(proj.GetRevisionId(all_refs), self.HEAD_ID)
+            proj.bare_git.ResolveCommit.assert_not_called()
+
+            # Tag ref in all_refs may be an annotated tag object SHA, so it
+            # must fall through to ResolveCommit to peel to a commit SHA.
+            proj.revisionExpr = "refs/tags/v1.0"
+            mock_remote.ToLocal.return_value = "refs/tags/v1.0"
+            self.assertEqual(proj.GetRevisionId(all_refs), self.REVID)
+            proj.bare_git.ResolveCommit.assert_called_once_with(
+                "refs/tags/v1.0"
+            )
+
+            # GetCommitRevisionId skips _allrefs for tags and pinned revisionId.
+            with mock.patch.object(
+                project.Project, "_allrefs", new_callable=mock.PropertyMock
+            ) as mock_allrefs:
+                proj.bare_git.ResolveCommit.reset_mock()
+                self.assertEqual(proj.GetCommitRevisionId(), self.REVID)
+                mock_allrefs.assert_not_called()
+                proj.bare_git.ResolveCommit.assert_called_once_with(
+                    "refs/tags/v1.0"
+                )
+
+                proj.revisionId = self.HEAD_ID
+                proj.bare_git.ResolveCommit.reset_mock()
+                self.assertEqual(proj.GetCommitRevisionId(), self.HEAD_ID)
+                mock_allrefs.assert_not_called()
+                proj.bare_git.ResolveCommit.assert_not_called()
+
 
 class ReprojectCmdGitTests(unittest.TestCase):
     """Tests running the reprojectcmd contract against a real Git checkout."""
@@ -4203,6 +4248,45 @@ class ReprojectCmdGitTests(unittest.TestCase):
                 self._git(worktree, "status", "--porcelain").splitlines(),
                 [" M keep.txt", "?? junk"],
             )
+
+    def test_sync_local_half_checks_out_an_annotated_tag(self) -> None:
+        """Test Sync_LocalHalf peels an annotated tag to its commit SHA."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            marker = os.path.join(topdir, "ran")
+            proj, revid = self._make_client(
+                topdir, f"{self.READ_TREE} && touch {marker}"
+            )
+            remote = proj.remote.url
+            worktree = proj.worktree
+            self._git(
+                remote,
+                "-c",
+                "user.name=Test",
+                "-c",
+                "user.email=test@example.com",
+                "tag",
+                "-a",
+                "-m",
+                "release v1.0",
+                "v1.0",
+                "HEAD",
+            )
+            self._git(
+                worktree, "fetch", "-q", remote, "refs/tags/v1.0:refs/tags/v1.0"
+            )
+            proj.revisionExpr = "refs/tags/v1.0"
+            proj.revisionId = None
+
+            clean, errors = self._sync(proj)
+            self.assertTrue(clean, errors)
+            self.assertTrue(os.path.exists(marker))
+            self.assertEqual(self._git(worktree, "rev-parse", "HEAD"), revid)
+
+            # Syncing a second time sees HEAD == revid and skips reprojectcmd.
+            os.remove(marker)
+            clean, errors = self._sync(proj)
+            self.assertTrue(clean, errors)
+            self.assertFalse(os.path.exists(marker))
 
 
 class DownloadPatchSetTests(unittest.TestCase):
