@@ -20,10 +20,13 @@ import os
 from pathlib import Path
 import shutil
 import tempfile
+import threading
 import time
-from typing import Dict, List, Optional, Tuple, Type
+from typing import Any, Dict, Iterator, List, Optional, Tuple, Type
 import unittest
 from unittest import mock
+import xmlrpc.client
+import xmlrpc.server
 
 import pytest
 
@@ -1653,6 +1656,7 @@ class SyncCommand(unittest.TestCase):
                             ) as mock_warn:
                                 self.cmd.Execute(self.opt, [])
         mock_setup.assert_called_once()
+        self.assertTrue(mock_setup.call_args.kwargs.get("best_effort"))
         self.assertFalse(self.opt.smart_sync)
         self.assertFalse(mock_warn.called)
 
@@ -1689,9 +1693,11 @@ class SyncCommand(unittest.TestCase):
             self.cmd,
             "_SmartSyncSetup",
             side_effect=sync.SmartSyncError("unreachable"),
-        ):
+        ) as mock_setup:
             with self.assertRaises(sync.SmartSyncError):
                 self.cmd.Execute(self.opt, [])
+            mock_setup.assert_called_once()
+            self.assertFalse(mock_setup.call_args.kwargs.get("best_effort"))
 
     def test_implicit_smart_sync_unparsable_manifest(self) -> None:
         """Ensure an unparsable smart sync manifest falls back to ToT."""
@@ -2830,10 +2836,10 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
 
         # Mock XML-RPC server call
         mock_server = mock.MagicMock()
-        mock_server.GetApprovedManifest.return_value = [
-            True,
-            "<manifest></manifest>",
-        ]
+        mock_server.GetApprovedManifestV2.return_value = {
+            "success": True,
+            "manifest_xml": "<manifest></manifest>",
+        }
         mock_server_class.return_value = mock_server
 
         # Mock manifest project branch
@@ -2885,7 +2891,10 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         self.manifest.manifest_server_helper = None
 
         mock_server = mock.MagicMock()
-        mock_server.GetApprovedManifest.return_value = [True, "<manifest>"]
+        mock_server.GetApprovedManifestV2.return_value = {
+            "success": True,
+            "manifest_xml": "<manifest>",
+        }
         mock_server_class.return_value = mock_server
 
         self.cmd._GetBranch = mock.MagicMock(return_value="main")
@@ -3065,10 +3074,10 @@ class TestSmartSyncSetupBranch(unittest.TestCase):
         self.manifest.manifest_server_helper = None
         self.smart_sync_manifest_path = "/fake/path/to/manifest.xml"
         self.mock_server = mock.MagicMock()
-        self.mock_server.GetApprovedManifest.return_value = [
-            True,
-            "<manifest></manifest>",
-        ]
+        self.mock_server.GetApprovedManifestV2.return_value = {
+            "success": True,
+            "manifest_xml": "<manifest></manifest>",
+        }
         self.cmd._GetBranch = mock.MagicMock(return_value="main")
         self.cmd._ReloadManifest = mock.MagicMock()
         self.cmd._ResolveManifestServerTransport = mock.MagicMock(
@@ -3089,14 +3098,16 @@ class TestSmartSyncSetupBranch(unittest.TestCase):
         self.cmd._GetBranch.assert_called_once_with(
             self.manifest.manifestProject
         )
-        self.mock_server.GetApprovedManifest.assert_called_once_with("main")
+        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
+            {"branch": "main"}
+        )
 
     def test_sync_branch(self) -> None:
         """SYNC_BRANCH replaces the manifest branch."""
         self._RunSetup({"SYNC_BRANCH": "git_main-abfs"})
         self.cmd._GetBranch.assert_not_called()
-        self.mock_server.GetApprovedManifest.assert_called_once_with(
-            "git_main-abfs"
+        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
+            {"branch": "git_main-abfs"}
         )
 
     def test_sync_branch_with_target(self) -> None:
@@ -3107,8 +3118,11 @@ class TestSmartSyncSetupBranch(unittest.TestCase):
                 "SYNC_TARGET": "cf_x86_64_phone-trunk_staging-eng",
             }
         )
-        self.mock_server.GetApprovedManifest.assert_called_once_with(
-            "git_main-abfs", "cf_x86_64_phone-trunk_staging-eng"
+        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
+            {
+                "branch": "git_main-abfs",
+                "target": "cf_x86_64_phone-trunk_staging-eng",
+            }
         )
 
     def test_empty_sync_branch(self) -> None:
@@ -3117,4 +3131,127 @@ class TestSmartSyncSetupBranch(unittest.TestCase):
         self.cmd._GetBranch.assert_called_once_with(
             self.manifest.manifestProject
         )
-        self.mock_server.GetApprovedManifest.assert_called_once_with("main")
+        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
+            {"branch": "main"}
+        )
+
+
+class GetApprovedManifestTests(unittest.TestCase):
+    """Tests for _GetApprovedManifest."""
+
+    def test_request_with_target_and_best_effort(self) -> None:
+        server = mock.MagicMock()
+        server.GetApprovedManifestV2.return_value = {
+            "success": True,
+            "manifest_xml": "<manifest/>",
+        }
+        result = sync._GetApprovedManifest(server, "main", "tgt", True)
+        self.assertEqual(result, (True, "<manifest/>"))
+        server.GetApprovedManifestV2.assert_called_once_with(
+            {"branch": "main", "target": "tgt", "best_effort": True}
+        )
+        server.GetApprovedManifest.assert_not_called()
+
+    def test_request_omits_unset_options(self) -> None:
+        server = mock.MagicMock()
+        server.GetApprovedManifestV2.return_value = {
+            "success": True,
+            "manifest_xml": "<manifest/>",
+        }
+        sync._GetApprovedManifest(server, "main", None, False)
+        server.GetApprovedManifestV2.assert_called_once_with({"branch": "main"})
+
+    def test_declined(self) -> None:
+        server = mock.MagicMock()
+        server.GetApprovedManifestV2.return_value = {
+            "success": False,
+            "error_message": "not in rollout",
+        }
+        result = sync._GetApprovedManifest(server, "main", None, True)
+        self.assertEqual(result, (False, "not in rollout"))
+
+    def test_invalid_response(self) -> None:
+        server = mock.MagicMock()
+        server.GetApprovedManifestV2.return_value = [True, "<manifest/>"]
+        with self.assertRaises(sync.SmartSyncError):
+            sync._GetApprovedManifest(server, "main", None, False)
+
+    def test_success_missing_manifest(self) -> None:
+        server = mock.MagicMock()
+        server.GetApprovedManifestV2.return_value = {"success": True}
+        with self.assertRaises(sync.SmartSyncError):
+            sync._GetApprovedManifest(server, "main", None, False)
+
+    def test_fallback_on_method_not_found_code(self) -> None:
+        server = mock.MagicMock()
+        server.GetApprovedManifestV2.side_effect = xmlrpc.client.Fault(
+            -32601, "no such method"
+        )
+        server.GetApprovedManifest.return_value = [True, "<manifest/>"]
+        result = sync._GetApprovedManifest(server, "main", "tgt", True)
+        self.assertEqual(result, (True, "<manifest/>"))
+        server.GetApprovedManifest.assert_called_once_with("main", "tgt")
+
+    def test_other_fault_is_not_retried(self) -> None:
+        server = mock.MagicMock()
+        server.GetApprovedManifestV2.side_effect = xmlrpc.client.Fault(
+            1, "internal error"
+        )
+        with self.assertRaises(xmlrpc.client.Fault):
+            sync._GetApprovedManifest(server, "main", "tgt", False)
+        server.GetApprovedManifest.assert_not_called()
+
+
+@contextlib.contextmanager
+def _LiveManifestServer(**funcs: Any) -> Iterator[xmlrpc.client.ServerProxy]:
+    """Runs a local XML-RPC server exposing |funcs|."""
+    server = xmlrpc.server.SimpleXMLRPCServer(
+        ("127.0.0.1", 0), logRequests=False
+    )
+    for name, func in funcs.items():
+        server.register_function(func, name)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        host, port = server.server_address
+        yield xmlrpc.client.ServerProxy(f"http://{host}:{port}/")
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join()
+
+
+class GetApprovedManifestLiveTests(unittest.TestCase):
+    """Tests _GetApprovedManifest against a real XML-RPC server."""
+
+    def test_legacy_server_fallback(self) -> None:
+        calls = []
+
+        def legacy(*args: str) -> List[Any]:
+            calls.append(args)
+            return [True, "<manifest/>"]
+
+        with _LiveManifestServer(GetApprovedManifest=legacy) as proxy:
+            self.assertEqual(
+                sync._GetApprovedManifest(proxy, "main", "tgt", True),
+                (True, "<manifest/>"),
+            )
+            self.assertEqual(
+                sync._GetApprovedManifest(proxy, "main", None, True),
+                (True, "<manifest/>"),
+            )
+        self.assertEqual(calls, [("main", "tgt"), ("main",)])
+
+    def test_v2_server(self) -> None:
+        requests = []
+
+        def v2(request: Dict[str, Any]) -> Dict[str, Any]:
+            requests.append(request)
+            return {"success": False, "error_message": "declined"}
+
+        with _LiveManifestServer(GetApprovedManifestV2=v2) as proxy:
+            self.assertEqual(
+                sync._GetApprovedManifest(proxy, "main", None, True),
+                (False, "declined"),
+            )
+        self.assertEqual(requests, [{"branch": "main", "best_effort": True}])
