@@ -434,6 +434,7 @@ def test_cli_smart_sync(
     implicit = cmd._ResolveSmartSyncOption(opts, manifest)
     assert opts.smart_sync == expected_smart_sync
     assert implicit == expected_implicit
+    assert getattr(opts, "smart_sync_implicit", None) == expected_implicit
 
 
 @pytest.mark.parametrize(
@@ -1591,6 +1592,7 @@ class SyncCommand(unittest.TestCase):
                             ) as mock_warn:
                                 self.cmd.Execute(self.opt, [])
         mock_setup.assert_called_once()
+        self.assertTrue(mock_setup.call_args.kwargs.get("is_implicit"))
         self.assertFalse(self.opt.smart_sync)
         self.assertFalse(mock_warn.called)
 
@@ -1627,9 +1629,11 @@ class SyncCommand(unittest.TestCase):
             self.cmd,
             "_SmartSyncSetup",
             side_effect=sync.SmartSyncError("unreachable"),
-        ):
+        ) as mock_setup:
             with self.assertRaises(sync.SmartSyncError):
                 self.cmd.Execute(self.opt, [])
+            mock_setup.assert_called_once()
+            self.assertFalse(mock_setup.call_args.kwargs.get("is_implicit"))
 
     def test_implicit_smart_sync_unparsable_manifest(self) -> None:
         """Ensure an unparsable smart sync manifest falls back to ToT."""
@@ -2710,8 +2714,12 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
     @mock.patch("xmlrpc.client.Server")
     @mock.patch("subcmds.sync.PersistentTransport")
     def test_smart_sync_setup_with_helper(
-        self, mock_transport_class, mock_server_class, mock_popen, mock_which
-    ):
+        self,
+        mock_transport_class: mock.MagicMock,
+        mock_server_class: mock.MagicMock,
+        mock_popen: mock.MagicMock,
+        mock_which: mock.MagicMock,
+    ) -> None:
         """Test _SmartSyncSetup when a helper is present and succeeds."""
         import subprocess
 
@@ -2760,9 +2768,11 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         )
 
         # Verify transport was created with the proxy returned by helper (with
-        # http:// prepended)
+        # http:// prepended) and smart_sync_mode="explicit".
         mock_transport_class.assert_called_once_with(
-            self.manifest.manifest_server, proxy="http://127.0.0.1:999"
+            self.manifest.manifest_server,
+            proxy="http://127.0.0.1:999",
+            smart_sync_mode="explicit",
         )
 
         # Verify Server was created with the same URL, with persistent- stripped
@@ -2772,6 +2782,88 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         )
 
         self.assertEqual(manifest_name, "manifest.xml")
+
+    @mock.patch("shutil.which")
+    @mock.patch("subprocess.Popen")
+    @mock.patch("xmlrpc.client.Server")
+    @mock.patch("subcmds.sync.PersistentTransport")
+    def test_smart_sync_setup_with_helper_implicit(
+        self,
+        mock_transport_class: mock.MagicMock,
+        mock_server_class: mock.MagicMock,
+        mock_popen: mock.MagicMock,
+        mock_which: mock.MagicMock,
+    ) -> None:
+        """Test _SmartSyncSetup with helper in implicit mode."""
+        import subprocess
+
+        self.manifest.manifest_server = (
+            "persistent-https://android-smartsync.corp.google.com/"
+            "manifestserver"
+        )
+        self.manifest.manifest_server_helper = "repo-remote-sso"
+        mock_which.return_value = "/fake/bin/repo-remote-sso"
+
+        mock_process = mock.MagicMock()
+        mock_process.communicate.return_value = (
+            '{"status":"ok","message":"http://127.0.0.1:999"}\n',
+            "",
+        )
+        mock_process.returncode = 0
+        mock_popen.return_value = mock_process
+
+        mock_server = mock.MagicMock()
+        mock_server.GetApprovedManifest.return_value = [
+            True,
+            "<manifest></manifest>",
+        ]
+        mock_server_class.return_value = mock_server
+
+        self.cmd._GetBranch = mock.MagicMock(return_value="main")
+        self.cmd._ReloadManifest = mock.MagicMock()
+
+        with mock.patch("builtins.open", mock.mock_open()):
+            manifest_name = self.cmd._SmartSyncSetup(
+                self.opt,
+                self.smart_sync_manifest_path,
+                self.manifest,
+                is_implicit=True,
+            )
+
+        mock_transport_class.assert_called_once_with(
+            self.manifest.manifest_server,
+            proxy="http://127.0.0.1:999",
+            smart_sync_mode="implicit",
+        )
+        self.assertEqual(manifest_name, "manifest.xml")
+
+    @mock.patch("subcmds.sync.PersistentTransport")
+    def test_resolve_manifest_server_transport_without_helper(
+        self, mock_transport_class: mock.MagicMock
+    ) -> None:
+        """Test _ResolveManifestServerTransport without helper."""
+        self.manifest.manifest_server = (
+            "https://android-smartsync.corp.google.com/manifestserver"
+        )
+        self.manifest.manifest_server_helper = None
+        self.opt.manifest_server_username = None
+        self.opt.manifest_server_password = None
+
+        server_url, transport = self.cmd._ResolveManifestServerTransport(
+            self.opt, self.manifest, smart_sync_mode="explicit"
+        )
+        mock_transport_class.assert_called_once_with(
+            self.manifest.manifest_server, smart_sync_mode="explicit"
+        )
+        self.assertEqual(server_url, self.manifest.manifest_server)
+
+        mock_transport_class.reset_mock()
+        server_url, transport = self.cmd._ResolveManifestServerTransport(
+            self.opt, self.manifest, smart_sync_mode="implicit"
+        )
+        mock_transport_class.assert_called_once_with(
+            self.manifest.manifest_server, smart_sync_mode="implicit"
+        )
 
     @mock.patch("xmlrpc.client.Server")
     def test_smart_sync_setup_unparsable_manifest(
@@ -2950,3 +3042,59 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
             "Stderr was: debugging logs",
             str(context.exception),
         )
+
+
+class TestPersistentTransport(unittest.TestCase):
+    """Tests for PersistentTransport request headers."""
+
+    @mock.patch("urllib.request.build_opener")
+    @mock.patch("subcmds.sync.GetUrlCookieFile")
+    def test_persistent_transport_headers(
+        self,
+        mock_cookie_file: mock.MagicMock,
+        mock_build_opener: mock.MagicMock,
+    ) -> None:
+        mock_cookie_file.return_value.__enter__.return_value = (None, None)
+        mock_opener = mock.MagicMock()
+        mock_build_opener.return_value = mock_opener
+        mock_response = mock.MagicMock()
+        mock_response.read.return_value = (
+            b"<?xml version='1.0'?>"
+            b"<methodResponse><params><param><value><string>ok</string></value></param></params></methodResponse>"
+        )
+        mock_opener.open.return_value = mock_response
+
+        # Explicit mode
+        transport_explicit = sync.PersistentTransport(
+            "https://example.com/manifestserver",
+            smart_sync_mode=sync._SMARTSYNC_MODE_EXPLICIT,
+        )
+        transport_explicit.request("example.com", "/manifestserver", b"<xml/>")
+        req_explicit = mock_opener.open.call_args[0][0]
+        self.assertTrue(req_explicit.has_header("X-repo-smart-sync-mode"))
+        self.assertEqual(
+            req_explicit.get_header("X-repo-smart-sync-mode"), "explicit"
+        )
+
+        # Implicit mode
+        mock_opener.reset_mock()
+        transport_implicit = sync.PersistentTransport(
+            "https://example.com/manifestserver",
+            smart_sync_mode=sync._SMARTSYNC_MODE_IMPLICIT,
+        )
+        transport_implicit.request("example.com", "/manifestserver", b"<xml/>")
+        req_implicit = mock_opener.open.call_args[0][0]
+        self.assertTrue(req_implicit.has_header("X-repo-smart-sync-mode"))
+        self.assertEqual(
+            req_implicit.get_header("X-repo-smart-sync-mode"), "implicit"
+        )
+
+        # Default / None mode (header omitted)
+        mock_opener.reset_mock()
+        transport_none = sync.PersistentTransport(
+            "https://example.com/manifestserver",
+        )
+        transport_none.request("example.com", "/manifestserver", b"<xml/>")
+        req_none = mock_opener.open.call_args[0][0]
+        self.assertFalse(req_none.has_header("X-repo-smart-sync-mode"))
+

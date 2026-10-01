@@ -95,6 +95,18 @@ example would do.  Google's internal server uses Python's
 
 The manifest server should implement the following RPC methods.
 
+### HTTP Headers
+
+When sending XML-RPC requests to the manifest server, repo includes the
+following HTTP header:
+
+* `X-Repo-Smart-Sync-Mode`: Indicates whether Smart Sync was triggered
+  explicitly by the user or implicitly by the manifest:
+  * `explicit`: The user explicitly requested Smart Sync (e.g. via `-s`,
+    `--smart-sync`, or `-t`/`--smart-tag`).
+  * `implicit`: Smart Sync was automatically triggered by the manifest default
+    attribute `sync-smartsync="true"` without explicit user request.
+
 ### GetApprovedManifest
 
 > `GetApprovedManifest(branch: str, target: Optional[str]) -> str`
