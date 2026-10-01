@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b919705_b15998e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-10-01T20:16:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21fd9a96_be94e2eb",
+      "revId": "047b6136f9014b5109febf32ce3b33b6bdab5d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f46c3980_377f15d3",
@@ -54,6 +72,54 @@
       "writtenOn": "2026-09-30T18:27:29Z",
       "side": 1,
       "message": "Please fix this WARNING reported by Repo Analyzer: Missing type annotation for function argument `url`",
+      "range": {
+        "startLine": 579,
+        "startChar": 0,
+        "endLine": 580,
+        "endChar": 0
+      },
+      "revId": "047b6136f9014b5109febf32ce3b33b6bdab5d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b79658c_0e45c698",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-10-01T20:16:44Z",
+      "side": 1,
+      "message": "Added url: Optional[str] \u003d None",
+      "parentUuid": "b4652e2a_0cad1aea",
+      "range": {
+        "startLine": 579,
+        "startChar": 0,
+        "endLine": 580,
+        "endChar": 0
+      },
+      "revId": "047b6136f9014b5109febf32ce3b33b6bdab5d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56b7bcb4_ce80fba8",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-10-01T20:16:44Z",
+      "side": 1,
+      "message": "Added return type -\u003e Optional[str]: and imported Optional from typing",
+      "parentUuid": "f46c3980_377f15d3",
       "range": {
         "startLine": 579,
         "startChar": 0,
