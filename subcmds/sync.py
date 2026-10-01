@@ -98,6 +98,69 @@ _BLOAT_SIZE_GARBAGE_THRESHOLD_KB = 1 * 1024 * 1024  # 1 GiB in KiB
 
 logger = RepoLogger(__file__)
 
+# Manifest server RPC that takes a single struct of named options.  Servers
+# that do not implement it are called via the positional GetApprovedManifest.
+_GET_APPROVED_MANIFEST_V2 = "GetApprovedManifestV2"
+
+
+def _IsMethodNotFoundFault(fault: xmlrpc.client.Fault, method: str) -> bool:
+    """Whether |fault| means the server does not implement |method|."""
+    # -32601 per the xmlrpc-epi fault code interoperability spec.
+    if fault.faultCode == xmlrpc.client.METHOD_NOT_FOUND:
+        return True
+    # Python's SimpleXMLRPCDispatcher uses faultCode 1 with this message.
+    return f'method "{method}" is not supported' in str(fault.faultString)
+
+
+def _GetApprovedManifest(
+    server: xmlrpc.client.ServerProxy,
+    branch: str,
+    target: Optional[str],
+    best_effort: bool,
+) -> Tuple[bool, str]:
+    """Requests the approved manifest from the manifest server.
+
+    Args:
+        server: The manifest server proxy.
+        branch: The manifest branch.
+        target: The build target, if any.
+        best_effort: The client can proceed without a manifest (e.g. by
+            falling back to ToT), so the server may decline the request.
+
+    Returns:
+        A (success, manifest XML or error message) tuple.
+    """
+    request = {"branch": branch}
+    if target:
+        request["target"] = target
+    if best_effort:
+        request["best_effort"] = True
+
+    try:
+        response = server.GetApprovedManifestV2(request)
+    except xmlrpc.client.Fault as e:
+        if not _IsMethodNotFoundFault(e, _GET_APPROVED_MANIFEST_V2):
+            raise
+        # Older server: |best_effort| has no equivalent and is dropped.
+        if target:
+            success, manifest_str = server.GetApprovedManifest(branch, target)
+        else:
+            success, manifest_str = server.GetApprovedManifest(branch)
+        return success, manifest_str
+
+    if not isinstance(response, dict):
+        raise SmartSyncError(
+            f"error: invalid {_GET_APPROVED_MANIFEST_V2} response: {response!r}"
+        )
+    if response.get("success"):
+        if "manifest_xml" not in response:
+            raise SmartSyncError(
+                f"error: {_GET_APPROVED_MANIFEST_V2} response is missing "
+                "manifest_xml"
+            )
+        return True, response["manifest_xml"]
+    return False, response.get("error_message", "unknown error")
+
 
 def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
     """Generate a sequence of checkouts that is safe to perform.
@@ -2059,7 +2122,13 @@ later is required to fix a server side protocol bug.
 
         return server_url, transport
 
-    def _SmartSyncSetup(self, opt, smart_sync_manifest_path, manifest):
+    def _SmartSyncSetup(
+        self,
+        opt: optparse.Values,
+        smart_sync_manifest_path: str,
+        manifest: XmlManifest,
+        best_effort: bool = False,
+    ) -> str:
         if not manifest.manifest_server:
             raise SmartSyncError(
                 "error: cannot smart sync: no manifest server defined in "
@@ -2100,12 +2169,9 @@ later is required to fix a server side protocol bug.
                         os.environ["TARGET_BUILD_VARIANT"],
                     )
 
-                if target:
-                    [success, manifest_str] = server.GetApprovedManifest(
-                        branch, target
-                    )
-                else:
-                    [success, manifest_str] = server.GetApprovedManifest(branch)
+                success, manifest_str = _GetApprovedManifest(
+                    server, branch, target, best_effort
+                )
             else:
                 assert opt.smart_tag
                 [success, manifest_str] = server.GetManifest(opt.smart_tag)
@@ -2478,7 +2544,10 @@ later is required to fix a server side protocol bug.
         if opt.smart_sync or opt.smart_tag:
             try:
                 manifest_name = self._SmartSyncSetup(
-                    opt, smart_sync_manifest_path, manifest
+                    opt,
+                    smart_sync_manifest_path,
+                    manifest,
+                    best_effort=implicit_smart_sync,
                 )
             except (SmartSyncError, ManifestParseError) as e:
                 if not implicit_smart_sync:

@@ -95,6 +95,36 @@ example would do.  Google's internal server uses Python's
 
 The manifest server should implement the following RPC methods.
 
+### GetApprovedManifestV2
+
+> `GetApprovedManifestV2(request: dict) -> dict`
+
+Like [GetApprovedManifest](#GetApprovedManifest), but takes a single struct of
+named options so new options can be added without changing the method signature.
+Unset options are omitted from the struct. Servers should ignore options they do
+not understand.
+
+Request options:
+
+*   `branch` (`str`, required): Same as in `GetApprovedManifest`.
+*   `target` (`str`, optional): Same as in `GetApprovedManifest`.
+*   `best_effort` (`bool`, optional, default `False`): The client can proceed
+    without a manifest, so the server may decline the request (e.g. during a
+    staged rollout or to shed load). Repo sets this for Smart Syncs enabled by
+    the manifest's `sync-smartsync` default, and falls back to a regular ToT
+    sync if the request is declined. Servers must not decline requests without
+    this option for these reasons.
+
+Response fields:
+
+*   `success` (`bool`): Whether a manifest was returned.
+*   `manifest_xml` (`str`): The manifest. Required if `success` is true.
+*   `error_message` (`str`): Why the request failed or was declined. Repo shows
+    it to the user like `GetApprovedManifest` errors.
+
+If the server does not implement this method, repo calls `GetApprovedManifest`
+instead and drops the options it cannot express.
+
 ### GetApprovedManifest
 
 > `GetApprovedManifest(branch: str, target: Optional[str]) -> str`
@@ -152,10 +182,12 @@ Sync unless explicitly overridden on the command line. Since the user did not
 ask for a Smart Sync, any failure to obtain a manifest from the manifest server
 (e.g. the server is unreachable, or it returns a manifest that cannot be parsed)
 is silently ignored and `repo sync` falls back to a regular ToT sync; pass
-`--verbose` to see the reason. This is only a fallback for the manifest-driven
-default: an explicit `-s`/`--smart-sync` or `-t`/`--smart-tag` still fails the
-sync, as before. Options that specify an explicit target or manifest source
-(such as `-t`/`--smart-tag`, `-m`/`--manifest-name` or
+`--verbose` to see the reason. Repo marks these requests as `best_effort` (see
+[GetApprovedManifestV2](#GetApprovedManifestV2)), so the server may also decline
+them, e.g. during a staged rollout. This is only a fallback for the
+manifest-driven default: an explicit `-s`/`--smart-sync` or `-t`/`--smart-tag`
+still fails the sync, as before. Options that specify an explicit target or
+manifest source (such as `-t`/`--smart-tag`, `-m`/`--manifest-name` or
 `--superproject-revision`) will also disable the default Smart Sync behavior.
 
 With `-l`/`--local-only` or `--no-manifest-update`, the default Smart Sync does
@@ -167,7 +199,8 @@ options do not change the behavior of an explicit `-s`/`--smart-sync`.
 ### --smart-sync / -s
 
 Explicitly enables Smart Sync. Repo will call
-`GetApprovedManifest(branch[, target])`.
+`GetApprovedManifestV2({branch[, target]})`, or
+`GetApprovedManifest(branch[, target])` if the server does not implement it.
 
 The `branch` is determined by the current manifest branch as specified by
 `--manifest-branch=BRANCH` when running `repo init`.
