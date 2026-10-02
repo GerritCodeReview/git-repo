@@ -2081,6 +2081,7 @@ class Project:
                 and self._CheckForImmutableRevision(
                     use_superproject=use_superproject,
                     depth=depth,
+                    allow_prefetch=True,
                 )
                 and (has_shallow or not self._IsShallow(depth))
             )
@@ -3340,6 +3341,7 @@ class Project:
         self,
         use_superproject: Optional[bool] = None,
         depth: Optional[int] = None,
+        allow_prefetch: bool = False,
     ) -> bool:
         try:
             # if revision (sha or tag) is not present then following function
@@ -3366,12 +3368,21 @@ class Project:
 
             # Verify revision is an ancestor of the upstream tracking ref.
             if verify_upstream:
-                self.bare_git.merge_base(
-                    "--is-ancestor",
-                    self.revisionExpr,
-                    upstream_rev,
-                    log_as_error=False,
-                )
+                try:
+                    self.bare_git.merge_base(
+                        "--is-ancestor",
+                        self.revisionExpr,
+                        upstream_rev,
+                        log_as_error=False,
+                    )
+                except error.GitError:
+                    if (
+                        not allow_prefetch
+                        or not self._FastForwardUpstreamFromPrefetch(
+                            upstream_rev
+                        )
+                    ):
+                        raise
             return True
         except error.GitError:
             # There is no such persistent revision. We have to fetch it.
@@ -3413,6 +3424,68 @@ class Project:
                 return {line.strip() for line in fd if line.strip()}
         except OSError:
             return set()
+
+    def _FastForwardUpstreamFromPrefetch(self, upstream_rev: str) -> bool:
+        """Fast-forwards the upstream tracking ref to its prefetched value.
+
+        `git maintenance run --task=prefetch` and similar background tools
+        fetch refs/remotes/<remote>/<branch> into
+        refs/prefetch/remotes/<remote>/<branch> without touching the tracking
+        ref. When that prefetched tip contains the revision being synced and
+        is a fast-forward of the existing tracking ref, moving the tracking
+        ref to it gives the same result as a fetch done when the prefetch ran,
+        without another network round trip.
+
+        Args:
+            upstream_rev: The tracking ref, e.g. refs/remotes/goog/main.
+
+        Returns:
+            True if the tracking ref now contains self.revisionExpr.
+        """
+        if not upstream_rev.startswith("refs/remotes/"):
+            return False
+        prefetch_ref = "refs/prefetch/" + upstream_rev[len("refs/") :]
+        try:
+            prefetch_rev = self.bare_git.rev_parse(
+                "--verify",
+                "--quiet",
+                f"{prefetch_ref}^{{commit}}",
+                log_as_error=False,
+            )
+            self.bare_git.merge_base(
+                "--is-ancestor",
+                self.revisionExpr,
+                prefetch_rev,
+                log_as_error=False,
+            )
+        except error.GitError:
+            return False
+
+        try:
+            old_rev = self.bare_git.rev_parse(
+                "--verify",
+                "--quiet",
+                f"{upstream_rev}^{{commit}}",
+                log_as_error=False,
+            )
+            self.bare_git.merge_base(
+                "--is-ancestor",
+                old_rev,
+                prefetch_rev,
+                log_as_error=False,
+            )
+            # Compare-and-swap so a concurrent fetch is never overwritten.
+            self.bare_git.update_ref(
+                "-m",
+                f"repo: fast-forward from {prefetch_ref}",
+                upstream_rev,
+                prefetch_rev,
+                old_rev,
+                log_as_error=False,
+            )
+        except error.GitError:
+            return False
+        return True
 
     def _HasShallow(self) -> bool:
         """Check if this project has a shallow file in its gitdir."""
@@ -3758,6 +3831,7 @@ class Project:
                 if self._CheckForImmutableRevision(
                     use_superproject=use_superproject,
                     depth=depth,
+                    allow_prefetch=True,
                 ) and (has_shallow or not self._IsShallow(depth)):
                     if verbose:
                         print(
