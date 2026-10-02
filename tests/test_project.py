@@ -2774,6 +2774,109 @@ class SyncOptimizationTests(unittest.TestCase):
                 proj._CheckForImmutableRevision(use_superproject=False)
             )
 
+    def _make_linear_history(self, proj, tempdir, count):
+        """Creates `count` commits on HEAD and returns their ids in order."""
+        test_file = os.path.join(tempdir, "file.txt")
+        commits = []
+        for i in range(count):
+            with open(test_file, "w") as f:
+                f.write(f"commit{i}")
+            proj.work_git.add("file.txt")
+            proj.work_git.commit("-m", f"commit {i}")
+            commits.append(proj.work_git.rev_parse("HEAD"))
+        return commits
+
+    def _get_upstream_project(self, tempdir):
+        proj = _create_mock_project(tempdir)
+        proj.bare_git = project.Project._GitGetByExec(
+            proj, bare=True, gitdir=proj.gitdir
+        )
+        proj.upstream = "refs/heads/main"
+        proj.work_git.config("remote.origin.url", "http://example.com/repo")
+        proj.work_git.config(
+            "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*"
+        )
+        return proj
+
+    def test_check_immutable_revision_fast_forwards_from_prefetch(
+        self,
+    ) -> None:
+        """A prefetched tip containing the revision replaces a fetch."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_upstream_project(tempdir)
+            c1, c2, c3 = self._make_linear_history(proj, tempdir, 3)
+            proj.work_git.update_ref("refs/remotes/origin/main", c1)
+            proj.work_git.update_ref("refs/prefetch/remotes/origin/main", c3)
+            proj.revisionExpr = c2
+
+            self.assertTrue(
+                proj._CheckForImmutableRevision(use_superproject=False)
+            )
+            self.assertEqual(
+                proj.work_git.rev_parse("refs/remotes/origin/main"), c3
+            )
+
+    def test_check_immutable_revision_prefetch_needs_upstream_ref(
+        self,
+    ) -> None:
+        """Without a tracking ref, the prefetched tip is not used."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_upstream_project(tempdir)
+            _, c2 = self._make_linear_history(proj, tempdir, 2)
+            proj.work_git.update_ref("refs/prefetch/remotes/origin/main", c2)
+            proj.revisionExpr = c2
+
+            self.assertFalse(
+                proj._CheckForImmutableRevision(use_superproject=False)
+            )
+            self.assertNotIn(
+                "refs/remotes/origin/main",
+                proj.work_git.for_each_ref("--format=%(refname)"),
+            )
+
+    def test_check_immutable_revision_prefetch_without_revision_fetches(
+        self,
+    ) -> None:
+        """A prefetched tip that does not contain the revision is ignored."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_upstream_project(tempdir)
+            c1, c2, c3 = self._make_linear_history(proj, tempdir, 3)
+            proj.work_git.update_ref("refs/remotes/origin/main", c1)
+            proj.work_git.update_ref("refs/prefetch/remotes/origin/main", c2)
+            proj.revisionExpr = c3
+
+            self.assertFalse(
+                proj._CheckForImmutableRevision(use_superproject=False)
+            )
+            self.assertEqual(
+                proj.work_git.rev_parse("refs/remotes/origin/main"), c1
+            )
+
+    def test_check_immutable_revision_prefetch_never_rewinds_upstream(
+        self,
+    ) -> None:
+        """The tracking ref is not moved unless it is a fast-forward."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_upstream_project(tempdir)
+            c1, c2 = self._make_linear_history(proj, tempdir, 2)
+            # A side commit not on the tracking ref's history.
+            proj.work_git.checkout("-q", "--detach", c1)
+            with open(os.path.join(tempdir, "side.txt"), "w") as f:
+                f.write("side")
+            proj.work_git.add("side.txt")
+            proj.work_git.commit("-m", "side")
+            side = proj.work_git.rev_parse("HEAD")
+            proj.work_git.update_ref("refs/remotes/origin/main", side)
+            proj.work_git.update_ref("refs/prefetch/remotes/origin/main", c2)
+            proj.revisionExpr = c2
+
+            self.assertFalse(
+                proj._CheckForImmutableRevision(use_superproject=False)
+            )
+            self.assertEqual(
+                proj.work_git.rev_parse("refs/remotes/origin/main"), side
+            )
+
     def test_sync_network_half_stale_upstream_fetches(self) -> None:
         """Sync_NetworkHalf does not skip fetch when upstream ref is behind."""
         with utils_for_test.TempGitTree() as tempdir:
