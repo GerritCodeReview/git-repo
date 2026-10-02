@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c272053c_7eef0635",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-02T16:04:37Z",
+      "side": 1,
+      "message": "imo this is going the wrong direction.  we\u0027ve already defined an explicit manifest server REST API.  if you want to change behavior, change the API, don\u0027t side-channel it with headers.",
+      "revId": "ce25e9410e5ee0a699c7063dc9fa8996b746cb02",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ae990fc_db495a30",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-02T16:04:37Z",
+      "side": 1,
+      "message": "this does not follow go/mdstyle",
+      "revId": "ce25e9410e5ee0a699c7063dc9fa8996b746cb02",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
