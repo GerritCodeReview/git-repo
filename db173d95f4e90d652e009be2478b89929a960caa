@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9783377_63e3a8a0",
+        "filename": "git_config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-05T18:02:17Z",
+      "side": 1,
+      "message": "do we want to do this normalization after _InsteadOf as well? same with also having a `persistent-` check after (see L627)",
+      "range": {
+        "startLine": 635,
+        "startChar": 12,
+        "endLine": 636,
+        "endChar": 24
+      },
+      "revId": "db173d95f4e90d652e009be2478b89929a960caa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b18403c_82a69242",
+        "filename": "tests/test_git_config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-05T18:02:17Z",
+      "side": 1,
+      "message": "iiuc REVIEW_CACHE prevents 503 from being tested since remote info doesnt change across the runs",
+      "range": {
+        "startLine": 294,
+        "startChar": 41,
+        "endLine": 294,
+        "endChar": 49
+      },
+      "revId": "db173d95f4e90d652e009be2478b89929a960caa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb3df460_60ebfb9d",
+        "filename": "tests/test_git_config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-05T18:02:17Z",
+      "side": 1,
+      "message": "do we also want to mock ForUser here?",
+      "range": {
+        "startLine": 312,
+        "startChar": 0,
+        "endLine": 312,
+        "endChar": 36
+      },
+      "revId": "db173d95f4e90d652e009be2478b89929a960caa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
