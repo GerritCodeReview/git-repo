@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "876b525b_40680852",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-10-05T11:18:28Z",
+      "side": 1,
+      "message": "We originally thought about changing the API surface. After talking to Gavin, we decided to go with the header for a couple of reasons:\n\n- The current parameters branch \u0026 target identify which manifest to return. implicit/explicit is client invocation metadaata and tells why the call is happening which seemed like the wrong type of data to send over for this endpoint similar to User-Agent.\n\n- Header also allows to pass over this info while being backward compatible without changing public protocol. XML-RPC only supports positional arguments and does not marshal None by default since it\u0027s initialized with \"allow_none\u003dFalse\", which means the client cannot call `GetApprovedManifest(branch, None, mode)` which would lead to errors. `GetApprovedManifest(branch, mode)` would collide with target.\n\n- The behavior of the API stays the same regardless of what type of call this is. The server returns (ok, manifest_xml) which repo uses to sync. Or False when unavailable, which implicit sync treats as a ToT fallback on our server.\n\nHappy to chat about this further if you feel this isn\u0027t the right direction.",
+      "parentUuid": "c272053c_7eef0635",
+      "revId": "ce25e9410e5ee0a699c7063dc9fa8996b746cb02",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ae990fc_db495a30",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-02T16:04:37Z",
       "side": 1,
       "message": "this does not follow go/mdstyle",
+      "revId": "ce25e9410e5ee0a699c7063dc9fa8996b746cb02",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de8f5a70_67fc7652",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-10-05T11:18:28Z",
+      "side": 1,
+      "message": "Done. (If I understand correctly, I think you mean the spacing after the asterisks rather than using numbered list here)",
+      "parentUuid": "4ae990fc_db495a30",
       "revId": "ce25e9410e5ee0a699c7063dc9fa8996b746cb02",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
