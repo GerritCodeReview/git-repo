@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b3046a0_282cfee0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-10-06T10:03:55Z",
+      "side": 1,
+      "message": "Some clarification on what the client vs. server is responsible for here:\n\nThe fallback policy is already in the client. repo decides how to handle failures in _ExecuteHelper. When the call fails, explicit `-s` hard-fails while implicit smartsync catches the SmartSyncError and falls back to ToT. (https://gerrit-review.googlesource.com/c/git-repo/+/617641) I think the commit message might be poorly worded; the server doesn\u0027t need this to implement ToT fallback.\n\nThe reason we need this info in the server is for server-side A/B rollout and org/cohort gating of `sync-smartsync\u003d\"true\"`. Because it lives in the manifest, enabling it on a branch applies to every user. We want to roll this out in a controlled manner. The rollout orgs/cohorts are only known by the server, not the client. The server needs to know whether a request was implicit/explicit so that:\n* If an opted-out user runs plain `repo sync` (implicit), the server can decline it and let the client handle the ToT fallback locally as it already does.\n* If that same user explicitly runs `repo sync -s` (explicit), the server will honor it.\n\nFrom repo\u0027s perspective, the client still owns the fallback policy, and this header is purely informational metadata about how the client was invoked that our server happens to inspect for cohort gating and telemetry. \n\nDoes that context make the header approach reasonable? Or do you still prefer we extend `GetApprovedManifest` to take an optional `options` dict?",
+      "parentUuid": "09314851_afbeb1a2",
+      "revId": "ce25e9410e5ee0a699c7063dc9fa8996b746cb02",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ae990fc_db495a30",
