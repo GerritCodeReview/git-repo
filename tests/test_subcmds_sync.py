@@ -2982,3 +2982,74 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
             "Stderr was: debugging logs",
             str(context.exception),
         )
+
+
+class TestSmartSyncSetupBranch(unittest.TestCase):
+    """Tests for how _SmartSyncSetup picks the branch sent to the server."""
+
+    def setUp(self) -> None:
+        self.cmd = sync.Sync()
+        self.opt = mock.MagicMock()
+        self.opt.quiet = True
+        self.opt.smart_sync = True
+        self.opt.smart_tag = None
+        self.manifest = mock.MagicMock()
+        self.manifest.manifest_server = (
+            "http://android-smartsync.corp.google.com/manifestserver"
+        )
+        self.manifest.manifest_server_helper = None
+        self.smart_sync_manifest_path = "/fake/path/to/manifest.xml"
+        self.mock_server = mock.MagicMock()
+        self.mock_server.GetApprovedManifest.return_value = [
+            True,
+            "<manifest></manifest>",
+        ]
+        self.cmd._GetBranch = mock.MagicMock(return_value="main")
+        self.cmd._ReloadManifest = mock.MagicMock()
+        self.cmd._ResolveManifestServerTransport = mock.MagicMock(
+            return_value=(self.manifest.manifest_server, mock.MagicMock())
+        )
+
+    def _RunSetup(self, env: Dict[str, str]) -> str:
+        with mock.patch.dict(os.environ, env, clear=True), mock.patch(
+            "xmlrpc.client.Server", return_value=self.mock_server
+        ), mock.patch("builtins.open", mock.mock_open()):
+            return self.cmd._SmartSyncSetup(
+                self.opt, self.smart_sync_manifest_path, self.manifest
+            )
+
+    def test_default_branch(self) -> None:
+        """Without SYNC_BRANCH the manifest branch is used."""
+        self._RunSetup({})
+        self.cmd._GetBranch.assert_called_once_with(
+            self.manifest.manifestProject
+        )
+        self.mock_server.GetApprovedManifest.assert_called_once_with("main")
+
+    def test_sync_branch(self) -> None:
+        """SYNC_BRANCH replaces the manifest branch."""
+        self._RunSetup({"SYNC_BRANCH": "git_main-abfs"})
+        self.cmd._GetBranch.assert_not_called()
+        self.mock_server.GetApprovedManifest.assert_called_once_with(
+            "git_main-abfs"
+        )
+
+    def test_sync_branch_with_target(self) -> None:
+        """SYNC_BRANCH and SYNC_TARGET are both forwarded."""
+        self._RunSetup(
+            {
+                "SYNC_BRANCH": "git_main-abfs",
+                "SYNC_TARGET": "cf_x86_64_phone-trunk_staging-eng",
+            }
+        )
+        self.mock_server.GetApprovedManifest.assert_called_once_with(
+            "git_main-abfs", "cf_x86_64_phone-trunk_staging-eng"
+        )
+
+    def test_empty_sync_branch(self) -> None:
+        """An empty SYNC_BRANCH falls back to the manifest branch."""
+        self._RunSetup({"SYNC_BRANCH": ""})
+        self.cmd._GetBranch.assert_called_once_with(
+            self.manifest.manifestProject
+        )
+        self.mock_server.GetApprovedManifest.assert_called_once_with("main")

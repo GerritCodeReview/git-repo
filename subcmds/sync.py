@@ -2059,7 +2059,12 @@ later is required to fix a server side protocol bug.
 
         return server_url, transport
 
-    def _SmartSyncSetup(self, opt, smart_sync_manifest_path, manifest):
+    def _SmartSyncSetup(
+        self,
+        opt: optparse.Values,
+        smart_sync_manifest_path: str,
+        manifest: XmlManifest,
+    ) -> str:
         if not manifest.manifest_server:
             raise SmartSyncError(
                 "error: cannot smart sync: no manifest server defined in "
@@ -2077,7 +2082,12 @@ later is required to fix a server side protocol bug.
         try:
             server = xmlrpc.client.Server(server_url, transport=transport)
             if opt.smart_sync:
-                branch = self._GetBranch(manifest.manifestProject)
+                # SYNC_BRANCH overrides the branch sent to the manifest server
+                # (e.g. to select a specific CI branch that builds the same
+                # manifest branch). An empty value is treated as unset.
+                branch = os.environ.get("SYNC_BRANCH")
+                if not branch:
+                    branch = self._GetBranch(manifest.manifestProject)
                 target = None
                 if "SYNC_TARGET" in os.environ:
                     target = os.environ["SYNC_TARGET"]
