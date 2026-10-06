@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09314851_afbeb1a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-06T05:49:11Z",
+      "side": 1,
+      "message": "headers like user-agent are informational.  you\u0027re effectively making the header into an argument to the APIs and since this is a public API, it becomes part of the client\u003c-\u003eserver API for repo to support.  so you are changing the public protocol.\n\nthe behavior you\u0027re attempting to encode should not be managed by the server -- you\u0027re encoding a *policy* into the API which is the wrong approach.  the client is responsible for making choices based on how the user invoked it, the client decides what policy it wants to follow, and then it makes the call to the server.  which means it should be an explicit request by the client as to how the server should fallback/search for alternatives.\n\nif the current API calls are not flexible enough, then create a new one that has the flexibility.  if keyword args are not available directly in the API we\u0027re using, and switching to a more standard API format (i.e. protobufs) is too much effort, then implement it yourself with a dict as a \"kwargs\" parameter.",
+      "parentUuid": "876b525b_40680852",
+      "revId": "ce25e9410e5ee0a699c7063dc9fa8996b746cb02",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ae990fc_db495a30",
         "filename": "docs/smart-sync.md",
         "patchSetId": 5
