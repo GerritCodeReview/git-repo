@@ -170,7 +170,10 @@ Explicitly enables Smart Sync. Repo will call
 `GetApprovedManifest(branch[, target])`.
 
 The `branch` is determined by the current manifest branch as specified by
-`--manifest-branch=BRANCH` when running `repo init`.
+`--manifest-branch=BRANCH` when running `repo init`.  If `${SYNC_BRANCH}` is
+defined and non-empty, its value is sent instead.  This allows selecting a
+branch other than the one the checkout tracks, e.g. a server-side (CI) branch
+name that builds from the same manifest branch.
 
 The `target` is defined by environment variables in the order below.  If none
 of them match, then `target` is omitted.  These variables were decided as they
