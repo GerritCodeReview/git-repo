@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e38268a_d653db21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5209716
+      },
+      "writtenOn": "2026-10-06T04:08:55Z",
+      "side": 1,
+      "message": "Very nice worker ; good job.",
+      "revId": "ab0de9bf033f704f7f7f8a445786f1d0afdd2530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6479deeb_aeaf1192",
@@ -68,6 +85,24 @@
       "side": 1,
       "message": "if you want to migrate all the existing code to `import command` in a sep change, i\u0027d approve that",
       "parentUuid": "3bed3cf3_5eee5227",
+      "revId": "ab0de9bf033f704f7f7f8a445786f1d0afdd2530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84f16d50_de3f4851",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5209716
+      },
+      "writtenOn": "2026-10-06T04:08:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f16a3362_bcfba9f4",
       "revId": "ab0de9bf033f704f7f7f8a445786f1d0afdd2530",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
