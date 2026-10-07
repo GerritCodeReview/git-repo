@@ -3228,7 +3228,8 @@ class Project:
         """Fetch using a custom command specified by repo.fetchcmd.
 
         Populates the subshell with project-context environment variables,
-        including REPO_TREV (target revision resolved to a commit hash).
+        including REPO_TREV when the target revision is already resolved to a
+        commit hash.
 
         Expects the target commit to be reachable and tracking refs/FETCH_HEAD
         to be updated upon a successful 0 exit code.
@@ -3236,27 +3237,20 @@ class Project:
         For a detailed contract, environment variables, and postconditions,
         see docs/fetch-cmd.md.
         """
-        # Resolve REPO_TREV (target revision resolved to a full commit hash).
+        # Populate REPO_TREV when the target commit hash is already known
+        # (e.g. from a superproject or a SHA-pinned manifest revision). When the
+        # manifest names an unpinned branch or tag, leave REPO_TREV empty and
+        # let fetchcmd resolve REPO_RREV from its remote without a separate
+        # git ls-remote round-trip.
         repo_trev = None
         if self.revisionId and IsId(self.revisionId):
             repo_trev = self.revisionId
-
-        if not repo_trev:
-            output = self._LsRemote(self.upstream or self.revisionExpr)
-            if output:
-                lines = output.splitlines()
-                if lines:
-                    parts = lines[0].split()
-                    if parts:
-                        repo_trev = parts[0]
-
-        if not repo_trev:
-            logger.error("error: Cannot resolve REPO_TREV for %s", self.name)
-            return False
+        elif self.revisionExpr and IsId(self.revisionExpr):
+            repo_trev = self.revisionExpr
 
         env = os.environ.copy()
         env.update(self.GetEnvVars())
-        env["REPO_TREV"] = repo_trev
+        env["REPO_TREV"] = repo_trev or ""
         cmd_str = self.manifest.manifestProject.fetch_cmd
 
         if verbose:
@@ -3288,23 +3282,20 @@ class Project:
             return False
 
         # Verify postconditions.
-        try:
-            self.bare_git.cat_file("-e", repo_trev)
-        except GitError:
-            logger.error(
-                "error: Postcondition failed: %s not found in object store",
-                repo_trev,
-            )
-            return False
-
-        try:
-            ref_name = self.GetRemote().ToLocal(self.revisionExpr)
-        except GitError as e:
-            logger.error("error: Failed to resolve tracking ref: %s", e)
-            return False
-        try:
-            resolved_ref = self.bare_git.rev_parse(ref_name)
-            if resolved_ref != repo_trev:
+        if not IsId(self.revisionExpr):
+            try:
+                ref_name = self.GetRemote().ToLocal(self.revisionExpr)
+            except GitError as e:
+                logger.error("error: Failed to resolve tracking ref: %s", e)
+                return False
+            try:
+                resolved_ref = self.bare_git.rev_parse(f"{ref_name}^{{commit}}")
+            except GitError:
+                logger.error(
+                    "error: Postcondition failed: %s not found", ref_name
+                )
+                return False
+            if repo_trev and resolved_ref != repo_trev:
                 logger.error(
                     "error: Postcondition failed: %s is %s, expected %s",
                     ref_name,
@@ -3312,12 +3303,10 @@ class Project:
                     repo_trev,
                 )
                 return False
-        except GitError:
-            logger.error("error: Postcondition failed: %s not found", ref_name)
-            return False
+            repo_trev = resolved_ref
 
         try:
-            fetch_head = self.bare_git.rev_parse("FETCH_HEAD")
+            fetch_head = self.bare_git.rev_parse("FETCH_HEAD^{commit}")
             if fetch_head != repo_trev:
                 logger.error(
                     "error: Postcondition failed: FETCH_HEAD is %s, "
@@ -3328,6 +3317,15 @@ class Project:
                 return False
         except GitError:
             logger.error("error: Postcondition failed: FETCH_HEAD not found")
+            return False
+
+        try:
+            self.bare_git.cat_file("-e", f"{repo_trev}^{{commit}}")
+        except GitError:
+            logger.error(
+                "error: Postcondition failed: %s not found in object store",
+                repo_trev,
+            )
             return False
 
         return True

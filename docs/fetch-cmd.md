@@ -28,7 +28,10 @@ Environment section in `repo help forall` or `subcmds/forall.py`.
 
 The following environment variable is specific to `repo.fetchcmd`:
 
-*   `REPO_TREV`: The target revision resolved to a full commit hash.
+*   `REPO_TREV`: The target commit hash when the revision is already pinned to
+    a commit (e.g. via a superproject or a commit SHA in the manifest), or
+    empty when `REPO_RREV` is an unpinned branch or tag to be resolved by the
+    fetch command.
 
 ## Contract
 
@@ -37,14 +40,17 @@ The following environment variable is specific to `repo.fetchcmd`:
 After the fetch command exits with status 0, `repo` expects the following
 postconditions to be met:
 
-1.  `git cat-file -e REPO_TREV` succeeds (the commit must exist in the object
-    store).
-2.  The mapped local tracking ref (e.g. `refs/remotes/REPO_REMOTE/<branch>`
-    for a branch revision, or the tag ref itself for a tag) must point to
-    `REPO_TREV`.
-3.  `FETCH_HEAD` must point to `REPO_TREV`.
-4.  The commit graph from `REPO_TREV` must be reachable far enough to compute
-    merge bases with local branches.
+1.  When the manifest revision names a branch or tag, the mapped local tracking
+    ref (e.g. `refs/remotes/REPO_REMOTE/<branch>` for a branch, or
+    `refs/tags/<tag>` for a tag) must resolve to a valid commit in the object
+    store (`git rev-parse <ref>^{commit}`), and must equal `REPO_TREV` if
+    `REPO_TREV` was non-empty.
+2.  `FETCH_HEAD` must resolve to the same target commit
+    (`git rev-parse FETCH_HEAD^{commit}`).
+3.  `git cat-file -e <commit>^{commit}` succeeds (the target commit exists in
+    the object store).
+4.  The commit graph from the target commit must be reachable far enough to
+    compute merge bases with local branches.
 
 ### Invariants
 

@@ -3252,11 +3252,12 @@ class FetchCmdTests(unittest.TestCase):
         proj.GetRevisionId = mock.MagicMock(return_value="1234abcd")
         return proj
 
-    def test_fetch_cmd_execution(self):
-        """Test that fetch_cmd is executed with correct environment."""
+    def test_fetch_cmd_execution_unpinned_branch(self):
+        """Test fetch_cmd with an unpinned branch does not call ls-remote."""
         with utils_for_test.TempGitTree() as tempdir:
             proj = self._get_project(tempdir)
-
+            proj.revisionId = None
+            proj.revisionExpr = "main"
             proj.bare_git.rev_parse.return_value = "1234abcd"
             mock_remote = mock.MagicMock()
             mock_remote.ToLocal.return_value = "refs/remotes/origin/main"
@@ -3268,14 +3269,70 @@ class FetchCmdTests(unittest.TestCase):
 
                 self.assertTrue(res)
                 mock_run.assert_called_once()
+            proj._LsRemote.assert_not_called()
             args, kwargs = mock_run.call_args
             self.assertEqual(args[0], "echo hi")
             self.assertEqual(kwargs["shell"], True)
             self.assertEqual(kwargs["cwd"], tempdir)
-            self.assertEqual(kwargs["env"]["REPO_TREV"], "1234abcd")
+            self.assertEqual(kwargs["env"]["REPO_TREV"], "")
+            self.assertEqual(kwargs["env"]["REPO_RREV"], "main")
             self.assertEqual(
                 kwargs["env"]["REPO_PROJECT_FETCH_URL"],
                 "http://example.com/repo",
+            )
+            proj.bare_git.rev_parse.assert_any_call(
+                "refs/remotes/origin/main^{commit}"
+            )
+            proj.bare_git.rev_parse.assert_any_call("FETCH_HEAD^{commit}")
+            proj.bare_git.cat_file.assert_called_once_with(
+                "-e", "1234abcd^{commit}"
+            )
+
+    def test_fetch_cmd_execution_pinned_revision_id(self) -> None:
+        """Test fetch_cmd populates REPO_TREV when revisionId is set."""
+        with utils_for_test.TempGitTree() as tempdir:
+            sha = "0123456789abcdef0123456789abcdef01234567"
+            proj = self._get_project(tempdir)
+            proj.revisionId = sha
+            proj.revisionExpr = "main"
+            proj.bare_git.rev_parse.return_value = sha
+            mock_remote = mock.MagicMock()
+            mock_remote.ToLocal.return_value = "refs/remotes/origin/main"
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+
+            with mock.patch("subprocess.run") as mock_run:
+                mock_run.return_value = mock.MagicMock(returncode=0, stderr="")
+                res = proj._CustomFetch()
+
+            self.assertTrue(res)
+            proj._LsRemote.assert_not_called()
+            _, kwargs = mock_run.call_args
+            self.assertEqual(kwargs["env"]["REPO_TREV"], sha)
+
+    def test_fetch_cmd_execution_pinned_revision_expr_sha(self) -> None:
+        """Test fetch_cmd populates REPO_TREV when revisionExpr is a SHA."""
+        with utils_for_test.TempGitTree() as tempdir:
+            sha = "0123456789abcdef0123456789abcdef01234567"
+            proj = self._get_project(tempdir)
+            proj.revisionId = None
+            proj.revisionExpr = sha
+            proj.bare_git.rev_parse.return_value = sha
+            proj.GetRemote = mock.MagicMock()
+
+            with mock.patch("subprocess.run") as mock_run:
+                mock_run.return_value = mock.MagicMock(returncode=0, stderr="")
+                res = proj._CustomFetch()
+
+            self.assertTrue(res)
+            proj._LsRemote.assert_not_called()
+            proj.GetRemote.assert_not_called()
+            _, kwargs = mock_run.call_args
+            self.assertEqual(kwargs["env"]["REPO_TREV"], sha)
+            proj.bare_git.rev_parse.assert_called_once_with(
+                "FETCH_HEAD^{commit}"
+            )
+            proj.bare_git.cat_file.assert_called_once_with(
+                "-e", f"{sha}^{{commit}}"
             )
 
     def test_sync_fetch_cmd_requires_use_local_gitdirs(self):
