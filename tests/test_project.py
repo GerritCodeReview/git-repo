@@ -20,7 +20,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type
 import unittest
 from unittest import mock
 
@@ -2062,6 +2062,58 @@ def test_metaproject_has_changes_bounds_revision_walk() -> None:
 
 
 @pytest.mark.parametrize(
+    "project_cls,revision,expected",
+    (
+        (project.RepoProject, "refs/remotes/origin/current", False),
+        (project.RepoProject, "refs/remotes/origin/newer", True),
+        (project.RepoProject, "refs/remotes/origin/divergent", True),
+        # A release rollback rewinds stable, and repo itself has to follow.
+        (project.RepoProject, "refs/remotes/origin/older", True),
+        # --repo-rev can pin repo to an annotated tag, which must be peeled.
+        (project.RepoProject, "refs/tags/current-tag", False),
+        # Other MetaProjects only update when the remote has new commits.
+        (project.ManifestProject, "refs/remotes/origin/current", False),
+        (project.ManifestProject, "refs/remotes/origin/newer", True),
+        (project.ManifestProject, "refs/remotes/origin/divergent", True),
+        (project.ManifestProject, "refs/remotes/origin/older", False),
+    ),
+    ids=lambda v: v.__name__ if isinstance(v, type) else None,
+)
+def test_metaproject_has_changes(
+    project_cls: Type[project.MetaProject], revision: str, expected: bool
+) -> None:
+    """HasChanges compares the tracked revision with the checked out one."""
+    with utils_for_test.TempGitTree() as tempdir:
+
+        def git(*args: str) -> str:
+            return subprocess.run(
+                ["git", "-C", tempdir, *args],
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+
+        def commit(msg: str) -> str:
+            git("commit", "-q", "--allow-empty", "-m", msg)
+            return git("rev-parse", "HEAD")
+
+        # older -> current -> newer, plus divergent branching off older.
+        revs = {name: commit(name) for name in ("older", "current", "newer")}
+        git("checkout", "-q", "--detach", revs["older"])
+        revs["divergent"] = commit("divergent")
+        git("checkout", "-q", "main")
+        git("reset", "-q", "--hard", revs["current"])
+        for name, rev in revs.items():
+            git("update-ref", f"refs/remotes/origin/{name}", rev)
+        git("tag", "-a", "-m", "current-tag", "current-tag", revs["current"])
+
+        proj = _create_meta_project(tempdir, project_cls)
+        proj.revisionExpr = revision
+
+        assert proj.HasChanges is expected
+
+
+@pytest.mark.parametrize(
     "state,expect_failure",
     [
         ("clean", False),
@@ -3225,8 +3277,11 @@ class GetEnvVarsTests(unittest.TestCase):
             self.assertEqual(env["REPO_LREV"], "")
 
 
-def _create_manifest_project(tempdir: str) -> project.ManifestProject:
-    """Return a ManifestProject for a new .repo/ under |tempdir|."""
+def _create_meta_project(
+    tempdir: str,
+    project_cls: Type[project.MetaProject] = project.ManifestProject,
+) -> project.MetaProject:
+    """Return a |project_cls| for a new .repo/ under |tempdir|."""
     repodir = os.path.join(tempdir, ".repo")
     manifest_dir = os.path.join(repodir, "manifests")
     manifest_file = os.path.join(repodir, manifest_xml.MANIFEST_FILE_NAME)
@@ -3234,7 +3289,7 @@ def _create_manifest_project(tempdir: str) -> project.ManifestProject:
     os.mkdir(manifest_dir)
     manifest = manifest_xml.XmlManifest(repodir, manifest_file)
 
-    return project.ManifestProject(
+    return project_cls(
         manifest, "test/manifest", os.path.join(tempdir, ".git"), tempdir
     )
 
@@ -3243,7 +3298,7 @@ class FetchCmdTests(unittest.TestCase):
     """Tests for fetch_cmd feature."""
 
     def setUpManifest(self, tempdir):
-        return _create_manifest_project(tempdir)
+        return _create_meta_project(tempdir)
 
     def _get_project(self, tempdir):
         proj = _create_mock_project(
@@ -3750,7 +3805,7 @@ class ReprojectCmdTests(unittest.TestCase):
     def test_metaproject_never_uses_the_command(self) -> None:
         """Test .repo/manifests and .repo/repo are checked out by Git."""
         with utils_for_test.TempGitTree() as tempdir:
-            fakeproj = _create_manifest_project(tempdir)
+            fakeproj = _create_meta_project(tempdir)
             fakeproj.config.SetString("repo.reprojectcmd", "echo hi")
             fakeproj.config.SetBoolean("repo.uselocalgitdirs", True)
             self.assertFalse(fakeproj.UseReprojectCmd)
@@ -3758,7 +3813,7 @@ class ReprojectCmdTests(unittest.TestCase):
     def test_sync_reproject_cmd_requires_use_local_gitdirs(self) -> None:
         """Test that repo.reprojectcmd requires repo.uselocalgitdirs."""
         with utils_for_test.TempGitTree() as tempdir:
-            fakeproj = _create_manifest_project(tempdir)
+            fakeproj = _create_meta_project(tempdir)
 
             class DummyManifest:
                 is_submanifest = False
