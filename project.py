@@ -5507,6 +5507,18 @@ class RepoProject(MetaProject):
         except OSError:
             return 0
 
+    @property
+    def HasChanges(self) -> bool:
+        """Does the remote revision differ from what is checked out?
+
+        Unlike MetaProject, this is also true when the remote moved backwards:
+        a release rollback force pushes an older release to stable, and users
+        who already upgraded have to move back to it too.
+        """
+        # Not passing all_refs makes GetRevisionId peel annotated tags (from
+        # e.g. --repo-rev=v2.50) to the commit that HEAD points at.
+        return self.GetRevisionId() != self.GetHeadRevisionId()
+
 
 class ManifestProject(MetaProject):
     """The MetaProject for manifests."""
