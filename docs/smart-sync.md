@@ -158,11 +158,15 @@ sync, as before. Options that specify an explicit target or manifest source
 (such as `-t`/`--smart-tag`, `-m`/`--manifest-name` or
 `--superproject-revision`) will also disable the default Smart Sync behavior.
 
-With `-l`/`--local-only` or `--no-manifest-update`, the default Smart Sync does
-not contact the manifest server. Instead, repo keeps using the
-`smart_sync_override.xml` from the last Smart Sync, if there is one. Pass
-`--no-smart-sync` to discard it and use the default manifest instead. These
-options do not change the behavior of an explicit `-s`/`--smart-sync`.
+With `-l`/`--local-only`, the default Smart Sync does not contact the manifest
+server. Instead, repo keeps using the `smart_sync_override.xml` from the last
+Smart Sync, if there is one. Pass `--no-smart-sync` to discard it and use the
+default manifest instead. These options do not change the behavior of an
+explicit `-s`/`--smart-sync`.
+
+`--no-manifest-update` only skips updating the manifest checkout. It does not
+affect Smart Sync: the default Smart Sync still runs, and an existing
+`smart_sync_override.xml` is replaced or removed as in a regular sync.
 
 ### --smart-sync / -s
 

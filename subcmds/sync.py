@@ -2432,7 +2432,6 @@ later is required to fix a server side protocol bug.
             and not opt.manifest_name
             and not opt.superproject_revision
             and not opt.local_only
-            and opt.mp_update
             and getattr(manifest.default, "sync_smartsync", False) is True
         )
         if opt.smart_sync is None:
@@ -2459,12 +2458,12 @@ later is required to fix a server side protocol bug.
         if opt.clone_bundle is None:
             opt.clone_bundle = manifest.CloneBundle
 
-        # An onboarded client run with -l or --no-manifest-update keeps the
-        # smart sync manifest it last synced to instead of contacting the
-        # manifest server. Computed before _ResolveSmartSyncOption, which
-        # makes an unset opt.smart_sync indistinguishable from --no-smart-sync.
+        # An onboarded client run with -l keeps the smart sync manifest it last
+        # synced to instead of contacting the manifest server. Computed before
+        # _ResolveSmartSyncOption, which makes an unset opt.smart_sync
+        # indistinguishable from --no-smart-sync.
         reuse_smart_sync_override = (
-            (opt.local_only or not opt.mp_update)
+            opt.local_only
             and opt.smart_sync is None
             and not opt.smart_tag
             and not opt.manifest_name

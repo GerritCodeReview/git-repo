@@ -408,8 +408,9 @@ def test_cli_jobs_sync_j_max(
         (["--manifest-name=other.xml"], True, False, False),
         (["-l"], True, False, False),
         (["--local-only"], True, False, False),
-        (["--nmu"], True, False, False),
-        (["--no-manifest-update"], True, False, False),
+        (["--nmu"], True, True, True),
+        (["--no-manifest-update"], True, True, True),
+        (["--nmu"], False, False, False),
         (["--superproject-revision=abc"], True, False, False),
         (["-s", "-l"], True, True, False),
         (["-s", "--nmu"], True, True, False),
@@ -449,7 +450,8 @@ def test_cli_smart_sync(
             sync.SmartSyncError,
         ),
         (["-l", "-u", "user", "-p", "pass"], True, sync.SmartSyncError),
-        (["--nmu", "-u", "user", "-p", "pass"], True, sync.SmartSyncError),
+        (["--nmu", "-u", "user", "-p", "pass"], True, None),
+        (["--nmu", "-u", "user", "-p", "pass"], False, sync.SmartSyncError),
         (["-s", "-l", "-u", "user", "-p", "pass"], True, None),
         (["-u", "user"], False, SystemExit),
         (["-p", "pass"], False, SystemExit),
@@ -1667,7 +1669,9 @@ class SyncCommand(unittest.TestCase):
                 self.cmd.Execute(self.opt, [])
 
     def _ExecuteWithSmartSyncOverride(
-        self, reload_error: Optional[Exception] = None
+        self,
+        reload_error: Optional[Exception] = None,
+        setup_error: Optional[Exception] = None,
     ) -> Tuple[str, mock.MagicMock, mock.MagicMock, mock.MagicMock]:
         """Run Execute with an existing smart sync override on disk.
 
@@ -1694,7 +1698,9 @@ class SyncCommand(unittest.TestCase):
             ):
                 stack.enter_context(mock.patch.object(self.cmd, name))
             setup = stack.enter_context(
-                mock.patch.object(self.cmd, "_SmartSyncSetup")
+                mock.patch.object(
+                    self.cmd, "_SmartSyncSetup", side_effect=setup_error
+                )
             )
             reload = stack.enter_context(
                 mock.patch.object(
@@ -1708,12 +1714,12 @@ class SyncCommand(unittest.TestCase):
         return override_path, setup, reload, update_mps
 
     def test_smart_sync_override_reused_offline(self) -> None:
-        """Ensure -l/--nmu reuse an onboarded client's smart sync manifest."""
-        for local_only, mp_update in ((True, True), (False, False)):
-            with self.subTest(local_only=local_only, mp_update=mp_update):
+        """Ensure -l reuses an onboarded client's smart sync manifest."""
+        for mp_update in (True, False):
+            with self.subTest(mp_update=mp_update):
                 self.manifest.default.sync_smartsync = True
                 self.opt.smart_sync = None
-                self.opt.local_only = local_only
+                self.opt.local_only = True
                 self.opt.mp_update = mp_update
                 path, setup, reload, update_mps = (
                     self._ExecuteWithSmartSyncOverride()
@@ -1727,6 +1733,32 @@ class SyncCommand(unittest.TestCase):
                     self.assertEqual(
                         update_mps.call_args[0][2], "smart_sync_override.xml"
                     )
+
+    def test_no_manifest_update_keeps_default_smart_sync(self) -> None:
+        """Ensure --nmu still runs the manifest-driven default smart sync."""
+        self.manifest.default.sync_smartsync = True
+        self.opt.smart_sync = None
+        self.opt.mp_update = False
+        _, setup, _, update_mps = self._ExecuteWithSmartSyncOverride()
+        setup.assert_called_once()
+        update_mps.assert_not_called()
+
+    def test_no_manifest_update_does_not_reuse_override(self) -> None:
+        """Ensure --nmu handles an existing override like a regular sync."""
+        cases = (
+            ("manifest without sync-smartsync", False, None),
+            ("failed default smart sync", True, sync.SmartSyncError("down")),
+        )
+        for name, sync_smartsync, setup_error in cases:
+            with self.subTest(name):
+                self.manifest.default.sync_smartsync = sync_smartsync
+                self.opt.smart_sync = None
+                self.opt.mp_update = False
+                path, _, reload, _ = self._ExecuteWithSmartSyncOverride(
+                    setup_error=setup_error
+                )
+                reload.assert_not_called()
+                self.assertFalse(os.path.isfile(path))
 
     def test_smart_sync_override_removed_offline(self) -> None:
         """Ensure -l still drops the override when reuse does not apply."""
