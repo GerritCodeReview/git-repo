@@ -1855,8 +1855,15 @@ class Project:
         else:
             alt_dir = None
 
+        custom_fetch_configured = (
+            self.manifest.manifestProject.use_local_gitdirs
+            and self.manifest.manifestProject.fetch_cmd
+            and not isinstance(self, MetaProject)
+        )
+
         if (
             clone_bundle
+            and not custom_fetch_configured
             and alt_dir is None
             and self._ApplyCloneBundle(
                 initial=is_new, quiet=quiet, verbose=verbose
@@ -1889,12 +1896,6 @@ class Project:
         if depth and clone_filter_for_depth:
             depth = None
             clone_filter = clone_filter_for_depth
-
-        custom_fetch_configured = (
-            self.manifest.manifestProject.use_local_gitdirs
-            and self.manifest.manifestProject.fetch_cmd
-            and not isinstance(self, MetaProject)
-        )
 
         remote_fetched = False
         if custom_fetch_configured:
