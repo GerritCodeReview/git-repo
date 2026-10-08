@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "944c6188_bfc74cd4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-08T14:56:01Z",
+      "side": 1,
+      "message": "the commit message still says the server changes behavior:\n\u003e implicit syncs (which can gracefully fall back to ToT\n\nthe server should not be doing this.  if the client is talking to the server, it\u0027s because the client is using smartsync.  if the server cannot satisfy the request, that\u0027s an error, and it should pass that error back to the client.  obviously that can\u0027t be enforced from this project\u0027s perspective, but we shouldn\u0027t build out the API on that working assumption.\n\nthe client/server API is XML RPC.  HTTP headers are not part of that API.  they\u0027re side channeling the service.\n\nlet me flip this around.  you make it sound like it\u0027s a temporary thing as in we\u0027d only ever do it once, and only Android/AG/git_main would want this.  but i\u0027m skeptical of how \"temporary\" this actually will be, and what you describe doesn\u0027t sound like it\u0027s specific to us.  why wouldn\u0027t any other org want similar rollout capabilities ?\n\nyou\u0027re going to have to add an `options` dict at some point anyways.  when you get to the point of allowing users to select the \"good build\" based on a variety of criteria (did it build ?  did it pass smoke tests ?  did it pass all tests ?), the current API will crater.",
+      "parentUuid": "6b3046a0_282cfee0",
+      "revId": "ce25e9410e5ee0a699c7063dc9fa8996b746cb02",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ae990fc_db495a30",
         "filename": "docs/smart-sync.md",
         "patchSetId": 5
