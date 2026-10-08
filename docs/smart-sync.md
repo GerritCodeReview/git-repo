@@ -138,6 +138,20 @@ copy into `.repo/manifests/smart_sync_override.xml` so users can examine it.
 The next time `repo sync` is run, this file is automatically replaced or removed
 based on the current set of options.
 
+With `-l`/`--local-only` and no explicit `-s`/`--smart-sync` or
+`-t`/`--smart-tag`, repo does not contact the manifest server. Instead, it keeps
+using the existing `smart_sync_override.xml`, if there is one, whether it came
+from an explicit `-s`/`--smart-sync` or from the manifest's `sync-smartsync`
+default. This way, `repo sync -n` followed by `repo sync -l` ends up on the same
+revisions as the equivalent single `repo sync` (e.g. `repo sync -s -n` +
+`repo sync -l` matches `repo sync -s`). Pass `--no-smart-sync` to discard it and
+use the default manifest instead.
+
+`--no-manifest-update` only skips updating the manifest checkout. It does not
+affect Smart Sync: the default Smart Sync from `sync-smartsync` (see below)
+still runs, and an existing `smart_sync_override.xml` is replaced or removed as
+in a regular sync.
+
 ### sync-smartsync (Manifest Attribute)
 
 The manifest can enable Smart Sync by default for all `repo sync` invocations
@@ -157,16 +171,6 @@ default: an explicit `-s`/`--smart-sync` or `-t`/`--smart-tag` still fails the
 sync, as before. Options that specify an explicit target or manifest source
 (such as `-t`/`--smart-tag`, `-m`/`--manifest-name` or
 `--superproject-revision`) will also disable the default Smart Sync behavior.
-
-With `-l`/`--local-only`, the default Smart Sync does not contact the manifest
-server. Instead, repo keeps using the `smart_sync_override.xml` from the last
-Smart Sync, if there is one. Pass `--no-smart-sync` to discard it and use the
-default manifest instead. These options do not change the behavior of an
-explicit `-s`/`--smart-sync`.
-
-`--no-manifest-update` only skips updating the manifest checkout. It does not
-affect Smart Sync: the default Smart Sync still runs, and an existing
-`smart_sync_override.xml` is replaced or removed as in a regular sync.
 
 ### --smart-sync / -s
 
