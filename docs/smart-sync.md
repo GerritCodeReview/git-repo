@@ -138,6 +138,13 @@ copy into `.repo/manifests/smart_sync_override.xml` so users can examine it.
 The next time `repo sync` is run, this file is automatically replaced or removed
 based on the current set of options.
 
+With `-l`/`--local-only` or `--no-manifest-update`, repo does not contact the
+manifest server. Instead, it keeps using the existing `smart_sync_override.xml`,
+if there is one, whether it came from an explicit `-s`/`--smart-sync` or from the
+manifest's `sync-smartsync` default. Pass `--no-smart-sync` to discard it and use
+the default manifest instead. These options do not change the behavior of an
+explicit `-s`/`--smart-sync`.
+
 ### sync-smartsync (Manifest Attribute)
 
 The manifest can enable Smart Sync by default for all `repo sync` invocations
@@ -157,12 +164,6 @@ default: an explicit `-s`/`--smart-sync` or `-t`/`--smart-tag` still fails the
 sync, as before. Options that specify an explicit target or manifest source
 (such as `-t`/`--smart-tag`, `-m`/`--manifest-name` or
 `--superproject-revision`) will also disable the default Smart Sync behavior.
-
-With `-l`/`--local-only` or `--no-manifest-update`, the default Smart Sync does
-not contact the manifest server. Instead, repo keeps using the
-`smart_sync_override.xml` from the last Smart Sync, if there is one. Pass
-`--no-smart-sync` to discard it and use the default manifest instead. These
-options do not change the behavior of an explicit `-s`/`--smart-sync`.
 
 ### --smart-sync / -s
 
