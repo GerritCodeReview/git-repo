@@ -40,6 +40,30 @@
       ],
       "revId": "02122a286c2afc2c4ad2f443490152d839e76927",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbfb3a7f_39ed4cb8",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-10-08T10:18:42Z",
+      "side": 1,
+      "message": "I followed how SYNC_TARGET is implemented. We could also provide a flag for both target and branch (maybe in a separate change?). Currently _SmartSyncSetup resolves target exclusively from envvars.",
+      "parentUuid": "9e03d673_da78b02c",
+      "range": {
+        "startLine": 173,
+        "startChar": 58,
+        "endLine": 173,
+        "endChar": 72
+      },
+      "revId": "02122a286c2afc2c4ad2f443490152d839e76927",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
