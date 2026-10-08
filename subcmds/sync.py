@@ -2459,17 +2459,17 @@ later is required to fix a server side protocol bug.
         if opt.clone_bundle is None:
             opt.clone_bundle = manifest.CloneBundle
 
-        # An onboarded client run with -l or --no-manifest-update keeps the
-        # smart sync manifest it last synced to instead of contacting the
-        # manifest server. Computed before _ResolveSmartSyncOption, which
-        # makes an unset opt.smart_sync indistinguishable from --no-smart-sync.
+        # -l and --no-manifest-update never contact the manifest server, so
+        # they keep the smart sync manifest the client last synced to, whether
+        # that came from -s or from the manifest's sync-smartsync default.
+        # Computed before _ResolveSmartSyncOption, which makes an unset
+        # opt.smart_sync indistinguishable from --no-smart-sync.
         reuse_smart_sync_override = (
             (opt.local_only or not opt.mp_update)
             and opt.smart_sync is None
             and not opt.smart_tag
             and not opt.manifest_name
             and not opt.superproject_revision
-            and getattr(manifest.default, "sync_smartsync", False) is True
             and os.path.isfile(smart_sync_manifest_path)
         )
 
