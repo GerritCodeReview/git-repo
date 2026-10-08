@@ -3354,6 +3354,31 @@ class FetchCmdTests(unittest.TestCase):
             result = fakeproj.Sync(use_local_gitdirs=False)
             self.assertFalse(result)
 
+    def test_sync_network_half_skips_clone_bundle_with_fetch_cmd(self) -> None:
+        """Test Sync_NetworkHalf skips _ApplyCloneBundle when fetchcmd is set."""
+        with tempfile.TemporaryDirectory() as tempdir:
+            worktree = os.path.join(tempdir, "new-proj")
+            gitdir = os.path.join(worktree, ".git")
+            proj = _create_mock_project(
+                worktree,
+                use_local_gitdirs=True,
+                fetch_cmd="echo hi",
+                gitdir=gitdir,
+                objdir=gitdir,
+            )
+            proj._InitGitDir = mock.MagicMock()
+            proj._InitRemote = mock.MagicMock()
+            proj._InitMRef = mock.MagicMock()
+            proj._CustomFetch = mock.MagicMock(return_value=True)
+            proj._ApplyCloneBundle = mock.MagicMock(return_value=True)
+
+            res = proj.Sync_NetworkHalf(clone_bundle=True, is_new=True)
+
+            self.assertIsNone(res.error)
+            self.assertTrue(res.remote_fetched)
+            proj._ApplyCloneBundle.assert_not_called()
+            proj._CustomFetch.assert_called_once()
+
 
 class ReprojectCmdTests(unittest.TestCase):
     """Tests for the repo.reprojectcmd feature."""
