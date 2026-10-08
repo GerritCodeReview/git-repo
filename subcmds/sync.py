@@ -827,13 +827,42 @@ later is required to fix a server side protocol bug.
             or opt.current_branch_only
         )
 
+    def _GetSuperprojectRevision(
+        self, opt: optparse.Values, manifest: XmlManifest
+    ) -> Optional[str]:
+        """Returns the --superproject-revision to apply to manifest.
+
+        The option only applies to the outer manifest.
+
+        Args:
+            opt: Program options returned from optparse.  See _Options().
+            manifest: The manifest to check.
+
+        Returns:
+            The requested superproject revision, or None if manifest's
+            superproject should not be pinned.
+        """
+        if manifest == self.outer_manifest:
+            return opt.superproject_revision
+        return None
+
     def _ConfigureSuperproject(
-        self,
-        opt: optparse.Values,
-        manifest,
-        revision: Optional[str] = None,
+        self, opt: optparse.Values, manifest: XmlManifest
     ) -> bool:
-        """Configure superproject with options."""
+        """Configure superproject with options.
+
+        The configuration lives on the manifest's Superproject object, which
+        is discarded whenever the manifest is unloaded (see _ReloadManifest
+        and XmlManifest.Unload). Callers must therefore configure the
+        superproject again after every manifest reload.
+
+        Args:
+            opt: Program options returned from optparse.  See _Options().
+            manifest: The manifest whose superproject should be configured.
+
+        Returns:
+            Whether superproject messages should be printed.
+        """
         if not manifest.superproject:
             return False
         manifest.superproject.SetQuiet(not opt.verbose)
@@ -841,6 +870,7 @@ later is required to fix a server side protocol bug.
             opt.use_superproject, manifest
         )
         manifest.superproject.SetPrintMessages(print_messages)
+        revision = self._GetSuperprojectRevision(opt, manifest)
         if revision:
             manifest.superproject.SetRevisionId(revision)
         return print_messages
@@ -2171,7 +2201,7 @@ later is required to fix a server side protocol bug.
             mp: the manifestProject to query.
             manifest_name: Manifest file to be reloaded.
         """
-        if opt.superproject_revision and mp.manifest == self.outer_manifest:
+        if self._GetSuperprojectRevision(opt, mp.manifest):
             self._SyncToSuperprojectRev(
                 opt, mp.manifest, mp, manifest_name, errors
             )
@@ -2383,18 +2413,19 @@ later is required to fix a server side protocol bug.
     def _SyncToSuperprojectRev(
         self,
         opt: optparse.Values,
-        manifest,
+        manifest: XmlManifest,
         mp: Project,
         manifest_name: Optional[str],
         errors: List[Exception],
     ) -> None:
-        """Sync to a specific superproject commit."""
+        """Sync to a specific superproject commit.
+
+        Only valid for the outer manifest; see _GetSuperprojectRevision.
+        """
         if not manifest.superproject:
             raise SyncError("superproject not defined in manifest")
 
-        self._ConfigureSuperproject(
-            opt, manifest, revision=opt.superproject_revision
-        )
+        self._ConfigureSuperproject(opt, manifest)
 
         sync_result = manifest.superproject.Sync(self.git_event_log)
         if not sync_result.success:
