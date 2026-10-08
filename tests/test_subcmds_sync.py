@@ -254,6 +254,66 @@ def test_sync_update_projects_revision_id_populates_logging_data(
     }
 
 
+@pytest.mark.parametrize(
+    "superproject_revision, is_outer_manifest, expected_revision",
+    [
+        ("deadbeef", True, "deadbeef"),
+        ("deadbeef", False, None),
+        (None, True, None),
+    ],
+    ids=["outer_manifest", "not_outer_manifest", "no_superproject_revision"],
+)
+def test_sync_update_projects_revision_id_pins_superproject_revision(
+    tmp_path: Path,
+    superproject_revision: Optional[str],
+    is_outer_manifest: bool,
+    expected_revision: Optional[str],
+) -> None:
+    """Test that --superproject-revision is applied to a reloaded manifest.
+
+    _SyncToSuperprojectRev pins the superproject, but updating the manifest
+    project unloads the manifest, so _UpdateProjectsRevisionId must pin the
+    freshly loaded superproject again before using it.
+    """
+    manifest = _create_manifest_with_groups(tmp_path)
+    cmd = sync.Sync()
+    cmd.manifest = manifest
+    cmd.outer_manifest = manifest if is_outer_manifest else mock.MagicMock()
+
+    # Simulate the state after a manifest reload: a new, unpinned superproject.
+    superproject = mock.MagicMock()
+    superproject.UpdateProjectsRevisionId.return_value = mock.MagicMock(
+        manifest_path=None, fatal=False
+    )
+    manifest._superproject = superproject
+
+    opts, args = cmd.OptionParser.parse_args([])
+    opts.verbose = False
+    opts.this_manifest_only = True
+    opts.local_only = False
+    opts.superproject_revision = superproject_revision
+
+    with mock.patch.object(
+        cmd, "ManifestList", return_value=[manifest]
+    ), mock.patch.object(
+        sync.git_superproject, "UseSuperproject", return_value=True
+    ), mock.patch.object(
+        sync.git_superproject, "PrintMessages", return_value=False
+    ):
+        cmd._UpdateProjectsRevisionId(opts, args, {}, manifest)
+
+    if expected_revision is not None:
+        superproject.SetRevisionId.assert_called_once_with(expected_revision)
+        # The pin must be in place before the superproject is used.
+        method_calls = [name for name, _, _ in superproject.mock_calls]
+        assert method_calls.index("SetRevisionId") < method_calls.index(
+            "UpdateProjectsRevisionId"
+        )
+    else:
+        superproject.SetRevisionId.assert_not_called()
+    superproject.UpdateProjectsRevisionId.assert_called_once()
+
+
 def test_sync_update_projects_revision_id_logs_without_superproject_tag(
     tmp_path: Path,
 ) -> None:
