@@ -2114,6 +2114,75 @@ def test_metaproject_has_changes(
 
 
 @pytest.mark.parametrize(
+    "local_state,expect_failure",
+    (
+        # The newer commit is on the remote, so it is not local work, even
+        # though it was committed by the current user.
+        ("none", False),
+        # An upstream commit fetched by id alone is not on any remote branch,
+        # but it was committed by someone else, so it is not local work.
+        ("unpushed_commit_by_other", False),
+        ("untracked_file", False),
+        ("local_commit", True),
+        ("uncommitted_change", True),
+        ("rebase_in_progress", True),
+    ),
+)
+def test_manifest_project_checkout_exact_revision(
+    local_state: str, expect_failure: bool
+) -> None:
+    """CheckoutExactRevision moves HEAD back unless there is local work."""
+    with utils_for_test.TempGitTree() as tempdir:
+
+        def git(*args: str, **env: str) -> str:
+            return subprocess.run(
+                ["git", "-C", tempdir, *args],
+                check=True,
+                capture_output=True,
+                text=True,
+                env=dict(os.environ, **env),
+            ).stdout.strip()
+
+        def write(content: str) -> None:
+            with open(os.path.join(tempdir, "file"), "w") as fp:
+                fp.write(content)
+
+        def commit(msg: str, **env: str) -> str:
+            write(msg)
+            git("add", "file")
+            git("commit", "-q", "-m", msg, **env)
+            return git("rev-parse", "HEAD")
+
+        older = commit("older")
+        newer = commit("newer")
+        git("update-ref", "refs/remotes/origin/main", newer)
+        if local_state == "unpushed_commit_by_other":
+            commit("upstream", GIT_COMMITTER_EMAIL="other@example.com")
+        elif local_state == "untracked_file":
+            open(os.path.join(tempdir, "untracked"), "w").close()
+        elif local_state == "local_commit":
+            commit("local")
+        elif local_state == "uncommitted_change":
+            write("uncommitted")
+        elif local_state == "rebase_in_progress":
+            os.mkdir(os.path.join(tempdir, ".git", "rebase-merge"))
+        head = git("rev-parse", "HEAD")
+
+        proj = _create_meta_project(tempdir)
+        proj.SetRevision(older)
+
+        if expect_failure:
+            with pytest.raises(project.LocalSyncFail):
+                proj.CheckoutExactRevision()
+            assert git("rev-parse", "HEAD") == head
+        else:
+            proj.CheckoutExactRevision()
+            assert git("rev-parse", "HEAD") == older
+        # The branch keeps tracking its upstream.
+        assert git("symbolic-ref", "HEAD") == "refs/heads/main"
+
+
+@pytest.mark.parametrize(
     "state,expect_failure",
     [
         ("clean", False),

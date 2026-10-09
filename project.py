@@ -5542,6 +5542,41 @@ class ManifestProject(MetaProject):
             == 0
         )
 
+    def CheckoutExactRevision(self) -> None:
+        """Check out the revision exactly, even if it is an ancestor of HEAD.
+
+        Unlike Sync_LocalHalf, which follows a branch and does not move it back
+        to an ancestor, this moves HEAD to the revision wherever it is. Only an
+        unfinished rebase, uncommitted changes, or local commits block it, and
+        they are checked before anything changes. The current branch, if any,
+        is reset to the revision so it keeps tracking its upstream.
+
+        Raises:
+            LocalSyncFail: An unfinished rebase or local changes block it.
+            GitError: The checkout failed.
+        """
+        revid = self.GetRevisionId()
+        if self.IsRebaseInProgress() or self.IsCherryPickInProgress():
+            raise _PriorSyncFailedError(project=self.name)
+        if self.IsDirty(consider_untracked=False):
+            raise _DirtyError(project=self.name)
+        # Sync_LocalHalf treats every commit by the current user as local
+        # work, even ones that already landed upstream. Here, a local commit
+        # must also not be on any remote branch. Both checks are needed, since
+        # upstream commits fetched by id alone are not on any remote branch.
+        # The user's own upstream commits fetched by id alone still look local,
+        # which errs on the side of not discarding work.
+        committers = self._revlist(
+            not_rev(revid), HEAD, "--not", "--remotes", format="%ce"
+        )
+        if self.UserEmail in committers:
+            raise LocalSyncFail(
+                f"{self.worktree}: has local commits that are not in {revid}; "
+                "remove them and retry",
+                project=self.name,
+            )
+        self._ResetHard(revid)
+
     @property
     def standalone_manifest_url(self):
         """The URL of the standalone manifest, or None."""

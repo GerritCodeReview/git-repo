@@ -79,6 +79,8 @@ from progress import elapsed_str
 from progress import jobs_str
 from progress import Progress
 from project import DeleteWorktreeError
+from project import LocalSyncFail
+from project import ManifestProject
 from project import Project
 from project import RemoteSpec
 from project import SyncBuffer
@@ -2222,65 +2224,102 @@ later is required to fix a server side protocol bug.
                     opt, child.manifestProject, None, errors
                 )
 
-    def _UpdateManifestProject(self, opt, mp, manifest_name, errors):
+    def _FetchManifestProject(
+        self,
+        opt: optparse.Values,
+        mp: ManifestProject,
+        errors: List[Exception],
+    ) -> None:
+        """Fetch the manifest project, unless syncing locally only.
+
+        Args:
+            opt: Program options returned from optparse.  See _Options().
+            mp: the manifestProject to fetch.
+            errors: List to append fetch errors to.
+        """
+        if opt.local_only:
+            return
+        start = time.time()
+        buf = TeeStringIO(sys.stdout)
+        try:
+            result = mp.Sync_NetworkHalf(
+                quiet=not opt.verbose,
+                output_redir=buf,
+                verbose=opt.verbose,
+                use_superproject=opt.use_superproject,
+                current_branch_only=self._GetCurrentBranchOnly(
+                    opt, mp.manifest
+                ),
+                force_sync=opt.force_sync,
+                tags=opt.tags,
+                optimized_fetch=opt.optimized_fetch,
+                retry_fetches=opt.retry_fetches,
+                submodules=mp.manifest.HasSubmodules,
+                clone_filter=mp.manifest.CloneFilter,
+                partial_clone_exclude=mp.manifest.PartialCloneExclude,
+                clone_filter_for_depth=mp.manifest.CloneFilterForDepth,
+            )
+            if result.error:
+                errors.append(result.error)
+        except KeyboardInterrupt:
+            errors.append(
+                ManifestInterruptError(buf.getvalue(), project=mp.name)
+            )
+            raise
+
+        finish = time.time()
+        self.event_log.AddSync(
+            mp, event_log.TASK_SYNC_NETWORK, start, finish, result.success
+        )
+
+    def _UpdateManifestProject(
+        self,
+        opt: optparse.Values,
+        mp: ManifestProject,
+        manifest_name: Optional[str],
+        errors: List[Exception],
+    ) -> None:
         """Fetch & update the local manifest project.
 
         Args:
             opt: Program options returned from optparse.  See _Options().
             mp: the manifestProject to query.
             manifest_name: Manifest file to be reloaded.
+            errors: List to append fetch errors to.
         """
-        if not opt.local_only:
-            start = time.time()
-            buf = TeeStringIO(sys.stdout)
-            try:
-                result = mp.Sync_NetworkHalf(
-                    quiet=not opt.verbose,
-                    output_redir=buf,
-                    verbose=opt.verbose,
-                    use_superproject=opt.use_superproject,
-                    current_branch_only=self._GetCurrentBranchOnly(
-                        opt, mp.manifest
-                    ),
-                    force_sync=opt.force_sync,
-                    tags=opt.tags,
-                    optimized_fetch=opt.optimized_fetch,
-                    retry_fetches=opt.retry_fetches,
-                    submodules=mp.manifest.HasSubmodules,
-                    clone_filter=mp.manifest.CloneFilter,
-                    partial_clone_exclude=mp.manifest.PartialCloneExclude,
-                    clone_filter_for_depth=mp.manifest.CloneFilterForDepth,
-                )
-                if result.error:
-                    errors.append(result.error)
-            except KeyboardInterrupt:
-                errors.append(
-                    ManifestInterruptError(buf.getvalue(), project=mp.name)
-                )
-                raise
-
-            finish = time.time()
-            self.event_log.AddSync(
-                mp, event_log.TASK_SYNC_NETWORK, start, finish, result.success
-            )
-
+        self._FetchManifestProject(opt, mp, errors)
         if mp.HasChanges:
-            errors = []
-            syncbuf = SyncBuffer(mp.config)
-            start = time.time()
-            mp.Sync_LocalHalf(
-                syncbuf,
-                submodules=mp.manifest.HasSubmodules,
-                verbose=opt.verbose,
-            )
-            clean = syncbuf.Finish()
-            errors.extend(syncbuf.errors)
-            self.event_log.AddSync(
-                mp, event_log.TASK_SYNC_LOCAL, start, time.time(), clean
-            )
-            if not clean:
-                raise UpdateManifestError(aggregate_errors=errors)
-            self._ReloadManifest(manifest_name, mp.manifest)
+            self._CheckoutManifestProject(opt, mp, manifest_name)
+
+    def _CheckoutManifestProject(
+        self,
+        opt: optparse.Values,
+        mp: ManifestProject,
+        manifest_name: Optional[str],
+    ) -> None:
+        """Check out the fetched manifest project and reload the manifest.
+
+        Args:
+            opt: Program options returned from optparse.  See _Options().
+            mp: the manifestProject to check out.
+            manifest_name: Manifest file to be reloaded.
+        """
+        errors = []
+        syncbuf = SyncBuffer(mp.config)
+        start = time.time()
+        mp.Sync_LocalHalf(
+            syncbuf,
+            submodules=mp.manifest.HasSubmodules,
+            verbose=opt.verbose,
+        )
+        clean = syncbuf.Finish()
+        errors.extend(syncbuf.errors)
+        self.event_log.AddSync(
+            mp, event_log.TASK_SYNC_LOCAL, start, time.time(), clean
+        )
+        if not clean:
+            raise UpdateManifestError(aggregate_errors=errors)
+        self._ReloadManifest(manifest_name, mp.manifest)
 
     def ValidateOptions(self, opt, args):
         if opt.force_broken:
@@ -2414,7 +2453,7 @@ later is required to fix a server side protocol bug.
         self,
         opt: optparse.Values,
         manifest: XmlManifest,
-        mp: Project,
+        mp: ManifestProject,
         manifest_name: Optional[str],
         errors: List[Exception],
     ) -> None:
@@ -2451,9 +2490,17 @@ later is required to fix a server side protocol bug.
             raise SyncError("could not parse .supermanifest")
 
         mp.SetRevision(manifest_commit)
+        self._FetchManifestProject(opt, mp, errors)
         try:
-            self._UpdateManifestProject(opt, mp, manifest_name, errors)
-        except UpdateManifestError as e:
+            if mp.HasChanges:
+                self._CheckoutManifestProject(opt, mp, manifest_name)
+            elif mp.GetRevisionId() != mp.GetHeadRevisionId():
+                # The revision is an ancestor of HEAD (e.g. an older
+                # superproject revision on the same branch), which
+                # Sync_LocalHalf never moves back to.
+                mp.CheckoutExactRevision()
+                self._ReloadManifest(manifest_name, mp.manifest)
+        except (UpdateManifestError, GitError, LocalSyncFail) as e:
             raise SyncError(
                 "failed to sync manifest project", aggregate_errors=[e]
             )

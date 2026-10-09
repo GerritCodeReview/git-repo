@@ -31,7 +31,9 @@ import command
 from error import GitError
 from error import ManifestParseError
 from error import RepoExitError
+from error import UpdateManifestError
 import manifest_xml
+from project import LocalSyncFail
 from project import SyncNetworkHalfResult
 from subcmds import sync
 
@@ -2652,9 +2654,14 @@ class SyncToSuperprojectRevTests(unittest.TestCase):
         mock_git.stdout = "proj branch manifest_commit_hash\n"
         mock_git_command.return_value = mock_git
 
+        # The .supermanifest commit is an ancestor of HEAD.
+        self.mp.HasChanges = False
+        self.mp.GetRevisionId.return_value = "manifest_commit_hash"
+        self.mp.GetHeadRevisionId.return_value = "newer"
+
         with mock.patch.object(
-            self.cmd, "_UpdateManifestProject"
-        ) as mock_update:
+            self.cmd, "_FetchManifestProject"
+        ) as mock_fetch, mock.patch.object(self.cmd, "_ReloadManifest"):
             self.cmd._SyncToSuperprojectRev(
                 self.opt, self.manifest, self.mp, "name", self.errors
             )
@@ -2663,7 +2670,8 @@ class SyncToSuperprojectRevTests(unittest.TestCase):
             mock_superproject.Sync.assert_called_once()
             mock_git_command.assert_called_once()
             self.mp.SetRevision.assert_called_with("manifest_commit_hash")
-            mock_update.assert_called_once()
+            mock_fetch.assert_called_once_with(self.opt, self.mp, self.errors)
+            self.mp.CheckoutExactRevision.assert_called_once()
             self.assertEqual(self.errors, [])
 
     @mock.patch("subcmds.sync.GitCommand")
@@ -2722,6 +2730,95 @@ class SyncToSuperprojectRevTests(unittest.TestCase):
                 self.opt, self.manifest, self.mp, "name", self.errors
             )
         self.assertIn("failed to sync superproject", str(e.exception))
+
+
+def _fake_sync_cmd() -> sync.Sync:
+    """Return a Sync command whose manifest project steps are mocked."""
+    cmd = sync.Sync()
+    cmd._FetchManifestProject = mock.Mock()
+    cmd._CheckoutManifestProject = mock.Mock()
+    cmd._ReloadManifest = mock.Mock()
+    return cmd
+
+
+def _fake_manifest_project(has_changes: bool, head: str) -> mock.MagicMock:
+    """Return a fake manifest project with HEAD at `head`."""
+    mp = mock.MagicMock(HasChanges=has_changes)
+    mp.GetRevisionId.return_value = "revision"
+    mp.GetHeadRevisionId.return_value = head
+    return mp
+
+
+def _sync_to_superproject_rev(cmd: sync.Sync, mp: mock.MagicMock) -> None:
+    """Run _SyncToSuperprojectRev with `.supermanifest` naming "revision"."""
+    manifest = mock.MagicMock()
+    manifest.superproject.Sync.return_value = mock.Mock(success=True)
+    cmd.outer_manifest = manifest
+    git = mock.Mock(stdout="proj branch revision\n")
+    git.Wait.return_value = 0
+    opt = mock.Mock(
+        verbose=False, local_only=False, superproject_revision="deadbeef"
+    )
+
+    with mock.patch.object(sync, "GitCommand", return_value=git):
+        cmd._SyncToSuperprojectRev(opt, manifest, mp, "name", [])
+
+
+@pytest.mark.parametrize(
+    "has_changes, head, expect_checkout, expect_exact",
+    [
+        (True, "older", True, False),
+        (False, "newer", False, True),
+        (False, "revision", False, False),
+    ],
+    ids=["upstream_changes", "ancestor_of_head", "already_checked_out"],
+)
+def test_sync_to_superproject_rev_checks_out_manifest(
+    has_changes: bool, head: str, expect_checkout: bool, expect_exact: bool
+) -> None:
+    """Test how the manifest project is checked out at the revision.
+
+    New upstream commits use the usual checkout, which keeps (rebases) local
+    manifest commits. HasChanges is False when the revision is an ancestor of
+    HEAD, e.g. for an older superproject revision, so that needs an exact
+    checkout.
+    """
+    cmd = _fake_sync_cmd()
+    mp = _fake_manifest_project(has_changes, head)
+
+    _sync_to_superproject_rev(cmd, mp)
+
+    mp.SetRevision.assert_called_once_with("revision")
+    cmd._FetchManifestProject.assert_called_once()
+    assert cmd._CheckoutManifestProject.called is expect_checkout
+    assert mp.CheckoutExactRevision.called is expect_exact
+    # _CheckoutManifestProject reloads by itself, but it is mocked here.
+    assert cmd._ReloadManifest.called is expect_exact
+
+
+@pytest.mark.parametrize(
+    "has_changes, error",
+    [
+        (True, UpdateManifestError("checkout failed")),
+        (False, GitError("reset failed")),
+        (False, LocalSyncFail("local commits")),
+    ],
+    ids=["checkout_error", "exact_git_error", "exact_local_sync_fail"],
+)
+def test_sync_to_superproject_rev_checkout_failure(
+    has_changes: bool, error: Exception
+) -> None:
+    """Test that a failed manifest checkout fails the sync without reload."""
+    cmd = _fake_sync_cmd()
+    cmd._CheckoutManifestProject.side_effect = error
+    mp = _fake_manifest_project(has_changes, "other")
+    mp.CheckoutExactRevision.side_effect = error
+
+    with pytest.raises(sync.SyncError) as e:
+        _sync_to_superproject_rev(cmd, mp)
+
+    assert e.value.aggregate_errors == [error]
+    cmd._ReloadManifest.assert_not_called()
 
 
 class UpdateAllManifestProjectsTests(unittest.TestCase):
