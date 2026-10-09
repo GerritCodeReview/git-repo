@@ -776,6 +776,36 @@ class Project:
         )
 
     @property
+    def IsLinkedWorktree(self):
+        """Whether the checkout is a linked `git worktree` of |gitdir|.
+
+        This is the case inside a `repo workspace`, where the checkout's .git
+        is a "gitdir:" file pointing at <gitdir>/worktrees/<name>/.  HEAD and
+        other per-checkout state then live there rather than in |gitdir|.
+        """
+        if not self.worktree:
+            return False
+        dotgit = os.path.join(self.worktree, ".git")
+        if not os.path.isfile(dotgit):
+            return False
+        try:
+            with open(dotgit) as fp:
+                setting = fp.read()
+        except OSError:
+            return False
+        if not setting.startswith("gitdir:"):
+            return False
+        target = os.path.normpath(
+            os.path.join(self.worktree, setting.split(":", 1)[1].strip())
+        )
+        return os.path.normpath(target) != os.path.normpath(self.gitdir)
+
+    @property
+    def _HeadInWorktreeAdminDir(self):
+        """Whether HEAD must be read from the checkout, not |bare_ref|."""
+        return self.use_git_worktrees or self.IsLinkedWorktree
+
+    @property
     def CurrentBranch(self):
         """Obtain the name of the currently checked out branch.
 
@@ -800,7 +830,7 @@ class Project:
         # Git worktrees keep the checkout's HEAD in the worktree admin dir,
         # while bare_ref reads the shared repository.  Its HEAD is not the
         # checked-out worktree's HEAD and must not be reused here.
-        if not self.use_git_worktrees and self.bare_ref.is_loaded:
+        if not self._HeadInWorktreeAdminDir and self.bare_ref.is_loaded:
             head = self.bare_ref.head
             if head:
                 return head
@@ -2038,7 +2068,7 @@ class Project:
         Returns None if worktree is not checked out or HEAD cannot be resolved.
         """
         if self.work_git:
-            if not self.use_git_worktrees and self.bare_ref.is_loaded:
+            if not self._HeadInWorktreeAdminDir and self.bare_ref.is_loaded:
                 head = self.bare_ref.get(HEAD)
                 if head:
                     return head
