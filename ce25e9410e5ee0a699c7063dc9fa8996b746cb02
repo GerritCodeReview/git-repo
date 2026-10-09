@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "59febc85_b1ce3a6f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-10-09T15:49:46Z",
+      "side": 1,
+      "message": "Agreed that flexibility to add options later is worth having. We probably would want to provide users the option to choose the type of \"good build\" they want in the future. \n\n`GetApprovedManifest(branch[, target])` seems effectively frozen now. Adding a new arg would break existing servers (not to mention the client doesn\u0027t allow passing None as an argument right now). So I\u0027ve implemented a new endpoint `GetApprovedManifestV2` taking an `options` dict. I\u0027m considering two ways for the client to decide when to call it:\n\nA (patchset 8): The client always calls `GetApprovedManifestV2` first. If the server replies with a \"method not found\" fault, client falls back to `GetApprovedManifest`.\nB: The manifest declares which API to use, e.g. `\u003cmanifest-server url\u003d\"...\" approved-manifest-api\u003d\"v2\" /\u003e`, and the client only calls v2 when declared. If the attribute isn\u0027t found, client calls `GetApprovedManifest` as usual.\n\nOne problem that I see with option A is that servers can fail in arbitrary ways when they get a call they don\u0027t recognize. Nice servers might return METHOD_NOT_FOUND, others could fail with a generic 400/500 fault. Client cannot tell whether the server actually has the V2 method or not. Option B avoids guessing but requires a change in the manifest schema. Which one do you think is better?",
+      "parentUuid": "944c6188_bfc74cd4",
+      "revId": "ce25e9410e5ee0a699c7063dc9fa8996b746cb02",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ae990fc_db495a30",
         "filename": "docs/smart-sync.md",
         "patchSetId": 5
