@@ -112,6 +112,30 @@ __complete_repo_command_start() {
   fi
 }
 
+# Complete `repo workspace`.
+__complete_repo_command_workspace() {
+  local current=$1
+  # CWORD=1 is "workspace".
+  # CWORD=2 is the verb.
+  # CWORD=3 is a workspace name for most verbs.
+  if [[ ${COMP_CWORD} -eq 2 ]]; then
+    COMPREPLY=(
+      $(compgen -W "create enter run list remove clean status" -- "${current}")
+    )
+  elif [[ ${COMP_CWORD} -eq 3 ]]; then
+    case ${COMP_WORDS[2]} in
+    enter|run|remove|rm|clean)
+      local root
+      root=$(repo --show-toplevel 2>/dev/null) || return
+      COMPREPLY=(
+        $(compgen -W "$(ls "${root}/.repo/workspaces" 2>/dev/null)" \
+          -- "${current}")
+      )
+      ;;
+    esac
+  fi
+}
+
 # Complete the repo subcommand arguments.
 __complete_repo_arg() {
   if [[ ${COMP_CWORD} -le 1 ]]; then
@@ -132,7 +156,7 @@ __complete_repo_arg() {
     return 0
     ;;
 
-  help|start|forall)
+  help|start|forall|workspace)
     __complete_repo_command_${command} "${current}"
     return 0
     ;;

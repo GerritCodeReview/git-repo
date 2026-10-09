@@ -47,6 +47,7 @@ _repo() {
     'upload:Upload changes to the review server'
     'version:Display version'
     'wipe:Wipe uncommitted changes'
+    'workspace:Manage parallel checkouts of a project at its normal path'
   )
 
   local -a global_opts
@@ -415,6 +416,23 @@ _repo() {
         '--force-shared[Force shared]' \
         '*: :->project'
       ;;
+    workspace)
+      _arguments \
+        ${common_opts} \
+        '(-b --branch)'{-b,--branch=}'[Branch name]:branch:' \
+        '(-r --rev --revision)'{-r,--rev=,--revision=}'[Revision]:revision:' \
+        '--head[Start from current HEAD]' \
+        '--no-enter[Do not enter after create]' \
+        '--no-overlay[Create worktree only]' \
+        '--size[Show disk usage]' \
+        '(-f --force)'{-f,--force}'[Force removal]' \
+        '--all[Clean all build output]' \
+        '--days=[Idle threshold in days]:days:' \
+        '(-y --yes)'{-y,--yes}'[Assume yes]' \
+        '1: :(create enter run list remove clean status)' \
+        '2: :->workspace' \
+        '*: :->project'
+      ;;
     esac
 
     # Handle states for positional arguments.
@@ -430,6 +448,9 @@ _repo() {
       ;;
     newbranch)
       _message 'new branch name'
+      ;;
+    workspace)
+      [[ ${PREFIX} != -* ]] && _repo_workspaces
       ;;
     help_cmds)
       _describe -t commands 'repo command' subcommands
@@ -449,6 +470,13 @@ _repo_projects() {
   local -a projects
   projects=(${(f)"$(_call_program projects repo list -n 2>/dev/null)"})
   _describe -t projects 'project' projects
+}
+
+_repo_workspaces() {
+  local -a workspaces root
+  root=$(_call_program toplevel repo --show-toplevel 2>/dev/null) || return
+  workspaces=(${(f)"$(ls "${root}/.repo/workspaces" 2>/dev/null)"})
+  _describe -t workspaces 'workspace' workspaces
 }
 
 _repo "$@"

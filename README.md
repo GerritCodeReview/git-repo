@@ -14,6 +14,7 @@ that you can put anywhere in your path.
 * Docs: <https://source.android.com/source/using-repo.html>
 * [repo Manifest Format](./docs/manifest-format.md)
 * [repo Hooks](./docs/repo-hooks.md)
+* [repo Workspaces](./docs/workspaces.md)
 * [Contributing](./CONTRIBUTING.md)
 * Running Repo in [Microsoft Windows](./docs/windows.md)
 * GitHub mirror: <https://github.com/GerritCodeReview/git-repo>
