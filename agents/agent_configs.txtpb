@@ -24,3 +24,16 @@ configs {
   }
   automatic: false
 }
+
+# Default Multi-Perspective Code Review Agent
+configs {
+  id: "git-repo-code-review-agent"
+  display_name: "Code Review Agent"
+  description: "Default multi-perspective review agent for git-repo."
+  include_filters {
+    project: "git-repo"
+    path_regex: ".*"
+  }
+  use_default_subagents: true
+  tags: "code-review-agent"
+}
