@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08d99cdd_a6529941",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 5572,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-12T21:47:21Z",
+      "side": 1,
+      "message": "why do we need to check this? iiuc this will crash if UserEmail isn\u0027t configured but that isn\u0027t always required",
+      "range": {
+        "startLine": 5572,
+        "startChar": 11,
+        "endLine": 5572,
+        "endChar": 25
+      },
+      "revId": "cf379a0a3453ea5e017357b0a03ca66ef47ac292",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc61392a_59f7e679",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2502,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-12T21:47:21Z",
+      "side": 1,
+      "message": "if we have local manifest changes, then on the first sync forward with `--superproject-revision $REV`: `mp.HasChanges` is true, so we run `Sync_LocalHalf` which rebases the local commits onto `$REV`. on a second sync with `--superproject-revision $REV`, `mp.HasChanges` is false (since `$REV` is an ancestor of the new HEAD from rebase), and since `mp.GetRevisionId() !\u003d mp.GetHeadRevisionId()`, we get \"failed to sync\". (whereas before this CL, a repeated sync worked fine). how do you think repo should handle local manifest commits with `--superproject-revision`?",
+      "range": {
+        "startLine": 2495,
+        "startChar": 12,
+        "endLine": 2502,
+        "endChar": 64
+      },
+      "revId": "cf379a0a3453ea5e017357b0a03ca66ef47ac292",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
