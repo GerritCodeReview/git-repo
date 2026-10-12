@@ -742,6 +742,22 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             avail = project.GetUploadableBranches(opt.branch)
         return (project_idx, avail, cbr)
 
+    def ValidateOptions(self, opt: optparse.Values, args: List[str]) -> None:
+        if opt.fix:
+            if opt.ignore_hooks:
+                self.OptionParser.error(
+                    "--fix and --ignore-hooks are mutually exclusive options: "
+                    "with --ignore-hooks, the original commits are uploaded, "
+                    "so fixups would only modify the working tree and would "
+                    "not be part of the upload"
+                )
+            if opt.bypass_hooks:
+                self.OptionParser.error(
+                    "--fix and --no-verify are mutually exclusive options: "
+                    "--no-verify skips the pre-upload hook, so --fix would "
+                    "have no effect"
+                )
+
     def Execute(self, opt, args):
         projects = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
