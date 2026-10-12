@@ -42,13 +42,13 @@ postconditions to be met:
 
 1.  When the manifest revision names a branch or tag, the mapped local tracking
     ref (e.g. `refs/remotes/REPO_REMOTE/<branch>` for a branch, or
-    `refs/tags/<tag>` for a tag) must resolve to a valid commit in the object
-    store (`git rev-parse --verify <ref>^{commit}`), and must equal `REPO_TREV`
-    if `REPO_TREV` was non-empty.
-2.  `FETCH_HEAD` must resolve to the same target commit in the object store
-    (`git rev-parse --verify FETCH_HEAD^{commit}`).
-3.  The commit graph from the target commit must be reachable far enough to
-    compute merge bases with local branches.
+    `refs/tags/<tag>` for a tag) must name the target commit, and must equal
+    `REPO_TREV` if `REPO_TREV` was non-empty. A tag ref may name an annotated
+    tag of the target commit.
+2.  `FETCH_HEAD` must name the same target commit.
+3.  The target commit, and the commit graph from it far enough to compute
+    merge bases with local branches, must be readable from the object store.
+    They may be materialized lazily, when first read.
 
 ### Invariants
 
@@ -66,5 +66,10 @@ postconditions to be met:
 
 *   A non-zero exit status aborts the project's sync, and the command's stderr
     is surfaced to the user.
-*   `repo` verifies the tracking ref and target reachability after exit 0. Any
-    mismatch is treated as a failure.
+*   After exit 0, `repo` checks postconditions 1 and 2 by comparing the object
+    IDs that the refs record (`git rev-parse --verify <ref>`), so it does not
+    read the object store during the network half of the sync. It peels the
+    IDs to commits only when they differ, as for an annotated tag. Any mismatch
+    is treated as a failure.
+*   A target commit missing from the object store fails the checkout that reads
+    it.

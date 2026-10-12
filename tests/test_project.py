@@ -440,6 +440,43 @@ class ProjectTests(unittest.TestCase):
             with self.assertRaises(error.GitError):
                 git.ResolveCommit("--not-a-revision")
 
+    def test_resolve_ref_does_not_peel(self) -> None:
+        """Ref resolution verifies the name without peeling it to a commit."""
+        proj = mock.MagicMock(name="project")
+        proj.name = "project"
+        git = project.Project._GitGetByExec(proj, bare=True, gitdir="gitdir")
+        command = mock.MagicMock()
+        command.stdout = "1" * 40 + "\n"
+        command.Wait.return_value = 0
+
+        with mock.patch.object(
+            project, "git_require", return_value=True
+        ), mock.patch.object(
+            project, "GitCommand", return_value=command
+        ) as cmd:
+            self.assertEqual("1" * 40, git.ResolveRef("FETCH_HEAD"))
+
+        cmd.assert_called_once_with(
+            proj,
+            [
+                "rev-parse",
+                "--verify",
+                "--quiet",
+                "--end-of-options",
+                "FETCH_HEAD",
+            ],
+            bare=True,
+            gitdir="gitdir",
+            capture_stdout=True,
+            capture_stderr=True,
+            verify_command=True,
+            log_as_error=False,
+        )
+
+        with mock.patch.object(project, "git_require", return_value=False):
+            with self.assertRaises(error.GitError):
+                git.ResolveRef("--not-a-revision")
+
     def test_get_branches_reuses_ref_snapshot_for_current_branch(self) -> None:
         """GetBranches derives the current branch from the loaded refs."""
         with utils_for_test.TempGitTree() as tempdir:
@@ -3305,6 +3342,8 @@ class FetchCmdTests(unittest.TestCase):
             tempdir, use_local_gitdirs=True, fetch_cmd="echo hi"
         )
         proj.GetRevisionId = mock.MagicMock(return_value="1234abcd")
+        # Every ID names a commit unless a test says otherwise.
+        proj.bare_git.ResolveCommit.side_effect = lambda rev: rev
         return proj
 
     def test_fetch_cmd_execution_unpinned_branch(self) -> None:
@@ -3313,7 +3352,7 @@ class FetchCmdTests(unittest.TestCase):
             proj = self._get_project(tempdir)
             proj.revisionId = None
             proj.revisionExpr = "main"
-            proj.bare_git.ResolveCommit.return_value = "1234abcd"
+            proj.bare_git.ResolveRef.return_value = "1234abcd"
             mock_remote = mock.MagicMock()
             mock_remote.ToLocal.return_value = "refs/remotes/origin/main"
             proj.GetRemote = mock.MagicMock(return_value=mock_remote)
@@ -3335,10 +3374,9 @@ class FetchCmdTests(unittest.TestCase):
                 kwargs["env"]["REPO_PROJECT_FETCH_URL"],
                 "http://example.com/repo",
             )
-            proj.bare_git.ResolveCommit.assert_any_call(
-                "refs/remotes/origin/main"
-            )
-            proj.bare_git.ResolveCommit.assert_any_call("FETCH_HEAD")
+            proj.bare_git.ResolveRef.assert_any_call("refs/remotes/origin/main")
+            proj.bare_git.ResolveRef.assert_any_call("FETCH_HEAD")
+            proj.bare_git.ResolveCommit.assert_not_called()
 
     def test_fetch_cmd_execution_pinned_revision_id(self) -> None:
         """Test fetch_cmd populates REPO_TREV when revisionId is set."""
@@ -3347,7 +3385,7 @@ class FetchCmdTests(unittest.TestCase):
             proj = self._get_project(tempdir)
             proj.revisionId = sha
             proj.revisionExpr = "main"
-            proj.bare_git.ResolveCommit.return_value = sha
+            proj.bare_git.ResolveRef.return_value = sha
             mock_remote = mock.MagicMock()
             mock_remote.ToLocal.return_value = "refs/remotes/origin/main"
             proj.GetRemote = mock.MagicMock(return_value=mock_remote)
@@ -3360,6 +3398,7 @@ class FetchCmdTests(unittest.TestCase):
             proj._LsRemote.assert_not_called()
             _, kwargs = mock_run.call_args
             self.assertEqual(kwargs["env"]["REPO_TREV"], sha)
+            proj.bare_git.ResolveCommit.assert_not_called()
 
     def test_fetch_cmd_execution_pinned_revision_expr_sha(self) -> None:
         """Test fetch_cmd populates REPO_TREV when revisionExpr is a SHA."""
@@ -3368,7 +3407,7 @@ class FetchCmdTests(unittest.TestCase):
             proj = self._get_project(tempdir)
             proj.revisionId = None
             proj.revisionExpr = sha
-            proj.bare_git.ResolveCommit.return_value = sha
+            proj.bare_git.ResolveRef.return_value = sha
             proj.GetRemote = mock.MagicMock()
 
             with mock.patch("subprocess.run") as mock_run:
@@ -3380,7 +3419,8 @@ class FetchCmdTests(unittest.TestCase):
             proj.GetRemote.assert_not_called()
             _, kwargs = mock_run.call_args
             self.assertEqual(kwargs["env"]["REPO_TREV"], sha)
-            proj.bare_git.ResolveCommit.assert_called_once_with("FETCH_HEAD")
+            proj.bare_git.ResolveRef.assert_called_once_with("FETCH_HEAD")
+            proj.bare_git.ResolveCommit.assert_not_called()
 
     def test_fetch_cmd_postcondition_fails_when_fetch_head_mismatches_ref(
         self,
@@ -3390,7 +3430,7 @@ class FetchCmdTests(unittest.TestCase):
             proj = self._get_project(tempdir)
             proj.revisionId = None
             proj.revisionExpr = "main"
-            proj.bare_git.ResolveCommit.side_effect = [
+            proj.bare_git.ResolveRef.side_effect = [
                 "11111111" * 5,
                 "22222222" * 5,
             ]
@@ -3410,7 +3450,7 @@ class FetchCmdTests(unittest.TestCase):
             proj = self._get_project(tempdir)
             proj.revisionId = "11111111" * 5
             proj.revisionExpr = "main"
-            proj.bare_git.ResolveCommit.return_value = "22222222" * 5
+            proj.bare_git.ResolveRef.return_value = "22222222" * 5
             mock_remote = mock.MagicMock()
             mock_remote.ToLocal.return_value = "refs/remotes/origin/main"
             proj.GetRemote = mock.MagicMock(return_value=mock_remote)
@@ -3425,9 +3465,73 @@ class FetchCmdTests(unittest.TestCase):
             proj = self._get_project(tempdir)
             proj.revisionId = None
             proj.revisionExpr = "main"
-            proj.bare_git.ResolveCommit.side_effect = error.GitError("missing")
+            proj.bare_git.ResolveRef.side_effect = error.GitError("missing")
             mock_remote = mock.MagicMock()
             mock_remote.ToLocal.return_value = "refs/remotes/origin/main"
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+
+            with mock.patch("subprocess.run") as mock_run:
+                mock_run.return_value = mock.MagicMock(returncode=0, stderr="")
+                self.assertFalse(proj._CustomFetch())
+
+    def test_fetch_cmd_postcondition_fails_when_fetch_head_missing(
+        self,
+    ) -> None:
+        """Test _CustomFetch fails when FETCH_HEAD does not resolve."""
+        with utils_for_test.TempGitTree() as tempdir:
+            sha = "0123456789abcdef0123456789abcdef01234567"
+            proj = self._get_project(tempdir)
+            proj.revisionId = sha
+            proj.revisionExpr = sha
+            proj.bare_git.ResolveRef.side_effect = error.GitError("missing")
+
+            with mock.patch("subprocess.run") as mock_run:
+                mock_run.return_value = mock.MagicMock(returncode=0, stderr="")
+                self.assertFalse(proj._CustomFetch())
+
+    def test_fetch_cmd_postcondition_peels_annotated_tag(self) -> None:
+        """Test an annotated tag matches REPO_TREV once peeled."""
+        with utils_for_test.TempGitTree() as tempdir:
+            commit = "11111111" * 5
+            tag = "aaaaaaaa" * 5
+            proj = self._get_project(tempdir)
+            proj.revisionId = commit
+            proj.revisionExpr = "refs/tags/v1.0"
+            proj.bare_git.ResolveRef.return_value = tag
+            proj.bare_git.ResolveCommit.side_effect = {
+                tag: commit,
+                commit: commit,
+            }.get
+            mock_remote = mock.MagicMock()
+            mock_remote.ToLocal.return_value = "refs/tags/v1.0"
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+
+            with mock.patch("subprocess.run") as mock_run:
+                mock_run.return_value = mock.MagicMock(returncode=0, stderr="")
+                self.assertTrue(proj._CustomFetch())
+
+            proj.bare_git.ResolveRef.assert_any_call("refs/tags/v1.0")
+            proj.bare_git.ResolveRef.assert_any_call("FETCH_HEAD")
+            proj.bare_git.ResolveCommit.assert_any_call(tag)
+
+    def test_fetch_cmd_postcondition_fails_when_tag_peels_elsewhere(
+        self,
+    ) -> None:
+        """Test an annotated tag of another commit fails the postcondition."""
+        with utils_for_test.TempGitTree() as tempdir:
+            commit = "11111111" * 5
+            other = "22222222" * 5
+            tag = "aaaaaaaa" * 5
+            proj = self._get_project(tempdir)
+            proj.revisionId = commit
+            proj.revisionExpr = "refs/tags/v1.0"
+            proj.bare_git.ResolveRef.return_value = tag
+            proj.bare_git.ResolveCommit.side_effect = {
+                tag: other,
+                commit: commit,
+            }.get
+            mock_remote = mock.MagicMock()
+            mock_remote.ToLocal.return_value = "refs/tags/v1.0"
             proj.GetRemote = mock.MagicMock(return_value=mock_remote)
 
             with mock.patch("subprocess.run") as mock_run:
@@ -3477,6 +3581,137 @@ class FetchCmdTests(unittest.TestCase):
             self.assertTrue(res.remote_fetched)
             proj._ApplyCloneBundle.assert_not_called()
             proj._CustomFetch.assert_called_once()
+
+
+class FetchCmdGitTests(unittest.TestCase):
+    """Tests running the fetchcmd contract against real Git repositories."""
+
+    @staticmethod
+    def _git(cwd: str, *args: str) -> str:
+        return subprocess.run(
+            ["git", "-C", cwd] + list(args),
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+        ).stdout.rstrip("\n")
+
+    def _make_project(
+        self,
+        topdir: str,
+        fetch_cmd: str,
+        revision_expr: str,
+        revision_id: Optional[str],
+    ) -> project.Project:
+        """Return a project under |topdir| that fetches with |fetch_cmd|."""
+        worktree = os.path.join(topdir, "proj")
+        os.mkdir(worktree)
+        self._git(worktree, "init", "-q")
+
+        manifest = mock.MagicMock()
+        manifest.manifestProject.use_local_gitdirs = True
+        manifest.manifestProject.fetch_cmd = fetch_cmd
+        manifest.UseLocalGitDirs = True
+        manifest.IsMirror = False
+        manifest.is_multimanifest = False
+        manifest.topdir = topdir
+        manifest.path_prefix = ""
+        manifest.globalConfig = None
+
+        remote_spec = mock.MagicMock()
+        remote_spec.name = "origin"
+        remote_spec.url = os.path.join(topdir, "remote")
+
+        return project.Project(
+            manifest=manifest,
+            name="proj",
+            remote=remote_spec,
+            gitdir=os.path.join(worktree, ".git"),
+            objdir=os.path.join(worktree, ".git"),
+            worktree=worktree,
+            relpath="proj",
+            revisionExpr=revision_expr,
+            revisionId=revision_id,
+        )
+
+    def test_postconditions_do_not_read_the_object_store(self) -> None:
+        """Test fetchcmd may leave the target commit to materialize lazily."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            # The commit is not in the object store yet, as on a filesystem
+            # that downloads objects when they are first read.
+            commit = "1234abcd" * 5
+            proj = self._make_project(
+                topdir,
+                f"echo {commit} > $REPO_PATH/.git/FETCH_HEAD",
+                revision_expr=commit,
+                revision_id=commit,
+            )
+
+            self.assertTrue(proj._CustomFetch())
+
+    def test_postconditions_peel_an_annotated_tag(self) -> None:
+        """Test a fetched annotated tag satisfies a pinned REPO_TREV."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            remote = os.path.join(topdir, "remote")
+            os.mkdir(remote)
+            self._git(remote, "init", "-q")
+            with open(os.path.join(remote, "a.txt"), "w") as fp:
+                fp.write("a\n")
+            self._git(remote, "add", "a.txt")
+            ident = [
+                "-c",
+                "user.name=Test",
+                "-c",
+                "user.email=test@example.com",
+            ]
+            self._git(remote, *ident, "commit", "-q", "-m", "one")
+            self._git(remote, *ident, "tag", "-a", "-m", "release", "v1.0")
+            commit = self._git(remote, "rev-parse", "HEAD")
+            proj = self._make_project(
+                topdir,
+                f"git -C $REPO_PATH fetch -q {remote} "
+                "+refs/tags/v1.0:refs/tags/v1.0",
+                revision_expr="refs/tags/v1.0",
+                revision_id=commit,
+            )
+
+            self.assertTrue(proj._CustomFetch())
+            # The ref and FETCH_HEAD name the tag object, not the commit.
+            tag = self._git(proj.worktree, "rev-parse", "refs/tags/v1.0")
+            self.assertNotEqual(tag, commit)
+            self.assertEqual(
+                self._git(proj.worktree, "rev-parse", "FETCH_HEAD"), tag
+            )
+
+    def test_postconditions_reject_a_tag_of_another_commit(self) -> None:
+        """Test an annotated tag of another commit fails a pinned REPO_TREV."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            remote = os.path.join(topdir, "remote")
+            os.mkdir(remote)
+            self._git(remote, "init", "-q")
+            ident = [
+                "-c",
+                "user.name=Test",
+                "-c",
+                "user.email=test@example.com",
+            ]
+            self._git(
+                remote, *ident, "commit", "-q", "--allow-empty", "-m", "1"
+            )
+            pinned = self._git(remote, "rev-parse", "HEAD")
+            self._git(
+                remote, *ident, "commit", "-q", "--allow-empty", "-m", "2"
+            )
+            self._git(remote, *ident, "tag", "-a", "-m", "release", "v1.0")
+            proj = self._make_project(
+                topdir,
+                f"git -C $REPO_PATH fetch -q {remote} "
+                "+refs/tags/v1.0:refs/tags/v1.0",
+                revision_expr="refs/tags/v1.0",
+                revision_id=pinned,
+            )
+
+            self.assertFalse(proj._CustomFetch())
 
 
 class ReprojectCmdTests(unittest.TestCase):
