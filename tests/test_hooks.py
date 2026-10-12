@@ -176,6 +176,42 @@ def main(project_list, **kwargs):
     assert project_list == [fix_val]
 
 
+@pytest.mark.parametrize("ignore_hooks_val", (True, False))
+def test_repo_upload_ignore_hooks_arg(
+    tmp_path: Path, ignore_hooks_val: bool
+) -> None:
+    """Test that ignore_hooks is passed in kwargs during hook execution."""
+
+    class FakeProject:
+        def __init__(self, worktree: str) -> None:
+            self.worktree = worktree
+            self.enabled_repo_hooks = ["pre-upload"]
+            self.config = None
+
+    hook_file = tmp_path / "pre-upload.py"
+
+    hook_content = """
+def main(project_list, **kwargs):
+    project_list.append(kwargs.get("ignore_hooks"))
+"""
+    hook_file.write_text(hook_content)
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(str(tmp_path)),
+        repo_topdir=str(tmp_path),
+        manifest_url="https://gerrit",
+        allow_all_hooks=True,
+        ignore_hooks=ignore_hooks_val,
+    )
+
+    project_list = []
+    res = hook.Run(project_list=project_list, worktree_list=[])
+
+    assert res is True
+    assert project_list == [ignore_hooks_val]
+
+
 def test_from_subcmd_without_fix_option() -> None:
     """Test that FromSubcmd works when opt does not have fix attribute."""
 
