@@ -23,12 +23,13 @@ except ImportError:
     import dummy_threading as _threading
 
 import repo_trace
+import terminal
 
 
 # Capture the original stderr stream. We use this exclusively for progress
 # updates to ensure we talk to the terminal even if stderr is redirected.
 _STDERR = sys.stderr
-_TTY = _STDERR.isatty()
+_TTY = terminal.is_output_tty(_STDERR)
 
 # This will erase all content in the current line (wherever the cursor is).
 # It does not move the cursor, so this is usually followed by \r to move to

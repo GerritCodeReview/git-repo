@@ -25,6 +25,7 @@ from git_trace2_event_log_base import BaseEventLog
 import platform_utils
 import repo_logging
 import repo_trace
+import terminal
 from wrapper import Wrapper
 
 
@@ -336,7 +337,7 @@ class GitCommand:
             # Need to use the --progress flag for fetch/clone/push so output
             # will be displayed as by default git only does progress output if
             # stderr is a TTY.
-            if sys.stderr.isatty():
+            if terminal.is_output_tty(sys.stderr):
                 if (
                     "--progress" not in cmdv
                     and "--no-progress" not in cmdv

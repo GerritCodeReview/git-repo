@@ -17,9 +17,12 @@
 from io import StringIO
 from pathlib import Path
 import sys
+from typing import Dict, Optional
+from unittest import mock
 
 import pytest
 
+import error
 import hooks
 
 
@@ -201,3 +204,77 @@ def test_from_subcmd_without_fix_option() -> None:
 
     hook = hooks.RepoHook.FromSubcmd(FakeManifest(), FakeOpt(), "post-sync")
     assert hook._fix is False
+
+
+class FakeHooksConfig:
+    """A git config that stores values in memory."""
+
+    def __init__(self) -> None:
+        self.values: Dict[str, str] = {}
+
+    def GetString(self, key: str) -> Optional[str]:
+        return self.values.get(key)
+
+    def SetString(self, key: str, value: str) -> None:
+        self.values[key] = value
+
+
+def _approval_hook(abort_if_user_denies: bool) -> hooks.RepoHook:
+    """Returns a pre-upload hook backed by an in-memory config."""
+
+    class FakeProject:
+        worktree = None
+        config = FakeHooksConfig()
+
+    return hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(),
+        repo_topdir="/fake/topdir",
+        manifest_url="https://gerrit",
+        abort_if_user_denies=abort_if_user_denies,
+    )
+
+
+def _check_approval(hook: hooks.RepoHook) -> bool:
+    return hook._CheckForHookApprovalHelper(
+        "approvedhash", "abc123", "Run the hook", "The hook changed."
+    )
+
+
+@pytest.mark.parametrize("abort_if_user_denies", (True, False))
+def test_approval_not_interactive(abort_if_user_denies: bool) -> None:
+    """Test that the approval prompt is skipped when repo can't prompt."""
+    hook = _approval_hook(abort_if_user_denies)
+    with mock.patch(
+        "terminal.is_input_interactive", return_value=False
+    ), mock.patch("builtins.input") as mock_input:
+        if abort_if_user_denies:
+            with pytest.raises(error.HookError):
+                _check_approval(hook)
+        else:
+            assert _check_approval(hook) is False
+    mock_input.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "response, approved, saved",
+    (
+        ("yes", True, False),
+        ("always", True, True),
+        ("no", False, False),
+    ),
+)
+def test_approval_interactive(
+    response: str, approved: bool, saved: bool
+) -> None:
+    """Test that the approval prompt is used when repo can prompt."""
+    hook = _approval_hook(abort_if_user_denies=False)
+    with mock.patch(
+        "terminal.is_input_interactive", return_value=True
+    ), mock.patch("builtins.input", return_value=response) as mock_input:
+        assert _check_approval(hook) is approved
+    mock_input.assert_called_once()
+    config = hook._hooks_project.config
+    assert (
+        config.GetString("repo.hooks.pre-upload.approvedhash") == "abc123"
+    ) is saved

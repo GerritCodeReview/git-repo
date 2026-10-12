@@ -21,6 +21,7 @@ from command import MirrorSafeCommand
 import error
 import git_command
 import repo_logging
+import terminal
 from wrapper import Wrapper
 from wrapper import WrapperDir
 
@@ -404,7 +405,7 @@ to update the working directory files.
 
         self._SyncManifest(opt)
 
-        if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
+        if terminal.is_input_interactive() and not self.manifest.IsMirror:
             if opt.config_name or self._ShouldConfigureUser(
                 opt, existing_checkout
             ):
