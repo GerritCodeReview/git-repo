@@ -3276,7 +3276,10 @@ class Project:
             logger.error("error: Failed to execute fetchcmd: %s", e)
             return False
 
-        # Verify postconditions.
+        # Verify postconditions against the object IDs that the refs record.
+        # Peeling them would read the object store, and on one that is
+        # populated lazily that downloads the objects fetchcmd just registered
+        # before anything needs them. The checkout reads them when it does.
         if not IsId(self.revisionExpr):
             try:
                 ref_name = self.GetRemote().ToLocal(self.revisionExpr)
@@ -3284,15 +3287,13 @@ class Project:
                 logger.error("error: Failed to resolve tracking ref: %s", e)
                 return False
             try:
-                resolved_ref = self.bare_git.ResolveCommit(ref_name)
+                resolved_ref = self.bare_git.ResolveRef(ref_name)
             except GitError:
                 logger.error(
-                    "error: Postcondition failed: %s does not resolve to a "
-                    "commit in object store",
-                    ref_name,
+                    "error: Postcondition failed: %s not found", ref_name
                 )
                 return False
-            if repo_trev and resolved_ref != repo_trev:
+            if repo_trev and not self._IsSameCommit(resolved_ref, repo_trev):
                 logger.error(
                     "error: Postcondition failed: %s is %s, expected %s",
                     ref_name,
@@ -3300,26 +3301,39 @@ class Project:
                     repo_trev,
                 )
                 return False
-            repo_trev = resolved_ref
+            if not repo_trev:
+                repo_trev = resolved_ref
 
         try:
-            fetch_head = self.bare_git.ResolveCommit("FETCH_HEAD")
-            if fetch_head != repo_trev:
-                logger.error(
-                    "error: Postcondition failed: FETCH_HEAD is %s, "
-                    "expected %s",
-                    fetch_head,
-                    repo_trev,
-                )
-                return False
+            fetch_head = self.bare_git.ResolveRef("FETCH_HEAD")
         except GitError:
+            logger.error("error: Postcondition failed: FETCH_HEAD not found")
+            return False
+        if not self._IsSameCommit(fetch_head, repo_trev):
             logger.error(
-                "error: Postcondition failed: FETCH_HEAD does not resolve to "
-                "a commit in object store"
+                "error: Postcondition failed: FETCH_HEAD is %s, expected %s",
+                fetch_head,
+                repo_trev,
             )
             return False
 
         return True
+
+    def _IsSameCommit(self, oid: str, expected: str) -> bool:
+        """Whether object ID |oid| names the same commit as |expected|.
+
+        Equal IDs match without reading the object store. Different IDs
+        still match when both peel to the same commit, as when one of them
+        names an annotated tag.
+        """
+        if oid == expected:
+            return True
+        try:
+            return self.bare_git.ResolveCommit(
+                oid
+            ) == self.bare_git.ResolveCommit(expected)
+        except GitError:
+            return False
 
     def _GetUpstreamFallback(self) -> Optional[str]:
         """Resolve a fallback upstream branch when revisionExpr is a SHA-1.
@@ -5110,8 +5124,13 @@ class Project:
                     )
                 return ref
 
-        def ResolveCommit(self, revision: str) -> str:
-            """Resolve |revision| to a commit without option ambiguity."""
+        def ResolveRef(self, revision: str) -> str:
+            """Resolve |revision| to the object ID it names, without peeling.
+
+            Unlike ResolveCommit, this neither peels |revision| nor checks
+            that its object exists, so a ref name or a full object ID resolves
+            without reading the object store.
+            """
             cmdv = ["--verify", "--quiet"]
             if git_require((2, 30, 0)):
                 cmdv.append("--end-of-options")
@@ -5120,8 +5139,12 @@ class Project:
                     f"invalid revision: {revision}",
                     project=self._project.name,
                 )
-            cmdv.append(f"{revision}^{{commit}}")
+            cmdv.append(revision)
             return self.rev_parse(*cmdv, log_as_error=False)
+
+        def ResolveCommit(self, revision: str) -> str:
+            """Resolve |revision| to a commit without option ambiguity."""
+            return self.ResolveRef(f"{revision}^{{commit}}")
 
         def SetHead(self, ref, message=None):
             cmdv = []
