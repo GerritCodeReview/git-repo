@@ -21,6 +21,7 @@ import urllib.parse
 
 import error
 from git_refs import HEAD
+import terminal
 
 
 # The API we've documented to hook authors.  Keep in sync with repo-hooks.md.
@@ -46,10 +47,10 @@ class RepoHook:
 
     Combinations of hook option flags:
     - no-verify=False, verify=False (DEFAULT):
-      If stdout is a tty, can prompt about running hooks if needed.
-      If user denies running hooks, the action is cancelled. If stdout is
-      not a tty and we would need to prompt about hooks, action is
-      cancelled.
+      If repo can prompt (see terminal.is_input_interactive), can prompt about
+      running hooks if needed. If user denies running hooks, the action is
+      cancelled. If repo can't prompt and we would need to prompt about hooks,
+      action is cancelled.
     - no-verify=False, verify=True:
       Always run hooks with no prompt.
     - no-verify=True, verify=False:
@@ -213,8 +214,8 @@ class RepoHook:
         else:
             prompt = ""
 
-        # Prompt the user if we're not on a tty; on a tty we'll assume "no".
-        if sys.stdout.isatty():
+        # Prompt the user if we can; otherwise we'll assume "no".
+        if terminal.is_input_interactive():
             prompt += main_prompt + " (yes/always/NO)? "
             response = input(prompt).lower()
             print()

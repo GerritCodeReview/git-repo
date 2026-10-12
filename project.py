@@ -56,6 +56,7 @@ import platform_utils
 import progress
 from repo_logging import RepoLogger
 from repo_trace import Trace
+import terminal
 
 
 logger = RepoLogger(__file__)
@@ -3478,7 +3479,7 @@ class Project:
 
         if not verbose:
             cmd.append("--quiet")
-        if not quiet and sys.stdout.isatty():
+        if not quiet and terminal.is_output_tty():
             cmd.append("--progress")
         if not self.worktree:
             cmd.append("--update-head-ok")
@@ -3764,7 +3765,7 @@ class Project:
         cmd = ["fetch"]
         if not verbose:
             cmd.append("--quiet")
-        if not quiet and sys.stdout.isatty():
+        if not quiet and terminal.is_output_tty():
             cmd.append("--progress")
         if not self.worktree:
             cmd.append("--update-head-ok")
@@ -5370,7 +5371,7 @@ class SyncBuffer:
 
     def _PrintMessages(self):
         if self._messages or self._pending_failures:
-            if os.isatty(2):
+            if terminal.is_output_tty(2):
                 self.out.write(progress.CSI_ERASE_LINE)
             self.out.write("\r")
 

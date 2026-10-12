@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 import sys
 from typing import Optional
 
 import pager
+import terminal
 
 
 COLORS = {
@@ -135,7 +135,7 @@ class Coloring:
 
         self._on = _CONFIG_TO_COLOR_SETTING.get(on, _CHECK_CONSOLE)
         if self._on is _CHECK_CONSOLE:
-            self._on = pager.active or os.isatty(1)
+            self._on = pager.active or terminal.is_output_tty(1)
 
     def redirect(self, out):
         self._out = out
