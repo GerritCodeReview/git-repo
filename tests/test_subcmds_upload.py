@@ -233,3 +233,38 @@ def test_MultipleBranches_yes_without_branch_or_cbr_uses_editor(
         cmd._MultipleBranches(opt, pending, _STUB_PEOPLE)
         mock_edit.assert_called_once()
         mock_upload.assert_called_once_with(opt, [branch1], _STUB_PEOPLE)
+
+
+@pytest.mark.parametrize(
+    "argv",
+    (
+        ["--fix", "--ignore-hooks"],
+        ["--fix", "--no-verify"],
+        ["--fix", "--ignore-hooks", "--no-verify"],
+    ),
+)
+def test_ValidateOptions_fix_conflicts(
+    cmd: upload.Upload, argv: List[str]
+) -> None:
+    """Check --fix is rejected with --ignore-hooks or --no-verify."""
+    opt, args = cmd.OptionParser.parse_args(argv)
+    with pytest.raises(SystemExit):
+        cmd.ValidateOptions(opt, args)
+
+
+@pytest.mark.parametrize(
+    "argv",
+    (
+        [],
+        ["--fix"],
+        ["--fix", "--verify"],
+        ["--fix", "-y"],
+        ["--ignore-hooks"],
+        ["--no-verify"],
+        ["--ignore-hooks", "--no-verify"],
+    ),
+)
+def test_ValidateOptions_allowed(cmd: upload.Upload, argv: List[str]) -> None:
+    """Check valid hook option combinations are accepted."""
+    opt, args = cmd.OptionParser.parse_args(argv)
+    cmd.ValidateOptions(opt, args)

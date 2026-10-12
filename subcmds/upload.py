@@ -742,6 +742,17 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             avail = project.GetUploadableBranches(opt.branch)
         return (project_idx, avail, cbr)
 
+    def ValidateOptions(self, opt: optparse.Values, args: List[str]) -> None:
+        if opt.fix:
+            if opt.ignore_hooks:
+                self.OptionParser.error(
+                    "--fix and --ignore-hooks are mutually exclusive options"
+                )
+            if opt.bypass_hooks:
+                self.OptionParser.error(
+                    "--fix and --no-verify are mutually exclusive options"
+                )
+
     def Execute(self, opt, args):
         projects = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
