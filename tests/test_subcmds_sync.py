@@ -498,27 +498,116 @@ def test_cli_smart_sync(
 
 
 @pytest.mark.parametrize(
-    "argv, sync_smartsync_manifest, expected_exception",
+    "argv, user_pref, sync_smartsync_manifest, expected_smart_sync, "
+    "expected_implicit",
     [
-        (["-u", "user", "-p", "pass"], False, sync.SmartSyncError),
-        (["-u", "user", "-p", "pass"], True, None),
-        (["-s", "-u", "user", "-p", "pass"], False, None),
-        (["-t", "tag", "-u", "user", "-p", "pass"], False, None),
+        # sync.smartsync=false: never smart sync unless -s/-t is given.
+        ([], False, True, False, False),
+        ([], False, False, False, False),
+        (["-s"], False, True, True, False),
+        (["--smart-sync"], False, False, True, False),
+        (["-t", "tag123"], False, True, False, False),
+        (["--nmu"], False, True, False, False),
+        # sync.smartsync=true: like -s, counted as explicit, not implicit.
+        ([], True, False, True, False),
+        ([], True, True, True, False),
+        (["--nmu"], True, False, True, False),
+        (["--no-smart-sync"], True, True, False, False),
+        (["-t", "tag123"], True, False, False, False),
+        (["-m", "other.xml"], True, False, False, False),
+        (["-l"], True, False, False, False),
+        (["--superproject-revision=abc"], True, False, False, False),
+        # sync.smartsync unset: manifest default applies as before.
+        ([], None, True, True, True),
+        ([], None, False, False, False),
+    ],
+)
+def test_user_config_smart_sync(
+    argv: List[str],
+    user_pref: Optional[bool],
+    sync_smartsync_manifest: bool,
+    expected_smart_sync: bool,
+    expected_implicit: bool,
+) -> None:
+    """Tests the sync.smartsync user setting against CLI and manifest."""
+    manifest = mock.MagicMock()
+    manifest.default.sync_smartsync = sync_smartsync_manifest
+
+    user_cfg = mock.MagicMock()
+    user_cfg.GetBoolean.return_value = user_pref
+
+    cmd = sync.Sync(manifest=manifest)
+    opts, args = cmd.OptionParser.parse_args(argv)
+    cmd.ValidateOptions(opts, args)
+    with mock.patch.object(sync.RepoConfig, "ForUser", return_value=user_cfg):
+        implicit = cmd._ResolveSmartSyncOption(opts, manifest)
+    user_cfg.GetBoolean.assert_called_once_with("sync.smartsync")
+    assert opts.smart_sync == expected_smart_sync
+    assert implicit == expected_implicit
+
+
+@pytest.mark.parametrize(
+    "value, expected_smart_sync",
+    [("true", True), ("false", False), ("yes", True), ("no", False)],
+)
+def test_user_config_smart_sync_from_file(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_home_dir: Path,
+    value: str,
+    expected_smart_sync: bool,
+) -> None:
+    """Tests that sync.smartsync is read from ~/.repoconfig/config."""
+    # ForUser() caches its instance process-wide; make it pick up this HOME.
+    monkeypatch.setattr(sync.RepoConfig, "_ForUser", None)
+    monkeypatch.delenv("REPO_CONFIG_DIR", raising=False)
+    cfg_dir = tmp_home_dir / ".repoconfig"
+    cfg_dir.mkdir()
+    (cfg_dir / "config").write_text(f"[sync]\n\tsmartsync = {value}\n")
+
+    manifest = mock.MagicMock()
+    # Set the manifest default to the opposite so we know the user config won.
+    manifest.default.sync_smartsync = not expected_smart_sync
+
+    cmd = sync.Sync(manifest=manifest)
+    opts, args = cmd.OptionParser.parse_args([])
+    cmd.ValidateOptions(opts, args)
+    assert cmd._ResolveSmartSyncOption(opts, manifest) is False
+    assert opts.smart_sync == expected_smart_sync
+
+
+@pytest.mark.parametrize(
+    "argv, user_pref, sync_smartsync_manifest, expected_exception",
+    [
+        (["-u", "user", "-p", "pass"], None, False, sync.SmartSyncError),
+        (["-u", "user", "-p", "pass"], None, True, None),
+        (["-s", "-u", "user", "-p", "pass"], None, False, None),
+        (["-t", "tag", "-u", "user", "-p", "pass"], None, False, None),
         (
             ["--no-smart-sync", "-u", "user", "-p", "pass"],
+            None,
             True,
             sync.SmartSyncError,
         ),
-        (["-l", "-u", "user", "-p", "pass"], True, sync.SmartSyncError),
-        (["--nmu", "-u", "user", "-p", "pass"], True, None),
-        (["--nmu", "-u", "user", "-p", "pass"], False, sync.SmartSyncError),
-        (["-s", "-l", "-u", "user", "-p", "pass"], True, None),
-        (["-u", "user"], False, SystemExit),
-        (["-p", "pass"], False, SystemExit),
+        (["-l", "-u", "user", "-p", "pass"], None, True, sync.SmartSyncError),
+        (["--nmu", "-u", "user", "-p", "pass"], None, True, None),
+        (
+            ["--nmu", "-u", "user", "-p", "pass"],
+            None,
+            False,
+            sync.SmartSyncError,
+        ),
+        (["-s", "-l", "-u", "user", "-p", "pass"], None, True, None),
+        (["-u", "user"], None, False, SystemExit),
+        (["-p", "pass"], None, False, SystemExit),
+        # -u/-p are accepted when smart sync comes from sync.smartsync=true...
+        (["-u", "user", "-p", "pass"], True, False, None),
+        # ...and rejected when sync.smartsync=false drops the manifest default.
+        (["-u", "user", "-p", "pass"], False, True, sync.SmartSyncError),
     ],
 )
 def test_cli_manifest_server_credentials(
     argv: List[str],
+    user_pref: Optional[bool],
     sync_smartsync_manifest: bool,
     expected_exception: Optional[Type[BaseException]],
 ) -> None:
@@ -526,15 +615,19 @@ def test_cli_manifest_server_credentials(
     manifest = mock.MagicMock()
     manifest.default.sync_smartsync = sync_smartsync_manifest
 
+    user_cfg = mock.MagicMock()
+    user_cfg.GetBoolean.return_value = user_pref
+
     cmd = sync.Sync(manifest=manifest)
     opts, args = cmd.OptionParser.parse_args(argv)
-    if expected_exception:
-        with pytest.raises(expected_exception):
+    with mock.patch.object(sync.RepoConfig, "ForUser", return_value=user_cfg):
+        if expected_exception:
+            with pytest.raises(expected_exception):
+                cmd.ValidateOptions(opts, args)
+                cmd._ResolveSmartSyncOption(opts, manifest)
+        else:
             cmd.ValidateOptions(opts, args)
             cmd._ResolveSmartSyncOption(opts, manifest)
-    else:
-        cmd.ValidateOptions(opts, args)
-        cmd._ResolveSmartSyncOption(opts, manifest)
 
 
 class LocalSyncState(unittest.TestCase):
@@ -1692,6 +1785,48 @@ class SyncCommand(unittest.TestCase):
         ):
             with self.assertRaises(sync.SmartSyncError):
                 self.cmd.Execute(self.opt, [])
+
+    def test_user_config_smart_sync_disabled(self) -> None:
+        """Ensure sync.smartsync=false skips the manifest's default."""
+        self.manifest.default.sync_smartsync = True
+        self.opt.smart_sync = None
+        mock.patch.object(self.cmd, "_UpdateAllManifestProjects").start()
+        user_cfg = mock.MagicMock()
+        user_cfg.GetBoolean.return_value = False
+        with mock.patch.object(
+            sync.RepoConfig, "ForUser", return_value=user_cfg
+        ):
+            with mock.patch.object(self.cmd, "_SmartSyncSetup") as mock_setup:
+                with mock.patch.object(self.cmd, "_UpdateRepoProject"):
+                    with mock.patch.object(
+                        self.cmd, "_ValidateOptionsWithManifest"
+                    ):
+                        with mock.patch.object(self.cmd, "_SyncInterleaved"):
+                            with mock.patch.object(
+                                self.cmd, "_RunPostSyncHook"
+                            ):
+                                self.cmd.Execute(self.opt, [])
+        mock_setup.assert_not_called()
+        self.assertFalse(self.opt.smart_sync)
+
+    def test_user_config_smart_sync_enabled_error(self) -> None:
+        """Ensure sync.smartsync=true fails hard instead of falling back."""
+        self.manifest.default.sync_smartsync = False
+        self.opt.smart_sync = None
+        self.opt.mp_update = False
+        user_cfg = mock.MagicMock()
+        user_cfg.GetBoolean.return_value = True
+        with mock.patch.object(
+            sync.RepoConfig, "ForUser", return_value=user_cfg
+        ):
+            with mock.patch.object(
+                self.cmd,
+                "_SmartSyncSetup",
+                side_effect=sync.SmartSyncError("unreachable"),
+            ) as mock_setup:
+                with self.assertRaises(sync.SmartSyncError):
+                    self.cmd.Execute(self.opt, [])
+        mock_setup.assert_called_once()
 
     def test_implicit_smart_sync_unparsable_manifest(self) -> None:
         """Ensure an unparsable smart sync manifest falls back to ToT."""
