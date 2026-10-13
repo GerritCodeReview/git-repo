@@ -204,6 +204,10 @@ still fails the sync, as before. Options that specify an explicit target or
 manifest source (such as `-t`/`--smart-tag`, `-m`/`--manifest-name` or
 `--superproject-revision`) will also disable the default Smart Sync behavior.
 
+Users can override this manifest default on their workstation with the
+`sync.smartsync` user setting; see
+[Per-user default](#Per_user-default-sync_smartsync) below.
+
 ### --smart-sync / -s
 
 Explicitly enables Smart Sync. Repo will call
@@ -230,6 +234,18 @@ match the settings Android build environments automatically setup.
 
 Explicitly disables Smart Sync, overriding any `sync-smartsync="true"` setting
 declared in the manifest `<default>` element.
+
+### Per-user default (sync.smartsync)
+
+A user can decide once, for all their checkouts, whether `repo sync` should
+Smart Sync by default by setting the boolean `sync.smartsync` key in their
+[per-user repo config](./repoconfig.md#smartsync).
+
+Command line flags (`-s`, `--no-smart-sync`, `-t`) override the user setting,
+which in turn overrides the manifest's `sync-smartsync` default.  A Smart Sync
+enabled this way is treated as an explicit request, so it is subject to the
+same restrictions as `-s` and fails the sync if no manifest can be obtained
+from the server instead of silently falling back to ToT.
 
 ### --smart-tag=TAG / -t
 
