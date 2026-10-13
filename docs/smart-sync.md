@@ -172,6 +172,10 @@ sync, as before. Options that specify an explicit target or manifest source
 (such as `-t`/`--smart-tag`, `-m`/`--manifest-name` or
 `--superproject-revision`) will also disable the default Smart Sync behavior.
 
+Users can override this manifest default on their workstation with the
+`sync.smartsync` user setting; see
+[Per-user default](#Per-user-default-sync_smartsync) below.
+
 ### --smart-sync / -s
 
 Explicitly enables Smart Sync. Repo will call
@@ -197,6 +201,46 @@ match the settings Android build environments automatically setup.
 
 Explicitly disables Smart Sync, overriding any `sync-smartsync="true"` setting
 declared in the manifest `<default>` element.
+
+### Per-user default (sync.smartsync)
+
+A user can decide once, for all their checkouts, whether `repo sync` should
+Smart Sync by default.  The choice is stored as the boolean `sync.smartsync`
+key in the per-user repo config file `~/.repoconfig/config` (see
+[internal-fs-layout.md](./internal-fs-layout.md#dotconfig-layout)), which uses
+the git-config file format:
+
+```sh
+# Always Smart Sync, as if -s/--smart-sync were passed.
+git config --file ~/.repoconfig/config sync.smartsync true
+
+# Never Smart Sync by default, even if the manifest sets sync-smartsync="true".
+git config --file ~/.repoconfig/config sync.smartsync false
+
+# Remove the preference and go back to following the manifest.
+git config --file ~/.repoconfig/config --unset sync.smartsync
+```
+
+The effective behavior is resolved in this order; the first match wins:
+
+1.  Command line: `-s`/`--smart-sync`, `--no-smart-sync`, or `-t`/`--smart-tag`.
+2.  User config: `sync.smartsync` in `~/.repoconfig/config`.
+3.  Manifest: `sync-smartsync="true"` on the `<default>` element.
+4.  Otherwise, a regular ToT sync.
+
+So `sync.smartsync=false` turns off the manifest-driven default, but an
+explicit `repo sync -s`, `repo sync -t TAG` or `repo smartsync` still works.
+Likewise `sync.smartsync=true` is overridden by `--no-smart-sync`.
+
+A Smart Sync enabled by `sync.smartsync=true` is treated as an explicit
+request: it is subject to the same restrictions as `-s` (it is skipped when
+`-l`/`--local-only`, `-m`/`--manifest-name`, `-t`/`--smart-tag` or
+`--superproject-revision` is used), and a failure to obtain a manifest from
+the server fails the sync instead of silently falling back to ToT.
+
+`sync.smartsync` does not affect `-l`/`--local-only`: as described above, a
+local-only sync keeps whatever `smart_sync_override.xml` the previous network
+sync left behind.
 
 ### --smart-tag=TAG / -t
 
