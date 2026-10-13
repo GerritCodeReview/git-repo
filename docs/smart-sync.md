@@ -152,6 +152,36 @@ affect Smart Sync: the default Smart Sync from `sync-smartsync` (see below)
 still runs, and an existing `smart_sync_override.xml` is replaced or removed as
 in a regular sync.
 
+### repo.smartsync (Git Config) and `repo init --[no-]smart-sync`
+
+Users can configure Smart Sync as the default for an individual workspace or
+globally across their machine using the `repo.smartsync` boolean git config key:
+
+*   **Per-workspace**: Pass `-s`/`--smart-sync` (or `--no-smart-sync`/`--head`)
+    to `repo init`, or run
+    `git -C .repo/manifests.git config repo.smartsync true` (or `false`).
+*   **Global (user/machine)**: Run `git config --global repo.smartsync true`
+    (or `false`), or set it in `~/.repoconfig/config` via
+    `git config --file ~/.repoconfig/config repo.smartsync true` (or `false`).
+
+When resolving whether to perform a Smart Sync by default, `repo sync` uses the
+following precedence order (highest to lowest):
+
+1.  Per-invocation CLI flags (`-s`/`--smart-sync`, `--no-smart-sync`/`--head`,
+    or target selection flags like `-t`, `-m`, `--superproject-revision`, `-l`).
+2.  Workspace git config (`.repo/manifests.git/config` `repo.smartsync`).
+3.  User global git config (`~/.gitconfig` or `~/.config/git/config`
+    `repo.smartsync`).
+4.  User repo config (`~/.repoconfig/config` `repo.smartsync`).
+5.  Manifest `<default sync-smartsync="true" />` attribute.
+
+Setting `repo.smartsync` to `false` (or running `repo init --no-smart-sync` /
+`repo init --head`) disables default Smart Sync even when the manifest sets
+`sync-smartsync="true"`. As with `sync-smartsync="true"`, a config-enabled
+default Smart Sync falls back to a regular ToT sync if the manifest does not
+define a `<manifest-server>` or the manifest server cannot provide a usable
+manifest.
+
 ### sync-smartsync (Manifest Attribute)
 
 The manifest can enable Smart Sync by default for all `repo sync` invocations
@@ -193,10 +223,10 @@ match the settings Android build environments automatically setup.
 3.  `${TARGET_PRODUCT}-${TARGET_BUILD_VARIANT}`: If these variables are all
     defined, then they are merged with `-` and used.
 
-### --no-smart-sync
+### --no-smart-sync / --head
 
-Explicitly disables Smart Sync, overriding any `sync-smartsync="true"` setting
-declared in the manifest `<default>` element.
+Explicitly disables Smart Sync, overriding any `repo.smartsync` git config or
+`sync-smartsync="true"` setting declared in the manifest `<default>` element.
 
 ### --smart-tag=TAG / -t
 

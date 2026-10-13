@@ -439,6 +439,20 @@ def InitParser(parser):
         help="disable use of manifest superprojects",
     )
     group.add_option(
+        "-s",
+        "--smart-sync",
+        action="store_true",
+        default=None,
+        help="default to smart sync when syncing projects",
+    )
+    group.add_option(
+        "--no-smart-sync",
+        "--head",
+        action="store_false",
+        dest="smart_sync",
+        help="disable defaulting to smart sync",
+    )
+    group.add_option(
         "--clone-bundle",
         action="store_true",
         help="enable use of /clone.bundle on HTTP/HTTPS "

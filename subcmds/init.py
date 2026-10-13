@@ -164,6 +164,7 @@ to update the working directory files.
             clone_bundle=opt.clone_bundle,
             git_lfs=opt.git_lfs,
             use_superproject=opt.use_superproject,
+            smart_sync=opt.smart_sync,
             verbose=opt.verbose,
             current_branch_only=opt.current_branch_only,
             tags=opt.tags,
@@ -312,9 +313,17 @@ to update the working directory files.
                     "--mirror and --use-superproject cannot be "
                     "used together."
                 )
+            if opt.smart_sync is not None:
+                self.OptionParser.error(
+                    "--mirror and --smart-sync cannot be used together."
+                )
         if opt.archive and opt.use_superproject is not None:
             self.OptionParser.error(
                 "--archive and --use-superproject cannot be used " "together."
+            )
+        if opt.archive and opt.smart_sync is not None:
+            self.OptionParser.error(
+                "--archive and --smart-sync cannot be used together."
             )
 
         if opt.standalone_manifest and (
