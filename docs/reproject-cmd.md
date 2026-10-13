@@ -91,8 +91,9 @@ Detecting collisions with untracked files or unstaged working-tree modifications
 After the command exits with status 0, `repo` expects the following
 postconditions to be met:
 
-1.  `git diff-index --quiet --cached REPO_TREV^{tree}` exits 0 (the index
-    matches the target tree).
+1.  The index matches `REPO_TREV`'s tree (`repo` trusts the command's exit
+    status and does not run `git diff-index` against `REPO_TREV^{tree}`, which
+    would read every tree object from `.git/objects`).
 2.  `HEAD` still names what it did before the command, and its resolved commit
     object ID has not changed.
 
