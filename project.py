@@ -4169,26 +4169,6 @@ class Project:
                 project=self.name,
             )
 
-        p = GitCommand(
-            self,
-            ["diff-index", "--cached", "--name-only", f"{revid}^{{tree}}"],
-            capture_stdout=True,
-            capture_stderr=True,
-        )
-        if p.Wait() != 0:
-            raise LocalSyncFail(
-                f"cannot compare the index against {revid}: "
-                f"{p.stderr.strip()}",
-                project=self.name,
-            )
-        mismatched = p.stdout.splitlines()
-        if mismatched:
-            raise LocalSyncFail(
-                f"reprojectcmd left the index different from {revid}:\n"
-                + _FirstLines(mismatched),
-                project=self.name,
-            )
-
     def _InitGitDir(self, mirror_git=None, force_sync=False, quiet=False):
         # Prefix for temporary directories created during gitdir initialization.
         TMP_GITDIR_PREFIX = ".tmp-project-initgitdir-"
