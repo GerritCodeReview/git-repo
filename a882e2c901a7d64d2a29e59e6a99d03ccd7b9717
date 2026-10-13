@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07cb86bf_b698d5bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-13T15:20:45Z",
+      "side": 1,
+      "message": "it feels like we\u0027re throwing things against the wall to see what sticks instead of thinking comprehensively about the UX.  the hooks should have no idea whether they\u0027re being skipped entirely, or their output/results ignored.\n\nwhat you\u0027re trying to suppress/control is interactivity.  it\u0027s what you already implemented `--yes`.  maybe we should be plumbing through \"interactive\" as a signal.  or we don\u0027t plumb through anything and we actively rebind stdin to /dev/null so every hook implementation doesn\u0027t need to re-implement the same logic.",
+      "revId": "a882e2c901a7d64d2a29e59e6a99d03ccd7b9717",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5337acaa_a56cd879",
+        "filename": "hooks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-13T15:20:45Z",
+      "side": 1,
+      "message": "every arg here must be documented in docs/repo-hooks.md\n\nmight help to add a comment above reminding people",
+      "revId": "a882e2c901a7d64d2a29e59e6a99d03ccd7b9717",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
