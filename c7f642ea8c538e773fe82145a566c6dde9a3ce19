@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84cae8a7_70e076c4",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-10-13T17:01:32Z",
+      "side": 1,
+      "message": "Although it\u0027s unlikely we\u0027ll pass in a single word for self.file, we should still guard against that just in case. If self.file is a single word then the directory already exists (it\u0027s basically the current directory)",
+      "range": {
+        "startLine": 272,
+        "startChar": 15,
+        "endLine": 272,
+        "endChar": 23
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f0428233_f3de4ffe",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "git_config.py",
+              "range": {
+                "startLine": 272,
+                "startChar": 0,
+                "endLine": 273,
+                "endChar": 0
+              },
+              "replacement": "            parent_dir \u003d os.path.dirname(self.file)\n            if parent_dir:\n                os.makedirs(parent_dir, exist_ok\u003dTrue)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c7f642ea8c538e773fe82145a566c6dde9a3ce19",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
