@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b35477c3_d8503093",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-13T17:37:04Z",
+      "side": 1,
+      "message": "this is not a good commit message.  it should explain what you\u0027re fixing \u0026 how.\nhttps://cbea.ms/git-commit/\n\nyou should also scope the commit message when possible.  this should be prefixed with `git_config:`.",
+      "revId": "c7f642ea8c538e773fe82145a566c6dde9a3ce19",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84cae8a7_70e076c4",
         "filename": "git_config.py",
         "patchSetId": 1
