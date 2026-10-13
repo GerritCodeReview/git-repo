@@ -129,7 +129,7 @@ if not REPO_REV:
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 69)
+VERSION = (2, 70)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -442,6 +442,20 @@ def InitParser(parser):
         action="store_false",
         dest="use_superproject",
         help="disable use of manifest superprojects",
+    )
+    group.add_option(
+        "-s",
+        "--smart-sync",
+        action="store_true",
+        default=None,
+        help="default to smart sync when syncing projects",
+    )
+    group.add_option(
+        "--no-smart-sync",
+        "--head",
+        action="store_false",
+        dest="smart_sync",
+        help="default to not use smart sync when syncing projects",
     )
     group.add_option(
         "--clone-bundle",

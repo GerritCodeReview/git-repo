@@ -465,6 +465,8 @@ def test_cli_jobs_sync_j_max(
         (["--smart-sync"], True, True, False),
         (["--no-smart-sync"], True, False, False),
         (["--no-smart-sync"], False, False, False),
+        (["--head"], True, False, False),
+        (["--head"], False, False, False),
         (["-t", "tag123"], True, False, False),
         (["--smart-tag=tag123"], True, False, False),
         (["-m", "other.xml"], True, False, False),
@@ -491,6 +493,55 @@ def test_cli_smart_sync(
     """
     manifest = mock.MagicMock()
     manifest.default.sync_smartsync = sync_smartsync_manifest
+    manifest.manifestProject.smart_sync = None
+
+    cmd = sync.Sync(manifest=manifest)
+    opts, args = cmd.OptionParser.parse_args(argv)
+    cmd.ValidateOptions(opts, args)
+    implicit = cmd._ResolveSmartSyncOption(opts, manifest)
+    assert opts.smart_sync == expected_smart_sync
+    assert implicit == expected_implicit
+
+
+@pytest.mark.parametrize(
+    "argv, config_smart_sync, sync_smartsync_manifest, expected_smart_sync, "
+    "expected_implicit",
+    [
+        # Config True overrides manifest False/None.
+        ([], True, False, True, True),
+        ([], True, None, True, True),
+        # Config False overrides manifest True.
+        ([], False, True, False, False),
+        # Config None falls back to manifest.
+        ([], None, True, True, True),
+        ([], None, False, False, False),
+        # CLI flags override config.
+        (["-s"], False, False, True, False),
+        (["--smart-sync"], False, True, True, False),
+        (["--no-smart-sync"], True, True, False, False),
+        (["--no-smart-sync"], True, False, False, False),
+        (["--head"], True, True, False, False),
+        (["--head"], True, False, False, False),
+        # Conflicting flags suppress implicit smart sync from config.
+        (["-t", "tag123"], True, False, False, False),
+        (["-m", "other.xml"], True, False, False, False),
+        (["-l"], True, False, False, False),
+        (["--nmu"], True, False, True, True),
+        (["--superproject-revision=abc"], True, False, False, False),
+        (["-s", "-l"], True, False, True, False),
+    ],
+)
+def test_cli_smart_sync_with_config(
+    argv: List[str],
+    config_smart_sync: Optional[bool],
+    sync_smartsync_manifest: Optional[bool],
+    expected_smart_sync: bool,
+    expected_implicit: bool,
+) -> None:
+    """Tests repo.smartsync config precedence between CLI and manifest."""
+    manifest = mock.MagicMock()
+    manifest.default.sync_smartsync = sync_smartsync_manifest
+    manifest.manifestProject.smart_sync = config_smart_sync
 
     cmd = sync.Sync(manifest=manifest)
     opts, args = cmd.OptionParser.parse_args(argv)
