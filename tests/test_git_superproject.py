@@ -613,3 +613,61 @@ class SuperprojectTestCase(unittest.TestCase):
             capture_stderr=True,
             log_as_error=False,
         )
+
+    def test_commit_id_verifies_commit_object(self) -> None:
+        """Test commit_id peels to ^{commit} so missing SHAs return None."""
+        rev = "1234abcd" * 5
+        self._superproject.SetRevisionId(rev)
+        command = mock.MagicMock(stdout=f"{rev}\n")
+        command.Wait.return_value = 0
+        with mock.patch(
+            "git_superproject.GitCommand", return_value=command
+        ) as git_command:
+            self.assertEqual(rev, self._superproject.commit_id)
+
+        git_command.assert_called_once_with(
+            None,
+            ["rev-parse", "--verify", "--quiet", f"{rev}^{{commit}}"],
+            gitdir=self._superproject._work_git,
+            bare=True,
+            capture_stdout=True,
+            capture_stderr=True,
+        )
+
+    def test_Sync_fetches_when_revision_id_missing_locally(self) -> None:
+        """Test Sync runs _Fetch when a SHA revision is not in the repo."""
+        rev = "1234abcd" * 5
+        self._superproject.SetRevisionId(rev)
+        self._superproject.SetQuiet(True)
+        with mock.patch.object(
+            self._superproject, "_Init", return_value=True
+        ), mock.patch.object(
+            self._superproject, "_GetRef", return_value=""
+        ) as get_ref, mock.patch.object(
+            self._superproject, "_Fetch", return_value=True
+        ) as fetch:
+            result = self._superproject.Sync(self.git_event_log)
+
+        self.assertTrue(result.success)
+        self.assertFalse(result.fatal)
+        get_ref.assert_called_once_with(f"{rev}^{{commit}}")
+        fetch.assert_called_once_with()
+
+    def test_Sync_skips_fetch_when_revision_id_present_locally(self) -> None:
+        """Test Sync skips _Fetch when a SHA revision exists in the repo."""
+        rev = "1234abcd" * 5
+        self._superproject.SetRevisionId(rev)
+        self._superproject.SetQuiet(True)
+        with mock.patch.object(
+            self._superproject, "_Init", return_value=True
+        ), mock.patch.object(
+            self._superproject, "_GetRef", return_value=rev
+        ) as get_ref, mock.patch.object(
+            self._superproject, "_Fetch", return_value=True
+        ) as fetch:
+            result = self._superproject.Sync(self.git_event_log)
+
+        self.assertTrue(result.success)
+        self.assertFalse(result.fatal)
+        get_ref.assert_called_once_with(f"{rev}^{{commit}}")
+        fetch.assert_not_called()

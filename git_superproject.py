@@ -139,7 +139,12 @@ class Superproject:
     @property
     def commit_id(self):
         """Returns the commit ID of the superproject checkout."""
-        cmd = ["rev-parse", self.revision]
+        cmd = [
+            "rev-parse",
+            "--verify",
+            "--quiet",
+            f"{self.revision}^{{commit}}",
+        ]
         p = GitCommand(
             None,  # project
             cmd,
@@ -158,7 +163,7 @@ class Superproject:
                 p.stderr,
             )
             return None
-        return p.stdout
+        return p.stdout.strip()
 
     @property
     def project_commit_ids(self):
@@ -430,7 +435,7 @@ class Superproject:
 
         if not self._Init():
             return SyncResult(False, should_exit)
-        if IsId(self.revision) and self.commit_id:
+        if IsId(self.revision) and self._GetRef(f"{self.revision}^{{commit}}"):
             return SyncResult(True, False)
         if not self._Fetch():
             return SyncResult(False, should_exit)
