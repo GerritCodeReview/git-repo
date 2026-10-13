@@ -57,6 +57,29 @@
       },
       "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59d3efb6_c67dec70",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-10-13T20:23:12Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Repo Analyzer: The \u0027repo\u0027 launcher script was modified but the VERSION tuple was not bumped (cu...\n\nThe \u0027repo\u0027 launcher script was modified but the VERSION tuple was not bumped (currently (2, 65)). Please consider incrementing VERSION to signal a new launcher release.",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 0
+      },
+      "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
