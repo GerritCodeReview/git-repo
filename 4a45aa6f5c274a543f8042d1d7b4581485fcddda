@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76174356_9afa2a9d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-13T14:41:02Z",
+      "side": 1,
+      "message": "doesn\u0027t `--fix --yes` skip prompting ?",
+      "revId": "4a45aa6f5c274a543f8042d1d7b4581485fcddda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
