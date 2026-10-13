@@ -16,6 +16,24 @@
       "message": "I have updated this CL to also support putting the variable in `~/.repoconfig/config`, while still mirroring several other `repo init` options that are tracked in `.repo/manifests.git/config`.\n\nEither change is fine by me.",
       "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6dee8c5_cfdac517",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-13T20:02:02Z",
+      "side": 1,
+      "message": "FWIW, the only thing currently using `~/.repoconfig/config` is the superproject opt-in status (and expiration).  Everything else tends to use `.repo/manifests.git/config`.",
+      "parentUuid": "f16acdb8_b7575f24",
+      "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
