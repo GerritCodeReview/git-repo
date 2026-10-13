@@ -559,6 +559,9 @@ class RemoteSpec:
 
 
 class Project:
+    # How long to wait before the first retry of a failed fetch.
+    RETRY_SLEEP_INITIAL_SEC = 4.0
+
     # These objects can be shared between several working trees.
     @property
     def shareable_dirs(self):
@@ -3353,7 +3356,6 @@ class Project:
         force_sync=False,
         clone_filter=None,
         retry_fetches=2,
-        retry_sleep_initial_sec=4.0,
         retry_exp_factor=2.0,
     ) -> bool:
         tag_name = None
@@ -3546,7 +3548,7 @@ class Project:
 
         # At least one retry minimum due to git remote prune.
         retry_fetches = max(retry_fetches, 2)
-        retry_cur_sleep = retry_sleep_initial_sec
+        retry_cur_sleep = self.RETRY_SLEEP_INITIAL_SEC
         ok = prune_tried = False
         try:
             for try_n in range(retry_fetches):
@@ -5487,6 +5489,10 @@ class MetaProject(Project):
 
 class RepoProject(MetaProject):
     """The MetaProject for repo itself."""
+
+    # The automated release process deletes the stable branch and then
+    # recreates it, so wait long enough for it to come back before retrying.
+    RETRY_SLEEP_INITIAL_SEC = 10.0
 
     @property
     def LastFetch(self):

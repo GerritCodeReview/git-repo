@@ -515,6 +515,62 @@ class TestResolveRepoRev:
         with pytest.raises(repo_wrapper.CloneFailure):
             repo_wrapper.resolve_repo_rev(git_checkout.git_dir, "boooooooya")
 
+    @pytest.mark.parametrize(
+        "committish",
+        ["refs/heads/unknown", "refs/tags/unknown", "boooooooya"],
+    )
+    @pytest.mark.parametrize("report_errors", [True, False])
+    def test_report_errors(
+        self,
+        repo_wrapper: wrapper.Wrapper,
+        git_checkout: GitCheckout,
+        capsys: pytest.CaptureFixture,
+        committish: str,
+        report_errors: bool,
+    ) -> None:
+        """Check errors are only printed when requested."""
+        with pytest.raises(repo_wrapper.CloneFailure):
+            repo_wrapper.resolve_repo_rev(
+                git_checkout.git_dir, committish, report_errors=report_errors
+            )
+        assert ("repo: error:" in capsys.readouterr().err) == report_errors
+
+
+class TestRefetchIfRevMissing:
+    """Check _RefetchIfRevMissing behavior."""
+
+    @pytest.mark.parametrize("missing", [False, True])
+    def test_refetch(
+        self,
+        repo_wrapper: wrapper.Wrapper,
+        capsys: pytest.CaptureFixture,
+        missing: bool,
+    ) -> None:
+        """Check it refetches once only if the rev doesn't resolve."""
+        mock_resolve = mock.Mock(
+            side_effect=repo_wrapper.CloneFailure() if missing else None
+        )
+        with mock.patch.object(repo_wrapper, "_Fetch") as mock_fetch:
+            with mock.patch.object(repo_wrapper.time, "sleep") as mock_sleep:
+                with mock.patch.object(
+                    repo_wrapper, "resolve_repo_rev", mock_resolve
+                ):
+                    repo_wrapper._RefetchIfRevMissing(
+                        "url", "/dst", "stable", False, False
+                    )
+
+        # It resolves quietly; check_repo_rev reports the error.
+        mock_resolve.assert_called_once_with(
+            "/dst", "stable", report_errors=False
+        )
+        fetches = int(missing)
+        fetch = mock.call("url", "/dst", "origin", False, False)
+        assert mock_fetch.call_args_list == [fetch] * fetches
+        delay = repo_wrapper.REV_REFETCH_DELAY_SEC
+        assert mock_sleep.call_args_list == [mock.call(delay)] * fetches
+        warnings = capsys.readouterr().err.count(f"refetching in {delay} ")
+        assert warnings == fetches
+
 
 class TestCheckRepoVerify:
     """Check check_repo_verify behavior."""

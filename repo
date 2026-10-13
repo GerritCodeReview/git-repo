@@ -26,7 +26,7 @@ import platform
 import shlex
 import subprocess
 import sys
-from typing import NamedTuple
+from typing import NamedTuple, Tuple
 
 
 # These should never be newer than the main.py version since this needs to be a
@@ -129,7 +129,7 @@ if not REPO_REV:
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 65)
+VERSION = (2, 69)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -220,6 +220,10 @@ repodir = ".repo"  # name of repo's private directory
 S_repo = "repo"  # special repo repository
 S_manifests = "manifests"  # special manifest repository
 REPO_MAIN = S_repo + "/main.py"  # main script
+# The automated release process deletes the stable branch and then recreates it
+# at the new release, so a fetch can briefly miss it.  Wait this long and
+# refetch once before giving up on --repo-rev.
+REV_REFETCH_DELAY_SEC = 10
 
 
 import errno
@@ -228,6 +232,7 @@ import optparse
 import re
 import shutil
 import stat
+import time
 import urllib.error
 import urllib.request
 
@@ -631,6 +636,7 @@ def _Init(args):
         dst = dst_final + ".tmp"
         shutil.rmtree(dst, ignore_errors=True)
         _Clone(url, dst, opt.clone_bundle, opt.quiet, opt.verbose)
+        _RefetchIfRevMissing(url, dst, rev, opt.quiet, opt.verbose)
 
         remote_ref, rev = check_repo_rev(
             dst, rev, opt.repo_verify, quiet=opt.quiet
@@ -1005,7 +1011,43 @@ def _Clone(url, cwd, clone_bundle, quiet, verbose):
     _Fetch(url, cwd, "origin", quiet, verbose)
 
 
-def resolve_repo_rev(cwd, committish):
+def _RefetchIfRevMissing(
+    url: str, cwd: str, rev: str, quiet: bool, verbose: bool
+) -> None:
+    """Refetch once if |rev| doesn't resolve.
+
+    This doesn't fail if |rev| still doesn't resolve; check_repo_rev reports
+    that.
+
+    Any unresolvable |rev| is retried, not just branches.  Telling a branch
+    apart from a tag or commit isn't possible while it's missing, and the only
+    cost for a bad --repo-rev is a short delay before the same error.
+
+    Args:
+        url: The URL of the repo source.
+        cwd: The git checkout to fetch into.
+        rev: The --repo-rev to wait for.
+        quiet: Whether to suppress fetch output.
+        verbose: Whether to show verbose fetch output.
+    """
+    try:
+        resolve_repo_rev(cwd, rev, report_errors=False)
+        return
+    except CloneFailure:
+        pass
+    # Print even with --quiet since this explains the delay.
+    print(
+        f'repo: warning: unable to resolve "{rev}"; '
+        f"refetching in {REV_REFETCH_DELAY_SEC} seconds",
+        file=sys.stderr,
+    )
+    time.sleep(REV_REFETCH_DELAY_SEC)
+    _Fetch(url, cwd, "origin", quiet, verbose)
+
+
+def resolve_repo_rev(
+    cwd: str, committish: str, report_errors: bool = True
+) -> Tuple[str, str]:
     """Figure out what REPO_REV represents.
 
     We support:
@@ -1016,6 +1058,7 @@ def resolve_repo_rev(cwd, committish):
     Args:
         cwd: The git checkout to run in.
         committish: The REPO_REV argument to resolve.
+        report_errors: Whether to print an error if it can't be resolved.
 
     Returns:
         A tuple of (remote ref, commit) as makes sense for the committish.
@@ -1034,17 +1077,18 @@ def resolve_repo_rev(cwd, committish):
         )
         return None if ret.returncode else ret.stdout.strip()
 
+    def error(msg: str) -> CloneFailure:
+        if report_errors:
+            print(f"repo: error: {msg}", file=sys.stderr)
+        return CloneFailure()
+
     # An explicit branch.
     if committish.startswith("refs/heads/"):
         remote_ref = committish
         committish = committish[len("refs/heads/") :]
         rev = resolve("refs/remotes/origin/%s" % committish)
         if rev is None:
-            print(
-                f'repo: error: unknown branch "{committish}"',
-                file=sys.stderr,
-            )
-            raise CloneFailure()
+            raise error(f'unknown branch "{committish}"')
         return (remote_ref, rev)
 
     # An explicit tag.
@@ -1053,11 +1097,7 @@ def resolve_repo_rev(cwd, committish):
         committish = committish[len("refs/tags/") :]
         rev = resolve(remote_ref)
         if rev is None:
-            print(
-                f'repo: error: unknown tag "{committish}"',
-                file=sys.stderr,
-            )
-            raise CloneFailure()
+            raise error(f'unknown tag "{committish}"')
         return (remote_ref, rev)
 
     # See if it's a short branch name.
@@ -1076,11 +1116,7 @@ def resolve_repo_rev(cwd, committish):
         return (rev, rev)
 
     # Give up!
-    print(
-        f'repo: error: unable to resolve "{committish}"',
-        file=sys.stderr,
-    )
-    raise CloneFailure()
+    raise error(f'unable to resolve "{committish}"')
 
 
 def verify_rev(cwd, remote_ref, rev, quiet):

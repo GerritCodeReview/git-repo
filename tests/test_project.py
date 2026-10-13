@@ -15,6 +15,7 @@
 """Unittests for the project.py module."""
 
 import contextlib
+import io
 import os
 from pathlib import Path
 import shutil
@@ -2111,6 +2112,35 @@ def test_metaproject_has_changes(
         proj.revisionExpr = revision
 
         assert proj.HasChanges is expected
+
+
+@pytest.mark.parametrize(
+    "project_cls,expected_sleep",
+    (
+        (project.ManifestProject, 4.0),
+        # Repo waits longer for a briefly deleted stable branch to come back.
+        (project.RepoProject, 10.0),
+    ),
+    ids=lambda v: v.__name__ if isinstance(v, type) else None,
+)
+def test_remote_fetch_retry_sleep(
+    project_cls: Type[project.MetaProject], expected_sleep: float
+) -> None:
+    """A failed fetch waits RETRY_SLEEP_INITIAL_SEC before retrying."""
+    with utils_for_test.TempGitTree() as tempdir:
+        proj = _create_meta_project(tempdir, project_cls)
+        proj.config.GetRemote("origin").ResetFetch()
+        proj.revisionExpr = "refs/heads/stable"
+        with mock.patch.object(project, "GitCommand") as mock_git:
+            # What git does while stable is deleted.
+            mock_git.return_value.Wait.return_value = 128
+            mock_git.return_value.stdout = (
+                "fatal: couldn't find remote ref refs/heads/stable\n"
+            )
+            with mock.patch.object(project.time, "sleep") as mock_sleep:
+                assert not proj._RemoteFetch(output_redir=io.StringIO())
+
+        assert mock_sleep.call_args_list == [mock.call(expected_sleep)]
 
 
 @pytest.mark.parametrize(
