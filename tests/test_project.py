@@ -3944,13 +3944,12 @@ class ReprojectCmdTests(unittest.TestCase):
 
     @staticmethod
     def _git_command(
-        staged: str = "", diff: str = "", returncode: int = 0
+        staged: str = "", returncode: int = 0
     ) -> Callable[..., mock.MagicMock]:
         """Return a GitCommand stand-in answering the reproject queries.
 
         Args:
             staged: `git diff-index -z --cached` or `git ls-files -z` output.
-            diff: `git diff-index --cached` postcondition output.
             returncode: exit code of GitCommand.
         """
 
@@ -3963,12 +3962,7 @@ class ReprojectCmdTests(unittest.TestCase):
                 return real_git_command(project, cmdv, **kwargs)
             cmd = mock.MagicMock()
             cmd.stderr = ""
-            if cmdv[0] == "diff-index":
-                if any("^{tree}" in arg for arg in cmdv):
-                    cmd.stdout = diff
-                else:
-                    cmd.stdout = staged
-            elif cmdv[0] == "ls-files":
+            if cmdv[0] in ("diff-index", "ls-files"):
                 cmd.stdout = staged
             else:
                 cmd.stdout = ""
@@ -4104,19 +4098,23 @@ class ReprojectCmdTests(unittest.TestCase):
                     proj._Reproject(self.REVID)
             self.assertIn("moved HEAD", str(e.exception))
 
-    def test_reproject_rejects_an_index_mismatch(self) -> None:
-        """Test a command that left the index off the target fails the sync."""
+    def test_reproject_does_not_read_target_tree(self) -> None:
+        """Test _Reproject does not diff the index against REPO_TREV^{tree}."""
         with utils_for_test.TempGitTree() as tempdir:
             proj = self._get_project(tempdir)
             with mock.patch(
                 "git_command.GitCommand",
-                side_effect=self._git_command(diff="lib/a.c\n"),
-            ), mock.patch("subprocess.run") as mock_run:
+                side_effect=self._git_command(),
+            ) as mock_git_cmd, mock.patch("subprocess.run") as mock_run:
                 mock_run.return_value = mock.MagicMock(returncode=0, stdout="")
-                with self.assertRaises(project.LocalSyncFail) as e:
-                    proj._Reproject(self.REVID)
-            self.assertIn(self.REVID, str(e.exception))
-            self.assertIn("lib/a.c", str(e.exception))
+                proj._Reproject(self.REVID)
+
+            self.assertEqual(mock_git_cmd.call_count, 1)
+            cmdv = mock_git_cmd.call_args[0][1]
+            self.assertEqual(
+                cmdv,
+                ["diff-index", "-z", "--cached", "--name-only", self.HEAD_TREE],
+            )
 
     def _get_synced_project(
         self,
@@ -4935,7 +4933,7 @@ class ReprojectCmdGitTests(unittest.TestCase):
             )
 
     def test_reproject_unborn_empty_skips_redundant_git_checks(self) -> None:
-        """Clean unborn files-backend checkout runs only post-check diff."""
+        """Clean unborn files-backend checkout runs zero GitCommand checks."""
         with tempfile.TemporaryDirectory() as topdir, mock.patch.dict(
             os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}
         ):
@@ -4956,17 +4954,7 @@ class ReprojectCmdGitTests(unittest.TestCase):
             with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
                 proj._Reproject(revid)
 
-            self.assertEqual(
-                [
-                    [
-                        "diff-index",
-                        "--cached",
-                        "--name-only",
-                        f"{revid}^{{tree}}",
-                    ]
-                ],
-                seen_cmds,
-            )
+            self.assertEqual([], seen_cmds)
 
 
 class DownloadPatchSetTests(unittest.TestCase):
