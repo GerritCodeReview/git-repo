@@ -1822,6 +1822,16 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             fakeproj.config.SetBoolean("repo.superproject", False)
             self.assertFalse(fakeproj.use_superproject)
 
+            with mock.patch.object(project.RepoConfig, "ForUser") as mock_user:
+                mock_user.return_value.GetBoolean.side_effect = lambda k: (
+                    True if k == "sync.smartsync" else None
+                )
+                self.assertTrue(fakeproj.smart_sync)
+                fakeproj.config.SetBoolean("repo.smartsync", False)
+                self.assertFalse(fakeproj.smart_sync)
+                fakeproj.config.SetBoolean("repo.smartsync", True)
+                self.assertTrue(fakeproj.smart_sync)
+
             fakeproj.config.SetBoolean("repo.partialclone", False)
             self.assertFalse(fakeproj.partial_clone)
 

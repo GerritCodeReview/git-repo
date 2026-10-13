@@ -834,6 +834,7 @@ later is required to fix a server side protocol bug.
             )
             p.add_option(
                 "--no-smart-sync",
+                "--head",
                 dest="smart_sync",
                 action="store_false",
                 help="disable smart sync and sync to ToT instead",
@@ -2522,19 +2523,27 @@ later is required to fix a server side protocol bug.
     def _ResolveSmartSyncOption(
         self, opt: optparse.Values, manifest: XmlManifest
     ) -> bool:
-        """Resolve opt.smart_sync from the CLI flags and manifest default.
+        """Resolve opt.smart_sync from CLI flags, repo config, and manifest.
 
         Returns:
-            True if smart_sync was enabled implicitly by the manifest default,
-            False otherwise.
+            True if smart_sync was enabled implicitly by config or manifest
+            default, False otherwise.
         """
+        default_smart_sync = getattr(
+            manifest.manifestProject, "smart_sync", None
+        )
+        if not isinstance(default_smart_sync, bool):
+            default_smart_sync = (
+                getattr(manifest.default, "sync_smartsync", False) is True
+            )
+
         implicit = (
             opt.smart_sync is None
             and not opt.smart_tag
             and not opt.manifest_name
             and not opt.superproject_revision
             and not opt.local_only
-            and getattr(manifest.default, "sync_smartsync", False) is True
+            and default_smart_sync
         )
         if opt.smart_sync is None:
             opt.smart_sync = implicit

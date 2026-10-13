@@ -50,6 +50,7 @@ from git_config import GetSchemeFromUrl
 from git_config import GetUrlCookieFile
 from git_config import GitConfig
 from git_config import IsId
+from git_config import RepoConfig
 from git_refs import GitRefs
 from git_refs import HEAD
 from git_refs import R_HEADS
@@ -5608,6 +5609,14 @@ class ManifestProject(MetaProject):
         return self.config.GetBoolean("repo.superproject")
 
     @property
+    def smart_sync(self) -> Optional[bool]:
+        """Whether we use smart sync by default."""
+        val = self.config.GetBoolean("repo.smartsync")
+        if val is None:
+            val = RepoConfig.ForUser().GetBoolean("sync.smartsync")
+        return val
+
+    @property
     def partial_clone(self):
         """Whether this is a partial clone."""
         return self.config.GetBoolean("repo.partialclone")
@@ -5701,6 +5710,7 @@ class ManifestProject(MetaProject):
             clone_bundle=mp.clone_bundle,
             git_lfs=mp.git_lfs,
             use_superproject=mp.use_superproject,
+            smart_sync=mp.smart_sync,
             verbose=verbose,
             current_branch_only=current_branch_only,
             tags=tags,
@@ -5732,6 +5742,7 @@ class ManifestProject(MetaProject):
         clone_bundle=None,
         git_lfs=None,
         use_superproject=None,
+        smart_sync: Optional[bool] = None,
         verbose=False,
         current_branch_only=False,
         git_event_log=None,
@@ -5773,6 +5784,7 @@ class ManifestProject(MetaProject):
             git_lfs: a boolean, whether to enable git LFS support.
             use_superproject: a boolean, whether to use the manifest
                 superproject to sync projects.
+            smart_sync: a boolean, whether to default to smart sync.
             verbose: a boolean, whether to show all output, rather than only
                 errors.
             current_branch_only: a boolean, whether to only fetch the current
@@ -5820,6 +5832,7 @@ class ManifestProject(MetaProject):
                 clone_bundle=clone_bundle,
                 git_lfs=git_lfs,
                 use_superproject=use_superproject,
+                smart_sync=smart_sync,
                 verbose=verbose,
                 current_branch_only=current_branch_only,
                 tags=tags,
@@ -6090,6 +6103,9 @@ class ManifestProject(MetaProject):
         if use_superproject is not None:
             self.config.SetBoolean("repo.superproject", use_superproject)
 
+        if smart_sync is not None:
+            self.config.SetBoolean("repo.smartsync", smart_sync)
+
         if not standalone_manifest:
             success = self.Sync_NetworkHalf(
                 is_new=is_new,
@@ -6173,6 +6189,7 @@ class ManifestProject(MetaProject):
                     clone_bundle=clone_bundle,
                     git_lfs=git_lfs,
                     use_superproject=use_superproject,
+                    smart_sync=smart_sync,
                     verbose=verbose,
                     current_branch_only=current_branch_only,
                     tags=tags,
