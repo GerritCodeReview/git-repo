@@ -34,6 +34,29 @@
       "parentUuid": "f16acdb8_b7575f24",
       "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f39214f2_f1b1e7e3",
+        "filename": "man/repo-init.1",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-13T20:08:37Z",
+      "side": 1,
+      "message": "`--head` mirrors another VCS that defaults to something similar to smart sync.  Added to help with familiarity.",
+      "range": {
+        "startLine": 109,
+        "startChar": 27,
+        "endLine": 109,
+        "endChar": 41
+      },
+      "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
