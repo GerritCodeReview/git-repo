@@ -23,7 +23,13 @@ from subcmds import init
 
 @pytest.mark.parametrize(
     "argv",
-    ([],),
+    (
+        [],
+        ["-s"],
+        ["--smart-sync"],
+        ["--no-smart-sync"],
+        ["--head"],
+    ),
 )
 def test_cli_parser_good(argv: List[str]) -> None:
     """Check valid command line options."""
@@ -39,6 +45,12 @@ def test_cli_parser_good(argv: List[str]) -> None:
         ["url", "asdf"],
         # Conflicting options.
         ["--mirror", "--archive"],
+        ["--mirror", "--smart-sync"],
+        ["--mirror", "--no-smart-sync"],
+        ["--mirror", "--head"],
+        ["--archive", "--smart-sync"],
+        ["--archive", "--no-smart-sync"],
+        ["--archive", "--head"],
     ),
 )
 def test_cli_parser_bad(argv: List[str]) -> None:
