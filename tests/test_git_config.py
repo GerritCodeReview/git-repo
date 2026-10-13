@@ -268,3 +268,23 @@ def test_remote_save_with_push_url_without_projectname(
 def test_is_id(rev: str, expected: bool) -> None:
     """Test IsId identifies both SHA-1 and SHA-256 hashes."""
     assert git_config.IsId(rev) == expected
+
+
+def test_repo_config_for_user_is_not_shared_with_git_config(
+    monkeypatch: pytest.MonkeyPatch, tmp_home_dir: Path
+) -> None:
+    """RepoConfig.ForUser() must not reuse GitConfig.ForUser()'s cache."""
+    monkeypatch.setattr(git_config.GitConfig, "_ForUser", None)
+    monkeypatch.setattr(git_config.RepoConfig, "_ForUser", None)
+    monkeypatch.delenv("REPO_CONFIG_DIR", raising=False)
+
+    # Populate the GitConfig cache first, as manifest loading does.
+    git_cfg = git_config.GitConfig.ForUser()
+    repo_cfg = git_config.RepoConfig.ForUser()
+
+    assert repo_cfg is not git_cfg
+    assert git_cfg.file == str(tmp_home_dir / ".gitconfig")
+    assert repo_cfg.file == str(tmp_home_dir / ".repoconfig" / "config")
+    # And the RepoConfig instance is cached on its own class.
+    assert git_config.RepoConfig.ForUser() is repo_cfg
+    assert git_config.GitConfig.ForUser() is git_cfg

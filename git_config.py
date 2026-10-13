@@ -266,6 +266,13 @@ class GitConfig:
         except KeyError:
             old = []
 
+        if self.file != self._SYSTEM_CONFIG:
+            # `git config --file` does not create missing parent directories
+            # (e.g. ~/.repoconfig/ on first use).
+            parent_dir = os.path.dirname(self.file)
+            if parent_dir:
+                os.makedirs(parent_dir, exist_ok=True)
+
         if value is None:
             if old:
                 del self._cache[key]
@@ -443,6 +450,11 @@ class GitConfig:
 
 class RepoConfig(GitConfig):
     """User settings for repo itself."""
+
+    # Keep separate caches from GitConfig, otherwise ForUser()/ForSystem()
+    # would return the already-cached ~/.gitconfig instance of the parent.
+    _ForUser = None
+    _ForSystem = None
 
     @staticmethod
     def _getUserConfig():
