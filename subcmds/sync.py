@@ -69,6 +69,7 @@ import event_log
 from git_command import git_require
 from git_command import GitCommand
 from git_config import GetUrlCookieFile
+from git_config import RepoConfig
 from git_refs import HEAD
 from git_refs import R_HEADS
 import git_superproject
@@ -427,6 +428,15 @@ The -s/--smart-sync option can be used to sync to a known good
 build as specified by the manifest-server element in the current
 manifest. The -t/--smart-tag option is similar and allows you to
 specify a custom tag/label.
+
+A per-user default can be set in ~/.repoconfig/config, for example:
+
+    git config --file ~/.repoconfig/config repo.smartsync true
+
+Set repo.smartsync to true to always smart sync, or to false to never
+smart sync by default, even if the manifest enables it. Unset it to follow
+the manifest's sync-smartsync default. Explicit -s/--no-smart-sync/-t
+flags always override this setting.
 
 The -u/--manifest-server-username and -p/--manifest-server-password
 options can be used to specify a username and password to authenticate
@@ -2461,22 +2471,36 @@ later is required to fix a server side protocol bug.
     def _ResolveSmartSyncOption(
         self, opt: optparse.Values, manifest: XmlManifest
     ) -> bool:
-        """Resolve opt.smart_sync from the CLI flags and manifest default.
+        """Resolve opt.smart_sync from CLI flags, user config and manifest.
+
+        Precedence: CLI flags (-s/--no-smart-sync/-t) > `repo.smartsync` in
+        the user's ~/.repoconfig/config > manifest `<default sync-smartsync>`.
 
         Returns:
             True if smart_sync was enabled implicitly by the manifest default,
-            False otherwise.
+            False otherwise.  Smart sync enabled via user config counts as an
+            explicit user request, not implicit.
         """
-        implicit = (
+        user_pref = RepoConfig.ForUser().GetBoolean("repo.smartsync")
+        default_allowed = (
             opt.smart_sync is None
             and not opt.smart_tag
             and not opt.manifest_name
             and not opt.superproject_revision
             and not opt.local_only
+        )
+        implicit = (
+            default_allowed
+            and user_pref is None
             and getattr(manifest.default, "sync_smartsync", False) is True
         )
         if opt.smart_sync is None:
-            opt.smart_sync = implicit
+            if user_pref is False:
+                opt.smart_sync = False
+            elif user_pref is True:
+                opt.smart_sync = default_allowed
+            else:
+                opt.smart_sync = implicit
 
         if (
             opt.manifest_server_username or opt.manifest_server_password
