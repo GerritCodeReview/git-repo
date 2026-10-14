@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a39f678c_cc6a7904",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-14T11:39:24Z",
+      "side": 1,
+      "message": "I have added more context into the commit message.",
+      "parentUuid": "b35477c3_d8503093",
+      "revId": "c7f642ea8c538e773fe82145a566c6dde9a3ce19",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84cae8a7_70e076c4",
@@ -55,6 +73,30 @@
           ]
         }
       ],
+      "revId": "c7f642ea8c538e773fe82145a566c6dde9a3ce19",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b71dc0ef_14dc1866",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-14T11:39:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84cae8a7_70e076c4",
+      "range": {
+        "startLine": 272,
+        "startChar": 15,
+        "endLine": 272,
+        "endChar": 23
+      },
       "revId": "c7f642ea8c538e773fe82145a566c6dde9a3ce19",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
