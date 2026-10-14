@@ -36,6 +36,41 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "23bd5fc3_74cf698e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-14T02:47:03Z",
+      "side": 1,
+      "message": "err, i\u0027m fairly certain that\u0027s wrong.  _ExpandAlias/`[alias]` is def used from repoconfig.\n\ni think you\u0027re confusing the purposes of those 2 config files.  repoconfig is for user settings that they customize directly.  `.repo/manifests.git/config` is for preserving settings from `repo init`, not for users to directly tweak.\n\ni suspect the superproject logic is buggy, and seems to be open-coded relative to main.py:_ExpandAlias.\n\nbut this speaks to use lacking proper docs for this user-facing config file.  the internal docs file seems to be pretty clear on manifests.git/config at least.",
+      "parentUuid": "e6dee8c5_cfdac517",
+      "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30fad8b1_a2a56ef8",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-14T02:47:03Z",
+      "side": 1,
+      "message": "no, never suggest people touch .repo/manifests.git",
+      "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "f39214f2_f1b1e7e3",
@@ -78,6 +113,40 @@
         "endLine": 133,
         "endChar": 0
       },
+      "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49dc135b_771d7e80",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-14T02:47:03Z",
+      "side": 1,
+      "message": "this could use rephrasing -- \"disable default\" is confusing",
+      "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "314456ad_619f15c5",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-14T02:47:03Z",
+      "side": 1,
+      "message": "why ?",
       "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
