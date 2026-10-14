@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "780e97c1_b15fd4cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-14T20:21:50Z",
+      "side": 1,
+      "message": "please rebase onto main to pick up https://gerrit-review.git.corp.google.com/c/git-repo/+/643263",
+      "revId": "7e36f3652e01c5312e51cc89461864dde1c0f5ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f0159e30_3aa8d9b3",
         "filename": "docs/smart-sync.md",
         "patchSetId": 4
