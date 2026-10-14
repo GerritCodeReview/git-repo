@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa2c3092_35c5e736",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-14T11:59:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e96670e_21088ac0",
+      "revId": "c12857d9050c9b4b7e6878102359a96e30901a95",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ded55230_154f7414",
@@ -55,6 +73,30 @@
       "side": 1,
       "message": "there\u0027s no need to use `repo.` because this config is only for repo.  `sync.smartsync` suffices.",
       "parentUuid": "ded55230_154f7414",
+      "range": {
+        "startLine": 208,
+        "startChar": 61,
+        "endLine": 208,
+        "endChar": 75
+      },
+      "revId": "c12857d9050c9b4b7e6878102359a96e30901a95",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "761c263a_7d12dd81",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-14T11:59:55Z",
+      "side": 1,
+      "message": "Changed to `sync.smartsync`",
+      "parentUuid": "92817296_844326bb",
       "range": {
         "startLine": 208,
         "startChar": 61,
