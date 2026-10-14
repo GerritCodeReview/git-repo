@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24a5724b_0ecdbca3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-14T19:17:59Z",
+      "side": 1,
+      "message": "since you\u0027re basically updating the `sync` subcommand only, use `sync:` as the prefix",
+      "revId": "7e36f3652e01c5312e51cc89461864dde1c0f5ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0159e30_3aa8d9b3",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-14T19:17:59Z",
+      "side": 1,
+      "message": "the `internal-fs-layout.md` file was largely written for our own internal purposes to keep track of state, and to help users who are too curious.  it isn\u0027t intended to be a user facing document.\n\narguably we should already have a proper doc for the `repoconfig` file since we expect users to manage/customize it.  but we don\u0027t have one now.  you\u0027ve written a good amount below that really should be in such a doc, so could you start one instead ?\n\ni guess `docs/repoconfig.md` is fairly boring and unlikely to be confused/reused for other things ?",
+      "revId": "7e36f3652e01c5312e51cc89461864dde1c0f5ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2db52da_fe6f4592",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-14T19:17:59Z",
+      "side": 1,
+      "message": "if we\u0027re expanding usage and kind of expecting people to toggle this in practice, should we have our own `repo config` wrapper here so people don\u0027t need this esoteric git-config call ?",
+      "revId": "7e36f3652e01c5312e51cc89461864dde1c0f5ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
