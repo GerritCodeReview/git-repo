@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f33efe29_56d309d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-14T22:42:18Z",
+      "side": 1,
+      "message": "\u003e err, i\u0027m fairly certain that\u0027s wrong. _ExpandAlias/[alias] is def used from repoconfig.\n\nAgreed. I was refering to the `[repo]` section only.\n\nMy original intent here was to:\n- add `--smart-sync` (etc) to `repo init` (so that the initial sync can be to a smart-sync).\n- remember that designation as the default for any future `repo sync` command.\n\nAt this point (patchset3), the documentation tells the user to change the default by re-running `repo init` (similar to how they would change any of the other remembered args from `repo init`).  Patchset 2 introduced the user_cfg option to pre-specify it for all workspaces (incorporated from https://gerrit-review.git.corp.google.com/c/git-repo/+/643264).\n\nIf we want to chose only one approach to specifying a default, I would lean toward making it a per-workspace option from `repo init` (and remove the `~/.repoconfig/config` alternative).\n\nAs for the superproject logic, it probably is buggy.  I believe that their intent was enable the use of superproject at the user level, rather than the workspace level, so doing that in a manner similar to ExpandAlias kind of makes sense.  OTOH, as noted elsewhere, using a `[repo]` section in `~/.repoconfig/config` seems very redundant.\n\nWould you prefer this to be workspace-specific (from `repo init` -- my preference), user-specific (from ~/.repoconfig/config), or both?\n\nPatchset3 implements \"both. If both specify a default, then the workspace config wins.\"",
+      "parentUuid": "23bd5fc3_74cf698e",
+      "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30fad8b1_a2a56ef8",
         "filename": "docs/smart-sync.md",
         "patchSetId": 2
