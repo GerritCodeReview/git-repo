@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8582750_873042d5",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2821,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-15T21:11:34Z",
+      "side": 1,
+      "message": "this method can delete local worktrees, please make sure to skip/return early on network only syncs",
+      "range": {
+        "startLine": 2815,
+        "startChar": 8,
+        "endLine": 2821,
+        "endChar": 28
+      },
+      "revId": "ac9cff4ed6f0fd86f09928a9b6ba89c1a64f950c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a75b3238_aada1269",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3278,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-15T21:11:34Z",
+      "side": 1,
+      "message": "in phased sync this runs after fetch, but here it runs before any projects are fetched. what happens when a sync-s\u003dtrue parent project\u0027s revision in the manifest moves to a new SHA that hasn\u0027t been fetched locally yet?\n\niiuc _GetSubmodules in project.py would return an empty list (https://cs.opensource.google/gerrit/gerrit/git-repo/+/main:project.py;l\u003d2989-2991) and this would end up deleting all existing subprojects",
+      "range": {
+        "startLine": 3278,
+        "startChar": 38,
+        "endLine": 3278,
+        "endChar": 58
+      },
+      "revId": "ac9cff4ed6f0fd86f09928a9b6ba89c1a64f950c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
