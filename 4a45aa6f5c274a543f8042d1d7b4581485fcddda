@@ -16,6 +16,24 @@
       "message": "doesn\u0027t `--fix --yes` skip prompting ?",
       "revId": "4a45aa6f5c274a543f8042d1d7b4581485fcddda",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15fd9b15_906031f0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-10-15T15:14:29Z",
+      "side": 1,
+      "message": "Yes it does. But this change isn\u0027t about interactivity. Using `--fix` with `--ignore-hooks` or `--no-verify` either doesn\u0027t do anything or the effect is ambiguous. \n\nThis is just telling the user that this flag combination isn\u0027t doing to do what you expect it to do. I\u0027ve improved the error string so it\u0027s more clear to the user.",
+      "parentUuid": "76174356_9afa2a9d",
+      "revId": "4a45aa6f5c274a543f8042d1d7b4581485fcddda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
