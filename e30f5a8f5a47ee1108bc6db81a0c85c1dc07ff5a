@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1239fcf4_6703527c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-10-15T13:53:34Z",
+      "side": 1,
+      "message": "This can hide hooks from a user forever if they always use -y (which most people already do with repo upload). Not sure if we want that to happen?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 23
+      },
+      "revId": "e30f5a8f5a47ee1108bc6db81a0c85c1dc07ff5a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
