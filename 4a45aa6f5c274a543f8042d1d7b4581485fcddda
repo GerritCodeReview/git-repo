@@ -34,6 +34,24 @@
       "parentUuid": "76174356_9afa2a9d",
       "revId": "4a45aa6f5c274a543f8042d1d7b4581485fcddda",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85fee053_f7f2302d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-15T22:39:30Z",
+      "side": 1,
+      "message": "the fact `--fix` leaves changes in the current tree \u0026 doesn\u0027t update the git commits is the key part, so the updated error messages LGTM",
+      "parentUuid": "15fd9b15_906031f0",
+      "revId": "4a45aa6f5c274a543f8042d1d7b4581485fcddda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
