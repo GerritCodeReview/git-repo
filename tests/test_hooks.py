@@ -15,11 +15,15 @@
 """Unittests for the hooks.py module."""
 
 from io import StringIO
+import optparse
 from pathlib import Path
 import sys
+from typing import Optional
+from unittest import mock
 
 import pytest
 
+from error import HookError
 import hooks
 
 
@@ -201,3 +205,81 @@ def test_from_subcmd_without_fix_option() -> None:
 
     hook = hooks.RepoHook.FromSubcmd(FakeManifest(), FakeOpt(), "post-sync")
     assert hook._fix is False
+
+
+@pytest.mark.parametrize(
+    "yes_val, stdin_tty, stdout_tty",
+    (
+        (True, True, True),
+        (False, False, True),
+        (False, True, False),
+    ),
+)
+@pytest.mark.parametrize("abort_if_user_denies", (True, False))
+@pytest.mark.parametrize("old_val", (None, "https://old-gerrit"))
+def test_hook_approval_non_interactive(
+    monkeypatch: pytest.MonkeyPatch,
+    yes_val: bool,
+    stdin_tty: bool,
+    stdout_tty: bool,
+    abort_if_user_denies: bool,
+    old_val: Optional[str],
+) -> None:
+    """Test non-interactive hook approval skips prompt and suggests flags."""
+
+    class FakeConfig:
+        def GetString(self, key: str) -> Optional[str]:
+            return old_val
+
+    class FakeProject:
+        worktree = "/some/path"
+        enabled_repo_hooks = ["pre-upload"]
+        config = FakeConfig()
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(),
+        repo_topdir="/topdir",
+        manifest_url="https://gerrit",
+        abort_if_user_denies=abort_if_user_denies,
+        yes=yes_val,
+    )
+
+    monkeypatch.setattr(sys.stdin, "isatty", lambda: stdin_tty)
+    monkeypatch.setattr(sys.stdout, "isatty", lambda: stdout_tty)
+
+    with mock.patch("builtins.input") as mock_input:
+        if abort_if_user_denies:
+            with pytest.raises(HookError) as excinfo:
+                hook._CheckForHookApproval()
+            err_msg = str(excinfo.value)
+            assert "--verify" in err_msg
+            assert "--no-verify" in err_msg
+            if yes_val:
+                assert "--yes only covers safe prompts" in err_msg
+            else:
+                assert "--yes only covers safe prompts" not in err_msg
+            if old_val is not None:
+                assert "WARNING: Manifest URL has changed" in err_msg
+        else:
+            assert hook._CheckForHookApproval() is False
+        mock_input.assert_not_called()
+
+
+def test_add_option_group_adds_yes() -> None:
+    """Test that AddOptionGroup adds -y/--yes if not already present."""
+    parser = optparse.OptionParser()
+    hooks.RepoHook.AddOptionGroup(parser, "post-sync")
+    opts, _ = parser.parse_args([])
+    assert opts.yes is False
+    opts, _ = parser.parse_args(["-y"])
+    assert opts.yes is True
+    opts, _ = parser.parse_args(["--yes"])
+    assert opts.yes is True
+
+    # Calling AddOptionGroup when --yes already exists should not conflict.
+    parser = optparse.OptionParser()
+    parser.add_option("-y", "--yes", default=False, action="store_true")
+    hooks.RepoHook.AddOptionGroup(parser, "pre-upload", allow_fix=True)
+    opts, _ = parser.parse_args(["--yes"])
+    assert opts.yes is True

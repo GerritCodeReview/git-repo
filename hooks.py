@@ -46,10 +46,10 @@ class RepoHook:
 
     Combinations of hook option flags:
     - no-verify=False, verify=False (DEFAULT):
-      If stdout is a tty, can prompt about running hooks if needed.
-      If user denies running hooks, the action is cancelled. If stdout is
-      not a tty and we would need to prompt about hooks, action is
-      cancelled.
+      If stdin/stdout are ttys and --yes is not set, can prompt about
+      running hooks if needed. If user denies running hooks, the action is
+      cancelled. If non-interactive (not a tty or --yes is set) and we would
+      need to prompt about hooks, action is cancelled.
     - no-verify=False, verify=True:
       Always run hooks with no prompt.
     - no-verify=True, verify=False:
@@ -92,7 +92,7 @@ class RepoHook:
             ignore_hooks: If True, then 'Do not abort action if hooks fail'.
             abort_if_user_denies: If True, we'll abort running the hook if the
                 user doesn't allow us to run the hook.
-            yes: If True, then 'Yes' is assumed for any prompts.
+            yes: If True, then 'Yes' is assumed for any safe prompts.
             fix: If True, then 'Fix' is assumed for any fixup prompts.
         """
         self._hook_type = hook_type
@@ -213,10 +213,9 @@ class RepoHook:
         else:
             prompt = ""
 
-        # Prompt the user if we're not on a tty; on a tty we'll assume "no".
-        if sys.stdout.isatty():
-            prompt += main_prompt + " (yes/always/NO)? "
-            response = input(prompt).lower()
+        # Prompt the user if interactive and not --yes; otherwise assume "no".
+        if not self._yes and sys.stdin.isatty() and sys.stdout.isatty():
+            response = input(f"{prompt}{main_prompt} (yes/always/NO)? ").lower()
             print()
 
             # User is doing a one-time approval.
@@ -228,9 +227,16 @@ class RepoHook:
 
         # For anything else, we'll assume no approval.
         if self._abort_if_user_denies:
+            if self._yes:
+                reason = (
+                    f"Skipped {self._hook_type} hook approval prompt because "
+                    "--yes only covers safe prompts, not hook approval. "
+                )
+            else:
+                reason = ""
             raise HookError(
-                "You must allow the %s hook or use --no-verify."
-                % self._hook_type
+                f"{prompt}{reason}You must allow the {self._hook_type} hook "
+                "(use --verify to run without prompting) or use --no-verify."
             )
 
         return False
@@ -549,4 +555,12 @@ class RepoHook:
                 action="store_true",
                 default=False,
                 help="Automatically apply %s fixes without prompting." % name,
+            )
+        if not parser.has_option("--yes"):
+            parser.add_option(
+                "-y",
+                "--yes",
+                default=False,
+                action="store_true",
+                help="answer yes to all safe prompts",
             )

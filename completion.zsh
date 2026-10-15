@@ -343,6 +343,7 @@ _repo() {
         '--no-smart-sync[Do not smart sync]' \
         '--head[Do not smart sync]' \
         '(-t --smart-tag)'{-t,--smart-tag=}'[Smart tag]:tag:' \
+        '(-y --yes)'{-y,--yes}'[Answer yes to all prompts]' \
         '--no-repo-verify[Do not verify repo]' \
         '--no-verify[Do not verify]' \
         '--verify[Verify]' \
