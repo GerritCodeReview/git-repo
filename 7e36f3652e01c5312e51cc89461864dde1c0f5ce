@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5425c968_3479fd0c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-15T14:58:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24a5724b_0ecdbca3",
+      "revId": "7e36f3652e01c5312e51cc89461864dde1c0f5ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "780e97c1_b15fd4cc",
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "071cfb1f_075e066a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-15T14:58:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "780e97c1_b15fd4cc",
+      "revId": "7e36f3652e01c5312e51cc89461864dde1c0f5ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0159e30_3aa8d9b3",
@@ -69,6 +105,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4d7a860_45f03a2f",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-15T14:58:48Z",
+      "side": 1,
+      "message": "Created `docs/repoconfig.md`.",
+      "parentUuid": "f0159e30_3aa8d9b3",
+      "revId": "7e36f3652e01c5312e51cc89461864dde1c0f5ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2db52da_fe6f4592",
@@ -82,6 +136,24 @@
       "writtenOn": "2026-10-14T19:17:59Z",
       "side": 1,
       "message": "if we\u0027re expanding usage and kind of expecting people to toggle this in practice, should we have our own `repo config` wrapper here so people don\u0027t need this esoteric git-config call ?",
+      "revId": "7e36f3652e01c5312e51cc89461864dde1c0f5ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "912832eb_affeac67",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-15T14:58:48Z",
+      "side": 1,
+      "message": "Yes. This might be a good thing to have. We can do it separately though. It doesn\u0027t need to be part of this change.",
+      "parentUuid": "a2db52da_fe6f4592",
       "revId": "7e36f3652e01c5312e51cc89461864dde1c0f5ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
