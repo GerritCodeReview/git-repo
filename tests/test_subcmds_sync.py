@@ -2253,6 +2253,74 @@ class InterleavedSyncTest(unittest.TestCase):
             self.cmd._interleaved_err_checkout_results, ["sub/foo"]
         )
 
+    def test_interleaved_updates_project_list_before_and_after_checkout(
+        self,
+    ) -> None:
+        """Test obsolete projects are removed pre-checkout and post-reload."""
+        opt = self._get_opts(["--interleaved", "-j1"])
+        proj = self._make_syncable(FakeProject("foo/bar", objdir="objA"))
+        self.manifest.IsMirror = False
+        self.manifest.IsArchive = False
+        mock.patch.object(
+            self.cmd, "ManifestList", return_value=[self.manifest]
+        ).start()
+
+        events = []
+        mock.patch.object(
+            self.cmd,
+            "UpdateProjectList",
+            side_effect=lambda *a, **kw: events.append("update_projects"),
+        ).start()
+        mock.patch.object(
+            self.cmd,
+            "UpdateCopyLinkfileList",
+            side_effect=lambda *a, **kw: events.append("update_linkfiles"),
+        ).start()
+        proj.Sync_LocalHalf.side_effect = lambda *a, **kw: events.append(
+            "checkout"
+        )
+
+        self._run_interleaved(opt, [proj], [proj])
+
+        self.assertEqual(
+            events,
+            [
+                "update_projects",
+                "checkout",
+                "update_projects",
+                "update_linkfiles",
+            ],
+        )
+
+    def test_interleaved_pre_sync_update_project_list_error_not_duplicated(
+        self,
+    ) -> None:
+        """Test a pre-sync UpdateProjectList failure isn't retried post-sync."""
+        opt = self._get_opts(["--interleaved", "-j1"])
+        opt.fail_fast = False
+        proj = self._make_syncable(FakeProject("foo/bar", objdir="objA"))
+        self.manifest.IsMirror = False
+        self.manifest.IsArchive = False
+        self.cmd.git_event_log = mock.MagicMock()
+        mock.patch.object(
+            self.cmd, "ManifestList", return_value=[self.manifest]
+        ).start()
+
+        delete_err = sync.DeleteWorktreeError("dirty worktree")
+        update_projects = mock.patch.object(
+            self.cmd, "UpdateProjectList", side_effect=delete_err
+        ).start()
+        update_linkfiles = mock.patch.object(
+            self.cmd, "UpdateCopyLinkfileList"
+        ).start()
+
+        with self.assertRaises(sync.SyncError) as ctx:
+            self._run_interleaved(opt, [proj], [proj])
+
+        update_projects.assert_called_once_with(opt, self.manifest)
+        update_linkfiles.assert_called_once_with(self.manifest)
+        self.assertEqual(ctx.exception.aggregate_errors, [delete_err])
+
     def test_interleaved_shared_objdir_serial(self):
         """Test that projects with shared objdir are processed serially."""
         opt, args = self.cmd.OptionParser.parse_args(["--interleaved", "-j4"])
