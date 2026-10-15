@@ -2817,6 +2817,8 @@ later is required to fix a server side protocol bug.
         opt: optparse.Values,
         err_event: multiprocessing.Event,
         errors: List[Exception],
+        update_project_list: bool = True,
+        update_linkfile_list: bool = True,
     ) -> Tuple[bool, bool]:
         """Updates project lists and copy/link files for all manifests.
 
@@ -2824,6 +2826,8 @@ later is required to fix a server side protocol bug.
             opt: Program options from optparse.
             err_event: An event to set if any error occurs.
             errors: A list to append any encountered exceptions to.
+            update_project_list: Whether to run UpdateProjectList.
+            update_linkfile_list: Whether to run UpdateCopyLinkfileList.
 
         Returns:
             A tuple (err_update_projects, err_update_linkfiles) indicating
@@ -2835,29 +2839,31 @@ later is required to fix a server side protocol bug.
             if m.IsMirror or m.IsArchive:
                 continue
 
-            try:
-                self.UpdateProjectList(opt, m)
-            except Exception as e:
-                err_event.set()
-                err_update_projects = True
-                errors.append(e)
-                if isinstance(e, DeleteWorktreeError):
-                    errors.extend(e.aggregate_errors)
-                if opt.fail_fast:
-                    logger.error("error: Local checkouts *not* updated.")
-                    raise SyncFailFastError(aggregate_errors=errors)
+            if update_project_list:
+                try:
+                    self.UpdateProjectList(opt, m)
+                except Exception as e:
+                    err_event.set()
+                    err_update_projects = True
+                    errors.append(e)
+                    if isinstance(e, DeleteWorktreeError):
+                        errors.extend(e.aggregate_errors)
+                    if opt.fail_fast:
+                        logger.error("error: Local checkouts *not* updated.")
+                        raise SyncFailFastError(aggregate_errors=errors)
 
-            try:
-                self.UpdateCopyLinkfileList(m)
-            except Exception as e:
-                err_event.set()
-                err_update_linkfiles = True
-                errors.append(e)
-                if opt.fail_fast:
-                    logger.error(
-                        "error: Local update copyfile or linkfile failed."
-                    )
-                    raise SyncFailFastError(aggregate_errors=errors)
+            if update_linkfile_list:
+                try:
+                    self.UpdateCopyLinkfileList(m)
+                except Exception as e:
+                    err_event.set()
+                    err_update_linkfiles = True
+                    errors.append(e)
+                    if opt.fail_fast:
+                        logger.error(
+                            "error: Local update copyfile or linkfile failed."
+                        )
+                        raise SyncFailFastError(aggregate_errors=errors)
         return err_update_projects, err_update_linkfiles
 
     def _ReportErrors(
@@ -3266,6 +3272,16 @@ later is required to fix a server side protocol bug.
         _RelPath = lambda p: p.RelPath(local=opt.this_manifest_only)
 
         err_event = multiprocessing.Event()
+        # Remove obsolete manifest projects before checking out new ones so
+        # replacing a parent project 'foo' with a nested child project 'foo/bar'
+        # does not check out 'foo/bar' inside the obsolete 'foo' worktree.
+        err_update_projects, _ = self._UpdateManifestLists(
+            opt,
+            err_event,
+            errors,
+            update_linkfile_list=False,
+        )
+
         finished_relpaths = set()
         project_list = list(all_projects)
         pm = Progress(
@@ -3409,9 +3425,13 @@ later is required to fix a server side protocol bug.
 
         pm.end()
 
-        err_update_projects, err_update_linkfiles = self._UpdateManifestLists(
-            opt, err_event, errors
+        err_post_projects, err_update_linkfiles = self._UpdateManifestLists(
+            opt,
+            err_event,
+            errors,
+            update_project_list=not err_update_projects,
         )
+        err_update_projects = err_update_projects or err_post_projects
         if not self.outer_client.manifest.IsArchive:
             self._GCProjects(project_list, opt, err_event)
 
