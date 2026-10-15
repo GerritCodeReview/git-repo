@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a333c4ab_1f4148c4",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-15T22:23:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9aa31e0d_88802b3f",
+      "revId": "d1c790b7932de1d5d9a24d27204b9321942ade8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c3dc015_57aa77f5",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-15T22:02:27Z",
       "side": 1,
       "message": "i think this is a bug fixed in https://gerrit-review.git.corp.google.com/c/643263.  repo should not be searching for `[repo]` stuff in user git configs.\n\nrepo using `.repo/manifest/.git/config` is an internal detail for our own state tracking from `repo init`.",
+      "revId": "d1c790b7932de1d5d9a24d27204b9321942ade8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e96efad_67aaa845",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-15T22:23:43Z",
+      "side": 1,
+      "message": "Rather than have the changes overlap, I\u0027ve updated this one to just add the per-checkout default, and leave the user-config (.repoconfig) updates to https://gerrit-review.git.corp.google.com/c/git-repo/+/643264.",
+      "parentUuid": "8c3dc015_57aa77f5",
       "revId": "d1c790b7932de1d5d9a24d27204b9321942ade8b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeced207_14fcdd6b",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-15T22:23:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e5f0a09_94fd3c7b",
+      "revId": "d1c790b7932de1d5d9a24d27204b9321942ade8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b141666c_1afdb7ba",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-10-15T22:02:27Z",
       "side": 1,
       "message": "don\u0027t document the specific element, link to the section",
+      "revId": "d1c790b7932de1d5d9a24d27204b9321942ade8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "020c25d0_895914ca",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-15T22:23:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b141666c_1afdb7ba",
       "revId": "d1c790b7932de1d5d9a24d27204b9321942ade8b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +158,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c64e89ce_532d1796",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-15T22:23:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3467f070_d20cc7c9",
+      "revId": "d1c790b7932de1d5d9a24d27204b9321942ade8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "401004d5_f13c9f85",
@@ -99,6 +189,24 @@
       "writtenOn": "2026-10-15T22:02:27Z",
       "side": 1,
       "message": "let\u0027s handle this separately via https://gerrit-review.git.corp.google.com/c/643264",
+      "revId": "d1c790b7932de1d5d9a24d27204b9321942ade8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4db0df4c_7fba341b",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 5616,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-15T22:23:43Z",
+      "side": 1,
+      "message": "Agreed.",
+      "parentUuid": "401004d5_f13c9f85",
       "revId": "d1c790b7932de1d5d9a24d27204b9321942ade8b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
