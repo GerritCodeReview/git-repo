@@ -46,10 +46,10 @@ class RepoHook:
 
     Combinations of hook option flags:
     - no-verify=False, verify=False (DEFAULT):
-      If stdout is a tty, can prompt about running hooks if needed.
-      If user denies running hooks, the action is cancelled. If stdout is
-      not a tty and we would need to prompt about hooks, action is
-      cancelled.
+      If stdin/stdout are ttys and --yes is not set, can prompt about
+      running hooks if needed. If user denies running hooks, the action is
+      cancelled. If non-interactive (not a tty or --yes is set) and we would
+      need to prompt about hooks, action is cancelled.
     - no-verify=False, verify=True:
       Always run hooks with no prompt.
     - no-verify=True, verify=False:
@@ -213,8 +213,8 @@ class RepoHook:
         else:
             prompt = ""
 
-        # Prompt the user if we're not on a tty; on a tty we'll assume "no".
-        if sys.stdout.isatty():
+        # Prompt the user if interactive and not --yes; otherwise assume "no".
+        if not self._yes and sys.stdin.isatty() and sys.stdout.isatty():
             prompt += main_prompt + " (yes/always/NO)? "
             response = input(prompt).lower()
             print()
@@ -229,8 +229,8 @@ class RepoHook:
         # For anything else, we'll assume no approval.
         if self._abort_if_user_denies:
             raise HookError(
-                "You must allow the %s hook or use --no-verify."
-                % self._hook_type
+                "You must allow the %s hook (use --verify to run without "
+                "prompting) or use --no-verify." % self._hook_type
             )
 
         return False

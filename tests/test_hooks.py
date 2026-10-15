@@ -17,9 +17,11 @@
 from io import StringIO
 from pathlib import Path
 import sys
+from unittest import mock
 
 import pytest
 
+from error import HookError
 import hooks
 
 
@@ -201,3 +203,73 @@ def test_from_subcmd_without_fix_option() -> None:
 
     hook = hooks.RepoHook.FromSubcmd(FakeManifest(), FakeOpt(), "post-sync")
     assert hook._fix is False
+
+
+def test_hook_approval_skips_prompt_when_yes_is_set(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Test that --yes skips approval prompt and suggests --verify."""
+
+    class FakeConfig:
+        def GetString(self, key: str) -> None:
+            return None
+
+    class FakeProject:
+        worktree = "/some/path"
+        enabled_repo_hooks = ["pre-upload"]
+        config = FakeConfig()
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(),
+        repo_topdir="/topdir",
+        manifest_url="https://gerrit",
+        abort_if_user_denies=True,
+        yes=True,
+    )
+
+    monkeypatch.setattr(sys.stdin, "isatty", lambda: True)
+    monkeypatch.setattr(sys.stdout, "isatty", lambda: True)
+
+    with mock.patch("builtins.input") as mock_input:
+        with pytest.raises(HookError) as excinfo:
+            hook._CheckForHookApproval()
+        mock_input.assert_not_called()
+
+    assert "--verify" in str(excinfo.value)
+    assert "--no-verify" in str(excinfo.value)
+
+
+def test_hook_approval_skips_prompt_when_stdin_not_tty(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Test that non-tty stdin skips approval prompt and suggests --verify."""
+
+    class FakeConfig:
+        def GetString(self, key: str) -> None:
+            return None
+
+    class FakeProject:
+        worktree = "/some/path"
+        enabled_repo_hooks = ["pre-upload"]
+        config = FakeConfig()
+
+    hook = hooks.RepoHook(
+        hook_type="pre-upload",
+        hooks_project=FakeProject(),
+        repo_topdir="/topdir",
+        manifest_url="https://gerrit",
+        abort_if_user_denies=True,
+        yes=False,
+    )
+
+    monkeypatch.setattr(sys.stdin, "isatty", lambda: False)
+    monkeypatch.setattr(sys.stdout, "isatty", lambda: True)
+
+    with mock.patch("builtins.input") as mock_input:
+        with pytest.raises(HookError) as excinfo:
+            hook._CheckForHookApproval()
+        mock_input.assert_not_called()
+
+    assert "--verify" in str(excinfo.value)
+    assert "--no-verify" in str(excinfo.value)
