@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aebdb301_98476e27",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-15T22:18:38Z",
+      "side": 1,
+      "message": "do not copy \u0026 paste the path everywhere.  the point of the standalone doc is to be the single thing we point to.",
+      "revId": "2fc1bb829d55d80e9e339e99320f9e046242c91b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dd1a5db_da6e41db",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-15T22:18:38Z",
+      "side": 1,
+      "message": "refer to the doc, don\u0027t copy \u0026 paste these around",
+      "revId": "2fc1bb829d55d80e9e339e99320f9e046242c91b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f057d85_a7c9c9f7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-15T22:18:38Z",
+      "side": 1,
+      "message": "i don\u0027t think we should document this directly.  point people to the repoconfig doc.",
+      "revId": "2fc1bb829d55d80e9e339e99320f9e046242c91b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7082c25c_11f6b0ef",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 2538,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-15T22:18:38Z",
+      "side": 1,
+      "message": "we shouldn\u0027t be duplicating explicit internal details like this everywhere.  refer to them generally like \"CLI flags, per-user settings, per-manifest settings\" and if you want to provide more context, link to the docs.",
+      "revId": "2fc1bb829d55d80e9e339e99320f9e046242c91b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
