@@ -22,6 +22,31 @@
       },
       "revId": "e30f5a8f5a47ee1108bc6db81a0c85c1dc07ff5a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce843423_1a3b360b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1026972
+      },
+      "writtenOn": "2026-10-15T16:07:56Z",
+      "side": 1,
+      "message": "For `repo upload`, `abort_if_user_denies` is `True`, so skipping the prompt does not silently skip running the hooks—instead, it raises `HookError(\"You must allow the pre-upload hook (use --verify to run without prompting) or use --no-verify.\")` and aborts the upload. (`post-sync` in `repo sync` has `abort_if_user_denies\u003dFalse`, but `repo sync` doesn\u0027t have a `-y`/`--yes` flag, so `self._yes` is always `False` there.)\n\nThat said, for a user who runs `repo upload -y` in a new checkout where hooks haven\u0027t been approved yet, this will fail fast with that error message instead of prompting `(yes/always/NO)?`. The motivation here is that AI agents (which often run commands in a PTY where `isatty()` is `True`) pass `repo upload -y` and currently hang forever on `input()`.\n\nDo you think failing fast with the `--verify` / `--no-verify` message when `-y` is passed is okay, or would you prefer a different way to handle non-interactive / AI agent invocations?",
+      "parentUuid": "1239fcf4_6703527c",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 23
+      },
+      "isAi": true,
+      "revId": "e30f5a8f5a47ee1108bc6db81a0c85c1dc07ff5a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
