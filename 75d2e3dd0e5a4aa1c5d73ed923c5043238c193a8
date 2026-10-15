@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "919c75b5_d1284d78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-15T22:02:27Z",
+      "side": 1,
+      "message": "per-checkout defaults via `repo init` is fine, but the expectation is if people want to flip that off, they re-`repo init`.\n\nthe point of `internal-fs-layout.md` is for repo devs to keep track of things as we develop \u0026 onboard new people.  it\u0027s not user-facing docs with the expectation they ever toggle things in there.  it\u0027s like a section 8 man page.",
+      "parentUuid": "f33efe29_56d309d0",
+      "revId": "75d2e3dd0e5a4aa1c5d73ed923c5043238c193a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30fad8b1_a2a56ef8",
         "filename": "docs/smart-sync.md",
         "patchSetId": 2
