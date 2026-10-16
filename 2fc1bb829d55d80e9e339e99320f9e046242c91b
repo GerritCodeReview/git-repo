@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8d4b3f5_783ecbdb",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-16T13:37:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aebdb301_98476e27",
+      "revId": "2fc1bb829d55d80e9e339e99320f9e046242c91b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3dd1a5db_da6e41db",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-15T22:18:38Z",
       "side": 1,
       "message": "refer to the doc, don\u0027t copy \u0026 paste these around",
+      "revId": "2fc1bb829d55d80e9e339e99320f9e046242c91b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aecfb0bd_f9651625",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-16T13:37:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3dd1a5db_da6e41db",
       "revId": "2fc1bb829d55d80e9e339e99320f9e046242c91b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7457a70_11269779",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-16T13:37:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f057d85_a7c9c9f7",
+      "revId": "2fc1bb829d55d80e9e339e99320f9e046242c91b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7082c25c_11f6b0ef",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-10-15T22:18:38Z",
       "side": 1,
       "message": "we shouldn\u0027t be duplicating explicit internal details like this everywhere.  refer to them generally like \"CLI flags, per-user settings, per-manifest settings\" and if you want to provide more context, link to the docs.",
+      "revId": "2fc1bb829d55d80e9e339e99320f9e046242c91b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "596a4b3b_7cb7816c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 2538,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-16T13:37:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7082c25c_11f6b0ef",
       "revId": "2fc1bb829d55d80e9e339e99320f9e046242c91b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
