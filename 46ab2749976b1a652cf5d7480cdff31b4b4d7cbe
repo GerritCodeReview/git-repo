@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "404cac24_dfebd29b",
+        "filename": "docs/repoconfig.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-17T03:23:04Z",
+      "side": 1,
+      "message": "```suggestion\n# repoconfig: User Configuration\n```",
+      "revId": "46ab2749976b1a652cf5d7480cdff31b4b4d7cbe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c97a616_8c1c038e",
+        "filename": "docs/repoconfig.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-17T03:23:04Z",
+      "side": 1,
+      "message": "tables are unwieldy for large content like this.  how about we use separate headers to break it up by section/option.\n\nif you wanted to keep a table as a short summary/toc like thing, OK, but i think the generated toc is sufficient.\n\n```\n\n## Settings\n\n### alias.*\n\n... talk about how aliases work ...\n\n### sync\n\n#### smartsync\n\n... talk about `sync.smartsync` here ...\n```",
+      "revId": "46ab2749976b1a652cf5d7480cdff31b4b4d7cbe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de6d4513_8355d01a",
+        "filename": "docs/repoconfig.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-17T03:23:04Z",
+      "side": 1,
+      "message": "this stuff was to support rollout of superproject settings internally.  i think we\u0027re past that point.  let\u0027s not document these settings at all as i think we would undo them entirely.",
+      "revId": "46ab2749976b1a652cf5d7480cdff31b4b4d7cbe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
