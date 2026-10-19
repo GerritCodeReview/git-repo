@@ -71,6 +71,53 @@
       },
       "revId": "e30f5a8f5a47ee1108bc6db81a0c85c1dc07ff5a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9801ded5_1b819e72",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-10-19T14:56:26Z",
+      "side": 1,
+      "message": "Agreed in essence. This is mainly a problem for new checkouts. But I believe we\u0027re overloading the identity of the \"yes\" flag.\n\nNot all subcmds support a \"yes\" flag (like post-sync or pre-init hooks). It is acting as a proxy for \"This is an automated env, skip all prompts\" but isn\u0027t available globally. \n\nWe should probably check for something like `REPO_NONINTERACTIVE` during RepoHook.init. Or we should ensure that \"yes\" is available to pass for each subcommand which could conceivably have any hook.",
+      "parentUuid": "7c5e1136_1af8c6ff",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 23
+      },
+      "revId": "e30f5a8f5a47ee1108bc6db81a0c85c1dc07ff5a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e2f0724_385166fc",
+        "filename": "hooks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-10-19T14:56:26Z",
+      "side": 1,
+      "message": "Using self._yes as a signal for non-interactivity is a bit counterintuitive here because passing `-y` usually means \"yes to everything\"; but now will cause `HookError` on a fresh checkout even if the user is at a terminal.\n\nWe should probably improve the error message on line 231 to mention that prompt was skipped because \"yes\" was specified and \"yes\" doesn\u0027t cover hook approval for because it is not a \"safe prompt\".",
+      "range": {
+        "startLine": 217,
+        "startChar": 11,
+        "endLine": 217,
+        "endChar": 25
+      },
+      "revId": "e30f5a8f5a47ee1108bc6db81a0c85c1dc07ff5a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
