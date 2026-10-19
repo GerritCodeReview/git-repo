@@ -47,6 +47,30 @@
       "isAi": true,
       "revId": "e30f5a8f5a47ee1108bc6db81a0c85c1dc07ff5a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c5e1136_1af8c6ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1026972
+      },
+      "writtenOn": "2026-10-19T08:57:24Z",
+      "side": 1,
+      "message": "ping?",
+      "parentUuid": "ce843423_1a3b360b",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 23
+      },
+      "revId": "e30f5a8f5a47ee1108bc6db81a0c85c1dc07ff5a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
