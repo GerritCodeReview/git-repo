@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e69c134c_de2856dc",
+        "filename": "docs/repoconfig.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-19T13:16:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "404cac24_dfebd29b",
+      "revId": "46ab2749976b1a652cf5d7480cdff31b4b4d7cbe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c97a616_8c1c038e",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c778b31_f9bc2463",
+        "filename": "docs/repoconfig.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-19T13:16:19Z",
+      "side": 1,
+      "message": "Make sense. Done.",
+      "parentUuid": "8c97a616_8c1c038e",
+      "revId": "46ab2749976b1a652cf5d7480cdff31b4b4d7cbe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de6d4513_8355d01a",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-10-17T03:23:04Z",
       "side": 1,
       "message": "this stuff was to support rollout of superproject settings internally.  i think we\u0027re past that point.  let\u0027s not document these settings at all as i think we would undo them entirely.",
+      "revId": "46ab2749976b1a652cf5d7480cdff31b4b4d7cbe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "861da002_5e23fa52",
+        "filename": "docs/repoconfig.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-19T13:16:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de6d4513_8355d01a",
       "revId": "46ab2749976b1a652cf5d7480cdff31b4b4d7cbe",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
