@@ -839,6 +839,7 @@ later is required to fix a server side protocol bug.
             )
             p.add_option(
                 "--no-smart-sync",
+                "--head",
                 dest="smart_sync",
                 action="store_false",
                 help="disable smart sync and sync to ToT instead",
@@ -2527,16 +2528,20 @@ later is required to fix a server side protocol bug.
     def _ResolveSmartSyncOption(
         self, opt: optparse.Values, manifest: XmlManifest
     ) -> bool:
-        """Resolve opt.smart_sync from CLI flags, user config and manifest.
+        """Resolve opt.smart_sync from CLI flags, config, and manifest.
 
-        Precedence: CLI flags > per-user settings > per-manifest settings.
+        Precedence: CLI flags > per-checkout settings > per-user settings >
+        per-manifest settings.
         See docs/repoconfig.md and docs/smart-sync.md for details.
 
         Returns:
-            True if smart_sync was enabled implicitly by the manifest default,
-            False otherwise.  Smart sync enabled via per-user settings counts
-            as an explicit user request, not implicit.
+            True if smart_sync was enabled implicitly by checkout or manifest
+            default, False otherwise.  Smart sync enabled via per-user settings
+            counts as an explicit user request, not implicit.
         """
+        checkout_pref = getattr(manifest.manifestProject, "smart_sync", None)
+        if not isinstance(checkout_pref, bool):
+            checkout_pref = None
         user_pref = RepoConfig.ForUser().GetBoolean("sync.smartsync")
         default_allowed = (
             opt.smart_sync is None
@@ -2545,13 +2550,20 @@ later is required to fix a server side protocol bug.
             and not opt.superproject_revision
             and not opt.local_only
         )
+        default_smart_sync = (
+            checkout_pref
+            if checkout_pref is not None
+            else getattr(manifest.default, "sync_smartsync", False) is True
+        )
         implicit = (
             default_allowed
-            and user_pref is None
-            and getattr(manifest.default, "sync_smartsync", False) is True
+            and (checkout_pref is not None or user_pref is None)
+            and default_smart_sync
         )
         if opt.smart_sync is None:
-            if user_pref is False:
+            if checkout_pref is not None:
+                opt.smart_sync = implicit
+            elif user_pref is False:
                 opt.smart_sync = False
             elif user_pref is True:
                 opt.smart_sync = default_allowed

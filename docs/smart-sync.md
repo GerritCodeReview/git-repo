@@ -182,6 +182,28 @@ affect Smart Sync: the default Smart Sync from `sync-smartsync` (see below)
 still runs, and an existing `smart_sync_override.xml` is replaced or removed as
 in a regular sync.
 
+### `repo init --[no-]smart-sync`
+
+Users can configure Smart Sync as the default for a checkout by passing
+`-s`/`--smart-sync` (or `--no-smart-sync`/`--head`) to `repo init` (this can
+also be re-run in an existing checkout to change the setting).
+
+When resolving whether to perform a Smart Sync by default, `repo sync` uses the
+following precedence order (highest to lowest):
+
+1.  Per-invocation CLI flags (`-s`/`--smart-sync`, `--no-smart-sync`/`--head`,
+    or target selection flags like `-t`, `-m`, `--superproject-revision`, `-l`).
+2.  Checkout `repo init` setting (`repo init --[no-]smart-sync`).
+3.  [Per-user `sync.smartsync` setting](#Per_user-default-sync_smartsync).
+4.  Manifest [`sync-smartsync`](#sync-smartsync-manifest-attribute) setting.
+
+Running `repo init --no-smart-sync` (or `repo init --head`) disables default
+Smart Sync for the checkout even when enabled by the user setting or manifest.
+As with the [manifest setting](#sync-smartsync-manifest-attribute), a
+checkout-enabled default Smart Sync falls back to a regular ToT sync if the
+manifest does not define a `<manifest-server>` or the manifest server cannot
+provide a usable manifest.
+
 ### sync-smartsync (Manifest Attribute)
 
 The manifest can enable Smart Sync by default for all `repo sync` invocations
@@ -230,10 +252,10 @@ match the settings Android build environments automatically setup.
 3.  `${TARGET_PRODUCT}-${TARGET_BUILD_VARIANT}`: If these variables are all
     defined, then they are merged with `-` and used.
 
-### --no-smart-sync
+### --no-smart-sync / --head
 
-Explicitly disables Smart Sync, overriding any `sync-smartsync="true"` setting
-declared in the manifest `<default>` element.
+Explicitly disables Smart Sync, overriding any `repo.smartsync` git config or
+`sync-smartsync="true"` setting declared in the manifest `<default>` element.
 
 ### Per-user default (sync.smartsync)
 

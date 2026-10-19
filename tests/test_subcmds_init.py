@@ -23,7 +23,13 @@ from subcmds import init
 
 @pytest.mark.parametrize(
     "argv",
-    ([],),
+    (
+        [],
+        ["-s"],
+        ["--smart-sync"],
+        ["--no-smart-sync"],
+        ["--head"],
+    ),
 )
 def test_cli_parser_good(argv: List[str]) -> None:
     """Check valid command line options."""
