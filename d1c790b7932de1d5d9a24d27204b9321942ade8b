@@ -71,6 +71,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52d1c7f5_04b8be03",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-19T20:29:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e96efad_67aaa845",
+      "revId": "d1c790b7932de1d5d9a24d27204b9321942ade8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e5f0a09_94fd3c7b",
