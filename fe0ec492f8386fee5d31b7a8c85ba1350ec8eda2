@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2657fe8_6c0437f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-19T18:41:21Z",
+      "side": 1,
+      "message": "please update and write a commit msg body",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 73
+      },
+      "revId": "fe0ec492f8386fee5d31b7a8c85ba1350ec8eda2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f980a7a_4ab84d15",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-19T18:41:21Z",
+      "side": 1,
+      "message": "```suggestion\n[Per-user default](#Per_user-default-sync_smartsync) below.\n```",
+      "range": {
+        "startLine": 209,
+        "startChar": 19,
+        "endLine": 209,
+        "endChar": 51
+      },
+      "revId": "fe0ec492f8386fee5d31b7a8c85ba1350ec8eda2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
