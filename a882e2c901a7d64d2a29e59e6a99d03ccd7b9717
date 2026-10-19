@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "82dee064_02a761ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-10-19T15:03:05Z",
+      "side": 1,
+      "message": "I agree. Specially after looking at other changes ensuring non-interactivity (like 643843). \n\n\"yes\" is right now acting as a proxy for \"please don\u0027t prompt anything\" but it isn\u0027t really available for every subcommand. Either we ensure \"yes\" can be passed for each subcmd. So in effect \"yes\" would mean: \"say yes to safe prompts. no to unsafe prompts. never interactive\". But passing `-y` to `repo sync` or `repo init`, which could have post-sync or pre-init hooks, feels kinda weird.",
+      "parentUuid": "07cb86bf_b698d5bb",
+      "revId": "a882e2c901a7d64d2a29e59e6a99d03ccd7b9717",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5337acaa_a56cd879",
         "filename": "hooks.py",
         "patchSetId": 2
