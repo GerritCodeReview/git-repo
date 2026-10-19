@@ -236,6 +236,9 @@ _repo() {
         '--clone-filter=[Clone filter]:filter:' \
         '--use-superproject[Use superproject]' \
         '--no-use-superproject[Do not use superproject]' \
+        '(-s --smart-sync)'{-s,--smart-sync}'[Default to smart sync]' \
+        '--no-smart-sync[Do not default to smart sync]' \
+        '--head[Do not default to smart sync]' \
         '--clone-bundle[Use clone bundle]' \
         '--no-clone-bundle[Do not use clone bundle]' \
         '--git-lfs[Use git lfs]' \
@@ -338,6 +341,7 @@ _repo() {
         '--no-auto-gc[Do not run auto gc]' \
         '(-s --smart-sync)'{-s,--smart-sync}'[Smart sync]' \
         '--no-smart-sync[Do not smart sync]' \
+        '--head[Do not smart sync]' \
         '(-t --smart-tag)'{-t,--smart-tag=}'[Smart tag]:tag:' \
         '--no-repo-verify[Do not verify repo]' \
         '--no-verify[Do not verify]' \
