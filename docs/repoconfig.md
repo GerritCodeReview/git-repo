@@ -18,25 +18,33 @@ The file is created on demand; it's fine for it to be missing.
 
 ## Format
 
-The file uses the [git-config] syntax, so it can be edited by hand:
+The file uses the [git-config] syntax.  The easiest way to manage it is the
+`repo config` command:
+
+```sh
+# Set a value.
+repo config sync.smartsync true
+
+# Read a value.
+repo config sync.smartsync
+
+# Remove a value.
+repo config --unset sync.smartsync
+
+# Show all settings.
+repo config --list
+```
+
+Like other repo subcommands, `repo config` must be run from inside a repo
+checkout.  The file can also be edited by hand:
 
 ```ini
 [sync]
 	smartsync = true
 ```
 
-or managed with `git config` by pointing it at the file explicitly:
-
-```sh
-# Set a value.
-git config --file ~/.repoconfig/config sync.smartsync true
-
-# Read a value.
-git config --file ~/.repoconfig/config sync.smartsync
-
-# Remove a value.
-git config --file ~/.repoconfig/config --unset sync.smartsync
-```
+or with `git config` by pointing it at the file explicitly, e.g.
+`git config --file ~/.repoconfig/config sync.smartsync true`.
 
 Boolean settings accept `true`/`yes` and `false`/`no`.
 
@@ -69,13 +77,13 @@ default:
 
 ```sh
 # Always Smart Sync, as if -s/--smart-sync were passed.
-git config --file ~/.repoconfig/config sync.smartsync true
+repo config sync.smartsync true
 
 # Never Smart Sync by default, even if the manifest sets sync-smartsync="true".
-git config --file ~/.repoconfig/config sync.smartsync false
+repo config sync.smartsync false
 
 # Remove the preference and go back to following the manifest.
-git config --file ~/.repoconfig/config --unset sync.smartsync
+repo config --unset sync.smartsync
 ```
 
 The effective behavior is resolved in this order; the first match wins:
