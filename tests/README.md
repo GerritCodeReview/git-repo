@@ -14,6 +14,8 @@ should be written using [pytest] only.
     [subcmds/forall.py](../subcmds/forall.py) module.
 *   [conftest.py](./conftest.py): Custom pytest fixtures for sharing.
 *   [utils_for_test.py](./utils_for_test.py): Helpers for sharing in tests.
+*   [e2e/](./e2e/): Hermetic end-to-end tests that run the real `repo` against
+    a local git server.
 
 
 [pytest]: https://pytest.org/
