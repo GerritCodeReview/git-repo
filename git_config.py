@@ -61,6 +61,54 @@ def IsImmutable(rev):
     return IsChange(rev) or IsId(rev) or IsTag(rev)
 
 
+def ParseBoolean(value: str) -> Union[bool, None]:
+    """Parses a git config boolean value.
+
+    Accepts the same spellings as `git config --type=bool`.
+
+    Returns:
+        True/False, or None if |value| is not a valid boolean.
+    """
+    v = value.strip().lower()
+    if v in ("true", "yes", "on", "1"):
+        return True
+    if v in ("false", "no", "off", "0"):
+        return False
+    return None
+
+
+def ParseInt(value: str) -> Union[int, None]:
+    """Parses a git config integer value.
+
+    Accepts the same syntax as `git config --type=int`: an optional k, m or
+    g suffix (multiples of 1024) and hex with a 0x prefix.
+
+    Returns:
+        The integer, or None if |value| is not a valid integer.
+    """
+    v = value.strip().lower()
+
+    mult = 1
+    if v.endswith("k"):
+        v = v[:-1]
+        mult = 1024
+    elif v.endswith("m"):
+        v = v[:-1]
+        mult = 1024 * 1024
+    elif v.endswith("g"):
+        v = v[:-1]
+        mult = 1024 * 1024 * 1024
+
+    base = 10
+    if v.startswith("0x"):
+        base = 16
+
+    try:
+        return int(v, base=base) * mult
+    except ValueError:
+        return None
+
+
 def _key(name):
     parts = name.split(".")
     if len(parts) < 2:
@@ -152,32 +200,15 @@ class GitConfig:
         v = self.GetString(name)
         if v is None:
             return None
-        v = v.strip()
 
-        mult = 1
-        if v.endswith("k"):
-            v = v[:-1]
-            mult = 1024
-        elif v.endswith("m"):
-            v = v[:-1]
-            mult = 1024 * 1024
-        elif v.endswith("g"):
-            v = v[:-1]
-            mult = 1024 * 1024 * 1024
-
-        base = 10
-        if v.startswith("0x"):
-            base = 16
-
-        try:
-            return int(v, base=base) * mult
-        except ValueError:
+        ret = ParseInt(v)
+        if ret is None:
             print(
                 f"warning: expected {name} to represent an integer, got {v} "
                 "instead",
                 file=sys.stderr,
             )
-            return None
+        return ret
 
     def DumpConfigDict(self):
         """Returns the current configuration dict.
@@ -197,24 +228,25 @@ class GitConfig:
     def GetBoolean(self, name: str) -> Union[bool, None]:
         """Returns a boolean from the configuration file.
 
+        This follows the git config syntax.
+
         Returns:
             None: The value was not defined, or is not a boolean.
-            True: The value was set to true or yes.
-            False: The value was set to false or no.
+            True: The value was set to true, yes, on or 1.
+            False: The value was set to false, no, off or 0.
         """
         v = self.GetString(name)
         if v is None:
             return None
-        v = v.lower()
-        if v in ("true", "yes"):
-            return True
-        if v in ("false", "no"):
-            return False
-        print(
-            f"warning: expected {name} to represent a boolean, got {v} instead",
-            file=sys.stderr,
-        )
-        return None
+
+        ret = ParseBoolean(v)
+        if ret is None:
+            print(
+                f"warning: expected {name} to represent a boolean, got {v} "
+                "instead",
+                file=sys.stderr,
+            )
+        return ret
 
     def SetBoolean(self, name, value):
         """Set the truthy value for a key."""

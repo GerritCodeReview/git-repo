@@ -254,7 +254,8 @@ setting `REPO_CONFIG_DIR`.
 
 *   `.repoconfig/`: Repo's per-user directory for all random config files/state.
 *   `.repoconfig/config`: Per-user settings using [git-config] file format.
-    See [repoconfig.md](./repoconfig.md) for the available settings.
+    Managed with `repo config`; see [repoconfig.md](./repoconfig.md) for the
+    available settings.
 *   `.repoconfig/keyring-version`: Cache file for checking if the gnupg subdir
     has all the same keys as the repo launcher.  Used to avoid running gpg
     constantly as that can be quite slow.
