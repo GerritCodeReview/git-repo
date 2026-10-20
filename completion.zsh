@@ -24,6 +24,7 @@ _repo() {
     'branches:View current topic branches'
     'checkout:Checkout a branch'
     'cherry-pick:Cherry-pick a change'
+    'config:Read and write per-user repo settings'
     'diff:Show changes between commit and working tree'
     'diffmanifests:Show differences between two manifests'
     'download:Download and find a change'
@@ -116,6 +117,15 @@ _repo() {
       _arguments \
         ${common_opts} \
         '1: :_message "sha1"'
+      ;;
+    config)
+      _arguments \
+        ${common_opts} \
+        '--type=[Validate and canonicalize the value as this type]:type:(bool int)' \
+        '(-z --null)'{-z,--null}'[Terminate output with NUL]' \
+        '1: :(get set unset list)' \
+        '2: :_message "name"' \
+        '3: :_message "value"'
       ;;
     diff)
       _arguments \

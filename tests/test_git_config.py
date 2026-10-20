@@ -15,7 +15,7 @@
 """Unittests for the git_config.py module."""
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import pytest
 import utils_for_test
@@ -288,3 +288,61 @@ def test_repo_config_for_user_is_not_shared_with_git_config(
     # And the RepoConfig instance is cached on its own class.
     assert git_config.RepoConfig.ForUser() is repo_cfg
     assert git_config.GitConfig.ForUser() is git_cfg
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    (
+        ("true", True),
+        ("True", True),
+        ("yes", True),
+        ("on", True),
+        ("1", True),
+        (" true ", True),
+        ("false", False),
+        ("No", False),
+        ("off", False),
+        ("0", False),
+        ("oops", None),
+        ("2", None),
+        ("", None),
+    ),
+)
+def test_parse_boolean(value: str, expected: Optional[bool]) -> None:
+    """Test ParseBoolean accepts the spellings `git config --type=bool` does."""
+    assert git_config.ParseBoolean(value) is expected
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    (
+        ("10", 10),
+        ("-7", -7),
+        ("10k", 10 * 1024),
+        ("10M", 10 * 1024 * 1024),
+        ("10g", 10 * 1024 * 1024 * 1024),
+        ("0x10", 16),
+        ("0x10k", 16 * 1024),
+        (" 10 ", 10),
+        ("oops", None),
+        ("1x", None),
+        ("", None),
+    ),
+)
+def test_parse_int(value: str, expected: Optional[int]) -> None:
+    """Test ParseInt accepts the syntax `git config --type=int` does."""
+    assert git_config.ParseInt(value) == expected
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    (("on", True), ("off", False), ("1", True), ("0", False)),
+)
+def test_get_boolean_git_spellings(
+    tmp_path: Path, value: str, expected: bool
+) -> None:
+    """Test GetBoolean accepts on/off/1/0 like git does."""
+    config_file = tmp_path / "config"
+    config_file.write_text(f"[section]\n\tkey = {value}\n")
+    config = git_config.GitConfig(config_file)
+    assert config.GetBoolean("section.key") is expected
