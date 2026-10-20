@@ -67,6 +67,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8a02a005_3cc1a1ae",
+        "filename": "manifest_xml.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2314,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-20T15:34:42Z",
+      "side": 1,
+      "message": "\u003e i assume git already asserts this ?\n\nit does for `..` and absolute paths (`fatal: could not normalize path ../outside`), but only when `sparse-checkout set` runs, which is after we\u0027ve already cloned/fetched. It also takes `.git` without complaint. I lean towards keeping the check so a bad manifest fails at parse time like `\u003ccopyfile\u003e`/`\u003clinkfile\u003e` do--let me know if you\u0027d rather drop it though.",
+      "parentUuid": "d8e4ad1d_8a5b7599",
+      "range": {
+        "startLine": 2314,
+        "startChar": 36,
+        "endLine": 2314,
+        "endChar": 62
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9b230a2_e7bb12c4",
+        "filename": "manifest_xml.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2314,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-20T15:34:42Z",
+      "side": 1,
+      "message": "Done, thanks!",
+      "parentUuid": "5cda8895_875cfc22",
+      "range": {
+        "startLine": 2314,
+        "startChar": 36,
+        "endLine": 2314,
+        "endChar": 62
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "41e2ac7f_4897b262",
         "filename": "project.py",
         "patchSetId": 20
@@ -78,6 +126,30 @@
       "writtenOn": "2026-09-15T23:18:28Z",
       "side": 1,
       "message": "do we want to set `clone_bundle \u003d False`?",
+      "range": {
+        "startLine": 1469,
+        "startChar": 0,
+        "endLine": 1469,
+        "endChar": 38
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "faeb8029_0f93fe2a",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1469,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-20T15:34:42Z",
+      "side": 1,
+      "message": "Good catch--done. The bundle is an unfiltered pack so it would undo the `blob:none` filter.",
+      "parentUuid": "41e2ac7f_4897b262",
       "range": {
         "startLine": 1469,
         "startChar": 0,
@@ -111,6 +183,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2df292ae_4d5d993f",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 3985,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-20T15:34:42Z",
+      "side": 1,
+      "message": "Done. `_InitGitWorktree` now runs `worktree remove --force --force` on any failure after `worktree add`, since the worktree is locked and `prune` would skip it otherwise.",
+      "parentUuid": "f2437737_0cac0aff",
+      "range": {
+        "startLine": 3980,
+        "startChar": 12,
+        "endLine": 3985,
+        "endChar": 0
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33c882f3_93d248cd",
@@ -134,6 +230,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bf06d15_251e077f",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 4046,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-20T15:34:42Z",
+      "side": 1,
+      "message": "Done, thanks for the suggestion! One tweak: I key off `info/sparse-checkout` rather than `core.sparseCheckout`, since git writes that setting to `config.worktree`, which `self.bare_git`/`self.config` don\u0027t read.",
+      "parentUuid": "33c882f3_93d248cd",
+      "range": {
+        "startLine": 4046,
+        "startChar": 0,
+        "endLine": 4046,
+        "endChar": 72
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b58342c7_e1eec668",
@@ -147,6 +267,30 @@
       "writtenOn": "2026-09-15T23:18:28Z",
       "side": 1,
       "message": "add a `--` delimiter here",
+      "range": {
+        "startLine": 4078,
+        "startChar": 44,
+        "endLine": 4078,
+        "endChar": 45
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c65cd709_ad88b0f7",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 4078,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-20T15:34:42Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "b58342c7_e1eec668",
       "range": {
         "startLine": 4078,
         "startChar": 44,
