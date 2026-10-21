@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26c974c7_0efe4827",
+        "filename": "docs/repoconfig.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T06:00:44Z",
+      "side": 1,
+      "message": "i would drop mention of this",
+      "revId": "0d3a4303978a0543c7dec3af6c273f9c4615525b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a81129f_7a0c0129",
+        "filename": "subcmds/config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T06:00:44Z",
+      "side": 1,
+      "message": "since this is new code, write `import command` and `import error` instead\n\nwe really need to clean the codebase of this",
+      "revId": "0d3a4303978a0543c7dec3af6c273f9c4615525b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d124f65_542f5bfb",
+        "filename": "subcmds/config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T06:00:44Z",
+      "side": 1,
+      "message": "what value is this providing ?  why not hand it directly to git config and let it do the checking for us ?",
+      "revId": "0d3a4303978a0543c7dec3af6c273f9c4615525b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8f6b7ce_dd4c9277",
+        "filename": "subcmds/config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T06:00:44Z",
+      "side": 1,
+      "message": "`git config` migrated to subcommands and deprecated the flag interface.  since this is a new subcommand, shouldn\u0027t we follow that standard now ?",
+      "revId": "0d3a4303978a0543c7dec3af6c273f9c4615525b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
