@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ad6e2ea_74095d45",
+        "filename": "docs/repoconfig.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-21T16:02:00Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "c13d936f_5bb995dc",
+      "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1ace0f2_a9edf897",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-21T14:56:25Z",
       "side": 1,
       "message": "for list, can we support `--null`/`-z` now ?  shouldn\u0027t be difficult to implement, and that provides a reliable scripting surface.",
+      "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2890702_65378924",
+        "filename": "subcmds/config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-21T16:02:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1ace0f2_a9edf897",
       "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87e87cd2_0fd08be1",
+        "filename": "subcmds/config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-21T16:02:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c2eda99_b22a8a56",
+      "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bb079b4_5749838f",
@@ -69,6 +123,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "689ca2fe_19f2bcef",
+        "filename": "subcmds/config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-21T16:02:00Z",
+      "side": 1,
+      "message": "Added it using AI. My Python taste might not be ideal, and I am not sure we need suffix parsing for ints. I am happy to remove it, if you think it is redundant.",
+      "parentUuid": "4bb079b4_5749838f",
+      "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73069353_3883fc6c",
@@ -82,6 +154,24 @@
       "writtenOn": "2026-10-21T14:56:25Z",
       "side": 1,
       "message": "`import command`",
+      "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e23283b4_34f12dfd",
+        "filename": "tests/test_subcmds_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-21T16:02:00Z",
+      "side": 1,
+      "message": "Fixed. Should we never use the `from A import B`? The unitest and typing kinda libraries seem to routinely import speicific symbols.",
+      "parentUuid": "73069353_3883fc6c",
       "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
