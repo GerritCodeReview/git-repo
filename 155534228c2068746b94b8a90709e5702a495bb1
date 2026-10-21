@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0f6eec8_12fc3364",
+        "filename": "project.py",
+        "patchSetId": 22
+      },
+      "lineNbr": 1809,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-21T21:37:16Z",
+      "side": 1,
+      "message": "since `_ConfigureSparseCheckout` only runs on new checkouts, applying `blob:none` on every sync will convert existing full checkouts into partial clones (and also applies to mirror checkouts, where partial clone isn\u0027t supported) IIUC\n\nwdyt about gating this so we only default to `blob:none` on non-mirror checkouts that are either new or already using partial clone? eg adding this to the condition:\n\n\n```\nand not self.manifest.IsMirror\nand (not os.path.exists(self.objdir) or self.config.GetString(\"extensions.partialclone\"))\n```",
+      "range": {
+        "startLine": 1809,
+        "startChar": 0,
+        "endLine": 1809,
+        "endChar": 50
+      },
+      "revId": "155534228c2068746b94b8a90709e5702a495bb1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
