@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99ee16e4_690b060c",
+        "filename": "repo",
+        "patchSetId": 6
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T06:05:44Z",
+      "side": 1,
+      "message": "```suggestion\nVERSION \u003d (2, 71)\n```",
+      "revId": "6edec49c02f31c52e3b6a7f191acb9ab8087e4f2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e13249cc_de041dfa",
+        "filename": "repo",
+        "patchSetId": 6
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T06:05:44Z",
+      "side": 1,
+      "message": "```suggestion\n        help\u003d\"do not default to smart sync when syncing projects\",\n```",
+      "revId": "6edec49c02f31c52e3b6a7f191acb9ab8087e4f2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "962cf45b_342c5b57",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 2531,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T06:05:44Z",
+      "side": 1,
+      "message": "the first line of a docstring is a single line",
+      "revId": "6edec49c02f31c52e3b6a7f191acb9ab8087e4f2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
