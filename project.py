@@ -3883,7 +3883,7 @@ class Project:
     def _IsValidBundle(self, path, quiet):
         try:
             with open(path, "rb") as f:
-                if f.read(16) == b"# v2 git bundle\n":
+                if f.read(16) in (b"# v2 git bundle\n", b"# v3 git bundle\n"):
                     return True
                 else:
                     if not quiet:
