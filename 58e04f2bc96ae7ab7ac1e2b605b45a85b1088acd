@@ -141,6 +141,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6a81e16_d502ce8c",
+        "filename": "subcmds/config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T17:31:01Z",
+      "side": 1,
+      "message": "if `git config` supports it, it\u0027s fine to leave.  if `git config` doesn\u0027t support suffixes, then let\u0027s drop it.",
+      "parentUuid": "689ca2fe_19f2bcef",
+      "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73069353_3883fc6c",
@@ -172,6 +190,24 @@
       "side": 1,
       "message": "Fixed. Should we never use the `from A import B`? The unitest and typing kinda libraries seem to routinely import speicific symbols.",
       "parentUuid": "73069353_3883fc6c",
+      "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "591a8054_1a5dc027",
+        "filename": "tests/test_subcmds_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T17:31:01Z",
+      "side": 1,
+      "message": "yeah, the existing codebase is bad.  most (but not all) should be migrated to import modules.  at this point i\u0027m just asking people to not add to the fire.",
+      "parentUuid": "e23283b4_34f12dfd",
       "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

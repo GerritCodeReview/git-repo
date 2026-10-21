@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cba42621_75522a2e",
+        "filename": "subcmds/config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T17:31:01Z",
+      "side": 1,
+      "message": "can we move this to git_config.py \u0026 merge the existing GetBoolean logic with it ?",
+      "revId": "8c86699f1f1c77a2edaef482cb1d9c78afdd4b41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
