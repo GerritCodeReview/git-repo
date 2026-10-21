@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "098c777e_aa5dbc05",
+        "filename": "repo",
+        "patchSetId": 6
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-21T18:08:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99ee16e4_690b060c",
+      "revId": "6edec49c02f31c52e3b6a7f191acb9ab8087e4f2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e13249cc_de041dfa",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c534ff39_5a264af8",
+        "filename": "repo",
+        "patchSetId": 6
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-21T18:08:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e13249cc_de041dfa",
+      "revId": "6edec49c02f31c52e3b6a7f191acb9ab8087e4f2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "962cf45b_342c5b57",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-10-21T06:05:44Z",
       "side": 1,
       "message": "the first line of a docstring is a single line",
+      "revId": "6edec49c02f31c52e3b6a7f191acb9ab8087e4f2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43c43337_119835d9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 2531,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2026-10-21T18:08:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "962cf45b_342c5b57",
       "revId": "6edec49c02f31c52e3b6a7f191acb9ab8087e4f2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
