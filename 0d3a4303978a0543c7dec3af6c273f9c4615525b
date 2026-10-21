@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "694556bb_598aa3c8",
+        "filename": "docs/repoconfig.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-21T14:44:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26c974c7_0efe4827",
+      "revId": "0d3a4303978a0543c7dec3af6c273f9c4615525b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a81129f_7a0c0129",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-21T06:00:44Z",
       "side": 1,
       "message": "since this is new code, write `import command` and `import error` instead\n\nwe really need to clean the codebase of this",
+      "revId": "0d3a4303978a0543c7dec3af6c273f9c4615525b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f539654_73572adb",
+        "filename": "subcmds/config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-21T14:44:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a81129f_7a0c0129",
       "revId": "0d3a4303978a0543c7dec3af6c273f9c4615525b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23c856c6_b60d2f07",
+        "filename": "subcmds/config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-21T14:44:14Z",
+      "side": 1,
+      "message": "I guess this only makes sense for `get`. But there it will also just error, which is fine.",
+      "parentUuid": "8d124f65_542f5bfb",
+      "revId": "0d3a4303978a0543c7dec3af6c273f9c4615525b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8f6b7ce_dd4c9277",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-10-21T06:00:44Z",
       "side": 1,
       "message": "`git config` migrated to subcommands and deprecated the flag interface.  since this is a new subcommand, shouldn\u0027t we follow that standard now ?",
+      "revId": "0d3a4303978a0543c7dec3af6c273f9c4615525b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52c3df02_d26d677f",
+        "filename": "subcmds/config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-21T14:44:14Z",
+      "side": 1,
+      "message": "Fair enough",
+      "parentUuid": "d8f6b7ce_dd4c9277",
       "revId": "0d3a4303978a0543c7dec3af6c273f9c4615525b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
