@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c13d936f_5bb995dc",
+        "filename": "docs/repoconfig.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T14:56:25Z",
+      "side": 1,
+      "message": "can you delete this while you\u0027re here ?",
+      "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1ace0f2_a9edf897",
+        "filename": "subcmds/config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T14:56:25Z",
+      "side": 1,
+      "message": "for list, can we support `--null`/`-z` now ?  shouldn\u0027t be difficult to implement, and that provides a reliable scripting surface.",
+      "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c2eda99_b22a8a56",
+        "filename": "subcmds/config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T14:56:25Z",
+      "side": 1,
+      "message": "let\u0027s create helper methods for this to dispatch to.  we don\u0027t need to microoptimize the execution.\n\nsomething like (just typed off the top of my head -- feel free to structure how you like)\n```\ndispatch \u003d {\n  \"list\": self._ExecuteList,\n  \"get\": self._ExecuteGet,\n  ...\n}[action]\ndispatch(opt, config, *rest)\n```",
+      "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bb079b4_5749838f",
+        "filename": "subcmds/config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T14:56:25Z",
+      "side": 1,
+      "message": "document that the `set` function currently only supports strings.  if you\u0027re letting AI generate this stuff, then asking it to plumb `--type` now with support for bool \u0026 int would be good.",
+      "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73069353_3883fc6c",
+        "filename": "tests/test_subcmds_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-21T14:56:25Z",
+      "side": 1,
+      "message": "`import command`",
+      "revId": "58e04f2bc96ae7ab7ac1e2b605b45a85b1088acd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
