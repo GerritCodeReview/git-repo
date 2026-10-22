@@ -16,6 +16,24 @@
       "message": "somewhere in this chain of CLs we should update `docs/release-process.md` with instructions for running these tests on manual releases (and update w/ the new automated release process, but that should probably be a separate CL)",
       "revId": "14b10d0c3329d93d95f0bb138879ce5e72af602d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aece73c_bef6450c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-10-22T17:31:41Z",
+      "side": 1,
+      "message": "These tests will be run as part of cq so nothing additional needs to be done on release. For updating with the new release process: b/575551885",
+      "parentUuid": "3e252f7a_c6465c29",
+      "revId": "14b10d0c3329d93d95f0bb138879ce5e72af602d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
