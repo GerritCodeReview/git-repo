@@ -16,9 +16,7 @@ import re
 import sys
 
 from command import Command
-from error import GitError
-from error import NoSuchProjectError
-from error import RepoExitError
+import error
 from repo_logging import RepoLogger
 
 
@@ -26,7 +24,7 @@ CHANGE_RE = re.compile(r"^([1-9][0-9]*)(?:[/\.-]([1-9][0-9]*))?$")
 logger = RepoLogger(__file__)
 
 
-class DownloadCommandError(RepoExitError):
+class DownloadCommandError(error.RepoExitError):
     """Error raised when download command fails."""
 
 
@@ -107,7 +105,7 @@ If no project is specified try to use current directory as a project.
                     # If the cwd is one of the projects, assume they want that.
                     try:
                         project = self.GetProjects(".")[0]
-                    except NoSuchProjectError:
+                    except error.NoSuchProjectError:
                         project = None
                     if project not in projects:
                         logger.error(
@@ -121,7 +119,7 @@ If no project is specified try to use current directory as a project.
                                 project.RelPath(local=opt.this_manifest_only),
                                 project.revisionExpr,
                             )
-                        raise NoSuchProjectError()
+                        raise error.NoSuchProjectError()
                 else:
                     project = projects[0]
                     print("Defaulting to cwd project", project.name)
@@ -143,7 +141,7 @@ If no project is specified try to use current directory as a project.
         try:
             self._ExecuteHelper(opt, args)
         except Exception as e:
-            if isinstance(e, RepoExitError):
+            if isinstance(e, error.RepoExitError):
                 raise e
             raise DownloadCommandError(aggregate_errors=[e])
 
@@ -202,7 +200,7 @@ If no project is specified try to use current directory as a project.
                     else:
                         project._Checkout(dl.commit)
 
-            except GitError:
+            except error.GitError:
                 logger.error(
                     "[%s] Could not complete the %s of %s",
                     project.name,

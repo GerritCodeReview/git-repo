@@ -18,7 +18,7 @@ import subprocess
 import sys
 import tempfile
 
-from error import EditorError
+import error
 import platform_utils
 
 
@@ -104,9 +104,11 @@ least one of these before using this command.""",  # noqa: E501
             try:
                 rc = subprocess.Popen(args, shell=shell).wait()
             except OSError as e:
-                raise EditorError(f"editor failed, {str(e)}: {editor} {path}")
+                raise error.EditorError(
+                    f"editor failed, {str(e)}: {editor} {path}"
+                )
             if rc != 0:
-                raise EditorError(
+                raise error.EditorError(
                     "editor failed with exit status %d: %s %s"
                     % (rc, editor, path)
                 )

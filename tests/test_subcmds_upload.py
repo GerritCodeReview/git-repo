@@ -19,8 +19,7 @@ from unittest import mock
 
 import pytest
 
-from error import GitError
-from error import UploadError
+import error
 from subcmds import upload
 
 
@@ -45,7 +44,9 @@ def cmd() -> upload.Upload:
 def test_UploadAndReport_UploadError(cmd: upload.Upload) -> None:
     """Check UploadExitError raised when UploadError encountered."""
     opt, _ = cmd.OptionParser.parse_args([])
-    with mock.patch.object(cmd, "_UploadBranch", side_effect=UploadError("")):
+    with mock.patch.object(
+        cmd, "_UploadBranch", side_effect=error.UploadError("")
+    ):
         with pytest.raises(upload.UploadExitError):
             cmd._UploadAndReport(opt, [mock.MagicMock()], _STUB_PEOPLE)
 
@@ -53,7 +54,9 @@ def test_UploadAndReport_UploadError(cmd: upload.Upload) -> None:
 def test_UploadAndReport_GitError(cmd: upload.Upload) -> None:
     """Check UploadExitError raised when GitError encountered."""
     opt, _ = cmd.OptionParser.parse_args([])
-    with mock.patch.object(cmd, "_UploadBranch", side_effect=GitError("")):
+    with mock.patch.object(
+        cmd, "_UploadBranch", side_effect=error.GitError("")
+    ):
         with pytest.raises(upload.UploadExitError):
             cmd._UploadAndReport(opt, [mock.MagicMock()], _STUB_PEOPLE)
 

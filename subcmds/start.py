@@ -17,7 +17,7 @@ from typing import NamedTuple
 
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
-from error import RepoExitError
+import error
 from git_command import IsValidBranchName
 from git_config import IsImmutable
 from progress import Progress
@@ -32,7 +32,7 @@ class ExecuteOneResult(NamedTuple):
     error: Exception
 
 
-class StartError(RepoExitError):
+class StartError(error.RepoExitError):
     """Exit error for failed start command."""
 
 
@@ -85,7 +85,7 @@ revision specified in the manifest.
         # a change, then we can't push back to it. Substitute with
         # dest_branch, if defined; or with manifest default revision instead.
         branch_merge = ""
-        error = None
+        err = None
         project = cls.get_parallel_context()["projects"][project_idx]
         if IsImmutable(project.revisionExpr):
             if project.dest_branch:
@@ -99,8 +99,8 @@ revision specified in the manifest.
             )
         except Exception as e:
             logger.error("error: unable to checkout %s: %s", project.name, e)
-            error = e
-        return ExecuteOneResult(project_idx, error)
+            err = e
+        return ExecuteOneResult(project_idx, err)
 
     def Execute(self, opt, args):
         nb = args[0]

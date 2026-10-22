@@ -45,17 +45,7 @@ from color import SetDefaultColoring
 from command import InteractiveCommand
 from command import MirrorSafeCommand
 from editor import Editor
-from error import DownloadError
-from error import InvalidProjectGroupsError
-from error import ManifestInvalidRevisionError
-from error import ManifestParseError
-from error import NoManifestException
-from error import NoSuchProjectError
-from error import RepoChangedException
-from error import RepoError
-from error import RepoExitError
-from error import RepoUnhandledExceptionError
-from error import SilentRepoExitError
+import error
 import event_log
 from git_command import user_agent
 from git_config import RepoConfig
@@ -435,7 +425,7 @@ class _Repo:
         try:
             copts, cargs = cmd.OptionParser.parse_args(argv)
             copts = cmd.ReadEnvironmentOptions(copts)
-        except NoManifestException as e:
+        except error.NoManifestException as e:
             logger.error("error: in `%s`: %s", " ".join([name] + argv), e)
             logger.error(
                 "error: manifest missing or unreadable -- please run init"
@@ -511,23 +501,23 @@ class _Repo:
                 KeyboardInterrupt,
                 SystemExit,
                 Exception,
-                RepoExitError,
+                error.RepoExitError,
             ) as e:
                 ok = isinstance(e, SystemExit) and not e.code
                 exception_name = type(e).__name__
-                if isinstance(e, RepoUnhandledExceptionError):
+                if isinstance(e, error.RepoUnhandledExceptionError):
                     exception_name = type(e.error).__name__
-                if isinstance(e, RepoExitError):
+                if isinstance(e, error.RepoExitError):
                     aggregated_errors = e.aggregate_errors or []
-                    for error in aggregated_errors:
+                    for err in aggregated_errors:
                         project = None
-                        if isinstance(error, RepoError):
-                            project = error.project
+                        if isinstance(err, error.RepoError):
+                            project = err.project
                         error_info = json.dumps(
                             {
-                                "ErrorType": type(error).__name__,
+                                "ErrorType": type(err).__name__,
                                 "Project": str(project),
-                                "Message": str(error),
+                                "Message": str(err),
                             }
                         )
                         git_trace2_event_log.ErrorEvent(
@@ -542,24 +532,24 @@ class _Repo:
         try:
             execute_command()
         except (
-            DownloadError,
-            ManifestInvalidRevisionError,
-            ManifestParseError,
-            NoManifestException,
+            error.DownloadError,
+            error.ManifestInvalidRevisionError,
+            error.ManifestParseError,
+            error.NoManifestException,
         ) as e:
             logger.error("error: in `%s`: %s", " ".join([name] + argv), e)
-            if isinstance(e, NoManifestException):
+            if isinstance(e, error.NoManifestException):
                 logger.error(
                     "error: manifest missing or unreadable -- please run init"
                 )
             result = e.exit_code
-        except NoSuchProjectError as e:
+        except error.NoSuchProjectError as e:
             if e.name:
                 logger.error("error: project %s not found", e.name)
             else:
                 logger.error("error: no project in current directory")
             result = e.exit_code
-        except InvalidProjectGroupsError as e:
+        except error.InvalidProjectGroupsError as e:
             if e.name:
                 logger.error(
                     "error: project group must be enabled for project %s",
@@ -578,7 +568,7 @@ class _Repo:
         except KeyboardInterrupt:
             result = KEYBOARD_INTERRUPT_EXIT
             raise
-        except RepoExitError as e:
+        except error.RepoExitError as e:
             result = e.exit_code
             raise
         except Exception:
@@ -949,14 +939,14 @@ def _Main(argv):
             SetTraceToStderr()
 
         result = repo._Run(name, gopts, argv) or 0
-    except RepoExitError as e:
-        if not isinstance(e, SilentRepoExitError):
+    except error.RepoExitError as e:
+        if not isinstance(e, error.SilentRepoExitError):
             logger.log_aggregated_errors(e)
         result = e.exit_code
     except KeyboardInterrupt:
         print("aborted by user", file=sys.stderr)
         result = KEYBOARD_INTERRUPT_EXIT
-    except RepoChangedException as rce:
+    except error.RepoChangedException as rce:
         # If repo changed, re-exec ourselves.
         argv = list(sys.argv)
         argv.extend(rce.extra_args)

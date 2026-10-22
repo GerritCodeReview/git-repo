@@ -17,7 +17,7 @@ import sys
 from typing import Tuple
 
 from command import Command
-from error import GitError
+import error
 from git_command import GitCommand
 from repo_logging import RepoLogger
 
@@ -57,7 +57,7 @@ change id will be added.
 
         try:
             p.Wait()
-        except GitError as e:
+        except error.GitError as e:
             logger.error(e)
             logger.warning(
                 "NOTE: When committing (please see above) and editing the "
@@ -86,7 +86,7 @@ change id will be added.
         )
         try:
             p.Wait()
-        except GitError:
+        except error.GitError:
             logger.error("error: Failed to update commit message")
             raise
 
@@ -107,7 +107,7 @@ change id will be added.
             if not separator:
                 raise ValueError("missing cat-file header")
             if header.endswith(" missing") or header.endswith(" ambiguous"):
-                raise GitError(f"commit {reference} not found")
+                raise error.GitError(f"commit {reference} not found")
 
             parts = header.split(" ", 2)
             if len(parts) != 3 or parts[1] != "commit":
@@ -122,13 +122,13 @@ change id will be added.
                 raise ValueError("truncated cat-file object")
 
             commit = output[:-1]
-        except (GitError, ValueError) as e:
+        except (error.GitError, ValueError) as e:
             logger.error(
                 "error: Failed to resolve or read commit %s", reference
             )
-            if isinstance(e, GitError):
+            if isinstance(e, error.GitError):
                 raise
-            raise GitError(str(e)) from e
+            raise error.GitError(str(e)) from e
 
         return sha1, commit
 

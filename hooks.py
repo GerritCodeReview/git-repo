@@ -19,7 +19,7 @@ import sys
 import traceback
 import urllib.parse
 
-from error import HookError
+import error
 from git_refs import HEAD
 
 
@@ -228,7 +228,7 @@ class RepoHook:
 
         # For anything else, we'll assume no approval.
         if self._abort_if_user_denies:
-            raise HookError(
+            raise error.HookError(
                 "You must allow the %s hook or use --no-verify."
                 % self._hook_type
             )
@@ -326,14 +326,16 @@ class RepoHook:
         try:
             exec(compile(data, self._script_fullpath, "exec"), context)
         except Exception:
-            raise HookError(
+            raise error.HookError(
                 "%s\nFailed to import %s hook; see traceback above."
                 % (traceback.format_exc(), self._hook_type)
             )
 
         # Running the script should have defined a main() function.
         if "main" not in context:
-            raise HookError('Missing main() in: "%s"' % self._script_fullpath)
+            raise error.HookError(
+                'Missing main() in: "%s"' % self._script_fullpath
+            )
 
         # Call the main function in the hook.  If the hook should cause the
         # build to fail, it will raise an Exception.  We'll catch that convert
@@ -341,7 +343,7 @@ class RepoHook:
         try:
             context["main"](**kwargs)
         except Exception:
-            raise HookError(
+            raise error.HookError(
                 "%s\nFailed to run main() for %s hook; see traceback "
                 "above." % (traceback.format_exc(), self._hook_type)
             )
@@ -394,7 +396,7 @@ class RepoHook:
             if interp:
                 prog = os.path.basename(interp)
                 if prog.startswith("python2"):
-                    raise HookError("Python 2 is not supported")
+                    raise error.HookError("Python 2 is not supported")
 
             # Run the hook by importing directly.
             self._ExecuteHookViaImport(data, context, **kwargs)
@@ -406,7 +408,7 @@ class RepoHook:
     def _CheckHook(self):
         # Bail with a nice error if we can't find the hook.
         if not os.path.isfile(self._script_fullpath):
-            raise HookError(
+            raise error.HookError(
                 "Couldn't find repo hook: %s" % self._script_fullpath
             )
 
@@ -473,7 +475,7 @@ class RepoHook:
                 % (self._hook_type, str(e)),
                 file=sys.stderr,
             )
-        except HookError as e:
+        except error.HookError as e:
             passed = False
             print("ERROR: %s" % str(e), file=sys.stderr)
 

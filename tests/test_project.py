@@ -2474,7 +2474,7 @@ class StatelessSyncTests(unittest.TestCase):
             proj.bare_ref.head = "refs/heads/topic"
             proj.work_git = mock.MagicMock()
             proj.work_git.GetHead.return_value = "refs/heads/topic"
-            proj.work_git.merge_base.side_effect = project.GitError("diverged")
+            proj.work_git.merge_base.side_effect = error.GitError("diverged")
             branch = mock.MagicMock()
             branch.name = "topic"
             branch.LocalMerge = "refs/remotes/origin/main"

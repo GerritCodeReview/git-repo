@@ -19,9 +19,7 @@ from typing import NamedTuple
 from color import Coloring
 from command import DEFAULT_LOCAL_JOBS
 from command import PagedCommand
-from error import GitError
-from error import InvalidArgumentsError
-from error import SilentRepoExitError
+import error
 from git_command import GitCommand
 from repo_logging import RepoLogger
 
@@ -43,10 +41,10 @@ class ExecuteOneResult(NamedTuple):
     rc: int
     stdout: str
     stderr: str
-    error: GitError
+    error: error.GitError
 
 
-class GrepCommandError(SilentRepoExitError):
+class GrepCommandError(error.SilentRepoExitError):
     """Grep command failure. Since Grep command
     output already outputs errors ensure that
     aggregate errors exit silently."""
@@ -273,16 +271,16 @@ contain a line that matches both expressions:
                 capture_stderr=True,
                 verify_command=True,
             )
-        except GitError as e:
+        except error.GitError as e:
             return ExecuteOneResult(project_idx, -1, None, str(e), e)
 
         try:
-            error = None
+            err = None
             rc = p.Wait()
-        except GitError as e:
+        except error.GitError as e:
             rc = 1
-            error = e
-        return ExecuteOneResult(project_idx, rc, p.stdout, p.stderr, error)
+            err = e
+        return ExecuteOneResult(project_idx, rc, p.stdout, p.stderr, err)
 
     @staticmethod
     def _ProcessResults(
@@ -377,7 +375,7 @@ contain a line that matches both expressions:
             if "--cached" in cmd_argv:
                 msg = "fatal: cannot combine --cached and --revision"
                 logger.error(msg)
-                raise InvalidArgumentsError(msg)
+                raise error.InvalidArgumentsError(msg)
             have_rev = True
             cmd_argv.extend(opt.revision)
         cmd_argv.append("--")

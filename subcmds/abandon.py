@@ -18,8 +18,7 @@ import itertools
 
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
-from error import RepoError
-from error import RepoExitError
+import error
 from git_command import IsValidBranchName
 from progress import Progress
 from repo_logging import RepoLogger
@@ -28,7 +27,7 @@ from repo_logging import RepoLogger
 logger = RepoLogger(__file__)
 
 
-class AbandonError(RepoExitError):
+class AbandonError(error.RepoExitError):
     """Exit error when abandon command fails."""
 
 
@@ -82,7 +81,7 @@ It is equivalent to "git branch -D <branchname>".
             status = None
             try:
                 status = project.AbandonBranch(name)
-            except RepoError as e:
+            except error.RepoError as e:
                 status = False
                 errors.append(e)
             if status is not None:

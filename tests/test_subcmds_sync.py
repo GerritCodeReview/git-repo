@@ -31,9 +31,7 @@ import xmlrpc.server
 import pytest
 
 import command
-from error import GitError
-from error import ManifestParseError
-from error import RepoExitError
+import error
 import manifest_xml
 from project import SyncNetworkHalfResult
 from subcmds import sync
@@ -1693,13 +1691,13 @@ class SyncCommand(unittest.TestCase):
 
     def test_command_exit_error(self):
         """Ensure unsuccessful commands raise expected errors."""
-        self.sync_network_half_error = GitError(
+        self.sync_network_half_error = error.GitError(
             "sync_network_half_error error", project=self.project
         )
-        self.sync_local_half_error = GitError(
+        self.sync_local_half_error = error.GitError(
             "sync_local_half_error", project=self.project
         )
-        with self.assertRaises(RepoExitError) as e:
+        with self.assertRaises(error.RepoExitError) as e:
             self.cmd.Execute(self.opt, [])
             self.assertIn(self.sync_local_half_error, e.aggregate_errors)
             self.assertIn(self.sync_network_half_error, e.aggregate_errors)
@@ -1751,7 +1749,7 @@ class SyncCommand(unittest.TestCase):
         p_foo_bar = FakeProject("foo/bar")
         p_foo.UseReprojectCmd = p_foo_bar.UseReprojectCmd = True
         self.cmd.GetProjects.return_value = [p_foo, p_foo_bar]
-        with self.assertRaises(sync.SyncError) as e:
+        with self.assertRaises(error.SyncError) as e:
             self._ExecuteUntilSync([])
         self.assertIn("foo/bar", str(e.exception))
         self.assertNotIn(" - foo\n", str(e.exception))
@@ -1762,7 +1760,7 @@ class SyncCommand(unittest.TestCase):
         p_sub = FakeProject("foo/sub", parent=p_foo, is_derived=True)
         p_foo.UseReprojectCmd = p_sub.UseReprojectCmd = True
         self.cmd.GetProjects.return_value = [p_foo, p_sub]
-        with self.assertRaises(sync.SyncError) as e:
+        with self.assertRaises(error.SyncError) as e:
             self._ExecuteUntilSync([])
         self.assertIn("foo/sub", str(e.exception))
 
@@ -1774,7 +1772,7 @@ class SyncCommand(unittest.TestCase):
         self.cmd.GetProjects.side_effect = lambda args, **kwargs: (
             [p_foo_bar] if args else [p_foo, p_foo_bar]
         )
-        with self.assertRaises(sync.SyncError):
+        with self.assertRaises(error.SyncError):
             self._ExecuteUntilSync(["foo/bar"])
         self.assertEqual(self.cmd.GetProjects.call_count, 2)
         _, kwargs = self.cmd.GetProjects.call_args
@@ -1905,7 +1903,7 @@ class SyncCommand(unittest.TestCase):
         with mock.patch.object(
             self.cmd,
             "_SmartSyncSetup",
-            side_effect=ManifestParseError("mismatched tag"),
+            side_effect=error.ManifestParseError("mismatched tag"),
         ):
             with mock.patch.object(self.cmd, "_UpdateRepoProject"):
                 with mock.patch.object(
@@ -1926,9 +1924,9 @@ class SyncCommand(unittest.TestCase):
         with mock.patch.object(
             self.cmd,
             "_SmartSyncSetup",
-            side_effect=ManifestParseError("mismatched tag"),
+            side_effect=error.ManifestParseError("mismatched tag"),
         ):
-            with self.assertRaises(ManifestParseError):
+            with self.assertRaises(error.ManifestParseError):
                 self.cmd.Execute(self.opt, [])
 
     def _ExecuteWithSmartSyncOverride(
@@ -2050,7 +2048,7 @@ class SyncCommand(unittest.TestCase):
         self.opt.smart_sync = None
         self.opt.local_only = True
         path, _, _, update_mps = self._ExecuteWithSmartSyncOverride(
-            reload_error=ManifestParseError("mismatched tag")
+            reload_error=error.ManifestParseError("mismatched tag")
         )
         self.manifest.ClearOverride.assert_called_once_with()
         self.assertFalse(os.path.isfile(path))
@@ -2147,7 +2145,7 @@ class SyncUpdateRepoProject(unittest.TestCase):
         self.manifest.repoProject.LastFetch = time.time() - (
             sync._ONE_DAY_S + 1
         )
-        fetch_error = GitError("Fetch failed")
+        fetch_error = error.GitError("Fetch failed")
         self.manifest.repoProject.Sync_NetworkHalf.return_value = (
             SyncNetworkHalfResult(False, fetch_error)
         )
@@ -2440,10 +2438,10 @@ class InterleavedSyncTest(unittest.TestCase):
         sub = self._make_syncable(
             FakeProject("foo", name="sub", objdir="b", path_prefix="sub")
         )
-        sub.Sync_LocalHalf.side_effect = GitError("checkout failed")
+        sub.Sync_LocalHalf.side_effect = error.GitError("checkout failed")
         self.cmd.git_event_log = mock.MagicMock()
 
-        with self.assertRaises(sync.SyncError):
+        with self.assertRaises(error.SyncError):
             self._run_interleaved(opt, [outer, sub], [outer, sub])
 
         self.assertEqual(
@@ -2565,7 +2563,7 @@ class InterleavedSyncTest(unittest.TestCase):
         """Test _SyncProjectList with a failed fetch."""
         opt = self._get_opts()
         project = self.projA
-        fetch_error = GitError("Fetch failed")
+        fetch_error = error.GitError("Fetch failed")
         project.Sync_NetworkHalf = mock.Mock(
             return_value=SyncNetworkHalfResult(
                 error=fetch_error, remote_fetched=False
@@ -2607,7 +2605,7 @@ class InterleavedSyncTest(unittest.TestCase):
         """Test _SyncProjectList with an exception during fetch."""
         opt = self._get_opts()
         project = self.projA
-        fetch_error = GitError("Fetch failed")
+        fetch_error = error.GitError("Fetch failed")
         project.Sync_NetworkHalf = mock.Mock(side_effect=fetch_error)
         project.Sync_LocalHalf = mock.Mock()
         self.mock_context["projects"] = [project]
@@ -2628,7 +2626,7 @@ class InterleavedSyncTest(unittest.TestCase):
         project.Sync_NetworkHalf = mock.Mock(
             return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
         )
-        checkout_error = GitError("Checkout failed")
+        checkout_error = error.GitError("Checkout failed")
         project.Sync_LocalHalf = mock.Mock(side_effect=checkout_error)
         project.manifest.manifestProject.config = mock.MagicMock()
         self.mock_context["projects"] = [project]
@@ -2886,7 +2884,7 @@ class SyncToSuperprojectRevTests(unittest.TestCase):
         mock_git.stdout = "invalid_content\n"
         mock_git_command.return_value = mock_git
 
-        with self.assertRaises(sync.SyncError) as e:
+        with self.assertRaises(error.SyncError) as e:
             self.cmd._SyncToSuperprojectRev(
                 self.opt, self.manifest, self.mp, "name", self.errors
             )
@@ -2903,7 +2901,7 @@ class SyncToSuperprojectRevTests(unittest.TestCase):
         mock_git.stderr = "git error"
         mock_git_command.return_value = mock_git
 
-        with self.assertRaises(sync.SyncError) as e:
+        with self.assertRaises(error.SyncError) as e:
             self.cmd._SyncToSuperprojectRev(
                 self.opt, self.manifest, self.mp, "name", self.errors
             )
@@ -2913,7 +2911,7 @@ class SyncToSuperprojectRevTests(unittest.TestCase):
         """Test error when superproject is not defined."""
         self.manifest.superproject = None
 
-        with self.assertRaises(sync.SyncError) as e:
+        with self.assertRaises(error.SyncError) as e:
             self.cmd._SyncToSuperprojectRev(
                 self.opt, self.manifest, self.mp, "name", self.errors
             )
@@ -2925,7 +2923,7 @@ class SyncToSuperprojectRevTests(unittest.TestCase):
         mock_superproject = self.manifest.superproject
         mock_superproject.Sync.return_value = mock.Mock(success=False)
 
-        with self.assertRaises(sync.SyncError) as e:
+        with self.assertRaises(error.SyncError) as e:
             self.cmd._SyncToSuperprojectRev(
                 self.opt, self.manifest, self.mp, "name", self.errors
             )
@@ -3096,11 +3094,11 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
 
         self.cmd._GetBranch = mock.MagicMock(return_value="main")
         self.cmd._ReloadManifest = mock.MagicMock(
-            side_effect=ManifestParseError("mismatched tag")
+            side_effect=error.ManifestParseError("mismatched tag")
         )
 
         with mock.patch("builtins.open", mock.mock_open()):
-            with self.assertRaises(ManifestParseError):
+            with self.assertRaises(error.ManifestParseError):
                 self.cmd._SmartSyncSetup(
                     self.opt, self.smart_sync_manifest_path, self.manifest
                 )

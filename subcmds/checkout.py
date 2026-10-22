@@ -17,8 +17,7 @@ from typing import NamedTuple
 
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
-from error import GitError
-from error import RepoExitError
+import error
 from progress import Progress
 from repo_logging import RepoLogger
 
@@ -33,11 +32,11 @@ class CheckoutBranchResult(NamedTuple):
     error: Exception
 
 
-class CheckoutCommandError(RepoExitError):
+class CheckoutCommandError(error.RepoExitError):
     """Exception thrown when checkout command fails."""
 
 
-class MissingBranchError(RepoExitError):
+class MissingBranchError(error.RepoExitError):
     """Exception thrown when no project has specified branch."""
 
 
@@ -64,14 +63,14 @@ The command is equivalent to:
     @classmethod
     def _ExecuteOne(cls, nb, project_idx):
         """Checkout one project."""
-        error = None
+        err = None
         result = None
         project = cls.get_parallel_context()["projects"][project_idx]
         try:
             result = project.CheckoutBranch(nb)
-        except GitError as e:
-            error = e
-        return CheckoutBranchResult(result, project_idx, error)
+        except error.GitError as e:
+            err = e
+        return CheckoutBranchResult(result, project_idx, err)
 
     def Execute(self, opt, args):
         nb = args[0]

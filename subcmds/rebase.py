@@ -16,7 +16,7 @@ import sys
 
 from color import Coloring
 from command import Command
-from error import GitError
+import error
 from git_command import GitCommand
 from project import Project
 from repo_logging import RepoLogger
@@ -39,7 +39,7 @@ def _ResolveOntoManifest(project: Project) -> str:
     """
     try:
         return project.GetRemote().ToLocal(project.revisionExpr)
-    except GitError:
+    except error.GitError:
         return project.revisionExpr
 
 

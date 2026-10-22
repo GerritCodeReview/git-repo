@@ -22,9 +22,7 @@ from typing import List
 from command import DEFAULT_LOCAL_JOBS
 from command import InteractiveCommand
 from editor import Editor
-from error import GitError
-from error import SilentRepoExitError
-from error import UploadError
+import error
 from git_refs import R_HEADS
 import git_superproject
 from hooks import RepoHook
@@ -37,7 +35,7 @@ _DEFAULT_UNUSUAL_COMMIT_THRESHOLD = 5
 logger = RepoLogger(__file__)
 
 
-class UploadExitError(SilentRepoExitError):
+class UploadExitError(error.SilentRepoExitError):
     """Indicates that there is an upload command error requiring a sys exit."""
 
 
@@ -671,7 +669,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         for branch in todo:
             try:
                 self._UploadBranch(opt, branch, people)
-            except (UploadError, GitError) as e:
+            except (error.UploadError, error.GitError) as e:
                 self.git_event_log.ErrorEvent(f"upload error: {e}")
                 branch.error = e
                 aggregate_errors.append(e)

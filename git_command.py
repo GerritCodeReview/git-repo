@@ -20,8 +20,7 @@ import subprocess
 import sys
 from typing import Any, Optional
 
-from error import GitError
-from error import RepoExitError
+import error
 from git_trace2_event_log_base import BaseEventLog
 import platform_utils
 from repo_logging import RepoLogger
@@ -604,14 +603,14 @@ class GitCommand:
         return self.rc
 
 
-class GitRequireError(RepoExitError):
+class GitRequireError(error.RepoExitError):
     """Error raised when git version is unavailable or invalid."""
 
     def __init__(self, message, exit_code: int = INVALID_GIT_EXIT_CODE):
         super().__init__(message, exit_code=exit_code)
 
 
-class GitCommandError(GitError):
+class GitCommandError(error.GitError):
     """
     Error raised from a failed git command.
     Note that GitError can refer to any Git related error (e.g. branch not
@@ -691,7 +690,7 @@ class GitCommandError(GitError):
         return string
 
 
-class GitPopenCommandError(GitError):
+class GitPopenCommandError(error.GitError):
     """
     Error raised when subprocess.Popen fails for a GitCommand
     """

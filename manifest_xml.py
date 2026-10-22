@@ -21,9 +21,7 @@ import sys
 import urllib.parse
 import xml.dom.minidom
 
-from error import ManifestInvalidPathError
-from error import ManifestInvalidRevisionError
-from error import ManifestParseError
+import error
 from git_config import GitConfig
 from git_refs import HEAD
 from git_refs import R_HEADS
@@ -114,7 +112,9 @@ def XmlInt(node, attr, default=None):
     try:
         return int(value)
     except ValueError:
-        raise ManifestParseError(f'manifest: invalid {attr}="{value}" integer')
+        raise error.ManifestParseError(
+            f'manifest: invalid {attr}="{value}" integer'
+        )
 
 
 def normalize_url(url: str) -> str:
@@ -290,7 +290,7 @@ class _XmlSubmanifest:
         self.annotations = []
         outer_client = parent._outer_client or parent
         if self.remote and not self.project:
-            raise ManifestParseError(
+            raise error.ManifestParseError(
                 f"Submanifest {name}: must specify project when remote is "
                 "given."
             )
@@ -424,7 +424,7 @@ class XmlManifest:
             # This avoids a trailing os.path.sep when submanifest_path is empty.
             self.topdir = os.path.join(self.topdir, submanifest_path)
         if manifest_file != os.path.abspath(manifest_file):
-            raise ManifestParseError("manifest_file must be abspath")
+            raise error.ManifestParseError("manifest_file must be abspath")
         self.manifestFile = manifest_file
         if not outer_client or outer_client == self:
             # manifestFileOverrides only exists in the outer_client's manifest,
@@ -438,7 +438,9 @@ class XmlManifest:
 
         if submanifest_path and not outer_client:
             # If passing a submanifest_path, there must be an outer_client.
-            raise ManifestParseError(f"Bad call to {self.__class__.__name__}")
+            raise error.ManifestParseError(
+                f"Bad call to {self.__class__.__name__}"
+            )
 
         # If self._outer_client is None, this is not a checkout that supports
         # multi-tree.
@@ -477,7 +479,7 @@ class XmlManifest:
         if path is None:
             path = os.path.join(self.manifestProject.worktree, name)
             if not os.path.isfile(path):
-                raise ManifestParseError("manifest %s not found" % name)
+                raise error.ManifestParseError("manifest %s not found" % name)
 
         self._load_local_manifests = load_local_manifests
         self._outer_client.manifestFileOverrides[self.path_prefix] = path
@@ -863,7 +865,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     elif child.nodeName in MULTI_ELEMENTS:
                         ret.setdefault(child.nodeName, []).append(element)
                     else:
-                        raise ManifestParseError(
+                        raise error.ManifestParseError(
                             f'Unhandled element "{child.nodeName}"'
                         )
 
@@ -1188,7 +1190,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
     def _Load(self, initial_client=None, submanifest_depth=0):
         if submanifest_depth > MAX_SUBMANIFEST_DEPTH:
-            raise ManifestParseError(
+            raise error.ManifestParseError(
                 "maximum submanifest depth %d exceeded." % MAX_SUBMANIFEST_DEPTH
             )
         if not self._loaded:
@@ -1260,7 +1262,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
                 try:
                     self._ParseManifest(nodes)
-                except ManifestParseError as e:
+                except error.ManifestParseError as e:
                     # There was a problem parsing, unload ourselves in case they
                     # catch this error and try again later, we will show the
                     # correct error
@@ -1322,10 +1324,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         try:
             root = xml.dom.minidom.parse(path)
         except (OSError, xml.parsers.expat.ExpatError) as e:
-            raise ManifestParseError(f"error parsing manifest {path}: {e}")
+            raise error.ManifestParseError(
+                f"error parsing manifest {path}: {e}"
+            )
 
         if not root or not root.childNodes:
-            raise ManifestParseError(f"no root node in {path}")
+            raise error.ManifestParseError(f"no root node in {path}")
 
         for manifest in root.childNodes:
             if (
@@ -1334,7 +1338,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             ):
                 break
         else:
-            raise ManifestParseError(f"no <manifest> in {path}")
+            raise error.ManifestParseError(f"no <manifest> in {path}")
 
         nodes = []
         for node in manifest.childNodes:
@@ -1351,7 +1355,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 if restrict_includes:
                     msg = self._CheckLocalPath(name)
                     if msg:
-                        raise ManifestInvalidPathError(
+                        raise error.ManifestInvalidPathError(
                             f'<include> invalid "name": {name}: {msg}'
                         )
                 include_groups = (parent_groups or set()).copy()
@@ -1361,7 +1365,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     )
                 fp = os.path.join(include_root, name)
                 if not os.path.isfile(fp):
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "include [%s/]%s doesn't exist or isn't a file"
                         % (include_root, name)
                     )
@@ -1373,10 +1377,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     )
                 # should isolate this to the exact exception, but that's
                 # tricky.  actual parsing implementation may vary.
-                except (RuntimeError, ManifestParseError):
+                except (RuntimeError, error.ManifestParseError):
                     raise
                 except Exception as e:
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         f"failed parsing included manifest {name}: {e}"
                     )
             else:
@@ -1400,7 +1404,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 if remote:
                     if remote.name in self._remotes:
                         if remote != self._remotes[remote.name]:
-                            raise ManifestParseError(
+                            raise error.ManifestParseError(
                                 "remote %s already exists with different "
                                 "attributes" % (remote.name)
                             )
@@ -1416,7 +1420,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 if self._default is None:
                     self._default = new_default
                 elif not emptyDefault and new_default != self._default:
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "duplicate default in %s" % (self.manifestFile)
                     )
 
@@ -1430,7 +1434,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 if submanifest:
                     if submanifest.name in self._submanifests:
                         if submanifest != self._submanifests[submanifest.name]:
-                            raise ManifestParseError(
+                            raise error.ManifestParseError(
                                 "submanifest %s already exists with different "
                                 "attributes" % (submanifest.name)
                             )
@@ -1441,7 +1445,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         for node in itertools.chain(*node_list):
             if node.nodeName == "notice":
                 if self._notice is not None:
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "duplicate notice in %s" % (self.manifestFile)
                     )
                 self._notice = self._ParseNotice(node)
@@ -1451,7 +1455,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 url = self._reqatt(node, "url")
                 helper = node.getAttribute("helper") or None
                 if self._manifest_server is not None:
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "duplicate manifest-server in %s" % (self.manifestFile)
                     )
                 self._manifest_server = url
@@ -1460,18 +1464,18 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         def recursively_add_projects(project):
             projects = self._projects.setdefault(project.name, [])
             if project.relpath is None:
-                raise ManifestParseError(
+                raise error.ManifestParseError(
                     "missing path for %s in %s"
                     % (project.name, self.manifestFile)
                 )
             if project.relpath in self._paths:
-                raise ManifestParseError(
+                raise error.ManifestParseError(
                     "duplicate path %s in %s"
                     % (project.relpath, self.manifestFile)
                 )
             for tree in submanifest_paths:
                 if project.relpath.startswith(tree):
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "project %s conflicts with submanifest path %s"
                         % (project.relpath, tree)
                     )
@@ -1491,7 +1495,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 name = self._reqatt(node, "name")
 
                 if name not in self._projects:
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "extend-project element specifies non-existent "
                         "project: %s" % name
                     )
@@ -1513,7 +1517,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
                 named_projects = self._projects[name]
                 if dest_path and not path and len(named_projects) > 1:
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "extend-project cannot use dest-path when "
                         "matching multiple projects: %s" % name
                     )
@@ -1570,7 +1574,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             if node.nodeName == "repo-hooks":
                 # Only one project can be the hooks project
                 if repo_hooks_project is not None:
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "duplicate repo-hooks in %s" % (self.manifestFile)
                     )
 
@@ -1584,7 +1588,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 name = self._reqatt(node, "name")
                 # There can only be one superproject.
                 if self._superproject:
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "duplicate superproject in %s" % (self.manifestFile)
                     )
                 remote_name = node.getAttribute("remote")
@@ -1593,7 +1597,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 else:
                     remote = self._get_remote(node)
                 if remote is None:
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "no remote for superproject %s within %s"
                         % (name, self.manifestFile)
                     )
@@ -1601,7 +1605,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 if not revision:
                     revision = self._default.revisionExpr
                 if not revision:
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "no revision for superproject %s within %s"
                         % (name, self.manifestFile)
                     )
@@ -1624,7 +1628,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
                 # Name or path needed.
                 if not name and not path:
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "remove-project must have name and/or path"
                     )
 
@@ -1669,14 +1673,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     repo_hooks_project = None
 
                 if not removed_project and not XmlBool(node, "optional", False):
-                    raise ManifestParseError(
+                    raise error.ManifestParseError(
                         "remove-project element specifies non-existent "
                         "project: %s" % node.toxml()
                     )
 
         if failed_revision_changes:
             fail_string = "\n".join(failed_revision_changes)
-            raise ManifestParseError(
+            raise error.ManifestParseError(
                 f"detected base-revision mismatch, updates needed:\n"
                 f"{fail_string}",
             )
@@ -1687,12 +1691,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             try:
                 repo_hooks_projects = self._projects[repo_hooks_project]
             except KeyError:
-                raise ManifestParseError(
+                raise error.ManifestParseError(
                     "project %s not found for repo-hooks" % (repo_hooks_project)
                 )
 
             if len(repo_hooks_projects) != 1:
-                raise ManifestParseError(
+                raise error.ManifestParseError(
                     "internal error parsing repo-hooks in %s"
                     % (self.manifestFile)
                 )
@@ -1704,7 +1708,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         name = None
         m_url = m.GetRemote().url
         if m_url.endswith("/.git"):
-            raise ManifestParseError("refusing to mirror %s" % m_url)
+            raise error.ManifestParseError("refusing to mirror %s" % m_url)
 
         if self._default and self._default.remote:
             url = self._default.remote.resolvedFetchUrl
@@ -1789,14 +1793,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         d.sync_j = XmlInt(node, "sync-j", None)
         if d.sync_j is not None and d.sync_j <= 0:
-            raise ManifestParseError(
+            raise error.ManifestParseError(
                 '%s: sync-j must be greater than 0, not "%s"'
                 % (self.manifestFile, d.sync_j)
             )
 
         d.sync_j_max = XmlInt(node, "sync-j-max", None)
         if d.sync_j_max is not None and d.sync_j_max <= 0:
-            raise ManifestParseError(
+            raise error.ManifestParseError(
                 '%s: sync-j-max must be greater than 0, not "%s"'
                 % (self.manifestFile, d.sync_j_max)
             )
@@ -1872,20 +1876,20 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             if revision:
                 msg = self._CheckLocalPath(revision.split("/")[-1])
                 if msg:
-                    raise ManifestInvalidPathError(
+                    raise error.ManifestInvalidPathError(
                         '<submanifest> invalid "revision": %s: %s'
                         % (revision, msg)
                     )
             else:
                 msg = self._CheckLocalPath(name)
                 if msg:
-                    raise ManifestInvalidPathError(
+                    raise error.ManifestInvalidPathError(
                         f'<submanifest> invalid "name": {name}: {msg}'
                     )
         else:
             msg = self._CheckLocalPath(path)
             if msg:
-                raise ManifestInvalidPathError(
+                raise error.ManifestInvalidPathError(
                     f'<submanifest> invalid "path": {path}: {msg}'
                 )
 
@@ -1920,7 +1924,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         name = self._reqatt(node, "name")
         msg = self._CheckLocalPath(name, dir_ok=True)
         if msg:
-            raise ManifestInvalidPathError(
+            raise error.ManifestInvalidPathError(
                 f'<project> invalid "name": {name}: {msg}'
             )
         if parent:
@@ -1930,7 +1934,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if remote is None:
             remote = self._default.remote
         if remote is None:
-            raise ManifestParseError(
+            raise error.ManifestParseError(
                 f"no remote for project {name} within {self.manifestFile}"
             )
 
@@ -1938,7 +1942,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if not revisionExpr:
             revisionExpr = self._default.revisionExpr
         if not revisionExpr:
-            raise ManifestParseError(
+            raise error.ManifestParseError(
                 "no revision for project %s within %s"
                 % (name, self.manifestFile)
             )
@@ -1951,7 +1955,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             # Project.Sync_LocalHalf.
             msg = self._CheckLocalPath(path, dir_ok=True, cwd_dot_ok=True)
             if msg:
-                raise ManifestInvalidPathError(
+                raise error.ManifestInvalidPathError(
                     f'<project> invalid "path": {path}: {msg}'
                 )
 
@@ -1962,7 +1966,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         clone_depth = XmlInt(node, "clone-depth")
         if clone_depth is not None and clone_depth <= 0:
-            raise ManifestParseError(
+            raise error.ManifestParseError(
                 '%s: clone-depth must be greater than 0, not "%s"'
                 % (self.manifestFile, clone_depth)
             )
@@ -2256,7 +2260,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         # It is relative to the top of the repo client checkout.
         msg = cls._CheckLocalPath(dest)
         if msg:
-            raise ManifestInvalidPathError(
+            raise error.ManifestInvalidPathError(
                 f'<{element}> invalid "dest": {dest}: {msg}'
             )
 
@@ -2267,7 +2271,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             src, dir_ok=is_linkfile, cwd_dot_ok=is_linkfile
         )
         if msg:
-            raise ManifestInvalidPathError(
+            raise error.ManifestInvalidPathError(
                 f'<{element}> invalid "src": {src}: {msg}'
             )
 
@@ -2296,10 +2300,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         value = self._reqatt(node, "value")
         try:
             keep = self._reqatt(node, "keep").lower()
-        except ManifestParseError:
+        except error.ManifestParseError:
             keep = "true"
         if keep != "true" and keep != "false":
-            raise ManifestParseError(
+            raise error.ManifestParseError(
                 'optional "keep" attribute must be ' '"true" or "false"'
             )
         element.AddAnnotation(name, value, keep)
@@ -2311,7 +2315,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         v = self._remotes.get(name)
         if not v:
-            raise ManifestParseError(
+            raise error.ManifestParseError(
                 f"remote {name} not defined in {self.manifestFile}"
             )
         return v
@@ -2322,7 +2326,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         """
         v = node.getAttribute(attname)
         if not v:
-            raise ManifestParseError(
+            raise error.ManifestParseError(
                 "no %s in <%s> within %s"
                 % (attname, node.nodeName, self.manifestFile)
             )
@@ -2360,7 +2364,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 try:
                     fromRevId = fromProj.GetCommitRevisionId()
                     toRevId = toProj.GetCommitRevisionId()
-                except ManifestInvalidRevisionError:
+                except error.ManifestInvalidRevisionError:
                     diff["unreachable"].append((fromProj, toProj))
                 else:
                     if fromRevId != toRevId:
