@@ -43,4 +43,5 @@ single_line_exclusions = ['abc', 'collections.abc', 'typing']
 [tool.pytest.ini_options]
 markers = """
     skip_cq: Skip tests in the CQ. Should be rarely used!
+    e2e: Hermetic end-to-end tests (tests/e2e/). Deselect with -m 'not e2e'.
 """
