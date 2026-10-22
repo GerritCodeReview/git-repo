@@ -16,26 +16,11 @@
 
 import http.client
 from pathlib import Path
-from typing import Iterator, Mapping
+from typing import Mapping
 import urllib.parse
 
 import harness
 import pytest
-
-
-# `ServerRepo.create` uses `git init --initial-branch`.
-pytestmark = pytest.mark.skipif(
-    harness.git_version() < (2, 28, 0), reason="requires git 2.28+"
-)
-
-
-@pytest.fixture
-def git_server(tmp_path: Path) -> Iterator[harness.GitHttpServer]:
-    """A git smart HTTP server for a single test."""
-    if not harness.has_http_backend():
-        pytest.skip("git http-backend is not available")
-    with harness.serve(tmp_path) as server:
-        yield server
 
 
 @pytest.mark.parametrize(
