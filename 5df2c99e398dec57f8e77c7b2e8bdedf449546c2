@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9828c51_a0fb8350",
+        "filename": "tests/e2e/test_harness.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-22T23:01:11Z",
+      "side": 1,
+      "message": "add a smoke test for exercising `host`, `client`, `repo_source`, and `GIT_DEFAULTS_PARAMS`, like:\n\n```suggestion\n        conn.close()\n\n@pytest.mark.parametrize(\"git_defaults\", harness.GIT_DEFAULTS_PARAMS)\n        def test_client_init_and_sync(\n            host: harness.GitHost, client: harness.RepoClient, git_defaults: str\n        ) -\u003e None:\n            \"\"\"End-to-end smoke test of RepoClient init \u0026 sync against GitHost.\"\"\"\n            proj \u003d host.create_repo(\"proj\", {\"file.txt\": \"hello\\n\"})\n            proj.write_bundle()\n            host.create_manifest(\n                harness.manifest_xml(\u0027\u003cproject name\u003d\"proj\" path\u003d\"proj\" /\u003e\u0027)\n            )\n            client.init(host.manifest_url)\n            client.sync()\n            assert client.head(\"proj\") \u003d\u003d proj.rev_parse(\"main\")\n            assert client.list_projects() \u003d\u003d {\"proj\": \"proj\"}\n```",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 20
+      },
+      "revId": "5df2c99e398dec57f8e77c7b2e8bdedf449546c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
