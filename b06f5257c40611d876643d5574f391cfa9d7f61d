@@ -22,6 +22,30 @@
       },
       "revId": "b06f5257c40611d876643d5574f391cfa9d7f61d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a8efd31_123df67e",
+        "filename": "tests/e2e/harness.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-10-22T23:17:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74dc6e6d_f805772e",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 16
+      },
+      "revId": "b06f5257c40611d876643d5574f391cfa9d7f61d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
