@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b997b3de_b24aef04",
+        "filename": "git_config.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-22T14:21:24Z",
+      "side": 1,
+      "message": "can you link to the git-scm site too ?\n```suggestion\n    Accepts the same spellings as `git config --type\u003dbool`.\n    https://git-scm.com/docs/git-config#Documentation/git-config.txt-boolean\n```",
+      "revId": "1333c986a5b5e989e33ec810a280bb777e8a8962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e03cf1d_3f843665",
+        "filename": "git_config.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-22T14:21:24Z",
+      "side": 1,
+      "message": "can you link to the git-scm site too ?\n\n```suggestion\n    g suffix (multiples of 1024) and hex with a 0x prefix.\n    https://git-scm.com/docs/git-config#Documentation/git-config.txt-integer\n```",
+      "revId": "1333c986a5b5e989e33ec810a280bb777e8a8962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
