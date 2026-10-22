@@ -71,6 +71,29 @@ def test_commit_replace_file_with_dir(
     assert repo.git("ls-tree", "-r", "--name-only", "main") == "foo/bar"
 
 
+def test_snapshot_worktree_host_excludes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The developer's global excludes apply despite the isolated HOME."""
+    host_home = tmp_path / "host-home"
+    host_home.mkdir()
+    excludes = host_home / "excludes"
+    excludes.write_text("venv/\n")
+    # Set excludesFile explicitly so a system-wide one can't take precedence.
+    harness.write_config(
+        host_home / ".gitconfig", {"core.excludesFile": excludes.as_posix()}
+    )
+    monkeypatch.setattr(harness, "HOST_ENVIRON", {"HOME": str(host_home)})
+    root = tmp_path / "checkout"
+    harness.run_git("init", "--quiet", str(root))
+    (root / ".gitignore").write_text("*.pyc\n")
+    (root / "main.py").write_text("")
+    (root / "main.pyc").write_text("")
+    (root / "venv").mkdir()
+    (root / "venv" / "lib.py").write_text("")
+    assert sorted(harness._snapshot_worktree(root)) == [".gitignore", "main.py"]
+
+
 @pytest.mark.parametrize(
     "chunked,expect_continue",
     [(False, False), (True, False), (True, True)],
