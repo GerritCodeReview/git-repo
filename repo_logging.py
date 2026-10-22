@@ -17,7 +17,7 @@
 import logging
 
 from color import Coloring
-from error import RepoExitError
+import error
 
 
 SEPARATOR = "=" * 80
@@ -71,7 +71,7 @@ class RepoLogger(logging.Logger):
         handler.setFormatter(_LogColoringFormatter(config))
         self.addHandler(handler)
 
-    def log_aggregated_errors(self, err: RepoExitError):
+    def log_aggregated_errors(self, err: error.RepoExitError):
         """Print all aggregated logs."""
         self.error(SEPARATOR)
 

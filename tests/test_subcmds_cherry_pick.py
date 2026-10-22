@@ -18,7 +18,7 @@ from unittest import mock
 
 import pytest
 
-from error import GitError
+import error
 from git_command import GitCommand
 from subcmds import cherry_pick
 
@@ -64,7 +64,7 @@ def test_resolve_reference_rejects_missing_object(
         mock.create_autospec(GitCommand, return_value=command),
     )
 
-    with pytest.raises(GitError, match="commit topic not found"):
+    with pytest.raises(error.GitError, match="commit topic not found"):
         cherry_pick.CherryPick()._ResolveReference("topic")
 
 
@@ -81,5 +81,5 @@ def test_resolve_reference_rejects_ambiguous_object(
         mock.create_autospec(GitCommand, return_value=command),
     )
 
-    with pytest.raises(GitError, match="commit topic not found"):
+    with pytest.raises(error.GitError, match="commit topic not found"):
         cherry_pick.CherryPick()._ResolveReference("topic")

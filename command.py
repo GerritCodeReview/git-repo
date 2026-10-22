@@ -19,9 +19,7 @@ import os
 import re
 from typing import List, Optional, TYPE_CHECKING
 
-from error import InvalidProjectGroupsError
-from error import NoSuchProjectError
-from error import RepoExitError
+import error
 from event_log import EventLog
 import progress
 
@@ -48,7 +46,7 @@ WORKER_BATCH_SIZE = 32
 DEFAULT_LOCAL_JOBS = min(os.cpu_count(), 8)
 
 
-class UsageError(RepoExitError):
+class UsageError(error.RepoExitError):
     """Exception thrown with invalid command usage."""
 
 
@@ -526,16 +524,16 @@ class Command:
                         projects = [project]
 
                 if not projects:
-                    raise NoSuchProjectError(arg)
+                    raise error.NoSuchProjectError(arg)
 
                 for project in projects:
                     if not missing_ok and not project.Exists:
-                        raise NoSuchProjectError(
+                        raise error.NoSuchProjectError(
                             "%s (%s)"
                             % (arg, project.RelPath(local=not all_manifests))
                         )
                     if not matches_groups(project):
-                        raise InvalidProjectGroupsError(arg)
+                        raise error.InvalidProjectGroupsError(arg)
 
                 result.extend(projects)
 

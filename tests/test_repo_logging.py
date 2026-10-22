@@ -23,7 +23,7 @@ from unittest import mock
 import pytest
 
 from color import SetDefaultColoring
-from error import RepoExitError
+import error
 from repo_logging import RepoLogger
 
 
@@ -32,7 +32,7 @@ def test_log_aggregated_errors_logs_aggregated_errors(mock_error) -> None:
     """Test if log_aggregated_errors logs a list of aggregated errors."""
     logger = RepoLogger(__name__)
     logger.log_aggregated_errors(
-        RepoExitError(
+        error.RepoExitError(
             aggregate_errors=[
                 Exception("foo"),
                 Exception("bar"),
@@ -61,7 +61,7 @@ def test_log_aggregated_errors_logs_aggregated_errors(mock_error) -> None:
 def test_log_aggregated_errors_logs_single_error(mock_error) -> None:
     """Test if log_aggregated_errors logs empty aggregated_errors."""
     logger = RepoLogger(__name__)
-    logger.log_aggregated_errors(RepoExitError())
+    logger.log_aggregated_errors(error.RepoExitError())
 
     mock_error.assert_has_calls(
         [
