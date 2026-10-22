@@ -16,6 +16,24 @@
       "message": "can we move this to git_config.py \u0026 merge the existing GetBoolean logic with it ?",
       "revId": "8c86699f1f1c77a2edaef482cb1d9c78afdd4b41",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f9bd9ed_d45f7962",
+        "filename": "subcmds/config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-22T12:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cba42621_75522a2e",
+      "revId": "8c86699f1f1c77a2edaef482cb1d9c78afdd4b41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
