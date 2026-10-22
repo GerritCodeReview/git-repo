@@ -126,7 +126,8 @@ def clean_environ() -> Dict[str, str]:
     platforms and CI environments.
 
     Note: `HOME` is already isolated by `session_tmp_home_dir` &
-    `tmp_home_dir` in `tests/conftest.py`.
+    `tmp_home_dir` in `tests/conftest.py`, and overridden per test in
+    `client_env` in `tests/e2e/conftest.py`.
     """
     env = {}
     for key, value in os.environ.items():
