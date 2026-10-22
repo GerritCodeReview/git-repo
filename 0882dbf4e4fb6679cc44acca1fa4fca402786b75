@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "049af0fa_ff8f4eec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-22T22:07:58Z",
+      "side": 1,
+      "message": "I can only give +1 apparently.",
+      "revId": "0882dbf4e4fb6679cc44acca1fa4fca402786b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
