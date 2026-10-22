@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24254e4f_d67abc95",
+        "filename": "tests/e2e/harness.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-22T22:53:53Z",
+      "side": 1,
+      "message": "https://github.com/python/cpython/issues/85919\n\ncwd being Path raises `TypeError: cwd: expected str, bytes or None, not WindowsPath` on win in python 3.6 and 3.7. please fix",
+      "range": {
+        "startLine": 843,
+        "startChar": 0,
+        "endLine": 843,
+        "endChar": 25
+      },
+      "revId": "d26b2979d09667044255f5704f4ee48ea22e8bbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
