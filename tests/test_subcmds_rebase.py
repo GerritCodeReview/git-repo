@@ -19,7 +19,7 @@ import io
 from types import SimpleNamespace
 from unittest import mock
 
-from error import GitError
+import error
 from subcmds import rebase
 
 
@@ -44,7 +44,7 @@ def test_resolve_onto_manifest_fallback() -> None:
     project.revisionExpr = "main"
 
     remote = mock.MagicMock()
-    remote.ToLocal.side_effect = GitError("Failed to resolve")
+    remote.ToLocal.side_effect = error.GitError("Failed to resolve")
     project.GetRemote.return_value = remote
 
     res = rebase._ResolveOntoManifest(project)

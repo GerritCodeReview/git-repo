@@ -26,8 +26,7 @@ from typing import Union
 import urllib.error
 import urllib.request
 
-from error import GitError
-from error import UploadError
+import error
 from git_command import GitCommand
 from git_refs import R_CHANGES
 from git_refs import R_HEADS
@@ -479,7 +478,7 @@ class GitConfig:
         if p.Wait() == 0:
             return p.stdout
         else:
-            raise GitError(f"git {' '.join(command)}: {p.stderr}")
+            raise error.GitError(f"git {' '.join(command)}: {p.stderr}")
 
 
 class RepoConfig(GitConfig):
@@ -717,11 +716,13 @@ class Remote:
                             userEmail, host, port
                         )
                 except urllib.error.HTTPError as e:
-                    raise UploadError(f"{self.review}: {str(e)}")
+                    raise error.UploadError(f"{self.review}: {str(e)}")
                 except urllib.error.URLError as e:
-                    raise UploadError(f"{self.review}: {str(e)}")
+                    raise error.UploadError(f"{self.review}: {str(e)}")
                 except http.client.HTTPException as e:
-                    raise UploadError(f"{self.review}: {e.__class__.__name__}")
+                    raise error.UploadError(
+                        f"{self.review}: {e.__class__.__name__}"
+                    )
 
                 REVIEW_CACHE[u] = self._review_url
         return self._review_url + self.projectname
@@ -747,7 +748,7 @@ class Remote:
         if not rev.startswith(R_HEADS):
             return rev
 
-        raise GitError(
+        raise error.GitError(
             "%s: remote %s does not have %s"
             % (self.projectname, self.name, rev)
         )

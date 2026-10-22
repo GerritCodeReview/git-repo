@@ -33,15 +33,7 @@ from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 import urllib.parse
 
 from color import Coloring
-from error import DownloadError
-from error import GitAuthError
-from error import GitError
-from error import ManifestInvalidPathError
-from error import ManifestInvalidRevisionError
-from error import ManifestParseError
-from error import NoManifestException
-from error import RepoError
-from error import UploadError
+import error
 import fetch
 from git_command import git_require
 from git_command import GitCommand
@@ -83,11 +75,11 @@ class SyncNetworkHalfResult(NamedTuple):
         return not self.error
 
 
-class SyncNetworkHalfError(RepoError):
+class SyncNetworkHalfError(error.RepoError):
     """Failure trying to sync."""
 
 
-class DeleteWorktreeError(RepoError):
+class DeleteWorktreeError(error.RepoError):
     """Failure to delete worktree."""
 
     def __init__(
@@ -226,7 +218,7 @@ class ReviewableBranch:
                 self._commit_cache = self.project.bare_git.rev_list(
                     *args, log_as_error=self.base_exists
                 )
-            except GitError:
+            except error.GitError:
                 # We weren't able to probe the commits for this branch.  Was it
                 # tracking a branch that no longer exists?  If so, return no
                 # commits.  Otherwise, rethrow the error as we don't know what's
@@ -270,7 +262,7 @@ class ReviewableBranch:
                 self.project.bare_git.rev_parse("--verify", not_rev(self.base))
                 # If we're still here, the base branch exists.
                 self._base_exists = True
-            except GitError:
+            except error.GitError:
                 # If we failed to verify, the base branch doesn't exist.
                 self._base_exists = False
 
@@ -392,19 +384,19 @@ def _SafeExpandPath(base, subpath, skipfinal=False):
     path = base
     for part in components:
         if part in {".", ".."}:
-            raise ManifestInvalidPathError(
+            raise error.ManifestInvalidPathError(
                 f'{subpath}: "{part}" not allowed in paths'
             )
 
         path = os.path.join(path, part)
         if platform_utils.islink(path):
-            raise ManifestInvalidPathError(
+            raise error.ManifestInvalidPathError(
                 f"{path}: traversing symlinks not allow"
             )
 
         if os.path.exists(path):
             if not os.path.isfile(path) and not platform_utils.isdir(path):
-                raise ManifestInvalidPathError(
+                raise error.ManifestInvalidPathError(
                     f"{path}: only regular files & directories allowed"
                 )
 
@@ -431,11 +423,11 @@ class _CopyFile(NamedTuple):
         dest = _SafeExpandPath(self.topdir, self.dest)
 
         if platform_utils.isdir(src):
-            raise ManifestInvalidPathError(
+            raise error.ManifestInvalidPathError(
                 f"{self.src}: copying from directory not supported"
             )
         if platform_utils.isdir(dest):
-            raise ManifestInvalidPathError(
+            raise error.ManifestInvalidPathError(
                 f"{self.dest}: copying to directory not allowed"
             )
 
@@ -714,7 +706,7 @@ class Project:
 
         try:
             lrev = "" if self.manifest.IsMirror else self.GetRevisionId()
-        except ManifestInvalidRevisionError:
+        except error.ManifestInvalidRevisionError:
             lrev = ""
         setenv("REPO_LREV", lrev)
         setenv("REPO_RREV", self.revisionExpr)
@@ -788,7 +780,7 @@ class Project:
         """
         try:
             b = self._GetHead()
-        except NoManifestException:
+        except error.NoManifestException:
             # If the local checkout is in a bad state, don't barf.  Let the
             # callers process this like the head is unreadable.
             return None
@@ -862,7 +854,7 @@ class Project:
         try:
             self.work_git.update_index("-q", *args, log_as_error=False)
             return
-        except GitError:
+        except error.GitError:
             pass
 
         # Exit code 1 means there are modified files, which is okay.
@@ -908,7 +900,11 @@ class Project:
                 ahead_behind=ahead_behind,
                 show_stash=show_stash,
             )
-        except (GitError, ValueError, git_status.UnsupportedStatusError) as e:
+        except (
+            error.GitError,
+            ValueError,
+            git_status.UnsupportedStatusError,
+        ) as e:
             logger.warning(
                 "project %s: porcelain v2 status failed; using legacy "
                 "status: %s",
@@ -970,7 +966,7 @@ class Project:
         is_dirty = self._IsDirtyLegacy(consider_untracked=True)
         try:
             head = self.work_git.rev_parse(HEAD)
-        except GitError:
+        except error.GitError:
             head = None
         return is_dirty, head
 
@@ -1252,7 +1248,7 @@ class Project:
                 left, right = left_right[0].split()
                 behind = int(left)
                 ahead = int(right)
-        except (GitError, IndexError, ValueError):
+        except (error.GitError, IndexError, ValueError):
             pass
         return ahead, behind
 
@@ -1378,7 +1374,7 @@ class Project:
         try:
             p = GitCommand(self, cmd, capture_stdout=True, capture_stderr=True)
             p.Wait()
-        except GitError as e:
+        except error.GitError as e:
             out.nl()
             out.project("project %s/" % self.RelPath(local))
             out.nl()
@@ -1401,7 +1397,7 @@ class Project:
         if all_refs is None:
             try:
                 return self.bare_git.rev_parse(key)
-            except GitError:
+            except error.GitError:
                 return None
         else:
             try:
@@ -1494,16 +1490,16 @@ class Project:
         if branch is None:
             branch = self.CurrentBranch
         if branch is None:
-            raise GitError("not currently on a branch", project=self.name)
+            raise error.GitError("not currently on a branch", project=self.name)
 
         branch = self.GetBranch(branch)
         if not branch.LocalMerge:
-            raise GitError(
+            raise error.GitError(
                 "branch %s does not track a remote" % branch.name,
                 project=self.name,
             )
         if not branch.remote.review:
-            raise GitError(
+            raise error.GitError(
                 "remote %s has no review url" % branch.remote.name,
                 project=self.name,
             )
@@ -1511,7 +1507,7 @@ class Project:
         # Basic validity check on label syntax.
         for label in labels:
             if not re.match(r"^.+[+-][0-9]+$", label):
-                raise UploadError(
+                raise error.UploadError(
                     f'invalid label syntax "{label}": labels use forms like '
                     "CodeReview+1 or Verified-1",
                     project=self.name,
@@ -1530,7 +1526,7 @@ class Project:
 
         url = branch.remote.ReviewUrl(self.UserEmail, validate_certs)
         if url is None:
-            raise UploadError("review not configured", project=self.name)
+            raise error.UploadError("review not configured", project=self.name)
         cmd = ["push", "--progress"]
         if dryrun:
             cmd.append("-n")
@@ -1693,7 +1689,7 @@ class Project:
 
         try:
             local_head = self.bare_git.rev_parse("HEAD")
-        except GitError:
+        except error.GitError:
             local_head = None
 
         if target_hash == local_head:
@@ -1717,7 +1713,7 @@ class Project:
             )
             if int(local_commits[0]) > 0:
                 return False
-        except (GitError, IndexError, ValueError):
+        except (error.GitError, IndexError, ValueError):
             return False
 
         if self._HasDirtyOrStash():
@@ -1768,7 +1764,7 @@ class Project:
 
             try:
                 self._FetchArchive(tarpath, cwd=topdir)
-            except GitError as e:
+            except error.GitError as e:
                 logger.error("error: %s", e)
                 return SyncNetworkHalfResult(False, e)
 
@@ -1821,7 +1817,7 @@ class Project:
                 self._CheckDirReference(self.objdir, self.gitdir)
 
                 self._UpdateHooks(quiet=quiet)
-            except GitError as e:
+            except error.GitError as e:
                 if not force_sync:
                     raise e
                 # Let _InitGitDir fix the issue, force_sync is always True here.
@@ -1916,7 +1912,7 @@ class Project:
                             project=self.name,
                         ),
                     )
-            except RepoError as e:
+            except error.RepoError as e:
                 return SyncNetworkHalfResult(
                     remote_fetched,
                     e,
@@ -1961,7 +1957,7 @@ class Project:
                                 project=self.name,
                             ),
                         )
-                except RepoError as e:
+                except error.RepoError as e:
                     return SyncNetworkHalfResult(
                         remote_fetched,
                         e,
@@ -1987,7 +1983,7 @@ class Project:
                 if p.Wait() != 0:
                     return SyncNetworkHalfResult(
                         remote_fetched,
-                        GitError(
+                        error.GitError(
                             "Unable to repack alternates", project=self.name
                         ),
                     )
@@ -2035,7 +2031,7 @@ class Project:
                     return head
             try:
                 return self.work_git.rev_parse("HEAD")
-            except GitError:
+            except error.GitError:
                 pass
         return None
 
@@ -2058,8 +2054,8 @@ class Project:
 
         try:
             return self.bare_git.ResolveCommit(rev)
-        except GitError:
-            raise ManifestInvalidRevisionError(
+        except error.GitError:
+            raise error.ManifestInvalidRevisionError(
                 f"revision {self.revisionExpr} in {self.name} not found"
             )
 
@@ -2243,7 +2239,7 @@ class Project:
                 _checkout()
                 if submodules:
                     self._SyncSubmodules(quiet=True)
-            except (GitError, LocalSyncFail) as e:
+            except (error.GitError, LocalSyncFail) as e:
                 fail(e)
                 return
             self._CopyAndLinkFiles()
@@ -2270,7 +2266,7 @@ class Project:
                 _checkout()
                 if submodules:
                     self._SyncSubmodules(quiet=True)
-            except (GitError, LocalSyncFail) as e:
+            except (error.GitError, LocalSyncFail) as e:
                 fail(e)
                 return
             self._CopyAndLinkFiles()
@@ -2287,7 +2283,7 @@ class Project:
             )
             # Skip the published logic.
             pub = False
-        except GitError:
+        except error.GitError:
             pub = self.WasPublished(branch.name, all_refs)
 
         if pub:
@@ -2403,7 +2399,7 @@ class Project:
                 if submodules:
                     self._SyncSubmodules(quiet=True)
                 self._CopyAndLinkFiles()
-            except (GitError, LocalSyncFail) as e:
+            except (error.GitError, LocalSyncFail) as e:
                 fail(e)
                 return
         else:
@@ -2478,7 +2474,7 @@ class Project:
         is_corrupted = False
         try:
             is_dirty = self.IsDirty()
-        except GitError:
+        except error.GitError:
             is_corrupted = True
 
         rel_path = self.RelPath(local=False)
@@ -2541,7 +2537,7 @@ class Project:
                         )
                         if fullpath == needle:
                             platform_utils.rmtree(os.path.join(configs, name))
-            except GitError as e:
+            except error.GitError as e:
                 logger.warning(
                     "warning: %s: Failed to list worktrees, skipping worktree "
                     "cleanup: %s",
@@ -2903,7 +2899,7 @@ class Project:
                     bare=True,
                     gitdir=gitdir,
                 )
-            except GitError:
+            except error.GitError:
                 return [], [], []
             if p.Wait() != 0:
                 return [], [], []
@@ -2925,7 +2921,7 @@ class Project:
                 if p.Wait() != 0:
                     return [], [], []
                 gitmodules_lines = p.stdout.split("\n")
-            except GitError:
+            except error.GitError:
                 return [], [], []
             finally:
                 platform_utils.remove(temp_gitmodules_path)
@@ -2971,7 +2967,7 @@ class Project:
                     bare=True,
                     gitdir=gitdir,
                 )
-            except GitError:
+            except error.GitError:
                 return []
             if p.Wait() != 0:
                 return []
@@ -2985,7 +2981,7 @@ class Project:
 
         try:
             rev = self.GetRevisionId()
-        except (GitError, ManifestInvalidRevisionError):
+        except (error.GitError, error.ManifestInvalidRevisionError):
             # The git repo may be outdated (i.e. not fetched yet) and querying
             # its submodules using the revision may not work; so return here.
             return []
@@ -3015,7 +3011,7 @@ class Project:
                 "--",
                 log_as_error=False,
             )
-        except (GitError, ManifestInvalidRevisionError):
+        except (error.GitError, error.ManifestInvalidRevisionError):
             return None
 
         return {
@@ -3154,7 +3150,7 @@ class Project:
                     log_as_error=False,
                 )
             return True
-        except GitError:
+        except error.GitError:
             # There is no such persistent revision. We have to fetch it.
             return False
 
@@ -3283,12 +3279,12 @@ class Project:
         if not IsId(self.revisionExpr):
             try:
                 ref_name = self.GetRemote().ToLocal(self.revisionExpr)
-            except GitError as e:
+            except error.GitError as e:
                 logger.error("error: Failed to resolve tracking ref: %s", e)
                 return False
             try:
                 resolved_ref = self.bare_git.ResolveCommit(ref_name)
-            except GitError:
+            except error.GitError:
                 logger.error(
                     "error: Postcondition failed: %s does not resolve to a "
                     "commit in object store",
@@ -3315,7 +3311,7 @@ class Project:
                     repo_trev,
                 )
                 return False
-        except GitError:
+        except error.GitError:
             logger.error(
                 "error: Postcondition failed: FETCH_HEAD does not resolve to "
                 "a commit in object store"
@@ -3644,7 +3640,7 @@ class Project:
                         "interactive authentication.",
                         file=output_redir,
                     )
-                    raise GitAuthError(gitcmd.stdout)
+                    raise error.GitAuthError(gitcmd.stdout)
                     break
                 elif current_branch_only and is_sha1 and ret == 128:
                     # Exit code 128 means "couldn't find the ref you asked for";
@@ -3893,7 +3889,7 @@ class Project:
         cmd.append("--")
         if GitCommand(self, cmd).Wait() != 0:
             if self._allrefs:
-                raise GitError(
+                raise error.GitError(
                     f"{self.name} checkout {rev} ", project=self.name
                 )
 
@@ -3907,7 +3903,7 @@ class Project:
         cmd.append("--")
         if GitCommand(self, cmd).Wait() != 0:
             if self._allrefs:
-                raise GitError(
+                raise error.GitError(
                     f"{self.name} cherry-pick {rev} ", project=self.name
                 )
 
@@ -3925,7 +3921,9 @@ class Project:
         cmd.append("--")
         if GitCommand(self, cmd).Wait() != 0:
             if self._allrefs:
-                raise GitError(f"{self.name} revert {rev} ", project=self.name)
+                raise error.GitError(
+                    f"{self.name} revert {rev} ", project=self.name
+                )
 
     def _ResetHard(self, rev, quiet=True):
         cmd = ["reset", "--hard"]
@@ -3933,7 +3931,7 @@ class Project:
             cmd.append("-q")
         cmd.append(rev)
         if GitCommand(self, cmd).Wait() != 0:
-            raise GitError(
+            raise error.GitError(
                 f"{self.name} reset --hard {rev} ", project=self.name
             )
 
@@ -3942,7 +3940,7 @@ class Project:
         if quiet:
             cmd.append("-q")
         if GitCommand(self, cmd).Wait() != 0:
-            raise GitError(
+            raise error.GitError(
                 "%s submodule update --init --recursive " % self.name,
                 project=self.name,
             )
@@ -3987,7 +3985,9 @@ class Project:
             cmd.extend(["--onto", onto])
         cmd.append(upstream)
         if GitCommand(self, cmd).Wait() != 0:
-            raise GitError(f"{self.name} rebase {upstream} ", project=self.name)
+            raise error.GitError(
+                f"{self.name} rebase {upstream} ", project=self.name
+            )
 
     def _FastForward(self, head: str, quiet: bool = True) -> None:
         cmd = ["merge", "--no-stat", "--ff-only"]
@@ -3995,7 +3995,7 @@ class Project:
             cmd.append("-q")
         cmd.append(head)
         if GitCommand(self, cmd).Wait() != 0:
-            raise GitError(
+            raise error.GitError(
                 f"{self.name} merge --ff-only {head}", project=self.name
             )
 
@@ -4057,7 +4057,7 @@ class Project:
             head_tree = self.work_git.rev_parse(
                 "-q", "--verify", "HEAD^{tree}", log_as_error=False
             )
-        except GitError:
+        except error.GitError:
             head_tree = None
 
         if head_tree:
@@ -4101,7 +4101,7 @@ class Project:
             head_oid = self.work_git.rev_parse(
                 "-q", "--verify", "HEAD", log_as_error=False
             )
-        except GitError:
+        except error.GitError:
             head_oid = None
 
         env = os.environ.copy()
@@ -4137,7 +4137,7 @@ class Project:
             new_head_oid = self.work_git.rev_parse(
                 "-q", "--verify", "HEAD", log_as_error=False
             )
-        except GitError:
+        except error.GitError:
             new_head_oid = None
 
         if new_head != head or new_head_oid != head_oid:
@@ -4220,7 +4220,7 @@ class Project:
                     )
                 try:
                     self._CheckDirReference(self.objdir, curr_gitdir)
-                except GitError as e:
+                except error.GitError as e:
                     if force_sync:
                         try:
                             rm_dirs = (
@@ -4390,7 +4390,7 @@ class Project:
                     try:
                         os.link(stock_hook, dst)
                     except OSError:
-                        raise GitError(
+                        raise error.GitError(
                             self._get_symlink_error_message(), project=self.name
                         )
                 else:
@@ -4502,7 +4502,7 @@ class Project:
                         destdir,
                         srcdir,
                     )
-                    raise GitError(
+                    raise error.GitError(
                         "--force-sync not enabled; cannot overwrite a local "
                         "work tree. If you're comfortable with the "
                         "possibility of losing the work tree's git metadata,"
@@ -4554,7 +4554,7 @@ class Project:
 
             except OSError as e:
                 if e.errno == errno.EPERM:
-                    raise DownloadError(self._get_symlink_error_message())
+                    raise error.DownloadError(self._get_symlink_error_message())
                 else:
                     raise
 
@@ -4660,7 +4660,7 @@ class Project:
                 cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
                 try:
                     if GitCommand(self, cmd).Wait() != 0:
-                        raise GitError(
+                        raise error.GitError(
                             "Cannot initialize work tree for " + self.name,
                             project=self.name,
                         )
@@ -4703,7 +4703,7 @@ class Project:
             with open(dotgit) as fp:
                 setting = fp.read()
             if not setting.startswith("gitdir:"):
-                raise GitError(
+                raise error.GitError(
                     f"'.git' in {self.worktree} must start with 'gitdir:'",
                     project=self.name,
                 )
@@ -4731,7 +4731,7 @@ class Project:
                 gitdir = os.path.dirname(os.path.realpath(path))
                 break
         else:
-            raise GitError(
+            raise error.GitError(
                 f"{dotgit}: unsupported checkout state", project=project
             )
 
@@ -4792,7 +4792,7 @@ class Project:
                         f"{dotgit_path}: unknown file; please file a bug"
                     )
         if unknown_paths:
-            raise GitError(
+            raise error.GitError(
                 "Aborting migration: " + "\n".join(unknown_paths),
                 project=project,
             )
@@ -4892,7 +4892,7 @@ class Project:
                 )
                 if log.Wait() == 0:
                     return log.stdout
-            except GitError:
+            except error.GitError:
                 # worktree may not exist if groups changed for example. In that
                 # case, try in gitdir instead.
                 if not os.path.exists(self.worktree):
@@ -5076,13 +5076,13 @@ class Project:
 
             try:
                 return self.symbolic_ref("-q", HEAD, log_as_error=False)
-            except GitError:
+            except error.GitError:
                 pass
 
             try:
                 # If symbolic-ref fails, try to treat as detached HEAD.
                 return self.rev_parse(HEAD)
-            except GitError as e:
+            except error.GitError as e:
                 logger.warning(
                     "project %s: unparseable HEAD; trying to recover.\n"
                     "Check that HEAD ref in .git/HEAD is valid. The error "
@@ -5094,7 +5094,7 @@ class Project:
                 # Fallback to direct file reading for compatibility with broken
                 # repos, e.g. if HEAD points to an unborn branch.
                 if not path:
-                    raise NoManifestException(
+                    raise error.NoManifestException(
                         self._project.RelPath(local=False), str(e)
                     )
                 try:
@@ -5103,11 +5103,11 @@ class Project:
                     ) as fd:
                         ref = self._ParseHead(fd.readline())
                 except OSError:
-                    raise NoManifestException(
+                    raise error.NoManifestException(
                         self._project.RelPath(local=False), str(e)
                     )
                 if not ref:
-                    raise NoManifestException(
+                    raise error.NoManifestException(
                         self._project.RelPath(local=False), str(e)
                     )
                 return ref
@@ -5118,7 +5118,7 @@ class Project:
             if git_require((2, 30, 0)):
                 cmdv.append("--end-of-options")
             elif revision.startswith("-"):
-                raise GitError(
+                raise error.GitError(
                     f"invalid revision: {revision}",
                     project=self._project.name,
                 )
@@ -5233,7 +5233,7 @@ class Project:
             return runner
 
 
-class LocalSyncFail(RepoError):
+class LocalSyncFail(error.RepoError):
     """Default error when there is an Sync_LocalHalf error."""
 
 
@@ -5287,7 +5287,7 @@ class _Later:
             if not self.quiet:
                 out.nl()
             return True
-        except (GitError, LocalSyncFail) as e:
+        except (error.GitError, LocalSyncFail) as e:
             syncbuf.fail(self.project, e)
             out.nl()
             return False
@@ -6137,7 +6137,7 @@ class ManifestProject(MetaProject):
             if is_new or self.CurrentBranch is None:
                 try:
                     self.StartBranch("default")
-                except GitError as e:
+                except error.GitError as e:
                     msg = str(e)
                     logger.error(
                         "fatal: cannot create default in manifest %s", msg
@@ -6159,7 +6159,7 @@ class ManifestProject(MetaProject):
 
         try:
             self.manifest.Link(manifest_name)
-        except ManifestParseError as e:
+        except error.ManifestParseError as e:
             logger.error("fatal: manifest '%s' not available", manifest_name)
             logger.error("fatal: %s", e)
             return False

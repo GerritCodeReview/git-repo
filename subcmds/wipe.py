@@ -17,13 +17,12 @@ import sys
 from typing import List
 
 from command import Command
-from error import GitError
-from error import RepoExitError
+import error
 import platform_utils
 from project import DeleteWorktreeError
 
 
-class Error(RepoExitError):
+class Error(error.RepoExitError):
     """Exit error when wipe command fails."""
 
 
@@ -101,7 +100,7 @@ Examples:
             try:
                 if project.HasChanges():
                     uncommitted_projects.append(project.name)
-            except GitError:
+            except error.GitError:
                 uncommitted_projects.append(f"{project.name} (corrupted)")
 
             users = objdir_map.get(project.objdir, {project.relpath})

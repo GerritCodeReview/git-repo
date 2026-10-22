@@ -16,7 +16,7 @@ import optparse
 
 from command import Command
 from command import MirrorSafeCommand
-from error import RepoExitError
+import error
 from repo_logging import RepoLogger
 from subcmds.sync import _PostRepoFetch
 from subcmds.sync import _PostRepoUpgrade
@@ -25,7 +25,7 @@ from subcmds.sync import _PostRepoUpgrade
 logger = RepoLogger(__file__)
 
 
-class SelfupdateError(RepoExitError):
+class SelfupdateError(error.RepoExitError):
     """Exit error for failed selfupdate command."""
 
 

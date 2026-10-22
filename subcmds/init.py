@@ -18,8 +18,7 @@ import sys
 from color import Coloring
 from command import InteractiveCommand
 from command import MirrorSafeCommand
-from error import RepoUnhandledExceptionError
-from error import UpdateManifestError
+import error
 from git_command import git_require
 from repo_logging import RepoLogger
 from wrapper import Wrapper
@@ -174,7 +173,7 @@ to update the working directory files.
             use_local_gitdirs=opt.use_local_gitdirs,
         ):
             manifest_name = opt.manifest_name
-            raise UpdateManifestError(
+            raise error.UpdateManifestError(
                 f"Unable to sync manifest {manifest_name}"
             )
 
@@ -379,7 +378,7 @@ to update the working directory files.
                 err_msg = "fatal: double check your --repo-rev setting."
                 logger.error(err_msg)
                 self.git_event_log.ErrorEvent(err_msg)
-                raise RepoUnhandledExceptionError(e)
+                raise error.RepoUnhandledExceptionError(e)
 
             branch = rp.GetBranch("default")
             branch.merge = remote_ref

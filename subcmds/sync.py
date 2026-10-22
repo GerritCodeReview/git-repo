@@ -57,14 +57,7 @@ from command import Command
 from command import DEFAULT_LOCAL_JOBS
 from command import MirrorSafeCommand
 from command import WORKER_BATCH_SIZE
-from error import GitError
-from error import ManifestParseError
-from error import RepoChangedException
-from error import RepoError
-from error import RepoExitError
-from error import RepoUnhandledExceptionError
-from error import SyncError
-from error import UpdateManifestError
+import error
 import event_log
 from git_command import git_require
 from git_command import GitCommand
@@ -418,19 +411,19 @@ class _InterleavedSyncResult(NamedTuple):
     results: List[_SyncResult]
 
 
-class SuperprojectError(SyncError):
+class SuperprojectError(error.SyncError):
     """Superproject sync repo."""
 
 
-class SyncFailFastError(SyncError):
+class SyncFailFastError(error.SyncError):
     """Sync exit error when --fail-fast set."""
 
 
-class SmartSyncError(SyncError):
+class SmartSyncError(error.SyncError):
     """Smart sync exit error."""
 
 
-class ManifestInterruptError(RepoError):
+class ManifestInterruptError(error.RepoError):
     """Aggregate Error to be logged when a user interrupts a manifest update."""
 
     def __init__(self, output, **kwargs):
@@ -1116,7 +1109,7 @@ later is required to fix a server side protocol bug.
             logger.error("Keyboard interrupt while processing %s", project.name)
             if not cls.is_multiprocessing_active():
                 raise
-        except GitError as e:
+        except error.GitError as e:
             logger.error("error.GitError: Cannot fetch %s", e)
             errors.append(e)
         except Exception as e:
@@ -1322,7 +1315,7 @@ later is required to fix a server side protocol bug.
             if opt.network_only:
                 # Bail out now; the rest touches the working tree.
                 if err_event.is_set():
-                    e = SyncError(
+                    e = error.SyncError(
                         "error: Exited sync due to fetch errors.",
                         aggregate_errors=errors,
                     )
@@ -1416,7 +1409,7 @@ later is required to fix a server side protocol bug.
             logger.error("Keyboard interrupt while processing %s", project.name)
             if not cls.is_multiprocessing_active():
                 raise
-        except GitError as e:
+        except error.GitError as e:
             logger.error(
                 "error.GitError: Cannot checkout %s: %s", project.name, e
             )
@@ -1675,7 +1668,7 @@ later is required to fix a server side protocol bug.
                         cls._RunOneGC(bare_git._project, config=config)
                     else:
                         bare_git.pack_refs(config=config)
-                except GitError:
+                except error.GitError:
                     err_event.set()
                 except Exception:
                     err_event.set()
@@ -2346,7 +2339,7 @@ later is required to fix a server side protocol bug.
                 mp, event_log.TASK_SYNC_LOCAL, start, time.time(), clean
             )
             if not clean:
-                raise UpdateManifestError(aggregate_errors=errors)
+                raise error.UpdateManifestError(aggregate_errors=errors)
             self._ReloadManifest(manifest_name, mp.manifest)
 
     def ValidateOptions(self, opt, args):
@@ -2454,10 +2447,10 @@ later is required to fix a server side protocol bug.
         try:
             self._ExecuteHelper(opt, args, errors)
             sync_duration_seconds = time.time() - start_time
-        except (RepoExitError, RepoChangedException):
+        except (error.RepoExitError, error.RepoChangedException):
             raise
         except (KeyboardInterrupt, Exception) as e:
-            raise RepoUnhandledExceptionError(e, aggregate_errors=errors)
+            raise error.RepoUnhandledExceptionError(e, aggregate_errors=errors)
 
         # Run post-sync hook only after successful sync
         self._RunPostSyncHook(opt, sync_duration_seconds=sync_duration_seconds)
@@ -2490,13 +2483,13 @@ later is required to fix a server side protocol bug.
         Only valid for the outer manifest; see _GetSuperprojectRevision.
         """
         if not manifest.superproject:
-            raise SyncError("superproject not defined in manifest")
+            raise error.SyncError("superproject not defined in manifest")
 
         self._ConfigureSuperproject(opt, manifest)
 
         sync_result = manifest.superproject.Sync(self.git_event_log)
         if not sync_result.success:
-            raise SyncError("failed to sync superproject")
+            raise error.SyncError("failed to sync superproject")
 
         cmd = ["show", f"{opt.superproject_revision}:.supermanifest"]
         p = GitCommand(
@@ -2508,20 +2501,20 @@ later is required to fix a server side protocol bug.
             capture_stderr=True,
         )
         if p.Wait() != 0:
-            raise SyncError(
+            raise error.SyncError(
                 f"failed to read .supermanifest from superproject: {p.stderr}"
             )
 
         try:
             _, _, manifest_commit = p.stdout.strip().split()
         except ValueError:
-            raise SyncError("could not parse .supermanifest")
+            raise error.SyncError("could not parse .supermanifest")
 
         mp.SetRevision(manifest_commit)
         try:
             self._UpdateManifestProject(opt, mp, manifest_name, errors)
-        except UpdateManifestError as e:
-            raise SyncError(
+        except error.UpdateManifestError as e:
+            raise error.SyncError(
                 "failed to sync manifest project", aggregate_errors=[e]
             )
 
@@ -2616,7 +2609,7 @@ later is required to fix a server side protocol bug.
                     manifest,
                     best_effort=implicit_smart_sync,
                 )
-            except (SmartSyncError, ManifestParseError) as e:
+            except (SmartSyncError, error.ManifestParseError) as e:
                 if not implicit_smart_sync:
                     raise
                 # The user did not ask for a smart sync, so failing to get a
@@ -2635,7 +2628,7 @@ later is required to fix a server side protocol bug.
             manifest_name = os.path.basename(smart_sync_manifest_path)
             try:
                 self._ReloadManifest(manifest_name, manifest)
-            except ManifestParseError as e:
+            except error.ManifestParseError as e:
                 reuse_smart_sync_override = False
                 manifest_name = None
                 manifest.ClearOverride()
@@ -2805,7 +2798,7 @@ later is required to fix a server side protocol bug.
         nested = _NestedProjects(projects)
         if not nested:
             return
-        e = SyncError(
+        e = error.SyncError(
             "error: repo.reprojectcmd does not support nested projects or "
             "submodules; found:\n"
             + "\n".join(
@@ -2929,7 +2922,7 @@ later is required to fix a server side protocol bug.
         logger.error(
             'Try re-running with "-j1 --fail-fast" to exit at the first error.'
         )
-        raise SyncError(aggregate_errors=errors)
+        raise error.SyncError(aggregate_errors=errors)
 
     def _SyncPhased(
         self,
@@ -3063,7 +3056,7 @@ later is required to fix a server side protocol bug.
                 )
                 if not cls.is_multiprocessing_active():
                     raise
-            except GitError as e:
+            except error.GitError as e:
                 fetch_errors.append(e)
                 logger.error("error.GitError: Cannot fetch %s", e)
             except Exception as e:
@@ -3115,7 +3108,7 @@ later is required to fix a server side protocol bug.
                     )
                     if not cls.is_multiprocessing_active():
                         raise
-                except GitError as e:
+                except error.GitError as e:
                     checkout_errors.append(e)
                     logger.error(
                         "error.GitError: Cannot checkout %s: %s",
@@ -3483,7 +3476,7 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
         wrapper = Wrapper()
         try:
             rev = rp.bare_git.describe(rp.GetRevisionId())
-        except GitError:
+        except error.GitError:
             rev = None
         _, new_rev = wrapper.check_repo_rev(
             rp.gitdir, rev, repo_verify=repo_verify
@@ -3501,10 +3494,10 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
                 # Refresh index since reset --keep won't do it.
                 rp.work_git.update_index("-q", "--refresh")
                 rp.work_git.reset("--keep", new_rev)
-            except GitError as e:
-                raise RepoUnhandledExceptionError(e)
+            except error.GitError as e:
+                raise error.RepoUnhandledExceptionError(e)
             print("info: Restarting repo with latest version")
-            raise RepoChangedException(["--repo-upgraded"])
+            raise error.RepoChangedException(["--repo-upgraded"])
         else:
             logger.warning("warning: Skipped upgrade to unverified version")
     else:

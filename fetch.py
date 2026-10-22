@@ -19,10 +19,10 @@ import sys
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-from error import RepoExitError
+import error
 
 
-class FetchFileError(RepoExitError):
+class FetchFileError(error.RepoExitError):
     """Exit error when fetch_file fails."""
 
 
