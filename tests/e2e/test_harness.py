@@ -14,8 +14,10 @@
 
 """Tests for the E2E harness helpers themselves."""
 
+import http.client
 from pathlib import Path
-from typing import Mapping
+from typing import Iterator, Mapping
+import urllib.parse
 
 import harness
 import pytest
@@ -25,6 +27,15 @@ import pytest
 pytestmark = pytest.mark.skipif(
     harness.git_version() < (2, 28, 0), reason="requires git 2.28+"
 )
+
+
+@pytest.fixture
+def git_server(tmp_path: Path) -> Iterator[harness.GitHttpServer]:
+    """A git smart HTTP server for a single test."""
+    if not harness.has_http_backend():
+        pytest.skip("git http-backend is not available")
+    with harness.serve(tmp_path) as server:
+        yield server
 
 
 @pytest.mark.parametrize(
@@ -58,3 +69,40 @@ def test_commit_replace_file_with_dir(
     repo.commit({"foo": "file"})
     repo.commit(files)
     assert repo.git("ls-tree", "-r", "--name-only", "main") == "foo/bar"
+
+
+@pytest.mark.parametrize(
+    "chunked,expect_continue",
+    [(False, False), (True, False), (True, True)],
+)
+def test_http_post_body(
+    git_server: harness.GitHttpServer, chunked: bool, expect_continue: bool
+) -> None:
+    """POST bodies reach git http-backend however curl encodes them."""
+    name = f"post-{int(chunked)}{int(expect_continue)}.git"
+    repo = harness.ServerRepo.create(git_server.root / name, "unused")
+    commit = repo.commit({"file": "x"})
+    # A protocol v2 ls-refs request: a command pkt-line & a flush-pkt.
+    body = b"0014command=ls-refs\n0000"
+    headers = {
+        "Content-Type": "application/x-git-upload-pack-request",
+        "Git-Protocol": "version=2",
+    }
+    if expect_continue:
+        headers["Expect"] = "100-continue"
+    url = urllib.parse.urlsplit(git_server.url)
+    conn = http.client.HTTPConnection(url.hostname, url.port, timeout=30)
+    try:
+        # http.client skips any interim `100 Continue` response.
+        conn.request(
+            "POST",
+            f"/{name}/git-upload-pack",
+            body=iter([body[:10], body[10:]]) if chunked else body,
+            headers=headers,
+            encode_chunked=chunked,
+        )
+        resp = conn.getresponse()
+        assert resp.status == 200
+        assert f"{commit} refs/heads/main".encode() in resp.read()
+    finally:
+        conn.close()
