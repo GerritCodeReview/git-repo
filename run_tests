@@ -54,10 +54,16 @@ def is_ci() -> bool:
     return os.getenv("LUCI_CQ") == "yes"
 
 
+def ci_pytest_args() -> list[str]:
+    """Returns extra pytest args for CI runs."""
+    if not is_ci():
+        return []
+    return ["-m", "not skip_cq", "--fail-on-skip"]
+
+
 def run_pytest(argv: list[str]) -> int:
     """Returns the exit code from pytest."""
-    if is_ci():
-        argv = ["-m", "not skip_cq"] + argv
+    argv = ci_pytest_args() + argv
 
     log_cmd("pytest", argv)
     return subprocess.run(
@@ -69,8 +75,7 @@ def run_pytest(argv: list[str]) -> int:
 
 def run_pytest_py38(argv: list[str]) -> int:
     """Returns the exit code from pytest under Python 3.8."""
-    if is_ci():
-        argv = ["-m", "not skip_cq"] + argv
+    argv = ci_pytest_args() + argv
 
     log_cmd("[vpython 3.8] pytest", argv)
     try:
