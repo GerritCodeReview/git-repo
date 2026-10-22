@@ -289,6 +289,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aec05f63_e6b074ce",
+        "filename": "project.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 4021,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-22T14:08:43Z",
+      "side": 1,
+      "message": "Done--it\u0027s documented in manifest-format.md (\"Sparse-checkout is configured only when the project\u0027s working directory is first created...\").",
+      "parentUuid": "5ac5805e_738e7d7d",
+      "range": {
+        "startLine": 4021,
+        "startChar": 0,
+        "endLine": 4021,
+        "endChar": 27
+      },
+      "revId": "cce2be41b9f91c7fbd693a6649a54fe3e57e4974",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "200e6ce7_57da8983",
