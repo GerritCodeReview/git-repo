@@ -14,13 +14,41 @@
 
 """Common fixtures for pytests."""
 
+import os
 import pathlib
+from typing import Any, Generator
 
 import pytest
 
 import color
 import platform_utils
 import repo_trace
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(
+    item: pytest.Item, call: "pytest.CallInfo[None]"
+) -> Generator[None, Any, None]:
+    """Fail skipped tests in CQ.
+
+    A skip in CQ usually means the builder is missing a dependency (e.g. a new
+    enough git), which would otherwise silently drop coverage.  Tests that
+    should not run in CQ are deselected via the `skip_cq` marker instead.
+    """
+    outcome = yield
+    report = outcome.get_result()
+    if (
+        os.environ.get("LUCI_CQ") == "yes"
+        and report.skipped
+        # xfail outcomes are also reported as skipped.
+        and not hasattr(report, "wasxfail")
+    ):
+        reason = report.longrepr
+        if isinstance(reason, tuple):
+            # (path, lineno, reason)
+            reason = reason[2]
+        report.outcome = "failed"
+        report.longrepr = f"Not allowed in CQ (LUCI_CQ=yes): {reason}"
 
 
 @pytest.fixture(autouse=True)
