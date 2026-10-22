@@ -12,32 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ctypes import addressof
-from ctypes import byref
-from ctypes import c_buffer
-from ctypes import c_ubyte
-from ctypes import FormatError
-from ctypes import get_last_error
-from ctypes import Structure
-from ctypes import Union
-from ctypes import WinDLL
-from ctypes import WinError
-from ctypes.wintypes import BOOL
-from ctypes.wintypes import BOOLEAN
-from ctypes.wintypes import DWORD
-from ctypes.wintypes import HANDLE
-from ctypes.wintypes import LPCWSTR
-from ctypes.wintypes import LPDWORD
-from ctypes.wintypes import LPVOID
-from ctypes.wintypes import ULONG
-from ctypes.wintypes import USHORT
-from ctypes.wintypes import WCHAR
+import ctypes
+from ctypes import wintypes
 import errno
 
 
-kernel32 = WinDLL("kernel32", use_last_error=True)
+kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
 
-UCHAR = c_ubyte
+UCHAR = ctypes.c_ubyte
 
 # Win32 error codes
 ERROR_SUCCESS = 0
@@ -46,11 +28,11 @@ ERROR_PRIVILEGE_NOT_HELD = 1314
 
 # Win32 API entry points
 CreateSymbolicLinkW = kernel32.CreateSymbolicLinkW
-CreateSymbolicLinkW.restype = BOOLEAN
+CreateSymbolicLinkW.restype = wintypes.BOOLEAN
 CreateSymbolicLinkW.argtypes = (
-    LPCWSTR,  # lpSymlinkFileName In
-    LPCWSTR,  # lpTargetFileName In
-    DWORD,  # dwFlags In
+    wintypes.LPCWSTR,  # lpSymlinkFileName In
+    wintypes.LPCWSTR,  # lpTargetFileName In
+    wintypes.DWORD,  # dwFlags In
 )
 
 # Symbolic link creation flags
@@ -61,44 +43,44 @@ SYMBOLIC_LINK_FLAG_DIRECTORY = 0x01
 SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE = 0x02
 
 GetFileAttributesW = kernel32.GetFileAttributesW
-GetFileAttributesW.restype = DWORD
-GetFileAttributesW.argtypes = (LPCWSTR,)  # lpFileName In
+GetFileAttributesW.restype = wintypes.DWORD
+GetFileAttributesW.argtypes = (wintypes.LPCWSTR,)  # lpFileName In
 
 INVALID_FILE_ATTRIBUTES = 0xFFFFFFFF
 FILE_ATTRIBUTE_REPARSE_POINT = 0x00400
 
 CreateFileW = kernel32.CreateFileW
-CreateFileW.restype = HANDLE
+CreateFileW.restype = wintypes.HANDLE
 CreateFileW.argtypes = (
-    LPCWSTR,  # lpFileName In
-    DWORD,  # dwDesiredAccess In
-    DWORD,  # dwShareMode In
-    LPVOID,  # lpSecurityAttributes In_opt
-    DWORD,  # dwCreationDisposition In
-    DWORD,  # dwFlagsAndAttributes In
-    HANDLE,  # hTemplateFile In_opt
+    wintypes.LPCWSTR,  # lpFileName In
+    wintypes.DWORD,  # dwDesiredAccess In
+    wintypes.DWORD,  # dwShareMode In
+    wintypes.LPVOID,  # lpSecurityAttributes In_opt
+    wintypes.DWORD,  # dwCreationDisposition In
+    wintypes.DWORD,  # dwFlagsAndAttributes In
+    wintypes.HANDLE,  # hTemplateFile In_opt
 )
 
 CloseHandle = kernel32.CloseHandle
-CloseHandle.restype = BOOL
-CloseHandle.argtypes = (HANDLE,)  # hObject In
+CloseHandle.restype = wintypes.BOOL
+CloseHandle.argtypes = (wintypes.HANDLE,)  # hObject In
 
-INVALID_HANDLE_VALUE = HANDLE(-1).value
+INVALID_HANDLE_VALUE = wintypes.HANDLE(-1).value
 OPEN_EXISTING = 3
 FILE_FLAG_BACKUP_SEMANTICS = 0x02000000
 FILE_FLAG_OPEN_REPARSE_POINT = 0x00200000
 
 DeviceIoControl = kernel32.DeviceIoControl
-DeviceIoControl.restype = BOOL
+DeviceIoControl.restype = wintypes.BOOL
 DeviceIoControl.argtypes = (
-    HANDLE,  # hDevice In
-    DWORD,  # dwIoControlCode In
-    LPVOID,  # lpInBuffer In_opt
-    DWORD,  # nInBufferSize In
-    LPVOID,  # lpOutBuffer Out_opt
-    DWORD,  # nOutBufferSize In
-    LPDWORD,  # lpBytesReturned Out_opt
-    LPVOID,  # lpOverlapped Inout_opt
+    wintypes.HANDLE,  # hDevice In
+    wintypes.DWORD,  # dwIoControlCode In
+    wintypes.LPVOID,  # lpInBuffer In_opt
+    wintypes.DWORD,  # nInBufferSize In
+    wintypes.LPVOID,  # lpOutBuffer Out_opt
+    wintypes.DWORD,  # nOutBufferSize In
+    wintypes.LPDWORD,  # lpBytesReturned Out_opt
+    wintypes.LPVOID,  # lpOverlapped Inout_opt
 )
 
 # Device I/O control flags and options
@@ -108,45 +90,45 @@ IO_REPARSE_TAG_SYMLINK = 0xA000000C
 MAXIMUM_REPARSE_DATA_BUFFER_SIZE = 0x4000
 
 
-class GENERIC_REPARSE_BUFFER(Structure):
+class GENERIC_REPARSE_BUFFER(ctypes.Structure):
     _fields_ = (("DataBuffer", UCHAR * 1),)
 
 
-class SYMBOLIC_LINK_REPARSE_BUFFER(Structure):
+class SYMBOLIC_LINK_REPARSE_BUFFER(ctypes.Structure):
     _fields_ = (
-        ("SubstituteNameOffset", USHORT),
-        ("SubstituteNameLength", USHORT),
-        ("PrintNameOffset", USHORT),
-        ("PrintNameLength", USHORT),
-        ("Flags", ULONG),
-        ("PathBuffer", WCHAR * 1),
+        ("SubstituteNameOffset", wintypes.USHORT),
+        ("SubstituteNameLength", wintypes.USHORT),
+        ("PrintNameOffset", wintypes.USHORT),
+        ("PrintNameLength", wintypes.USHORT),
+        ("Flags", wintypes.ULONG),
+        ("PathBuffer", wintypes.WCHAR * 1),
     )
 
     @property
     def PrintName(self):
-        arrayt = WCHAR * (self.PrintNameLength // 2)
+        arrayt = wintypes.WCHAR * (self.PrintNameLength // 2)
         offset = type(self).PathBuffer.offset + self.PrintNameOffset
-        return arrayt.from_address(addressof(self) + offset).value
+        return arrayt.from_address(ctypes.addressof(self) + offset).value
 
 
-class MOUNT_POINT_REPARSE_BUFFER(Structure):
+class MOUNT_POINT_REPARSE_BUFFER(ctypes.Structure):
     _fields_ = (
-        ("SubstituteNameOffset", USHORT),
-        ("SubstituteNameLength", USHORT),
-        ("PrintNameOffset", USHORT),
-        ("PrintNameLength", USHORT),
-        ("PathBuffer", WCHAR * 1),
+        ("SubstituteNameOffset", wintypes.USHORT),
+        ("SubstituteNameLength", wintypes.USHORT),
+        ("PrintNameOffset", wintypes.USHORT),
+        ("PrintNameLength", wintypes.USHORT),
+        ("PathBuffer", wintypes.WCHAR * 1),
     )
 
     @property
     def PrintName(self):
-        arrayt = WCHAR * (self.PrintNameLength // 2)
+        arrayt = wintypes.WCHAR * (self.PrintNameLength // 2)
         offset = type(self).PathBuffer.offset + self.PrintNameOffset
-        return arrayt.from_address(addressof(self) + offset).value
+        return arrayt.from_address(ctypes.addressof(self) + offset).value
 
 
-class REPARSE_DATA_BUFFER(Structure):
-    class REPARSE_BUFFER(Union):
+class REPARSE_DATA_BUFFER(ctypes.Structure):
+    class REPARSE_BUFFER(ctypes.Union):
         _fields_ = (
             ("SymbolicLinkReparseBuffer", SYMBOLIC_LINK_REPARSE_BUFFER),
             ("MountPointReparseBuffer", MOUNT_POINT_REPARSE_BUFFER),
@@ -154,9 +136,9 @@ class REPARSE_DATA_BUFFER(Structure):
         )
 
     _fields_ = (
-        ("ReparseTag", ULONG),
-        ("ReparseDataLength", USHORT),
-        ("Reserved", USHORT),
+        ("ReparseTag", wintypes.ULONG),
+        ("ReparseDataLength", wintypes.USHORT),
+        ("Reserved", wintypes.USHORT),
         ("ReparseBuffer", REPARSE_BUFFER),
     )
     _anonymous_ = ("ReparseBuffer",)
@@ -182,8 +164,8 @@ def _create_symlink(source, link_name, dwFlags):
         # "the unprivileged create flag is unsupported below Windows 10 (1703,
         # v10.0.14972). retry without it."
         if not CreateSymbolicLinkW(link_name, source, dwFlags):
-            code = get_last_error()
-            error_desc = FormatError(code).strip()
+            code = ctypes.get_last_error()
+            error_desc = ctypes.FormatError(code).strip()
             if code == ERROR_PRIVILEGE_NOT_HELD:
                 raise OSError(errno.EPERM, error_desc, link_name)
             _raise_winerror(code, f'Error creating symbolic link "{link_name}"')
@@ -208,10 +190,10 @@ def readlink(path):
     )
     if reparse_point_handle == INVALID_HANDLE_VALUE:
         _raise_winerror(
-            get_last_error(), f'Error opening symbolic link "{path}"'
+            ctypes.get_last_error(), f'Error opening symbolic link "{path}"'
         )
-    target_buffer = c_buffer(MAXIMUM_REPARSE_DATA_BUFFER_SIZE)
-    n_bytes_returned = DWORD()
+    target_buffer = ctypes.c_buffer(MAXIMUM_REPARSE_DATA_BUFFER_SIZE)
+    n_bytes_returned = wintypes.DWORD()
     io_result = DeviceIoControl(
         reparse_point_handle,
         FSCTL_GET_REPARSE_POINT,
@@ -219,13 +201,13 @@ def readlink(path):
         0,
         target_buffer,
         len(target_buffer),
-        byref(n_bytes_returned),
+        ctypes.byref(n_bytes_returned),
         None,
     )
     CloseHandle(reparse_point_handle)
     if not io_result:
         _raise_winerror(
-            get_last_error(), f'Error reading symbolic link "{path}"'
+            ctypes.get_last_error(), f'Error reading symbolic link "{path}"'
         )
     rdb = REPARSE_DATA_BUFFER.from_buffer(target_buffer)
     if rdb.ReparseTag == IO_REPARSE_TAG_SYMLINK:
@@ -239,6 +221,6 @@ def readlink(path):
 
 
 def _raise_winerror(code, error_desc):
-    win_error_desc = FormatError(code).strip()
+    win_error_desc = ctypes.FormatError(code).strip()
     error_desc = f"{error_desc}: {win_error_desc}"
-    raise WinError(code, error_desc)
+    raise ctypes.WinError(code, error_desc)
