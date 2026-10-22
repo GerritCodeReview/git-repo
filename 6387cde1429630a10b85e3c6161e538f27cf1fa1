@@ -113,6 +113,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3dd6de8_a044965e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2314,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-22T14:08:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a02a005_3cc1a1ae",
+      "range": {
+        "startLine": 2314,
+        "startChar": 36,
+        "endLine": 2314,
+        "endChar": 62
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41e2ac7f_4897b262",
