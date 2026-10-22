@@ -15,12 +15,47 @@
 """Common fixtures for pytests."""
 
 import pathlib
+from typing import Any, Generator
 
 import pytest
 
 import color
 import platform_utils
 import repo_trace
+
+
+def pytest_addoption(parser: pytest.Parser) -> None:
+    parser.addoption(
+        "--fail-on-skip",
+        action="store_true",
+        help="fail skipped tests (run_tests sets this in CQ)",
+    )
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(
+    item: pytest.Item,
+) -> Generator[None, Any, None]:
+    """Fail skipped tests with --fail-on-skip.
+
+    A skip in CQ usually means the builder is missing a dependency (e.g. a new
+    enough git), which would otherwise silently drop coverage.  Tests that
+    should not run in CQ are deselected via the `skip_cq` marker instead.
+    """
+    outcome = yield
+    report = outcome.get_result()
+    if (
+        item.config.getoption("fail_on_skip")
+        and report.skipped
+        # xfail outcomes are also reported as skipped.
+        and not hasattr(report, "wasxfail")
+    ):
+        reason = report.longrepr
+        if isinstance(reason, tuple):
+            # (path, lineno, reason)
+            reason = reason[2]
+        report.outcome = "failed"
+        report.longrepr = f"Not allowed with --fail-on-skip: {reason}"
 
 
 @pytest.fixture(autouse=True)
