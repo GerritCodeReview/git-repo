@@ -22,6 +22,30 @@
       },
       "revId": "155534228c2068746b94b8a90709e5702a495bb1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a27cfb3_4b4e283a",
+        "filename": "project.py",
+        "patchSetId": 22
+      },
+      "lineNbr": 1809,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-22T14:08:20Z",
+      "side": 1,
+      "message": "good catch--done. The `blob:none` default now only kicks in for non-mirror projects that are either new or already a partial clone, so an existing full checkout stays full. I documented it next to the other \"first checkout only\" behavior in manifest-format.md and added tests for the existing-full, existing-partial, and mirror cases. thanks!",
+      "parentUuid": "a0f6eec8_12fc3364",
+      "range": {
+        "startLine": 1809,
+        "startChar": 0,
+        "endLine": 1809,
+        "endChar": 50
+      },
+      "revId": "155534228c2068746b94b8a90709e5702a495bb1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
