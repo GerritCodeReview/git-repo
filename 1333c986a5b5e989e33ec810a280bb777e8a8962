@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ced7386_06a943c9",
+        "filename": "git_config.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-22T14:59:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b997b3de_b24aef04",
+      "revId": "1333c986a5b5e989e33ec810a280bb777e8a8962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e03cf1d_3f843665",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-22T14:21:24Z",
       "side": 1,
       "message": "can you link to the git-scm site too ?\n\n```suggestion\n    g suffix (multiples of 1024) and hex with a 0x prefix.\n    https://git-scm.com/docs/git-config#Documentation/git-config.txt-integer\n```",
+      "revId": "1333c986a5b5e989e33ec810a280bb777e8a8962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1b55949_13b50531",
+        "filename": "git_config.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1134622
+      },
+      "writtenOn": "2026-10-22T14:59:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e03cf1d_3f843665",
       "revId": "1333c986a5b5e989e33ec810a280bb777e8a8962",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
