@@ -14,13 +14,19 @@
 
 """Hermetic end-to-end test harness for repo.
 
-The harness has two parts:
+The harness has three parts:
 
 * `GitHttpServer`: a local smart HTTP git server built on `git http-backend`.
   It also serves static `clone.bundle` files like Gerrit/GoB do.
 * `ServerRepo`/`GitHost`: bare repositories hosted by the server, with helpers
   to create commits (including gitlinks for superprojects), branches, tags &
   bundles without needing a worktree.
+* `RepoClient`: runs a standalone copy of the `repo` launcher as a real
+  subprocess, the same way end users do, against the server.
+
+The code under test (current checkout including uncommitted changes) is
+published on the server as the `git-repo` project by `publish_repo_source`, so
+`repo init` installs it into `.repo/repo/` over HTTP.
 """
 
 import contextlib
@@ -29,10 +35,13 @@ import http.server
 import os
 from pathlib import Path
 import re
+import shutil
 import socketserver
+import stat
 import subprocess
 import sys
 import threading
+import time
 from typing import (
     Dict,
     Iterator,
@@ -46,8 +55,18 @@ from typing import (
 import urllib.parse
 
 
+ROOT_DIR = Path(__file__).resolve().parents[2]
+LAUNCHER = ROOT_DIR / "repo"
+
+# The developer's environment, captured at import (i.e. collection) time before
+# `tests/conftest.py` isolates HOME for the test session.
+HOST_ENVIRON = dict(os.environ)
+
 # Every repo/git subprocess gets this timeout so a hang can't wedge the CQ.
 COMMAND_TIMEOUT = 300
+
+# Name of the branch used for the published repo source.
+REPO_SOURCE_BRANCH = "main"
 
 # The manifest repo lives two levels deep (like AOSP's platform/manifest) so
 # the common `fetch=".."` resolves to the root of the host namespace.
@@ -68,6 +87,34 @@ SERVER_REPO_CONFIG = {
     "uploadpack.allowReachableSHA1InWant": "true",
     "http.receivepack": "false",
 }
+
+# Client git defaults that tests can emulate.
+# Git 3.0 changes several defaults; these let us test them on older git.
+# https://git-scm.com/docs/BreakingChanges
+GIT_DEFAULTS: Dict[str, Dict[str, str]] = {
+    # Git 2 defaults.
+    "git2": {
+        "init.defaultBranch": "master",
+        "init.defaultObjectFormat": "sha1",
+        "init.defaultRefFormat": "files",
+        "init.defaultRefStorageFormat": "files",
+        "safe.bareRepository": "all",
+    },
+    # Git 3 defaults, except for SHA-256.
+    "git3": {
+        "init.defaultBranch": "main",
+        # TODO(b/483758905): Switch to sha256 (the Git 3 default) once remotes
+        # migrate to sha256.
+        "init.defaultObjectFormat": "sha1",
+        # init.defaultRefFormat is the deprecated name for
+        # init.defaultRefStorageFormat; set both to support old & new git.
+        "init.defaultRefFormat": "reftable",
+        "init.defaultRefStorageFormat": "reftable",
+        "safe.bareRepository": "explicit",
+    },
+}
+
+GIT_DEFAULTS_PARAMS = list(GIT_DEFAULTS)
 
 
 def clean_environ() -> Dict[str, str]:
@@ -674,6 +721,201 @@ def manifest_xml(*elements: str, default: Optional[str] = None) -> str:
     )
 
 
+def _snapshot_worktree(root: Path) -> Dict[str, FileContent]:
+    """Return the files in the git checkout at `root` (honoring .gitignore).
+
+    This includes uncommitted & untracked (but not ignored) files.
+    """
+    # Use the developer's git config (not the isolated test HOME) so their
+    # global excludes (e.g. a venv/) & safe.directory settings apply.
+    env = clean_environ()
+    del env["GIT_CONFIG_NOSYSTEM"]
+    for key in ("HOME", "USERPROFILE", "XDG_CONFIG_HOME"):
+        env.pop(key, None)
+        if key in HOST_ENVIRON:
+            env[key] = HOST_ENVIRON[key]
+    out = run_git(
+        "ls-files",
+        "-z",
+        "--cached",
+        "--others",
+        "--exclude-standard",
+        cwd=root,
+        env=env,
+    )
+    files: Dict[str, FileContent] = {}
+    for name in sorted(set(out.split("\0"))):
+        if not name:
+            continue
+        path = root / name
+        try:
+            st_mode = path.lstat().st_mode
+        except OSError:
+            # Deleted in the worktree but not (yet) in the index.
+            continue
+        if stat.S_ISLNK(st_mode):
+            files[name] = Blob(os.fsencode(os.readlink(path)), "120000")
+        elif stat.S_ISREG(st_mode):
+            mode = "100755" if st_mode & 0o111 else "100644"
+            files[name] = Blob(path.read_bytes(), mode)
+    return files
+
+
+def publish_repo_source(dest: Path, url: str) -> ServerRepo:
+    """Publish the code under test as a bare repository at `dest`.
+
+    The snapshot is taken from the working tree so uncommitted local changes
+    are tested too.  It's a single orphan commit (cheap to clone) with an
+    annotated tag so `git describe` works like it does for releases.
+    """
+    repo = ServerRepo.create(dest, url, default_branch=REPO_SOURCE_BRANCH)
+    commit = repo.commit(
+        _snapshot_worktree(ROOT_DIR),
+        branch=REPO_SOURCE_BRANCH,
+        message="e2e snapshot of repo",
+    )
+    repo.tag("v99.0-e2e", commit)
+    return repo
+
+
+class RepoResult(NamedTuple):
+    """Result of running a repo command."""
+
+    args: List[str]
+    returncode: int
+    stdout: str
+    stderr: str
+
+    @property
+    def output(self) -> str:
+        return self.stdout + self.stderr
+
+
+class RepoCommandError(AssertionError):
+    """A repo command exited with an unexpected status."""
+
+
+class RepoClient:
+    """Runs the repo launcher against a client checkout directory."""
+
+    def __init__(
+        self,
+        top: Path,
+        launcher: Path,
+        env: Mapping[str, str],
+        repo_url: str,
+    ) -> None:
+        self.top = top
+        self.launcher = launcher
+        self.env = dict(env)
+        self.repo_url = repo_url
+        # The launcher searches parent dirs for a client checkout, so an outer
+        # one (e.g. `--basetemp` inside a repo client) would hijack the tests.
+        for parent in top.resolve().parents:
+            if (parent / ".repo" / "repo" / "main.py").is_file():
+                raise AssertionError(
+                    f"{top} is inside the repo client checkout {parent}; "
+                    "use a different temp dir"
+                )
+        top.mkdir(parents=True, exist_ok=True)
+
+    @property
+    def repodir(self) -> Path:
+        """The .repo/ directory."""
+        return self.top / ".repo"
+
+    def run(self, *args: str, check: bool = True) -> RepoResult:
+        """Run `repo <args>` and return the result.
+
+        The command & its output are printed so pytest displays them if the
+        test fails on a later assertion.
+
+        Raises:
+            RepoCommandError: If `check` and the command failed.
+        """
+        argv = [sys.executable, str(self.launcher)] + list(args)
+        cmd = f"repo {' '.join(args)}"
+        start = time.monotonic()
+        proc = subprocess.run(
+            argv,
+            cwd=self.top,
+            env=self.env,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=COMMAND_TIMEOUT,
+        )
+        elapsed = time.monotonic() - start
+        result = RepoResult(
+            list(args),
+            proc.returncode,
+            proc.stdout.decode("utf-8", "replace"),
+            proc.stderr.decode("utf-8", "replace"),
+        )
+        print(f"$ {cmd}  # exit {result.returncode} after {elapsed:.1f}s")
+        if result.output:
+            print(result.output.rstrip("\n"))
+        if check and result.returncode:
+            raise RepoCommandError(
+                f"`{cmd}` failed with {result.returncode} "
+                f"after {elapsed:.1f}s\n"
+                f"--- stdout ---\n{result.stdout}\n"
+                f"--- stderr ---\n{result.stderr}"
+            )
+        return result
+
+    def init(self, manifest_url: str, *args: str) -> RepoResult:
+        """Run `repo init` installing the code under test."""
+        return self.run(
+            "init",
+            "--manifest-url",
+            manifest_url,
+            "--repo-url",
+            self.repo_url,
+            "--repo-rev",
+            REPO_SOURCE_BRANCH,
+            "--no-repo-verify",
+            *args,
+        )
+
+    def sync(self, *args: str) -> RepoResult:
+        """Run `repo sync`."""
+        return self.run("sync", *args)
+
+    def git(self, path: str, *args: str) -> str:
+        """Run git in a checkout dir (relative to the client top)."""
+        return run_git(*args, cwd=self.top / path, env=self.env)
+
+    def head(self, path: str) -> str:
+        """Return the commit checked out in `path`."""
+        return self.git(path, "rev-parse", "HEAD")
+
+    def has_object(self, path: str, oid: str) -> bool:
+        """Whether the checkout at `path` has object `oid` locally."""
+        # Unlike `cat-file -e`, this never lazily fetches missing objects in
+        # partial clones.  Test repos are small, so listing them all is cheap.
+        out = self.git(
+            path,
+            "cat-file",
+            "--batch-check=%(objectname)",
+            "--batch-all-objects",
+        )
+        return oid in out.split()
+
+    def is_shallow(self, path: str) -> bool:
+        return self.git(path, "rev-parse", "--is-shallow-repository") == "true"
+
+    def list_projects(self) -> Dict[str, str]:
+        """Return a map of project path to name from `repo list`."""
+        out = self.run("list").stdout
+        projects = {}
+        for line in out.splitlines():
+            path, _, name = line.partition(" : ")
+            projects[path.strip()] = name.strip()
+        return projects
+
+
 @contextlib.contextmanager
 def serve(root: Path) -> Iterator[GitHttpServer]:
     """Run a GitHttpServer for the duration of the context."""
@@ -683,3 +925,16 @@ def serve(root: Path) -> Iterator[GitHttpServer]:
         yield server
     finally:
         server.stop()
+
+
+def install_launcher(bindir: Path) -> Path:
+    """Copy the repo launcher to `bindir`.
+
+    A standalone copy is used (instead of running ./repo from the checkout) so
+    the launcher behaves like an end user's install and runs the code that
+    `repo init` fetched into .repo/repo/ rather than the checkout directly.
+    """
+    bindir.mkdir(parents=True, exist_ok=True)
+    dest = bindir / "repo"
+    shutil.copy2(LAUNCHER, dest)
+    return dest
