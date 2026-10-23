@@ -27,7 +27,7 @@ import urllib.error
 import urllib.request
 
 import error
-from git_command import GitCommand
+import git_command
 from git_refs import R_CHANGES
 from git_refs import R_HEADS
 from git_refs import R_TAGS
@@ -474,7 +474,9 @@ class GitConfig:
             command = ["config", "--file", self.file, "--includes"]
         command.extend(args)
 
-        p = GitCommand(None, command, capture_stdout=True, capture_stderr=True)
+        p = git_command.GitCommand(
+            None, command, capture_stdout=True, capture_stderr=True
+        )
         if p.Wait() == 0:
             return p.stdout
         else:

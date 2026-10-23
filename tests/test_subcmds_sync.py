@@ -32,6 +32,7 @@ import pytest
 
 import command
 import error
+import git_command
 import manifest_xml
 from project import SyncNetworkHalfResult
 from subcmds import sync
@@ -1475,14 +1476,14 @@ class CheckForBloatedProjects(unittest.TestCase):
         self.project.GetRevisionId.assert_not_called()
         self.project.bare_git.count_objects.assert_not_called()
 
-    @mock.patch("subcmds.sync.git_require")
+    @mock.patch.object(git_command, "git_require")
     def test_git_version_unsupported(self, mock_git_require):
         """Test that it returns early if git version is unsupported."""
         mock_git_require.return_value = False
         self.cmd._CheckForBloatedProjects([self.project], self.opt)
         self.assertFalse(self.cmd.git_event_log.ErrorEvent.called)
 
-    @mock.patch("subcmds.sync.git_require")
+    @mock.patch.object(git_command, "git_require")
     def test_no_projects(self, mock_git_require):
         """Test that it returns early if no projects have clone_depth."""
         mock_git_require.return_value = True
@@ -1490,7 +1491,7 @@ class CheckForBloatedProjects(unittest.TestCase):
         self.cmd._CheckForBloatedProjects([self.project], self.opt)
         self.assertFalse(self.cmd.git_event_log.ErrorEvent.called)
 
-    @mock.patch("subcmds.sync.git_require", return_value=True)
+    @mock.patch.object(git_command, "git_require", return_value=True)
     @mock.patch("subcmds.sync.Progress")
     def test_network_only_skips_check(
         self, mock_progress: mock.Mock, mock_git_require: mock.Mock
@@ -1504,7 +1505,7 @@ class CheckForBloatedProjects(unittest.TestCase):
         mock_progress.assert_not_called()
         self.cmd.ExecuteInParallel.assert_not_called()
 
-    @mock.patch("subcmds.sync.git_require", return_value=True)
+    @mock.patch.object(git_command, "git_require", return_value=True)
     @mock.patch("subcmds.sync.Progress")
     def test_projects_without_worktree_excluded(
         self, mock_progress: mock.Mock, mock_git_require: mock.Mock
@@ -1526,7 +1527,7 @@ class CheckForBloatedProjects(unittest.TestCase):
                 mock_progress.assert_not_called()
                 self.cmd.ExecuteInParallel.assert_not_called()
 
-    @mock.patch("subcmds.sync.git_require")
+    @mock.patch.object(git_command, "git_require")
     @mock.patch("subcmds.sync.Progress")
     def test_bloated_project_found(self, mock_progress, mock_git_require):
         """Test that it adds project to _bloated_projects."""
@@ -1549,7 +1550,7 @@ class CheckForBloatedProjects(unittest.TestCase):
 
         self.assertEqual(self.cmd._bloated_projects, ["project"])
 
-    @mock.patch("subcmds.sync.git_require")
+    @mock.patch.object(git_command, "git_require")
     @mock.patch("subcmds.sync.Progress")
     def test_stateless_prune_excluded(self, mock_progress, mock_git_require):
         """Test that projects pruned for stateless sync are excluded."""
@@ -2847,7 +2848,7 @@ class SyncToSuperprojectRevTests(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.repodir)
 
-    @mock.patch("subcmds.sync.GitCommand")
+    @mock.patch.object(git_command, "GitCommand")
     def test_successful_sync(self, mock_git_command):
         """Test successful sync to superproject rev."""
         mock_superproject = self.manifest.superproject
@@ -2872,7 +2873,7 @@ class SyncToSuperprojectRevTests(unittest.TestCase):
             mock_update.assert_called_once()
             self.assertEqual(self.errors, [])
 
-    @mock.patch("subcmds.sync.GitCommand")
+    @mock.patch.object(git_command, "GitCommand")
     def test_parse_error(self, mock_git_command):
         """Test error when .supermanifest cannot be parsed."""
         mock_superproject = self.manifest.superproject
@@ -2890,7 +2891,7 @@ class SyncToSuperprojectRevTests(unittest.TestCase):
             )
         self.assertIn("could not parse .supermanifest", str(e.exception))
 
-    @mock.patch("subcmds.sync.GitCommand")
+    @mock.patch.object(git_command, "GitCommand")
     def test_read_error(self, mock_git_command):
         """Test error when reading .supermanifest fails."""
         mock_superproject = self.manifest.superproject
@@ -2917,7 +2918,7 @@ class SyncToSuperprojectRevTests(unittest.TestCase):
             )
         self.assertIn("superproject not defined", str(e.exception))
 
-    @mock.patch("subcmds.sync.GitCommand")
+    @mock.patch.object(git_command, "GitCommand")
     def test_sync_failure(self, mock_git_command):
         """Test error when superproject sync fails."""
         mock_superproject = self.manifest.superproject

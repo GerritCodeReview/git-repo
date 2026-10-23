@@ -14,8 +14,7 @@
 
 import os
 
-from git_command import git_require
-from git_command import GitCommand
+import git_command
 import platform_utils
 import repo_trace
 
@@ -135,7 +134,7 @@ class GitRefs:
         Returns:
             Whether root refs, including HEAD when it exists, were loaded.
         """
-        include_root_refs = git_require((2, 45, 0))
+        include_root_refs = git_command.git_require((2, 45, 0))
         cmd = [
             "for-each-ref",
             "--format=%(objectname)%00%(refname)%00%(symref)",
@@ -145,7 +144,7 @@ class GitRefs:
             # Avoid caching volatile root refs such as ORIG_HEAD.  HEAD and
             # refs/* are the only namespaces GitRefs exposes to callers.
             cmd.extend([HEAD, "refs"])
-        p = GitCommand(
+        p = git_command.GitCommand(
             None,
             cmd,
             capture_stdout=True,
@@ -166,7 +165,7 @@ class GitRefs:
 
     def _ReadSymbolicRef(self, name: str) -> None:
         """Read a symbolic reference."""
-        p = GitCommand(
+        p = git_command.GitCommand(
             None,
             ["symbolic-ref", "-q", name],
             capture_stdout=True,
@@ -180,7 +179,7 @@ class GitRefs:
                 self._symref[name] = ref
                 return
 
-        p = GitCommand(
+        p = git_command.GitCommand(
             None,
             ["rev-parse", "--verify", "-q", name],
             capture_stdout=True,

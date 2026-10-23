@@ -18,10 +18,7 @@ from typing import Any, Tuple
 
 from command import Command
 from command import MirrorSafeCommand
-from git_command import git
-from git_command import git_require
-from git_command import RepoSourceVersion
-from git_command import user_agent
+import git_command
 from git_refs import HEAD
 from wrapper import Wrapper
 
@@ -39,7 +36,7 @@ class Version(Command, MirrorSafeCommand):
     @staticmethod
     def _RepoVersion(project: Any) -> Tuple[str, str]:
         """Return repo's describe string and commit date."""
-        if git_require((2, 32, 0)):
+        if git_command.git_require((2, 32, 0)):
             output = project.bare_git.log(
                 "-1", "--format=%(describe)%n%cD", HEAD
             )
@@ -58,7 +55,7 @@ class Version(Command, MirrorSafeCommand):
         branch = rp.GetBranch("default")
 
         # These might not be the same.  Report them both.
-        src_ver = RepoSourceVersion()
+        src_ver = git_command.RepoSourceVersion()
         rp_ver, commit_date = self._RepoVersion(rp)
         print(f"repo version {rp_ver}")
         print(f"       (from {rem.url})")
@@ -72,9 +69,9 @@ class Version(Command, MirrorSafeCommand):
             if src_ver != rp_ver:
                 print(f"       (currently at {src_ver})")
 
-        print(f"repo User-Agent {user_agent.repo}")
-        print(f"git {git.version_tuple().full}")
-        print(f"git User-Agent {user_agent.git}")
+        print(f"repo User-Agent {git_command.user_agent.repo}")
+        print(f"git {git_command.git.version_tuple().full}")
+        print(f"git User-Agent {git_command.user_agent.git}")
         print(f"Python {sys.version}")
         uname = platform.uname()
         if sys.version_info.major < 3:

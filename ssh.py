@@ -24,7 +24,7 @@ import sys
 import tempfile
 import time
 
-from git_command import git
+import git_command
 import platform_utils
 import repo_trace
 
@@ -359,7 +359,7 @@ def _get_git_protocol_version() -> str:
         if e.returncode == 1:
             # Exit code 1 means that the git config key was not found.
             # Try to imitate the defaults that git would have used.
-            git_version = git.version_tuple()
+            git_version = git_command.git.version_tuple()
             if git_version >= (2, 26, 0):
                 # Since git version 2.26, protocol v2 is the default.
                 return "2"

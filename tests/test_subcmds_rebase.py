@@ -20,6 +20,7 @@ from types import SimpleNamespace
 from unittest import mock
 
 import error
+import git_command
 from subcmds import rebase
 
 
@@ -77,11 +78,11 @@ def test_execute_delegates_autostash_to_rebase() -> None:
         onto_manifest=False,
         this_manifest_only=False,
     )
-    git_command = mock.MagicMock()
-    git_command.Wait.return_value = 0
+    command = mock.MagicMock()
+    command.Wait.return_value = 0
 
     with mock.patch.object(
-        rebase, "GitCommand", return_value=git_command
+        git_command, "GitCommand", return_value=command
     ) as run_git, contextlib.redirect_stdout(io.StringIO()):
         assert cmd.Execute(opt, []) == 0
 

@@ -18,7 +18,7 @@ from typing import Tuple
 
 from command import Command
 import error
-from git_command import GitCommand
+import git_command
 import repo_logging
 
 
@@ -47,7 +47,7 @@ change id will be added.
         sha1, commit = self._ResolveReference(reference)
         old_msg = self._StripHeader(commit)
 
-        p = GitCommand(
+        p = git_command.GitCommand(
             None,
             ["cherry-pick", sha1],
             capture_stdout=True,
@@ -76,7 +76,7 @@ change id will be added.
         # the commit message.
         new_msg = self._Reformat(old_msg, sha1)
 
-        p = GitCommand(
+        p = git_command.GitCommand(
             None,
             ["commit", "--amend", "-F", "-"],
             input=new_msg,
@@ -93,7 +93,7 @@ change id will be added.
     def _ResolveReference(self, reference: str) -> Tuple[str, str]:
         """Resolve a commit and read it through one cat-file batch request."""
         expression = f"{reference}^{{commit}}"
-        p = GitCommand(
+        p = git_command.GitCommand(
             None,
             ["cat-file", "--batch"],
             input=expression + "\n",

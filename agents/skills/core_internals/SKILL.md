@@ -2004,10 +2004,10 @@ def _Run(self, *cmd):
 **Do:**
 
 ```python
-from git_command import GitCommand
+import git_command
 
 def _Run(self, cmd):
-    p = GitCommand(
+    p = git_command.GitCommand(
         None,
         cmd,
         capture_stdout=True,

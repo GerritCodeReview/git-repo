@@ -32,8 +32,7 @@ import time
 from typing import NamedTuple
 import urllib.parse
 
-from git_command import git_require
-from git_command import GitCommand
+import git_command
 from git_config import IsId
 from git_config import RepoConfig
 import platform_utils
@@ -140,7 +139,7 @@ class Superproject:
     def commit_id(self):
         """Returns the commit ID of the superproject checkout."""
         cmd = ["rev-parse", self.revision]
-        p = GitCommand(
+        p = git_command.GitCommand(
             None,  # project
             cmd,
             gitdir=self._work_git,
@@ -242,7 +241,7 @@ class Superproject:
 
         try:
             cmd = ["init", "--bare", tmp_git_name]
-            p = GitCommand(
+            p = git_command.GitCommand(
                 None,
                 cmd,
                 cwd=self._superproject_path,
@@ -292,7 +291,7 @@ class Superproject:
         if not os.path.exists(self._work_git):
             self._LogWarning("git fetch missing directory: {}", self._work_git)
             return False
-        if not git_require((2, 28, 0)):
+        if not git_command.git_require((2, 28, 0)):
             self._LogWarning(
                 "superproject requires a git version 2.28 or later"
             )
@@ -329,7 +328,7 @@ class Superproject:
                 else f"{self.revision}:{self.revision}"
             )
             cmd.append(refspec)
-        p = GitCommand(
+        p = git_command.GitCommand(
             None,
             cmd,
             gitdir=self._work_git,
@@ -351,7 +350,7 @@ class Superproject:
 
     def _GetRef(self, ref: str) -> str:
         """Resolve one local ref without loading the entire ref namespace."""
-        p = GitCommand(
+        p = git_command.GitCommand(
             None,
             ["rev-parse", "--verify", "--quiet", ref],
             gitdir=self._work_git,
@@ -381,7 +380,7 @@ class Superproject:
         branch = "HEAD" if not self.revision else self.revision
         cmd = ["ls-tree", "-z", "-r", branch]
 
-        p = GitCommand(
+        p = git_command.GitCommand(
             None,
             cmd,
             gitdir=self._work_git,

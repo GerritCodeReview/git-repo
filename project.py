@@ -35,9 +35,7 @@ import urllib.parse
 from color import Coloring
 import error
 import fetch
-from git_command import git_require
-from git_command import GitCommand
-from git_command import GitCommandError
+import git_command
 from git_config import GetSchemeFromUrl
 from git_config import GetUrlCookieFile
 from git_config import GitConfig
@@ -835,7 +833,7 @@ class Project:
 
         def _git(*args):
             # Ignore return code, in case there was no rebase in progress.
-            GitCommand(self, args, log_as_error=False).Wait()
+            git_command.GitCommand(self, args, log_as_error=False).Wait()
 
         _git("cherry-pick", "--abort")
         _git("rebase", "--abort")
@@ -860,7 +858,7 @@ class Project:
         # Exit code 1 means there are modified files, which is okay.
         try:
             self.work_git.update_index(*args)
-        except GitCommandError as e:
+        except git_command.GitCommandError as e:
             if e.git_rc != 1:
                 raise
 
@@ -887,7 +885,7 @@ class Project:
         the worktree directory is missing. A missing worktree isn't logged:
         status can't run there, and the legacy path raises its own error.
         """
-        if not git_require((2, 11, 0)):
+        if not git_command.git_require((2, 11, 0)):
             return None
         if not self.worktree or not platform_utils.isdir(self.worktree):
             return None
@@ -926,7 +924,7 @@ class Project:
 
     def HasStash(self) -> bool:
         """Returns True if there is a stash in the repository."""
-        p = GitCommand(
+        p = git_command.GitCommand(
             self,
             ["rev-parse", "--verify", "refs/stash"],
             bare=True,
@@ -938,7 +936,7 @@ class Project:
 
     def _HasDirtyOrStash(self) -> bool:
         """Check dirty and normal stash state with one status when possible."""
-        has_status_stash = git_require((2, 35, 0))
+        has_status_stash = git_command.git_require((2, 35, 0))
         status = self._GetStatusSnapshot(
             untracked_files="normal",
             show_stash=has_status_stash,
@@ -1372,7 +1370,9 @@ class Project:
             cmd.append("--dst-prefix=b/%s/" % self.RelPath(local))
         cmd.append("--")
         try:
-            p = GitCommand(self, cmd, capture_stdout=True, capture_stderr=True)
+            p = git_command.GitCommand(
+                self, cmd, capture_stdout=True, capture_stderr=True
+            )
             p.Wait()
         except error.GitError as e:
             out.nl()
@@ -1574,7 +1574,7 @@ class Project:
             ref_spec = ref_spec + "%" + ",".join(opts)
         cmd.append(ref_spec)
 
-        push_cmd = GitCommand(
+        push_cmd = git_command.GitCommand(
             self,
             cmd,
             bare=True,
@@ -1971,7 +1971,7 @@ class Project:
             )
             if os.path.exists(alternates_file):
                 cmd = ["repack", "-a", "-d"]
-                p = GitCommand(
+                p = git_command.GitCommand(
                     self,
                     cmd,
                     bare=True,
@@ -2191,12 +2191,12 @@ class Project:
 
         def _doprune() -> None:
             """Expire reflogs and run prune-now GC for stateless sync."""
-            GitCommand(
+            git_command.GitCommand(
                 self,
                 ["reflog", "expire", "--expire=all", "--all"],
                 bare=True,
             ).Wait()
-            p = GitCommand(
+            p = git_command.GitCommand(
                 self,
                 ["gc", "--prune=now"],
                 bare=True,
@@ -2439,14 +2439,14 @@ class Project:
         remote = self.GetRemote()
 
         cmd = ["fetch"]
-        if git_require((2, 17, 0)):
+        if git_command.git_require((2, 17, 0)):
             cmd.append("--no-filter")
         cmd.append("--no-tags")
         cmd.append(remote.name)
         cmd.append(
             "refs/changes/%2.2d/%d/%d" % (change_id % 100, change_id, patch_id)
         )
-        GitCommand(self, cmd, bare=True, verify_command=True).Wait()
+        git_command.GitCommand(self, cmd, bare=True, verify_command=True).Wait()
         return DownloadedChange(
             self,
             self.GetRevisionId(),
@@ -2654,7 +2654,7 @@ class Project:
 
         all_refs = self.bare_ref.all
         if R_HEADS + name in all_refs:
-            GitCommand(
+            git_command.GitCommand(
                 self, ["checkout", "-q", name, "--"], verify_command=True
             ).Wait()
             return True
@@ -2682,7 +2682,7 @@ class Project:
             branch.Save()
             return True
 
-        GitCommand(
+        git_command.GitCommand(
             self,
             ["checkout", "-q", "-b", branch.name, revid],
             verify_command=True,
@@ -2725,7 +2725,7 @@ class Project:
             self.work_git.SetHead(R_HEADS + name)
             return True
 
-        GitCommand(
+        git_command.GitCommand(
             self,
             ["checkout", name, "--"],
             capture_stdout=True,
@@ -2761,7 +2761,7 @@ class Project:
                 self.work_git.DetachHead(revid)
             else:
                 self._Checkout(revid, quiet=True)
-        GitCommand(
+        git_command.GitCommand(
             self,
             ["branch", "-D", name],
             capture_stdout=True,
@@ -2811,7 +2811,7 @@ class Project:
 
                 b = ["branch", "-d"]
                 b.extend(kill)
-                b = GitCommand(
+                b = git_command.GitCommand(
                     self, b, bare=True, capture_stdout=True, capture_stderr=True
                 )
                 b.Wait()
@@ -2891,7 +2891,7 @@ class Project:
         def parse_gitmodules(gitdir, rev):
             cmd = ["cat-file", "blob", "%s:.gitmodules" % rev]
             try:
-                p = GitCommand(
+                p = git_command.GitCommand(
                     None,
                     cmd,
                     capture_stdout=True,
@@ -2910,7 +2910,7 @@ class Project:
                 os.write(fd, p.stdout.encode("utf-8"))
                 os.close(fd)
                 cmd = ["config", "--file", temp_gitmodules_path, "--list"]
-                p = GitCommand(
+                p = git_command.GitCommand(
                     None,
                     cmd,
                     capture_stdout=True,
@@ -2959,7 +2959,7 @@ class Project:
             cmd = ["ls-tree", rev, "--"]
             cmd.extend(paths)
             try:
-                p = GitCommand(
+                p = git_command.GitCommand(
                     None,
                     cmd,
                     capture_stdout=True,
@@ -3208,7 +3208,7 @@ class Project:
         cmd.append("--prefix=%s/" % self.RelPath(local=False))
         cmd.append(self.revisionExpr)
 
-        command = GitCommand(
+        command = git_command.GitCommand(
             self,
             cmd,
             cwd=cwd,
@@ -3440,7 +3440,7 @@ class Project:
                     alt_tmp_refs.append(r)
 
                 if update_ref_cmds:
-                    GitCommand(
+                    git_command.GitCommand(
                         self,
                         ["update-ref", "--stdin"],
                         bare=True,
@@ -3452,7 +3452,7 @@ class Project:
         cmd = ["fetch"]
 
         if clone_filter:
-            git_require((2, 19, 0), fail=True, msg="partial clones")
+            git_command.git_require((2, 19, 0), fail=True, msg="partial clones")
             cmd.append("--filter=%s" % clone_filter)
             self.EnableRepositoryExtension("partialclone", self.remote.name)
 
@@ -3473,7 +3473,7 @@ class Project:
         effective_depth = (
             self.clone_depth or self.manifest.manifestProject.depth
         )
-        if effective_depth == 1 and git_require((2, 23, 0)):
+        if effective_depth == 1 and git_command.git_require((2, 23, 0)):
             cmd.append("--no-auto-gc")
 
         if not verbose:
@@ -3549,7 +3549,7 @@ class Project:
         try:
             for try_n in range(retry_fetches):
                 verify_command = try_n == retry_fetches - 1
-                gitcmd = GitCommand(
+                gitcmd = git_command.GitCommand(
                     self,
                     cmd,
                     bare=True,
@@ -3599,7 +3599,7 @@ class Project:
                     and not prune_tried
                 ):
                     prune_tried = True
-                    prunecmd = GitCommand(
+                    prunecmd = git_command.GitCommand(
                         self,
                         ["remote", "prune", name],
                         bare=True,
@@ -3688,7 +3688,7 @@ class Project:
                     delete_cmds = "".join(
                         f"delete {ref}\n" for ref in alt_tmp_refs
                     )
-                    GitCommand(
+                    git_command.GitCommand(
                         self,
                         ["update-ref", "--stdin"],
                         bare=True,
@@ -3774,7 +3774,7 @@ class Project:
         cmd.append("+refs/tags/*:refs/tags/*")
 
         ok = (
-            GitCommand(
+            git_command.GitCommand(
                 self,
                 cmd,
                 bare=True,
@@ -3887,7 +3887,7 @@ class Project:
             cmd.append("-f")
         cmd.append(rev)
         cmd.append("--")
-        if GitCommand(self, cmd).Wait() != 0:
+        if git_command.GitCommand(self, cmd).Wait() != 0:
             if self._allrefs:
                 raise error.GitError(
                     f"{self.name} checkout {rev} ", project=self.name
@@ -3901,7 +3901,7 @@ class Project:
             cmd.append("-x")
         cmd.append(rev)
         cmd.append("--")
-        if GitCommand(self, cmd).Wait() != 0:
+        if git_command.GitCommand(self, cmd).Wait() != 0:
             if self._allrefs:
                 raise error.GitError(
                     f"{self.name} cherry-pick {rev} ", project=self.name
@@ -3909,7 +3909,7 @@ class Project:
 
     def _LsRemote(self, refs: str) -> Optional[str]:
         cmd = ["ls-remote", self.remote.name, refs]
-        p = GitCommand(self, cmd, bare=True, capture_stdout=True)
+        p = git_command.GitCommand(self, cmd, bare=True, capture_stdout=True)
         if p.Wait() == 0:
             return p.stdout
         return None
@@ -3919,7 +3919,7 @@ class Project:
         cmd.append("--no-edit")
         cmd.append(rev)
         cmd.append("--")
-        if GitCommand(self, cmd).Wait() != 0:
+        if git_command.GitCommand(self, cmd).Wait() != 0:
             if self._allrefs:
                 raise error.GitError(
                     f"{self.name} revert {rev} ", project=self.name
@@ -3930,7 +3930,7 @@ class Project:
         if quiet:
             cmd.append("-q")
         cmd.append(rev)
-        if GitCommand(self, cmd).Wait() != 0:
+        if git_command.GitCommand(self, cmd).Wait() != 0:
             raise error.GitError(
                 f"{self.name} reset --hard {rev} ", project=self.name
             )
@@ -3939,7 +3939,7 @@ class Project:
         cmd = ["submodule", "update", "--init", "--recursive"]
         if quiet:
             cmd.append("-q")
-        if GitCommand(self, cmd).Wait() != 0:
+        if git_command.GitCommand(self, cmd).Wait() != 0:
             raise error.GitError(
                 "%s submodule update --init --recursive " % self.name,
                 project=self.name,
@@ -3955,7 +3955,7 @@ class Project:
         base_delay_secs = 1
         jitter_ratio = 1 / 3
         for attempt in range(max_retries):
-            git_cmd = GitCommand(
+            git_cmd = git_command.GitCommand(
                 None,
                 cmd,
                 cwd=self.parent.worktree,
@@ -3984,7 +3984,7 @@ class Project:
         if onto is not None:
             cmd.extend(["--onto", onto])
         cmd.append(upstream)
-        if GitCommand(self, cmd).Wait() != 0:
+        if git_command.GitCommand(self, cmd).Wait() != 0:
             raise error.GitError(
                 f"{self.name} rebase {upstream} ", project=self.name
             )
@@ -3994,7 +3994,7 @@ class Project:
         if quiet:
             cmd.append("-q")
         cmd.append(head)
-        if GitCommand(self, cmd).Wait() != 0:
+        if git_command.GitCommand(self, cmd).Wait() != 0:
             raise error.GitError(
                 f"{self.name} merge --ff-only {head}", project=self.name
             )
@@ -4061,7 +4061,7 @@ class Project:
             head_tree = None
 
         if head_tree:
-            p = GitCommand(
+            p = git_command.GitCommand(
                 self,
                 ["diff-index", "-z", "--cached", "--name-only", head_tree],
                 capture_stdout=True,
@@ -4075,7 +4075,7 @@ class Project:
                 )
             staged = p.stdout.split("\0")[:-1]
         else:
-            p = GitCommand(
+            p = git_command.GitCommand(
                 self,
                 ["ls-files", "-z", "--cached"],
                 capture_stdout=True,
@@ -4157,7 +4157,7 @@ class Project:
                 project=self.name,
             )
 
-        p = GitCommand(
+        p = git_command.GitCommand(
             self,
             ["diff-index", "--cached", "--name-only", f"{revid}^{{tree}}"],
             capture_stdout=True,
@@ -4197,7 +4197,7 @@ class Project:
                     # Enable per-worktree config file support if possible.  This
                     # is more a nice-to-have feature for users rather than a
                     # hard requirement.
-                    if git_require((2, 20, 0)):
+                    if git_command.git_require((2, 20, 0)):
                         self.EnableRepositoryExtension("worktreeConfig")
 
             # If we have a separate directory to hold refs, initialize it as
@@ -4301,7 +4301,7 @@ class Project:
                 # such information is not available here. Instead of passing it,
                 # set it as shared, and rely to be unset down the execution
                 # path.
-                if git_require((2, 7, 0)):
+                if git_command.git_require((2, 7, 0)):
                     self.EnableRepositoryExtension("preciousObjects")
                 else:
                     self.config.SetString("gc.pruneExpire", "never")
@@ -4659,7 +4659,7 @@ class Project:
                 # Finish checking out the worktree.
                 cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
                 try:
-                    if GitCommand(self, cmd).Wait() != 0:
+                    if git_command.GitCommand(self, cmd).Wait() != 0:
                         raise error.GitError(
                             "Cannot initialize work tree for " + self.name,
                             project=self.name,
@@ -4887,7 +4887,7 @@ class Project:
                 cmd.append("--oneline")
 
             try:
-                log = GitCommand(
+                log = git_command.GitCommand(
                     self, cmd, capture_stdout=True, capture_stderr=True
                 )
                 if log.Wait() == 0:
@@ -4940,7 +4940,7 @@ class Project:
             self._project, self._bare, self._gitdir = state
 
         def LsOthers(self):
-            p = GitCommand(
+            p = git_command.GitCommand(
                 self._project,
                 ["ls-files", "-z", "--others", "--exclude-standard"],
                 bare=False,
@@ -4960,7 +4960,7 @@ class Project:
             cmd.append("-z")
             cmd.append("--ignore-submodules")
             cmd.extend(args)
-            p = GitCommand(
+            p = git_command.GitCommand(
                 self._project,
                 cmd,
                 gitdir=self._gitdir,
@@ -5115,7 +5115,7 @@ class Project:
         def ResolveCommit(self, revision: str) -> str:
             """Resolve |revision| to a commit without option ambiguity."""
             cmdv = ["--verify", "--quiet"]
-            if git_require((2, 30, 0)):
+            if git_command.git_require((2, 30, 0)):
                 cmdv.append("--end-of-options")
             elif revision.startswith("-"):
                 raise error.GitError(
@@ -5165,7 +5165,7 @@ class Project:
             else:
                 cmdv = ["rev-list"]
             cmdv.extend(args)
-            p = GitCommand(
+            p = git_command.GitCommand(
                 self._project,
                 cmdv,
                 bare=self._bare,
@@ -5214,7 +5214,7 @@ class Project:
                         cmdv.append(f"{k}={v}")
                 cmdv.append(name)
                 cmdv.extend(args)
-                p = GitCommand(
+                p = git_command.GitCommand(
                     self._project,
                     cmdv,
                     bare=self._bare,
@@ -5388,7 +5388,7 @@ def _DefaultBranchFallback() -> str:
     """Return the ref to use when remote default branch can't be resolved."""
 
     def _git(args: List[str]) -> str:
-        p = GitCommand(
+        p = git_command.GitCommand(
             None,
             args,
             capture_stdout=True,
@@ -5398,7 +5398,7 @@ def _DefaultBranchFallback() -> str:
         return p.stdout.strip() if p.Wait() == 0 else ""
 
     branch = ""
-    if git_require((2, 35, 0)):
+    if git_command.git_require((2, 35, 0)):
         branch = _git(["var", "GIT_DEFAULT_BRANCH"])
     if not branch:
         branch = _git(["config", "--get", "init.defaultBranch"])
@@ -5528,7 +5528,7 @@ class ManifestProject(MetaProject):
         syncbuf.Finish()
 
         return (
-            GitCommand(
+            git_command.GitCommand(
                 self,
                 ["update-ref", "-d", "refs/heads/default"],
                 capture_stdout=True,
@@ -6083,7 +6083,9 @@ class ManifestProject(MetaProject):
 
         if git_lfs is not None:
             if git_lfs:
-                git_require((2, 17, 0), fail=True, msg="Git LFS support")
+                git_command.git_require(
+                    (2, 17, 0), fail=True, msg="Git LFS support"
+                )
 
             self.config.SetBoolean("repo.git-lfs", git_lfs)
             if not is_new:

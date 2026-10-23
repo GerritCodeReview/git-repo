@@ -23,6 +23,7 @@ from unittest import mock
 import pytest
 import utils_for_test
 
+import git_command
 import git_refs
 
 
@@ -99,8 +100,8 @@ def test_reads_head_with_root_refs_in_one_command(
         def Wait(self) -> int:
             return 0
 
-    monkeypatch.setattr(git_refs, "GitCommand", FakeGitCommand)
-    monkeypatch.setattr(git_refs, "git_require", lambda _version: True)
+    monkeypatch.setattr(git_command, "GitCommand", FakeGitCommand)
+    monkeypatch.setattr(git_command, "git_require", lambda _version: True)
     refs = git_refs.GitRefs("/nonexistent")
     with mock.patch.object(refs, "_ReadSymbolicRef") as read_head:
         assert refs.get("HEAD") == head
@@ -131,8 +132,8 @@ def test_root_ref_snapshot_falls_back_for_unborn_head(
         def Wait(self) -> int:
             return 0
 
-    monkeypatch.setattr(git_refs, "GitCommand", FakeGitCommand)
-    monkeypatch.setattr(git_refs, "git_require", lambda _version: True)
+    monkeypatch.setattr(git_command, "GitCommand", FakeGitCommand)
+    monkeypatch.setattr(git_command, "git_require", lambda _version: True)
     refs = git_refs.GitRefs("/nonexistent")
 
     def read_head(name: str) -> None:
@@ -161,8 +162,8 @@ def test_old_git_keeps_separate_head_fallback(
         def Wait(self) -> int:
             return 0
 
-    monkeypatch.setattr(git_refs, "GitCommand", FakeGitCommand)
-    monkeypatch.setattr(git_refs, "git_require", lambda _version: False)
+    monkeypatch.setattr(git_command, "GitCommand", FakeGitCommand)
+    monkeypatch.setattr(git_command, "git_require", lambda _version: False)
     refs = git_refs.GitRefs("/nonexistent")
 
     def read_head(name: str) -> None:
@@ -194,8 +195,8 @@ def test_for_each_ref_failure_falls_back_to_symbolic_ref(
         def Wait(self) -> int:
             return 1
 
-    monkeypatch.setattr(git_refs, "GitCommand", FakeGitCommand)
-    monkeypatch.setattr(git_refs, "git_require", lambda _version: True)
+    monkeypatch.setattr(git_command, "GitCommand", FakeGitCommand)
+    monkeypatch.setattr(git_command, "git_require", lambda _version: True)
     refs = git_refs.GitRefs("/nonexistent")
 
     def read_head(name: str) -> None:
