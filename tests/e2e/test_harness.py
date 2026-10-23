@@ -114,3 +114,24 @@ def test_http_post_body(
         assert f"{commit} refs/heads/main".encode() in resp.read()
     finally:
         conn.close()
+
+
+def test_offline(git_server: harness.GitHttpServer) -> None:
+    """Requests fail while a namespace is offline, and work again after."""
+    host = harness.GitHost(git_server, "offline")
+    repo = host.create_repo("platform/repo", {"f": "x"})
+    other = harness.GitHost(git_server, "online")
+    other_repo = other.create_repo("repo", {"f": "x"})
+
+    with host.offline():
+        with pytest.raises(AssertionError, match="503"):
+            harness.run_git("ls-remote", repo.url)
+        # Other namespaces are unaffected.
+        assert "refs/heads/main" in harness.run_git("ls-remote", other_repo.url)
+    assert {r.status for r in host.requests()} == {503}
+
+    # The outage ends even if the context exits with an exception.
+    with pytest.raises(RuntimeError):
+        with host.offline():
+            raise RuntimeError("boom")
+    assert "refs/heads/main" in harness.run_git("ls-remote", repo.url)
