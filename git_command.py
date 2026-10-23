@@ -23,7 +23,7 @@ from typing import Any, Optional
 import error
 from git_trace2_event_log_base import BaseEventLog
 import platform_utils
-from repo_logging import RepoLogger
+import repo_logging
 import repo_trace
 from wrapper import Wrapper
 
@@ -40,7 +40,7 @@ GIT_ERROR_STDOUT_LINES = 1
 GIT_ERROR_STDERR_LINES = 10
 INVALID_GIT_EXIT_CODE = 126
 
-logger = RepoLogger(__file__)
+logger = repo_logging.RepoLogger(__file__)
 
 
 class _GitCall:

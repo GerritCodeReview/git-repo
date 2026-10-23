@@ -27,12 +27,12 @@ from git_refs import R_HEADS
 import git_superproject
 from hooks import RepoHook
 from project import ReviewableBranch
-from repo_logging import RepoLogger
+import repo_logging
 from subcmds.sync import LocalSyncState
 
 
 _DEFAULT_UNUSUAL_COMMIT_THRESHOLD = 5
-logger = RepoLogger(__file__)
+logger = repo_logging.RepoLogger(__file__)
 
 
 class UploadExitError(error.SilentRepoExitError):

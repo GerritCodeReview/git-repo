@@ -17,10 +17,10 @@ import sys
 from color import Coloring
 from command import InteractiveCommand
 from git_command import GitCommand
-from repo_logging import RepoLogger
+import repo_logging
 
 
-logger = RepoLogger(__file__)
+logger = repo_logging.RepoLogger(__file__)
 
 
 class _ProjectList(Coloring):

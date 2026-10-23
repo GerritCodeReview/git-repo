@@ -76,7 +76,7 @@ from project import DeleteWorktreeError
 from project import Project
 from project import RemoteSpec
 from project import SyncBuffer
-from repo_logging import RepoLogger
+import repo_logging
 import repo_trace
 import ssh
 from wrapper import Wrapper
@@ -90,7 +90,7 @@ _BLOAT_PACK_COUNT_THRESHOLD = 10
 _BLOAT_SIZE_PACK_THRESHOLD_KB = 10 * 1024 * 1024  # 10 GiB in KiB
 _BLOAT_SIZE_GARBAGE_THRESHOLD_KB = 1 * 1024 * 1024  # 1 GiB in KiB
 
-logger = RepoLogger(__file__)
+logger = repo_logging.RepoLogger(__file__)
 
 # Manifest server RPC that takes a single struct of named options.  Servers
 # that do not implement it are called via the positional GetApprovedManifest.

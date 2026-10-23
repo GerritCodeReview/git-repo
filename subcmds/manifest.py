@@ -19,10 +19,10 @@ import os
 import sys
 
 from command import PagedCommand
-from repo_logging import RepoLogger
+import repo_logging
 
 
-logger = RepoLogger(__file__)
+logger = repo_logging.RepoLogger(__file__)
 
 
 class OutputFormat(enum.Enum):

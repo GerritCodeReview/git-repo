@@ -20,12 +20,12 @@ from command import InteractiveCommand
 from command import MirrorSafeCommand
 import error
 from git_command import git_require
-from repo_logging import RepoLogger
+import repo_logging
 from wrapper import Wrapper
 from wrapper import WrapperDir
 
 
-logger = RepoLogger(__file__)
+logger = repo_logging.RepoLogger(__file__)
 
 _REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
 
