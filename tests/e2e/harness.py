@@ -17,8 +17,8 @@
 The harness has three parts:
 
 * `GitHttpServer`: a local smart HTTP git server built on `git http-backend`.
-  It also serves static `clone.bundle` files like Gerrit/GoB do, and can
-  simulate outages.
+  It also serves static `clone.bundle` files like Gerrit/GoB do, other static
+  files (e.g. standalone manifests), and can simulate outages.
 * `ServerRepo`/`GitHost`: bare repositories hosted by the server, with helpers
   to create commits (including gitlinks for superprojects), branches, tags &
   bundles without needing a worktree.
@@ -73,6 +73,11 @@ REPO_SOURCE_BRANCH = "main"
 # The manifest repo lives two levels deep (like AOSP's platform/manifest) so
 # the common `fetch=".."` resolves to the root of the host namespace.
 MANIFEST_REPO = "platform/manifest"
+
+# Directory (directly under a host namespace) whose files the server returns
+# as-is, e.g. for `repo init --standalone-manifest`.  The leading underscore
+# keeps it from clashing with repo names used by tests.
+STATIC_DIR = "_static"
 
 # The git endpoints (relative to a repo URL) that clients request.
 REPO_ENDPOINTS = (
@@ -279,6 +284,17 @@ def write_config(path: Path, settings: Mapping[str, str]) -> None:
             fp.write(f"[{section}]\n\t{name} = {_quote_config(value)}\n")
 
 
+def move_aside(path: Path) -> Path:
+    """Make `path` disappear by renaming it next to itself; return the new path.
+
+    Use this rather than deleting git dirs mid-test: git's read-only pack
+    files make `shutil.rmtree` fail on Windows.
+    """
+    dest = path.with_name(f"{path.name}.moved-aside")
+    path.rename(dest)
+    return dest
+
+
 class Request(NamedTuple):
     """A request received by GitHttpServer."""
 
@@ -302,6 +318,7 @@ class GitHttpServer:
     All bare repositories under `root` are exported.  Requests for
     `<repo>/clone.bundle` are served from a `clone.bundle` file inside the
     repository directory (if it exists) to emulate Gerrit's bundle support.
+    Files under `<namespace>/_static/` (see `STATIC_DIR`) are served as-is.
     """
 
     def __init__(self, root: Path) -> None:
@@ -494,6 +511,27 @@ class _GitHttpHandler(http.server.BaseHTTPRequestHandler):
                     return
         self._send(404, {"Content-Type": "text/plain"}, b"no bundle\n")
 
+    @staticmethod
+    def _static_parts(path: str) -> Optional[List[str]]:
+        """Split `path` if it names a static file (see `STATIC_DIR`)."""
+        parts = path.strip("/").split("/")
+        if len(parts) >= 3 and parts[1] == STATIC_DIR:
+            return parts
+        return None
+
+    def _serve_static(self, parts: List[str]) -> None:
+        # Never serve anything outside the static dir (e.g. via `..`).
+        if self.command in ("GET", "HEAD") and not {"", ".", ".."} & set(parts):
+            path = self.git_server.root.joinpath(*parts)
+            if path.is_file():
+                self._send(
+                    200,
+                    {"Content-Type": "application/octet-stream"},
+                    path.read_bytes(),
+                )
+                return
+        self._send(404, {"Content-Type": "text/plain"}, b"not found\n")
+
     def _handle(self) -> None:
         path = self._request_path
         query = self.path.partition("?")[2]
@@ -504,6 +542,10 @@ class _GitHttpHandler(http.server.BaseHTTPRequestHandler):
             return
         if path.endswith("/clone.bundle"):
             self._serve_bundle(path)
+            return
+        static_parts = self._static_parts(path)
+        if static_parts:
+            self._serve_static(static_parts)
             return
 
         body = self._read_body()
@@ -857,6 +899,25 @@ class GitHost:
         finally:
             requests.extend(self.server.requests_for(f"/{self.prefix}/", start))
 
+    def publish_file(self, name: str, content: Union[str, bytes]) -> str:
+        """Serve `content` as a static file (replacing any old one).
+
+        Returns:
+            The URL of the file.
+        """
+        # The server refuses to serve such paths (see _serve_static).
+        assert not {"", ".", ".."} & set(name.split("/")), name
+        path = self.server.root / self.prefix / STATIC_DIR / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if isinstance(content, str):
+            content = content.encode("utf-8")
+        # Write to a temp file & rename so the server never serves a partial
+        # file.  Write bytes so the content is the same on every platform.
+        tmp = path.with_name(f"{path.name}.tmp")
+        tmp.write_bytes(content)
+        os.replace(tmp, path)
+        return f"{self.url}/{STATIC_DIR}/{name}"
+
     @contextlib.contextmanager
     def offline(self) -> Iterator[None]:
         """Fail all requests for this namespace during the context.
@@ -867,12 +928,16 @@ class GitHost:
             yield
 
 
-def manifest_xml(*elements: str, default: Optional[str] = None) -> str:
+def manifest_xml(
+    *elements: str, default: Optional[str] = None, fetch: str = ".."
+) -> str:
     """Build a manifest with an `origin` remote & a default element.
 
     Args:
         elements: Extra XML elements (projects, etc...) to include.
         default: Attributes for the <default> element.
+        fetch: The `fetch` attribute of the remote; the default resolves to
+            the root of the host namespace for manifests served by `GitHost`.
     """
     if default is None:
         default = 'remote="origin" revision="main"'
@@ -880,7 +945,7 @@ def manifest_xml(*elements: str, default: Optional[str] = None) -> str:
     return (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         "<manifest>\n"
-        '  <remote name="origin" fetch=".." />\n'
+        f'  <remote name="origin" fetch="{fetch}" />\n'
         f"  <default {default} />\n"
         f"{body}"
         "</manifest>\n"
