@@ -49,6 +49,7 @@ from typing import (
     Mapping,
     NamedTuple,
     Optional,
+    Set,
     Tuple,
     Union,
 )
@@ -933,6 +934,24 @@ class RepoClient:
     def head(self, path: str) -> str:
         """Return the commit checked out in `path`."""
         return self.git(path, "rev-parse", "HEAD")
+
+    def remote_branches(self, path: str) -> Set[str]:
+        """Return the names of the `origin` remote-tracking branches."""
+        out = self.git(
+            path,
+            "for-each-ref",
+            "--format=%(refname:lstrip=3)",
+            "refs/remotes/origin/",
+        )
+        return set(out.split())
+
+    def checkouts(self) -> Set[str]:
+        """Return the names of the top-level dirs, except `.repo`."""
+        return {
+            x.name
+            for x in self.top.iterdir()
+            if x.is_dir() and x.name != ".repo"
+        }
 
     def has_object(self, path: str, oid: str) -> bool:
         """Whether the checkout at `path` has object `oid` locally."""
