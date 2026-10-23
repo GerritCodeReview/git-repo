@@ -130,6 +130,30 @@ def test_http_post_body(
         conn.close()
 
 
+def test_static_files(git_server: harness.GitHttpServer) -> None:
+    """Published files are served as-is, and nothing outside of them."""
+    host = harness.GitHost(git_server, "static-files")
+    host.create_repo("repo", {"f": "x"})
+    url = host.publish_file("dir/default.xml", "<manifest />\n")
+    path = urllib.parse.urlsplit(url).path
+    assert _http_request(git_server, "GET", path) == (200, b"<manifest />\n")
+
+    # Publishing again replaces the file.
+    assert host.publish_file("dir/default.xml", b"v2") == url
+    assert _http_request(git_server, "GET", path) == (200, b"v2")
+
+    static = f"/{host.prefix}/{harness.STATIC_DIR}"
+    for bad_path in (
+        f"{static}/missing.xml",
+        f"{static}/dir",
+        f"{static}/../repo.git/config",
+        f"{static}/%2e%2e/repo.git/config",
+        f"{static}//etc/passwd",
+    ):
+        assert _http_request(git_server, "GET", bad_path)[0] == 404, bad_path
+    assert _http_request(git_server, "POST", path)[0] == 404
+
+
 def test_offline(git_server: harness.GitHttpServer) -> None:
     """Requests fail while a namespace is offline, and work again after."""
     host = harness.GitHost(git_server, "offline")
@@ -156,11 +180,13 @@ def test_requested_repos(git_server: harness.GitHttpServer) -> None:
     host = harness.GitHost(git_server, "requested")
     nested = host.create_repo("platform/nested", {"f": "x"})
     top = host.create_repo("top", {"f": "x"})
+    host.publish_file("file.xml", "x")
 
     harness.run_git("ls-remote", nested.url)
     with host.watch_requests() as watched:
         harness.run_git("ls-remote", top.url)
         _http_request(git_server, "GET", f"/{host.prefix}/top/clone.bundle")
+        _http_request(git_server, "GET", f"/{host.prefix}/_static/file.xml")
 
     assert host.requested_repos() == {"platform/nested", "top"}
     assert host.requested_repos(watched) == {"top"}
