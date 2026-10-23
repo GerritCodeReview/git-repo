@@ -161,7 +161,41 @@ def clean_environ() -> Dict[str, str]:
     env["GIT_CONFIG_NOSYSTEM"] = "1"
     # Tests match on English git & repo output.
     env["LC_ALL"] = "C"
+    exec_dir = _git_exec_dir()
+    if exec_dir:
+        env["PATH"] = os.pathsep.join([exec_dir, env.get("PATH", "")])
     return env
+
+
+@functools.lru_cache(maxsize=None)
+def _git_exec_dir() -> Optional[str]:
+    """Return git's exec dir if it has a `git` binary, to put first on PATH.
+
+    `git` on PATH may be a wrapper, e.g. LUCI's, which retries the server
+    errors tests simulate for minutes.  The real git answers `--exec-path`
+    (wrappers pass it through) & installs a copy of itself there, so putting
+    that dir first makes the harness, repo & the git that repo runs all use the
+    real git.
+    """
+    env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+    try:
+        proc = subprocess.run(
+            ["git", "--exec-path"],
+            env=env,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            check=False,
+            timeout=COMMAND_TIMEOUT,
+        )
+    except OSError:
+        return None
+    exec_dir = proc.stdout.decode("utf-8").strip()
+    if proc.returncode or not any(
+        os.path.isfile(os.path.join(exec_dir, name))
+        for name in ("git", "git.exe")
+    ):
+        return None
+    return exec_dir
 
 
 def run_git(
@@ -759,7 +793,8 @@ def _snapshot_worktree(root: Path) -> Dict[str, FileContent]:
             # Deleted in the worktree but not (yet) in the index.
             continue
         if stat.S_ISLNK(st_mode):
-            files[name] = Blob(os.fsencode(os.readlink(path)), "120000")
+            # Python <3.8 on Windows rejects Path objects here.
+            files[name] = Blob(os.fsencode(os.readlink(str(path))), "120000")
         elif stat.S_ISREG(st_mode):
             mode = "100755" if st_mode & 0o111 else "100644"
             files[name] = Blob(path.read_bytes(), mode)
@@ -853,11 +888,13 @@ class RepoClient:
             timeout=COMMAND_TIMEOUT,
         )
         elapsed = time.monotonic() - start
+        # Python on Windows writes `\r\n` to pipes; normalize so tests can match
+        # multi-line output.
         result = RepoResult(
             list(args),
             proc.returncode,
-            proc.stdout.decode("utf-8", "replace"),
-            proc.stderr.decode("utf-8", "replace"),
+            proc.stdout.decode("utf-8", "replace").replace("\r\n", "\n"),
+            proc.stderr.decode("utf-8", "replace").replace("\r\n", "\n"),
         )
         print(f"$ {cmd}  # exit {result.returncode} after {elapsed:.1f}s")
         if result.output:
