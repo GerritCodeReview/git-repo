@@ -32,5 +32,6 @@ superproject support), or when not run from a git checkout.
   configuration from go/repo-init & go/sync.
 * `test_sync_modes.py`: `sync -n`/`-l` & the other sync flags.
 * `test_groups.py`: manifest groups.
+* `test_failures.py`: failure paths (missing projects, dirty trees, ...).
 * `test_workflows.py`: multi-step workflows.
 * `test_manifest_regressions.py`: manifests that broke users in the past.

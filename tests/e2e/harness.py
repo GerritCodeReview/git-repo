@@ -1035,7 +1035,9 @@ class RepoClient:
             )
         return result
 
-    def init(self, manifest_url: str, *args: str) -> RepoResult:
+    def init(
+        self, manifest_url: str, *args: str, check: bool = True
+    ) -> RepoResult:
         """Run `repo init` installing the code under test."""
         return self.run(
             "init",
@@ -1047,6 +1049,7 @@ class RepoClient:
             REPO_SOURCE_BRANCH,
             "--no-repo-verify",
             *args,
+            check=check,
         )
 
     def sync(self, *args: str, check: bool = True) -> RepoResult:
