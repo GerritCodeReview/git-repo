@@ -17,11 +17,11 @@ import sys
 
 from command import Command
 import error
-from repo_logging import RepoLogger
+import repo_logging
 
 
 CHANGE_RE = re.compile(r"^([1-9][0-9]*)(?:[/\.-]([1-9][0-9]*))?$")
-logger = RepoLogger(__file__)
+logger = repo_logging.RepoLogger(__file__)
 
 
 class DownloadCommandError(error.RepoExitError):

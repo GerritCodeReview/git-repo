@@ -19,11 +19,11 @@ from typing import Tuple
 from command import Command
 import error
 from git_command import GitCommand
-from repo_logging import RepoLogger
+import repo_logging
 
 
 CHANGE_ID_RE = re.compile(r"^\s*Change-Id: I([0-9a-f]{40})\s*$")
-logger = RepoLogger(__file__)
+logger = repo_logging.RepoLogger(__file__)
 
 
 class CherryPick(Command):

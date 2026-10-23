@@ -24,13 +24,13 @@ import pytest
 
 from color import SetDefaultColoring
 import error
-from repo_logging import RepoLogger
+import repo_logging
 
 
-@mock.patch.object(RepoLogger, "error")
+@mock.patch.object(repo_logging.RepoLogger, "error")
 def test_log_aggregated_errors_logs_aggregated_errors(mock_error) -> None:
     """Test if log_aggregated_errors logs a list of aggregated errors."""
-    logger = RepoLogger(__name__)
+    logger = repo_logging.RepoLogger(__name__)
     logger.log_aggregated_errors(
         error.RepoExitError(
             aggregate_errors=[
@@ -57,10 +57,10 @@ def test_log_aggregated_errors_logs_aggregated_errors(mock_error) -> None:
     )
 
 
-@mock.patch.object(RepoLogger, "error")
+@mock.patch.object(repo_logging.RepoLogger, "error")
 def test_log_aggregated_errors_logs_single_error(mock_error) -> None:
     """Test if log_aggregated_errors logs empty aggregated_errors."""
-    logger = RepoLogger(__name__)
+    logger = repo_logging.RepoLogger(__name__)
     logger.log_aggregated_errors(error.RepoExitError())
 
     mock_error.assert_has_calls(
@@ -99,7 +99,7 @@ def test_log_with_format_string(level: int) -> None:
     output = io.StringIO()
 
     with contextlib.redirect_stderr(output):
-        logger = RepoLogger(__name__)
+        logger = repo_logging.RepoLogger(__name__)
         logger.log(level, "%s", "100% pass")
 
     assert re.search(

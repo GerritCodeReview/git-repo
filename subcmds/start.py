@@ -21,10 +21,10 @@ import error
 from git_command import IsValidBranchName
 from git_config import IsImmutable
 from progress import Progress
-from repo_logging import RepoLogger
+import repo_logging
 
 
-logger = RepoLogger(__file__)
+logger = repo_logging.RepoLogger(__file__)
 
 
 class ExecuteOneResult(NamedTuple):

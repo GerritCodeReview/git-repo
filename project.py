@@ -54,11 +54,11 @@ import git_superproject
 from git_trace2_event_log import EventLog
 import platform_utils
 import progress
-from repo_logging import RepoLogger
+import repo_logging
 import repo_trace
 
 
-logger = RepoLogger(__file__)
+logger = repo_logging.RepoLogger(__file__)
 
 
 class SyncNetworkHalfResult(NamedTuple):

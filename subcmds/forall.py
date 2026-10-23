@@ -25,10 +25,10 @@ from color import Coloring
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
 from command import MirrorSafeCommand
-from repo_logging import RepoLogger
+import repo_logging
 
 
-logger = RepoLogger(__file__)
+logger = repo_logging.RepoLogger(__file__)
 _CAN_COLOR = [
     "branch",
     "diff",

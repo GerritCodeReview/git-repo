@@ -33,7 +33,7 @@ import time
 from typing import Optional
 import urllib.request
 
-from repo_logging import RepoLogger
+import repo_logging
 
 
 try:
@@ -60,7 +60,7 @@ from wrapper import Wrapper
 from wrapper import WrapperPath
 
 
-logger = RepoLogger(__file__)
+logger = repo_logging.RepoLogger(__file__)
 
 
 # NB: These do not need to be kept in sync with the repo launcher script.
