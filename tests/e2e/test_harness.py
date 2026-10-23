@@ -16,11 +16,25 @@
 
 import http.client
 from pathlib import Path
-from typing import Mapping
+from typing import Mapping, Tuple
 import urllib.parse
 
 import harness
 import pytest
+
+
+def _http_request(
+    server: harness.GitHttpServer, method: str, path: str
+) -> Tuple[int, bytes]:
+    """Send a request to `server` & return the response status & body."""
+    url = urllib.parse.urlsplit(server.url)
+    conn = http.client.HTTPConnection(url.hostname, url.port, timeout=30)
+    try:
+        conn.request(method, path)
+        resp = conn.getresponse()
+        return resp.status, resp.read()
+    finally:
+        conn.close()
 
 
 @pytest.mark.parametrize(
@@ -135,3 +149,35 @@ def test_offline(git_server: harness.GitHttpServer) -> None:
         with host.offline():
             raise RuntimeError("boom")
     assert "refs/heads/main" in harness.run_git("ls-remote", repo.url)
+
+
+def test_requested_repos(git_server: harness.GitHttpServer) -> None:
+    """`requested_repos()` & `watch_requests()` track repo requests."""
+    host = harness.GitHost(git_server, "requested")
+    nested = host.create_repo("platform/nested", {"f": "x"})
+    top = host.create_repo("top", {"f": "x"})
+
+    harness.run_git("ls-remote", nested.url)
+    with host.watch_requests() as watched:
+        harness.run_git("ls-remote", top.url)
+        _http_request(git_server, "GET", f"/{host.prefix}/top/clone.bundle")
+
+    assert host.requested_repos() == {"platform/nested", "top"}
+    assert host.requested_repos(watched) == {"top"}
+    assert host.requests_for("platform/nested", watched) == []
+
+
+def test_client_config(tmp_path: Path) -> None:
+    """`RepoClient.config()` tells unset keys apart from errors."""
+    # Don't let git find a repo above tmp_path (e.g. with --basetemp).
+    env = dict(harness.clean_environ(), GIT_CEILING_DIRECTORIES=str(tmp_path))
+    client = harness.RepoClient(tmp_path / "client", harness.LAUNCHER, env, "")
+    repo = client.top / "repo"
+    harness.run_git("init", "-q", str(repo))
+    harness.run_git("config", "-f", str(repo / ".git/config"), "a.key", "val")
+    (client.top / "not-a-repo").mkdir()
+
+    assert client.config("repo", "a.key") == "val"
+    assert client.config("repo", "a.unset") is None
+    with pytest.raises(AssertionError, match="failed in not-a-repo"):
+        client.config("not-a-repo", "a.key")

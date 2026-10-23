@@ -28,6 +28,8 @@ superproject support), or when not run from a git checkout.
 
 * `harness.py`: the git server, server-side repos & the repo client.
 * `test_init_sync.py`: core `repo init` & `repo sync` options.
+* `test_partial_clone.py`: partial clones, incl. the standard Android
+  configuration from go/repo-init & go/sync.
 * `test_sync_modes.py`: `sync -n`/`-l` & the other sync flags.
 * `test_workflows.py`: multi-step workflows.
 * `test_manifest_regressions.py`: manifests that broke users in the past.
