@@ -1096,9 +1096,9 @@ class RepoClient:
     def is_shallow(self, path: str) -> bool:
         return self.git(path, "rev-parse", "--is-shallow-repository") == "true"
 
-    def list_projects(self) -> Dict[str, str]:
-        """Return a map of project path to name from `repo list`."""
-        out = self.run("list").stdout
+    def list_projects(self, *args: str) -> Dict[str, str]:
+        """Return a map of project path to name from `repo list <args>`."""
+        out = self.run("list", *args).stdout
         projects = {}
         for line in out.splitlines():
             path, _, name = line.partition(" : ")
