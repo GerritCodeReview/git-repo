@@ -16,7 +16,7 @@ import sys
 
 from color import Coloring
 from command import InteractiveCommand
-from git_command import GitCommand
+import git_command
 import repo_logging
 
 
@@ -129,5 +129,5 @@ The '%prog' command stages files to prepare the next commit.
 
 
 def _AddI(project):
-    p = GitCommand(project, ["add", "--interactive"], bare=False)
+    p = git_command.GitCommand(project, ["add", "--interactive"], bare=False)
     p.Wait()

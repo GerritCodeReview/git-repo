@@ -59,8 +59,7 @@ from command import MirrorSafeCommand
 from command import WORKER_BATCH_SIZE
 import error
 import event_log
-from git_command import git_require
-from git_command import GitCommand
+import git_command
 from git_config import GetUrlCookieFile
 from git_config import RepoConfig
 from git_refs import HEAD
@@ -1575,7 +1574,7 @@ later is required to fix a server side protocol bug.
                         % (relpath, project.name)
                     )
 
-                if git_require((2, 7, 0)):
+                if git_command.git_require((2, 7, 0)):
                     project.EnableRepositoryExtension("preciousObjects")
                 else:
                     # This isn't perfect, but it's the best we can do with old
@@ -1765,7 +1764,7 @@ later is required to fix a server side protocol bug.
         # We only care about bloated projects if we have a git version that
         # supports --no-auto-gc (2.23.0+) since what we use to disable auto-gc
         # in Project._RemoteFetch.
-        if not git_require((2, 23, 0)):
+        if not git_command.git_require((2, 23, 0)):
             return
 
         # Skip projects with no worktree on disk, e.g. ones only ever synced
@@ -2492,7 +2491,7 @@ later is required to fix a server side protocol bug.
             raise error.SyncError("failed to sync superproject")
 
         cmd = ["show", f"{opt.superproject_revision}:.supermanifest"]
-        p = GitCommand(
+        p = git_command.GitCommand(
             None,
             cmd,
             gitdir=manifest.superproject._work_git,

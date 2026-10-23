@@ -18,8 +18,7 @@ from collections import OrderedDict
 import os
 from typing import Iterator, List, Optional, TYPE_CHECKING
 
-from git_command import git_require
-from git_command import GitCommand
+import git_command
 
 
 if TYPE_CHECKING:
@@ -80,7 +79,7 @@ def GetStatus(
     show_stash: bool = False,
 ) -> StatusSnapshot:
     """Return one machine-readable status snapshot for |project|."""
-    if not git_require((2, 11, 0)):
+    if not git_command.git_require((2, 11, 0)):
         raise UnsupportedStatusError("porcelain v2 requires Git 2.11")
     cmd = [
         "status",
@@ -91,18 +90,18 @@ def GetStatus(
     ]
     if branch:
         cmd.append("--branch")
-        if git_require((2, 17, 0)):
+        if git_command.git_require((2, 17, 0)):
             cmd.append(
                 "--ahead-behind" if ahead_behind else "--no-ahead-behind"
             )
-    if git_require((2, 18, 0)):
+    if git_command.git_require((2, 18, 0)):
         # Match the existing staged diff's explicit rename detection even if
         # status.renames is disabled in the user's config.
         cmd.append("--renames")
-    if show_stash and git_require((2, 35, 0)):
+    if show_stash and git_command.git_require((2, 35, 0)):
         cmd.append("--show-stash")
 
-    p = GitCommand(
+    p = git_command.GitCommand(
         project,
         cmd,
         bare=False,

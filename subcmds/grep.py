@@ -20,7 +20,7 @@ from color import Coloring
 from command import DEFAULT_LOCAL_JOBS
 from command import PagedCommand
 import error
-from git_command import GitCommand
+import git_command
 import repo_logging
 
 
@@ -263,7 +263,7 @@ contain a line that matches both expressions:
         """Process one project."""
         project = cls.get_parallel_context()["projects"][project_idx]
         try:
-            p = GitCommand(
+            p = git_command.GitCommand(
                 project,
                 cmd_argv,
                 bare=False,

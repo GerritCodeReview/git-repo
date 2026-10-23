@@ -16,8 +16,7 @@ import os
 from typing import List, Set
 
 from command import Command
-from git_command import git_require
-from git_command import GitCommand
+import git_command
 import platform_utils
 from progress import Progress
 from project import Project
@@ -200,13 +199,13 @@ are still in the manifests.
 
             # Prepare workspace for repacking - remove all unreachable refs and
             # their objects.
-            GitCommand(
+            git_command.GitCommand(
                 project,
                 ["reflog", "expire", "--expire-unreachable=all"],
                 verify_command=True,
             ).Wait()
             pm.update(msg=f"{project.name} | gc", inc=0)
-            GitCommand(
+            git_command.GitCommand(
                 project,
                 ["gc"],
                 verify_command=True,
@@ -214,7 +213,7 @@ are still in the manifests.
 
             # Get all objects that are reachable from the remote, and pack them.
             pm.update(msg=f"{project.name} | generating list of objects", inc=0)
-            remote_objects_cmd = GitCommand(
+            remote_objects_cmd = git_command.GitCommand(
                 project,
                 [
                     "rev-list",
@@ -229,7 +228,7 @@ are still in the manifests.
             )
 
             # Get all local objects and pack them.
-            local_head_objects_cmd = GitCommand(
+            local_head_objects_cmd = git_command.GitCommand(
                 project,
                 [
                     "rev-list",
@@ -240,7 +239,7 @@ are still in the manifests.
                 capture_stdout=True,
                 verify_command=True,
             )
-            local_objects_cmd = GitCommand(
+            local_objects_cmd = git_command.GitCommand(
                 project,
                 [
                     "rev-list",
@@ -260,7 +259,7 @@ are still in the manifests.
             remote_objects_cmd.Wait()
 
             pm.update(msg=f"{project.name} | remote repack", inc=0)
-            GitCommand(
+            git_command.GitCommand(
                 project,
                 ["pack-objects", os.path.join(pack_dir, "pack")],
                 input=remote_objects_cmd.stdout,
@@ -276,7 +275,7 @@ are still in the manifests.
             local_objects_cmd.Wait()
 
             pm.update(msg=f"{project.name} | local repack", inc=0)
-            GitCommand(
+            git_command.GitCommand(
                 project,
                 ["pack-objects", os.path.join(pack_dir, "pack")],
                 input=local_head_objects_cmd.stdout + local_objects_cmd.stdout,
@@ -325,7 +324,7 @@ are still in the manifests.
             return ret
 
         if opt.repack:
-            git_require((2, 17, 0), fail=True, msg="--repack")
+            git_command.git_require((2, 17, 0), fail=True, msg="--repack")
             ret = self.repack_projects(projects, opt)
 
         return ret

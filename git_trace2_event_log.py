@@ -14,8 +14,7 @@
 
 """Event logging in the git trace2 EVENT format."""
 
-from git_command import GetEventTargetPath
-from git_command import RepoSourceVersion
+import git_command
 from git_trace2_event_log_base import BaseEventLog
 
 
@@ -37,7 +36,9 @@ class EventLog(BaseEventLog):
     """
 
     def __init__(self, **kwargs):
-        super().__init__(repo_source_version=RepoSourceVersion(), **kwargs)
+        super().__init__(
+            repo_source_version=git_command.RepoSourceVersion(), **kwargs
+        )
 
     def Write(self, path=None, **kwargs):
         if path is None:
@@ -45,4 +46,4 @@ class EventLog(BaseEventLog):
         return super().Write(path=path, **kwargs)
 
     def _GetEventTargetPath(self):
-        return GetEventTargetPath()
+        return git_command.GetEventTargetPath()

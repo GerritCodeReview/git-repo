@@ -19,7 +19,7 @@ from unittest import mock
 import pytest
 
 import error
-from git_command import GitCommand
+import git_command
 from subcmds import cherry_pick
 
 
@@ -30,12 +30,12 @@ def test_resolve_reference_uses_one_typed_batch_request(
     commit = "tree " + "2" * 40 + "\n\nSubject 🚀\n\nBody\n"
     output = oid + " commit " + str(len(commit.encode("utf-8"))) + "\n"
     output += commit + "\n"
-    command = mock.create_autospec(GitCommand, instance=True)
+    command = mock.create_autospec(git_command.GitCommand, instance=True)
     command.stdout = output
     command.stderr = ""
     command.Wait.return_value = 0
-    run_git = mock.create_autospec(GitCommand, return_value=command)
-    monkeypatch.setattr(cherry_pick, "GitCommand", run_git)
+    run_git = mock.create_autospec(git_command.GitCommand, return_value=command)
+    monkeypatch.setattr(git_command, "GitCommand", run_git)
 
     resolved, contents = cherry_pick.CherryPick()._ResolveReference("topic")
 
@@ -54,14 +54,14 @@ def test_resolve_reference_uses_one_typed_batch_request(
 def test_resolve_reference_rejects_missing_object(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    command = mock.create_autospec(GitCommand, instance=True)
+    command = mock.create_autospec(git_command.GitCommand, instance=True)
     command.stdout = "topic^{commit} missing\n"
     command.stderr = ""
     command.Wait.return_value = 0
     monkeypatch.setattr(
-        cherry_pick,
+        git_command,
         "GitCommand",
-        mock.create_autospec(GitCommand, return_value=command),
+        mock.create_autospec(git_command.GitCommand, return_value=command),
     )
 
     with pytest.raises(error.GitError, match="commit topic not found"):
@@ -71,14 +71,14 @@ def test_resolve_reference_rejects_missing_object(
 def test_resolve_reference_rejects_ambiguous_object(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    command = mock.create_autospec(GitCommand, instance=True)
+    command = mock.create_autospec(git_command.GitCommand, instance=True)
     command.stdout = "topic^{commit} ambiguous\n"
     command.stderr = ""
     command.Wait.return_value = 0
     monkeypatch.setattr(
-        cherry_pick,
+        git_command,
         "GitCommand",
-        mock.create_autospec(GitCommand, return_value=command),
+        mock.create_autospec(git_command.GitCommand, return_value=command),
     )
 
     with pytest.raises(error.GitError, match="commit topic not found"):
