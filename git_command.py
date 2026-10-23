@@ -24,9 +24,7 @@ import error
 from git_trace2_event_log_base import BaseEventLog
 import platform_utils
 from repo_logging import RepoLogger
-from repo_trace import IsTrace
-from repo_trace import REPO_TRACE
-from repo_trace import Trace
+import repo_trace
 from wrapper import Wrapper
 
 
@@ -432,7 +430,7 @@ class GitCommand:
             kwargs = {}
 
         dbg = ""
-        if IsTrace():
+        if repo_trace.IsTrace():
             global LAST_CWD
             global LAST_GITDIR
 
@@ -469,7 +467,7 @@ class GitCommand:
             elif stderr == subprocess.STDOUT:
                 dbg += " 2>&1"
 
-        with Trace(
+        with repo_trace.Trace(
             "git command %s %s with debug: %s", LAST_GITDIR, command, dbg
         ):
             try:
@@ -546,7 +544,7 @@ class GitCommand:
         """
         env = os.environ.copy()
         for key in (
-            REPO_TRACE,
+            repo_trace.REPO_TRACE,
             GIT_DIR,
             "GIT_ALTERNATE_OBJECT_DIRECTORIES",
             "GIT_OBJECT_DIRECTORY",

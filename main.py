@@ -53,9 +53,7 @@ from git_trace2_event_log import EventLog
 from manifest_xml import RepoClient
 from pager import RunPager
 from pager import TerminatePager
-from repo_trace import SetTrace
-from repo_trace import SetTraceToStderr
-from repo_trace import Trace
+import repo_trace
 from subcmds import all_commands
 from subcmds.version import Version
 from wrapper import Wrapper
@@ -269,7 +267,7 @@ class _Repo:
         run = (
             lambda: self._RunLong(name, gopts, argv, git_trace2_event_log) or 0
         )
-        with Trace(
+        with repo_trace.Trace(
             "starting new command: %s [sid=%s]",
             ", ".join([name] + argv),
             git_trace2_event_log.full_sid,
@@ -933,10 +931,10 @@ def _Main(argv):
         name, gopts, argv = repo._ParseArgs(argv)
 
         if gopts.trace:
-            SetTrace()
+            repo_trace.SetTrace()
 
         if gopts.trace_to_stderr:
-            SetTraceToStderr()
+            repo_trace.SetTraceToStderr()
 
         result = repo._Run(name, gopts, argv) or 0
     except error.RepoExitError as e:

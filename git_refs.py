@@ -17,7 +17,7 @@ import os
 from git_command import git_require
 from git_command import GitCommand
 import platform_utils
-from repo_trace import Trace
+import repo_trace
 
 
 HEAD = "HEAD"
@@ -82,7 +82,7 @@ class GitRefs:
             self._LoadAll()
 
     def _NeedUpdate(self):
-        with Trace(": scan refs %s", self._gitdir):
+        with repo_trace.Trace(": scan refs %s", self._gitdir):
             for name, mtime in self._mtime.items():
                 try:
                     if mtime != os.path.getmtime(
@@ -94,7 +94,7 @@ class GitRefs:
             return False
 
     def _LoadAll(self):
-        with Trace(": load refs %s", self._gitdir):
+        with repo_trace.Trace(": load refs %s", self._gitdir):
             self._phyref = {}
             self._symref = {}
             self._mtime = {}

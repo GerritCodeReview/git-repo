@@ -26,7 +26,7 @@ import time
 
 from git_command import git
 import platform_utils
-from repo_trace import Trace
+import repo_trace
 
 
 PROXY_PATH = os.path.join(os.path.dirname(__file__), "git_ssh")
@@ -201,7 +201,9 @@ class ProxyManager:
         # is the same as 'myhost.com' where "User git" is setup in the user's
         # ~/.ssh/config file.
         check_command = command_base + ["-O", "check"]
-        with Trace("Call to ssh (check call): %s", " ".join(check_command)):
+        with repo_trace.Trace(
+            "Call to ssh (check call): %s", " ".join(check_command)
+        ):
             try:
                 check_process = subprocess.Popen(
                     check_command,
@@ -250,7 +252,7 @@ class ProxyManager:
         )
         p = None
         try:
-            with Trace("Call to ssh: %s", " ".join(command)):
+            with repo_trace.Trace("Call to ssh: %s", " ".join(command)):
                 p = subprocess.Popen(command)
         except Exception as e:
             self._master_broken.value = True
