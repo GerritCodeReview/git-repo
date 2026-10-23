@@ -74,6 +74,14 @@ REPO_SOURCE_BRANCH = "main"
 # the common `fetch=".."` resolves to the root of the host namespace.
 MANIFEST_REPO = "platform/manifest"
 
+# The git endpoints (relative to a repo URL) that clients request.
+REPO_ENDPOINTS = (
+    "info/refs",
+    "git-upload-pack",
+    "git-receive-pack",
+    "clone.bundle",
+)
+
 # Fixed identity used for all commits created by the harness (not by
 # the simulated user).
 HARNESS_IDENTITY = {
@@ -664,6 +672,21 @@ class ServerRepo:
         """Create an annotated tag."""
         self.git("tag", "-a", "-m", name, name, rev)
 
+    def commit_history_only_blob(
+        self, path: str, data: Union[str, bytes]
+    ) -> str:
+        """Commit `data` at `path`, then delete `path` in a second commit.
+
+        Partial clones only download such blobs if the filter allows it.
+
+        Returns:
+            The id of the blob (only reachable from history).
+        """
+        self.commit({path: data}, message=f"add {path}")
+        blob = self.git("rev-parse", f"{self.default_branch}:{path}")
+        self.commit({path: None}, message=f"delete {path}")
+        return blob
+
     def write_bundle(self) -> Path:
         """Write a clone.bundle (all branches & tags) served by the server."""
         bundle = self.path / "clone.bundle"
@@ -780,6 +803,42 @@ class GitHost:
     def requests(self) -> List[Request]:
         """All requests received for this namespace."""
         return self.server.requests_for(f"/{self.prefix}/")
+
+    def requests_for(
+        self, name: str, requests: Optional[List[Request]] = None
+    ) -> List[Request]:
+        """The requests for the repo `name` (out of `requests`, or all so far).
+
+        Args:
+            name: The repo name, e.g. `platform/foo`.
+            requests: Requests to filter, e.g. from `watch_requests`.
+        """
+        if requests is None:
+            requests = self.requests()
+        prefix = f"/{self.prefix}/{name}/"
+        return [r for r in requests if r.path.startswith(prefix)]
+
+    def requested_repos(
+        self, requests: Optional[List[Request]] = None
+    ) -> Set[str]:
+        """Return the names of the repos that received requests.
+
+        Args:
+            requests: Requests to inspect (e.g. from `watch_requests`), or all
+                requests received so far if None.
+        """
+        if requests is None:
+            requests = self.requests()
+        namespace = f"/{self.prefix}/"
+        names = set()
+        for request in requests:
+            if not request.path.startswith(namespace):
+                continue
+            for suffix in REPO_ENDPOINTS:
+                if request.path.endswith(f"/{suffix}"):
+                    names.add(request.path[len(namespace) : -len(suffix) - 1])
+                    break
+        return names
 
     @contextlib.contextmanager
     def watch_requests(self) -> Iterator[List[Request]]:
@@ -1005,6 +1064,34 @@ class RepoClient:
     def is_detached(self, path: str) -> bool:
         """Whether HEAD in `path` is detached (not on a local branch)."""
         return self.git(path, "rev-parse", "--abbrev-ref", "HEAD") == "HEAD"
+
+    def config(self, path: str, key: str) -> Optional[str]:
+        """Return git config `key` of the checkout at `path` (None if unset).
+
+        Only the repo's own config is read (not e.g. the user's), and `path`
+        must be a git checkout.
+        """
+        proc = subprocess.run(
+            ["git", "config", "--local", "--get", key],
+            # See run_git for why this isn't a Path.
+            cwd=str(self.top / path),
+            env=self.env,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=COMMAND_TIMEOUT,
+        )
+        # git exits 1 for unset keys; anything else (e.g. 128 outside of a
+        # repo) is a real error.
+        if proc.returncode == 1:
+            return None
+        if proc.returncode:
+            raise AssertionError(
+                f"git config --get {key} failed in {path} "
+                f"({proc.returncode}):\n"
+                f"{proc.stderr.decode('utf-8', 'replace')}"
+            )
+        return proc.stdout.decode("utf-8").rstrip("\r\n")
 
     def remote_branches(self, path: str) -> Set[str]:
         """Return the names of the `origin` remote-tracking branches."""
