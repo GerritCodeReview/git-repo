@@ -23,3 +23,10 @@ They run as part of `./run_tests` by default, after the unit tests.
 The suite is skipped automatically when `git http-backend` isn't
 available, when git is older than 2.28 (need default branch support and
 superproject support), or when not run from a git checkout.
+
+## Layout
+
+* `harness.py`: the git server, server-side repos & the repo client.
+* `test_init_sync.py`: core `repo init` & `repo sync` options.
+* `test_workflows.py`: multi-step workflows.
+* `test_manifest_regressions.py`: manifests that broke users in the past.
