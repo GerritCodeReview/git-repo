@@ -17,7 +17,8 @@
 The harness has three parts:
 
 * `GitHttpServer`: a local smart HTTP git server built on `git http-backend`.
-  It also serves static `clone.bundle` files like Gerrit/GoB do.
+  It also serves static `clone.bundle` files like Gerrit/GoB do, and can
+  simulate outages.
 * `ServerRepo`/`GitHost`: bare repositories hosted by the server, with helpers
   to create commits (including gitlinks for superprojects), branches, tags &
   bundles without needing a worktree.
@@ -265,6 +266,8 @@ class GitHttpServer:
         self.root = root
         self.requests: List[Request] = []
         self._lock = threading.Lock()
+        # Path prefixes for which every request fails; see offline().
+        self._offline: Set[str] = set()
         self._httpd: Optional[_ThreadingHTTPServer] = None
         self._thread: Optional[threading.Thread] = None
         self._env = dict(
@@ -310,10 +313,43 @@ class GitHttpServer:
         with self._lock:
             self.requests.append(Request(method, path, status))
 
-    def requests_for(self, prefix: str) -> List[Request]:
-        """Return the requests whose path starts with `prefix`."""
+    def request_count(self) -> int:
+        """Return the number of requests received so far."""
         with self._lock:
-            return [r for r in self.requests if r.path.startswith(prefix)]
+            return len(self.requests)
+
+    def requests_for(self, prefix: str, start: int = 0) -> List[Request]:
+        """Return the requests whose path starts with `prefix`.
+
+        Args:
+            prefix: The request path prefix to match.
+            start: Skip the first `start` requests (see `request_count`).
+        """
+        with self._lock:
+            return [
+                r for r in self.requests[start:] if r.path.startswith(prefix)
+            ]
+
+    @contextlib.contextmanager
+    def offline(self, prefix: str) -> Iterator[None]:
+        """Fail all requests under the path `prefix` (like an outage).
+
+        Requests are still recorded (with a 503 status) so tests can tell
+        whether a command needed the network.
+        """
+        with self._lock:
+            assert prefix not in self._offline, f"{prefix} is already offline"
+            self._offline.add(prefix)
+        try:
+            yield
+        finally:
+            with self._lock:
+                self._offline.discard(prefix)
+
+    def is_offline(self, path: str) -> bool:
+        """Whether requests for `path` should fail; see offline()."""
+        with self._lock:
+            return any(path.startswith(x) for x in self._offline)
 
     def run_backend(
         self,
@@ -419,6 +455,11 @@ class _GitHttpHandler(http.server.BaseHTTPRequestHandler):
     def _handle(self) -> None:
         path = self._request_path
         query = self.path.partition("?")[2]
+        if self.git_server.is_offline(path):
+            # Drain any request body so the client sees the response.
+            self._read_body()
+            self._send(503, {"Content-Type": "text/plain"}, b"offline\n")
+            return
         if path.endswith("/clone.bundle"):
             self._serve_bundle(path)
             return
@@ -706,6 +747,32 @@ class GitHost:
         """All requests received for this namespace."""
         return self.server.requests_for(f"/{self.prefix}/")
 
+    @contextlib.contextmanager
+    def watch_requests(self) -> Iterator[List[Request]]:
+        """Collect the requests this namespace receives inside the block.
+
+        The yielded list is filled in when the block exits, e.g.:
+
+            with host.watch_requests() as requests:
+                client.sync("-l")
+            assert requests == []
+        """
+        start = self.server.request_count()
+        requests: List[Request] = []
+        try:
+            yield requests
+        finally:
+            requests.extend(self.server.requests_for(f"/{self.prefix}/", start))
+
+    @contextlib.contextmanager
+    def offline(self) -> Iterator[None]:
+        """Fail all requests for this namespace during the context.
+
+        This emulates the server (or network) being unavailable.
+        """
+        with self.server.offline(f"/{self.prefix}/"):
+            yield
+
 
 def manifest_xml(*elements: str, default: Optional[str] = None) -> str:
     """Build a manifest with an `origin` remote & a default element.
@@ -889,9 +956,9 @@ class RepoClient:
             *args,
         )
 
-    def sync(self, *args: str) -> RepoResult:
+    def sync(self, *args: str, check: bool = True) -> RepoResult:
         """Run `repo sync`."""
-        return self.run("sync", *args)
+        return self.run("sync", *args, check=check)
 
     def git(self, path: str, *args: str) -> str:
         """Run git in a checkout dir (relative to the client top)."""
@@ -900,6 +967,10 @@ class RepoClient:
     def head(self, path: str) -> str:
         """Return the commit checked out in `path`."""
         return self.git(path, "rev-parse", "HEAD")
+
+    def is_detached(self, path: str) -> bool:
+        """Whether HEAD in `path` is detached (not on a local branch)."""
+        return self.git(path, "rev-parse", "--abbrev-ref", "HEAD") == "HEAD"
 
     def remote_branches(self, path: str) -> Set[str]:
         """Return the names of the `origin` remote-tracking branches."""
@@ -910,6 +981,10 @@ class RepoClient:
             "refs/remotes/origin/",
         )
         return set(out.split())
+
+    def tags(self, path: str) -> Set[str]:
+        """Return the names of the tags in `path`."""
+        return set(self.git(path, "tag", "--list").split())
 
     def checkouts(self) -> Set[str]:
         """Return the names of the top-level dirs, except `.repo`."""
