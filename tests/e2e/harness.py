@@ -759,7 +759,8 @@ def _snapshot_worktree(root: Path) -> Dict[str, FileContent]:
             # Deleted in the worktree but not (yet) in the index.
             continue
         if stat.S_ISLNK(st_mode):
-            files[name] = Blob(os.fsencode(os.readlink(path)), "120000")
+            # Python <3.8 on Windows rejects Path objects here.
+            files[name] = Blob(os.fsencode(os.readlink(str(path))), "120000")
         elif stat.S_ISREG(st_mode):
             mode = "100755" if st_mode & 0o111 else "100644"
             files[name] = Blob(path.read_bytes(), mode)
@@ -853,11 +854,13 @@ class RepoClient:
             timeout=COMMAND_TIMEOUT,
         )
         elapsed = time.monotonic() - start
+        # Python on Windows writes `\r\n` to pipes; normalize so tests can match
+        # multi-line output.
         result = RepoResult(
             list(args),
             proc.returncode,
-            proc.stdout.decode("utf-8", "replace"),
-            proc.stderr.decode("utf-8", "replace"),
+            proc.stdout.decode("utf-8", "replace").replace("\r\n", "\n"),
+            proc.stderr.decode("utf-8", "replace").replace("\r\n", "\n"),
         )
         print(f"$ {cmd}  # exit {result.returncode} after {elapsed:.1f}s")
         if result.output:

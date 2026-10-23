@@ -113,8 +113,14 @@ def client_env(tmp_path: Path, git_defaults: str) -> Dict[str, str]:
         pytest.skip("git is too old to emulate Git 3 defaults")
     settings.update(harness.GIT_DEFAULTS[git_defaults])
     harness.write_config(home / ".gitconfig", settings)
-    # Python resolves `~` via USERPROFILE on Windows.
-    return dict(harness.clean_environ(), HOME=str(home), USERPROFILE=str(home))
+    # Python resolves `~` via USERPROFILE on Windows.  The ceiling keeps git
+    # from finding a repo above the test dir (e.g. with `--basetemp=./tmp`).
+    return dict(
+        harness.clean_environ(),
+        HOME=str(home),
+        USERPROFILE=str(home),
+        GIT_CEILING_DIRECTORIES=str(tmp_path),
+    )
 
 
 @pytest.fixture
