@@ -20,6 +20,7 @@ from unittest import mock
 
 import pytest
 
+import git_command
 import git_status
 
 
@@ -143,8 +144,8 @@ def test_get_status_uses_versioned_machine_options(
         def Wait(self) -> int:
             return 0
 
-    monkeypatch.setattr(git_status, "GitCommand", FakeGitCommand)
-    monkeypatch.setattr(git_status, "git_require", lambda _version: True)
+    monkeypatch.setattr(git_command, "GitCommand", FakeGitCommand)
+    monkeypatch.setattr(git_command, "git_require", lambda _version: True)
 
     git_status.GetStatus(
         mock.sentinel.project,
@@ -173,7 +174,7 @@ def test_get_status_uses_versioned_machine_options(
 def test_get_status_rejects_git_before_2_11(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setattr(git_status, "git_require", lambda _version: False)
+    monkeypatch.setattr(git_command, "git_require", lambda _version: False)
 
     with pytest.raises(git_status.UnsupportedStatusError):
         git_status.GetStatus(mock.sentinel.project, mock.sentinel.gitdir)
@@ -194,9 +195,9 @@ def test_get_status_omits_stash_header_before_2_35(
         def Wait(self) -> int:
             return 0
 
-    monkeypatch.setattr(git_status, "GitCommand", FakeGitCommand)
+    monkeypatch.setattr(git_command, "GitCommand", FakeGitCommand)
     monkeypatch.setattr(
-        git_status,
+        git_command,
         "git_require",
         lambda version: version <= (2, 34, 0),
     )

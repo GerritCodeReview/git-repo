@@ -17,7 +17,7 @@ import sys
 from color import Coloring
 from command import Command
 import error
-from git_command import GitCommand
+import git_command
 from project import Project
 import repo_logging
 
@@ -190,7 +190,7 @@ branch but need to incorporate new upstream changes "underneath" them.
             out.nl()
             out.flush()
 
-            if GitCommand(project, args).Wait() != 0:
+            if git_command.GitCommand(project, args).Wait() != 0:
                 ret += 1
                 continue
 

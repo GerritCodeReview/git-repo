@@ -18,6 +18,7 @@ from unittest import mock
 
 import pytest
 
+import git_command
 from subcmds import version
 
 
@@ -26,7 +27,7 @@ def test_repo_version_uses_one_pretty_format_call(
 ) -> None:
     project = mock.MagicMock()
     project.bare_git.log.return_value = "v2.0-1-g12345678\nTue, 25 Aug\n"
-    monkeypatch.setattr(version, "git_require", lambda _version: True)
+    monkeypatch.setattr(git_command, "git_require", lambda _version: True)
 
     result = version.Version._RepoVersion(project)
 
@@ -43,7 +44,7 @@ def test_repo_version_keeps_old_git_fallback(
     project = mock.MagicMock()
     project.bare_git.describe.return_value = "v2.0"
     project.bare_git.log.return_value = "Tue, 25 Aug"
-    monkeypatch.setattr(version, "git_require", lambda _version: False)
+    monkeypatch.setattr(git_command, "git_require", lambda _version: False)
 
     result = version.Version._RepoVersion(project)
 

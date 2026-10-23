@@ -19,7 +19,7 @@ from color import Coloring
 from command import InteractiveCommand
 from command import MirrorSafeCommand
 import error
-from git_command import git_require
+import git_command
 import repo_logging
 from wrapper import Wrapper
 from wrapper import WrapperDir
@@ -347,9 +347,9 @@ to update the working directory files.
         wrapper = Wrapper()
 
         reqs = wrapper.Requirements.from_dir(WrapperDir())
-        git_require(reqs.get_hard_ver("git"), fail=True)
+        git_command.git_require(reqs.get_hard_ver("git"), fail=True)
         min_git_version_soft = reqs.get_soft_ver("git")
-        if not git_require(min_git_version_soft):
+        if not git_command.git_require(min_git_version_soft):
             logger.warning(
                 "repo: warning: git-%s+ will soon be required; "
                 "please upgrade your version of git to maintain "
@@ -388,7 +388,9 @@ to update the working directory files.
         if opt.worktree:
             # Older versions of git supported worktree, but had dangerous gc
             # bugs.
-            git_require((2, 15, 0), fail=True, msg="git gc worktree corruption")
+            git_command.git_require(
+                (2, 15, 0), fail=True, msg="git gc worktree corruption"
+            )
 
         # Provide a short notice that we're reinitializing an existing checkout.
         # Sometimes developers might not realize that they're in one, or that

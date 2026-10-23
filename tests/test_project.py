@@ -216,7 +216,7 @@ class ProjectTests(unittest.TestCase):
         """Check UploadForReview emits repo.uploadstate trace2 data events."""
         proj, _ = self._create_project_for_upload_test()
 
-        with mock.patch("project.GitCommand") as mock_git_cmd, mock.patch(
+        with mock.patch("git_command.GitCommand") as mock_git_cmd, mock.patch(
             "project.ReviewableBranch"
         ) as mock_rb_cls:
             mock_cmd = mock.MagicMock()
@@ -256,7 +256,7 @@ class ProjectTests(unittest.TestCase):
         """Check event emission when stderr contains no review URLs."""
         proj, _ = self._create_project_for_upload_test()
 
-        with mock.patch("project.GitCommand") as mock_git_cmd, mock.patch(
+        with mock.patch("git_command.GitCommand") as mock_git_cmd, mock.patch(
             "project.ReviewableBranch"
         ) as mock_rb_cls:
             mock_cmd = mock.MagicMock()
@@ -290,7 +290,7 @@ class ProjectTests(unittest.TestCase):
         """Check UploadForReview succeeds when git_event_log is None."""
         proj, _ = self._create_project_for_upload_test()
 
-        with mock.patch("project.GitCommand") as mock_git_cmd, mock.patch(
+        with mock.patch("git_command.GitCommand") as mock_git_cmd, mock.patch(
             "project.ReviewableBranch"
         ) as mock_rb_cls:
             mock_cmd = mock.MagicMock()
@@ -313,7 +313,7 @@ class ProjectTests(unittest.TestCase):
         """Check exceptions during tracing are caught and do not fail upload."""
         proj, _ = self._create_project_for_upload_test()
 
-        with mock.patch("project.GitCommand") as mock_git_cmd, mock.patch(
+        with mock.patch("git_command.GitCommand") as mock_git_cmd, mock.patch(
             "project.ReviewableBranch"
         ) as mock_rb_cls, mock.patch("project.logger") as mock_logger:
             mock_cmd = mock.MagicMock()
@@ -338,7 +338,7 @@ class ProjectTests(unittest.TestCase):
         """Check integration with real git_trace2_event_log.EventLog."""
         proj, _ = self._create_project_for_upload_test()
 
-        with mock.patch("project.GitCommand") as mock_git_cmd, mock.patch(
+        with mock.patch("git_command.GitCommand") as mock_git_cmd, mock.patch(
             "project.ReviewableBranch"
         ) as mock_rb_cls:
             mock_cmd = mock.MagicMock()
@@ -408,9 +408,9 @@ class ProjectTests(unittest.TestCase):
         command.Wait.return_value = 0
 
         with mock.patch.object(
-            project, "git_require", return_value=True
+            git_command, "git_require", return_value=True
         ), mock.patch.object(
-            project, "GitCommand", return_value=command
+            git_command, "GitCommand", return_value=command
         ) as cmd:
             self.assertEqual("1" * 40, git.ResolveCommit("topic"))
 
@@ -437,7 +437,7 @@ class ProjectTests(unittest.TestCase):
         proj.name = "project"
         git = project.Project._GitGetByExec(proj, bare=True, gitdir="gitdir")
 
-        with mock.patch.object(project, "git_require", return_value=False):
+        with mock.patch.object(git_command, "git_require", return_value=False):
             with self.assertRaises(error.GitError):
                 git.ResolveCommit("--not-a-revision")
 
@@ -735,7 +735,9 @@ class ProjectTests(unittest.TestCase):
             proj._GetStatusSnapshot = mock.MagicMock(return_value=status)
             proj.HasStash = mock.MagicMock()
 
-            with mock.patch.object(project, "git_require", return_value=True):
+            with mock.patch.object(
+                git_command, "git_require", return_value=True
+            ):
                 self.assertTrue(proj._HasDirtyOrStash())
 
             proj.HasStash.assert_not_called()
@@ -748,7 +750,9 @@ class ProjectTests(unittest.TestCase):
             proj._GetStatusSnapshot = mock.MagicMock(return_value=status)
             proj.HasStash = mock.MagicMock()
 
-            with mock.patch.object(project, "git_require", return_value=True):
+            with mock.patch.object(
+                git_command, "git_require", return_value=True
+            ):
                 self.assertFalse(proj._HasDirtyOrStash())
 
             proj.HasStash.assert_not_called()
@@ -761,7 +765,9 @@ class ProjectTests(unittest.TestCase):
             proj._GetStatusSnapshot = mock.MagicMock(return_value=status)
             proj.HasStash = mock.MagicMock(return_value=True)
 
-            with mock.patch.object(project, "git_require", return_value=False):
+            with mock.patch.object(
+                git_command, "git_require", return_value=False
+            ):
                 self.assertTrue(proj._HasDirtyOrStash())
 
             proj._GetStatusSnapshot.assert_called_once_with(
@@ -778,7 +784,7 @@ class ProjectTests(unittest.TestCase):
                 for use_status in (True, False):
                     with self.subTest(expected=expected, status=use_status):
                         with mock.patch.object(
-                            project, "git_require", return_value=use_status
+                            git_command, "git_require", return_value=use_status
                         ):
                             self.assertEqual(expected, proj.GetDirtyAndHead())
 
@@ -819,7 +825,9 @@ class ProjectTests(unittest.TestCase):
             proj._IsDirtyLegacy = mock.MagicMock(return_value=False)
             proj.HasStash = mock.MagicMock(return_value=False)
 
-            with mock.patch.object(project, "git_require", return_value=True):
+            with mock.patch.object(
+                git_command, "git_require", return_value=True
+            ):
                 self.assertFalse(proj._HasDirtyOrStash())
 
             proj._GetStatusSnapshot.assert_called_once_with(
@@ -834,7 +842,9 @@ class ProjectTests(unittest.TestCase):
             proj.work_git = mock.MagicMock()
             proj.work_git.DiffZ.side_effect = [{}, {"tracked": mock.sentinel}]
 
-            with mock.patch.object(project, "git_require", return_value=False):
+            with mock.patch.object(
+                git_command, "git_require", return_value=False
+            ):
                 self.assertTrue(proj.IsDirty())
 
             proj.work_git.update_index.assert_called_once_with(
@@ -851,7 +861,7 @@ class ProjectTests(unittest.TestCase):
         with utils_for_test.TempGitTree() as tempdir:
             proj = _create_mock_project(tempdir)
             with mock.patch.object(
-                project, "GitCommand", autospec=True
+                git_command, "GitCommand", autospec=True
             ) as run_git:
                 run_git.return_value.Wait.return_value = 0
                 proj._FastForward("revision")
@@ -1339,7 +1349,7 @@ class ProjectTests(unittest.TestCase):
             hex41 = "a" * 41
             proj.SetRevision(hex41)
 
-            with mock.patch("project.GitCommand") as mock_git:
+            with mock.patch("git_command.GitCommand") as mock_git:
                 mock_cmd = mock.MagicMock()
                 mock_cmd.Wait.return_value = 0
                 mock_git.return_value = mock_cmd
@@ -2042,8 +2052,8 @@ def test_default_branch_fallback(
     project._DefaultBranchFallback.cache_clear()
     try:
         with mock.patch.object(
-            project, "git_require", return_value=supports_git_var
-        ), mock.patch.object(project, "GitCommand", FakeGitCommand):
+            git_command, "git_require", return_value=supports_git_var
+        ), mock.patch.object(git_command, "GitCommand", FakeGitCommand):
             assert project._DefaultBranchFallback() == expected_ref
         assert seen == expected_calls
     finally:
@@ -2134,7 +2144,7 @@ def test_remote_fetch_retry_sleep(
         proj = _create_meta_project(tempdir, project_cls)
         proj.config.GetRemote("origin").ResetFetch()
         proj.revisionExpr = "refs/heads/stable"
-        with mock.patch.object(project, "GitCommand") as mock_git:
+        with mock.patch.object(git_command, "GitCommand") as mock_git:
             # What git does while stable is deleted.
             mock_git.return_value.Wait.return_value = 128
             mock_git.return_value.stdout = (
@@ -2353,7 +2363,7 @@ class StatelessSyncTests(unittest.TestCase):
             proj.work_git = mock.MagicMock()
             syncbuf = project.SyncBuffer(proj.config)
 
-            with mock.patch("project.GitCommand") as mock_git_cmd:
+            with mock.patch("git_command.GitCommand") as mock_git_cmd:
                 mock_cmd_instance = mock.MagicMock()
                 mock_cmd_instance.Wait.return_value = 0
                 mock_git_cmd.return_value = mock_cmd_instance
@@ -2702,7 +2712,7 @@ class SyncOptimizationTests(unittest.TestCase):
             if os.path.exists(shallow_path):
                 os.unlink(shallow_path)
 
-            with mock.patch("project.GitCommand") as mock_git_cmd:
+            with mock.patch("git_command.GitCommand") as mock_git_cmd:
                 mock_cmd_instance = mock.MagicMock()
                 mock_cmd_instance.Wait.return_value = 0
                 mock_git_cmd.return_value = mock_cmd_instance
@@ -2725,7 +2735,7 @@ class SyncOptimizationTests(unittest.TestCase):
             with open(os.path.join(proj.gitdir, "shallow"), "w") as f:
                 f.write("")
 
-            with mock.patch("project.GitCommand") as mock_git_cmd:
+            with mock.patch("git_command.GitCommand") as mock_git_cmd:
                 res = proj._RemoteFetch(
                     current_branch_only=True,
                     depth=1,
@@ -2748,7 +2758,7 @@ class SyncOptimizationTests(unittest.TestCase):
             with open(os.path.join(other.gitdir, "shallow"), "w") as f:
                 f.write("")
 
-            with mock.patch("project.GitCommand") as mock_git_cmd:
+            with mock.patch("git_command.GitCommand") as mock_git_cmd:
                 mock_cmd_instance = mock.MagicMock()
                 mock_cmd_instance.Wait.return_value = 0
                 mock_git_cmd.return_value = mock_cmd_instance
@@ -2777,7 +2787,7 @@ class SyncOptimizationTests(unittest.TestCase):
             with open(os.path.join(other.gitdir, "shallow"), "w") as f:
                 f.write("")
 
-            with mock.patch("project.GitCommand") as mock_git_cmd:
+            with mock.patch("git_command.GitCommand") as mock_git_cmd:
                 res = proj._RemoteFetch(
                     current_branch_only=True,
                     depth=1,
@@ -2971,7 +2981,7 @@ class SyncOptimizationTests(unittest.TestCase):
             mock_remote.PreConnectFetch.return_value = True
             proj.GetRemote = mock.MagicMock(return_value=mock_remote)
 
-            with mock.patch("project.GitCommand") as mock_git_cmd:
+            with mock.patch("git_command.GitCommand") as mock_git_cmd:
                 mock_cmd_instance = mock.MagicMock()
                 mock_cmd_instance.Wait.return_value = 0
                 mock_git_cmd.return_value = mock_cmd_instance
@@ -3010,7 +3020,7 @@ class SyncOptimizationTests(unittest.TestCase):
             mock_remote.PreConnectFetch.return_value = True
             proj.GetRemote = mock.MagicMock(return_value=mock_remote)
 
-            with mock.patch("project.GitCommand") as mock_git_cmd:
+            with mock.patch("git_command.GitCommand") as mock_git_cmd:
                 mock_cmd_instance = mock.MagicMock()
                 mock_cmd_instance.Wait.return_value = 0
                 mock_git_cmd.return_value = mock_cmd_instance
@@ -3052,7 +3062,7 @@ class SyncOptimizationTests(unittest.TestCase):
             mock_remote.PreConnectFetch.return_value = True
             proj.GetRemote = mock.MagicMock(return_value=mock_remote)
 
-            with mock.patch("project.GitCommand") as mock_git_cmd:
+            with mock.patch("git_command.GitCommand") as mock_git_cmd:
                 mock_cmd_instance = mock.MagicMock()
                 mock_cmd_instance.Wait.return_value = 0
                 mock_git_cmd.return_value = mock_cmd_instance
@@ -3100,7 +3110,7 @@ class SyncOptimizationTests(unittest.TestCase):
             mock_remote.PreConnectFetch.return_value = True
             proj.GetRemote = mock.MagicMock(return_value=mock_remote)
 
-            with mock.patch("project.GitCommand") as mock_git_cmd:
+            with mock.patch("git_command.GitCommand") as mock_git_cmd:
                 mock_cmd_instance = mock.MagicMock()
                 mock_cmd_instance.Wait.return_value = 0
                 mock_git_cmd.return_value = mock_cmd_instance
@@ -3202,7 +3212,7 @@ class SyncOptimizationTests(unittest.TestCase):
                 return inst
 
             with mock.patch(
-                "project.GitCommand", side_effect=_fake_git_command
+                "git_command.GitCommand", side_effect=_fake_git_command
             ):
                 res = proj._RemoteFetch(current_branch_only=True)
 
@@ -3578,7 +3588,7 @@ class ReprojectCmdTests(unittest.TestCase):
     ) -> mock.MagicMock:
         """Run _Reproject against mocked Git; return the subprocess mock."""
         with mock.patch(
-            "project.GitCommand", side_effect=self._git_command(**outputs)
+            "git_command.GitCommand", side_effect=self._git_command(**outputs)
         ), mock.patch("subprocess.run") as mock_run:
             mock_run.return_value = mock.MagicMock(returncode=0, stdout="")
             proj._Reproject(self.REVID)
@@ -3589,7 +3599,7 @@ class ReprojectCmdTests(unittest.TestCase):
         with utils_for_test.TempGitTree() as tempdir:
             proj = self._get_project(tempdir)
             with mock.patch(
-                "project.GitCommand", side_effect=self._git_command()
+                "git_command.GitCommand", side_effect=self._git_command()
             ), mock.patch("subprocess.run") as mock_run:
                 mock_run.return_value = mock.MagicMock(returncode=0, stdout="")
                 proj._Reproject(self.REVID)
@@ -3649,7 +3659,7 @@ class ReprojectCmdTests(unittest.TestCase):
         with utils_for_test.TempGitTree() as tempdir:
             proj = self._get_project(tempdir)
             with mock.patch(
-                "project.GitCommand", side_effect=self._git_command()
+                "git_command.GitCommand", side_effect=self._git_command()
             ), mock.patch("subprocess.run") as mock_run:
                 mock_run.return_value = mock.MagicMock(
                     returncode=3, stdout="disk on fire\n"
@@ -3665,7 +3675,7 @@ class ReprojectCmdTests(unittest.TestCase):
             proj = self._get_project(tempdir)
             proj.work_git.GetHead.side_effect = [self.HEAD_ID, self.REVID]
             with mock.patch(
-                "project.GitCommand", side_effect=self._git_command()
+                "git_command.GitCommand", side_effect=self._git_command()
             ), mock.patch("subprocess.run") as mock_run:
                 mock_run.return_value = mock.MagicMock(returncode=0, stdout="")
                 with self.assertRaises(project.LocalSyncFail) as e:
@@ -3683,7 +3693,7 @@ class ReprojectCmdTests(unittest.TestCase):
                 self.REVID,  # HEAD after command
             ]
             with mock.patch(
-                "project.GitCommand", side_effect=self._git_command()
+                "git_command.GitCommand", side_effect=self._git_command()
             ), mock.patch("subprocess.run") as mock_run:
                 mock_run.return_value = mock.MagicMock(returncode=0, stdout="")
                 with self.assertRaises(project.LocalSyncFail) as e:
@@ -3695,7 +3705,7 @@ class ReprojectCmdTests(unittest.TestCase):
         with utils_for_test.TempGitTree() as tempdir:
             proj = self._get_project(tempdir)
             with mock.patch(
-                "project.GitCommand",
+                "git_command.GitCommand",
                 side_effect=self._git_command(diff="lib/a.c\n"),
             ), mock.patch("subprocess.run") as mock_run:
                 mock_run.return_value = mock.MagicMock(returncode=0, stdout="")
@@ -4361,9 +4371,9 @@ class DownloadPatchSetTests(unittest.TestCase):
     def test_download_patch_set_with_no_filter_and_no_tags(self) -> None:
         """Test DownloadPatchSet includes --no-filter and --no-tags."""
         with mock.patch(
-            "project.git_require", return_value=True
+            "git_command.git_require", return_value=True
         ) as mock_git_require:
-            with mock.patch("project.GitCommand") as mock_git_cmd:
+            with mock.patch("git_command.GitCommand") as mock_git_cmd:
                 mock_cmd_instance = mock.MagicMock()
                 mock_cmd_instance.Wait.return_value = 0
                 mock_git_cmd.return_value = mock_cmd_instance
@@ -4389,8 +4399,8 @@ class DownloadPatchSetTests(unittest.TestCase):
 
     def test_download_patch_set_legacy_git_omits_no_filter(self) -> None:
         """Test DownloadPatchSet omits --no-filter on git < 2.17."""
-        with mock.patch("project.git_require", return_value=False):
-            with mock.patch("project.GitCommand") as mock_git_cmd:
+        with mock.patch("git_command.git_require", return_value=False):
+            with mock.patch("git_command.GitCommand") as mock_git_cmd:
                 mock_cmd_instance = mock.MagicMock()
                 mock_cmd_instance.Wait.return_value = 0
                 mock_git_cmd.return_value = mock_cmd_instance

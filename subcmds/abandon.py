@@ -19,7 +19,7 @@ import itertools
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
 import error
-from git_command import IsValidBranchName
+import git_command
 from progress import Progress
 import repo_logging
 
@@ -57,7 +57,9 @@ It is equivalent to "git branch -D <branchname>".
 
         if not opt.all:
             branches = args[0].split()
-            invalid_branches = [x for x in branches if not IsValidBranchName(x)]
+            invalid_branches = [
+                x for x in branches if not git_command.IsValidBranchName(x)
+            ]
 
             if invalid_branches:
                 self.OptionParser.error(

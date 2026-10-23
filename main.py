@@ -47,7 +47,7 @@ from command import MirrorSafeCommand
 from editor import Editor
 import error
 import event_log
-from git_command import user_agent
+import git_command
 from git_config import RepoConfig
 from git_trace2_event_log import EventLog
 from manifest_xml import RepoClient
@@ -700,11 +700,11 @@ def _PruneOptions(argv, opt):
 
 class _UserAgentHandler(urllib.request.BaseHandler):
     def http_request(self, req):
-        req.add_header("User-Agent", user_agent.repo)
+        req.add_header("User-Agent", git_command.user_agent.repo)
         return req
 
     def https_request(self, req):
-        req.add_header("User-Agent", user_agent.repo)
+        req.add_header("User-Agent", git_command.user_agent.repo)
         return req
 
 

@@ -39,7 +39,7 @@ MANDIR = TOPDIR.joinpath("man")
 
 # Load repo local modules.
 sys.path.insert(0, str(TOPDIR))
-from git_command import RepoSourceVersion
+import git_command
 import subcmds
 
 
@@ -82,7 +82,7 @@ def main(argv: List[str]) -> int:
     del subcmds.all_commands["branch"]
     (MANDIR / "repo-branch.1").write_text(".so man1/repo-branches.1")
 
-    version = RepoSourceVersion()
+    version = git_command.RepoSourceVersion()
     cmdlist = [
         [
             *help2man,
