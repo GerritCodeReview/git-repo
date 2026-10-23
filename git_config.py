@@ -32,7 +32,7 @@ from git_refs import R_CHANGES
 from git_refs import R_HEADS
 from git_refs import R_TAGS
 import platform_utils
-from repo_trace import Trace
+import repo_trace
 
 
 # Prefix that is prepended to all the keys of SyncAnalysisState's data
@@ -427,7 +427,7 @@ class GitConfig:
         except OSError:
             return None
         try:
-            with Trace(": parsing %s", self.file):
+            with repo_trace.Trace(": parsing %s", self.file):
                 with open(self._json) as fd:
                     return json.load(fd)
         except (OSError, ValueError):

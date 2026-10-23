@@ -22,7 +22,7 @@ try:
 except ImportError:
     import dummy_threading as _threading
 
-from repo_trace import IsTraceToStderr
+import repo_trace
 
 
 # Capture the original stderr stream. We use this exclusively for progress
@@ -166,7 +166,7 @@ class Progress:
             msg = self._last_msg
         self._last_msg = msg
 
-        if not _TTY or IsTraceToStderr() or self._quiet:
+        if not _TTY or repo_trace.IsTraceToStderr() or self._quiet:
             return
 
         elapsed_sec = time.time() - self._start
@@ -211,7 +211,7 @@ class Progress:
 
         The progress bar is then redrawn on the next line.
         """
-        if not _TTY or IsTraceToStderr() or self._quiet:
+        if not _TTY or repo_trace.IsTraceToStderr() or self._quiet:
             return
 
         # Erase the current line, print the message with a newline,
@@ -227,7 +227,7 @@ class Progress:
         self._ended = True
 
         self._update_event.set()
-        if not _TTY or IsTraceToStderr() or self._quiet:
+        if not _TTY or repo_trace.IsTraceToStderr() or self._quiet:
             return
 
         duration = duration_str(time.time() - self._start)

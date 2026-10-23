@@ -77,7 +77,7 @@ from project import Project
 from project import RemoteSpec
 from project import SyncBuffer
 from repo_logging import RepoLogger
-from repo_trace import Trace
+import repo_trace
 import ssh
 from wrapper import Wrapper
 
@@ -1565,7 +1565,7 @@ later is required to fix a server side protocol bug.
 
         if expected != actual:
             # If this is unexpected, log it and repair.
-            Trace(
+            repo_trace.Trace(
                 f"{relpath} expected preciousObjects={expected}, got {actual}"
             )
             if expected:

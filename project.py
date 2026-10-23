@@ -55,7 +55,7 @@ from git_trace2_event_log import EventLog
 import platform_utils
 import progress
 from repo_logging import RepoLogger
-from repo_trace import Trace
+import repo_trace
 
 
 logger = RepoLogger(__file__)
@@ -3821,7 +3821,7 @@ class Project:
             cmd += [srcUrl]
 
             proc = None
-            with Trace("Fetching bundle: %s", " ".join(cmd)):
+            with repo_trace.Trace("Fetching bundle: %s", " ".join(cmd)):
                 if verbose:
                     print(f"{self.name}: Downloading bundle: {srcUrl}")
                 stdout = None if verbose else subprocess.PIPE
