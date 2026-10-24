@@ -3267,28 +3267,35 @@ class Project:
 
         stdout = None if verbose else subprocess.PIPE
         stderr = None if verbose else subprocess.PIPE
-        try:
-            p = subprocess.run(
-                cmd_str,
-                shell=True,
-                cwd=self.manifest.topdir,
-                env=env,
-                stdout=stdout,
-                stderr=stderr,
-                text=True,
-            )
-
-            if p.returncode != 0:
-                logger.error(
-                    "error: fetchcmd failed with exit code %d", p.returncode
+        with repo_trace.Trace(
+            "fetchcmd %s %s (REPO_PATH=%s REPO_TREV=%s)",
+            self.gitdir,
+            cmd_str,
+            self.relpath,
+            repo_trev or "",
+        ):
+            try:
+                p = subprocess.run(
+                    cmd_str,
+                    shell=True,
+                    cwd=self.manifest.topdir,
+                    env=env,
+                    stdout=stdout,
+                    stderr=stderr,
+                    text=True,
                 )
-                if not verbose:
-                    logger.error("stderr: %s", p.stderr)
-                return False
 
-        except Exception as e:
-            logger.error("error: Failed to execute fetchcmd: %s", e)
-            return False
+                if p.returncode != 0:
+                    logger.error(
+                        "error: fetchcmd failed with exit code %d", p.returncode
+                    )
+                    if not verbose:
+                        logger.error("stderr: %s", p.stderr)
+                    return False
+
+            except Exception as e:
+                logger.error("error: Failed to execute fetchcmd: %s", e)
+                return False
 
         # Verify postconditions.
         if not IsId(self.revisionExpr):
@@ -4127,20 +4134,27 @@ class Project:
             print(f"Running reprojectcmd: {cmd_str} for {self.name}")
 
         output = None if verbose else subprocess.PIPE
-        try:
-            p = subprocess.run(
-                cmd_str,
-                shell=True,
-                cwd=self.manifest.topdir,
-                env=env,
-                stdout=output,
-                stderr=None if verbose else subprocess.STDOUT,
-                text=True,
-            )
-        except OSError as e:
-            raise LocalSyncFail(
-                f"failed to run reprojectcmd: {e}", project=self.name
-            )
+        with repo_trace.Trace(
+            "reprojectcmd %s %s (REPO_PATH=%s REPO_TREV=%s)",
+            self.gitdir,
+            cmd_str,
+            self.relpath,
+            revid,
+        ):
+            try:
+                p = subprocess.run(
+                    cmd_str,
+                    shell=True,
+                    cwd=self.manifest.topdir,
+                    env=env,
+                    stdout=output,
+                    stderr=None if verbose else subprocess.STDOUT,
+                    text=True,
+                )
+            except OSError as e:
+                raise LocalSyncFail(
+                    f"failed to run reprojectcmd: {e}", project=self.name
+                )
         if p.returncode != 0:
             msg = f"reprojectcmd exited with {p.returncode}"
             if p.stdout:

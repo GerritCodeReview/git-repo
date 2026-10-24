@@ -3565,6 +3565,54 @@ class FetchCmdTests(unittest.TestCase):
             proj._ApplyCloneBundle.assert_not_called()
             proj._CustomFetch.assert_called_once()
 
+    def test_fetch_cmd_traces_execution(self) -> None:
+        """Test _CustomFetch traces execution and propagates trace OSError."""
+        with utils_for_test.TempGitTree() as tempdir:
+            sha = "0123456789abcdef0123456789abcdef01234567"
+            proj = self._get_project(tempdir)
+            proj.revisionId = None
+            proj.revisionExpr = "main"
+            proj.bare_git.ResolveCommit.return_value = sha
+            mock_remote = mock.MagicMock()
+            mock_remote.ToLocal.return_value = "refs/remotes/origin/main"
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+
+            with mock.patch("repo_trace.Trace") as mock_trace, mock.patch(
+                "subprocess.run"
+            ) as mock_run:
+                mock_run.return_value = mock.MagicMock(returncode=0, stderr="")
+                self.assertTrue(proj._CustomFetch())
+
+            mock_trace.assert_called_once_with(
+                "fetchcmd %s %s (REPO_PATH=%s REPO_TREV=%s)",
+                proj.gitdir,
+                "echo hi",
+                proj.relpath,
+                "",
+            )
+
+            proj.revisionId = sha
+            with mock.patch("repo_trace.Trace") as mock_trace, mock.patch(
+                "subprocess.run"
+            ) as mock_run:
+                mock_run.return_value = mock.MagicMock(returncode=0, stderr="")
+                self.assertTrue(proj._CustomFetch())
+
+            mock_trace.assert_called_once_with(
+                "fetchcmd %s %s (REPO_PATH=%s REPO_TREV=%s)",
+                proj.gitdir,
+                "echo hi",
+                proj.relpath,
+                sha,
+            )
+
+            with mock.patch(
+                "repo_trace.Trace", side_effect=OSError("trace disk full")
+            ), mock.patch("subprocess.run") as mock_run:
+                with self.assertRaises(OSError):
+                    proj._CustomFetch()
+                mock_run.assert_not_called()
+
 
 class ReprojectCmdTests(unittest.TestCase):
     """Tests for the repo.reprojectcmd feature."""
@@ -4090,6 +4138,32 @@ class ReprojectCmdTests(unittest.TestCase):
                 self.assertEqual(proj.GetCommitRevisionId(), self.HEAD_ID)
                 mock_allrefs.assert_not_called()
                 proj.bare_git.ResolveCommit.assert_not_called()
+
+    def test_reproject_traces_execution(self) -> None:
+        """Test _Reproject traces execution and propagates trace OSError."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            with mock.patch("repo_trace.Trace") as mock_trace:
+                self._reproject(proj)
+
+            mock_trace.assert_called_once_with(
+                "reprojectcmd %s %s (REPO_PATH=%s REPO_TREV=%s)",
+                proj.gitdir,
+                "echo reproject",
+                proj.relpath,
+                self.REVID,
+            )
+
+            with mock.patch(
+                "git_command.GitCommand", side_effect=self._git_command()
+            ), mock.patch(
+                "repo_trace.Trace", side_effect=OSError("trace disk full")
+            ), mock.patch(
+                "subprocess.run"
+            ) as mock_run:
+                with self.assertRaises(OSError):
+                    proj._Reproject(self.REVID)
+                mock_run.assert_not_called()
 
 
 class ReprojectCmdGitTests(unittest.TestCase):
