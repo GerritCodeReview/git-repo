@@ -380,6 +380,8 @@ class _SyncResult(NamedTuple):
       checkout_finish (Optional[float]): The time.time() when checkout
           finished.
       stderr_text (str): The combined output from both fetch and checkout.
+      fetch_git_hash (Optional[str]): Pre-resolved commit hash after fetch.
+      checkout_git_hash (Optional[str]): Pre-resolved commit hash for checkout.
     """
 
     project_index: int
@@ -397,6 +399,8 @@ class _SyncResult(NamedTuple):
     checkout_finish: Optional[float]
 
     stderr_text: str
+    fetch_git_hash: Optional[str] = None
+    checkout_git_hash: Optional[str] = None
 
 
 class _InterleavedSyncResult(NamedTuple):
@@ -3008,6 +3012,22 @@ later is required to fix a server side protocol bug.
                 err_update_linkfiles=err_update_linkfiles,
             )
 
+    @staticmethod
+    def _ResolveProjectGitHash(project: Project) -> Optional[str]:
+        """Resolve the project's target commit hash when available.
+
+        Args:
+            project: Project whose target revision hash should be resolved.
+
+        Returns:
+            The resolved commit hash string, or None if unavailable.
+        """
+        try:
+            git_hash = project.GetCommitRevisionId()
+        except Exception:
+            return None
+        return git_hash if isinstance(git_hash, str) else None
+
     @classmethod
     def _SyncOneProject(cls, opt, project_index, project) -> _SyncResult:
         """Syncs a single project for interleaved sync."""
@@ -3016,6 +3036,7 @@ later is required to fix a server side protocol bug.
         fetch_errors = []
         fetch_start = None
         fetch_finish = None
+        fetch_git_hash = None
         network_output = ""
 
         if opt.local_only:
@@ -3069,11 +3090,13 @@ later is required to fix a server side protocol bug.
             finally:
                 fetch_finish = time.time()
                 network_output = network_output_capture.getvalue()
+            fetch_git_hash = cls._ResolveProjectGitHash(project)
 
         checkout_success = False
         checkout_errors = []
         checkout_start = None
         checkout_finish = None
+        checkout_git_hash = None
         checkout_stderr = ""
 
         if fetch_success:
@@ -3083,6 +3106,11 @@ later is required to fix a server side protocol bug.
                 checkout_success = True
             else:
                 # This is a normal project that needs a checkout.
+                checkout_git_hash = (
+                    fetch_git_hash
+                    if fetch_git_hash is not None
+                    else cls._ResolveProjectGitHash(project)
+                )
                 checkout_start = time.time()
                 stderr_capture = io.StringIO()
                 try:
@@ -3147,6 +3175,8 @@ later is required to fix a server side protocol bug.
             fetch_finish=fetch_finish,
             checkout_start=checkout_start,
             checkout_finish=checkout_finish,
+            fetch_git_hash=fetch_git_hash,
+            checkout_git_hash=checkout_git_hash,
         )
 
     @classmethod
@@ -3219,6 +3249,7 @@ later is required to fix a server side protocol bug.
                         result.fetch_start,
                         result.fetch_finish,
                         result.fetch_success,
+                        git_hash=result.fetch_git_hash,
                     )
                 if result.checkout_start:
                     if result.checkout_success:
@@ -3229,6 +3260,7 @@ later is required to fix a server side protocol bug.
                         result.checkout_start,
                         result.checkout_finish,
                         result.checkout_success,
+                        git_hash=result.checkout_git_hash,
                     )
 
                 finished_relpaths.add(result.relpath)
