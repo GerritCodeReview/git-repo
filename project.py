@@ -3253,15 +3253,22 @@ class Project:
         stdout = None if verbose else subprocess.PIPE
         stderr = None if verbose else subprocess.PIPE
         try:
-            p = subprocess.run(
+            with repo_trace.Trace(
+                "fetchcmd %s %s (REPO_PATH=%s REPO_TREV=%s)",
+                self.gitdir,
                 cmd_str,
-                shell=True,
-                cwd=self.manifest.topdir,
-                env=env,
-                stdout=stdout,
-                stderr=stderr,
-                text=True,
-            )
+                self.relpath,
+                repo_trev or "",
+            ):
+                p = subprocess.run(
+                    cmd_str,
+                    shell=True,
+                    cwd=self.manifest.topdir,
+                    env=env,
+                    stdout=stdout,
+                    stderr=stderr,
+                    text=True,
+                )
 
             if p.returncode != 0:
                 logger.error(
@@ -4113,15 +4120,22 @@ class Project:
 
         output = None if verbose else subprocess.PIPE
         try:
-            p = subprocess.run(
+            with repo_trace.Trace(
+                "reprojectcmd %s %s (REPO_PATH=%s REPO_TREV=%s)",
+                self.gitdir,
                 cmd_str,
-                shell=True,
-                cwd=self.manifest.topdir,
-                env=env,
-                stdout=output,
-                stderr=None if verbose else subprocess.STDOUT,
-                text=True,
-            )
+                self.relpath,
+                revid,
+            ):
+                p = subprocess.run(
+                    cmd_str,
+                    shell=True,
+                    cwd=self.manifest.topdir,
+                    env=env,
+                    stdout=output,
+                    stderr=None if verbose else subprocess.STDOUT,
+                    text=True,
+                )
         except OSError as e:
             raise LocalSyncFail(
                 f"failed to run reprojectcmd: {e}", project=self.name
