@@ -2046,6 +2046,12 @@ class Project:
         # SHA rather than the peeled commit SHA. Fall through to ResolveCommit
         # so GetRevisionId always returns a commit SHA.
         if (
+            all_refs is None
+            and not rev.startswith(R_TAGS)
+            and self.bare_ref.is_loaded
+        ):
+            all_refs = self.bare_ref.all
+        if (
             all_refs is not None
             and not rev.startswith(R_TAGS)
             and rev in all_refs
@@ -4089,12 +4095,16 @@ class Project:
                 project=self.name,
             )
 
-        try:
-            head_tree = self.work_git.rev_parse(
-                "-q", "--verify", "HEAD^{tree}", log_as_error=False
-            )
-        except error.GitError:
+        use_exec_work_git = isinstance(self.work_git, self._GitGetByExec)
+        if use_exec_work_git and self.work_git.IsUnbornHead():
             head_tree = None
+        else:
+            try:
+                head_tree = self.work_git.rev_parse(
+                    "-q", "--verify", "HEAD^{tree}", log_as_error=False
+                )
+            except error.GitError:
+                head_tree = None
 
         if head_tree:
             p = git_command.GitCommand(
@@ -4110,6 +4120,8 @@ class Project:
                     project=self.name,
                 )
             staged = p.stdout.split("\0")[:-1]
+        elif use_exec_work_git and not self.work_git.HasIndexFile():
+            staged = []
         else:
             p = git_command.GitCommand(
                 self,
@@ -4133,12 +4145,14 @@ class Project:
             )
 
         head = self.work_git.GetHead()
-        try:
-            head_oid = self.work_git.rev_parse(
-                "-q", "--verify", "HEAD", log_as_error=False
-            )
-        except error.GitError:
-            head_oid = None
+        head_oid = None
+        if head_tree is not None:
+            try:
+                head_oid = self.work_git.rev_parse(
+                    "-q", "--verify", "HEAD", log_as_error=False
+                )
+            except error.GitError:
+                head_oid = None
 
         env = os.environ.copy()
         env.update(self.GetEnvVars())
@@ -4179,12 +4193,15 @@ class Project:
         self._RefreshConfigIfModified(config_stat)
 
         new_head = self.work_git.GetHead()
-        try:
-            new_head_oid = self.work_git.rev_parse(
-                "-q", "--verify", "HEAD", log_as_error=False
-            )
-        except error.GitError:
+        if use_exec_work_git and self.work_git.IsUnbornHead(head=new_head):
             new_head_oid = None
+        else:
+            try:
+                new_head_oid = self.work_git.rev_parse(
+                    "-q", "--verify", "HEAD", log_as_error=False
+                )
+            except error.GitError:
+                new_head_oid = None
 
         if new_head != head or new_head_oid != head_oid:
             from_desc = (
@@ -4534,6 +4551,8 @@ class Project:
                     active_git.UpdateRef(ref, dst, message=msg, detach=True)
                 else:
                     active_git.symbolic_ref("-m", msg, ref, dst)
+                    if active_git is self.bare_git:
+                        self.bare_ref.UpdateSymref(ref, dst)
 
     def _CheckDirReference(self, srcdir, destdir):
         # Git worktrees don't use symlinks to share at all.
@@ -5165,6 +5184,59 @@ class Project:
                         self._project.RelPath(local=False), str(e)
                     )
                 return ref
+
+        def IsUnbornHead(self, head: Optional[str] = None) -> bool:
+            """Check whether HEAD is guaranteed to be an unborn local ref.
+
+            Args:
+                head: Optional parsed HEAD symref target; if None, read from
+                    the worktree's HEAD file on disk.
+
+            Returns:
+                True when the repository uses plain loose files and HEAD
+                points to a missing local ref; False otherwise.
+            """
+            if "GIT_DIR" in os.environ or "GIT_COMMON_DIR" in os.environ:
+                return False
+            try:
+                dotgit = self.GetDotgitPath()
+                head_path = os.path.join(dotgit, HEAD)
+                if not os.path.isdir(dotgit) or platform_utils.islink(
+                    head_path
+                ):
+                    return False
+                if head is None:
+                    with open(
+                        head_path, encoding="utf-8", errors="replace"
+                    ) as fd:
+                        head = self._ParseHead(fd.readline())
+            except (OSError, AssertionError):
+                return False
+            if not head or not head.startswith("refs/") or ".." in head:
+                return False
+            if any(ch in head for ch in "~^:?*[\\@{ "):
+                return False
+            return not any(
+                os.path.lexists(os.path.join(dotgit, rel))
+                for rel in ("packed-refs", "reftable", "commondir", head)
+            )
+
+        def HasIndexFile(self) -> bool:
+            """Check whether the worktree may have a Git index file.
+
+            Returns:
+                False only when the worktree's .git/index file is confirmed
+                absent; True otherwise (including custom env overrides).
+            """
+            if "GIT_INDEX_FILE" in os.environ or "GIT_DIR" in os.environ:
+                return True
+            try:
+                dotgit = self.GetDotgitPath()
+                return not os.path.isdir(dotgit) or os.path.lexists(
+                    os.path.join(dotgit, "index")
+                )
+            except (OSError, AssertionError):
+                return True
 
         def ResolveCommit(self, revision: str) -> str:
             """Resolve |revision| to a commit without option ambiguity."""

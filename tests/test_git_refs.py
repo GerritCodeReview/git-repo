@@ -244,3 +244,63 @@ def test_updates_when_storage_backend_toggles(tmp_path):
     _run(repo, "refs", "migrate", "--ref-format=files")
     _run(repo, "branch", "files-branch")
     assert refs.get("refs/heads/files-branch") == head
+
+
+@pytest.mark.parametrize("reftable", [False, True])
+def test_unborn_head_resolution(
+    tmp_path: Path, reftable: bool, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Unborn HEAD reads files backend directly and uses git on reftable."""
+    if reftable and not utils_for_test.supports_reftable():
+        pytest.skip("reftable not supported")
+
+    repo = os.path.join(tmp_path, "unborn")
+    ref_format = "reftable" if reftable else "files"
+    utils_for_test.init_git_tree(repo, ref_format=ref_format)
+    _run(repo, "symbolic-ref", "HEAD", "refs/heads/unborn-main")
+
+    refs = git_refs.GitRefs(os.path.join(repo, ".git"))
+    seen_symbolic_ref = []
+
+    class SpyGitCommand(git_command.GitCommand):
+        def __init__(
+            self,
+            proj: Any,
+            cmdv: List[str],
+            *args: Any,
+            **kwargs: Any,
+        ) -> None:
+            if cmdv and cmdv[0] == "symbolic-ref":
+                seen_symbolic_ref.append(cmdv)
+            super().__init__(proj, cmdv, *args, **kwargs)
+
+    monkeypatch.setattr(git_command, "GitCommand", SpyGitCommand)
+    assert refs.symref("HEAD") == "refs/heads/unborn-main"
+    if not reftable:
+        assert seen_symbolic_ref == []
+
+
+@pytest.mark.parametrize("reftable", [False, True])
+def test_update_symref_keeps_snapshot_warm(
+    tmp_path: Path, reftable: bool
+) -> None:
+    """UpdateSymref avoids reloading while preserving external change checks."""
+    if reftable and not utils_for_test.supports_reftable():
+        pytest.skip("reftable not supported")
+
+    repo = _init_repo(tmp_path, reftable=reftable)
+    branch = _run(repo, "symbolic-ref", "--short", "HEAD")
+    head = _run(repo, "rev-parse", "HEAD")
+    refs = git_refs.GitRefs(os.path.join(repo, ".git"))
+    assert refs.get(f"refs/heads/{branch}") == head
+
+    _run(repo, "symbolic-ref", "refs/remotes/m/main", f"refs/heads/{branch}")
+    refs.UpdateSymref("refs/remotes/m/main", f"refs/heads/{branch}")
+
+    with mock.patch.object(
+        refs,
+        "_LoadAll",
+        side_effect=AssertionError("expected warm GitRefs snapshot"),
+    ):
+        assert refs.symref("refs/remotes/m/main") == f"refs/heads/{branch}"
+        assert refs.get("refs/remotes/m/main") == head
