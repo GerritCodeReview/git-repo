@@ -3801,6 +3801,16 @@ class ReprojectCmdTests(unittest.TestCase):
             proj.work_git.rev_parse.side_effect = error.GitError("unborn")
             mock_run = self._reproject(proj)
             mock_run.assert_called_once()
+            self.assertEqual(
+                [
+                    mock.call(
+                        "-q", "--verify", "HEAD^{tree}", log_as_error=False
+                    ),
+                    mock.call("-q", "--verify", "HEAD", log_as_error=False),
+                    mock.call("-q", "--verify", "HEAD", log_as_error=False),
+                ],
+                proj.work_git.rev_parse.call_args_list,
+            )
 
     def test_reproject_rejects_an_operation_in_progress(self) -> None:
         """Test an unfinished rebase fails the sync before the command runs."""
@@ -4254,6 +4264,113 @@ class ReprojectCmdTests(unittest.TestCase):
 
             self.assertTrue(proj.config.GetBoolean("custom.reprojected"))
 
+    def test_reproject_missing_head_tree_keeps_symmetric_head_oid(
+        self,
+    ) -> None:
+        """Born HEAD with missing HEAD^{tree} still compares HEAD cleanly."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.work_git.GetHead.return_value = "refs/heads/main"
+
+            def _rev_parse(*args: str, **_kwargs: Any) -> str:
+                if "HEAD^{tree}" in args:
+                    raise error.GitError("missing tree object")
+                return self.HEAD_ID
+
+            proj.work_git.rev_parse.side_effect = _rev_parse
+            mock_run = self._reproject(proj)
+            mock_run.assert_called_once()
+
+    def test_get_revision_id_reuses_loaded_bare_ref(self) -> None:
+        """Test GetRevisionId reuses warm bare_ref and peels tag revisions."""
+        with utils_for_test.TempGitTree() as tempdir:
+            subprocess.run(
+                [
+                    "git",
+                    "-C",
+                    tempdir,
+                    "commit",
+                    "--allow-empty",
+                    "-q",
+                    "-m",
+                    "init",
+                ],
+                check=True,
+            )
+            commit_sha = subprocess.check_output(
+                ["git", "-C", tempdir, "rev-parse", "HEAD"], text=True
+            ).strip()
+            subprocess.run(
+                [
+                    "git",
+                    "-C",
+                    tempdir,
+                    "update-ref",
+                    "refs/remotes/origin/main",
+                    commit_sha,
+                ],
+                check=True,
+            )
+            subprocess.run(
+                [
+                    "git",
+                    "-C",
+                    tempdir,
+                    "tag",
+                    "-a",
+                    "-m",
+                    "tag v1.0",
+                    "v1.0",
+                    commit_sha,
+                ],
+                check=True,
+            )
+            tag_sha = subprocess.check_output(
+                ["git", "-C", tempdir, "rev-parse", "refs/tags/v1.0"], text=True
+            ).strip()
+            subprocess.run(
+                [
+                    "git",
+                    "-C",
+                    tempdir,
+                    "update-ref",
+                    "refs/remotes/origin/tags/v1.0",
+                    tag_sha,
+                ],
+                check=True,
+            )
+
+            proj = _create_mock_project(tempdir, use_local_gitdirs=True)
+            proj.revisionId = None
+            mock_remote = mock.MagicMock()
+            proj.GetRemote = mock.MagicMock(return_value=mock_remote)
+            proj.bare_git.ResolveCommit.return_value = commit_sha
+
+            # Warm bare_ref via public API.
+            self.assertEqual(
+                proj.bare_ref.all["refs/remotes/origin/main"], commit_sha
+            )
+
+            proj.revisionExpr = "main"
+            mock_remote.ToLocal.return_value = "refs/remotes/origin/main"
+            self.assertEqual(proj.GetRevisionId(), commit_sha)
+            proj.bare_git.ResolveCommit.assert_not_called()
+
+            proj.revisionExpr = "refs/tags/v1.0"
+            mock_remote.ToLocal.return_value = "refs/tags/v1.0"
+            self.assertEqual(proj.GetRevisionId(), commit_sha)
+            proj.bare_git.ResolveCommit.assert_called_once_with(
+                "refs/tags/v1.0"
+            )
+
+            # Custom refspec mapping refs/tags/* elsewhere still peels tags.
+            proj.bare_git.ResolveCommit.reset_mock()
+            mock_remote.ToLocal.return_value = "refs/remotes/origin/tags/v1.0"
+            self.assertEqual(proj.GetRevisionId(), commit_sha)
+            proj.bare_git.ResolveCommit.assert_called_once_with(
+                "refs/remotes/origin/tags/v1.0"
+            )
+
 
 class ReprojectCmdGitTests(unittest.TestCase):
     """Tests running the reprojectcmd contract against a real Git checkout."""
@@ -4564,6 +4681,57 @@ class ReprojectCmdGitTests(unittest.TestCase):
             clean, errors = self._sync(proj)
             self.assertTrue(clean, errors)
             self.assertFalse(os.path.exists(marker))
+
+    def test_sync_local_half_rejects_staged_changes_on_unborn_head(
+        self,
+    ) -> None:
+        """Test real staged file on unborn HEAD is rejected before reproject."""
+        with tempfile.TemporaryDirectory() as topdir:
+            proj, _ = self._make_client(topdir, self.READ_TREE)
+            staged_path = os.path.join(proj.worktree, "staged.txt")
+            with open(staged_path, "w", encoding="utf-8") as fp:
+                fp.write("staged\n")
+            self._git(proj.worktree, "add", "staged.txt")
+
+            clean, errors = self._sync(proj)
+            self.assertFalse(clean)
+            self.assertTrue(
+                any("staged.txt" in str(err) for err in errors), errors
+            )
+
+    def test_reproject_unborn_empty_skips_redundant_git_checks(self) -> None:
+        """Clean unborn files-backend checkout runs only post-check diff."""
+        with tempfile.TemporaryDirectory() as topdir, mock.patch.dict(
+            os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}
+        ):
+            proj, revid = self._make_client(topdir, self.READ_TREE)
+            seen_cmds: List[List[str]] = []
+
+            class SpyGitCommand(git_command.GitCommand):
+                def __init__(
+                    self,
+                    proj_arg: Any,
+                    cmdv: List[str],
+                    *args: Any,
+                    **kwargs: Any,
+                ) -> None:
+                    seen_cmds.append(list(cmdv))
+                    super().__init__(proj_arg, cmdv, *args, **kwargs)
+
+            with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
+                proj._Reproject(revid)
+
+            self.assertEqual(
+                [
+                    [
+                        "diff-index",
+                        "--cached",
+                        "--name-only",
+                        f"{revid}^{{tree}}",
+                    ]
+                ],
+                seen_cmds,
+            )
 
 
 class DownloadPatchSetTests(unittest.TestCase):
