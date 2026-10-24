@@ -28,9 +28,7 @@ import urllib.request
 
 import error
 import git_command
-from git_refs import R_CHANGES
-from git_refs import R_HEADS
-from git_refs import R_TAGS
+import git_refs
 import platform_utils
 import repo_trace
 
@@ -45,7 +43,7 @@ REVIEW_CACHE = {}
 
 
 def IsChange(rev):
-    return rev.startswith(R_CHANGES)
+    return rev.startswith(git_refs.R_CHANGES)
 
 
 def IsId(rev: str) -> bool:
@@ -53,7 +51,7 @@ def IsId(rev: str) -> bool:
 
 
 def IsTag(rev):
-    return rev.startswith(R_TAGS)
+    return rev.startswith(git_refs.R_TAGS)
 
 
 def IsImmutable(rev):
@@ -741,13 +739,13 @@ class Remote:
             return rev
 
         if not rev.startswith("refs/"):
-            rev = R_HEADS + rev
+            rev = git_refs.R_HEADS + rev
 
         for spec in self.fetch:
             if spec.SourceMatches(rev):
                 return spec.MapSource(rev)
 
-        if not rev.startswith(R_HEADS):
+        if not rev.startswith(git_refs.R_HEADS):
             return rev
 
         raise error.GitError(

@@ -23,8 +23,7 @@ from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 from color import Coloring
 from command import DEFAULT_LOCAL_JOBS
 from command import PagedCommand
-from git_refs import R_HEADS
-from git_refs import R_M
+import git_refs
 
 
 class BranchInfo(NamedTuple):
@@ -333,9 +332,9 @@ class Info(PagedCommand):
             branch = project.manifest.manifestProject.config.GetBranch(
                 "default"
             ).merge
-            if branch.startswith(R_HEADS):
-                branch = branch[len(R_HEADS) :]
-            logTarget = R_M + branch
+            if branch.startswith(git_refs.R_HEADS):
+                branch = branch[len(git_refs.R_HEADS) :]
+            logTarget = git_refs.R_M + branch
 
             localCommits, originCommits = cls._GetDiffCommits(
                 project, logTarget
