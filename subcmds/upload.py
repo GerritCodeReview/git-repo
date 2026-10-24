@@ -23,7 +23,7 @@ from command import DEFAULT_LOCAL_JOBS
 from command import InteractiveCommand
 from editor import Editor
 import error
-from git_refs import R_HEADS
+import git_refs
 import git_superproject
 from hooks import RepoHook
 from project import ReviewableBranch
@@ -607,11 +607,11 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             )
 
             full_dest = destination
-            if not full_dest.startswith(R_HEADS):
-                full_dest = R_HEADS + full_dest
+            if not full_dest.startswith(git_refs.R_HEADS):
+                full_dest = git_refs.R_HEADS + full_dest
             full_revision = branch.project.revisionExpr
-            if not full_revision.startswith(R_HEADS):
-                full_revision = R_HEADS + full_revision
+            if not full_revision.startswith(git_refs.R_HEADS):
+                full_revision = git_refs.R_HEADS + full_revision
 
             # If the merge branch of the local branch is different from
             # the project's revision AND destination, this might not be

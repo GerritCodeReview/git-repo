@@ -23,8 +23,7 @@ import xml.dom.minidom
 
 import error
 from git_config import GitConfig
-from git_refs import HEAD
-from git_refs import R_HEADS
+import git_refs
 from git_superproject import Superproject
 import platform_utils
 from project import Annotation
@@ -711,7 +710,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 if self.IsMirror:
                     value = p.bare_git.ResolveCommit(p.revisionExpr)
                 else:
-                    value = p.work_git.ResolveCommit(HEAD)
+                    value = p.work_git.ResolveCommit(git_refs.HEAD)
                 e.setAttribute("revision", value)
                 if peg_rev_upstream:
                     if p.upstream:
@@ -1208,8 +1207,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             try:
                 m = self.manifestProject
                 b = m.GetBranch(m.CurrentBranch).merge
-                if b is not None and b.startswith(R_HEADS):
-                    b = b[len(R_HEADS) :]
+                if b is not None and b.startswith(git_refs.R_HEADS):
+                    b = b[len(git_refs.R_HEADS) :]
                 self.branch = b
 
                 parent_groups = self.parent_groups.copy()

@@ -62,8 +62,7 @@ import event_log
 import git_command
 from git_config import GetUrlCookieFile
 from git_config import RepoConfig
-from git_refs import HEAD
-from git_refs import R_HEADS
+import git_refs
 import git_superproject
 from hooks import RepoHook
 from manifest_xml import XmlManifest
@@ -866,8 +865,8 @@ later is required to fix a server side protocol bug.
         """
         b = manifest_project.GetBranch(manifest_project.CurrentBranch)
         branch = b.merge
-        if branch.startswith(R_HEADS):
-            branch = branch[len(R_HEADS) :]
+        if branch.startswith(git_refs.R_HEADS):
+            branch = branch[len(git_refs.R_HEADS) :]
         return branch
 
     @classmethod
@@ -3501,7 +3500,10 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
             logger.warning("warning: Skipped upgrade to unverified version")
     else:
         if verbose:
-            print("repo version %s is current" % rp.work_git.describe(HEAD))
+            print(
+                "repo version %s is current"
+                % rp.work_git.describe(git_refs.HEAD)
+            )
 
 
 class _FetchTimes:

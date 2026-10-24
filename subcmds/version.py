@@ -19,7 +19,7 @@ from typing import Any, Tuple
 from command import Command
 from command import MirrorSafeCommand
 import git_command
-from git_refs import HEAD
+import git_refs
 from wrapper import Wrapper
 
 
@@ -38,15 +38,15 @@ class Version(Command, MirrorSafeCommand):
         """Return repo's describe string and commit date."""
         if git_command.git_require((2, 32, 0)):
             output = project.bare_git.log(
-                "-1", "--format=%(describe)%n%cD", HEAD
+                "-1", "--format=%(describe)%n%cD", git_refs.HEAD
             )
             description, commit_date = output.rstrip("\n").split("\n", 1)
             if description:
                 return description, commit_date
 
         return (
-            project.bare_git.describe(HEAD),
-            project.bare_git.log("-1", "--format=%cD", HEAD),
+            project.bare_git.describe(git_refs.HEAD),
+            project.bare_git.log("-1", "--format=%cD", git_refs.HEAD),
         )
 
     def Execute(self, opt, args):

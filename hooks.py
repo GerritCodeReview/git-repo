@@ -20,7 +20,7 @@ import traceback
 import urllib.parse
 
 import error
-from git_refs import HEAD
+import git_refs
 
 
 # The API we've documented to hook authors.  Keep in sync with repo-hooks.md.
@@ -142,7 +142,7 @@ class RepoHook:
         # NOTE: Local (non-committed) changes will not be factored into this
         # hash. I think this is OK, since we're really only worried about
         # warning the user about upstream changes.
-        return self._hooks_project.work_git.rev_parse(HEAD)
+        return self._hooks_project.work_git.rev_parse(git_refs.HEAD)
 
     def _GetMustVerb(self):
         """Return 'must' if the hook is required; 'should' if not."""

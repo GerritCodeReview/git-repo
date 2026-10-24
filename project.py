@@ -40,13 +40,7 @@ from git_config import GetSchemeFromUrl
 from git_config import GetUrlCookieFile
 from git_config import GitConfig
 from git_config import IsId
-from git_refs import GitRefs
-from git_refs import HEAD
-from git_refs import R_HEADS
-from git_refs import R_M
-from git_refs import R_PUB
-from git_refs import R_TAGS
-from git_refs import R_WORKTREE_M
+import git_refs
 import git_status
 import git_superproject
 from git_trace2_event_log import EventLog
@@ -209,7 +203,7 @@ class ReviewableBranch:
                 "--reverse",
                 "--date-order",
                 not_rev(self.base),
-                R_HEADS + self.name,
+                git_refs.R_HEADS + self.name,
                 "--",
             )
             try:
@@ -232,7 +226,7 @@ class ReviewableBranch:
     def unabbrev_commits(self):
         r = {}
         for commit in self.project.bare_git.rev_list(
-            not_rev(self.base), R_HEADS + self.name, "--"
+            not_rev(self.base), git_refs.R_HEADS + self.name, "--"
         ):
             r[commit[0:8]] = commit
         return r
@@ -240,13 +234,17 @@ class ReviewableBranch:
     @property
     def date(self):
         return self.project.bare_git.log(
-            "--pretty=format:%cd", "-n", "1", R_HEADS + self.name, "--"
+            "--pretty=format:%cd",
+            "-n",
+            "1",
+            git_refs.R_HEADS + self.name,
+            "--",
         )
 
     @property
     def modified_files(self) -> List[str]:
         return self.project.bare_git.diff(
-            "--name-only", f"{self.base}...{R_HEADS}{self.name}"
+            "--name-only", f"{self.base}...{git_refs.R_HEADS}{self.name}"
         ).splitlines()
 
     @property
@@ -747,7 +745,7 @@ class Project:
         else:
             self.work_git = None
         self.bare_git = self._GitGetByExec(self, bare=True, gitdir=self.gitdir)
-        self.bare_ref = GitRefs(self.gitdir)
+        self.bare_ref = git_refs.GitRefs(self.gitdir)
         self.bare_objdir = self._GitGetByExec(
             self, bare=True, gitdir=self.objdir
         )
@@ -784,8 +782,8 @@ class Project:
             # If the local checkout is in a bad state, don't barf.  Let the
             # callers process this like the head is unreadable.
             return None
-        if b and b.startswith(R_HEADS):
-            return b[len(R_HEADS) :]
+        if b and b.startswith(git_refs.R_HEADS):
+            return b[len(git_refs.R_HEADS) :]
         return None
 
     def _GetHead(self) -> Optional[str]:
@@ -916,7 +914,7 @@ class Project:
     def _IsDirtyLegacy(self, consider_untracked: bool = True) -> bool:
         """Check dirty state with plumbing supported by older Git."""
         self._RefreshIndexStatCache()
-        if self.work_git.DiffZ("diff-index", "-M", "--cached", HEAD):
+        if self.work_git.DiffZ("diff-index", "-M", "--cached", git_refs.HEAD):
             return True
         if self.work_git.DiffZ("diff-files"):
             return True
@@ -965,7 +963,7 @@ class Project:
         # The snapshot already failed; don't run git status again.
         is_dirty = self._IsDirtyLegacy(consider_untracked=True)
         try:
-            head = self.work_git.rev_parse(HEAD)
+            head = self.work_git.rev_parse(git_refs.HEAD)
         except error.GitError:
             head = None
         return is_dirty, head
@@ -1019,8 +1017,8 @@ class Project:
         heads = {}
 
         for name, ref_id in all_refs.items():
-            if name.startswith(R_HEADS):
-                name = name[len(R_HEADS) :]
+            if name.startswith(git_refs.R_HEADS):
+                name = name[len(git_refs.R_HEADS) :]
                 b = self.GetBranch(name)
                 b.current = name == current
                 b.published = None
@@ -1028,8 +1026,8 @@ class Project:
                 heads[name] = b
 
         for name, ref_id in all_refs.items():
-            if name.startswith(R_PUB):
-                name = name[len(R_PUB) :]
+            if name.startswith(git_refs.R_PUB):
+                name = name[len(git_refs.R_PUB) :]
                 b = heads.get(name)
                 if b:
                     b.published = ref_id
@@ -1120,7 +1118,9 @@ class Project:
             if not get_all:
                 return details
 
-        changes = self.work_git.DiffZ("diff-index", "--cached", HEAD).keys()
+        changes = self.work_git.DiffZ(
+            "diff-index", "--cached", git_refs.HEAD
+        ).keys()
         if changes:
             details.extend(changes)
             if not get_all:
@@ -1209,7 +1209,7 @@ class Project:
         """Render status using plumbing supported by older Git."""
         self._RefreshIndexStatCache()
         rb = self.IsRebaseInProgress()
-        di = self.work_git.DiffZ("diff-index", "-M", "--cached", HEAD)
+        di = self.work_git.DiffZ("diff-index", "-M", "--cached", git_refs.HEAD)
         df = self.work_git.DiffZ("diff-files")
         do = self.work_git.LsOthers()
         if quiet and (rb or di or df or do):
@@ -1243,7 +1243,7 @@ class Project:
                 left_right = self.work_git.rev_list(
                     "--left-right",
                     "--count",
-                    f"{local_merge}...{R_HEADS}{branch_name}",
+                    f"{local_merge}...{git_refs.R_HEADS}{branch_name}",
                 )
                 left, right = left_right[0].split()
                 behind = int(left)
@@ -1366,7 +1366,7 @@ class Project:
         cmd = ["diff"]
         if out.is_on:
             cmd.append("--color")
-        cmd.append(HEAD)
+        cmd.append(git_refs.HEAD)
         if absolute_paths:
             cmd.append("--src-prefix=a/%s/" % self.RelPath(local))
             cmd.append("--dst-prefix=b/%s/" % self.RelPath(local))
@@ -1395,7 +1395,7 @@ class Project:
         If so, returns the SHA-1 hash of the last published
         state for the branch.
         """
-        key = R_PUB + branch
+        key = git_refs.R_PUB + branch
         if all_refs is None:
             try:
                 return self.bare_git.rev_parse(key)
@@ -1414,14 +1414,14 @@ class Project:
         heads = set()
         canrm = {}
         for name, ref_id in all_refs.items():
-            if name.startswith(R_HEADS):
+            if name.startswith(git_refs.R_HEADS):
                 heads.add(name)
-            elif name.startswith(R_PUB):
+            elif name.startswith(git_refs.R_PUB):
                 canrm[name] = ref_id
 
         for name, ref_id in canrm.items():
-            n = name[len(R_PUB) :]
-            if R_HEADS + n not in heads:
+            n = name[len(git_refs.R_PUB) :]
+            if git_refs.R_HEADS + n not in heads:
                 self.bare_git.DeleteRef(name, ref_id)
 
     def GetUploadableBranches(self, selected_branch=None):
@@ -1430,10 +1430,10 @@ class Project:
             branch = self.GetBranch(selected_branch)
             if not branch.LocalMerge:
                 return []
-            head_id = self.bare_ref.get(R_HEADS + selected_branch)
+            head_id = self.bare_ref.get(git_refs.R_HEADS + selected_branch)
             if not head_id:
                 return []
-            pub_id = self.bare_ref.get(R_PUB + selected_branch)
+            pub_id = self.bare_ref.get(git_refs.R_PUB + selected_branch)
             if pub_id and pub_id == head_id:
                 return []
             rb = self.GetUploadableBranch(selected_branch)
@@ -1520,8 +1520,8 @@ class Project:
             dest_branch = self.dest_branch
         if dest_branch is None:
             dest_branch = branch.merge
-        if not dest_branch.startswith(R_HEADS):
-            dest_branch = R_HEADS + dest_branch
+        if not dest_branch.startswith(git_refs.R_HEADS):
+            dest_branch = git_refs.R_HEADS + dest_branch
 
         if not branch.remote.projectname:
             branch.remote.projectname = self.name
@@ -1550,10 +1550,10 @@ class Project:
 
         cmd.append(url)
 
-        if dest_branch.startswith(R_HEADS):
-            dest_branch = dest_branch[len(R_HEADS) :]
+        if dest_branch.startswith(git_refs.R_HEADS):
+            dest_branch = dest_branch[len(git_refs.R_HEADS) :]
 
-        ref_spec = f"{R_HEADS + branch.name}:refs/for/{dest_branch}"
+        ref_spec = f"{git_refs.R_HEADS + branch.name}:refs/for/{dest_branch}"
         opts = []
         if topic is not None:
             opts += [f"topic={topic}"]
@@ -1607,7 +1607,9 @@ class Project:
         if not dryrun:
             msg = f"posted to {branch.remote.review} for {dest_branch}"
             self.bare_git.UpdateRef(
-                R_PUB + branch.name, R_HEADS + branch.name, message=msg
+                git_refs.R_PUB + branch.name,
+                git_refs.R_HEADS + branch.name,
+                message=msg,
             )
 
     @staticmethod
@@ -2020,7 +2022,9 @@ class Project:
         """Get revisionId of a commit."""
         if self.revisionId:
             return self.revisionId
-        if all_refs is None and not self.revisionExpr.startswith(R_TAGS):
+        if all_refs is None and not self.revisionExpr.startswith(
+            git_refs.R_TAGS
+        ):
             all_refs = self._allrefs
         return self.GetRevisionId(all_refs)
 
@@ -2031,7 +2035,7 @@ class Project:
         """
         if self.work_git:
             if not self.use_git_worktrees and self.bare_ref.is_loaded:
-                head = self.bare_ref.get(HEAD)
+                head = self.bare_ref.get(git_refs.HEAD)
                 if head:
                     return head
             try:
@@ -2052,7 +2056,7 @@ class Project:
         # so GetRevisionId always returns a commit SHA.
         if (
             all_refs is not None
-            and not rev.startswith(R_TAGS)
+            and not rev.startswith(git_refs.R_TAGS)
             and rev in all_refs
         ):
             return all_refs[rev]
@@ -2163,8 +2167,8 @@ class Project:
                 return
 
         head = self._GetHead()
-        if head and head.startswith(R_HEADS):
-            branch = head[len(R_HEADS) :]
+        if head and head.startswith(git_refs.R_HEADS):
+            branch = head[len(git_refs.R_HEADS) :]
             try:
                 head = all_refs[head]
             except KeyError:
@@ -2235,7 +2239,9 @@ class Project:
                     return
             else:
                 if verbose:
-                    lost_output = self._revlist("--count", not_rev(revid), HEAD)
+                    lost_output = self._revlist(
+                        "--count", not_rev(revid), git_refs.HEAD
+                    )
                     lost = int(lost_output[0]) if lost_output else 0
                     if lost:
                         syncbuf.info(self, "discarding %d commits", lost)
@@ -2277,14 +2283,14 @@ class Project:
             self._CopyAndLinkFiles()
             return
 
-        gain_output = self._revlist("--count", not_rev(HEAD), revid)
+        gain_output = self._revlist("--count", not_rev(git_refs.HEAD), revid)
         upstream_gain = int(gain_output[0]) if gain_output else 0
 
         # See if we can perform a fast forward merge.  This can happen if our
         # branch isn't in the exact same state as we last published.
         try:
             self.work_git.merge_base(
-                "--is-ancestor", HEAD, revid, log_as_error=False
+                "--is-ancestor", git_refs.HEAD, revid, log_as_error=False
             )
             # Skip the published logic.
             pub = False
@@ -2330,7 +2336,9 @@ class Project:
 
         # Examine the local commits not in the remote.  Find the
         # last one attributed to this user, if any.
-        local_changes = self._revlist(not_rev(revid), HEAD, format="%H %ce")
+        local_changes = self._revlist(
+            not_rev(revid), git_refs.HEAD, format="%H %ce"
+        )
         last_mine = None
         cnt_mine = 0
         for commit in local_changes:
@@ -2375,7 +2383,7 @@ class Project:
             # In case of manifest sync the revisionExpr might be a SHA1.
             branch.merge = self.revisionExpr
             if not branch.merge.startswith("refs/"):
-                branch.merge = R_HEADS + branch.merge
+                branch.merge = git_refs.R_HEADS + branch.merge
         branch.Save()
 
         if cnt_mine > 0 and self.rebase:
@@ -2654,11 +2662,11 @@ class Project:
         if not branch_merge:
             branch_merge = self.revisionExpr
         head = self.work_git.GetHead()
-        if head == (R_HEADS + name):
+        if head == (git_refs.R_HEADS + name):
             return True
 
         all_refs = self.bare_ref.all
-        if R_HEADS + name in all_refs:
+        if git_refs.R_HEADS + name in all_refs:
             git_command.GitCommand(
                 self, ["checkout", "-q", name, "--"], verify_command=True
             ).Wait()
@@ -2668,22 +2676,22 @@ class Project:
         branch.remote = self.GetRemote()
         branch.merge = branch_merge
         if not branch.merge.startswith("refs/") and not IsId(branch_merge):
-            branch.merge = R_HEADS + branch_merge
+            branch.merge = git_refs.R_HEADS + branch_merge
 
         if revision is None:
             revid = self.GetRevisionId(all_refs)
         else:
             revid = self.work_git.rev_parse(revision)
 
-        if head.startswith(R_HEADS):
+        if head.startswith(git_refs.R_HEADS):
             try:
                 head = all_refs[head]
             except KeyError:
                 head = None
         if revid and head and revid == head:
-            ref = R_HEADS + name
+            ref = git_refs.R_HEADS + name
             self.work_git.update_ref(ref, revid)
-            self.work_git.symbolic_ref(HEAD, ref)
+            self.work_git.symbolic_ref(git_refs.HEAD, ref)
             branch.Save()
             return True
 
@@ -2705,7 +2713,7 @@ class Project:
             True if the checkout succeeded; False if the
             branch doesn't exist.
         """
-        rev = R_HEADS + name
+        rev = git_refs.R_HEADS + name
         head = self.work_git.GetHead()
         if head == rev:
             # Already on the branch.
@@ -2718,7 +2726,7 @@ class Project:
             # Branch does not exist in this project.
             return False
 
-        if head.startswith(R_HEADS):
+        if head.startswith(git_refs.R_HEADS):
             try:
                 head = all_refs[head]
             except KeyError:
@@ -2727,7 +2735,7 @@ class Project:
         if head == revid:
             # Same revision; just update HEAD to point to the new
             # target branch, but otherwise take no other action.
-            self.work_git.SetHead(R_HEADS + name)
+            self.work_git.SetHead(git_refs.R_HEADS + name)
             return True
 
         git_command.GitCommand(
@@ -2749,7 +2757,7 @@ class Project:
             True if the abandon succeeded; Raises GitCommandError if it didn't;
             None if the branch didn't exist.
         """
-        rev = R_HEADS + name
+        rev = git_refs.R_HEADS + name
         all_refs = self.bare_ref.all
         if rev not in all_refs:
             # Doesn't exist
@@ -2781,8 +2789,8 @@ class Project:
         left = self._allrefs
         cb = self.CurrentBranch
         for name in left.keys():
-            if name.startswith(R_HEADS):
-                name = name[len(R_HEADS) :]
+            if name.startswith(git_refs.R_HEADS):
+                name = name[len(git_refs.R_HEADS) :]
                 if cb is None or name != cb:
                     kill.append(name)
 
@@ -2792,13 +2800,13 @@ class Project:
             return []
 
         rev = self.GetCommitRevisionId(left)
-        head = left.get(R_HEADS + cb) if cb is not None else None
+        head = left.get(git_refs.R_HEADS + cb) if cb is not None else None
         if (
             cb is not None
             and head == rev
             and not self.IsDirty(consider_untracked=False)
         ):
-            self.work_git.DetachHead(HEAD)
+            self.work_git.DetachHead(git_refs.HEAD)
             kill.append(cb)
 
         if kill:
@@ -2825,14 +2833,16 @@ class Project:
                     self.bare_git.DetachHead(old)
                 else:
                     branch = (
-                        old[len(R_HEADS) :] if old.startswith(R_HEADS) else old
+                        old[len(git_refs.R_HEADS) :]
+                        if old.startswith(git_refs.R_HEADS)
+                        else old
                     )
                     if branch not in kill:
                         self.bare_git.SetHead(old)
                 left = self._allrefs
 
             for branch in kill:
-                if (R_HEADS + branch) not in left:
+                if (git_refs.R_HEADS + branch) not in left:
                     self.CleanPublishedCache()
                     break
 
@@ -2842,7 +2852,7 @@ class Project:
 
         kept = []
         for branch in kill:
-            if R_HEADS + branch in left:
+            if git_refs.R_HEADS + branch in left:
                 branch = self.GetBranch(branch)
                 branch.current = branch.name == cb
                 base = branch.LocalMerge
@@ -3335,7 +3345,7 @@ class Project:
         if not default:
             return None
         for cand in (default.upstreamExpr, default.revisionExpr):
-            if cand and not IsId(cand) and not cand.startswith(R_TAGS):
+            if cand and not IsId(cand) and not cand.startswith(git_refs.R_TAGS):
                 return cand
         return None
 
@@ -3390,12 +3400,12 @@ class Project:
                 else:
                     current_branch_only = False
 
-            if self.revisionExpr.startswith(R_TAGS):
+            if self.revisionExpr.startswith(git_refs.R_TAGS):
                 # This is a tag and its commit id should never change.
-                tag_name = self.revisionExpr[len(R_TAGS) :]
-            elif upstream and upstream.startswith(R_TAGS):
+                tag_name = self.revisionExpr[len(git_refs.R_TAGS) :]
+            elif upstream and upstream.startswith(git_refs.R_TAGS):
                 # This is a tag and its commit id should never change.
-                tag_name = upstream[len(R_TAGS) :]
+                tag_name = upstream[len(git_refs.R_TAGS) :]
 
             if is_sha1 or tag_name is not None:
                 has_shallow = self._HasShallow()
@@ -3427,9 +3437,9 @@ class Project:
 
                 update_ref_cmds = []
 
-                for r, ref_id in GitRefs(ref_dir).all.items():
+                for r, ref_id in git_refs.GitRefs(ref_dir).all.items():
                     if r not in all_refs:
-                        if r.startswith(R_TAGS) or remote.WritesTo(r):
+                        if r.startswith(git_refs.R_TAGS) or remote.WritesTo(r):
                             update_ref_cmds.append(f"create {r} {ref_id}\n")
                             all_refs[r] = ref_id
                             ids.add(ref_id)
@@ -3527,7 +3537,7 @@ class Project:
                 branch = upstream
             if branch is not None and branch.strip():
                 if not branch.startswith("refs/"):
-                    branch = R_HEADS + branch
+                    branch = git_refs.R_HEADS + branch
                 spec.append(str(("+%s:" % branch) + remote.ToLocal(branch)))
 
         # If mirroring repo and we cannot deduce the tag or branch to fetch,
@@ -4014,8 +4024,8 @@ class Project:
         |revid|, since there is then nothing to materialize.
         """
         old = self._GetHead()
-        if old and old.startswith(R_HEADS):
-            old = old[len(R_HEADS) :]
+        if old and old.startswith(git_refs.R_HEADS):
+            old = old[len(git_refs.R_HEADS) :]
         if head != revid:
             self._Reproject(revid, verbose=verbose)
         self.work_git.DetachHead(
@@ -4035,7 +4045,7 @@ class Project:
         commit the branch is at; the ref write fails if it moved meanwhile.
         """
         self._Reproject(revid, verbose=verbose)
-        self.work_git.UpdateRef(HEAD, revid, old=head, message=message)
+        self.work_git.UpdateRef(git_refs.HEAD, revid, old=head, message=message)
 
     def _Reproject(self, revid: str, verbose: bool = False) -> None:
         """Make the index and worktree match |revid| with repo.reprojectcmd.
@@ -4431,13 +4441,13 @@ class Project:
                 # Set up the m/ space to point to the worktree-specific ref
                 # space. We'll update the worktree-specific ref space on each
                 # checkout.
-                ref = R_M + self.manifest.branch
+                ref = git_refs.R_M + self.manifest.branch
                 if not self.bare_ref.symref(ref):
                     self.bare_git.symbolic_ref(
                         "-m",
                         "redirecting to worktree scope",
                         ref,
-                        R_WORKTREE_M + self.manifest.branch,
+                        git_refs.R_WORKTREE_M + self.manifest.branch,
                     )
 
                 # We can't update this ref with git worktrees until it exists.
@@ -4445,18 +4455,18 @@ class Project:
                 if not os.path.exists(self.worktree):
                     return
 
-                base = R_WORKTREE_M
+                base = git_refs.R_WORKTREE_M
                 active_git = self.work_git
 
-                self._InitAnyMRef(HEAD, self.bare_git, detach=True)
+                self._InitAnyMRef(git_refs.HEAD, self.bare_git, detach=True)
             else:
-                base = R_M
+                base = git_refs.R_M
                 active_git = self.bare_git
 
             self._InitAnyMRef(base + self.manifest.branch, active_git)
 
     def _InitMirrorHead(self):
-        self._InitAnyMRef(HEAD, self.bare_git)
+        self._InitAnyMRef(git_refs.HEAD, self.bare_git)
 
     def _InitAnyMRef(self, ref, active_git, detach=False):
         """Initialize |ref| in |active_git| to the value in the manifest.
@@ -4659,10 +4669,12 @@ class Project:
                 self._createDotGit(dotgit)
 
             if init_dotgit:
-                self.work_git.UpdateRef(HEAD, self.GetRevisionId(), detach=True)
+                self.work_git.UpdateRef(
+                    git_refs.HEAD, self.GetRevisionId(), detach=True
+                )
 
                 # Finish checking out the worktree.
-                cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
+                cmd = ["read-tree", "--reset", "-u", "-v", git_refs.HEAD]
                 try:
                     if git_command.GitCommand(self, cmd).Wait() != 0:
                         raise error.GitError(
@@ -5051,7 +5063,7 @@ class Project:
                 # "refs/heads/.invalid" placeholder used for unborn branches,
                 # empty repositories, or when the reftables backend is used
                 # (which will be the default in Git 3.0).
-                if not ref or ref == R_HEADS + ".invalid":
+                if not ref or ref == git_refs.R_HEADS + ".invalid":
                     return None
                 return ref
             else:
@@ -5068,7 +5080,7 @@ class Project:
             try:
                 # Catch AssertionError raised by GetDotgitPath when worktree
                 # .git pointer file is malformed (e.g. missing 'gitdir:').
-                path = self.GetDotgitPath(subpath=HEAD)
+                path = self.GetDotgitPath(subpath=git_refs.HEAD)
                 if not platform_utils.islink(path):
                     with open(
                         path, "r", encoding="utf-8", errors="replace"
@@ -5080,13 +5092,15 @@ class Project:
                 pass
 
             try:
-                return self.symbolic_ref("-q", HEAD, log_as_error=False)
+                return self.symbolic_ref(
+                    "-q", git_refs.HEAD, log_as_error=False
+                )
             except error.GitError:
                 pass
 
             try:
                 # If symbolic-ref fails, try to treat as detached HEAD.
-                return self.rev_parse(HEAD)
+                return self.rev_parse(git_refs.HEAD)
             except error.GitError as e:
                 logger.warning(
                     "project %s: unparseable HEAD; trying to recover.\n"
@@ -5134,7 +5148,7 @@ class Project:
             cmdv = []
             if message is not None:
                 cmdv.extend(["-m", message])
-            cmdv.append(HEAD)
+            cmdv.append(git_refs.HEAD)
             cmdv.append(ref)
             self.symbolic_ref(*cmdv)
 
@@ -5142,7 +5156,7 @@ class Project:
             cmdv = ["--no-deref"]
             if message is not None:
                 cmdv.extend(["-m", message])
-            cmdv.append(HEAD)
+            cmdv.append(git_refs.HEAD)
             cmdv.append(new)
             self.update_ref(*cmdv)
 
@@ -5479,7 +5493,7 @@ class MetaProject(Project):
         all_refs = self.bare_ref.all
         revid = self.GetRevisionId(all_refs)
         head = self._GetHead()
-        if head and head.startswith(R_HEADS):
+        if head and head.startswith(git_refs.R_HEADS):
             try:
                 head = all_refs[head]
             except KeyError:
@@ -5487,7 +5501,7 @@ class MetaProject(Project):
 
         if revid == head:
             return False
-        elif self._revlist("-1", not_rev(HEAD), revid):
+        elif self._revlist("-1", not_rev(git_refs.HEAD), revid):
             return True
         return False
 

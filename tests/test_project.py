@@ -31,6 +31,7 @@ import utils_for_test
 import error
 import git_command
 import git_config
+import git_refs
 import git_status
 import git_trace2_event_log
 import manifest_xml
@@ -3792,8 +3793,10 @@ class ReprojectCmdTests(unittest.TestCase):
 
         proj.bare_ref = mock.MagicMock()
         if branch:
-            proj.bare_ref.head = project.R_HEADS + branch
-            proj.bare_ref.all = {project.R_HEADS + branch: head} if head else {}
+            proj.bare_ref.head = git_refs.R_HEADS + branch
+            proj.bare_ref.all = (
+                {git_refs.R_HEADS + branch: head} if head else {}
+            )
             # A branch that does not track upstream; tests that need one
             # tracking upstream replace this with _tracking_branch().
             proj.GetBranch = mock.MagicMock(
@@ -3806,7 +3809,7 @@ class ReprojectCmdTests(unittest.TestCase):
         def _revlist(*args: Any, **kwargs: Any) -> List[str]:
             if kwargs.get("format"):
                 return list(local_changes)
-            if project.not_rev(project.HEAD) in args:
+            if project.not_rev(git_refs.HEAD) in args:
                 if "--count" in args:
                     return [str(len(upstream_gain))]
                 return list(upstream_gain)
@@ -3909,7 +3912,7 @@ class ReprojectCmdTests(unittest.TestCase):
             self.assertTrue(syncbuf.Finish())
             proj._Reproject.assert_called_once_with(self.REVID, verbose=False)
             proj.work_git.UpdateRef.assert_called_once_with(
-                project.HEAD,
+                git_refs.HEAD,
                 self.REVID,
                 old=self.HEAD_ID,
                 message=f"merge {self.REVID}: Fast-forward",
@@ -3956,7 +3959,7 @@ class ReprojectCmdTests(unittest.TestCase):
             self.assertTrue(syncbuf.Finish())
             proj._Reproject.assert_called_once_with(self.REVID, verbose=False)
             proj.work_git.UpdateRef.assert_called_once_with(
-                project.HEAD,
+                git_refs.HEAD,
                 self.REVID,
                 old=self.HEAD_ID,
                 message=f"reset: moving to {self.REVID}",
