@@ -27,6 +27,8 @@ R_PUB = "refs/published/"
 R_WORKTREE = "refs/worktree/"
 R_WORKTREE_M = R_WORKTREE + "m/"
 R_M = "refs/remotes/m/"
+# Maximum symbolic-ref indirection depth (matches Git SYMREF_MAXDEPTH).
+_SYMREF_MAXDEPTH = 5
 
 
 class GitRefs:
@@ -76,6 +78,25 @@ class GitRefs:
         except KeyError:
             return ""
 
+    def UpdateSymref(self, name: str, target: str) -> None:
+        """Update |name| -> |target| in an already-loaded ref snapshot."""
+        if self._phyref is None:
+            return
+        self._symref[name] = target
+        resolved = target
+        for _ in range(_SYMREF_MAXDEPTH):
+            if resolved in self._phyref:
+                self._phyref[name] = self._phyref[resolved]
+                break
+            next_ref = self._symref.get(resolved)
+            if not next_ref:
+                self._phyref.pop(name, None)
+                break
+            resolved = next_ref
+        else:
+            self._phyref.pop(name, None)
+        self._RefreshMtimes()
+
     def _EnsureLoaded(self):
         if self._phyref is None or self._NeedUpdate():
             self._LoadAll()
@@ -107,7 +128,7 @@ class GitRefs:
 
             scan = self._symref
             attempts = 0
-            while scan and attempts < 5:
+            while scan and attempts < _SYMREF_MAXDEPTH:
                 scan_next = {}
                 for name, dest in scan.items():
                     if dest in self._phyref:
@@ -117,11 +138,16 @@ class GitRefs:
                 scan = scan_next
                 attempts += 1
 
-            self._TrackMtime(HEAD)
-            self._TrackMtime("config")
-            self._TrackMtime("packed-refs")
-            self._TrackTreeMtimes("refs")
-            self._TrackTreeMtimes("reftable")
+            self._RefreshMtimes()
+
+    def _RefreshMtimes(self) -> None:
+        """Record current modification times for ref storage paths."""
+        self._mtime = {}
+        self._TrackMtime(HEAD)
+        self._TrackMtime("config")
+        self._TrackMtime("packed-refs")
+        self._TrackTreeMtimes("refs")
+        self._TrackTreeMtimes("reftable")
 
     @staticmethod
     def _IsNullRef(ref_id: str) -> bool:
@@ -165,6 +191,22 @@ class GitRefs:
 
     def _ReadSymbolicRef(self, name: str) -> None:
         """Read a symbolic reference."""
+        if name == HEAD:
+            path = os.path.join(self._gitdir, HEAD)
+            try:
+                if not platform_utils.islink(path):
+                    with open(
+                        path, "r", encoding="utf-8", errors="replace"
+                    ) as fd:
+                        line = fd.readline().strip()
+                    if line.startswith("ref:"):
+                        ref = line[4:].strip()
+                        if ref and ref != R_HEADS + ".invalid":
+                            self._symref[name] = ref
+                            return
+            except OSError:
+                pass
+
         p = git_command.GitCommand(
             None,
             ["symbolic-ref", "-q", name],
