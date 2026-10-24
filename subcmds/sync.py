@@ -305,10 +305,12 @@ class _FetchOneResult(NamedTuple):
 
     Attributes:
       success (bool): True if successful.
+      errors (List[Exception]): Exceptions raised during fetch.
       project_idx (int): The fetched project index.
       start (float): The starting time.time().
       finish (float): The ending time.time().
       remote_fetched (bool): True if the remote was actually queried.
+      git_hash (Optional[str]): Pre-resolved commit hash for event_log.
     """
 
     success: bool
@@ -317,6 +319,7 @@ class _FetchOneResult(NamedTuple):
     start: float
     finish: float
     remote_fetched: bool
+    git_hash: Optional[str] = None
 
 
 class _FetchResult(NamedTuple):
@@ -346,9 +349,11 @@ class _CheckoutOneResult(NamedTuple):
 
     Attributes:
       success (bool): True if successful.
+      errors (List[Exception]): Exceptions raised during checkout.
       project_idx (int): The project index.
       start (float): The starting time.time().
       finish (float): The ending time.time().
+      git_hash (Optional[str]): Pre-resolved commit hash for event_log.
     """
 
     success: bool
@@ -356,6 +361,7 @@ class _CheckoutOneResult(NamedTuple):
     project_idx: int
     start: float
     finish: float
+    git_hash: Optional[str] = None
 
 
 class _SyncResult(NamedTuple):
@@ -379,6 +385,8 @@ class _SyncResult(NamedTuple):
       checkout_finish (Optional[float]): The time.time() when checkout
           finished.
       stderr_text (str): The combined output from both fetch and checkout.
+      fetch_git_hash (Optional[str]): Pre-resolved commit hash after fetch.
+      checkout_git_hash (Optional[str]): Pre-resolved commit hash for checkout.
     """
 
     project_index: int
@@ -396,6 +404,8 @@ class _SyncResult(NamedTuple):
     checkout_finish: Optional[float]
 
     stderr_text: str
+    fetch_git_hash: Optional[str] = None
+    checkout_git_hash: Optional[str] = None
 
 
 class _InterleavedSyncResult(NamedTuple):
@@ -1065,6 +1075,7 @@ later is required to fix a server side protocol bug.
         cls.get_parallel_context()["sync_dict"][k] = start
         success = False
         remote_fetched = False
+        interrupted = False
         errors = []
         buf = TeeStringIO(sys.stdout if opt.verbose else None)
         try:
@@ -1104,6 +1115,7 @@ later is required to fix a server side protocol bug.
                     project.remote.url,
                 )
         except KeyboardInterrupt:
+            interrupted = True
             logger.error("Keyboard interrupt while processing %s", project.name)
             if not cls.is_multiprocessing_active():
                 raise
@@ -1123,8 +1135,21 @@ later is required to fix a server side protocol bug.
             del cls.get_parallel_context()["sync_dict"][k]
 
         finish = time.time()
+        git_hash = None
+        if (
+            cls.get_parallel_context().get("event_log_enabled")
+            and not interrupted
+            and success
+        ):
+            git_hash = cls._ResolveProjectGitHash(project)
         return _FetchOneResult(
-            success, errors, project_idx, start, finish, remote_fetched
+            success,
+            errors,
+            project_idx,
+            start,
+            finish,
+            remote_fetched,
+            git_hash,
         )
 
     def _GetSyncProgressMessage(self):
@@ -1183,13 +1208,15 @@ later is required to fix a server side protocol bug.
                     finish = result.finish
                     self._fetch_times.Set(project, finish - start)
                     self._local_sync_state.SetFetchTime(project)
-                    self.event_log.AddSync(
-                        project,
-                        event_log.TASK_SYNC_NETWORK,
-                        start,
-                        finish,
-                        success,
-                    )
+                    if self.event_log_enabled:
+                        self.event_log.AddSync(
+                            project,
+                            event_log.TASK_SYNC_NETWORK,
+                            start,
+                            finish,
+                            success,
+                            git_hash=result.git_hash,
+                        )
                     if result.errors:
                         errors.extend(result.errors)
                     if result.remote_fetched:
@@ -1208,6 +1235,9 @@ later is required to fix a server side protocol bug.
             return ret
 
         with self.ParallelContext():
+            self.get_parallel_context()[
+                "event_log_enabled"
+            ] = self.event_log_enabled
             self.get_parallel_context()["projects"] = projects
             self.get_parallel_context()[
                 "sync_dict"
@@ -1392,6 +1422,7 @@ later is required to fix a server side protocol bug.
             project.manifest.manifestProject.config, detach_head=detach_head
         )
         success = False
+        interrupted = False
         errors = []
         try:
             project.Sync_LocalHalf(
@@ -1404,6 +1435,7 @@ later is required to fix a server side protocol bug.
             success = syncbuf.Finish()
             errors.extend(syncbuf.errors)
         except KeyboardInterrupt:
+            interrupted = True
             logger.error("Keyboard interrupt while processing %s", project.name)
             if not cls.is_multiprocessing_active():
                 raise
@@ -1424,7 +1456,15 @@ later is required to fix a server side protocol bug.
         if not success:
             logger.error("error: Cannot checkout %s", project.name)
         finish = time.time()
-        return _CheckoutOneResult(success, errors, project_idx, start, finish)
+        git_hash = None
+        if (
+            cls.get_parallel_context().get("event_log_enabled")
+            and not interrupted
+        ):
+            git_hash = cls._ResolveProjectGitHash(project)
+        return _CheckoutOneResult(
+            success, errors, project_idx, start, finish, git_hash
+        )
 
     def _Checkout(self, all_projects, opt, err_results, checkout_errors):
         """Checkout projects listed in all_projects
@@ -1447,9 +1487,15 @@ later is required to fix a server side protocol bug.
                 ]
                 start = result.start
                 finish = result.finish
-                self.event_log.AddSync(
-                    project, event_log.TASK_SYNC_LOCAL, start, finish, success
-                )
+                if self.event_log_enabled:
+                    self.event_log.AddSync(
+                        project,
+                        event_log.TASK_SYNC_LOCAL,
+                        start,
+                        finish,
+                        success,
+                        git_hash=result.git_hash,
+                    )
 
                 if result.errors:
                     checkout_errors.extend(result.errors)
@@ -1472,6 +1518,9 @@ later is required to fix a server side protocol bug.
 
         for projects in _SafeCheckoutOrder(all_projects):
             with self.ParallelContext():
+                self.get_parallel_context()[
+                    "event_log_enabled"
+                ] = self.event_log_enabled
                 self.get_parallel_context()["projects"] = projects
                 proc_res = self.ExecuteInParallel(
                     opt.jobs_checkout,
@@ -1842,13 +1891,14 @@ later is required to fix a server side protocol bug.
                     errors.append(sync_result.error)
 
                 finish = time.time()
-                self.event_log.AddSync(
-                    rp,
-                    event_log.TASK_SYNC_NETWORK,
-                    start,
-                    finish,
-                    sync_result.success,
-                )
+                if self.event_log_enabled:
+                    self.event_log.AddSync(
+                        rp,
+                        event_log.TASK_SYNC_NETWORK,
+                        start,
+                        finish,
+                        sync_result.success,
+                    )
                 if not sync_result.success:
                     logger.error("error: Cannot fetch repo tool %s", rp.name)
                     return
@@ -2318,9 +2368,14 @@ later is required to fix a server side protocol bug.
                 raise
 
             finish = time.time()
-            self.event_log.AddSync(
-                mp, event_log.TASK_SYNC_NETWORK, start, finish, result.success
-            )
+            if self.event_log_enabled:
+                self.event_log.AddSync(
+                    mp,
+                    event_log.TASK_SYNC_NETWORK,
+                    start,
+                    finish,
+                    result.success,
+                )
 
         if mp.HasChanges:
             errors = []
@@ -2333,9 +2388,10 @@ later is required to fix a server side protocol bug.
             )
             clean = syncbuf.Finish()
             errors.extend(syncbuf.errors)
-            self.event_log.AddSync(
-                mp, event_log.TASK_SYNC_LOCAL, start, time.time(), clean
-            )
+            if self.event_log_enabled:
+                self.event_log.AddSync(
+                    mp, event_log.TASK_SYNC_LOCAL, start, time.time(), clean
+                )
             if not clean:
                 raise error.UpdateManifestError(aggregate_errors=errors)
             self._ReloadManifest(manifest_name, mp.manifest)
@@ -3007,15 +3063,36 @@ later is required to fix a server side protocol bug.
                 err_update_linkfiles=err_update_linkfiles,
             )
 
+    @staticmethod
+    def _ResolveProjectGitHash(project: Project) -> Optional[str]:
+        """Resolve the project's target commit hash when available.
+
+        Args:
+            project: Project whose target revision hash should be resolved.
+
+        Returns:
+            The resolved commit hash string, or None if unavailable.
+        """
+        try:
+            git_hash = project.GetCommitRevisionId()
+        except Exception:
+            return None
+        return git_hash if isinstance(git_hash, str) else None
+
     @classmethod
     def _SyncOneProject(cls, opt, project_index, project) -> _SyncResult:
         """Syncs a single project for interleaved sync."""
+        event_log_enabled = bool(
+            cls.get_parallel_context().get("event_log_enabled")
+        )
         fetch_success = False
         remote_fetched = False
         fetch_errors = []
         fetch_start = None
         fetch_finish = None
+        fetch_git_hash = None
         network_output = ""
+        interrupted = False
 
         if opt.local_only:
             fetch_success = True
@@ -3049,6 +3126,7 @@ later is required to fix a server side protocol bug.
                 if sync_result.error:
                     fetch_errors.append(sync_result.error)
             except KeyboardInterrupt:
+                interrupted = True
                 logger.error(
                     "Keyboard interrupt while processing %s", project.name
                 )
@@ -3068,14 +3146,17 @@ later is required to fix a server side protocol bug.
             finally:
                 fetch_finish = time.time()
                 network_output = network_output_capture.getvalue()
+            if event_log_enabled and not interrupted and fetch_success:
+                fetch_git_hash = cls._ResolveProjectGitHash(project)
 
         checkout_success = False
         checkout_errors = []
         checkout_start = None
         checkout_finish = None
+        checkout_git_hash = None
         checkout_stderr = ""
 
-        if fetch_success:
+        if fetch_success and not interrupted:
             # We skip checkout if it's network-only or if the project has no
             # working tree (e.g., a mirror).
             if opt.network_only or not project.worktree:
@@ -3101,6 +3182,7 @@ later is required to fix a server side protocol bug.
                         if syncbuf.errors:
                             checkout_errors.extend(syncbuf.errors)
                 except KeyboardInterrupt:
+                    interrupted = True
                     logger.error(
                         "Keyboard interrupt while processing %s", project.name
                     )
@@ -3124,6 +3206,12 @@ later is required to fix a server side protocol bug.
                 finally:
                     checkout_finish = time.time()
                     checkout_stderr = stderr_capture.getvalue()
+                if event_log_enabled and not interrupted:
+                    checkout_git_hash = (
+                        fetch_git_hash
+                        if fetch_git_hash is not None
+                        else cls._ResolveProjectGitHash(project)
+                    )
 
         # Consolidate all captured output.
         captured_parts = []
@@ -3146,6 +3234,8 @@ later is required to fix a server side protocol bug.
             fetch_finish=fetch_finish,
             checkout_start=checkout_start,
             checkout_finish=checkout_finish,
+            fetch_git_hash=fetch_git_hash,
+            checkout_git_hash=checkout_git_hash,
         )
 
     @classmethod
@@ -3212,23 +3302,27 @@ later is required to fix a server side protocol bug.
                         result.fetch_finish - result.fetch_start,
                     )
                     self._local_sync_state.SetFetchTime(project)
-                    self.event_log.AddSync(
-                        project,
-                        event_log.TASK_SYNC_NETWORK,
-                        result.fetch_start,
-                        result.fetch_finish,
-                        result.fetch_success,
-                    )
+                    if self.event_log_enabled:
+                        self.event_log.AddSync(
+                            project,
+                            event_log.TASK_SYNC_NETWORK,
+                            result.fetch_start,
+                            result.fetch_finish,
+                            result.fetch_success,
+                            git_hash=result.fetch_git_hash,
+                        )
                 if result.checkout_start:
                     if result.checkout_success:
                         self._local_sync_state.SetCheckoutTime(project)
-                    self.event_log.AddSync(
-                        project,
-                        event_log.TASK_SYNC_LOCAL,
-                        result.checkout_start,
-                        result.checkout_finish,
-                        result.checkout_success,
-                    )
+                    if self.event_log_enabled:
+                        self.event_log.AddSync(
+                            project,
+                            event_log.TASK_SYNC_LOCAL,
+                            result.checkout_start,
+                            result.checkout_finish,
+                            result.checkout_success,
+                            git_hash=result.checkout_git_hash,
+                        )
 
                 finished_relpaths.add(result.relpath)
 
@@ -3309,6 +3403,9 @@ later is required to fix a server side protocol bug.
             ) as ssh_proxy:
                 ssh_proxy.sock()
                 with self.ParallelContext():
+                    self.get_parallel_context()[
+                        "event_log_enabled"
+                    ] = self.event_log_enabled
                     self.get_parallel_context()["ssh_proxy"] = ssh_proxy
                     # TODO(gavinmak): Use multprocessing.Queue instead of dict.
                     self.get_parallel_context()[
