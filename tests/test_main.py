@@ -164,3 +164,37 @@ def test_autocorrect_prompt_interrupt(mock_input, repo, mock_config):
     res = repo._autocorrect_command_name("tart", mock_config)
 
     assert res is None
+
+
+@mock.patch("main.RepoClient")
+def test_run_long_gates_event_log_on_flag(mock_client_cls, tmp_path):
+    """Test _RunLong enables cmd.event_log only when --event-log is set."""
+    client = mock_client_cls.return_value
+    client.manifest.IsMirror = False
+    client.manifest.manifestProject.config.DumpConfigDict.return_value = {}
+    repo = _Repo("repodir")
+
+    for log_path, expected in (
+        (None, False),
+        (str(tmp_path / "events.log"), True),
+    ):
+        cmd = mock.MagicMock()
+        cmd.manifest = client.manifest
+        cmd.MULTI_MANIFEST_SUPPORT = True
+        cmd.OptionParser.parse_args.return_value = (mock.MagicMock(), [])
+        cmd.ReadEnvironmentOptions.side_effect = lambda copts: copts
+        cmd.Execute.return_value = 0
+        repo.commands = {"sync": mock.Mock(return_value=cmd)}
+        gopts = mock.MagicMock(
+            color=None,
+            submanifest_path="",
+            pager=False,
+            time=False,
+            event_log=log_path,
+            git_trace2_event_log=None,
+        )
+
+        assert repo._RunLong("sync", gopts, [], mock.MagicMock()) == 0
+        assert cmd.event_log_enabled is expected
+        assert cmd.event_log.Add.called is expected
+        assert cmd.event_log.Write.called is expected

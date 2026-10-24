@@ -59,6 +59,9 @@ class Command:
     # NB: This is being replaced by git trace2 events. See git_trace2_event_log.
     event_log = EventLog()
 
+    # Whether the --event-log global option is active for this invocation.
+    event_log_enabled = False
+
     # Whether this command is a "common" one, i.e. whether the user would
     # commonly use it or it's a more uncommon command. This is used by the help
     # command to show short-vs-full summaries.
@@ -101,6 +104,7 @@ class Command:
         self.manifest = manifest
         self.git_event_log = git_event_log
         self.outer_manifest = outer_manifest
+        self.event_log_enabled = False
 
         # Cache for the OptionParser property.
         self._optparse = None

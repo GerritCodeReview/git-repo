@@ -413,6 +413,7 @@ class _Repo:
             outer_manifest=outer_client.manifest,
             git_event_log=git_trace2_event_log,
         )
+        cmd.event_log_enabled = bool(gopts.event_log)
 
         Editor.globalConfig = cmd.client.globalConfig
 
@@ -445,8 +446,10 @@ class _Repo:
                 RunPager(config)
 
         start = time.time()
-        cmd_event = cmd.event_log.Add(name, event_log.TASK_COMMAND, start)
-        cmd.event_log.SetParent(cmd_event)
+        cmd_event = None
+        if cmd.event_log_enabled:
+            cmd_event = cmd.event_log.Add(name, event_log.TASK_COMMAND, start)
+            cmd.event_log.SetParent(cmd_event)
         git_trace2_event_log.StartEvent(["repo", name] + argv)
         git_trace2_event_log.CommandEvent(name="repo", subcommands=[name])
 
@@ -588,9 +591,10 @@ class _Repo:
                         file=sys.stderr,
                     )
 
-            cmd.event_log.FinishEvent(
-                cmd_event, finish, result is None or result == 0
-            )
+            if cmd_event is not None:
+                cmd.event_log.FinishEvent(
+                    cmd_event, finish, result is None or result == 0
+                )
             git_trace2_event_log.DefParamRepoEvents(
                 cmd.manifest.manifestProject.config.DumpConfigDict()
             )

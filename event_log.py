@@ -14,11 +14,18 @@
 
 import json
 import multiprocessing
+from typing import Any, Dict, Optional, TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from project import Project
 
 
 TASK_COMMAND = "command"
 TASK_SYNC_NETWORK = "sync-network"
 TASK_SYNC_LOCAL = "sync-local"
+
+_UNSET: Any = object()
 
 
 class EventLog:
@@ -93,7 +100,15 @@ class EventLog:
         self._log.append(event)
         return event
 
-    def AddSync(self, project, task_name, start, finish, success):
+    def AddSync(
+        self,
+        project: "Project",
+        task_name: str,
+        start: float,
+        finish: Optional[float],
+        success: bool,
+        git_hash: Optional[str] = _UNSET,
+    ) -> Dict[str, Any]:
         """Add a event to the log for a sync command.
 
         Args:
@@ -103,6 +118,8 @@ class EventLog:
             start: Timestamp of when the operation started.
             finish: Timestamp of when the operation finished.
             success: Boolean indicating if the operation was successful.
+            git_hash: Pre-resolved commit hash for the project, None to
+                omit the field, or _UNSET to resolve from project.
 
         Returns:
             A dictionary of the event added to the log.
@@ -116,10 +133,13 @@ class EventLog:
                 event["project_url"] = project.remote.url
             if project.remote.fetchUrl:
                 event["remote_url"] = project.remote.fetchUrl
-            try:
-                event["git_hash"] = project.GetCommitRevisionId()
-            except Exception:
-                pass
+            if git_hash is _UNSET:
+                try:
+                    event["git_hash"] = project.GetCommitRevisionId()
+                except Exception:
+                    pass
+            elif git_hash is not None:
+                event["git_hash"] = git_hash
         return event
 
     def GetStatusString(self, success):

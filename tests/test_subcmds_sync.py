@@ -32,6 +32,7 @@ import pytest
 
 import command
 import error
+import event_log
 import git_command
 import manifest_xml
 from project import SyncNetworkHalfResult
@@ -1400,6 +1401,7 @@ class KeyboardInterruptTest(unittest.TestCase):
         """Test that _FetchOne suppresses KeyboardInterrupt in workers."""
         mock_is_active.return_value = True
         self.project.Sync_NetworkHalf.side_effect = KeyboardInterrupt()
+        self.get_parallel_context_mock["event_log_enabled"] = True
 
         with mock.patch.object(
             sync.Sync,
@@ -1408,6 +1410,46 @@ class KeyboardInterruptTest(unittest.TestCase):
         ):
             result = sync.Sync._FetchOne(self.opt, 0)
             self.assertFalse(result.success)
+            self.assertIsNone(result.git_hash)
+            self.project.GetCommitRevisionId.assert_not_called()
+
+    @mock.patch("subcmds.sync.Sync.is_multiprocessing_active")
+    def test_worker_interrupt_skips_git_hash_in_checkout_and_interleaved(
+        self, mock_is_active
+    ):
+        """Test interrupted workers never resolve event_log git_hash."""
+        mock_is_active.return_value = True
+        self.get_parallel_context_mock["event_log_enabled"] = True
+        self.project.Sync_LocalHalf.side_effect = KeyboardInterrupt()
+        self.opt.local_only = True
+        self.opt.network_only = False
+        self.opt.this_manifest_only = True
+        self.opt.detach_head = False
+        self.opt.force_sync = False
+        self.opt.force_checkout = False
+        self.opt.rebase = False
+
+        with mock.patch.object(
+            sync.Sync,
+            "get_parallel_context",
+            return_value=self.get_parallel_context_mock,
+        ), mock.patch("subcmds.sync.SyncBuffer"):
+            co_res = sync.Sync._CheckoutOne(
+                detach_head=False,
+                force_sync=False,
+                force_checkout=False,
+                force_rebase=False,
+                verbose=False,
+                project_idx=0,
+            )
+            self.assertFalse(co_res.success)
+            self.assertIsNone(co_res.git_hash)
+            self.project.GetCommitRevisionId.assert_not_called()
+
+            il_res = sync.Sync._SyncOneProject(self.opt, 0, self.project)
+            self.assertFalse(il_res.checkout_success)
+            self.assertIsNone(il_res.checkout_git_hash)
+            self.project.GetCommitRevisionId.assert_not_called()
 
 
 class CheckForBloatedProjects(unittest.TestCase):
@@ -2683,6 +2725,266 @@ class InterleavedSyncTest(unittest.TestCase):
         self.assertTrue(result.checkout_success)
         project.Sync_NetworkHalf.assert_called_once()
         project.Sync_LocalHalf.assert_not_called()
+
+    def test_worker_skips_git_hash_without_event_log(self) -> None:
+        """Test normal sync without --event-log skips git_hash and AddSync."""
+        opt = self._get_opts()
+        project = self.projA
+        project.GetCommitRevisionId = mock.Mock(
+            side_effect=AssertionError("GetCommitRevisionId should not run")
+        )
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        project.manifest.manifestProject.config = mock.MagicMock()
+        self.mock_context["projects"] = [project]
+
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buffer.return_value.Finish.return_value = True
+            mock_sync_buffer.return_value.errors = []
+            result_obj = self.cmd._SyncProjectList(opt, [0])
+
+        result = result_obj.results[0]
+        self.assertIsNone(result.fetch_git_hash)
+        self.assertIsNone(result.checkout_git_hash)
+        project.GetCommitRevisionId.assert_not_called()
+
+        mock.patch.object(self.cmd, "event_log", event_log.EventLog()).start()
+        self.cmd._ProcessSyncInterleavedResults(
+            set(), mock.MagicMock(), [], opt, None, mock.MagicMock(),
+            [result_obj],
+        )
+        self.assertEqual(self.cmd.event_log._log, [])
+
+    def test_worker_resolves_git_hash_for_event_log(self) -> None:
+        """Test worker pre-resolves git_hash so callback avoids git calls."""
+        opt = self._get_opts()
+        project = self.projA
+        expected_hash = "0123456789abcdef0123456789abcdef01234567"
+        project.revisionExpr = "refs/heads/main"
+        project.remote = mock.MagicMock(
+            url="https://example.com/projA",
+            fetchUrl="https://example.com/projA",
+        )
+        project.GetCommitRevisionId = mock.Mock(return_value=expected_hash)
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        project.manifest.manifestProject.config = mock.MagicMock()
+        self.mock_context["event_log_enabled"] = True
+        self.mock_context["projects"] = [project]
+        self.cmd.event_log_enabled = True
+
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buf_instance = mock.MagicMock()
+            mock_sync_buf_instance.Finish.return_value = True
+            mock_sync_buf_instance.errors = []
+            mock_sync_buffer.return_value = mock_sync_buf_instance
+
+            result_obj = self.cmd._SyncProjectList(opt, [0])
+
+        result = result_obj.results[0]
+        self.assertEqual(result.fetch_git_hash, expected_hash)
+        self.assertEqual(result.checkout_git_hash, expected_hash)
+        project.GetCommitRevisionId.assert_called_once()
+
+        # Processing results in MainProcess must not invoke GetCommitRevisionId.
+        project.GetCommitRevisionId.reset_mock()
+        project.GetCommitRevisionId.side_effect = AssertionError(
+            "MainProcess callback should not call GetCommitRevisionId"
+        )
+        self.cmd._fetch_times = mock.MagicMock()
+        self.cmd._local_sync_state = mock.MagicMock()
+        mock.patch.object(self.cmd, "event_log", event_log.EventLog()).start()
+        finished_relpaths = set()
+        err_event = mock.MagicMock()
+        errors = []
+        pm = mock.MagicMock()
+
+        self.cmd._ProcessSyncInterleavedResults(
+            finished_relpaths,
+            err_event,
+            errors,
+            opt,
+            None,
+            pm,
+            [result_obj],
+        )
+
+        self.assertEqual(len(self.cmd.event_log._log), 2)
+        self.assertEqual(
+            self.cmd.event_log._log[0]["git_hash"],
+            expected_hash,
+        )
+        self.assertEqual(
+            self.cmd.event_log._log[1]["git_hash"],
+            expected_hash,
+        )
+        project.GetCommitRevisionId.assert_not_called()
+
+    def test_worker_local_only_resolves_git_hash_for_event_log(self) -> None:
+        """Test --local-only worker resolves checkout_git_hash for event_log."""
+        opt = self._get_opts(["--interleaved", "--local-only"])
+        project = self.projA
+        expected_hash = "fedcba9876543210fedcba9876543210fedcba98"
+        project.revisionExpr = "refs/heads/main"
+        project.remote = mock.MagicMock(url="u", fetchUrl="u")
+        project.GetCommitRevisionId = mock.Mock(return_value=expected_hash)
+        project.Sync_NetworkHalf = mock.Mock()
+        project.Sync_LocalHalf = mock.Mock()
+        project.manifest.manifestProject.config = mock.MagicMock()
+        self.mock_context["event_log_enabled"] = True
+        self.mock_context["projects"] = [project]
+        self.cmd.event_log_enabled = True
+
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buffer.return_value.Finish.return_value = True
+            mock_sync_buffer.return_value.errors = []
+            result_obj = self.cmd._SyncProjectList(opt, [0])
+
+        result = result_obj.results[0]
+        self.assertIsNone(result.fetch_git_hash)
+        self.assertEqual(result.checkout_git_hash, expected_hash)
+        project.GetCommitRevisionId.assert_called_once()
+
+        project.GetCommitRevisionId.side_effect = AssertionError(
+            "MainProcess callback should not call GetCommitRevisionId"
+        )
+        mock.patch.object(self.cmd, "event_log", event_log.EventLog()).start()
+        self.cmd._ProcessSyncInterleavedResults(
+            set(), mock.MagicMock(), [], opt, None, mock.MagicMock(),
+            [result_obj],
+        )
+        self.assertEqual(len(self.cmd.event_log._log), 1)
+        self.assertEqual(
+            self.cmd.event_log._log[0]["task_name"], event_log.TASK_SYNC_LOCAL
+        )
+        self.assertEqual(self.cmd.event_log._log[0]["git_hash"], expected_hash)
+
+    def test_worker_failed_fetch_omits_git_hash_for_event_log(self) -> None:
+        """Test failed fetch leaves git_hash=None and omits event_log field."""
+        opt = self._get_opts()
+        project = self.projA
+        project.revisionExpr = "refs/heads/main"
+        project.remote = mock.MagicMock(url="u", fetchUrl="u")
+        project.GetCommitRevisionId = mock.Mock(
+            side_effect=AssertionError("Failed fetch should not resolve hash")
+        )
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(
+                error=error.GitError("Fetch failed"), remote_fetched=False
+            )
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        self.mock_context["event_log_enabled"] = True
+        self.mock_context["projects"] = [project]
+        self.cmd.event_log_enabled = True
+
+        result_obj = self.cmd._SyncProjectList(opt, [0])
+        result = result_obj.results[0]
+        self.assertIsNone(result.fetch_git_hash)
+        project.GetCommitRevisionId.assert_not_called()
+
+        self.cmd._interleaved_err_network_results = []
+        mock.patch.object(self.cmd, "event_log", event_log.EventLog()).start()
+        self.cmd._ProcessSyncInterleavedResults(
+            set(), mock.MagicMock(), [], opt, None, mock.MagicMock(),
+            [result_obj],
+        )
+        self.assertEqual(len(self.cmd.event_log._log), 1)
+        self.assertNotIn("git_hash", self.cmd.event_log._log[0])
+
+    def test_phased_fetch_and_checkout_event_log_worker_hash(self) -> None:
+        """Test phased _Fetch and _Checkout gate and pre-resolve git_hash."""
+        self.parallel_context_patcher.stop()
+        opt = self._get_opts(["--no-interleaved", "-j1"])
+        opt.jobs_network = 1
+        opt.jobs_checkout = 1
+        project = self.projA
+        project.gitdir = "gitA"
+        project.revisionExpr = "refs/heads/main"
+        project.remote = mock.MagicMock(url="u", fetchUrl="u")
+        expected_hash = "abcdef0123456789abcdef0123456789abcdef01"
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        project.manifest.manifestProject.config = mock.MagicMock()
+        mock.patch.object(self.cmd, "_GCProjects").start()
+        mock.patch.object(self.cmd, "event_log", event_log.EventLog()).start()
+
+        # Without --event-log, neither _Fetch nor _Checkout resolves git_hash.
+        self.cmd.event_log_enabled = False
+        project.GetCommitRevisionId = mock.Mock(
+            side_effect=AssertionError("Disabled event_log should not resolve")
+        )
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buffer.return_value.Finish.return_value = True
+            mock_sync_buffer.return_value.errors = []
+            self.cmd._Fetch([project], opt, mock.MagicMock(), None, [])
+            self.cmd._Checkout([project], opt, [], [])
+        self.assertEqual(self.cmd.event_log._log, [])
+        project.GetCommitRevisionId.assert_not_called()
+
+        # With --event-log, workers pre-resolve git_hash before MainProcess.
+        self.cmd.event_log_enabled = True
+        project.GetCommitRevisionId = mock.Mock(return_value=expected_hash)
+
+        def run_workers_then_callback(jobs, func, inputs, callback, **kwargs):
+            results = [func(item) for item in inputs]
+            project.GetCommitRevisionId.side_effect = AssertionError(
+                "MainProcess callback should not call GetCommitRevisionId"
+            )
+            return callback(None, kwargs["output"], results)
+
+        mock.patch.object(
+            self.cmd, "ExecuteInParallel", side_effect=run_workers_then_callback
+        ).start()
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buffer.return_value.Finish.return_value = True
+            mock_sync_buffer.return_value.errors = []
+            self.cmd._Fetch([project], opt, mock.MagicMock(), None, [])
+            project.GetCommitRevisionId = mock.Mock(return_value=expected_hash)
+            self.cmd._Checkout([project], opt, [], [])
+
+        self.assertEqual(len(self.cmd.event_log._log), 2)
+        self.assertEqual(self.cmd.event_log._log[0]["git_hash"], expected_hash)
+        self.assertEqual(self.cmd.event_log._log[1]["git_hash"], expected_hash)
+
+    def test_event_log_add_sync_git_hash_unset_vs_none(self) -> None:
+        """Test EventLog.AddSync distinguishes git_hash=None from _UNSET."""
+        log = event_log.EventLog()
+        project = self.projA
+        project.revisionExpr = "refs/heads/main"
+        project.remote = mock.MagicMock(url="u", fetchUrl="u")
+        expected_hash = "1111222233334444555566667777888899990000"
+        project.GetCommitRevisionId = mock.Mock(
+            side_effect=AssertionError("git_hash=None must skip resolution")
+        )
+
+        ev_none = log.AddSync(
+            project,
+            event_log.TASK_SYNC_NETWORK,
+            1.0,
+            2.0,
+            success=False,
+            git_hash=None,
+        )
+        self.assertNotIn("git_hash", ev_none)
+        project.GetCommitRevisionId.assert_not_called()
+
+        project.GetCommitRevisionId = mock.Mock(return_value=expected_hash)
+        ev_unset = log.AddSync(
+            project,
+            event_log.TASK_SYNC_NETWORK,
+            1.0,
+            2.0,
+            success=True,
+        )
+        self.assertEqual(ev_unset["git_hash"], expected_hash)
+        project.GetCommitRevisionId.assert_called_once()
 
 
 class UpdateCopyLinkfileListTest(unittest.TestCase):
