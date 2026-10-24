@@ -32,6 +32,7 @@ import pytest
 
 import command
 import error
+import event_log
 import git_command
 import manifest_xml
 from project import SyncNetworkHalfResult
@@ -2683,6 +2684,71 @@ class InterleavedSyncTest(unittest.TestCase):
         self.assertTrue(result.checkout_success)
         project.Sync_NetworkHalf.assert_called_once()
         project.Sync_LocalHalf.assert_not_called()
+
+    def test_worker_resolves_git_hash_for_event_log(self):
+        """Test worker pre-resolves git_hash so callback avoids git calls."""
+        opt = self._get_opts()
+        project = self.projA
+        expected_hash = "0123456789abcdef0123456789abcdef01234567"
+        project.revisionExpr = "refs/heads/main"
+        project.remote = mock.MagicMock(
+            url="https://example.com/projA",
+            fetchUrl="https://example.com/projA",
+        )
+        project.GetCommitRevisionId = mock.Mock(return_value=expected_hash)
+        project.Sync_NetworkHalf = mock.Mock(
+            return_value=SyncNetworkHalfResult(error=None, remote_fetched=True)
+        )
+        project.Sync_LocalHalf = mock.Mock()
+        project.manifest.manifestProject.config = mock.MagicMock()
+        self.mock_context["projects"] = [project]
+
+        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+            mock_sync_buf_instance = mock.MagicMock()
+            mock_sync_buf_instance.Finish.return_value = True
+            mock_sync_buf_instance.errors = []
+            mock_sync_buffer.return_value = mock_sync_buf_instance
+
+            result_obj = self.cmd._SyncProjectList(opt, [0])
+
+        result = result_obj.results[0]
+        self.assertEqual(result.fetch_git_hash, expected_hash)
+        self.assertEqual(result.checkout_git_hash, expected_hash)
+        project.GetCommitRevisionId.assert_called_once()
+
+        # Processing results in MainProcess must not invoke GetCommitRevisionId.
+        project.GetCommitRevisionId.reset_mock()
+        project.GetCommitRevisionId.side_effect = AssertionError(
+            "MainProcess callback should not call GetCommitRevisionId"
+        )
+        self.cmd._fetch_times = mock.MagicMock()
+        self.cmd._local_sync_state = mock.MagicMock()
+        mock.patch.object(self.cmd, "event_log", event_log.EventLog()).start()
+        finished_relpaths = set()
+        err_event = mock.MagicMock()
+        errors = []
+        pm = mock.MagicMock()
+
+        self.cmd._ProcessSyncInterleavedResults(
+            finished_relpaths,
+            err_event,
+            errors,
+            opt,
+            None,
+            pm,
+            [result_obj],
+        )
+
+        self.assertEqual(len(self.cmd.event_log._log), 2)
+        self.assertEqual(
+            self.cmd.event_log._log[0]["git_hash"],
+            expected_hash,
+        )
+        self.assertEqual(
+            self.cmd.event_log._log[1]["git_hash"],
+            expected_hash,
+        )
+        project.GetCommitRevisionId.assert_not_called()
 
 
 class UpdateCopyLinkfileListTest(unittest.TestCase):
