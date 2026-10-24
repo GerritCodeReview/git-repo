@@ -27,6 +27,8 @@ R_PUB = "refs/published/"
 R_WORKTREE = "refs/worktree/"
 R_WORKTREE_M = R_WORKTREE + "m/"
 R_M = "refs/remotes/m/"
+# Maximum symbolic-ref indirection depth (matches Git SYMREF_MAXDEPTH).
+_SYMREF_MAXDEPTH = 5
 
 
 class GitRefs:
@@ -76,6 +78,101 @@ class GitRefs:
         except KeyError:
             return ""
 
+    def UpdateSymref(self, name: str, target: str) -> None:
+        """Update a symbolic reference in an already-loaded ref snapshot.
+
+        Args:
+            name: Full symbolic reference name (e.g. "refs/remotes/m/main").
+            target: Target reference name that the symref points to.
+        """
+        if self._phyref is None:
+            return
+        if self._HasExternalRefChanges(name):
+            self._phyref = None
+            return
+
+        self._symref[name] = target
+        self._ResolveSymrefs()
+
+        parts = name.strip("/").split("/")
+        for idx in range(1, len(parts)):
+            anc = os.path.join(*parts[:idx])
+            self._TrackMtime(anc)
+        self._TrackMtime(os.path.join(*parts))
+
+    def _HasExternalRefChanges(self, updated_symref: str) -> bool:
+        """Check whether refs outside |updated_symref| changed on disk.
+
+        Args:
+            updated_symref: Symbolic ref path just updated on disk.
+
+        Returns:
+            True if reftable is in use or any unrelated ref path changed.
+        """
+        if os.path.exists(os.path.join(self._gitdir, "reftable")):
+            return True
+        if "packed-refs" not in self._mtime and os.path.exists(
+            os.path.join(self._gitdir, "packed-refs")
+        ):
+            return True
+
+        parts = updated_symref.strip("/").split("/")
+        expected_child = {
+            "/".join(parts[:idx]): parts[idx] for idx in range(1, len(parts))
+        }
+
+        for tracked, mtime in self._mtime.items():
+            norm = tracked.replace(os.sep, "/")
+            if norm == updated_symref:
+                continue
+            full_path = os.path.join(self._gitdir, tracked)
+            try:
+                curr_mtime = os.path.getmtime(full_path)
+            except OSError:
+                return True
+            if norm in expected_child:
+                if curr_mtime != mtime:
+                    try:
+                        children = platform_utils.listdir(full_path)
+                    except OSError:
+                        return True
+                    next_comp = expected_child[norm]
+                    for child in children:
+                        if child == next_comp:
+                            continue
+                        if os.path.join(tracked, child) not in self._mtime:
+                            return True
+            elif curr_mtime != mtime:
+                return True
+
+        for anc, next_comp in expected_child.items():
+            anc_os = anc.replace("/", os.sep)
+            if anc_os not in self._mtime:
+                anc_full = os.path.join(self._gitdir, anc_os)
+                try:
+                    if platform_utils.listdir(anc_full) != [next_comp]:
+                        return True
+                except OSError:
+                    return True
+        return False
+
+    def _ResolveSymrefs(self) -> None:
+        """Resolve all symbolic references into _phyref up to max depth."""
+        for name in self._symref:
+            self._phyref.pop(name, None)
+
+        scan = self._symref
+        attempts = 0
+        while scan and attempts < _SYMREF_MAXDEPTH:
+            scan_next = {}
+            for name, dest in scan.items():
+                if dest in self._phyref:
+                    self._phyref[name] = self._phyref[dest]
+                else:
+                    scan_next[name] = dest
+            scan = scan_next
+            attempts += 1
+
     def _EnsureLoaded(self):
         if self._phyref is None or self._NeedUpdate():
             self._LoadAll()
@@ -105,23 +202,17 @@ class GitRefs:
                 # --include-root-refs does not report an unborn HEAD.
                 self._ReadSymbolicRef(HEAD)
 
-            scan = self._symref
-            attempts = 0
-            while scan and attempts < 5:
-                scan_next = {}
-                for name, dest in scan.items():
-                    if dest in self._phyref:
-                        self._phyref[name] = self._phyref[dest]
-                    else:
-                        scan_next[name] = dest
-                scan = scan_next
-                attempts += 1
+            self._ResolveSymrefs()
+            self._RefreshMtimes()
 
-            self._TrackMtime(HEAD)
-            self._TrackMtime("config")
-            self._TrackMtime("packed-refs")
-            self._TrackTreeMtimes("refs")
-            self._TrackTreeMtimes("reftable")
+    def _RefreshMtimes(self) -> None:
+        """Record current modification times for ref storage paths."""
+        self._mtime = {}
+        self._TrackMtime(HEAD)
+        self._TrackMtime("config")
+        self._TrackMtime("packed-refs")
+        self._TrackTreeMtimes("refs")
+        self._TrackTreeMtimes("reftable")
 
     @staticmethod
     def _IsNullRef(ref_id: str) -> bool:
@@ -165,6 +256,22 @@ class GitRefs:
 
     def _ReadSymbolicRef(self, name: str) -> None:
         """Read a symbolic reference."""
+        if name == HEAD:
+            path = os.path.join(self._gitdir, HEAD)
+            try:
+                if not platform_utils.islink(path):
+                    with open(
+                        path, "r", encoding="utf-8", errors="replace"
+                    ) as fd:
+                        line = fd.readline().strip()
+                    if line.startswith("ref:"):
+                        ref = line[4:].strip()
+                        if ref and ref != R_HEADS + ".invalid":
+                            self._symref[name] = ref
+                            return
+            except OSError:
+                pass
+
         p = git_command.GitCommand(
             None,
             ["symbolic-ref", "-q", name],
