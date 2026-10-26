@@ -201,6 +201,7 @@ class GitCommandStreamLogsTest(unittest.TestCase):
 
     @mock.patch("sys.stderr")
     def test_streams_stderr_when_no_stream_is_set(self, mock_stderr):
+        mock_stderr.isatty.return_value = False
         logs = "\n".join(
             [
                 "Enumerating objects: 5, done.",
@@ -227,6 +228,28 @@ class GitCommandStreamLogsTest(unittest.TestCase):
         self.mock_process.communicate.assert_not_called()
         mock_stderr.write.assert_called_once_with(logs)
         self.assertEqual(cmd.stderr, logs)
+
+    @mock.patch("sys.stderr")
+    def test_push_injects_progress_only_when_tty_and_not_suppressed(
+        self, mock_stderr: mock.MagicMock
+    ) -> None:
+        mock_stderr.isatty.return_value = True
+        self.mock_process.stderr = io.BufferedReader(io.BytesIO(b""))
+        git_command.GitCommand(None, ["push"])
+        self.mock_popen.assert_called_once()
+        cmd = self.mock_popen.call_args[0][0]
+        self.assertEqual(cmd, ["git", "push", "--progress"])
+
+    @mock.patch("sys.stderr")
+    def test_push_does_not_inject_progress_when_no_progress_set(
+        self, mock_stderr: mock.MagicMock
+    ) -> None:
+        mock_stderr.isatty.return_value = True
+        self.mock_process.stderr = io.BufferedReader(io.BytesIO(b""))
+        git_command.GitCommand(None, ["push", "--no-progress"])
+        self.mock_popen.assert_called_once()
+        cmd = self.mock_popen.call_args[0][0]
+        self.assertEqual(cmd, ["git", "push", "--no-progress"])
 
 
 class GitCommandCaptureBytesTest(unittest.TestCase):

@@ -659,6 +659,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             push_options=push_options,
             patchset_description=opt.patchset_description,
             git_event_log=self.git_event_log,
+            quiet=opt.quiet,
         )
 
         branch.uploaded = True
@@ -676,8 +677,10 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 branch.uploaded = False
                 have_errors = True
 
-        print(file=sys.stderr)
-        print("-" * 70, file=sys.stderr)
+        quiet = getattr(opt, "quiet", False)
+        if not quiet or have_errors:
+            print(file=sys.stderr)
+            print("-" * 70, file=sys.stderr)
 
         if have_errors:
             for branch in todo:
@@ -698,17 +701,18 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                     )
             print()
 
-        for branch in todo:
-            if branch.uploaded:
-                print(
-                    "[OK    ] %-15s %s"
-                    % (
-                        branch.project.RelPath(local=opt.this_manifest_only)
-                        + "/",
-                        branch.name,
-                    ),
-                    file=sys.stderr,
-                )
+        if not quiet:
+            for branch in todo:
+                if branch.uploaded:
+                    print(
+                        "[OK    ] %-15s %s"
+                        % (
+                            branch.project.RelPath(local=opt.this_manifest_only)
+                            + "/",
+                            branch.name,
+                        ),
+                        file=sys.stderr,
+                    )
 
         if have_errors:
             raise UploadExitError(aggregate_errors=aggregate_errors)
