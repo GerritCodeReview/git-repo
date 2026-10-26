@@ -278,3 +278,55 @@ def test_ValidateOptions_allowed(cmd: upload.Upload, argv: List[str]) -> None:
     """Check valid hook option combinations are accepted."""
     opt, args = cmd.OptionParser.parse_args(argv)
     cmd.ValidateOptions(opt, args)
+
+
+@pytest.mark.parametrize("argv,expected_quiet", [([], False), (["-q"], True)])
+def test_UploadBranch_forwards_quiet(
+    cmd: upload.Upload, argv: List[str], expected_quiet: bool
+) -> None:
+    """Check _UploadBranch forwards opt.quiet to branch.UploadForReview."""
+    opt, _ = cmd.OptionParser.parse_args(argv)
+    cmd.CommonValidateOptions(opt, [])
+    branch = mock.MagicMock()
+    branch.project.dest_branch = None
+    with mock.patch("git_superproject.UseSuperproject", return_value=False):
+        cmd._UploadBranch(opt, branch, _STUB_PEOPLE)
+
+    branch.UploadForReview.assert_called_once()
+    _, kwargs = branch.UploadForReview.call_args
+    assert kwargs["quiet"] is expected_quiet
+
+
+def test_UploadAndReport_quiet_suppresses_ok_summary(
+    cmd: upload.Upload, capsys: pytest.CaptureFixture
+) -> None:
+    """Check -q suppresses non-error [OK] summary output."""
+    opt, _ = cmd.OptionParser.parse_args(["-q"])
+    cmd.CommonValidateOptions(opt, [])
+    branch = mock.MagicMock()
+    branch.name = "topic"
+    branch.project.RelPath.return_value = "proj"
+    with mock.patch.object(cmd, "_UploadBranch"):
+        cmd._UploadAndReport(opt, [branch], _STUB_PEOPLE)
+
+    assert capsys.readouterr().err == ""
+
+
+def test_UploadAndReport_quiet_still_prints_errors(
+    cmd: upload.Upload, capsys: pytest.CaptureFixture
+) -> None:
+    """Check -q still prints [FAILED] error summary when upload fails."""
+    opt, _ = cmd.OptionParser.parse_args(["-q"])
+    cmd.CommonValidateOptions(opt, [])
+    branch = mock.MagicMock()
+    branch.name = "topic"
+    branch.project.RelPath.return_value = "proj"
+    with mock.patch.object(
+        cmd, "_UploadBranch", side_effect=error.UploadError("boom")
+    ):
+        with pytest.raises(upload.UploadExitError):
+            cmd._UploadAndReport(opt, [branch], _STUB_PEOPLE)
+
+    err = capsys.readouterr().err
+    assert "[FAILED]" in err
+    assert "[OK    ]" not in err

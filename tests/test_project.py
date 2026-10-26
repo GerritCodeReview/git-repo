@@ -114,6 +114,19 @@ class ReviewableBranchTests(unittest.TestCase):
         _, kwargs = proj.UploadForReview.call_args
         self.assertEqual(kwargs.get("git_event_log"), mock_event_log)
 
+    def test_upload_for_review_forwards_quiet(self) -> None:
+        """Check ReviewableBranch.UploadForReview forwards quiet flag."""
+        proj = mock.MagicMock(spec=project.Project)
+        branch = mock.MagicMock()
+        branch.name = "work"
+        rb = project.ReviewableBranch(proj, branch, "main")
+
+        rb.UploadForReview(people=([], []), quiet=True)
+
+        proj.UploadForReview.assert_called_once()
+        _, kwargs = proj.UploadForReview.call_args
+        self.assertTrue(kwargs.get("quiet"))
+
     def test_current_comes_from_branch_snapshot(self) -> None:
         """Reviewable branches carry current state into report consumers."""
         branch = mock.MagicMock()
@@ -375,6 +388,36 @@ class ProjectTests(unittest.TestCase):
             self.assertEqual(
                 data_map.get("repo.uploadstate/files"), "file1.py,file2.py"
             )
+
+    def test_upload_for_review_progress_flag(self) -> None:
+        """Check UploadForReview passes --no-progress iff quiet=True."""
+        for quiet in (False, True):
+            with self.subTest(quiet=quiet):
+                proj, _ = self._create_project_for_upload_test()
+                with mock.patch(
+                    "git_command.GitCommand"
+                ) as mock_git_cmd, mock.patch("project.ReviewableBranch"):
+                    mock_cmd = mock.MagicMock()
+                    mock_cmd.Wait.return_value = 0
+                    mock_cmd.stderr = ""
+                    mock_git_cmd.return_value = mock_cmd
+
+                    project.Project.UploadForReview(
+                        proj,
+                        branch="test-branch",
+                        dryrun=True,
+                        quiet=quiet,
+                    )
+
+                    mock_git_cmd.assert_called_once()
+                    _, args, _ = mock_git_cmd.mock_calls[0]
+                    cmd = args[1]
+                    if quiet:
+                        self.assertIn("--no-progress", cmd)
+                    else:
+                        self.assertNotIn("--no-progress", cmd)
+                    self.assertNotIn("--progress", cmd)
+                    self.assertNotIn("--quiet", cmd)
 
     def test_get_head_revision_id(self):
         """Check GetHeadRevisionId behavior."""

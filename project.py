@@ -282,6 +282,7 @@ class ReviewableBranch:
         push_options=None,
         patchset_description=None,
         git_event_log: Optional[EventLog] = None,
+        quiet: bool = False,
     ) -> None:
         self.project.UploadForReview(
             branch=self.name,
@@ -299,6 +300,7 @@ class ReviewableBranch:
             push_options=push_options,
             patchset_description=patchset_description,
             git_event_log=git_event_log,
+            quiet=quiet,
         )
 
     def GetPublishedRefs(self):
@@ -1485,6 +1487,7 @@ class Project:
         push_options=None,
         patchset_description=None,
         git_event_log: Optional[EventLog] = None,
+        quiet: bool = False,
     ) -> None:
         """Uploads the named branch for code review."""
         if branch is None:
@@ -1527,7 +1530,9 @@ class Project:
         url = branch.remote.ReviewUrl(self.UserEmail, validate_certs)
         if url is None:
             raise error.UploadError("review not configured", project=self.name)
-        cmd = ["push", "--progress"]
+        cmd = ["push"]
+        if quiet:
+            cmd.append("--no-progress")
         if dryrun:
             cmd.append("-n")
 
