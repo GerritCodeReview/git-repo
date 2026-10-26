@@ -659,6 +659,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             push_options=push_options,
             patchset_description=opt.patchset_description,
             git_event_log=self.git_event_log,
+            quiet=opt.quiet,
         )
 
         branch.uploaded = True

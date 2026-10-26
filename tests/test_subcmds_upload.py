@@ -278,3 +278,20 @@ def test_ValidateOptions_allowed(cmd: upload.Upload, argv: List[str]) -> None:
     """Check valid hook option combinations are accepted."""
     opt, args = cmd.OptionParser.parse_args(argv)
     cmd.ValidateOptions(opt, args)
+
+
+@pytest.mark.parametrize("argv,expected_quiet", [([], False), (["-q"], True)])
+def test_UploadBranch_forwards_quiet(
+    cmd: upload.Upload, argv: List[str], expected_quiet: bool
+) -> None:
+    """Check _UploadBranch forwards opt.quiet to branch.UploadForReview."""
+    opt, _ = cmd.OptionParser.parse_args(argv)
+    cmd.CommonValidateOptions(opt, [])
+    branch = mock.MagicMock()
+    branch.project.dest_branch = None
+    with mock.patch("git_superproject.UseSuperproject", return_value=False):
+        cmd._UploadBranch(opt, branch, _STUB_PEOPLE)
+
+    branch.UploadForReview.assert_called_once()
+    _, kwargs = branch.UploadForReview.call_args
+    assert kwargs["quiet"] is expected_quiet
