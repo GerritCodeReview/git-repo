@@ -332,11 +332,17 @@ class GitCommand:
 
         if command_name in ("fetch", "clone"):
             env["GIT_TERMINAL_PROMPT"] = "0"
-            # Need to use the --progress flag for fetch/clone so output will be
-            # displayed as by default git only does progress output if stderr is
-            # a TTY.
+        if command_name in ("fetch", "clone", "push"):
+            # Need to use the --progress flag for fetch/clone/push so output
+            # will be displayed as by default git only does progress output if
+            # stderr is a TTY.
             if sys.stderr.isatty():
-                if "--progress" not in cmdv and "--quiet" not in cmdv:
+                if (
+                    "--progress" not in cmdv
+                    and "--no-progress" not in cmdv
+                    and "--quiet" not in cmdv
+                    and "-q" not in cmdv
+                ):
                     command.append("--progress")
         command.extend(cmdv[1:])
 
