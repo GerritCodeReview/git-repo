@@ -5,11 +5,19 @@ related topics and flows.
 
 [TOC]
 
-## Schedule
+## Schedule {#schedule}
 
-There is no specific schedule for when releases are made.
-Usually it's more along the lines of "enough minor changes have been merged",
-or "there's a known issue the maintainers know should get fixed".
+Releases are automated.
+Every Tuesday morning [US PT], a pipeline checks if any new commits have landed
+since last release.
+If so, it tags & tests the latest `main`, pushes & announces the tag, and then
+promotes it to `stable` a day later.
+The release is skipped if there's a holiday or [production freeze](#freeze)
+that week.
+Maintainers can also trigger it by hand.
+The [manual steps](#manual) below are only needed as a fallback, or to roll
+back a release.
+
 If you find a fix has been merged for an issue important to you, but hasn't been
 released after a week or so, feel free to [contact] us to request a new release.
 
@@ -47,6 +55,11 @@ Whenever major changes are made to the launcher script, you should increment the
 `VERSION` variable in the launcher itself.
 At runtime, repo will check this to see if it needs to be updated (and notify
 the user automatically).
+
+When `VERSION` changes, the release pipeline publishes the new launcher to the
+`git-repo-downloads` Google Cloud Storage bucket.
+To publish it by hand, run `./release/sign-launcher.py`, which signs the
+launcher and prints the commands to upload it.
 
 ## Key management
 
@@ -96,8 +109,8 @@ If that tag is valid, then repo will warn and use that commit instead.
 
 If that tag cannot be verified, it gives up and forces the user to resolve.
 
-If env variable `REPO_SKIP_SELF_UPDATE` is defined, this will
-bypass the self update algorithm.
+If the env variable `REPO_SKIP_SELF_UPDATE` is set to anything other than `0`,
+`repo sync` will bypass the self update algorithm.
 
 ### Force an update
 
@@ -110,29 +123,20 @@ All development happens on the `main` branch and should generally be stable.
 
 Since the repo launcher defaults to tracking the `stable` branch, it is not
 normally updated until a new release is available.
-If something goes wrong with a new release, an older release can be force pushed
-and clients will automatically downgrade.
-
-The `maint` branch is used to track the previous major release of repo.
-It is not normally meant to be used by people as `stable` should be good enough.
-Once a new major release is pushed to the `stable` branch, then the previous
-major release can be pushed to `maint`.
-For example, when `stable` moves from `v1.10.x` to `v1.11.x`, then the `maint`
-branch will be updated from `v1.9.x` to `v1.10.x`.
+If something goes wrong with a new release, `stable` can be pointed back at an
+older release and clients will automatically downgrade.
 
 We don't have parallel release branches/series.
-Typically all tags are made against the `main` branch and then pushed to the
+Typically all tags are made against the `main` branch and then promoted to the
 `stable` branch to make it available to the rest of the world.
 Since repo doesn't typically see a lot of changes, this tends to be OK.
 
-## Creating a new release
+## Creating a new release {#manual}
 
-When you want to create a new release, you'll need to select a good version and
+Releases are normally created automatically (see [Schedule](#schedule)).
+If you need to create one by hand, you'll need to select a good version and
 create a signed tag using a key registered in repo itself.
 Typically we just tag the latest version of the `main` branch.
-The tag could be pushed now, but it won't be used by clients normally (since the
-default `repo-rev` setting is `stable`).
-This would allow some early testing on systems who explicitly select `main`.
 
 ### Creating a signed tag
 
@@ -147,10 +151,10 @@ internal processes for accessing the restricted keys.
 
 ```sh
 # Pick the new version.
-$ t=v2.30
+$ t=v2.XX
 
-# Create a new signed tag with the current HEAD.
-$ ./release/sign-tag.py $t
+# Create a new signed tag of the latest main branch.
+$ ./release/sign-tag.py $t origin/main
 
 # Verify the signed tag.
 $ git show $t
@@ -158,43 +162,49 @@ $ git show $t
 
 ### Push the new release
 
-Once you're ready to make the release available to everyone, push it to the
-`stable` branch.
-
-Make sure you never push the tag itself to the stable branch!
-Only push the commit -- note the use of `^0` below.
+First push the tag, [announce](#announce) it, and wait a day to get feedback
+from people testing new releases early.
 
 ```sh
 $ git push https://gerrit-review.googlesource.com/git-repo $t
-$ git push https://gerrit-review.googlesource.com/git-repo $t^0:stable
 ```
 
-If something goes horribly wrong, you can force push the previous version to the
-`stable` branch and people should automatically recover.
-Again, make sure you never push the tag itself!
+Then make the release available to everyone by updating the `stable` branch.
+Direct pushes to it are rejected, so it has to be deleted & recreated via the
+authenticated [Gerrit REST API] (see [go/repo-release] for maintainers).
+
+Make sure you never point the stable branch at the tag itself!
+Only use the commit -- note the use of `^0` below.
+The commit is resolved before deleting anything so that a bad `$t` can't leave
+`stable` missing.
 
 ```sh
-$ oldrev="whatever-old-commit"
-$ git push https://gerrit-review.googlesource.com/git-repo $oldrev:stable --force
+$ api=https://gerrit-review.googlesource.com/a/projects/git-repo/branches/stable
+$ rev=$(git rev-parse --verify "$t^0") && \
+    curl --fail -X DELETE "$api" && \
+    curl --fail -X PUT -H 'Content-Type: application/json' \
+      -d "{\"revision\":\"$rev\"}" "$api"
 ```
 
-### Announce the release
+If something goes horribly wrong, run the same commands with the previous
+release (e.g. `t=$(git describe --abbrev=0 $t^0~)`) and people should
+automatically recover.
 
-Once you do push a new release to `stable`, make sure to announce it on the
-[repo-discuss@googlegroups.com] group.
+### Announce the release {#announce}
+
+Once you push a new release, make sure to announce it on the
+[repo-discuss@googlegroups.com] group, and follow up once it's on `stable`.
 Here is an [example announcement].
 
-You can create a short changelog using the command:
+You can create a short changelog since the previous release using the command:
 
 ```sh
-# If you haven't pushed to the stable branch yet, you can use origin/stable.
-# If you have pushed, change origin/stable to the previous release tag.
-# This assumes "main" is the current tagged release.  If it's newer, change it
-# to the current release tag too.
-$ git log --format="%h (%aN) %s" --no-merges origin/stable..main
+$ git log --format="%h (%aN) %s" --no-merges \
+    $(git describe --abbrev=0 $t^0~)..$t
 ```
 
 [contact]: ../README.md#contact
 [example announcement]: https://groups.google.com/d/topic/repo-discuss/UGBNismWo1M/discussion
 [repo-discuss@googlegroups.com]: https://groups.google.com/forum/#!forum/repo-discuss
 [go/repo-release]: https://goto.google.com/repo-release
+[Gerrit REST API]: https://gerrit-review.googlesource.com/Documentation/rest-api-projects.html#branch-endpoints
