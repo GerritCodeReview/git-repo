@@ -1865,24 +1865,26 @@ class Project:
 
         if is_new is None:
             is_new = not self.Exists
-        if is_new:
-            self._InitGitDir(force_sync=force_sync, quiet=quiet)
-        else:
-            try:
-                # At this point, it's possible that gitdir points to an old
-                # objdir (e.g. name changed, but objdir exists). Check
-                # references to ensure that's not the case. See
-                # https://issues.gerritcodereview.com/40013418 for more
-                # details.
-                self._CheckDirReference(self.objdir, self.gitdir)
+        with self.config.BatchWrites():
+            if is_new:
+                self._InitGitDir(force_sync=force_sync, quiet=quiet)
+            else:
+                try:
+                    # At this point, it's possible that gitdir points to an old
+                    # objdir (e.g. name changed, but objdir exists). Check
+                    # references to ensure that's not the case. See
+                    # https://issues.gerritcodereview.com/40013418 for more
+                    # details.
+                    self._CheckDirReference(self.objdir, self.gitdir)
 
-                self._UpdateHooks(quiet=quiet)
-            except error.GitError as e:
-                if not force_sync:
-                    raise e
-                # Let _InitGitDir fix the issue, force_sync is always True here.
-                self._InitGitDir(force_sync=True, quiet=quiet)
-        self._InitRemote()
+                    self._UpdateHooks(quiet=quiet)
+                except error.GitError as e:
+                    if not force_sync:
+                        raise e
+                    # Let _InitGitDir fix the issue, force_sync is always True
+                    # here.
+                    self._InitGitDir(force_sync=True, quiet=quiet)
+            self._InitRemote()
 
         if self.UseAlternates:
             # If gitdir/objects is a symlink, migrate it from the old layout.
@@ -4414,23 +4416,27 @@ class Project:
                         )
 
                 m = self.manifest.manifestProject.config
-                for key in ["user.name", "user.email"]:
-                    if m.Has(key, include_defaults=False):
-                        curr_config.SetString(key, m.GetString(key))
-                if not self.manifest.EnableGitLfs:
-                    curr_config.SetString(
-                        "filter.lfs.smudge", "git-lfs smudge --skip -- %f"
+                with curr_config.BatchWrites():
+                    for key in ["user.name", "user.email"]:
+                        if m.Has(key, include_defaults=False):
+                            curr_config.SetString(key, m.GetString(key))
+                    if not self.manifest.EnableGitLfs:
+                        curr_config.SetString(
+                            "filter.lfs.smudge",
+                            "git-lfs smudge --skip -- %f",
+                        )
+                        curr_config.SetString(
+                            "filter.lfs.process",
+                            "git-lfs filter-process --skip",
+                        )
+                    curr_config.SetBoolean(
+                        "core.bare", True if self.manifest.IsMirror else None
                     )
-                    curr_config.SetString(
-                        "filter.lfs.process", "git-lfs filter-process --skip"
-                    )
-                curr_config.SetBoolean(
-                    "core.bare", True if self.manifest.IsMirror else None
-                )
 
                 if tmp_gitdir:
                     platform_utils.rename(tmp_gitdir, self.gitdir)
                     tmp_gitdir = None
+                    self.config.ClearCache()
             if not init_obj_dir:
                 # The project might be shared (obj_dir already initialized), but
                 # such information is not available here. Instead of passing it,
@@ -4532,27 +4538,28 @@ class Project:
                     raise
 
     def _InitRemote(self):
-        if self.remote.url:
-            remote = self.GetRemote()
-            remote.url = self.remote.url
-            remote.pushUrl = self.remote.pushUrl
-            remote.review = self.remote.review
-            remote.projectname = self.name
+        with self.config.BatchWrites():
+            if self.remote.url:
+                remote = self.GetRemote()
+                remote.url = self.remote.url
+                remote.pushUrl = self.remote.pushUrl
+                remote.review = self.remote.review
+                remote.projectname = self.name
 
-            if self.worktree:
-                remote.ResetFetch(mirror=False)
-            else:
-                remote.ResetFetch(mirror=True)
-            remote.Save()
+                if self.worktree:
+                    remote.ResetFetch(mirror=False)
+                else:
+                    remote.ResetFetch(mirror=True)
+                remote.Save()
 
-        # Disable auto-gc for depth=1 to prevent hangs during lazy fetches
-        # inside git checkout for partial clones.
-        effective_depth = (
-            self.clone_depth or self.manifest.manifestProject.depth
-        )
-        if effective_depth == 1:
-            self.config.SetBoolean("maintenance.auto", False)
-            self.config.SetInt("gc.auto", 0)
+            # Disable auto-gc for depth=1 to prevent hangs during lazy fetches
+            # inside git checkout for partial clones.
+            effective_depth = (
+                self.clone_depth or self.manifest.manifestProject.depth
+            )
+            if effective_depth == 1:
+                self.config.SetBoolean("maintenance.auto", False)
+                self.config.SetInt("gc.auto", 0)
 
     def _InitMRef(self):
         """Initialize the pseudo m/<manifest branch> ref."""

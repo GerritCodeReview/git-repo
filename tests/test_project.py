@@ -4862,11 +4862,16 @@ class InitGitDirConfigTests(unittest.TestCase):
                     super().__init__(proj_arg, cmdv, *args, **kwargs)
 
             with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
-                proj._InitGitDir(quiet=True)
-                proj._InitRemote()
+                with proj.config.BatchWrites():
+                    proj._InitGitDir(quiet=True)
+                    proj._InitRemote()
 
             init_cmds = [cmd for cmd in seen_cmds if cmd and cmd[0] == "init"]
             self.assertEqual([["init", "-q", "--template="]], init_cmds)
+            self.assertFalse(
+                any("--replace-all" in cmd for cmd in seen_cmds),
+                f"Expected BatchWrites to avoid --replace-all, got {seen_cmds}",
+            )
             reloaded = git_config.GitConfig.ForRepository(gitdir=proj.gitdir)
             fresh = reloaded._ReadGit()
             self.assertEqual(
