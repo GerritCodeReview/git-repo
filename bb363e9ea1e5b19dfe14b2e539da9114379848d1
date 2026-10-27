@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00f3f22f_a587de22",
+        "filename": "docs/python-support.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-10-27T17:31:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad948b38_d3eeaf55",
+      "range": {
+        "startLine": 91,
+        "startChar": 19,
+        "endLine": 91,
+        "endChar": 71
+      },
+      "revId": "bb363e9ea1e5b19dfe14b2e539da9114379848d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9e21345_bdfb8a7f",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-27T16:18:08Z",
       "side": 1,
       "message": "https://wiki.debian.org/DebianReleases#Versions_of_Debian_stable here too",
+      "range": {
+        "startLine": 26,
+        "startChar": 2,
+        "endLine": 26,
+        "endChar": 54
+      },
+      "revId": "bb363e9ea1e5b19dfe14b2e539da9114379848d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "386bc16d_25dc7d63",
+        "filename": "requirements.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-10-27T17:31:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9e21345_bdfb8a7f",
       "range": {
         "startLine": 26,
         "startChar": 2,
