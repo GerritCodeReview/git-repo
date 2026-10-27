@@ -14,6 +14,8 @@
 
 """Unittests for the git_config.py module."""
 
+import json
+import os
 from pathlib import Path
 from typing import Any, Optional
 
@@ -346,3 +348,48 @@ def test_get_boolean_git_spellings(
     config_file.write_text(f"[section]\n\tkey = {value}\n")
     config = git_config.GitConfig(config_file)
     assert config.GetBoolean("section.key") is expected
+
+
+def test_set_string_updates_json_and_section_caches(
+    rw_config_file: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Test SetString keeps .repo_config.json and _sections coherent."""
+    config = git_config.GitConfig(str(rw_config_file))
+    assert not config.HasSection("remote", "origin")
+
+    config.SetString("remote.origin.url", "https://example.com/repo")
+    assert config.HasSection("remote", "origin")
+
+    json_file = rw_config_file.parent / ".repo_config.json"
+    assert json.loads(json_file.read_text()) == {
+        "remote.origin.url": ["https://example.com/repo"]
+    }
+
+    # Ensure mtime ordering on coarse-tick test filesystems so _ReadJson hits.
+    file_stat = os.stat(rw_config_file)
+    os.utime(
+        json_file,
+        ns=(file_stat.st_atime_ns, file_stat.st_mtime_ns + 1_000_000_000),
+    )
+
+    reader = git_config.GitConfig(str(rw_config_file))
+
+    def fail_read_git() -> None:
+        raise AssertionError("Expected _ReadJson cache hit without git config")
+
+    monkeypatch.setattr(reader, "_ReadGit", fail_read_git)
+    assert reader.GetString("remote.origin.url") == "https://example.com/repo"
+
+
+def test_reload_refreshes_external_edits(rw_config_file: Path) -> None:
+    """Test Reload() discards stale JSON cache and reloads external edits."""
+    config = git_config.GitConfig(str(rw_config_file))
+    config.SetString("abfs.initialized", "false")
+    assert config.GetBoolean("abfs.initialized") is False
+
+    rw_config_file.write_text("[abfs]\n\tinitialized = true\n")
+    config.Reload()
+
+    assert config.GetBoolean("abfs.initialized") is True
+    json_file = rw_config_file.parent / ".repo_config.json"
+    assert json.loads(json_file.read_text()) == {"abfs.initialized": ["true"]}
