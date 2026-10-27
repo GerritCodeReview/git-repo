@@ -19,9 +19,11 @@
 # Hard versions are when we refuse to work the tool.  Users will be shown an
 # error message before we abort entirely.
 
-# When deciding whether to upgrade a version requirement, check out the distro
-# lists to see who will be impacted:
-# https://gerrit.googlesource.com/git-repo/+/HEAD/docs/release-process.md#Project-References
+# When deciding whether to upgrade a version requirement, check out what versions
+# major distros (e.g. Ubuntu LTS & Debian stable) ship to see who will be
+# impacted:
+# https://wiki.ubuntu.com/Releases
+# https://wiki.debian.org/DebianReleases#Versions_of_Debian_stable
 
 {
   # The repo launcher itself.  This allows us to force people to upgrade as some
