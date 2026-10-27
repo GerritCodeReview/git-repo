@@ -45,10 +45,10 @@ that are critical to us.
 That said, let's assume we need functionality that only exists in Python 3.7.
 How do we decide when it's acceptable to drop Python 3.6?
 
-1.  Review the [Project References](./release-process.md#project-references) to
-    see what major distros are using the previous version of Python, and when
-    they go EOL.  Generally we care about Ubuntu LTS & current/previous Debian
-    stable versions.
+1.  Review what major distros are using the previous version of Python, and
+    when they go EOL (e.g. via [Ubuntu releases] & [Debian releases]).
+    Generally we care about Ubuntu LTS & current/previous Debian stable
+    versions.
     *   If they're all EOL already, then go for it, drop support.
     *   If they aren't EOL, start a thread on [repo-discuss] to see how the user
         base feels about the proposal.
@@ -88,5 +88,7 @@ $ repo-2.32 init --repo-rev=repo-1 ...
 
 
 [repo-discuss]: https://groups.google.com/forum/#!forum/repo-discuss
+[Debian releases]: https://wiki.debian.org/DebianReleases#Versions_of_Debian_stable
 [repo hooks]: ./repo-hooks.md
 [repo launcher]: ../repo
+[Ubuntu releases]: https://wiki.ubuntu.com/Releases
