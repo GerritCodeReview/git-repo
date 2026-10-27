@@ -3521,6 +3521,69 @@ class FetchCmdTests(unittest.TestCase):
                 mock_run.return_value = mock.MagicMock(returncode=0, stderr="")
                 self.assertFalse(proj._CustomFetch())
 
+    def test_fetch_cmd_refreshes_config_cache_when_modified(self) -> None:
+        """Test _CustomFetch refreshes GitConfig and remotes on config edit."""
+        with utils_for_test.TempGitTree() as tempdir:
+            sha = "0123456789abcdef0123456789abcdef01234567"
+            proj = self._get_project(tempdir)
+            proj.config = git_config.GitConfig.ForRepository(
+                gitdir=os.path.join(tempdir, ".git")
+            )
+            proj.config.SetString(
+                "remote.origin.url", "http://example.com/repo"
+            )
+            proj.config.SetString("remote.origin.projectname", "test-project")
+            proj.config.SetString(
+                "remote.origin.fetch",
+                "+refs/heads/legacy:refs/remotes/origin/legacy",
+            )
+            # Warm cached Remote before fetchcmd rewrites .git/config.
+            self.assertEqual(
+                proj.GetRemote().ToLocal("legacy"), "refs/remotes/origin/legacy"
+            )
+            proj.revisionId = sha
+            proj.revisionExpr = "main"
+            proj.bare_git.ResolveCommit.return_value = sha
+
+            def _edit_config(*_args: Any, **_kwargs: Any) -> mock.MagicMock:
+                with open(proj.config.file, "w", encoding="utf-8") as fp:
+                    fp.write(
+                        '[remote "origin"]\n'
+                        "\turl = http://example.com/repo\n"
+                        "\tprojectname = test-project\n"
+                        "\tfetch = +refs/heads/*:refs/remotes/origin/*\n"
+                        "[custom]\n"
+                        "\tinitialized = true\n"
+                    )
+                return mock.MagicMock(returncode=0, stderr="")
+
+            with mock.patch("subprocess.run", side_effect=_edit_config):
+                self.assertTrue(proj._CustomFetch())
+
+            self.assertTrue(proj.config.GetBoolean("custom.initialized"))
+            self.assertEqual(
+                proj.GetRemote().ToLocal("main"), "refs/remotes/origin/main"
+            )
+            fresh = git_config.GitConfig.ForRepository(
+                gitdir=os.path.join(tempdir, ".git")
+            )
+            with mock.patch.object(
+                fresh,
+                "_ReadGit",
+                side_effect=AssertionError("expected .repo_config.json hit"),
+            ):
+                self.assertTrue(fresh.GetBoolean("custom.initialized"))
+
+            # Non-zero exit after modifying config still refreshes cache.
+            def _fail_after_edit(*_args: Any, **_kwargs: Any) -> mock.MagicMock:
+                with open(proj.config.file, "a", encoding="utf-8") as fp:
+                    fp.write("[custom]\n\tfailedrun = true\n")
+                return mock.MagicMock(returncode=2, stderr="boom")
+
+            with mock.patch("subprocess.run", side_effect=_fail_after_edit):
+                self.assertFalse(proj._CustomFetch())
+            self.assertTrue(proj.config.GetBoolean("custom.failedrun"))
+
     def test_sync_fetch_cmd_requires_use_local_gitdirs(self):
         """Test that fetch_cmd requires use_local_gitdirs."""
         with utils_for_test.TempGitTree() as tempdir:
@@ -3656,9 +3719,13 @@ class ReprojectCmdTests(unittest.TestCase):
             returncode: exit code of GitCommand.
         """
 
+        real_git_command = git_command.GitCommand
+
         def make(
             project: project.Project, cmdv: List[str], **kwargs: Any
-        ) -> mock.MagicMock:
+        ) -> Any:
+            if cmdv and cmdv[0] == "config":
+                return real_git_command(project, cmdv, **kwargs)
             cmd = mock.MagicMock()
             cmd.stderr = ""
             if cmdv[0] == "diff-index":
@@ -4165,6 +4232,28 @@ class ReprojectCmdTests(unittest.TestCase):
                     proj._Reproject(self.REVID)
                 mock_run.assert_not_called()
 
+    def test_reproject_refreshes_config_cache_even_on_failure(self) -> None:
+        """Test _Reproject refreshes GitConfig even if reprojectcmd fails."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            proj.config = git_config.GitConfig.ForRepository(
+                gitdir=os.path.join(tempdir, ".git")
+            )
+            proj.config.SetBoolean("custom.reprojected", False)
+
+            def _fail_after_edit(*_args: Any, **_kwargs: Any) -> mock.MagicMock:
+                with open(proj.config.file, "w", encoding="utf-8") as fp:
+                    fp.write("[custom]\n\treprojected = true\n")
+                return mock.MagicMock(returncode=1, stdout="failed\n")
+
+            with mock.patch(
+                "git_command.GitCommand", side_effect=self._git_command()
+            ), mock.patch("subprocess.run", side_effect=_fail_after_edit):
+                with self.assertRaises(project.LocalSyncFail):
+                    proj._Reproject(self.REVID)
+
+            self.assertTrue(proj.config.GetBoolean("custom.reprojected"))
+
 
 class ReprojectCmdGitTests(unittest.TestCase):
     """Tests running the reprojectcmd contract against a real Git checkout."""
@@ -4535,3 +4624,161 @@ class DownloadPatchSetTests(unittest.TestCase):
                 )
                 self.assertEqual(dl.change_id, 54321)
                 self.assertEqual(dl.ps_id, 1)
+
+
+class InitGitDirConfigTests(unittest.TestCase):
+    """Tests for _InitGitDir template handling."""
+
+    def _make_uninitialized_project(
+        self,
+        topdir: str,
+        global_config: Optional[git_config.GitConfig] = None,
+        clone_depth: Optional[int] = None,
+    ) -> project.Project:
+        worktree = os.path.join(topdir, "proj")
+        gitdir = os.path.join(worktree, ".git")
+        manifest = mock.MagicMock()
+        manifest.IsMirror = False
+        manifest.EnableGitLfs = False
+        manifest.is_multimanifest = False
+        manifest.topdir = topdir
+        manifest.path_prefix = ""
+        manifest.globalConfig = global_config
+        manifest.manifestProject.reference = ""
+        manifest.manifestProject.depth = None
+        manifest.manifestProject.config.Has.return_value = False
+
+        remote_spec = project.RemoteSpec(
+            "origin",
+            url="https://example.com/platform/proj",
+            review="https://review.example.com",
+        )
+        return project.Project(
+            manifest=manifest,
+            name="platform/proj",
+            remote=remote_spec,
+            gitdir=gitdir,
+            objdir=gitdir,
+            worktree=worktree,
+            relpath="proj",
+            revisionExpr="main",
+            revisionId=None,
+            clone_depth=clone_depth,
+        )
+
+    def test_init_git_dir_skips_default_templates(self) -> None:
+        """Default init passes --template= and respects quiet flag."""
+        with tempfile.TemporaryDirectory() as topdir, mock.patch.dict(
+            os.environ,
+            {
+                "GIT_CONFIG_NOSYSTEM": "1",
+                "GIT_CONFIG_GLOBAL": os.path.join(topdir, "empty_gitconfig"),
+            },
+            clear=False,
+        ):
+            os.environ.pop("GIT_TEMPLATE_DIR", None)
+            os.environ.pop("GIT_CONFIG_PARAMETERS", None)
+            os.environ.pop("GIT_CONFIG_COUNT", None)
+            proj = self._make_uninitialized_project(topdir, clone_depth=1)
+            seen_cmds: List[List[str]] = []
+
+            class SpyGitCommand(git_command.GitCommand):
+                def __init__(
+                    self,
+                    proj_arg: Any,
+                    cmdv: List[str],
+                    *args: Any,
+                    **kwargs: Any,
+                ) -> None:
+                    seen_cmds.append(list(cmdv))
+                    super().__init__(proj_arg, cmdv, *args, **kwargs)
+
+            with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
+                proj._InitGitDir(quiet=True)
+                proj._InitRemote()
+
+            init_cmds = [cmd for cmd in seen_cmds if cmd and cmd[0] == "init"]
+            self.assertEqual([["init", "-q", "--template="]], init_cmds)
+            reloaded = git_config.GitConfig.ForRepository(gitdir=proj.gitdir)
+            fresh = reloaded._ReadGit()
+            self.assertEqual(
+                ["git-lfs smudge --skip -- %f"], fresh.get("filter.lfs.smudge")
+            )
+            self.assertEqual(
+                ["git-lfs filter-process --skip"],
+                fresh.get("filter.lfs.process"),
+            )
+            self.assertEqual(["false"], fresh.get("maintenance.auto"))
+            self.assertEqual(["0"], fresh.get("gc.auto"))
+
+            # Empty GIT_TEMPLATE_DIR="" also disables templates; quiet=False
+            # omits -q.
+            seen_cmds.clear()
+            os.environ["GIT_TEMPLATE_DIR"] = ""
+            proj2 = self._make_uninitialized_project(
+                os.path.join(topdir, "sub"), clone_depth=1
+            )
+            with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
+                proj2._InitGitDir(quiet=False)
+            init_cmds2 = [cmd for cmd in seen_cmds if cmd and cmd[0] == "init"]
+            self.assertEqual([["init", "--template="]], init_cmds2)
+
+    def test_init_git_dir_preserves_custom_template_dir(self) -> None:
+        """Custom init.templatedir runs git init -q and strips sample hooks."""
+        with tempfile.TemporaryDirectory() as topdir:
+            tpl_dir = os.path.join(topdir, "tpl")
+            os.makedirs(os.path.join(tpl_dir, "hooks"))
+            with open(
+                os.path.join(tpl_dir, "hooks", "pre-commit.sample"),
+                "w",
+                encoding="utf-8",
+            ) as fp:
+                fp.write("#!/bin/sh\n")
+            with open(
+                os.path.join(tpl_dir, "hooks", "post-checkout"),
+                "w",
+                encoding="utf-8",
+            ) as fp:
+                fp.write("#!/bin/sh\n")
+
+            global_cfg_file = os.path.join(topdir, "gitconfig")
+            global_cfg = git_config.GitConfig(global_cfg_file)
+            global_cfg.SetString("init.templatedir", tpl_dir)
+
+            proj = self._make_uninitialized_project(topdir, global_config=None)
+            seen_cmds: List[List[str]] = []
+
+            class SpyGitCommand(git_command.GitCommand):
+                def __init__(
+                    self,
+                    proj_arg: Any,
+                    cmdv: List[str],
+                    *args: Any,
+                    **kwargs: Any,
+                ) -> None:
+                    seen_cmds.append(list(cmdv))
+                    super().__init__(proj_arg, cmdv, *args, **kwargs)
+
+            with mock.patch.dict(
+                os.environ,
+                {
+                    "GIT_CONFIG_NOSYSTEM": "1",
+                    "GIT_CONFIG_GLOBAL": global_cfg_file,
+                },
+                clear=False,
+            ):
+                os.environ.pop("GIT_TEMPLATE_DIR", None)
+                with mock.patch.object(
+                    git_command, "GitCommand", SpyGitCommand
+                ):
+                    proj._InitGitDir(quiet=True)
+
+            init_cmds = [cmd for cmd in seen_cmds if cmd and cmd[0] == "init"]
+            self.assertEqual([["init", "-q"]], init_cmds)
+            hooks_dir = os.path.join(proj.gitdir, "hooks")
+            self.assertFalse(
+                os.path.exists(os.path.join(hooks_dir, "pre-commit.sample"))
+            )
+            self.assertTrue(
+                os.path.exists(os.path.join(hooks_dir, "post-checkout"))
+            )
