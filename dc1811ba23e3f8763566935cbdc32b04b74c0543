@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7d9da42_cc3422b3",
+        "filename": "tests/e2e/test_init_sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-27T09:37:25Z",
+      "side": 1,
+      "message": "please stop adding new code importing members from modules like this\n\nother than a few exceptions, you only import modules",
+      "revId": "dc1811ba23e3f8763566935cbdc32b04b74c0543",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
