@@ -24,7 +24,7 @@ import ssl
 import subprocess
 import sys
 import tempfile
-from typing import Optional, Tuple, Union
+from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 import urllib.error
 import urllib.request
 
@@ -40,11 +40,92 @@ import repo_trace
 SYNC_STATE_PREFIX = "repo.syncstate."
 
 ID_RE = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
+_INI_SECTION_RE = re.compile(r"^[A-Za-z0-9-]+$")
+_INI_KEY_RE = re.compile(r"^[A-Za-z][A-Za-z0-9-]*$")
 
 REVIEW_CACHE = {}
 
 # Metadata key stored in .repo_config.json to detect same-tick config edits.
 _JSON_META_KEY = "__repo_meta__"
+
+
+def _SplitIniName(name: str) -> Optional[Tuple[str, str, str]]:
+    """Split a config key into INI components when plain-append safe.
+
+    Args:
+        name: Dotted git config key name (e.g. "remote.origin.url").
+
+    Returns:
+        A (section, subsection, var) tuple if the key can be written as a
+        plain INI entry, or None if it requires git config CLI handling.
+    """
+    parts = name.split(".")
+    if len(parts) < 2:
+        return None
+    section = parts[0]
+    var = parts[-1]
+    subsection = ".".join(parts[1:-1]) if len(parts) > 2 else ""
+    if not _INI_SECTION_RE.match(section) or not _INI_KEY_RE.match(var):
+        return None
+    if any(
+        ord(ch) < 0x20 or ord(ch) > 0x7E or ch in ('"', "\\")
+        for ch in subsection
+    ):
+        return None
+    return (section, subsection, var)
+
+
+def _IsPlainIniValue(val: Any) -> bool:
+    """Check whether a config value needs no INI quoting or escaping.
+
+    Args:
+        val: Candidate configuration value passed to SetString.
+
+    Returns:
+        True if val is a string that can be written verbatim without quotes
+        or backslash escapes; False otherwise.
+    """
+    if not isinstance(val, str):
+        return False
+    if val and (val[0] in (" ", "\t") or val[-1] in (" ", "\t")):
+        return False
+    return not any(
+        ord(ch) < 0x20 or ord(ch) > 0x7E or ch in ('"', "\\", ";", "#")
+        for ch in val
+    )
+
+
+def _FormatIniBatch(ops: List[Tuple[str, List[str]]], existing: bytes) -> bytes:
+    """Format queued key/value pairs as UTF-8 INI bytes to append.
+
+    Args:
+        ops: Ordered list of (name, values) pairs to append.
+        existing: Existing raw bytes of the target git config file.
+
+    Returns:
+        UTF-8 encoded INI stanza bytes ready to append after existing.
+    """
+    lines: List[str] = []
+    if existing and not existing.endswith(b"\n"):
+        lines.append("\n")
+    last_header = None
+    for name, vals in ops:
+        parsed = _SplitIniName(name)
+        assert parsed is not None
+        section, subsection, var = parsed
+        header_key = (section.lower(), subsection)
+        if header_key != last_header:
+            if subsection:
+                lines.append(f'[{section} "{subsection}"]\n')
+            else:
+                lines.append(f"[{section}]\n")
+            last_header = header_key
+        for val in vals:
+            if val == "":
+                lines.append(f"\t{var} =\n")
+            else:
+                lines.append(f"\t{var} = {val}\n")
+    return "".join(lines).encode("utf-8")
 
 
 def IsChange(rev):
@@ -168,6 +249,10 @@ class GitConfig:
         self._cache_dict = None
         self._cache_fingerprint = None
         self._section_dict = None
+        self._file_stat: Optional[Tuple[int, int, int]] = None
+        self._batch_depth = 0
+        self._batch_ops: Dict[str, Tuple[str, List[str]]] = {}
+        self._batch_json_dirty = False
         self._remotes = {}
         self._branches = {}
 
@@ -185,14 +270,31 @@ class GitConfig:
         self._section_dict = None
         self._remotes = {}
         self._branches = {}
+        self._file_stat = None
 
     def _RemoveJson(self) -> None:
         with contextlib.suppress(OSError):
             platform_utils.remove(self._json, missing_ok=True)
 
+    @contextlib.contextmanager
+    def BatchWrites(self) -> Iterator[None]:
+        """Coalesce compatible SetString writes under Git's config.lock.
+
+        Yields:
+            None while SetString writes are queued for batch flushing on exit.
+        """
+        self._batch_depth += 1
+        try:
+            yield
+        finally:
+            self._batch_depth -= 1
+            if self._batch_depth == 0:
+                self._FlushBatch(save_json=True)
+
     def Reload(self) -> None:
         """Clear cached state and reload configuration from disk."""
         self.ClearCache()
+        self._batch_json_dirty = False
         self._RemoveJson()
         _ = self._cache
 
@@ -314,6 +416,7 @@ class GitConfig:
 
         if (
             self._cache_dict is not None
+            and not self._batch_ops
             and self._ReadFileFingerprint() != self._cache_fingerprint
         ):
             self.ClearCache()
@@ -333,7 +436,15 @@ class GitConfig:
 
         if value is None:
             if old:
-                self._do("--unset-all", name, allow_missing=True)
+                if key in self._batch_ops:
+                    del self._batch_ops[key]
+                else:
+                    if self._batch_ops and (
+                        key == "include.path" or key.startswith("includeif.")
+                    ):
+                        self._FlushBatch(save_json=False)
+                    self._do("--unset-all", name, allow_missing=True)
+                    self._file_stat = self._StatFile()
                 del self._cache[key]
                 self._SyncCacheAfterSet(key)
 
@@ -345,21 +456,157 @@ class GitConfig:
                 self.SetString(name, value[0])
 
             elif old != value:
-                self._do("--replace-all", name, value[0])
-                try:
-                    for i in range(1, len(value)):
-                        self._do("--add", name, value[i])
-                except BaseException:
-                    self.ClearCache()
-                    self._RemoveJson()
-                    raise
-                self._cache[key] = list(value)
+                vals = list(value)
+                if self._CanQueueInBatch(key, name, vals, old):
+                    self._cache[key] = vals
+                    self._batch_ops[key] = (name, vals)
+                else:
+                    if self._batch_ops:
+                        self._batch_ops.pop(key, None)
+                        self._FlushBatch(save_json=False)
+                    self._do("--replace-all", name, vals[0])
+                    try:
+                        for i in range(1, len(vals)):
+                            self._do("--add", name, vals[i])
+                    except BaseException:
+                        self.ClearCache()
+                        self._RemoveJson()
+                        raise
+                    self._cache[key] = vals
+                    self._file_stat = self._StatFile()
                 self._SyncCacheAfterSet(key)
 
         elif len(old) != 1 or old[0] != value:
-            self._do("--replace-all", name, value)
-            self._cache[key] = [value]
+            vals = [value]
+            if self._CanQueueInBatch(key, name, vals, old):
+                self._cache[key] = vals
+                self._batch_ops[key] = (name, vals)
+            else:
+                if self._batch_ops:
+                    self._batch_ops.pop(key, None)
+                    self._FlushBatch(save_json=False)
+                self._do("--replace-all", name, value)
+                self._cache[key] = vals
+                self._file_stat = self._StatFile()
             self._SyncCacheAfterSet(key)
+
+    def _CanQueueInBatch(
+        self,
+        key: str,
+        name: str,
+        vals: List[Any],
+        old: List[Optional[str]],
+    ) -> bool:
+        """Check whether a SetString write can be queued for lockfile append.
+
+        Args:
+            key: Lowercased canonical key used in self._cache.
+            name: Original dotted key name preserving subsection case.
+            vals: New value list requested by SetString.
+            old: Existing cached values for key before this write.
+
+        Returns:
+            True if the write can be appended at batch flush time; False if it
+            must be flushed immediately through git config.
+        """
+        if self._batch_depth <= 0 or self.file == self._SYSTEM_CONFIG:
+            return False
+        if key == "include.path" or key.startswith("includeif."):
+            return False
+        if old and key not in self._batch_ops:
+            return False
+        return _SplitIniName(name) is not None and all(
+            _IsPlainIniValue(v) for v in vals
+        )
+
+    def _FlushBatch(self, save_json: bool = True) -> None:
+        """Flush queued SetString writes via config.lock or git config CLI.
+
+        Args:
+            save_json: Whether to persist a dirty .repo_config.json cache
+                after flushing queued config updates.
+        """
+        ops = list(self._batch_ops.values())
+        self._batch_ops.clear()
+        if ops and not self._TryWriteBatchLocked(ops):
+            self._ApplyBatchViaGit(ops)
+        if save_json and self._batch_json_dirty:
+            self._batch_json_dirty = False
+            if self._cache_dict is not None:
+                self._SaveJson(self._cache_dict)
+
+    def _TryWriteBatchLocked(self, ops: List[Tuple[str, List[str]]]) -> bool:
+        """Atomically append queued entries under <file>.lock if unmodified.
+
+        Args:
+            ops: Ordered list of (name, values) pairs to append.
+
+        Returns:
+            True if the lockfile was written and renamed into place; False if
+            the lock was busy, the file changed externally, or an I/O error
+            occurred.
+        """
+        if self.file == self._SYSTEM_CONFIG or os.path.islink(self.file):
+            return False
+        lock_path = f"{self.file}.lock"
+        try:
+            fd = os.open(lock_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o666)
+        except OSError:
+            return False
+
+        replaced = False
+        try:
+            curr_stat = self._StatFile()
+            if self._file_stat is not None and curr_stat != self._file_stat:
+                return False
+            existing = b""
+            if curr_stat != (-1, -1, -1):
+                st = os.stat(self.file)
+                os.fchmod(fd, st.st_mode & 0o777)
+                with open(self.file, "rb") as src_fp:
+                    existing = src_fp.read()
+
+            payload = _FormatIniBatch(ops, existing)
+            with os.fdopen(fd, "wb") as lock_fp:
+                fd = -1
+                if existing:
+                    lock_fp.write(existing)
+                lock_fp.write(payload)
+            os.replace(lock_path, self.file)
+            replaced = True
+            self._file_stat = self._StatFile()
+            return True
+        except OSError:
+            return False
+        finally:
+            if fd >= 0:
+                os.close(fd)
+            if not replaced:
+                platform_utils.remove(lock_path, missing_ok=True)
+
+    def _ApplyBatchViaGit(self, ops: List[Tuple[str, List[str]]]) -> None:
+        """Apply queued batch operations via the git config CLI fallback.
+
+        Args:
+            ops: Ordered list of (name, values) pairs to write via git config.
+        """
+        for name, vals in ops:
+            self._do("--replace-all", name, vals[0])
+            for extra in vals[1:]:
+                self._do("--add", name, extra)
+        self.Reload()
+
+    def _StatFile(self) -> Tuple[int, int, int]:
+        """Stat self.file for external modification detection.
+
+        Returns:
+            A (mtime_ns, size, ino) tuple, or (-1, -1, -1) on OSError.
+        """
+        try:
+            st = os.stat(self.file)
+            return (st.st_mtime_ns, st.st_size, st.st_ino)
+        except OSError:
+            return (-1, -1, -1)
 
     def _SyncCacheAfterSet(self, key: str) -> None:
         """Keep the in-memory section index and JSON cache coherent.
@@ -384,6 +631,9 @@ class GitConfig:
         ):
             self.ClearCache()
             self._RemoveJson()
+            self._batch_json_dirty = False
+        elif self._batch_depth > 0:
+            self._batch_json_dirty = True
         else:
             self._SaveJson(self._cache)
 
@@ -475,7 +725,11 @@ class GitConfig:
         d = self._ReadJson()
         if d is None:
             d = self._ReadGit()
-            self._SaveJson(d)
+            if self._batch_depth > 0:
+                self._batch_json_dirty = True
+            else:
+                self._SaveJson(d)
+        self._file_stat = self._StatFile()
         return d
 
     def _ReadFileFingerprint(self) -> Optional[Tuple[int, int, int, int, str]]:

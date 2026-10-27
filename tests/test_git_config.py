@@ -559,3 +559,103 @@ def test_set_string_after_external_edit_preserves_external_keys(
     assert reader2.GetString("other.key") == "ext2"
     assert reader2.GetString("user.name") == "Alice"
     assert reader2.GetString("user.email") == "alice@example.com"
+
+
+def test_batch_writes_coalesces_new_keys_without_git_replace(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Test BatchWrites writes new sections atomically with one JSON save."""
+    cfg_path = tmp_path / "config"
+    cfg_path.write_text("[core]\n\trepositoryformatversion = 0\n")
+    config = git_config.GitConfig(str(cfg_path))
+
+    orig_do = config._do
+    seen_do = []
+    save_count = 0
+    orig_save = config._SaveJson
+
+    def spy_do(*args: str) -> str:
+        seen_do.append(args)
+        return orig_do(*args)
+
+    def spy_save(cache: Any) -> None:
+        nonlocal save_count
+        save_count += 1
+        orig_save(cache)
+
+    monkeypatch.setattr(config, "_do", spy_do)
+    monkeypatch.setattr(config, "_SaveJson", spy_save)
+
+    with config.BatchWrites():
+        config.SetString("filter.lfs.smudge", "git-lfs smudge --skip -- %f")
+        config.SetString("filter.lfs.process", "git-lfs filter-process --skip")
+        config.SetString("remote.goog.url", "https://example.com/platform/art")
+        config.SetString(
+            "remote.goog.fetch",
+            [
+                "+refs/heads/*:refs/remotes/goog/*",
+                "+refs/tags/*:refs/tags/*",
+            ],
+        )
+        config.SetBoolean("maintenance.auto", False)
+
+    assert seen_do == [("--null", "--list")]
+    assert save_count == 1
+    assert not (tmp_path / "config.lock").exists()
+
+    reloaded = git_config.GitConfig(str(cfg_path))
+    fresh = reloaded._ReadGit()
+    assert fresh["filter.lfs.smudge"] == ["git-lfs smudge --skip -- %f"]
+    assert fresh["filter.lfs.process"] == ["git-lfs filter-process --skip"]
+    assert fresh["remote.goog.url"] == ["https://example.com/platform/art"]
+    assert fresh["remote.goog.fetch"] == [
+        "+refs/heads/*:refs/remotes/goog/*",
+        "+refs/tags/*:refs/tags/*",
+    ]
+    assert fresh["maintenance.auto"] == ["false"]
+
+
+def test_batch_writes_falls_back_on_lock_or_external_edit(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Test BatchWrites preserves concurrent edits and respects config.lock."""
+    # 1. External edit between cache load and flush falls back to git config CLI
+    # so neither the external key nor the batched key is lost.
+    cfg_path = tmp_path / "config"
+    cfg_path.write_text("[core]\n\tfilemode = true\n")
+    config = git_config.GitConfig(str(cfg_path))
+
+    with config.BatchWrites():
+        config.SetString("remote.origin.url", "https://example.com/a")
+        with open(cfg_path, "a", encoding="utf-8") as fp:
+            fp.write("[external]\n\tadded = yes\n")
+
+    reloaded = git_config.GitConfig(str(cfg_path))
+    fresh = reloaded._ReadGit()
+    assert fresh["external.added"] == ["yes"]
+    assert fresh["remote.origin.url"] == ["https://example.com/a"]
+    assert config.GetString("external.added") == "yes"
+
+    # 2. Pre-existing config.lock is never clobbered; BatchWrites delegates to
+    # _do instead.
+    locked_path = tmp_path / "locked_config"
+    locked_path.write_text("[core]\n\tfilemode = true\n")
+    lock_file = tmp_path / "locked_config.lock"
+    lock_file.write_text("held-by-other-process")
+
+    locked_cfg = git_config.GitConfig(str(locked_path))
+    _ = locked_cfg.GetBoolean("core.filemode")
+    do_calls = []
+    monkeypatch.setattr(
+        locked_cfg,
+        "_do",
+        lambda *args: do_calls.append(args) or "core.filemode\ntrue\0",
+    )
+
+    with locked_cfg.BatchWrites():
+        locked_cfg.SetString("remote.origin.url", "https://example.com/b")
+
+    assert lock_file.read_text() == "held-by-other-process"
+    assert ("--replace-all", "remote.origin.url", "https://example.com/b") in (
+        do_calls
+    )
