@@ -14,12 +14,15 @@
 
 """Unittests for the git_config.py module."""
 
+import json
+import os
 from pathlib import Path
 from typing import Any, Optional
 
 import pytest
 import utils_for_test
 
+import error
 import git_config
 
 
@@ -346,3 +349,213 @@ def test_get_boolean_git_spellings(
     config_file.write_text(f"[section]\n\tkey = {value}\n")
     config = git_config.GitConfig(config_file)
     assert config.GetBoolean("section.key") is expected
+
+
+def test_set_string_updates_json_and_section_caches(
+    rw_config_file: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Test SetString keeps .repo_config.json and _sections coherent."""
+    config = git_config.GitConfig(str(rw_config_file))
+    assert not config.HasSection("remote", "origin")
+
+    config.SetString("remote.origin.url", "https://example.com/repo")
+    assert config.HasSection("remote", "origin")
+
+    json_file = rw_config_file.parent / ".repo_config.json"
+    raw = json.loads(json_file.read_text(encoding="utf-8"))
+    assert git_config._JSON_META_KEY in raw
+    raw.pop(git_config._JSON_META_KEY)
+    assert raw == {"remote.origin.url": ["https://example.com/repo"]}
+
+    reader = git_config.GitConfig(str(rw_config_file))
+
+    def fail_read_git() -> None:
+        raise AssertionError("Expected _ReadJson cache hit without git config")
+
+    monkeypatch.setattr(reader, "_ReadGit", fail_read_git)
+    assert reader.GetString("remote.origin.url") == "https://example.com/repo"
+    assert git_config._JSON_META_KEY not in reader.DumpConfigDict()
+
+
+def test_reload_refreshes_external_edits(rw_config_file: Path) -> None:
+    """Test Reload() discards stale JSON cache and reloads external edits."""
+    config = git_config.GitConfig(str(rw_config_file))
+    config.SetString("abfs.initialized", "false")
+    assert config.GetBoolean("abfs.initialized") is False
+
+    rw_config_file.write_text(
+        "[abfs]\n\tinitialized = true\n", encoding="utf-8"
+    )
+    config.Reload()
+
+    assert config.GetBoolean("abfs.initialized") is True
+    json_file = rw_config_file.parent / ".repo_config.json"
+    raw = json.loads(json_file.read_text(encoding="utf-8"))
+    raw.pop(git_config._JSON_META_KEY, None)
+    assert raw == {"abfs.initialized": ["true"]}
+
+
+def test_same_tick_external_edit_invalidates_json_cache(
+    rw_config_file: Path,
+) -> None:
+    """External edit with identical mtime_ns and size invalidates JSON."""
+    config = git_config.GitConfig(str(rw_config_file))
+    config.SetString("foo.bar", "val1")
+
+    json_file = rw_config_file.parent / ".repo_config.json"
+    json_stat = os.stat(json_file)
+
+    # Rewrite with identical byte length and force identical mtime_ns.
+    updated = rw_config_file.read_text(encoding="utf-8").replace("val1", "val2")
+    rw_config_file.write_text(updated, encoding="utf-8")
+    os.utime(rw_config_file, ns=(json_stat.st_atime_ns, json_stat.st_mtime_ns))
+
+    reader = git_config.GitConfig(str(rw_config_file))
+    assert reader.GetString("foo.bar") == "val2"
+
+
+def test_clear_cache_and_set_string_refresh_remotes_and_branches(
+    rw_config_file: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """ClearCache, Reload, SetString, and Branch.Save keep caches coherent."""
+    config = git_config.GitConfig(str(rw_config_file))
+    remote = config.GetRemote("origin")
+    remote.url = "https://old.example.com/repo"
+    remote.ResetFetch()
+    remote.Save()
+
+    branch = config.GetBranch("main")
+    branch.remote = remote
+    branch.merge = "refs/heads/main"
+    branch.Save()
+
+    assert config.HasSection("branch", "main")
+    assert config.GetString("branch.main.remote") == "origin"
+    assert config.GetString("branch.main.merge") == "refs/heads/main"
+
+    # Subsequent SetString must not clobber branch.* keys in .repo_config.json.
+    config.SetString("custom.flag", "1")
+    reader = git_config.GitConfig(str(rw_config_file))
+    monkeypatch.setattr(
+        reader,
+        "_ReadGit",
+        lambda: (_ for _ in ()).throw(AssertionError("expected JSON hit")),
+    )
+    assert reader.GetString("branch.main.remote") == "origin"
+    assert reader.GetString("branch.main.merge") == "refs/heads/main"
+
+    # Direct SetString on remote.* invalidates cached Remote objects.
+    config.SetString(
+        "remote.origin.fetch", "+refs/heads/dev:refs/remotes/origin/dev"
+    )
+    assert (
+        config.GetRemote("origin").ToLocal("dev") == "refs/remotes/origin/dev"
+    )
+
+    # External edit + Reload() refreshes both GetRemote() and GetBranch().
+    rw_config_file.write_text(
+        '[remote "origin"]\n'
+        "\turl = https://new.example.com/repo\n"
+        "\tfetch = +refs/heads/*:refs/remotes/origin/*\n"
+        '[branch "main"]\n'
+        "\tremote = origin\n"
+        "\tmerge = refs/heads/next\n",
+        encoding="utf-8",
+    )
+    config.Reload()
+    assert config.GetRemote("origin").url == "https://new.example.com/repo"
+    assert config.GetBranch("main").merge == "refs/heads/next"
+
+
+def test_set_string_with_include_invalidates_instead_of_corrupting(
+    tmp_path: Path,
+) -> None:
+    """SetString with [include] avoids freezing or dropping included values."""
+    inc_file = tmp_path / "extra.gitconfig"
+    inc_file.write_text("[inc]\n\tkey = v1\n", encoding="utf-8")
+
+    cfg_file = tmp_path / "config"
+    config = git_config.GitConfig(str(cfg_file))
+    config.SetString("include.path", str(inc_file))
+    assert config.GetString("inc.key") == "v1"
+
+    config.SetString("local.only", "yes")
+    json_file = tmp_path / ".repo_config.json"
+    assert not json_file.exists()
+
+    inc_file.write_text("[inc]\n\tkey = v2\n", encoding="utf-8")
+    assert config.GetString("inc.key") == "v2"
+    assert config.GetString("local.only") == "yes"
+
+    # Unsetting an included-only key does not fail with exit code 5 or hide it.
+    config.SetString("inc.key", None)
+    assert config.GetString("inc.key") == "v2"
+
+
+def test_set_string_failure_preserves_cache(
+    rw_config_file: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Failed _do() must not leave mutated values in _cache."""
+    config = git_config.GitConfig(str(rw_config_file))
+    config.SetString("foo.bar", "good")
+
+    def fail_do(*_args: Any, **_kwargs: Any) -> str:
+        raise error.GitError("lock contention")
+
+    monkeypatch.setattr(config, "_do", fail_do)
+    with pytest.raises(error.GitError):
+        config.SetString("foo.bar", "bad")
+    assert config.GetString("foo.bar") == "good"
+
+    with pytest.raises(error.GitError):
+        config.SetString("foo.bar", None)
+    assert config.GetString("foo.bar") == "good"
+
+
+def test_set_string_after_external_edit_preserves_external_keys(
+    rw_config_file: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Warm SetString reloads external edits instead of overwriting JSON."""
+    config = git_config.GitConfig(str(rw_config_file))
+    config.SetString("init.key", "v0")
+    assert config._cache_dict is not None
+
+    # External edit adds other.key while config._cache_dict is warm in memory.
+    rw_config_file.write_text(
+        "[init]\n\tkey = v0\n[other]\n\tkey = ext1\n", encoding="utf-8"
+    )
+    config.SetString("user.name", "Alice")
+
+    assert config.GetString("other.key") == "ext1"
+    assert config.GetString("user.name") == "Alice"
+
+    reader = git_config.GitConfig(str(rw_config_file))
+    monkeypatch.setattr(
+        reader,
+        "_ReadGit",
+        lambda: (_ for _ in ()).throw(AssertionError("expected JSON hit")),
+    )
+    assert reader.GetString("other.key") == "ext1"
+    assert reader.GetString("user.name") == "Alice"
+
+    # Same-mtime_ns and same-size external edit while warm is also detected.
+    prev_stat = os.stat(rw_config_file)
+    same_len = rw_config_file.read_text(encoding="utf-8").replace(
+        "ext1", "ext2"
+    )
+    rw_config_file.write_text(same_len, encoding="utf-8")
+    os.utime(rw_config_file, ns=(prev_stat.st_atime_ns, prev_stat.st_mtime_ns))
+
+    config.SetString("user.email", "alice@example.com")
+    assert config.GetString("other.key") == "ext2"
+    assert config.GetString("user.email") == "alice@example.com"
+
+    reader2 = git_config.GitConfig(str(rw_config_file))
+    monkeypatch.setattr(
+        reader2,
+        "_ReadGit",
+        lambda: (_ for _ in ()).throw(AssertionError("expected JSON hit")),
+    )
+    assert reader2.GetString("other.key") == "ext2"
+    assert reader2.GetString("user.name") == "Alice"
+    assert reader2.GetString("user.email") == "alice@example.com"
