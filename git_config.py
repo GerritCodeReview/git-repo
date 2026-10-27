@@ -177,6 +177,13 @@ class GitConfig:
     def ClearCache(self):
         """Clear the in-memory cache of config."""
         self._cache_dict = None
+        self._section_dict = None
+
+    def Reload(self) -> None:
+        """Clear cached state and reload configuration from disk."""
+        self.ClearCache()
+        platform_utils.remove(self._json, missing_ok=True)
+        _ = self._cache
 
     def Has(self, name, include_defaults=True):
         """Return true if this configuration file has the key."""
@@ -310,6 +317,7 @@ class GitConfig:
             if old:
                 del self._cache[key]
                 self._do("--unset-all", name)
+                self._SyncCacheAfterSet(key)
 
         elif isinstance(value, list):
             if len(value) == 0:
@@ -323,10 +331,21 @@ class GitConfig:
                 self._do("--replace-all", name, value[0])
                 for i in range(1, len(value)):
                     self._do("--add", name, value[i])
+                self._SyncCacheAfterSet(key)
 
         elif len(old) != 1 or old[0] != value:
             self._cache[key] = [value]
             self._do("--replace-all", name, value)
+            self._SyncCacheAfterSet(key)
+
+    def _SyncCacheAfterSet(self, key: str) -> None:
+        """Keep the in-memory section index and JSON cache coherent."""
+        self._section_dict = None
+        if key == "include.path" or key.startswith("includeif."):
+            self.ClearCache()
+            platform_utils.remove(self._json, missing_ok=True)
+        else:
+            self._SaveJson(self._cache)
 
     def GetRemote(self, name):
         """Get the remote.$name.* configuration values as an object."""

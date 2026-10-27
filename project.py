@@ -3218,6 +3218,22 @@ class Project:
         )
         command.Wait()
 
+    def _GetConfigStat(self) -> Optional[Tuple[int, int, int]]:
+        """Return (mtime_ns, size, ino) of the project's git config, if any."""
+        try:
+            st = os.stat(self.config.file)
+            return (st.st_mtime_ns, st.st_size, st.st_ino)
+        except OSError:
+            return None
+
+    def _RefreshConfigIfModified(
+        self, prev_stat: Optional[Tuple[int, int, int]]
+    ) -> None:
+        """Reload project GitConfig and JSON cache if modified externally."""
+        curr_stat = self._GetConfigStat()
+        if curr_stat is not None and curr_stat != prev_stat:
+            self.config.Reload()
+
     def _CustomFetch(self, verbose=False) -> bool:
         """Fetch using a custom command specified by repo.fetchcmd.
 
@@ -3252,6 +3268,7 @@ class Project:
 
         stdout = None if verbose else subprocess.PIPE
         stderr = None if verbose else subprocess.PIPE
+        config_stat = self._GetConfigStat()
         try:
             with repo_trace.Trace(
                 "fetchcmd %s %s (REPO_PATH=%s REPO_TREV=%s)",
@@ -3281,6 +3298,8 @@ class Project:
         except Exception as e:
             logger.error("error: Failed to execute fetchcmd: %s", e)
             return False
+
+        self._RefreshConfigIfModified(config_stat)
 
         # Verify postconditions.
         if not IsId(self.revisionExpr):
@@ -4119,6 +4138,7 @@ class Project:
             print(f"Running reprojectcmd: {cmd_str} for {self.name}")
 
         output = None if verbose else subprocess.PIPE
+        config_stat = self._GetConfigStat()
         try:
             with repo_trace.Trace(
                 "reprojectcmd %s %s (REPO_PATH=%s REPO_TREV=%s)",
@@ -4145,6 +4165,8 @@ class Project:
             if p.stdout:
                 msg += ":\n" + p.stdout.rstrip()
             raise LocalSyncFail(msg, project=self.name)
+
+        self._RefreshConfigIfModified(config_stat)
 
         new_head = self.work_git.GetHead()
         try:
@@ -4203,7 +4225,15 @@ class Project:
             # Initialize the bare repository, which contains all of the objects.
             if init_obj_dir:
                 os.makedirs(self.objdir)
-                self.bare_objdir.init()
+                global_cfg = getattr(self.manifest, "globalConfig", None)
+                has_template = bool(os.environ.get("GIT_TEMPLATE_DIR")) or (
+                    global_cfg is not None
+                    and bool(global_cfg.Has("init.templatedir"))
+                )
+                if has_template:
+                    self.bare_objdir.init()
+                else:
+                    self.bare_objdir.init("-q", "--template=")
 
                 self._UpdateHooks(quiet=quiet)
 
@@ -4356,13 +4386,13 @@ class Project:
         hooks = os.path.realpath(os.path.join(self.objdir, "hooks"))
         if not os.path.exists(hooks):
             os.makedirs(hooks)
-
-        # Delete sample hooks.  They're noise.
-        for hook in glob.glob(os.path.join(hooks, "*.sample")):
-            try:
-                platform_utils.remove(hook, missing_ok=True)
-            except PermissionError:
-                pass
+        else:
+            # Delete sample hooks.  They're noise.
+            for hook in glob.glob(os.path.join(hooks, "*.sample")):
+                try:
+                    platform_utils.remove(hook, missing_ok=True)
+                except PermissionError:
+                    pass
 
         for stock_hook in _ProjectHooks():
             name = os.path.basename(stock_hook)
