@@ -94,6 +94,59 @@ RETRY_JITTER_PERCENT = 0.1
 # TODO(vapier): Remove knob once behavior is verified.
 _ALTERNATES = os.environ.get("REPO_USE_ALTERNATES") == "1"
 
+_GIT_TEMPLATE_ENV_VARS = (
+    "GIT_TEMPLATE_DIR",
+    "GIT_CONFIG_GLOBAL",
+    "GIT_CONFIG_SYSTEM",
+    "GIT_CONFIG_NOSYSTEM",
+    "GIT_CONFIG_PARAMETERS",
+    "GIT_CONFIG_COUNT",
+    "HOME",
+    "XDG_CONFIG_HOME",
+)
+
+
+def _GitTemplateEnvKey() -> Tuple[Any, ...]:
+    """Build a cache key for environment variables affecting git templates.
+
+    Returns:
+        A hashable tuple representing the current template/config environment.
+    """
+    base = tuple(os.environ.get(name) for name in _GIT_TEMPLATE_ENV_VARS)
+    if "GIT_CONFIG_COUNT" not in os.environ:
+        return base
+    extra = tuple(
+        (key, os.environ[key])
+        for key in sorted(os.environ)
+        if key.startswith(("GIT_CONFIG_KEY_", "GIT_CONFIG_VALUE_"))
+    )
+    return base + extra
+
+
+@functools.lru_cache(maxsize=None)
+def _HasCustomGitTemplateDir(env_key: Tuple[Any, ...]) -> bool:
+    """Return whether Git has a custom template directory configured.
+
+    Args:
+        env_key: Snapshot from _GitTemplateEnvKey() for cache invalidation.
+
+    Returns:
+        True if a non-empty GIT_TEMPLATE_DIR or init.templatedir is configured.
+    """
+    git_template_dir = env_key[0]
+    if git_template_dir is not None:
+        return bool(git_template_dir)
+
+    p = git_command.GitCommand(
+        None,
+        ["config", "--get", "init.templatedir"],
+        capture_stdout=True,
+        capture_stderr=True,
+        bare=True,
+        add_event_log=False,
+    )
+    return p.Wait() == 0 and bool(p.stdout.strip())
+
 
 def _FirstLines(lines: List[str], limit: int = 10) -> str:
     """Join |lines|, eliding all but the first |limit| of them."""
@@ -3233,6 +3286,35 @@ class Project:
         )
         command.Wait()
 
+    def _GetConfigStat(self) -> Optional[Tuple[int, int, int, int]]:
+        """Stat the project's git config file when present.
+
+        Returns:
+            A (mtime_ns, ctime_ns, size, ino) tuple for the config file, or
+            None if the file does not exist or cannot be stat'ed.
+        """
+        try:
+            st = os.stat(self.config.file)
+            return (st.st_mtime_ns, st.st_ctime_ns, st.st_size, st.st_ino)
+        except OSError:
+            return None
+
+    def _RefreshConfigIfModified(
+        self, prev_stat: Optional[Tuple[int, int, int, int]]
+    ) -> None:
+        """Reload project GitConfig and JSON cache if modified externally.
+
+        Args:
+            prev_stat: Previous (mtime_ns, ctime_ns, size, ino) snapshot from
+                _GetConfigStat(), or None if the config file was absent.
+        """
+        curr_stat = self._GetConfigStat()
+        if curr_stat != prev_stat:
+            try:
+                self.config.Reload()
+            except error.GitError:
+                pass
+
     def _CustomFetch(self, verbose=False) -> bool:
         """Fetch using a custom command specified by repo.fetchcmd.
 
@@ -3267,6 +3349,7 @@ class Project:
 
         stdout = None if verbose else subprocess.PIPE
         stderr = None if verbose else subprocess.PIPE
+        config_stat = self._GetConfigStat()
         with repo_trace.Trace(
             "fetchcmd %s %s (REPO_PATH=%s REPO_TREV=%s)",
             self.gitdir,
@@ -3296,6 +3379,8 @@ class Project:
             except Exception as e:
                 logger.error("error: Failed to execute fetchcmd: %s", e)
                 return False
+            finally:
+                self._RefreshConfigIfModified(config_stat)
 
         # Verify postconditions.
         if not IsId(self.revisionExpr):
@@ -4134,6 +4219,7 @@ class Project:
             print(f"Running reprojectcmd: {cmd_str} for {self.name}")
 
         output = None if verbose else subprocess.PIPE
+        config_stat = self._GetConfigStat()
         with repo_trace.Trace(
             "reprojectcmd %s %s (REPO_PATH=%s REPO_TREV=%s)",
             self.gitdir,
@@ -4155,6 +4241,8 @@ class Project:
                 raise LocalSyncFail(
                     f"failed to run reprojectcmd: {e}", project=self.name
                 )
+            finally:
+                self._RefreshConfigIfModified(config_stat)
         if p.returncode != 0:
             msg = f"reprojectcmd exited with {p.returncode}"
             if p.stdout:
@@ -4218,7 +4306,10 @@ class Project:
             # Initialize the bare repository, which contains all of the objects.
             if init_obj_dir:
                 os.makedirs(self.objdir)
-                self.bare_objdir.init()
+                init_args = ["-q"] if quiet else []
+                if not _HasCustomGitTemplateDir(_GitTemplateEnvKey()):
+                    init_args.append("--template=")
+                self.bare_objdir.init(*init_args)
 
                 self._UpdateHooks(quiet=quiet)
 
@@ -4371,13 +4462,13 @@ class Project:
         hooks = os.path.realpath(os.path.join(self.objdir, "hooks"))
         if not os.path.exists(hooks):
             os.makedirs(hooks)
-
-        # Delete sample hooks.  They're noise.
-        for hook in glob.glob(os.path.join(hooks, "*.sample")):
-            try:
-                platform_utils.remove(hook, missing_ok=True)
-            except PermissionError:
-                pass
+        else:
+            # Delete sample hooks.  They're noise.
+            for hook in glob.glob(os.path.join(hooks, "*.sample")):
+                try:
+                    platform_utils.remove(hook, missing_ok=True)
+                except PermissionError:
+                    pass
 
         for stock_hook in _ProjectHooks():
             name = os.path.basename(stock_hook)

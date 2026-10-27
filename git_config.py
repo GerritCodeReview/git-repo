@@ -15,6 +15,7 @@
 import contextlib
 import datetime
 import errno
+import hashlib
 import http.client
 import json
 import os
@@ -22,7 +23,8 @@ import re
 import ssl
 import subprocess
 import sys
-from typing import Union
+import tempfile
+from typing import Optional, Tuple, Union
 import urllib.error
 import urllib.request
 
@@ -40,6 +42,9 @@ SYNC_STATE_PREFIX = "repo.syncstate."
 ID_RE = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
 
 REVIEW_CACHE = {}
+
+# Metadata key stored in .repo_config.json to detect same-tick config edits.
+_JSON_META_KEY = "__repo_meta__"
 
 
 def IsChange(rev):
@@ -161,6 +166,7 @@ class GitConfig:
         self.file = str(configfile)
         self.defaults = defaults
         self._cache_dict = None
+        self._cache_fingerprint = None
         self._section_dict = None
         self._remotes = {}
         self._branches = {}
@@ -175,6 +181,20 @@ class GitConfig:
     def ClearCache(self):
         """Clear the in-memory cache of config."""
         self._cache_dict = None
+        self._cache_fingerprint = None
+        self._section_dict = None
+        self._remotes = {}
+        self._branches = {}
+
+    def _RemoveJson(self) -> None:
+        with contextlib.suppress(OSError):
+            platform_utils.remove(self._json, missing_ok=True)
+
+    def Reload(self) -> None:
+        """Clear cached state and reload configuration from disk."""
+        self.ClearCache()
+        self._RemoveJson()
+        _ = self._cache
 
     def Has(self, name, include_defaults=True):
         """Return true if this configuration file has the key."""
@@ -292,6 +312,13 @@ class GitConfig:
         """
         key = _key(name)
 
+        if (
+            self._cache_dict is not None
+            and self._ReadFileFingerprint() != self._cache_fingerprint
+        ):
+            self.ClearCache()
+            self._RemoveJson()
+
         try:
             old = self._cache[key]
         except KeyError:
@@ -306,8 +333,9 @@ class GitConfig:
 
         if value is None:
             if old:
+                self._do("--unset-all", name, allow_missing=True)
                 del self._cache[key]
-                self._do("--unset-all", name)
+                self._SyncCacheAfterSet(key)
 
         elif isinstance(value, list):
             if len(value) == 0:
@@ -317,14 +345,47 @@ class GitConfig:
                 self.SetString(name, value[0])
 
             elif old != value:
-                self._cache[key] = list(value)
                 self._do("--replace-all", name, value[0])
-                for i in range(1, len(value)):
-                    self._do("--add", name, value[i])
+                try:
+                    for i in range(1, len(value)):
+                        self._do("--add", name, value[i])
+                except BaseException:
+                    self.ClearCache()
+                    self._RemoveJson()
+                    raise
+                self._cache[key] = list(value)
+                self._SyncCacheAfterSet(key)
 
         elif len(old) != 1 or old[0] != value:
-            self._cache[key] = [value]
             self._do("--replace-all", name, value)
+            self._cache[key] = [value]
+            self._SyncCacheAfterSet(key)
+
+    def _SyncCacheAfterSet(self, key: str) -> None:
+        """Keep the in-memory section index and JSON cache coherent.
+
+        Args:
+            key: Canonicalized configuration key that was modified.
+        """
+        self._section_dict = None
+        if key.startswith("remote."):
+            self._remotes = {}
+        elif key.startswith("branch."):
+            self._branches = {}
+
+        has_includes = self._cache_dict is not None and (
+            "include.path" in self._cache_dict
+            or any(k.startswith("includeif.") for k in self._cache_dict)
+        )
+        if (
+            key == "include.path"
+            or key.startswith("includeif.")
+            or has_includes
+        ):
+            self.ClearCache()
+            self._RemoveJson()
+        else:
+            self._SaveJson(self._cache)
 
     def GetRemote(self, name):
         """Get the remote.$name.* configuration values as an object."""
@@ -417,27 +478,109 @@ class GitConfig:
             self._SaveJson(d)
         return d
 
+    def _ReadFileFingerprint(self) -> Optional[Tuple[int, int, int, int, str]]:
+        """Return (mtime_ns, ctime_ns, size, ino, sha1_hex) for self.file."""
+        try:
+            with open(self.file, "rb") as fd:
+                raw_cfg = fd.read()
+                st = os.fstat(fd.fileno())
+        except OSError:
+            return None
+        return (
+            st.st_mtime_ns,
+            st.st_ctime_ns,
+            st.st_size,
+            st.st_ino,
+            hashlib.sha1(raw_cfg).hexdigest(),
+        )
+
     def _ReadJson(self):
         try:
-            if os.path.getmtime(self._json) <= os.path.getmtime(self.file):
-                platform_utils.remove(self._json)
-                return None
+            cfg_stat = os.stat(self.file)
+            json_stat = os.stat(self._json)
         except OSError:
+            return None
+        if json_stat.st_mtime_ns < cfg_stat.st_mtime_ns:
+            self._RemoveJson()
             return None
         try:
             with repo_trace.Trace(": parsing %s", self.file):
-                with open(self._json) as fd:
-                    return json.load(fd)
+                with open(self._json, encoding="utf-8") as fd:
+                    data = json.load(fd)
         except (OSError, ValueError):
-            platform_utils.remove(self._json, missing_ok=True)
+            self._RemoveJson()
+            return None
+        if not isinstance(data, dict):
+            self._RemoveJson()
             return None
 
+        meta = data.pop(_JSON_META_KEY, None)
+        if (
+            isinstance(meta, list)
+            and len(meta) == 2
+            and isinstance(meta[1], str)
+        ):
+            if (
+                json_stat.st_mtime_ns == cfg_stat.st_mtime_ns
+                or cfg_stat.st_size != meta[0]
+            ):
+                if cfg_stat.st_size != meta[0]:
+                    self._RemoveJson()
+                    return None
+                fp = self._ReadFileFingerprint()
+                if fp is None:
+                    return None
+                if fp[4] != meta[1]:
+                    self._RemoveJson()
+                    return None
+                self._cache_fingerprint = fp
+            else:
+                self._cache_fingerprint = (
+                    cfg_stat.st_mtime_ns,
+                    cfg_stat.st_ctime_ns,
+                    cfg_stat.st_size,
+                    cfg_stat.st_ino,
+                    meta[1],
+                )
+        elif json_stat.st_mtime_ns <= cfg_stat.st_mtime_ns:
+            self._RemoveJson()
+            return None
+        else:
+            fp = self._ReadFileFingerprint()
+            if fp is None:
+                return None
+            self._cache_fingerprint = fp
+
+        return data
+
     def _SaveJson(self, cache):
+        fp = self._ReadFileFingerprint()
+        if fp is None:
+            self._cache_fingerprint = None
+            self._RemoveJson()
+            return
+        self._cache_fingerprint = fp
+
+        payload = dict(cache)
+        payload[_JSON_META_KEY] = [fp[2], fp[4]]
+        json_dir = os.path.dirname(self._json) or "."
+        tmp_path = None
         try:
-            with open(self._json, "w") as fd:
-                json.dump(cache, fd, indent=2)
+            with tempfile.NamedTemporaryFile(
+                "w",
+                dir=json_dir,
+                prefix=f".tmp{os.path.basename(self._json)}.",
+                delete=False,
+                encoding="utf-8",
+            ) as fd:
+                tmp_path = fd.name
+                json.dump(payload, fd, indent=2)
+            os.replace(tmp_path, self._json)
         except (OSError, TypeError):
-            platform_utils.remove(self._json, missing_ok=True)
+            if tmp_path is not None:
+                with contextlib.suppress(OSError):
+                    platform_utils.remove(tmp_path, missing_ok=True)
+            self._RemoveJson()
 
     def _ReadGit(self):
         """
@@ -448,6 +591,7 @@ class GitConfig:
         """
         c = {}
         if not os.path.exists(self.file):
+            self._cache_fingerprint = None
             return c
 
         d = self._do("--null", "--list")
@@ -463,9 +607,10 @@ class GitConfig:
             else:
                 c[key] = [val]
 
+        self._cache_fingerprint = self._ReadFileFingerprint()
         return c
 
-    def _do(self, *args):
+    def _do(self, *args, allow_missing: bool = False):
         if self.file == self._SYSTEM_CONFIG:
             command = ["config", "--system", "--includes"]
         else:
@@ -475,10 +620,10 @@ class GitConfig:
         p = git_command.GitCommand(
             None, command, capture_stdout=True, capture_stderr=True
         )
-        if p.Wait() == 0:
+        rc = p.Wait()
+        if rc == 0 or (allow_missing and rc == 5):
             return p.stdout
-        else:
-            raise error.GitError(f"git {' '.join(command)}: {p.stderr}")
+        raise error.GitError(f"git {' '.join(command)}: {p.stderr}")
 
 
 class RepoConfig(GitConfig):
@@ -814,20 +959,11 @@ class Branch:
 
     def Save(self):
         """Save this branch back into the configuration."""
-        if self._config.HasSection("branch", self.name):
-            if self.remote:
-                self._Set("remote", self.remote.name)
-            else:
-                self._Set("remote", None)
-            self._Set("merge", self.merge)
-
+        if self.remote:
+            self._Set("remote", self.remote.name)
         else:
-            with open(self._config.file, "a") as fd:
-                fd.write('[branch "%s"]\n' % self.name)
-                if self.remote:
-                    fd.write("\tremote = %s\n" % self.remote.name)
-                if self.merge:
-                    fd.write("\tmerge = %s\n" % self.merge)
+            self._Set("remote", None)
+        self._Set("merge", self.merge)
 
     def _Set(self, key, value):
         key = f"branch.{self.name}.{key}"
