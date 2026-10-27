@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f701061f_070547b7",
+        "filename": "docs/release-process.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-27T18:03:01Z",
+      "side": 1,
+      "message": "please include a few more details on when a release is warranted",
+      "range": {
+        "startLine": 12,
+        "startChar": 6,
+        "endLine": 12,
+        "endChar": 38
+      },
+      "revId": "ed46e621983411d8f4f0485523258533d7f29bc6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f8cd782_076f9ec6",
+        "filename": "docs/release-process.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-27T18:03:01Z",
+      "side": 1,
+      "message": "with the e2e tests running in CQ, is manually running this before release necessary anymore? assuming all commits pass the full suite\n\nor do these tests cover things CQ/automated release doesn\u0027t?",
+      "range": {
+        "startLine": 165,
+        "startChar": 25,
+        "endLine": 166,
+        "endChar": 36
+      },
+      "revId": "ed46e621983411d8f4f0485523258533d7f29bc6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aace14dd_48372cb5",
+        "filename": "docs/release-process.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-27T18:03:01Z",
+      "side": 1,
+      "message": "this isn\u0027t documented in go/repo-release yet",
+      "range": {
+        "startLine": 196,
+        "startChar": 34,
+        "endLine": 197,
+        "endChar": 32
+      },
+      "revId": "ed46e621983411d8f4f0485523258533d7f29bc6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
