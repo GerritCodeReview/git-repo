@@ -41,7 +41,9 @@ class ForallColoring(color.Coloring):
         self.project = self.printer("project", attr="bold")
 
 
-class Forall(command.Command, command.MirrorSafeCommand):
+class Forall(
+    command.Command, command.MirrorSafeCommand, command.RemoteFilterCommand
+):
     COMMON = False
     helpSummary = "Run a shell command in each project"
     helpUsage = """
@@ -246,14 +248,22 @@ without iterating through the remaining projects.
                 args,
                 groups=opt.groups,
                 all_manifests=all_trees,
+                remotes=opt.filter_remote,
             )
         elif opt.inverse_regex:
             projects = self.FindProjects(
-                args, inverse=True, groups=opt.groups, all_manifests=all_trees
+                args,
+                inverse=True,
+                groups=opt.groups,
+                all_manifests=all_trees,
+                remotes=opt.filter_remote,
             )
         else:
             projects = self.GetProjects(
-                args, groups=opt.groups, all_manifests=all_trees
+                args,
+                groups=opt.groups,
+                all_manifests=all_trees,
+                remotes=opt.filter_remote,
             )
 
         os.environ["REPO_COUNT"] = str(len(projects))

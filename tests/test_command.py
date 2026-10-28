@@ -19,6 +19,15 @@ from typing import Iterable, List, Optional
 import pytest
 
 import command
+import error
+
+
+class FakeRemote:
+    """Minimal remote double for Command.GetProjects tests."""
+
+    def __init__(self, name: str, orig_name: Optional[str] = None):
+        self.name = name
+        self.orig_name = name if orig_name is None else orig_name
 
 
 class FakeProject:
@@ -33,8 +42,10 @@ class FakeProject:
         derived_subprojects=None,
         sync_s=False,
         exists: bool = True,
+        remote: Optional[FakeRemote] = None,
     ):
         self.name = name
+        self.remote = remote or FakeRemote("origin")
         self.relpath = relpath
         self.worktree = f"/work/{relpath}"
         self.manifest = None
@@ -347,3 +358,89 @@ def test_find_projects_allows_missing_projects() -> None:
     )
 
     assert projects == [project]
+
+
+def _RemoteProjects() -> List[FakeProject]:
+    """Projects on "origin", "other", and "aliased" (alias "origin")."""
+    return [
+        FakeProject("a", "a"),
+        FakeProject("b", "b", remote=FakeRemote("other")),
+        FakeProject("c", "c", remote=FakeRemote("origin", orig_name="aliased")),
+    ]
+
+
+@pytest.mark.parametrize(
+    ("remotes", "expected_relpaths"),
+    [
+        (None, ["a", "b", "c"]),
+        ([], ["a", "b", "c"]),
+        (["origin"], ["a", "c"]),
+        (["aliased"], ["c"]),
+        (["other", "aliased"], ["b", "c"]),
+        (["missing"], []),
+    ],
+)
+def test_get_projects_filters_by_remote(
+    remotes: Optional[List[str]], expected_relpaths: List[str]
+) -> None:
+    """Match the remote by manifest name or alias."""
+    cmd = command.Command(manifest=FakeManifest(_RemoteProjects()))
+
+    projects = cmd.GetProjects([], remotes=remotes)
+
+    assert [project.relpath for project in projects] == expected_relpaths
+
+
+def test_get_projects_by_name_filters_by_remote() -> None:
+    """Named projects on a selected remote are returned."""
+    cmd = command.Command(manifest=FakeManifest(_RemoteProjects()))
+
+    projects = cmd.GetProjects(["b", "c"], remotes=["other", "aliased"])
+
+    assert [project.relpath for project in projects] == ["b", "c"]
+
+
+def test_get_projects_by_name_rejects_other_remote() -> None:
+    """A named project not on a selected remote is an error."""
+    cmd = command.Command(manifest=FakeManifest(_RemoteProjects()))
+
+    with pytest.raises(error.InvalidProjectRemoteError) as e:
+        cmd.GetProjects(["a", "b"], remotes=["origin"])
+
+    assert e.value.name == "b"
+
+
+def test_get_projects_by_name_picks_checkout_on_remote() -> None:
+    """With one name on several remotes, keep only the selected remote's."""
+    on_origin = FakeProject("shared", "one")
+    on_other = FakeProject("shared", "two", remote=FakeRemote("other"))
+    cmd = command.Command(manifest=FakeManifest([on_origin, on_other]))
+
+    projects = cmd.GetProjects(["shared"], remotes=["other"])
+
+    assert projects == [on_other]
+
+
+def test_find_projects_filters_by_remote() -> None:
+    """Regex selection honors remotes."""
+    cmd = command.Command(manifest=FakeManifest(_RemoteProjects()))
+
+    projects = cmd.FindProjects(["."], remotes=["other"])
+
+    assert [project.relpath for project in projects] == ["b"]
+
+
+def test_remote_option_is_opt_in() -> None:
+    """Only RemoteFilterCommand commands get --filter-remote."""
+
+    class Plain(command.Command):
+        NAME = "plain"
+
+    class Filtered(command.Command, command.RemoteFilterCommand):
+        NAME = "filtered"
+
+    assert not Plain().OptionParser.has_option("--filter-remote")
+    opt, _ = Filtered().OptionParser.parse_args(
+        ["--filter-remote", "a", "--filter-remote", "b"]
+    )
+    assert opt.filter_remote == ["a", "b"]
