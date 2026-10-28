@@ -1716,6 +1716,15 @@ class SyncCommand(unittest.TestCase):
         _, kwargs = self.cmd.GetProjects.call_args
         self.assertEqual(kwargs.get("groups"), "my_group")
 
+    def test_remote_passed_to_get_projects(self) -> None:
+        """Ensure --remote is passed on to GetProjects."""
+        opt, _ = self.cmd.OptionParser.parse_args(
+            ["--remote", "origin", "--remote", "other"]
+        )
+        self.cmd._GetSyncProjects(opt, [], self.manifest)
+        _, kwargs = self.cmd.GetProjects.call_args
+        self.assertEqual(kwargs.get("remotes"), ["origin", "other"])
+
     def _ExecuteUntilSync(
         self, args: List[str]
     ) -> Tuple[mock.MagicMock, mock.MagicMock]:

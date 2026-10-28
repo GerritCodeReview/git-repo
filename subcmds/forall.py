@@ -25,6 +25,7 @@ from color import Coloring
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
 from command import MirrorSafeCommand
+from command import RemoteFilterCommand
 import repo_logging
 
 
@@ -43,7 +44,7 @@ class ForallColoring(Coloring):
         self.project = self.printer("project", attr="bold")
 
 
-class Forall(Command, MirrorSafeCommand):
+class Forall(Command, MirrorSafeCommand, RemoteFilterCommand):
     COMMON = False
     helpSummary = "Run a shell command in each project"
     helpUsage = """
@@ -248,14 +249,22 @@ without iterating through the remaining projects.
                 args,
                 groups=opt.groups,
                 all_manifests=all_trees,
+                remotes=opt.remotes,
             )
         elif opt.inverse_regex:
             projects = self.FindProjects(
-                args, inverse=True, groups=opt.groups, all_manifests=all_trees
+                args,
+                inverse=True,
+                groups=opt.groups,
+                all_manifests=all_trees,
+                remotes=opt.remotes,
             )
         else:
             projects = self.GetProjects(
-                args, groups=opt.groups, all_manifests=all_trees
+                args,
+                groups=opt.groups,
+                all_manifests=all_trees,
+                remotes=opt.remotes,
             )
 
         os.environ["REPO_COUNT"] = str(len(projects))

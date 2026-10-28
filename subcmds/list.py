@@ -16,9 +16,10 @@ import os
 
 from command import Command
 from command import MirrorSafeCommand
+from command import RemoteFilterCommand
 
 
-class List(Command, MirrorSafeCommand):
+class List(Command, MirrorSafeCommand, RemoteFilterCommand):
     COMMON = True
     helpSummary = "List projects and their associated directories"
     helpUsage = """
@@ -106,6 +107,7 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
                 groups=opt.groups,
                 missing_ok=opt.all,
                 all_manifests=not opt.this_manifest_only,
+                remotes=opt.remotes,
             )
         else:
             projects = self.FindProjects(
@@ -113,6 +115,7 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
                 groups=opt.groups,
                 missing_ok=opt.all,
                 all_manifests=not opt.this_manifest_only,
+                remotes=opt.remotes,
             )
 
         def _getpath(x):

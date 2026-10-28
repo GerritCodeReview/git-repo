@@ -20,10 +20,11 @@ import os
 from color import Coloring
 from command import DEFAULT_LOCAL_JOBS
 from command import PagedCommand
+from command import RemoteFilterCommand
 import platform_utils
 
 
-class Status(PagedCommand):
+class Status(PagedCommand, RemoteFilterCommand):
     COMMON = True
     helpSummary = "Show the working tree status"
     helpUsage = """
@@ -138,7 +139,9 @@ the following meanings:
 
     def Execute(self, opt, args):
         all_projects = self.GetProjects(
-            args, all_manifests=not opt.this_manifest_only
+            args,
+            all_manifests=not opt.this_manifest_only,
+            remotes=opt.remotes,
         )
 
         def _ProcessResults(_pool, _output, results):

@@ -122,7 +122,7 @@ def test_forall_regex_modes_pass_groups_to_find_projects(
     regex_option: str,
     inverse: bool,
 ) -> None:
-    """Pass --groups through in regex modes."""
+    """Pass --groups and --remote through in regex modes."""
     manifest = _create_manifest_with_8_projects(tmp_path)
 
     cmd = subcmds.forall.Forall()
@@ -133,6 +133,8 @@ def test_forall_regex_modes_pass_groups_to_find_projects(
             regex_option,
             "--groups",
             "special",
+            "--remote",
+            "origin",
             "project",
             "-c",
             "true",
@@ -153,6 +155,7 @@ def test_forall_regex_modes_pass_groups_to_find_projects(
     expected_kwargs = {
         "groups": "special",
         "all_manifests": True,
+        "remotes": ["origin"],
     }
     if inverse:
         expected_kwargs["inverse"] = True

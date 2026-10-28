@@ -56,6 +56,7 @@ except ImportError:
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
 from command import MirrorSafeCommand
+from command import RemoteFilterCommand
 from command import WORKER_BATCH_SIZE
 import error
 import event_log
@@ -450,7 +451,7 @@ class TeeStringIO(io.StringIO):
         return ret
 
 
-class Sync(Command, MirrorSafeCommand):
+class Sync(Command, MirrorSafeCommand, RemoteFilterCommand):
     COMMON = True
     RESPECT_SMART_SYNC_OVERRIDE = False
     MULTI_MANIFEST_SUPPORT = True
@@ -969,14 +970,7 @@ later is required to fix a server side protocol bug.
                 self._ReloadManifest(manifest_path, manifest)
             return
 
-        all_projects = self.GetProjects(
-            args,
-            groups=opt.groups,
-            missing_ok=True,
-            submodules_ok=opt.recurse_submodules,
-            manifest=manifest,
-            all_manifests=not opt.this_manifest_only,
-        )
+        all_projects = self._GetSyncProjects(opt, args, manifest)
 
         per_manifest = collections.defaultdict(list)
         if opt.this_manifest_only:
@@ -1326,14 +1320,7 @@ later is required to fix a server side protocol bug.
             previously_missing_set = set()
             while True:
                 self._ReloadManifest(None, manifest)
-                all_projects = self.GetProjects(
-                    args,
-                    groups=opt.groups,
-                    missing_ok=True,
-                    submodules_ok=opt.recurse_submodules,
-                    manifest=manifest,
-                    all_manifests=not opt.this_manifest_only,
-                )
+                all_projects = self._GetSyncProjects(opt, args, manifest)
                 missing = []
                 for project in all_projects:
                     if project.gitdir not in fetched:
@@ -2694,14 +2681,7 @@ later is required to fix a server side protocol bug.
             opt, args, superproject_logging_data, manifest
         )
 
-        all_projects = self.GetProjects(
-            args,
-            groups=opt.groups,
-            missing_ok=True,
-            submodules_ok=opt.recurse_submodules,
-            manifest=manifest,
-            all_manifests=not opt.this_manifest_only,
-        )
+        all_projects = self._GetSyncProjects(opt, args, manifest)
         self._CheckReprojectCmdNesting(opt, args, manifest, all_projects)
 
         # Log the repo projects by existing and new.
@@ -2765,6 +2745,18 @@ later is required to fix a server side protocol bug.
 
         if not opt.quiet:
             print("repo sync has finished successfully.")
+
+    def _GetSyncProjects(self, opt, args, manifest):
+        """Return the projects to sync, honoring args, groups and --remote."""
+        return self.GetProjects(
+            args,
+            groups=opt.groups,
+            missing_ok=True,
+            submodules_ok=opt.recurse_submodules,
+            manifest=manifest,
+            all_manifests=not opt.this_manifest_only,
+            remotes=opt.remotes,
+        )
 
     def _CheckReprojectCmdNesting(
         self,
@@ -3413,13 +3405,8 @@ later is required to fix a server side protocol bug.
                                     )
 
                             self._ReloadManifest(None, manifest)
-                            project_list = self.GetProjects(
-                                args,
-                                groups=opt.groups,
-                                missing_ok=True,
-                                submodules_ok=opt.recurse_submodules,
-                                manifest=manifest,
-                                all_manifests=not opt.this_manifest_only,
+                            project_list = self._GetSyncProjects(
+                                opt, args, manifest
                             )
                             pm.update_total(len(project_list))
                     finally:

@@ -562,3 +562,22 @@ def test_status_non_utf8_path(
 
     lines = _status_lines(stdout.getvalue())
     assert any("bad-" in line for line in lines)
+
+
+def test_status_passes_remotes_to_get_projects() -> None:
+    """Pass --remote through to GetProjects."""
+    cmd = subcmds.status.Status()
+    opts, args = cmd.OptionParser.parse_args(
+        ["--remote", "origin", "--remote", "other"]
+    )
+    opts.quiet = True
+
+    with mock.patch.object(
+        cmd, "GetProjects", return_value=[]
+    ) as get_projects, mock.patch.object(
+        cmd, "ExecuteInParallel", return_value=0
+    ):
+        cmd.Execute(opts, args)
+
+    _, kwargs = get_projects.call_args
+    assert kwargs.get("remotes") == ["origin", "other"]
