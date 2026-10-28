@@ -2103,7 +2103,11 @@ class SyncUpdateRepoProject(unittest.TestCase):
             sync._ONE_DAY_S + 1
         )
 
-        with mock.patch.object(sync, "_PostRepoFetch") as mock_post_fetch:
+        with mock.patch.object(
+            sync, "_PostRepoFetch"
+        ) as mock_post_fetch, mock.patch.dict(
+            os.environ, {"REPO_SKIP_SELF_UPDATE": "0"}
+        ):
             self.cmd._UpdateRepoProject(self.opt, self.manifest, self.errors)
             self.manifest.repoProject.Sync_NetworkHalf.assert_called_once()
             mock_post_fetch.assert_called_once()
