@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "747e2fd8_8c442215",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-10-28T14:22:47Z",
+      "side": 1,
+      "message": "this env var really shouldn\u0027t exist in the first place.  these are hacks for what should be actual CLI options.\n\nindividual tests themselves shouldn\u0027t be scrubbing the env.  all REPO env vars should be purged by the core test framework.",
+      "revId": "99c71b2cc2e49d6ec1577370d2edf3a89772d326",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
