@@ -197,6 +197,16 @@ class Command:
                 help=f"number of jobs to run in parallel (default: {default})",
             )
 
+        if isinstance(self, RemoteFilterCommand):
+            p.add_option(
+                "--remote",
+                dest="remotes",
+                action="append",
+                metavar="REMOTE",
+                help="only operate on projects whose manifest remote (by name "
+                "or alias) is REMOTE; may be repeated",
+            )
+
         m = p.add_option_group("Multi-manifest options")
         m.add_option(
             "--outer-manifest",
@@ -400,6 +410,7 @@ class Command:
         missing_ok=False,
         submodules_ok=None,
         all_manifests=False,
+        remotes: Optional[List[str]] = None,
     ):
         """A list of projects that match the arguments.
 
@@ -418,6 +429,8 @@ class Command:
             all_manifests: a boolean, if True then all manifests and
                 submanifests are used. If False, then only the local
                 (sub)manifest is used.
+            remotes: a list of remote names; if non-empty, only projects whose
+                remote's name or alias is in the list are returned.
 
         Returns:
             A list of matching Project instances.
@@ -465,6 +478,13 @@ class Command:
 
             return project.MatchesGroups(groups_by_manifest[project_manifest])
 
+        def matches_remotes(project: "Project") -> bool:
+            if not remotes:
+                return True
+            return bool(
+                {project.remote.name, project.remote.orig_name} & set(remotes)
+            )
+
         if not args:
             derived_projects = {}
             for project in all_projects_list:
@@ -475,7 +495,11 @@ class Command:
                     )
             all_projects_list.extend(derived_projects.values())
             for project in all_projects_list:
-                if (missing_ok or project.Exists) and matches_groups(project):
+                if (
+                    (missing_ok or project.Exists)
+                    and matches_groups(project)
+                    and matches_remotes(project)
+                ):
                     result.append(project)
         else:
             self._ResetPathToProjectMap(all_projects_list)
@@ -535,6 +559,10 @@ class Command:
                     if not matches_groups(project):
                         raise error.InvalidProjectGroupsError(arg)
 
+                projects = [p for p in projects if matches_remotes(p)]
+                if not projects:
+                    raise error.InvalidProjectRemoteError(arg)
+
                 result.extend(projects)
 
         def _getpath(x):
@@ -550,6 +578,7 @@ class Command:
         all_manifests: bool = False,
         groups: Optional[str] = "",
         missing_ok: Optional[bool] = False,
+        remotes: Optional[List[str]] = None,
     ) -> List["Project"]:
         """Find projects from command line arguments.
 
@@ -563,6 +592,8 @@ class Command:
             groups: a string specifying manifest groups. If empty or None, use
                 each manifest's effective groups.
             missing_ok: a boolean, whether to allow missing projects.
+            remotes: a list of remote names to limit the projects to; see
+                GetProjects.
         """
         result = []
         patterns = [re.compile(r"%s" % a, re.IGNORECASE) for a in args]
@@ -571,6 +602,7 @@ class Command:
             groups=groups,
             missing_ok=missing_ok,
             all_manifests=all_manifests,
+            remotes=remotes,
         ):
             paths = [project.name, project.RelPath(local=not all_manifests)]
             for pattern in patterns:
@@ -639,4 +671,11 @@ class PagedCommand(Command):
 class MirrorSafeCommand:
     """Command permits itself to run within a mirror, and does not require a
     working directory.
+    """
+
+
+class RemoteFilterCommand:
+    """Command offers --remote to limit the projects it operates on.
+
+    The command must pass opt.remotes on to GetProjects/FindProjects.
     """

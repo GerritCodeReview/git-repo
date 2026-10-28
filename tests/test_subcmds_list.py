@@ -35,11 +35,11 @@ def test_list_regex_passes_groups_and_all(
     expected_groups: Optional[str],
     expected_missing_ok: Optional[bool],
 ) -> None:
-    """Pass --groups and --all through in regex mode."""
+    """Pass --groups, --all and --remote through in regex mode."""
     cmd = subcmds.list.List()
 
     opts, args = cmd.OptionParser.parse_args(
-        ["--regex", *extra_args, "project"]
+        ["--regex", "--remote", "origin", *extra_args, "project"]
     )
 
     with mock.patch.object(
@@ -54,4 +54,5 @@ def test_list_regex_passes_groups_and_all(
         groups=expected_groups,
         missing_ok=expected_missing_ok,
         all_manifests=True,
+        remotes=["origin"],
     )
