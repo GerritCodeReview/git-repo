@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "314f56cf_8aa25a95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3614203
+      },
+      "writtenOn": "2026-10-28T18:56:39Z",
+      "side": 1,
+      "message": "Is there any interest in this feature? My use case is that we have AOSP\u0027s manifest combined with projects from several in-house repos on a different remote. 99% of the time that I do a sync, status, list, or forall, I only care about the in-house repos. Without this feature, repo has to iterate all 1300 or whatever projects from AOSP just to give me info about the 100 I need.\n\nsync went from 58s -\u003e 6s",
+      "revId": "c91957b903c5c4c5f15109ed0c2d2cb19d39c710",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
