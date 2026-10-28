@@ -19,11 +19,14 @@
 # Hard versions are when we refuse to work the tool.  Users will be shown an
 # error message before we abort entirely.
 
-# When deciding whether to upgrade a version requirement, check out what versions
-# major distros (e.g. Ubuntu LTS & Debian stable) ship to see who will be
-# impacted:
+# When deciding whether to upgrade a version requirement, check out what
+# versions major distros (e.g. Ubuntu LTS & Debian stable) ship and when they
+# go EOL to see who will be impacted:
 # https://wiki.ubuntu.com/Releases
 # https://wiki.debian.org/DebianReleases#Versions_of_Debian_stable
+# https://repology.org/project/python/versions
+# https://repology.org/project/git/versions
+# https://repology.org/project/openssh/versions
 
 {
   # The repo launcher itself.  This allows us to force people to upgrade as some
