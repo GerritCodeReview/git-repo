@@ -559,6 +559,17 @@ class _Repo:
                     "the current directory"
                 )
             result = e.exit_code
+        except error.InvalidProjectRemoteError as e:
+            if e.name:
+                logger.error(
+                    "error: project %s does not use a selected remote", e.name
+                )
+            else:
+                logger.error(
+                    "error: the project in the current directory does not use "
+                    "a selected remote"
+                )
+            result = e.exit_code
         except SystemExit as e:
             if e.code:
                 result = e.code

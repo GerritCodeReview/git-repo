@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
+from typing import List, Optional
 
 
 class BaseRepoError(Exception):
@@ -166,6 +166,19 @@ class InvalidProjectGroupsError(RepoExitError):
         self.name = name
 
     def __str__(self):
+        if self.name is None:
+            return "in current directory"
+        return self.name
+
+
+class InvalidProjectRemoteError(RepoExitError):
+    """A specified project does not use any of the specified remotes"""
+
+    def __init__(self, name: Optional[str] = None, **kwargs) -> None:
+        super().__init__(**kwargs)
+        self.name = name
+
+    def __str__(self) -> str:
         if self.name is None:
             return "in current directory"
         return self.name
