@@ -22,7 +22,7 @@ import command
 import platform_utils
 
 
-class Status(command.PagedCommand):
+class Status(command.PagedCommand, command.RemoteFilterCommand):
     COMMON = True
     helpSummary = "Show the working tree status"
     helpUsage = """
@@ -137,7 +137,9 @@ the following meanings:
 
     def Execute(self, opt, args):
         all_projects = self.GetProjects(
-            args, all_manifests=not opt.this_manifest_only
+            args,
+            all_manifests=not opt.this_manifest_only,
+            remotes=opt.filter_remote,
         )
 
         def _ProcessResults(_pool, _output, results):
