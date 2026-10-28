@@ -16,6 +16,24 @@
       "message": "i think you\u0027ve missed the point.  the first paragraph you deleted from the release doc explains why it\u0027s here in the first place.\n\nthis comprehensive cross-tool version information is not maintained upstream in any singular place.  in fact, many of the standard upstream sites archive older versions so you can\u0027t search them anymore.",
       "revId": "86a7bec83d5ce714359eb251c191955e9dac2a08",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8186ecf_d5f5fcd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-10-28T20:21:00Z",
+      "side": 1,
+      "message": "Addressed in https://gerrit-review.googlesource.com/c/git-repo/+/650868",
+      "parentUuid": "3b036882_22b9b459",
+      "revId": "86a7bec83d5ce714359eb251c191955e9dac2a08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
