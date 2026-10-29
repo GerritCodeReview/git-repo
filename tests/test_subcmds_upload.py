@@ -116,11 +116,46 @@ def test_GatherOne_returns_resolved_current_branch(
         "get_parallel_context",
         lambda: {"projects": [project]},
     )
-    opt = mock.MagicMock(current_branch=True)
+    opt = mock.MagicMock(current_branch=True, ignore_remote_commits=False)
 
     assert upload.Upload._GatherOne(opt, 0) == (0, [branch], "topic")
 
-    project.GetUploadableBranch.assert_called_once_with("topic")
+    project.GetUploadableBranch.assert_called_once_with(
+        "topic", ignore_remote_commits=False
+    )
+
+
+def test_GatherOne_forwards_ignore_remote_commits(
+    cmd: upload.Upload,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """_GatherOne forwards --ignore-remote-commits to project methods."""
+    project = mock.MagicMock()
+    project.CurrentBranch = "topic"
+    branch = mock.sentinel.branch
+    project.GetUploadableBranch.return_value = branch
+    project.GetUploadableBranches.return_value = [branch]
+    monkeypatch.setattr(
+        upload.Upload,
+        "get_parallel_context",
+        lambda: {"projects": [project]},
+    )
+
+    opt_cbr, _ = cmd.OptionParser.parse_args(
+        ["--cbr", "--ignore-remote-commits"]
+    )
+    assert upload.Upload._GatherOne(opt_cbr, 0) == (0, [branch], "topic")
+    project.GetUploadableBranch.assert_called_once_with(
+        "topic", ignore_remote_commits=True
+    )
+
+    opt_br, _ = cmd.OptionParser.parse_args(
+        ["--br", "topic", "--ignore-remote-commits"]
+    )
+    assert upload.Upload._GatherOne(opt_br, 0) == (0, [branch], None)
+    project.GetUploadableBranches.assert_called_once_with(
+        "topic", ignore_remote_commits=True
+    )
 
 
 def _create_mock_branch(

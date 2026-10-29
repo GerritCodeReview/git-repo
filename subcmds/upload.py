@@ -370,6 +370,12 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             help="always ask about untracked files in the working copy",
         )
         p.add_option(
+            "--ignore-remote-commits",
+            action="store_true",
+            default=False,
+            help="ignore commits already in remote branches",
+        )
+        p.add_option(
             "--no-cert-checks",
             dest="validate_certs",
             action="store_false",
@@ -738,10 +744,14 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         cbr = None
         if opt.current_branch:
             cbr = project.CurrentBranch
-            up_branch = project.GetUploadableBranch(cbr)
+            up_branch = project.GetUploadableBranch(
+                cbr, ignore_remote_commits=opt.ignore_remote_commits
+            )
             avail = [up_branch] if up_branch else None
         else:
-            avail = project.GetUploadableBranches(opt.branch)
+            avail = project.GetUploadableBranches(
+                opt.branch, ignore_remote_commits=opt.ignore_remote_commits
+            )
         return (project_idx, avail, cbr)
 
     def ValidateOptions(self, opt: optparse.Values, args: List[str]) -> None:

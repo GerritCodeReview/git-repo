@@ -36,6 +36,7 @@ from color import Coloring
 import error
 import fetch
 import git_command
+from git_config import Branch
 from git_config import GetSchemeFromUrl
 from git_config import GetUrlCookieFile
 from git_config import GitConfig
@@ -180,10 +181,17 @@ class ReviewableBranch:
     _commit_cache = None
     _base_exists = None
 
-    def __init__(self, project, branch, base):
+    def __init__(
+        self,
+        project: "Project",
+        branch: Branch,
+        base: str,
+        ignore_remote_commits: bool = False,
+    ) -> None:
         self.project = project
         self.branch = branch
         self.base = base
+        self.ignore_remote_commits = ignore_remote_commits
 
     @property
     def name(self):
@@ -204,6 +212,7 @@ class ReviewableBranch:
                 "--date-order",
                 not_rev(self.base),
                 git_refs.R_HEADS + self.name,
+                *(("--not", "--remotes") if self.ignore_remote_commits else ()),
                 "--",
             )
             try:
@@ -226,7 +235,10 @@ class ReviewableBranch:
     def unabbrev_commits(self):
         r = {}
         for commit in self.project.bare_git.rev_list(
-            not_rev(self.base), git_refs.R_HEADS + self.name, "--"
+            not_rev(self.base),
+            git_refs.R_HEADS + self.name,
+            *(("--not", "--remotes") if self.ignore_remote_commits else ()),
+            "--",
         ):
             r[commit[0:8]] = commit
         return r
@@ -1424,7 +1436,11 @@ class Project:
             if git_refs.R_HEADS + n not in heads:
                 self.bare_git.DeleteRef(name, ref_id)
 
-    def GetUploadableBranches(self, selected_branch=None):
+    def GetUploadableBranches(
+        self,
+        selected_branch: Optional[str] = None,
+        ignore_remote_commits: bool = False,
+    ) -> List[ReviewableBranch]:
         """List any branches which can be uploaded for review."""
         if selected_branch:
             branch = self.GetBranch(selected_branch)
@@ -1436,7 +1452,9 @@ class Project:
             pub_id = self.bare_ref.get(git_refs.R_PUB + selected_branch)
             if pub_id and pub_id == head_id:
                 return []
-            rb = self.GetUploadableBranch(selected_branch)
+            rb = self.GetUploadableBranch(
+                selected_branch, ignore_remote_commits=ignore_remote_commits
+            )
             if rb:
                 rb.branch.current = selected_branch == self.CurrentBranch
                 return [rb]
@@ -1454,18 +1472,26 @@ class Project:
             if branch_config.published == branch_config.revision:
                 continue
 
-            rb = self.GetUploadableBranch(branch)
+            rb = self.GetUploadableBranch(
+                branch, ignore_remote_commits=ignore_remote_commits
+            )
             if rb:
                 rb.branch.current = branch_config.current
                 ready.append(rb)
         return ready
 
-    def GetUploadableBranch(self, branch_name):
+    def GetUploadableBranch(
+        self,
+        branch_name: Optional[str],
+        ignore_remote_commits: bool = False,
+    ) -> Optional[ReviewableBranch]:
         """Get a single uploadable branch, or None."""
         branch = self.GetBranch(branch_name)
         base = branch.LocalMerge
         if branch.LocalMerge:
-            rb = ReviewableBranch(self, branch, base)
+            rb = ReviewableBranch(
+                self, branch, base, ignore_remote_commits=ignore_remote_commits
+            )
             if rb.commits:
                 return rb
         return None

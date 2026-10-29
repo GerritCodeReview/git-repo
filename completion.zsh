@@ -411,6 +411,7 @@ _repo() {
         '(-y --yes)'{-y,--yes}'[Answer yes to all prompts]' \
         '--ignore-untracked-files[Ignore untracked files]' \
         '--no-ignore-untracked-files[Do not ignore untracked files]' \
+        '--ignore-remote-commits[Ignore commits already in remote branches]' \
         '--no-cert-checks[Do not check certificates]' \
         '--no-verify[Do not verify]' \
         '--verify[Verify]' \

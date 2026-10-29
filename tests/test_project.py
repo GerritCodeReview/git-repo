@@ -137,6 +137,48 @@ class ReviewableBranchTests(unittest.TestCase):
 
         self.assertTrue(rb.current)
 
+    def test_ignore_remote_commits(self) -> None:
+        """Check ignore_remote_commits excludes commits in refs/remotes/*."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = FakeProject(tempdir)
+
+            with open(os.path.join(tempdir, "readme"), "w") as fp:
+                fp.write("init")
+            fakeproj.work_git.add("readme")
+            fakeproj.work_git.commit("-mInit")
+
+            # Create an upstream commit and record it under refs/remotes/.
+            fakeproj.work_git.checkout("-b", "upstream")
+            with open(os.path.join(tempdir, "upstream.txt"), "w") as fp:
+                fp.write("upstream")
+            fakeproj.work_git.add("upstream.txt")
+            fakeproj.work_git.commit("-mUpstream change")
+            fakeproj.work_git.update_ref(
+                "refs/remotes/upstream/main", "refs/heads/upstream"
+            )
+
+            # Merge the remote branch into work on top of main.
+            fakeproj.work_git.checkout("-b", "work", "main")
+            fakeproj.work_git.merge(
+                "--no-ff", "-mMerge upstream", "refs/remotes/upstream/main"
+            )
+
+            rb_default = project.ReviewableBranch(
+                fakeproj, fakeproj.config.GetBranch("work"), "main"
+            )
+            self.assertEqual(2, len(rb_default.commits))
+            self.assertEqual(2, len(rb_default.unabbrev_commits))
+
+            rb_ignored = project.ReviewableBranch(
+                fakeproj,
+                fakeproj.config.GetBranch("work"),
+                "main",
+                ignore_remote_commits=True,
+            )
+            self.assertEqual(1, len(rb_ignored.commits))
+            self.assertIn("Merge upstream", rb_ignored.commits[0])
+            self.assertEqual(1, len(rb_ignored.unabbrev_commits))
+
 
 class ProjectTests(unittest.TestCase):
     """Check Project behavior."""
@@ -1277,7 +1319,9 @@ class ProjectTests(unittest.TestCase):
             ) as mock_get_up:
                 res = proj.GetUploadableBranches("feature")
                 self.assertEqual(res, [mock_rb])
-                mock_get_up.assert_called_once_with("feature")
+                mock_get_up.assert_called_once_with(
+                    "feature", ignore_remote_commits=False
+                )
 
     def _get_derived_subproject_url(self, submodule_url):
         with tempfile.TemporaryDirectory(prefix="repo-tests") as tempdir:
