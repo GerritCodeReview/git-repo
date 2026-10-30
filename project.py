@@ -4490,7 +4490,7 @@ class Project:
                 if tmp_gitdir:
                     platform_utils.rename(tmp_gitdir, self.gitdir)
                     tmp_gitdir = None
-            if not init_obj_dir:
+            if not init_obj_dir and self.objdir != self.gitdir:
                 # The project might be shared (obj_dir already initialized), but
                 # such information is not available here. Instead of passing it,
                 # set it as shared, and rely to be unset down the execution

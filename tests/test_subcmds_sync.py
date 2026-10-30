@@ -1374,6 +1374,20 @@ class GetPreciousObjectsState(unittest.TestCase):
             self.cmd._GetPreciousObjectsState(self.project, self.opt)
         )
 
+    def test_duplicate_name_distinct_objdirs(self) -> None:
+        """Duplicate-name projects with distinct local objdirs aren't shared."""
+        other = mock.MagicMock(
+            use_git_worktrees=False, UseAlternates=False, objdir="b/.git"
+        )
+        self.project.objdir = "a/.git"
+        self.project.manifest.GetProjectsWithName.return_value = [
+            self.project,
+            other,
+        ]
+        self.assertFalse(
+            self.cmd._GetPreciousObjectsState(self.project, self.opt)
+        )
+
 
 class KeyboardInterruptTest(unittest.TestCase):
     """Tests for KeyboardInterrupt handling in Sync operations."""
@@ -1625,6 +1639,29 @@ class GCProjectsTest(unittest.TestCase):
             self.cmd._GCProjects([self.project], self.opt, None)
             mock_set_state.assert_called_once_with(self.project, self.opt)
         self.assertFalse(self.project.bare_git.gc.called)
+
+    def test_GCProjects_skip_unshared_local_gitdirs(self) -> None:
+        """Unshared --use-local-gitdirs projects skip preciousObjects scan."""
+        self.opt.auto_gc = False
+        self.project.parent = None
+        self.project.gitdir = "work/.git"
+        self.project.objdir = "work/.git"
+        self.project.manifest.UseLocalGitDirs = True
+        self.project.manifest.GetProjectsWithName.return_value = [self.project]
+
+        dup = mock.MagicMock()
+        dup.name = "dup"
+        dup.parent = None
+        dup.gitdir = "dup1/.git"
+        dup.objdir = "dup1/.git"
+        dup.manifest.UseLocalGitDirs = True
+        dup.manifest.GetProjectsWithName.return_value = [dup, mock.MagicMock()]
+
+        with mock.patch.object(
+            sync.Sync, "_SetPreciousObjectsState"
+        ) as mock_set_state:
+            self.cmd._GCProjects([self.project, dup], self.opt, mock.Mock())
+            mock_set_state.assert_called_once_with(dup, self.opt)
 
     @mock.patch.object(progress, "Progress")
     def test_GCProjects_sequential(self, mock_progress):
