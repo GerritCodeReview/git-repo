@@ -1563,22 +1563,20 @@ later is required to fix a server side protocol bug.
         if len(projects) == 1:
             return False
         if len(projects) > 1:
-            # Objects are potentially shared with another project.
+            if project.UseAlternates:
+                return False
+            # Objects are shared when another project uses the same objdir.
             # See the logic in Project.Sync_NetworkHalf regarding UseAlternates.
-            # - When False, shared projects share (via symlink)
-            #   .repo/project-objects/{PROJECT_NAME}.git as the one-and-only
-            #   objects directory.  All objects are precious, since there is no
-            #   project with a complete set of refs.
+            # - When False and projects share .repo/project-objects/{NAME}.git
+            #   as the one-and-only objects directory, all objects are precious
+            #   since no project has a complete set of refs.  Projects with
+            #   distinct local .git directories (--use-local-gitdirs) do not
+            #   share objects even when their manifest names match.
             # - When True, shared projects share (via info/alternates)
             #   .repo/project-objects/{PROJECT_NAME}.git as an alternate object
             #   store, which is written only on the first clone of the project,
-            #   and is not written subsequently. (When Sync_NetworkHalf sees
-            #   that it exists, it makes sure that the alternates file points
-            #   there, and uses a project-local .git/objects directory for all
-            #   syncs going forward.
-            # We do not support switching between the options.  The environment
-            # variable is present for testing and migration only.
-            return not project.UseAlternates
+            #   and is not written subsequently.
+            return sum(1 for p in projects if p.objdir == project.objdir) > 1
 
         return False
 
@@ -1649,6 +1647,18 @@ later is required to fix a server side protocol bug.
         if not opt.auto_gc:
             # Just repair preciousObjects state, and return.
             for project in projects:
+                if (
+                    project.manifest.UseLocalGitDirs is True
+                    and not project.parent
+                    and getattr(project, "gitdir", None) == project.objdir
+                    and len(
+                        project.manifest.GetProjectsWithName(
+                            project.name, all_manifests=True
+                        )
+                    )
+                    == 1
+                ):
+                    continue
                 cls._SetPreciousObjectsState(project, opt)
             return
 
