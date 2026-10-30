@@ -262,8 +262,12 @@ class GitConfig:
                 ".repo_" + os.path.basename(self.file) + ".json",
             )
 
-    def ClearCache(self):
+    def ClearCache(self) -> None:
         """Clear the in-memory cache of config."""
+        if self._batch_ops:
+            self._FlushBatch(save_json=False)
+            self._RemoveJson()
+            self._batch_json_dirty = False
         self._cache_dict = None
         self._cache_fingerprint = None
         self._section_dict = None
@@ -567,10 +571,17 @@ class GitConfig:
         try:
             existing = b""
             curr_fp = None
-            if os.path.exists(self.file):
-                with open(self.file, "rb") as src_fp:
+            open_flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+            try:
+                src_fd = os.open(self.file, open_flags)
+            except FileNotFoundError:
+                pass
+            else:
+                with os.fdopen(src_fd, "rb") as src_fp:
                     existing = src_fp.read()
                     st = os.fstat(src_fp.fileno())
+                if hasattr(os, "fchmod") and not platform_utils.isWindows():
+                    os.fchmod(fd, st.st_mode & 0o777)
                 curr_fp = (
                     st.st_mtime_ns,
                     st.st_ctime_ns,
@@ -578,8 +589,6 @@ class GitConfig:
                     st.st_ino,
                     hashlib.sha1(existing).hexdigest(),
                 )
-                if hasattr(os, "fchmod") and not platform_utils.isWindows():
-                    os.fchmod(fd, st.st_mode & 0o777)
             if curr_fp != self._cache_fingerprint:
                 return False
 
@@ -727,7 +736,12 @@ class GitConfig:
         d = self._ReadJson()
         if d is None:
             d = self._ReadGit()
-            if self._batch_depth > 0:
+            has_includes = "include.path" in d or any(
+                k.startswith("includeif.") for k in d
+            )
+            if has_includes:
+                self._RemoveJson()
+            elif self._batch_depth > 0:
                 self._batch_json_dirty = True
             else:
                 self._SaveJson(d)
@@ -1257,23 +1271,24 @@ class SyncAnalysisState:
         """
         self._config = config
         now = datetime.datetime.now(datetime.timezone.utc)
-        self._Set("main.synctime", now.isoformat(timespec="microseconds"))
-        self._Set("main.version", "1")
-        self._Set("sys.argv", sys.argv)
-        for key, value in superproject_logging_data.items():
-            self._Set(f"superproject.{key}", value)
-        for key, value in options.__dict__.items():
-            self._Set(f"options.{key}", value)
-        config_items = config.DumpConfigDict().items()
-        EXTRACT_NAMESPACES = {"repo", "branch", "remote"}
-        self._SetDictionary(
-            {
-                k: v
-                for k, v in config_items
-                if not k.startswith(SYNC_STATE_PREFIX)
-                and k.split(".", 1)[0] in EXTRACT_NAMESPACES
-            }
-        )
+        with self._config.BatchWrites():
+            self._Set("main.synctime", now.isoformat(timespec="microseconds"))
+            self._Set("main.version", "1")
+            self._Set("sys.argv", sys.argv)
+            for key, value in superproject_logging_data.items():
+                self._Set(f"superproject.{key}", value)
+            for key, value in options.__dict__.items():
+                self._Set(f"options.{key}", value)
+            config_items = config.DumpConfigDict().items()
+            EXTRACT_NAMESPACES = {"repo", "branch", "remote"}
+            self._SetDictionary(
+                {
+                    k: v
+                    for k, v in config_items
+                    if not k.startswith(SYNC_STATE_PREFIX)
+                    and k.split(".", 1)[0] in EXTRACT_NAMESPACES
+                }
+            )
 
     def _SetDictionary(self, data):
         """Save all key/value pairs of |data| dictionary.
