@@ -186,6 +186,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cb68a6c0_c1ccc421",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1469,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-30T20:34:21Z",
+      "side": 1,
+      "message": "right, those are mutually exclusive",
+      "parentUuid": "41e2ac7f_4897b262",
+      "range": {
+        "startLine": 1469,
+        "startChar": 0,
+        "endLine": 1469,
+        "endChar": 38
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f2437737_0cac0aff",
         "filename": "project.py",
         "patchSetId": 20
@@ -233,6 +257,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "535a74ca_5e464075",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 3985,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-30T20:34:21Z",
+      "side": 1,
+      "message": "so actually, if we cleanup there it would leave a populated directory behind, and git worktree add -ff then fails permanently with fatal: \u0027\u003cpath\u003e\u0027 already exists.",
+      "parentUuid": "f2437737_0cac0aff",
+      "range": {
+        "startLine": 3980,
+        "startChar": 12,
+        "endLine": 3985,
+        "endChar": 0
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33c882f3_93d248cd",
         "filename": "project.py",
         "patchSetId": 20
@@ -267,6 +315,30 @@
       "writtenOn": "2026-10-20T15:34:42Z",
       "side": 1,
       "message": "Done, thanks for the suggestion! One tweak: I key off `info/sparse-checkout` rather than `core.sparseCheckout`, since git writes that setting to `config.worktree`, which `self.bare_git`/`self.config` don\u0027t read.",
+      "parentUuid": "33c882f3_93d248cd",
+      "range": {
+        "startLine": 4046,
+        "startChar": 0,
+        "endLine": 4046,
+        "endChar": 72
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cccf3a6b_58bae826",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 4046,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-30T20:34:21Z",
+      "side": 1,
+      "message": "so we explicitly disable sparse checkout if it was set before? yeah I think that\u0027s reasonable.",
       "parentUuid": "33c882f3_93d248cd",
       "range": {
         "startLine": 4046,

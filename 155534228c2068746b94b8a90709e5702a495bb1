@@ -46,6 +46,30 @@
       },
       "revId": "155534228c2068746b94b8a90709e5702a495bb1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63a8ff9a_be6f80a3",
+        "filename": "project.py",
+        "patchSetId": 22
+      },
+      "lineNbr": 1809,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-30T20:34:21Z",
+      "side": 1,
+      "message": "yeah I\u0027m good with that",
+      "parentUuid": "a0f6eec8_12fc3364",
+      "range": {
+        "startLine": 1809,
+        "startChar": 0,
+        "endLine": 1809,
+        "endChar": 50
+      },
+      "revId": "155534228c2068746b94b8a90709e5702a495bb1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
