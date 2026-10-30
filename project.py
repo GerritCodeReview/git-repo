@@ -4694,6 +4694,11 @@ class Project:
                 project=self.name,
             )
 
+    @staticmethod
+    def WarmInitTemplateCache() -> None:
+        """Warm the init.templateDir lookup cache before forking workers."""
+        _HasCustomGitTemplateDir(_GitTemplateEnvKey())
+
     def _InitGitDir(self, mirror_git=None, force_sync=False, quiet=False):
         # Prefix for temporary directories created during gitdir initialization.
         TMP_GITDIR_PREFIX = ".tmp-project-initgitdir-"
@@ -4842,7 +4847,7 @@ class Project:
                     platform_utils.rename(tmp_gitdir, self.gitdir)
                     tmp_gitdir = None
                     self.config.ClearCache()
-            if not init_obj_dir:
+            if not init_obj_dir and self.objdir != self.gitdir:
                 # The project might be shared (obj_dir already initialized), but
                 # such information is not available here. Instead of passing it,
                 # set it as shared, and rely to be unset down the execution
