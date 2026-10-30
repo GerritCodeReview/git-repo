@@ -17,6 +17,7 @@ import errno
 import filecmp
 import functools
 import glob
+import json
 import os
 import platform
 import random
@@ -51,6 +52,8 @@ import repo_trace
 
 
 logger = repo_logging.RepoLogger(__file__)
+
+_REPROJECT_STAMP_FILE = ".repo_reproject.json"
 
 
 class SyncNetworkHalfResult(NamedTuple):
@@ -4371,6 +4374,129 @@ class Project:
                 f"{self.name} merge --ff-only {head}", project=self.name
             )
 
+    def _GetReprojectStampPath(self) -> Optional[str]:
+        """Return path to the reproject index stamp file when safe."""
+        if (
+            not isinstance(self.work_git, self._GitGetByExec)
+            or "GIT_INDEX_FILE" in os.environ
+            or "GIT_DIR" in os.environ
+            or "GIT_COMMON_DIR" in os.environ
+        ):
+            return None
+        try:
+            return self.work_git.GetDotgitPath(subpath=_REPROJECT_STAMP_FILE)
+        except (OSError, AssertionError):
+            return None
+
+    @staticmethod
+    def _ReadIndexFingerprint(
+        index_path: str,
+    ) -> Optional[Tuple[int, int, int, int, str]]:
+        """Return stat and checksum trailer fingerprint for a Git index file."""
+        try:
+            if platform_utils.islink(index_path):
+                return None
+            with open(index_path, "rb") as fd:
+                st = os.fstat(fd.fileno())
+                if not stat.S_ISREG(st.st_mode) or st.st_size < 32:
+                    return None
+                fd.seek(st.st_size - 32)
+                trailer = fd.read(32)
+        except OSError:
+            return None
+        if len(trailer) != 32:
+            return None
+        return (
+            st.st_mtime_ns,
+            st.st_ctime_ns,
+            st.st_size,
+            st.st_ino,
+            trailer.hex(),
+        )
+
+    def _ClearReprojectIndexStamp(self) -> None:
+        """Remove any cached reproject index stamp."""
+        stamp_path = self._GetReprojectStampPath()
+        if not stamp_path:
+            return
+        try:
+            platform_utils.remove(stamp_path, missing_ok=True)
+        except OSError:
+            pass
+
+    def _RecordReprojectIndexStamp(self, revid: str) -> None:
+        """Record index fingerprint after reprojectcmd materializes |revid|."""
+        stamp_path = self._GetReprojectStampPath()
+        if not stamp_path:
+            return
+        try:
+            index_path = self.work_git.GetDotgitPath(subpath="index")
+        except (OSError, AssertionError):
+            return
+        fp = self._ReadIndexFingerprint(index_path)
+        if fp is None:
+            self._ClearReprojectIndexStamp()
+            return
+        tmp_path = f"{stamp_path}.tmp.{os.getpid()}"
+        payload = json.dumps([revid, *fp])
+        try:
+            with open(tmp_path, "w", encoding="utf-8") as fd:
+                fd.write(payload)
+            os.replace(tmp_path, stamp_path)
+        except OSError:
+            try:
+                platform_utils.remove(tmp_path, missing_ok=True)
+            except OSError:
+                pass
+
+    def _HasCleanReprojectIndexStamp(self, head_oid: Optional[str]) -> bool:
+        """Whether .git/index still matches the last materialized |head_oid|."""
+        if not head_oid:
+            return False
+        stamp_path = self._GetReprojectStampPath()
+        if not stamp_path:
+            return False
+        try:
+            if platform_utils.islink(stamp_path):
+                return False
+            with open(stamp_path, "r", encoding="utf-8") as fd:
+                recorded = json.load(fd)
+            index_path = self.work_git.GetDotgitPath(subpath="index")
+        except (OSError, ValueError, AssertionError):
+            return False
+        if not isinstance(recorded, list) or len(recorded) != 6:
+            return False
+        if recorded[0] != head_oid:
+            return False
+        fp = self._ReadIndexFingerprint(index_path)
+        if fp is None:
+            return False
+        return recorded[1:] == list(fp)
+
+    def _ResolveWorkHeadOid(self, head: Optional[str]) -> Optional[str]:
+        """Resolve worktree HEAD commit OID without unnecessary subprocesses."""
+        if (
+            isinstance(self.work_git, self._GitGetByExec)
+            and "GIT_DIR" not in os.environ
+            and "GIT_COMMON_DIR" not in os.environ
+        ):
+            if head and IsId(head):
+                return head
+            if (
+                head
+                and not self.use_git_worktrees
+                and self.objdir == self.gitdir
+            ):
+                loose_oid = self._ReadLooseRefOid(head)
+                if loose_oid:
+                    return loose_oid
+        try:
+            return self.work_git.rev_parse(
+                "-q", "--verify", "HEAD", log_as_error=False
+            )
+        except error.GitError:
+            return None
+
     def _ReprojectCheckout(
         self, revid: str, head: Optional[str], verbose: bool = False
     ) -> None:
@@ -4383,11 +4509,14 @@ class Project:
         old = self._GetHead()
         if old and old.startswith(git_refs.R_HEADS):
             old = old[len(git_refs.R_HEADS) :]
-        if head != revid:
+        reprojected = head != revid
+        if reprojected:
             self._Reproject(revid, verbose=verbose)
         self.work_git.DetachHead(
             revid, message=f"checkout: moving from {old or revid} to {revid}"
         )
+        if reprojected:
+            self._RecordReprojectIndexStamp(revid)
 
     def _ReprojectBranch(
         self,
@@ -4403,6 +4532,7 @@ class Project:
         """
         self._Reproject(revid, verbose=verbose)
         self.work_git.UpdateRef(git_refs.HEAD, revid, old=head, message=message)
+        self._RecordReprojectIndexStamp(revid)
 
     def _Reproject(self, revid: str, verbose: bool = False) -> None:
         """Make the index and worktree match |revid| with repo.reprojectcmd.
@@ -4426,59 +4556,68 @@ class Project:
             )
 
         use_exec_work_git = isinstance(self.work_git, self._GitGetByExec)
-        unborn_head = use_exec_work_git and self.work_git.IsUnbornHead()
-        if unborn_head:
-            head_tree = None
+        if use_exec_work_git:
+            head = self.work_git.GetHead()
+            unborn_head = self.work_git.IsUnbornHead(head=head)
+            head_oid = None if unborn_head else self._ResolveWorkHeadOid(head)
+            skip_staged_check = self._HasCleanReprojectIndexStamp(head_oid)
         else:
-            try:
-                head_tree = self.work_git.rev_parse(
-                    "-q", "--verify", "HEAD^{tree}", log_as_error=False
-                )
-            except error.GitError:
-                head_tree = None
-
-        if head_tree:
-            p = git_command.GitCommand(
-                self,
-                ["diff-index", "-z", "--cached", "--name-only", head_tree],
-                capture_stdout=True,
-                capture_stderr=True,
-            )
-            if p.Wait() != 0:
-                raise LocalSyncFail(
-                    f"cannot check the index for staged changes: "
-                    f"{p.stderr.strip()}",
-                    project=self.name,
-                )
-            staged = p.stdout.split("\0")[:-1]
-        elif use_exec_work_git and not self.work_git.HasIndexFile():
-            staged = []
-        else:
-            p = git_command.GitCommand(
-                self,
-                ["ls-files", "-z", "--cached"],
-                capture_stdout=True,
-                capture_stderr=True,
-            )
-            if p.Wait() != 0:
-                raise LocalSyncFail(
-                    f"cannot check the index for staged changes: "
-                    f"{p.stderr.strip()}",
-                    project=self.name,
-                )
-            staged = p.stdout.split("\0")[:-1]
-
-        if staged:
-            raise LocalSyncFail(
-                "reprojectcmd cannot run with staged changes:\n"
-                + _FirstLines(staged),
-                project=self.name,
-            )
-
-        head = self.work_git.GetHead()
-        if unborn_head:
+            unborn_head = False
+            head = None
             head_oid = None
-        else:
+            skip_staged_check = False
+
+        if not skip_staged_check:
+            if unborn_head:
+                head_tree = None
+            else:
+                try:
+                    head_tree = self.work_git.rev_parse(
+                        "-q", "--verify", "HEAD^{tree}", log_as_error=False
+                    )
+                except error.GitError:
+                    head_tree = None
+
+            if head_tree:
+                p = git_command.GitCommand(
+                    self,
+                    ["diff-index", "-z", "--cached", "--name-only", head_tree],
+                    capture_stdout=True,
+                    capture_stderr=True,
+                )
+                if p.Wait() != 0:
+                    raise LocalSyncFail(
+                        f"cannot check the index for staged changes: "
+                        f"{p.stderr.strip()}",
+                        project=self.name,
+                    )
+                staged = p.stdout.split("\0")[:-1]
+            elif use_exec_work_git and not self.work_git.HasIndexFile():
+                staged = []
+            else:
+                p = git_command.GitCommand(
+                    self,
+                    ["ls-files", "-z", "--cached"],
+                    capture_stdout=True,
+                    capture_stderr=True,
+                )
+                if p.Wait() != 0:
+                    raise LocalSyncFail(
+                        f"cannot check the index for staged changes: "
+                        f"{p.stderr.strip()}",
+                        project=self.name,
+                    )
+                staged = p.stdout.split("\0")[:-1]
+
+            if staged:
+                raise LocalSyncFail(
+                    "reprojectcmd cannot run with staged changes:\n"
+                    + _FirstLines(staged),
+                    project=self.name,
+                )
+
+        if not use_exec_work_git:
+            head = self.work_git.GetHead()
             try:
                 head_oid = self.work_git.rev_parse(
                     "-q", "--verify", "HEAD", log_as_error=False
@@ -4502,6 +4641,7 @@ class Project:
             self.relpath,
             revid,
         ):
+            self._ClearReprojectIndexStamp()
             try:
                 p = _RunHookCommand(
                     cmd_str,
@@ -4523,8 +4663,12 @@ class Project:
             raise LocalSyncFail(msg, project=self.name)
 
         new_head = self.work_git.GetHead()
-        if use_exec_work_git and self.work_git.IsUnbornHead(head=new_head):
-            new_head_oid = None
+        if use_exec_work_git:
+            new_head_oid = (
+                None
+                if self.work_git.IsUnbornHead(head=new_head)
+                else self._ResolveWorkHeadOid(new_head)
+            )
         else:
             try:
                 new_head_oid = self.work_git.rev_parse(

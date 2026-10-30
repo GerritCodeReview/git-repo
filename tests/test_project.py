@@ -5070,6 +5070,110 @@ class ReprojectCmdGitTests(unittest.TestCase):
 
             self.assertEqual([], seen_cmds)
 
+    def test_reproject_advancing_sync_skips_git_subprocesses_when_clean(
+        self,
+    ) -> None:
+        """Warm advancing sync with untouched index runs zero GitCommands."""
+        with tempfile.TemporaryDirectory() as topdir, mock.patch.dict(
+            os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}
+        ):
+            proj, revid = self._make_client(topdir, self.READ_TREE)
+            self.assertTrue(self._sync(proj)[0])
+
+            # Advance remote by one commit and fetch into proj.
+            remote = proj.remote.url
+            with open(
+                os.path.join(remote, "three.txt"), "w", encoding="utf-8"
+            ) as fp:
+                fp.write("three\n")
+            self._git(remote, "add", "three.txt")
+            self._git(
+                remote,
+                "-c",
+                "user.name=Test",
+                "-c",
+                "user.email=test@example.com",
+                "commit",
+                "-q",
+                "-m",
+                "three",
+            )
+            next_revid = self._git(remote, "rev-parse", "HEAD")
+            self._git(proj.worktree, "fetch", "-q", remote, "refs/heads/main")
+            proj.revisionId = next_revid
+
+            # Benign unstaged edit in the worktree does not touch .git/index.
+            with open(
+                os.path.join(proj.worktree, "keep.txt"), "w", encoding="utf-8"
+            ) as fp:
+                fp.write("unstaged edit\n")
+
+            seen_cmds: List[List[str]] = []
+
+            class SpyGitCommand(git_command.GitCommand):
+                def __init__(
+                    self,
+                    proj_arg: Any,
+                    cmdv: List[str],
+                    *args: Any,
+                    **kwargs: Any,
+                ) -> None:
+                    seen_cmds.append(list(cmdv))
+                    super().__init__(proj_arg, cmdv, *args, **kwargs)
+
+            with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
+                proj._Reproject(next_revid)
+
+            self.assertEqual([], seen_cmds)
+
+    def test_reproject_stamp_detects_staged_changes_even_with_same_mtime(
+        self,
+    ) -> None:
+        """Index trailer catches staged edits even with forged mtime."""
+        with tempfile.TemporaryDirectory() as topdir, mock.patch.dict(
+            os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}
+        ):
+            proj, _ = self._make_client(topdir, self.READ_TREE)
+            self.assertTrue(self._sync(proj)[0])
+
+            remote = proj.remote.url
+            with open(
+                os.path.join(remote, "three.txt"), "w", encoding="utf-8"
+            ) as fp:
+                fp.write("three\n")
+            self._git(remote, "add", "three.txt")
+            self._git(
+                remote,
+                "-c",
+                "user.name=Test",
+                "-c",
+                "user.email=test@example.com",
+                "commit",
+                "-q",
+                "-m",
+                "three",
+            )
+            next_revid = self._git(remote, "rev-parse", "HEAD")
+            self._git(proj.worktree, "fetch", "-q", remote, "refs/heads/main")
+            proj.revisionId = next_revid
+
+            index_path = os.path.join(proj.gitdir, "index")
+            orig_stat = os.stat(index_path)
+
+            with open(
+                os.path.join(proj.worktree, "keep.txt"), "w", encoding="utf-8"
+            ) as fp:
+                fp.write("staged\n")
+            self._git(proj.worktree, "add", "keep.txt")
+            os.utime(
+                index_path, ns=(orig_stat.st_atime_ns, orig_stat.st_mtime_ns)
+            )
+
+            clean, errors = self._sync(proj)
+            self.assertFalse(clean)
+            self.assertIn("staged changes", str(errors[0]))
+            self.assertIn("keep.txt", str(errors[0]))
+
 
 class DownloadPatchSetTests(unittest.TestCase):
     """Tests for Project.DownloadPatchSet."""
