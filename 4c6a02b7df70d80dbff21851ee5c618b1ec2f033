@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db5c6c25_15b0fa4c",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-30T23:24:03Z",
+      "side": 1,
+      "message": "when `SetString` runs `self._do` inside `BatchWrites` (eg updating an existing key), `_SaveJson` is deferred so `_cache_fingerprint` stays stale. if `_batch_ops` is empty on the next `SetString`, this check mismatches and triggers ClearCache and an extra git subprocess\n\ncould we drop _file_stat / _StatFile and track `_cache_fingerprint` everywhere (refreshing it after direct `_do()` writes and check it against `existing` in _TryWriteBatchLocked)?",
+      "revId": "4c6a02b7df70d80dbff21851ee5c618b1ec2f033",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74452ed5_9aad945f",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-30T23:24:03Z",
+      "side": 1,
+      "message": "we should also return `False` here if `self._cache_dict` already has `include.path` or `includeif.*` (same `has_includes` check as _SyncCacheAfterSet)",
+      "revId": "4c6a02b7df70d80dbff21851ee5c618b1ec2f033",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64cea382_72c76725",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-30T23:24:03Z",
+      "side": 1,
+      "message": "we should guard `os.fchmod` since it was only added to windows in py 3.13 https://docs.python.org/3/library/os.html#os.fchmod . the earliest version we try to support py 3.6",
+      "range": {
+        "startLine": 565,
+        "startChar": 19,
+        "endLine": 565,
+        "endChar": 25
+      },
+      "revId": "4c6a02b7df70d80dbff21851ee5c618b1ec2f033",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b06690e_c901388d",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1214,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-30T23:24:03Z",
+      "side": 1,
+      "message": "let\u0027s also wrap `Branch.Save` and `Remote.Save` above in `with self._config.BatchWrites():`\n\nin the prev CL https://gerrit-review.googlesource.com/c/git-repo/+/649604, `Branch.Save` went from appending `[branch \"...\"]` directly to calling `SetString` twice, so wrapping it here would get back the 0 subprocess fast path",
+      "revId": "4c6a02b7df70d80dbff21851ee5c618b1ec2f033",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
