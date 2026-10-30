@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bdb7d02_77f00ea4",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-30T21:54:39Z",
+      "side": 1,
+      "message": "we should probably clear self._branches in this case too, since `Branch.__init__` caches `self.remote \u003d self._config.GetRemote(r)`",
+      "range": {
+        "startLine": 372,
+        "startChar": 12,
+        "endLine": 372,
+        "endChar": 30
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "60c0712e_292cb429",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "git_config.py",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "            self._branches \u003d {}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c2bf3700897a28e6667ca7a4e83fa73f6c960e21",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
