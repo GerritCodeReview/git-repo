@@ -17,7 +17,8 @@
 import json
 import os
 from pathlib import Path
-from typing import Any, Optional
+import types
+from typing import Any, List, Optional, Tuple
 
 import pytest
 import utils_for_test
@@ -715,3 +716,149 @@ def test_batch_writes_direct_do_refreshes_fingerprint_and_branch_save_batches(
     with config.BatchWrites():
         config.SetString("after.include", "yes")
     assert ("--replace-all", "after.include", "yes") in seen_do
+
+
+def test_batch_writes_preserves_writes_with_includes_and_clear_cache(
+    tmp_path: Path,
+) -> None:
+    """BatchWrites preserves writes with [include] or ClearCache."""
+    inc_file = tmp_path / "extra.gitconfig"
+    inc_file.write_text("[inc]\n\tkey = v1\n", encoding="utf-8")
+
+    cfg_path = tmp_path / "config"
+    cfg_path.write_text(
+        f"[include]\n\tpath = {inc_file}\n",
+        encoding="utf-8",
+    )
+    config = git_config.GitConfig(str(cfg_path))
+    with config.BatchWrites():
+        assert config.GetString("inc.key") == "v1"
+        config.SetString("first.key", "one")
+        config.SetString("second.key", "two")
+        assert config.GetString("second.key") == "two"
+
+    reloaded = git_config.GitConfig(str(cfg_path))
+    assert reloaded.GetString("first.key") == "one"
+    assert reloaded.GetString("second.key") == "two"
+    assert not (tmp_path / ".repo_config.json").exists()
+
+    # ClearCache() mid-batch flushes queued writes before dropping cache state.
+    plain_path = tmp_path / "plain_config"
+    plain_path.write_text("[core]\n\tfilemode = true\n", encoding="utf-8")
+    plain_cfg = git_config.GitConfig(str(plain_path))
+    with plain_cfg.BatchWrites():
+        plain_cfg.SetString("remote.origin.url", "https://example.com/repo")
+        plain_cfg.ClearCache()
+        assert (
+            plain_cfg.GetString("remote.origin.url")
+            == "https://example.com/repo"
+        )
+
+
+def test_batch_writes_detects_same_tick_edit_and_batches_sync_analysis_state(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """BatchWrites detects same-tick edits and batches SyncAnalysisState."""
+    cfg_path = tmp_path / "config"
+    cfg_path.write_text("[other]\n\tkey = ext1\n", encoding="utf-8")
+    config = git_config.GitConfig(str(cfg_path))
+    assert config.GetString("other.key") == "ext1"
+
+    with config.BatchWrites():
+        config.SetString("remote.origin.url", "https://example.com/repo")
+        prev_stat = os.stat(cfg_path)
+        cfg_path.write_text("[other]\n\tkey = ext2\n", encoding="utf-8")
+        os.utime(cfg_path, ns=(prev_stat.st_atime_ns, prev_stat.st_mtime_ns))
+
+    fresh = git_config.GitConfig(str(cfg_path))._ReadGit()
+    assert fresh["other.key"] == ["ext2"]
+    assert fresh["remote.origin.url"] == ["https://example.com/repo"]
+
+    # UpdateSyncAnalysisState coalesces new syncstate keys without git config.
+    state_cfg_path = tmp_path / "state_config"
+    state_cfg_path.write_text(
+        '[remote "origin"]\n\turl = https://example.com/repo\n',
+        encoding="utf-8",
+    )
+    state_cfg = git_config.GitConfig(str(state_cfg_path))
+    _ = state_cfg.GetString("remote.origin.url")
+    seen_do: List[Tuple[str, ...]] = []
+    orig_do = state_cfg._do
+    monkeypatch.setattr(
+        state_cfg,
+        "_do",
+        lambda *args, **kw: seen_do.append(args) or orig_do(*args, **kw),
+    )
+
+    opts = types.SimpleNamespace(jobs=8, quiet=True)
+    state_cfg.UpdateSyncAnalysisState(opts, {"superproject": False})
+
+    assert seen_do == []
+    fresh_state = git_config.GitConfig(str(state_cfg_path))._ReadGit()
+    assert fresh_state["repo.syncstate.main.version"] == ["1"]
+    assert fresh_state["repo.syncstate.options.jobs"] == ["8"]
+    assert fresh_state["repo.syncstate.options.quiet"] == ["true"]
+    assert fresh_state["repo.syncstate.remote.origin.url"] == [
+        "https://example.com/repo"
+    ]
+
+
+def test_batch_writes_empty_subsection_unset_and_fallback_failure(
+    tmp_path: Path,
+) -> None:
+    """BatchWrites handles empty subsections, mid-batch unsets, and failures."""
+    # 1. Empty subsection (remote..url) emits [remote ""], not [remote].
+    sub_path = tmp_path / "sub_config"
+    sub_path.write_text("[core]\n\tfilemode = true\n", encoding="utf-8")
+    sub_cfg = git_config.GitConfig(str(sub_path))
+    with sub_cfg.BatchWrites():
+        sub_cfg.SetString("remote.url", "https://example.com/no-sub")
+        sub_cfg.SetString("remote..url", "https://example.com/empty-sub")
+
+    fresh_sub = git_config.GitConfig(str(sub_path))._ReadGit()
+    assert fresh_sub["remote.url"] == ["https://example.com/no-sub"]
+    assert fresh_sub["remote..url"] == ["https://example.com/empty-sub"]
+    assert (
+        git_config.GitConfig(str(sub_path)).GetString("remote..url")
+        == "https://example.com/empty-sub"
+    )
+
+    # 2. Mid-batch unset flushes queued ops first so external edits aren't lost.
+    unset_path = tmp_path / "unset_config"
+    unset_path.write_text("[core]\n\tbare = true\n", encoding="utf-8")
+    unset_cfg = git_config.GitConfig(str(unset_path))
+    assert unset_cfg.GetBoolean("core.bare") is True
+
+    with unset_cfg.BatchWrites():
+        unset_cfg.SetString("remote.origin.url", "https://example.com/repo")
+        unset_path.write_text("[external]\n\tadded = yes\n", encoding="utf-8")
+        unset_cfg.SetString("core.bare", None)
+
+    reloaded_unset = git_config.GitConfig(str(unset_path))
+    assert reloaded_unset.GetString("external.added") == "yes"
+    assert (
+        reloaded_unset.GetString("remote.origin.url")
+        == "https://example.com/repo"
+    )
+    assert reloaded_unset.GetString("core.bare") is None
+
+    # 3. Failed fallback flush clears poisoned in-memory cache and dirty flag.
+    fail_path = tmp_path / "fail_config"
+    fail_path.write_text("[core]\n\tfilemode = true\n", encoding="utf-8")
+    lock_path = tmp_path / "fail_config.lock"
+    lock_path.write_text("locked", encoding="utf-8")
+    fail_cfg = git_config.GitConfig(str(fail_path))
+    assert fail_cfg.GetBoolean("core.filemode") is True
+
+    with pytest.raises(error.GitError):
+        with fail_cfg.BatchWrites():
+            fail_cfg.SetString("remote.origin.url", "https://bad.example.com")
+
+    lock_path.unlink()
+    assert fail_cfg.GetString("remote.origin.url") is None
+    with fail_cfg.BatchWrites():
+        pass
+    assert (
+        git_config.GitConfig(str(fail_path)).GetString("remote.origin.url")
+        is None
+    )

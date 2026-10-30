@@ -49,7 +49,7 @@ REVIEW_CACHE = {}
 _JSON_META_KEY = "__repo_meta__"
 
 
-def _SplitIniName(name: str) -> Optional[Tuple[str, str, str]]:
+def _SplitIniName(name: str) -> Optional[Tuple[str, Optional[str], str]]:
     """Split a config key into INI components when plain-append safe.
 
     Args:
@@ -64,10 +64,12 @@ def _SplitIniName(name: str) -> Optional[Tuple[str, str, str]]:
         return None
     section = parts[0]
     var = parts[-1]
-    subsection = ".".join(parts[1:-1]) if len(parts) > 2 else ""
+    subsection: Optional[str] = (
+        ".".join(parts[1:-1]) if len(parts) > 2 else None
+    )
     if not _INI_SECTION_RE.match(section) or not _INI_KEY_RE.match(var):
         return None
-    if any(
+    if subsection is not None and any(
         ord(ch) < 0x20 or ord(ch) > 0x7E or ch in ('"', "\\")
         for ch in subsection
     ):
@@ -115,7 +117,7 @@ def _FormatIniBatch(ops: List[Tuple[str, List[str]]], existing: bytes) -> bytes:
         section, subsection, var = parsed
         header_key = (section.lower(), subsection)
         if header_key != last_header:
-            if subsection:
+            if subsection is not None:
                 lines.append(f'[{section} "{subsection}"]\n')
             else:
                 lines.append(f"[{section}]\n")
@@ -262,8 +264,12 @@ class GitConfig:
                 ".repo_" + os.path.basename(self.file) + ".json",
             )
 
-    def ClearCache(self):
+    def ClearCache(self) -> None:
         """Clear the in-memory cache of config."""
+        if self._batch_ops:
+            self._FlushBatch(save_json=False)
+            self._RemoveJson()
+            self._batch_json_dirty = False
         self._cache_dict = None
         self._cache_fingerprint = None
         self._section_dict = None
@@ -437,13 +443,11 @@ class GitConfig:
                 if key in self._batch_ops:
                     del self._batch_ops[key]
                 else:
-                    if self._batch_ops and (
-                        key == "include.path" or key.startswith("includeif.")
-                    ):
+                    if self._batch_ops:
                         self._FlushBatch(save_json=False)
                     self._do("--unset-all", name, allow_missing=True)
                     self._cache_fingerprint = self._ReadFileFingerprint()
-                del self._cache[key]
+                self._cache.pop(key, None)
                 self._SyncCacheAfterSet(key)
 
         elif isinstance(value, list):
@@ -555,7 +559,7 @@ class GitConfig:
             the lock was busy, the file changed externally, or an I/O error
             occurred.
         """
-        if self.file == self._SYSTEM_CONFIG or os.path.islink(self.file):
+        if self.file == self._SYSTEM_CONFIG or platform_utils.islink(self.file):
             return False
         lock_path = f"{self.file}.lock"
         try:
@@ -567,10 +571,17 @@ class GitConfig:
         try:
             existing = b""
             curr_fp = None
-            if os.path.exists(self.file):
-                with open(self.file, "rb") as src_fp:
+            open_flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+            try:
+                src_fd = os.open(self.file, open_flags)
+            except FileNotFoundError:
+                pass
+            else:
+                with os.fdopen(src_fd, "rb") as src_fp:
                     existing = src_fp.read()
                     st = os.fstat(src_fp.fileno())
+                if hasattr(os, "fchmod") and not platform_utils.isWindows():
+                    os.fchmod(fd, st.st_mode & 0o777)
                 curr_fp = (
                     st.st_mtime_ns,
                     st.st_ctime_ns,
@@ -578,8 +589,6 @@ class GitConfig:
                     st.st_ino,
                     hashlib.sha1(existing).hexdigest(),
                 )
-                if hasattr(os, "fchmod") and not platform_utils.isWindows():
-                    os.fchmod(fd, st.st_mode & 0o777)
             if curr_fp != self._cache_fingerprint:
                 return False
 
@@ -607,10 +616,16 @@ class GitConfig:
         Args:
             ops: Ordered list of (name, values) pairs to write via git config.
         """
-        for name, vals in ops:
-            self._do("--replace-all", name, vals[0])
-            for extra in vals[1:]:
-                self._do("--add", name, extra)
+        try:
+            for name, vals in ops:
+                self._do("--replace-all", name, vals[0])
+                for extra in vals[1:]:
+                    self._do("--add", name, extra)
+        except BaseException:
+            self._batch_json_dirty = False
+            self.ClearCache()
+            self._RemoveJson()
+            raise
         self.Reload()
 
     def _SyncCacheAfterSet(self, key: str) -> None:
@@ -727,7 +742,12 @@ class GitConfig:
         d = self._ReadJson()
         if d is None:
             d = self._ReadGit()
-            if self._batch_depth > 0:
+            has_includes = "include.path" in d or any(
+                k.startswith("includeif.") for k in d
+            )
+            if has_includes:
+                self._RemoveJson()
+            elif self._batch_depth > 0:
                 self._batch_json_dirty = True
             else:
                 self._SaveJson(d)
@@ -1257,23 +1277,24 @@ class SyncAnalysisState:
         """
         self._config = config
         now = datetime.datetime.now(datetime.timezone.utc)
-        self._Set("main.synctime", now.isoformat(timespec="microseconds"))
-        self._Set("main.version", "1")
-        self._Set("sys.argv", sys.argv)
-        for key, value in superproject_logging_data.items():
-            self._Set(f"superproject.{key}", value)
-        for key, value in options.__dict__.items():
-            self._Set(f"options.{key}", value)
-        config_items = config.DumpConfigDict().items()
-        EXTRACT_NAMESPACES = {"repo", "branch", "remote"}
-        self._SetDictionary(
-            {
-                k: v
-                for k, v in config_items
-                if not k.startswith(SYNC_STATE_PREFIX)
-                and k.split(".", 1)[0] in EXTRACT_NAMESPACES
-            }
-        )
+        with self._config.BatchWrites():
+            self._Set("main.synctime", now.isoformat(timespec="microseconds"))
+            self._Set("main.version", "1")
+            self._Set("sys.argv", sys.argv)
+            for key, value in superproject_logging_data.items():
+                self._Set(f"superproject.{key}", value)
+            for key, value in options.__dict__.items():
+                self._Set(f"options.{key}", value)
+            config_items = config.DumpConfigDict().items()
+            EXTRACT_NAMESPACES = {"repo", "branch", "remote"}
+            self._SetDictionary(
+                {
+                    k: v
+                    for k, v in config_items
+                    if not k.startswith(SYNC_STATE_PREFIX)
+                    and k.split(".", 1)[0] in EXTRACT_NAMESPACES
+                }
+            )
 
     def _SetDictionary(self, data):
         """Save all key/value pairs of |data| dictionary.
