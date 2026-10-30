@@ -17,7 +17,7 @@
 import json
 import os
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, List, Optional, Tuple
 
 import pytest
 import utils_for_test
@@ -659,3 +659,87 @@ def test_batch_writes_falls_back_on_lock_or_external_edit(
     assert ("--replace-all", "remote.origin.url", "https://example.com/b") in (
         do_calls
     )
+
+
+def test_batch_writes_preserves_writes_with_includes_and_clear_cache(
+    tmp_path: Path,
+) -> None:
+    """BatchWrites preserves writes with [include] or ClearCache."""
+    inc_file = tmp_path / "extra.gitconfig"
+    inc_file.write_text("[inc]\n\tkey = v1\n", encoding="utf-8")
+
+    cfg_path = tmp_path / "config"
+    cfg_path.write_text(
+        f"[include]\n\tpath = {inc_file}\n",
+        encoding="utf-8",
+    )
+    config = git_config.GitConfig(str(cfg_path))
+    assert config.GetString("inc.key") == "v1"
+
+    with config.BatchWrites():
+        config.SetString("first.key", "one")
+        config.SetString("second.key", "two")
+
+    reloaded = git_config.GitConfig(str(cfg_path))
+    assert reloaded.GetString("first.key") == "one"
+    assert reloaded.GetString("second.key") == "two"
+    assert not (tmp_path / ".repo_config.json").exists()
+
+    # ClearCache() mid-batch flushes queued writes before dropping cache state.
+    plain_path = tmp_path / "plain_config"
+    plain_path.write_text("[core]\n\tfilemode = true\n", encoding="utf-8")
+    plain_cfg = git_config.GitConfig(str(plain_path))
+    with plain_cfg.BatchWrites():
+        plain_cfg.SetString("remote.origin.url", "https://example.com/repo")
+        plain_cfg.ClearCache()
+        assert (
+            plain_cfg.GetString("remote.origin.url")
+            == "https://example.com/repo"
+        )
+
+
+def test_batch_writes_detects_same_tick_external_edit_and_batches_branch_save(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """BatchWrites detects same-tick edits and batches Branch.Save."""
+    cfg_path = tmp_path / "config"
+    cfg_path.write_text("[other]\n\tkey = ext1\n", encoding="utf-8")
+    config = git_config.GitConfig(str(cfg_path))
+    assert config.GetString("other.key") == "ext1"
+
+    with config.BatchWrites():
+        config.SetString("remote.origin.url", "https://example.com/repo")
+        prev_stat = os.stat(cfg_path)
+        cfg_path.write_text("[other]\n\tkey = ext2\n", encoding="utf-8")
+        os.utime(cfg_path, ns=(prev_stat.st_atime_ns, prev_stat.st_mtime_ns))
+
+    fresh = git_config.GitConfig(str(cfg_path))._ReadGit()
+    assert fresh["other.key"] == ["ext2"]
+    assert fresh["remote.origin.url"] == ["https://example.com/repo"]
+
+    # Branch.Save() writes new branch remote + merge without git config.
+    branch_cfg_path = tmp_path / "branch_config"
+    branch_cfg_path.write_text(
+        '[remote "origin"]\n\turl = https://example.com/repo\n'
+        "\tfetch = +refs/heads/*:refs/remotes/origin/*\n",
+        encoding="utf-8",
+    )
+    branch_cfg = git_config.GitConfig(str(branch_cfg_path))
+    _ = branch_cfg.GetRemote("origin")
+    seen_do: List[Tuple[str, ...]] = []
+    orig_do = branch_cfg._do
+    monkeypatch.setattr(
+        branch_cfg,
+        "_do",
+        lambda *args, **kw: seen_do.append(args) or orig_do(*args, **kw),
+    )
+
+    branch = branch_cfg.GetBranch("main")
+    branch.remote = branch_cfg.GetRemote("origin")
+    branch.merge = "refs/heads/main"
+    branch.Save()
+
+    assert seen_do == []
+    fresh_branch = git_config.GitConfig(str(branch_cfg_path))._ReadGit()
+    assert fresh_branch["branch.main.remote"] == ["origin"]
+    assert fresh_branch["branch.main.merge"] == ["refs/heads/main"]

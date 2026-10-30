@@ -263,8 +263,12 @@ class GitConfig:
                 ".repo_" + os.path.basename(self.file) + ".json",
             )
 
-    def ClearCache(self):
+    def ClearCache(self) -> None:
         """Clear the in-memory cache of config."""
+        if self._batch_ops:
+            self._FlushBatch(save_json=False)
+            self._RemoveJson()
+            self._batch_json_dirty = False
         self._cache_dict = None
         self._cache_fingerprint = None
         self._section_dict = None
@@ -444,7 +448,7 @@ class GitConfig:
                     ):
                         self._FlushBatch(save_json=False)
                     self._do("--unset-all", name, allow_missing=True)
-                    self._file_stat = self._StatFile()
+                    self._UpdateStatAndFingerprint()
                 del self._cache[key]
                 self._SyncCacheAfterSet(key)
 
@@ -473,7 +477,7 @@ class GitConfig:
                         self._RemoveJson()
                         raise
                     self._cache[key] = vals
-                    self._file_stat = self._StatFile()
+                    self._UpdateStatAndFingerprint()
                 self._SyncCacheAfterSet(key)
 
         elif len(old) != 1 or old[0] != value:
@@ -487,8 +491,25 @@ class GitConfig:
                     self._FlushBatch(save_json=False)
                 self._do("--replace-all", name, value)
                 self._cache[key] = vals
-                self._file_stat = self._StatFile()
+                self._UpdateStatAndFingerprint()
             self._SyncCacheAfterSet(key)
+
+    def _HasIncludes(self) -> bool:
+        """Return True if the cached config contains include directives."""
+        return self._cache_dict is not None and (
+            "include.path" in self._cache_dict
+            or any(k.startswith("includeif.") for k in self._cache_dict)
+        )
+
+    def _UpdateStatAndFingerprint(self) -> None:
+        """Refresh cached stat and content fingerprint from self.file."""
+        fp = self._ReadFileFingerprint()
+        if fp is None:
+            self._file_stat = (-1, -1, -1)
+            self._cache_fingerprint = None
+        else:
+            self._file_stat = (fp[0], fp[2], fp[3])
+            self._cache_fingerprint = fp
 
     def _CanQueueInBatch(
         self,
@@ -511,7 +532,11 @@ class GitConfig:
         """
         if self._batch_depth <= 0 or self.file == self._SYSTEM_CONFIG:
             return False
-        if key == "include.path" or key.startswith("includeif."):
+        if (
+            key == "include.path"
+            or key.startswith("includeif.")
+            or self._HasIncludes()
+        ):
             return False
         if old and key not in self._batch_ops:
             return False
@@ -556,15 +581,34 @@ class GitConfig:
 
         replaced = False
         try:
-            curr_stat = self._StatFile()
+            existing = b""
+            open_flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+            try:
+                src_fd = os.open(self.file, open_flags)
+            except FileNotFoundError:
+                curr_stat = (-1, -1, -1)
+                curr_fp = None
+            else:
+                with os.fdopen(src_fd, "rb") as src_fp:
+                    existing = src_fp.read()
+                    st = os.fstat(src_fp.fileno())
+                os.fchmod(fd, st.st_mode & 0o777)
+                curr_stat = (st.st_mtime_ns, st.st_size, st.st_ino)
+                curr_fp = (
+                    st.st_mtime_ns,
+                    st.st_ctime_ns,
+                    st.st_size,
+                    st.st_ino,
+                    hashlib.sha1(existing).hexdigest(),
+                )
+
             if self._file_stat is not None and curr_stat != self._file_stat:
                 return False
-            existing = b""
-            if curr_stat != (-1, -1, -1):
-                st = os.stat(self.file)
-                os.fchmod(fd, st.st_mode & 0o777)
-                with open(self.file, "rb") as src_fp:
-                    existing = src_fp.read()
+            if (
+                self._cache_fingerprint is not None
+                and curr_fp != self._cache_fingerprint
+            ):
+                return False
 
             payload = _FormatIniBatch(ops, existing)
             with os.fdopen(fd, "wb") as lock_fp:
@@ -574,7 +618,7 @@ class GitConfig:
                 lock_fp.write(payload)
             os.replace(lock_path, self.file)
             replaced = True
-            self._file_stat = self._StatFile()
+            self._UpdateStatAndFingerprint()
             return True
         except OSError:
             return False
@@ -620,14 +664,10 @@ class GitConfig:
         elif key.startswith("branch."):
             self._branches = {}
 
-        has_includes = self._cache_dict is not None and (
-            "include.path" in self._cache_dict
-            or any(k.startswith("includeif.") for k in self._cache_dict)
-        )
         if (
             key == "include.path"
             or key.startswith("includeif.")
-            or has_includes
+            or self._HasIncludes()
         ):
             self.ClearCache()
             self._RemoveJson()
@@ -725,7 +765,12 @@ class GitConfig:
         d = self._ReadJson()
         if d is None:
             d = self._ReadGit()
-            if self._batch_depth > 0:
+            has_includes = "include.path" in d or any(
+                k.startswith("includeif.") for k in d
+            )
+            if has_includes:
+                self._RemoveJson()
+            elif self._batch_depth > 0:
                 self._batch_json_dirty = True
             else:
                 self._SaveJson(d)
@@ -1211,13 +1256,14 @@ class Branch:
             return self.remote.ToLocal(self.merge)
         return None
 
-    def Save(self):
+    def Save(self) -> None:
         """Save this branch back into the configuration."""
-        if self.remote:
-            self._Set("remote", self.remote.name)
-        else:
-            self._Set("remote", None)
-        self._Set("merge", self.merge)
+        with self._config.BatchWrites():
+            if self.remote:
+                self._Set("remote", self.remote.name)
+            else:
+                self._Set("remote", None)
+            self._Set("merge", self.merge)
 
     def _Set(self, key, value):
         key = f"branch.{self.name}.{key}"
@@ -1254,23 +1300,24 @@ class SyncAnalysisState:
         """
         self._config = config
         now = datetime.datetime.now(datetime.timezone.utc)
-        self._Set("main.synctime", now.isoformat(timespec="microseconds"))
-        self._Set("main.version", "1")
-        self._Set("sys.argv", sys.argv)
-        for key, value in superproject_logging_data.items():
-            self._Set(f"superproject.{key}", value)
-        for key, value in options.__dict__.items():
-            self._Set(f"options.{key}", value)
-        config_items = config.DumpConfigDict().items()
-        EXTRACT_NAMESPACES = {"repo", "branch", "remote"}
-        self._SetDictionary(
-            {
-                k: v
-                for k, v in config_items
-                if not k.startswith(SYNC_STATE_PREFIX)
-                and k.split(".", 1)[0] in EXTRACT_NAMESPACES
-            }
-        )
+        with self._config.BatchWrites():
+            self._Set("main.synctime", now.isoformat(timespec="microseconds"))
+            self._Set("main.version", "1")
+            self._Set("sys.argv", sys.argv)
+            for key, value in superproject_logging_data.items():
+                self._Set(f"superproject.{key}", value)
+            for key, value in options.__dict__.items():
+                self._Set(f"options.{key}", value)
+            config_items = config.DumpConfigDict().items()
+            EXTRACT_NAMESPACES = {"repo", "branch", "remote"}
+            self._SetDictionary(
+                {
+                    k: v
+                    for k, v in config_items
+                    if not k.startswith(SYNC_STATE_PREFIX)
+                    and k.split(".", 1)[0] in EXTRACT_NAMESPACES
+                }
+            )
 
     def _SetDictionary(self, data):
         """Save all key/value pairs of |data| dictionary.
