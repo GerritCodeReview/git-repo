@@ -17,6 +17,7 @@ import errno
 import filecmp
 import functools
 import glob
+import json
 import os
 import platform
 import random
@@ -48,6 +49,8 @@ import repo_trace
 
 
 logger = repo_logging.RepoLogger(__file__)
+
+_REPROJECT_STAMP_FILE = ".repo_reproject.json"
 
 
 class SyncNetworkHalfResult(NamedTuple):
@@ -4257,6 +4260,95 @@ class Project:
                 f"{self.name} merge --ff-only {head}", project=self.name
             )
 
+    def _GetReprojectIndexStamp(
+        self, oid: Optional[str]
+    ) -> Optional[Tuple[str, str]]:
+        """Return the stamp file path and the content tying the index to |oid|.
+
+        The content names |oid| and the checksum that ends .git/index, so a
+        recorded stamp only compares equal while the index is unchanged.
+
+        Returns:
+            None when there is no commit to tie the index to, or the index
+            has no checksum to identify it by.
+        """
+        if (
+            not oid
+            or not isinstance(self.work_git, self._GitGetByExec)
+            or "GIT_INDEX_FILE" in os.environ
+            or "GIT_DIR" in os.environ
+            or "GIT_COMMON_DIR" in os.environ
+        ):
+            return None
+        try:
+            dotgit = self.work_git.GetDotgitPath()
+            with open(os.path.join(dotgit, "index"), "rb") as fd:
+                fd.seek(-32, os.SEEK_END)
+                trailer = fd.read()
+        except (OSError, AssertionError):
+            return None
+        # index.skipHash, which feature.manyFiles turns on, writes a null
+        # checksum. That says nothing about the index, so do not vouch for it.
+        if len(trailer) != 32 or not any(trailer[-20:]):
+            return None
+        return (
+            os.path.join(dotgit, _REPROJECT_STAMP_FILE),
+            json.dumps([oid, trailer.hex()]),
+        )
+
+    def _RecordReprojectIndexStamp(self, revid: str) -> None:
+        """Record that reprojectcmd left the index matching |revid|."""
+        stamp = self._GetReprojectIndexStamp(revid)
+        if not stamp:
+            return
+        stamp_path, content = stamp
+        tmp_path = f"{stamp_path}.tmp.{os.getpid()}"
+        try:
+            with open(tmp_path, "w", encoding="utf-8") as fd:
+                fd.write(content)
+            os.replace(tmp_path, stamp_path)
+        except OSError:
+            try:
+                platform_utils.remove(tmp_path, missing_ok=True)
+            except OSError:
+                pass
+
+    def _HasCleanReprojectIndexStamp(self, head_oid: Optional[str]) -> bool:
+        """Whether the index is unchanged since reprojectcmd made |head_oid|."""
+        stamp = self._GetReprojectIndexStamp(head_oid)
+        if not stamp:
+            return False
+        stamp_path, content = stamp
+        try:
+            with open(stamp_path, encoding="utf-8") as fd:
+                return fd.read() == content
+        except (OSError, ValueError):
+            return False
+
+    def _ResolveWorkHeadOid(self, head: Optional[str]) -> Optional[str]:
+        """Return the commit |head| names, or None if it names none.
+
+        |head| is what work_git.GetHead() returned. Git only runs when HEAD is
+        on a branch whose ref cannot be read from a files ref backend.
+        """
+        if head and isinstance(self.work_git, self._GitGetByExec):
+            if git_config.IsId(head):
+                return head
+            try:
+                dotgit = self.work_git.GetDotgitPath()
+            except (OSError, AssertionError):
+                dotgit = None
+            if dotgit:
+                resolved = git_refs.GitRefs(dotgit).TryResolveRef(head)
+                if resolved is not None:
+                    return resolved or None
+        try:
+            return self.work_git.rev_parse(
+                "-q", "--verify", "HEAD", log_as_error=False
+            )
+        except error.GitError:
+            return None
+
     def _ReprojectCheckout(
         self, revid: str, head: Optional[str], verbose: bool = False
     ) -> None:
@@ -4312,65 +4404,58 @@ class Project:
             )
 
         use_exec_work_git = isinstance(self.work_git, self._GitGetByExec)
-        unborn_head = use_exec_work_git and self.work_git.IsUnbornHead()
-        if unborn_head:
-            head_tree = None
-        else:
-            try:
-                head_tree = self.work_git.rev_parse(
-                    "-q", "--verify", "HEAD^{tree}", log_as_error=False
-                )
-            except error.GitError:
-                head_tree = None
-
-        if head_tree:
-            p = git_command.GitCommand(
-                self,
-                ["diff-index", "-z", "--cached", "--name-only", head_tree],
-                capture_stdout=True,
-                capture_stderr=True,
-            )
-            if p.Wait() != 0:
-                raise LocalSyncFail(
-                    f"cannot check the index for staged changes: "
-                    f"{p.stderr.strip()}",
-                    project=self.name,
-                )
-            staged = p.stdout.split("\0")[:-1]
-        elif use_exec_work_git and not self.work_git.HasIndexFile():
-            staged = []
-        else:
-            p = git_command.GitCommand(
-                self,
-                ["ls-files", "-z", "--cached"],
-                capture_stdout=True,
-                capture_stderr=True,
-            )
-            if p.Wait() != 0:
-                raise LocalSyncFail(
-                    f"cannot check the index for staged changes: "
-                    f"{p.stderr.strip()}",
-                    project=self.name,
-                )
-            staged = p.stdout.split("\0")[:-1]
-
-        if staged:
-            raise LocalSyncFail(
-                "reprojectcmd cannot run with staged changes:\n"
-                + _FirstLines(staged),
-                project=self.name,
-            )
-
         head = self.work_git.GetHead()
-        if unborn_head:
-            head_oid = None
-        else:
-            try:
-                head_oid = self.work_git.rev_parse(
-                    "-q", "--verify", "HEAD", log_as_error=False
+        head_oid = self._ResolveWorkHeadOid(head)
+
+        # An index unchanged since reprojectcmd made it match HEAD has nothing
+        # staged, so only ask Git when no stamp vouches for that.
+        if not self._HasCleanReprojectIndexStamp(head_oid):
+            head_tree = None
+            if head_oid:
+                try:
+                    head_tree = self.work_git.rev_parse(
+                        "-q", "--verify", "HEAD^{tree}", log_as_error=False
+                    )
+                except error.GitError:
+                    pass
+
+            if head_tree:
+                p = git_command.GitCommand(
+                    self,
+                    ["diff-index", "-z", "--cached", "--name-only", head_tree],
+                    capture_stdout=True,
+                    capture_stderr=True,
                 )
-            except error.GitError:
-                head_oid = None
+                if p.Wait() != 0:
+                    raise LocalSyncFail(
+                        f"cannot check the index for staged changes: "
+                        f"{p.stderr.strip()}",
+                        project=self.name,
+                    )
+                staged = p.stdout.split("\0")[:-1]
+            elif use_exec_work_git and not self.work_git.HasIndexFile():
+                staged = []
+            else:
+                p = git_command.GitCommand(
+                    self,
+                    ["ls-files", "-z", "--cached"],
+                    capture_stdout=True,
+                    capture_stderr=True,
+                )
+                if p.Wait() != 0:
+                    raise LocalSyncFail(
+                        f"cannot check the index for staged changes: "
+                        f"{p.stderr.strip()}",
+                        project=self.name,
+                    )
+                staged = p.stdout.split("\0")[:-1]
+
+            if staged:
+                raise LocalSyncFail(
+                    "reprojectcmd cannot run with staged changes:\n"
+                    + _FirstLines(staged),
+                    project=self.name,
+                )
 
         env = os.environ.copy()
         env.update(self.GetEnvVars())
@@ -4411,15 +4496,7 @@ class Project:
             raise LocalSyncFail(msg, project=self.name)
 
         new_head = self.work_git.GetHead()
-        if use_exec_work_git and self.work_git.IsUnbornHead(head=new_head):
-            new_head_oid = None
-        else:
-            try:
-                new_head_oid = self.work_git.rev_parse(
-                    "-q", "--verify", "HEAD", log_as_error=False
-                )
-            except error.GitError:
-                new_head_oid = None
+        new_head_oid = self._ResolveWorkHeadOid(new_head)
 
         if new_head != head or new_head_oid != head_oid:
             from_desc = (
@@ -4437,6 +4514,10 @@ class Project:
                 "owns every ref write",
                 project=self.name,
             )
+
+        # The index now matches |revid|, which HEAD names once the caller has
+        # written the ref.
+        self._RecordReprojectIndexStamp(revid)
 
     @staticmethod
     def WarmInitTemplateCache() -> Tuple[Tuple[Any, ...], bool]:
@@ -5500,42 +5581,6 @@ class Project:
                         self._project.RelPath(local=False), str(e)
                     )
                 return ref
-
-        def IsUnbornHead(self, head: Optional[str] = None) -> bool:
-            """Check whether HEAD is guaranteed to be an unborn local ref.
-
-            Args:
-                head: Optional parsed HEAD symref target; if None, read from
-                    the worktree's HEAD file on disk.
-
-            Returns:
-                True when the repository uses plain loose files and HEAD
-                points to a missing local ref; False otherwise.
-            """
-            if "GIT_DIR" in os.environ or "GIT_COMMON_DIR" in os.environ:
-                return False
-            try:
-                dotgit = self.GetDotgitPath()
-                head_path = os.path.join(dotgit, git_refs.HEAD)
-                if not os.path.isdir(dotgit) or platform_utils.islink(
-                    head_path
-                ):
-                    return False
-                if head is None:
-                    with open(
-                        head_path, encoding="utf-8", errors="replace"
-                    ) as fd:
-                        head = self._ParseHead(fd.readline())
-            except (OSError, AssertionError):
-                return False
-            if not head or not head.startswith("refs/") or ".." in head:
-                return False
-            if any(ch in head for ch in "~^:?*[\\@{ "):
-                return False
-            return not any(
-                os.path.lexists(os.path.join(dotgit, rel))
-                for rel in ("packed-refs", "reftable", "commondir", head)
-            )
 
         def HasIndexFile(self) -> bool:
             """Check whether the worktree may have a Git index file.

@@ -4283,9 +4283,6 @@ class ReprojectCmdTests(unittest.TestCase):
             mock_run.assert_called_once()
             self.assertEqual(
                 [
-                    mock.call(
-                        "-q", "--verify", "HEAD^{tree}", log_as_error=False
-                    ),
                     mock.call("-q", "--verify", "HEAD", log_as_error=False),
                     mock.call("-q", "--verify", "HEAD", log_as_error=False),
                 ],
@@ -4337,8 +4334,8 @@ class ReprojectCmdTests(unittest.TestCase):
             proj = self._get_project(tempdir)
             proj.work_git.GetHead.return_value = "refs/heads/main"
             proj.work_git.rev_parse.side_effect = [
-                "tree123",  # HEAD^{tree}
                 self.HEAD_ID,  # HEAD before command
+                "tree123",  # HEAD^{tree}
                 self.REVID,  # HEAD after command
             ]
             with mock.patch.object(
@@ -5209,6 +5206,166 @@ class ReprojectCmdGitTests(unittest.TestCase):
                 proj._Reproject(revid)
 
             self.assertEqual([], seen_cmds)
+
+    def _advance(self, proj: project.Project) -> str:
+        """Commit upstream, fetch it and make it the revision to sync to."""
+        remote = proj.remote.url
+        with open(
+            os.path.join(remote, "three.txt"), "w", encoding="utf-8"
+        ) as fp:
+            fp.write("three\n")
+        self._git(remote, "add", "three.txt")
+        self._git(
+            remote,
+            "-c",
+            "user.name=Test",
+            "-c",
+            "user.email=test@example.com",
+            "commit",
+            "-q",
+            "-m",
+            "three",
+        )
+        revid = self._git(remote, "rev-parse", "HEAD")
+        self._git(proj.worktree, "fetch", "-q", remote, "refs/heads/main")
+        proj.revisionId = revid
+        return revid
+
+    def _reproject_git_cmds(
+        self, proj: project.Project, revid: str
+    ) -> List[List[str]]:
+        """Run _Reproject and return the Git commands it ran."""
+        seen_cmds: List[List[str]] = []
+
+        class SpyGitCommand(git_command.GitCommand):
+            def __init__(
+                self,
+                proj_arg: Any,
+                cmdv: List[str],
+                *args: Any,
+                **kwargs: Any,
+            ) -> None:
+                seen_cmds.append(list(cmdv))
+                super().__init__(proj_arg, cmdv, *args, **kwargs)
+
+        with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
+            proj._Reproject(revid)
+        return seen_cmds
+
+    def test_reproject_advancing_sync_skips_git_subprocesses_when_clean(
+        self,
+    ) -> None:
+        """Warm advancing sync with untouched index runs zero GitCommands."""
+        with tempfile.TemporaryDirectory() as topdir, mock.patch.dict(
+            os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}
+        ):
+            proj, _ = self._make_client(topdir, self.READ_TREE)
+            self.assertTrue(self._sync(proj)[0])
+            next_revid = self._advance(proj)
+
+            # Benign unstaged edit in the worktree does not touch .git/index.
+            with open(
+                os.path.join(proj.worktree, "keep.txt"), "w", encoding="utf-8"
+            ) as fp:
+                fp.write("unstaged edit\n")
+
+            self.assertEqual([], self._reproject_git_cmds(proj, next_revid))
+
+    def test_reproject_branch_packed_ref_skips_git_subprocesses_when_clean(
+        self,
+    ) -> None:
+        """Warm advancing sync on a packed branch ref runs zero GitCommands."""
+        with tempfile.TemporaryDirectory() as topdir, mock.patch.dict(
+            os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}
+        ):
+            proj, revid = self._make_client(topdir, self.READ_TREE)
+            self.assertTrue(self._sync(proj)[0])
+
+            # Point HEAD at a local branch stored in packed-refs without
+            # touching .git/index, preserving the clean index stamp.
+            self._git(proj.worktree, "update-ref", "refs/heads/main", revid)
+            self._git(proj.worktree, "symbolic-ref", "HEAD", "refs/heads/main")
+            self._git(proj.worktree, "pack-refs", "--all")
+            next_revid = self._advance(proj)
+
+            self.assertEqual([], self._reproject_git_cmds(proj, next_revid))
+
+    def test_reproject_stamp_survives_an_identical_index_rewrite(self) -> None:
+        """An index rewritten with the same content is still known clean.
+
+        `git status` rewrites the index like this to clear racy timestamps.
+        """
+        with tempfile.TemporaryDirectory() as topdir, mock.patch.dict(
+            os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}
+        ):
+            proj, _ = self._make_client(topdir, self.READ_TREE)
+            self.assertTrue(self._sync(proj)[0])
+            next_revid = self._advance(proj)
+
+            index_path = os.path.join(proj.gitdir, "index")
+            with open(index_path, "rb") as fp:
+                content = fp.read()
+            os.remove(index_path)
+            with open(index_path, "wb") as fp:
+                fp.write(content)
+
+            self.assertEqual([], self._reproject_git_cmds(proj, next_revid))
+
+    def test_reproject_stamp_detects_staged_changes(self) -> None:
+        """A change staged after the stamp was recorded fails the sync."""
+        with tempfile.TemporaryDirectory() as topdir, mock.patch.dict(
+            os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}
+        ):
+            proj, _ = self._make_client(topdir, self.READ_TREE)
+            self.assertTrue(self._sync(proj)[0])
+            self._advance(proj)
+
+            with open(
+                os.path.join(proj.worktree, "keep.txt"), "w", encoding="utf-8"
+            ) as fp:
+                fp.write("staged\n")
+            self._git(proj.worktree, "add", "keep.txt")
+
+            clean, errors = self._sync(proj)
+            self.assertFalse(clean)
+            self.assertIn("staged changes", str(errors[0]))
+            self.assertIn("keep.txt", str(errors[0]))
+
+    def test_reproject_stamp_is_only_for_the_commit_it_names(self) -> None:
+        """A stamp says nothing once HEAD names another commit."""
+        with tempfile.TemporaryDirectory() as topdir, mock.patch.dict(
+            os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}
+        ):
+            proj, revid = self._make_client(topdir, self.READ_TREE)
+            self.assertTrue(self._sync(proj)[0])
+
+            # The index keeps |revid|'s tree, so against its parent every
+            # path the two commits differ in is staged.
+            self._git(
+                proj.worktree, "update-ref", "--no-deref", "HEAD", revid + "~1"
+            )
+
+            clean, errors = self._sync(proj)
+            self.assertFalse(clean)
+            self.assertIn("staged changes", str(errors[0]))
+            self.assertIn("one.txt", str(errors[0]))
+
+    @unittest.skipUnless(
+        git_command.git_require((2, 40, 0)),
+        "git 2.40.0+ is required for index.skipHash",
+    )
+    def test_reproject_index_without_checksum_is_always_checked(self) -> None:
+        """An index written with index.skipHash has no checksum to stamp."""
+        with tempfile.TemporaryDirectory() as topdir, mock.patch.dict(
+            os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}
+        ):
+            proj, _ = self._make_client(topdir, self.READ_TREE)
+            self._git(proj.worktree, "config", "index.skipHash", "true")
+            self.assertTrue(self._sync(proj)[0])
+            next_revid = self._advance(proj)
+
+            cmds = self._reproject_git_cmds(proj, next_revid)
+            self.assertIn("diff-index", [cmd[0] for cmd in cmds])
 
 
 class DownloadPatchSetTests(unittest.TestCase):
