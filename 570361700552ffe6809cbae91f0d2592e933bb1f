@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e98b2b9_b0b0d5e3",
+        "filename": "event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-10-30T22:17:27Z",
+      "side": 1,
+      "message": "`AddSync` already guards `GetCommitRevisionId()`, so what if we shrunk this CL by:\n\n1. adding `enabled \u003d True` to `EventLog.__init__,` and `if not self.enabled: return None` at the top of `EventLog.Add`\n2. changing `Command.event_log` to `event_log \u003d EventLog(enabled\u003dFalse)`,\n3. In `_Repo._RunLong`, set `cmd.event_log.enabled \u003d bool(gopts.event_log)` and keep the `if cmd_event is not None` on L594\n\nthis would also make it so we don\u0027t keep adding to event_log.py (see the comment `# NB: This is being replaced by git trace2 events. See git_trace2_event_log.`) and dont have to touch `sync.py`",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 29
+      },
+      "revId": "570361700552ffe6809cbae91f0d2592e933bb1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
