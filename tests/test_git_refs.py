@@ -406,3 +406,93 @@ def test_update_symref_propagates_chained_symrefs(tmp_path: Path) -> None:
         assert refs.get("refs/remotes/m/main") == c2
         assert refs.get("refs/remotes/m/alias") == c2
         assert refs.get("HEAD") == c2
+
+
+def test_files_backend_reads_loose_and_packed_without_git(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Files backend reads packed-refs, loose refs, and symrefs in Python."""
+    repo = _init_repo(tmp_path, reftable=False)
+    branch = _run(repo, "symbolic-ref", "--short", "HEAD")
+    c1 = _run(repo, "rev-parse", "HEAD")
+    _run(repo, "tag", "-a", "-m", "v1", "v1.0")
+    tag_oid = _run(repo, "rev-parse", "refs/tags/v1.0")
+    _run(repo, "branch", "packed-only", c1)
+    _run(repo, "branch", "overridden", c1)
+    _run(repo, "pack-refs", "--all")
+
+    Path(os.path.join(repo, "a")).write_text("2", encoding="utf-8")
+    _run(repo, "add", "a")
+    _run(repo, "commit", "-q", "-m", "second")
+    c2 = _run(repo, "rev-parse", "HEAD")
+    _run(repo, "update-ref", "refs/heads/overridden", c2)
+    _run(repo, "symbolic-ref", "refs/remotes/m/main", "refs/heads/overridden")
+
+    monkeypatch.delenv("GIT_DIR", raising=False)
+    monkeypatch.delenv("GIT_COMMON_DIR", raising=False)
+    seen_cmds: List[List[str]] = []
+
+    class SpyGitCommand(git_command.GitCommand):
+        def __init__(
+            self,
+            proj: Any,
+            cmdv: List[str],
+            *args: Any,
+            **kwargs: Any,
+        ) -> None:
+            seen_cmds.append(list(cmdv))
+            super().__init__(proj, cmdv, *args, **kwargs)
+
+    monkeypatch.setattr(git_command, "GitCommand", SpyGitCommand)
+    refs = git_refs.GitRefs(os.path.join(repo, ".git"))
+    assert refs.get("HEAD") == c2
+    assert refs.get(f"refs/heads/{branch}") == c2
+    assert refs.get("refs/heads/packed-only") == c1
+    assert refs.get("refs/heads/overridden") == c2
+    assert refs.get("refs/remotes/m/main") == c2
+    assert refs.get("refs/tags/v1.0") == tag_oid
+    assert seen_cmds == []
+
+    # A concurrent .lock file triggers clean fallback to git for-each-ref.
+    lock_file = Path(repo, ".git", "refs", "heads", "packed-only.lock")
+    lock_file.write_text("", encoding="utf-8")
+    refs2 = git_refs.GitRefs(os.path.join(repo, ".git"))
+    assert refs2.get("refs/heads/packed-only") == c1
+    assert any(cmd and cmd[0] == "for-each-ref" for cmd in seen_cmds)
+
+
+@pytest.mark.parametrize("reftable", [False, True])
+def test_update_ref_keeps_snapshot_warm(tmp_path: Path, reftable: bool) -> None:
+    """UpdateRef stays warm on files backend and reloads on reftable."""
+    if reftable and not utils_for_test.supports_reftable():
+        pytest.skip("reftable not supported")
+
+    repo = _init_repo(tmp_path, reftable=reftable)
+    branch = _run(repo, "symbolic-ref", "--short", "HEAD")
+    c1 = _run(repo, "rev-parse", "HEAD")
+    _run(repo, "symbolic-ref", "refs/remotes/m/main", f"refs/heads/{branch}")
+
+    Path(os.path.join(repo, "a")).write_text("2", encoding="utf-8")
+    _run(repo, "add", "a")
+    _run(repo, "commit", "-q", "-m", "second")
+    c2 = _run(repo, "rev-parse", "HEAD")
+
+    refs = git_refs.GitRefs(os.path.join(repo, ".git"))
+    assert refs.symref("refs/remotes/m/main") == f"refs/heads/{branch}"
+    assert refs.get("refs/remotes/m/main") == c2
+
+    _run(repo, "update-ref", "--no-deref", "refs/remotes/m/main", c1)
+    refs.UpdateRef("refs/remotes/m/main")
+
+    if reftable:
+        assert not refs.is_loaded
+        assert refs.symref("refs/remotes/m/main") == ""
+        assert refs.get("refs/remotes/m/main") == c1
+    else:
+        with mock.patch.object(
+            refs,
+            "_LoadAll",
+            side_effect=AssertionError("expected warm GitRefs snapshot"),
+        ):
+            assert refs.symref("refs/remotes/m/main") == ""
+            assert refs.get("refs/remotes/m/main") == c1

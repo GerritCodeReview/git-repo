@@ -29,7 +29,7 @@ import sys
 import tarfile
 import tempfile
 import time
-from typing import Any, Dict, List, NamedTuple, Optional, Tuple
+from typing import Any, Dict, List, Mapping, NamedTuple, Optional, Tuple
 import urllib.parse
 
 from color import Coloring
@@ -146,6 +146,172 @@ def _HasCustomGitTemplateDir(env_key: Tuple[Any, ...]) -> bool:
         add_event_log=False,
     )
     return p.Wait() == 0 and bool(p.stdout.strip())
+
+
+_SHELL_BUILTINS = frozenset(
+    {
+        ":",
+        ".",
+        "[",
+        "alias",
+        "bg",
+        "bind",
+        "break",
+        "builtin",
+        "caller",
+        "case",
+        "cd",
+        "command",
+        "compgen",
+        "complete",
+        "compopt",
+        "continue",
+        "declare",
+        "dirs",
+        "disown",
+        "do",
+        "done",
+        "echo",
+        "elif",
+        "else",
+        "enable",
+        "esac",
+        "eval",
+        "exec",
+        "exit",
+        "export",
+        "false",
+        "fc",
+        "fg",
+        "fi",
+        "for",
+        "function",
+        "getopts",
+        "hash",
+        "help",
+        "history",
+        "if",
+        "in",
+        "jobs",
+        "kill",
+        "let",
+        "local",
+        "logout",
+        "mapfile",
+        "popd",
+        "printf",
+        "pushd",
+        "pwd",
+        "read",
+        "readarray",
+        "readonly",
+        "return",
+        "select",
+        "set",
+        "shift",
+        "shopt",
+        "source",
+        "suspend",
+        "test",
+        "then",
+        "time",
+        "times",
+        "trap",
+        "true",
+        "type",
+        "typeset",
+        "ulimit",
+        "umask",
+        "unalias",
+        "unset",
+        "until",
+        "wait",
+        "while",
+    }
+)
+_HOOK_PROG_RE = re.compile(r"^[A-Za-z0-9_./,@+-]+$")
+_HOOK_PLAIN_ARG_RE = re.compile(r"^[A-Za-z0-9_./:=,@+-]+$")
+_HOOK_ENV_ARG_RE = re.compile(
+    r'^"\$(?:\{([A-Za-z_][A-Za-z0-9_]*)\}|([A-Za-z_][A-Za-z0-9_]*))"$'
+)
+
+
+def _ResolveDirectHookExec(
+    cmd_str: str, env: Mapping[str, str], cwd: str
+) -> Optional[Tuple[List[str], str]]:
+    """Resolve a simple hook command to (argv, executable) without /bin/sh.
+
+    Returns None when the command uses shell builtins, operators, quoting, or
+    any token whose expansion could differ from a direct execve() call.
+    """
+    if not cmd_str or "\n" in cmd_str or "\r" in cmd_str:
+        return None
+    stripped = cmd_str.strip()
+    if not stripped:
+        return None
+    tokens = re.split(r"[ \t]+", stripped)
+    prog = tokens[0]
+    if prog in _SHELL_BUILTINS or not _HOOK_PROG_RE.match(prog):
+        return None
+
+    argv: List[str] = [prog]
+    for tok in tokens[1:]:
+        if _HOOK_PLAIN_ARG_RE.match(tok):
+            argv.append(tok)
+        else:
+            m = _HOOK_ENV_ARG_RE.match(tok)
+            if not m:
+                return None
+            var_name = m.group(1) or m.group(2)
+            argv.append(env.get(var_name, ""))
+
+    if "/" in prog:
+        cand = prog if os.path.isabs(prog) else os.path.join(cwd, prog)
+        if not (os.path.isfile(cand) and os.access(cand, os.X_OK)):
+            return None
+        exe = cand
+    else:
+        resolved = shutil.which(prog, path=env.get("PATH"))
+        if not resolved:
+            return None
+        exe = resolved
+    return (argv, exe)
+
+
+def _RunHookCommand(
+    cmd_str: str,
+    cwd: str,
+    env: Dict[str, str],
+    stdout: Any,
+    stderr: Any,
+) -> subprocess.CompletedProcess:
+    """Execute a fetchcmd/reprojectcmd string, avoiding /bin/sh when exact."""
+    resolved = _ResolveDirectHookExec(cmd_str, env, cwd)
+    if resolved is not None:
+        argv, exe = resolved
+        try:
+            return subprocess.run(
+                argv,
+                executable=exe,
+                shell=False,
+                cwd=cwd,
+                env=env,
+                stdout=stdout,
+                stderr=stderr,
+                text=True,
+            )
+        except OSError as e:
+            if e.errno != errno.ENOEXEC:
+                raise
+    return subprocess.run(
+        cmd_str,
+        shell=True,
+        cwd=cwd,
+        env=env,
+        stdout=stdout,
+        stderr=stderr,
+        text=True,
+    )
 
 
 def _FirstLines(lines: List[str], limit: int = 10) -> str:
@@ -724,12 +890,16 @@ class Project:
             return self.relpath
         return os.path.join(self.manifest.path_prefix, self.relpath)
 
-    def GetEnvVars(self, local: bool = True) -> Dict[str, str]:
+    def GetEnvVars(
+        self, local: bool = True, is_new: bool = False
+    ) -> Dict[str, str]:
         """Get project-context environment variables.
 
         Args:
             local: If True, REPO_PATH is relative to the local (sub)manifest.
                 If False, it is relative to the outermost manifest.
+            is_new: If True, the project repository was just initialized and
+                cannot have a local branch revision unless pinned in manifest.
 
         Returns:
             A dictionary mapping environment variable names to their values.
@@ -755,10 +925,13 @@ class Project:
         setenv("REPO_REMOTE", self.remote.name)
         setenv("REPO_PROJECT_FETCH_URL", self.remote.url)
 
-        try:
-            lrev = "" if self.manifest.IsMirror else self.GetRevisionId()
-        except error.ManifestInvalidRevisionError:
+        if self.manifest.IsMirror or (is_new and not self.revisionId):
             lrev = ""
+        else:
+            try:
+                lrev = self.GetRevisionId()
+            except error.ManifestInvalidRevisionError:
+                lrev = ""
         setenv("REPO_LREV", lrev)
         setenv("REPO_RREV", self.revisionExpr)
         setenv("REPO_UPSTREAM", self.upstream)
@@ -1965,7 +2138,7 @@ class Project:
             # FETCH_HEAD.
             remote_fetched = True
             try:
-                if not self._CustomFetch(verbose=verbose):
+                if not self._CustomFetch(verbose=verbose, is_new=is_new):
                     return SyncNetworkHalfResult(
                         remote_fetched,
                         SyncNetworkHalfError(
@@ -2112,8 +2285,13 @@ class Project:
         is_tag = rev.startswith(
             git_refs.R_TAGS
         ) or self.revisionExpr.startswith(git_refs.R_TAGS)
-        if all_refs is None and not is_tag and self.bare_ref.is_loaded:
-            all_refs = self.bare_ref.all
+        if all_refs is None and not is_tag:
+            if self.bare_ref.is_loaded:
+                all_refs = self.bare_ref.all
+            else:
+                loose_oid = self._ReadLooseRefOid(rev)
+                if loose_oid:
+                    return loose_oid
         if all_refs is not None and not is_tag and rev in all_refs:
             return all_refs[rev]
 
@@ -2123,6 +2301,42 @@ class Project:
             raise error.ManifestInvalidRevisionError(
                 f"revision {self.revisionExpr} in {self.name} not found"
             )
+
+    def _ReadLooseRefOid(self, ref: str) -> Optional[str]:
+        """Read a direct loose ref OID from self.gitdir when safe."""
+        if (
+            not isinstance(self.bare_git, self._GitGetByExec)
+            or "GIT_DIR" in os.environ
+            or "GIT_COMMON_DIR" in os.environ
+            or not ref.startswith("refs/")
+            or not git_refs._IsValidRefName(ref)
+        ):
+            return None
+        for special in ("reftable", "commondir"):
+            if os.path.lexists(os.path.join(self.gitdir, special)):
+                return None
+        try:
+            cfg_path = os.path.join(self.gitdir, "config")
+            if platform_utils.islink(cfg_path):
+                return None
+            with open(cfg_path, "rb") as cfg_fd:
+                if b"refstorage" in cfg_fd.read().lower():
+                    return None
+            ref_path = os.path.join(self.gitdir, *ref.split("/"))
+            if platform_utils.islink(ref_path):
+                return None
+            with open(ref_path, "r", encoding="utf-8") as fd:
+                line = fd.read(1024).rstrip("\r\n")
+        except (OSError, UnicodeDecodeError):
+            return None
+        if "\n" in line or "\r" in line:
+            return None
+        oid = line.strip()
+        if git_refs._HEX_OID_RE.match(oid) and not git_refs.GitRefs._IsNullRef(
+            oid
+        ):
+            return oid
+        return None
 
     def SetRevisionId(self, revisionId):
         if self.revisionExpr:
@@ -3318,7 +3532,7 @@ class Project:
             except error.GitError:
                 pass
 
-    def _CustomFetch(self, verbose=False) -> bool:
+    def _CustomFetch(self, verbose: bool = False, is_new: bool = False) -> bool:
         """Fetch using a custom command specified by repo.fetchcmd.
 
         Populates the subshell with project-context environment variables,
@@ -3343,7 +3557,7 @@ class Project:
             repo_trev = self.revisionExpr
 
         env = os.environ.copy()
-        env.update(self.GetEnvVars())
+        env.update(self.GetEnvVars(is_new=is_new))
         env["REPO_TREV"] = repo_trev or ""
         cmd_str = self.manifest.manifestProject.fetch_cmd
 
@@ -3361,14 +3575,12 @@ class Project:
             repo_trev or "",
         ):
             try:
-                p = subprocess.run(
+                p = _RunHookCommand(
                     cmd_str,
-                    shell=True,
                     cwd=self.manifest.topdir,
                     env=env,
                     stdout=stdout,
                     stderr=stderr,
-                    text=True,
                 )
 
                 if p.returncode != 0:
@@ -3389,19 +3601,28 @@ class Project:
         # Peeling them would read the object store, and on one that is
         # populated lazily that downloads the objects fetchcmd just registered
         # before anything needs them. The checkout reads them when it does.
+        use_exec_bare_git = (
+            isinstance(self.bare_git, self._GitGetByExec)
+            and "GIT_DIR" not in os.environ
+            and "GIT_COMMON_DIR" not in os.environ
+        )
         if not IsId(self.revisionExpr):
             try:
                 ref_name = self.GetRemote().ToLocal(self.revisionExpr)
             except error.GitError as e:
                 logger.error("error: Failed to resolve tracking ref: %s", e)
                 return False
-            try:
-                resolved_ref = self.bare_git.ResolveRef(ref_name)
-            except error.GitError:
-                logger.error(
-                    "error: Postcondition failed: %s not found", ref_name
-                )
-                return False
+            resolved_ref = (
+                self.bare_ref.get(ref_name) if use_exec_bare_git else ""
+            )
+            if not resolved_ref:
+                try:
+                    resolved_ref = self.bare_git.ResolveRef(ref_name)
+                except error.GitError:
+                    logger.error(
+                        "error: Postcondition failed: %s not found", ref_name
+                    )
+                    return False
             if repo_trev and not self._IsSameCommit(resolved_ref, repo_trev):
                 logger.error(
                     "error: Postcondition failed: %s is %s, expected %s",
@@ -3413,11 +3634,15 @@ class Project:
             if not repo_trev:
                 repo_trev = resolved_ref
 
-        try:
-            fetch_head = self.bare_git.ResolveRef("FETCH_HEAD")
-        except error.GitError:
-            logger.error("error: Postcondition failed: FETCH_HEAD not found")
-            return False
+        fetch_head = self._ReadSimpleFetchHead() if use_exec_bare_git else None
+        if not fetch_head:
+            try:
+                fetch_head = self.bare_git.ResolveRef("FETCH_HEAD")
+            except error.GitError:
+                logger.error(
+                    "error: Postcondition failed: FETCH_HEAD not found"
+                )
+                return False
         if not self._IsSameCommit(fetch_head, repo_trev):
             logger.error(
                 "error: Postcondition failed: FETCH_HEAD is %s, expected %s",
@@ -3427,6 +3652,29 @@ class Project:
             return False
 
         return True
+
+    def _ReadSimpleFetchHead(self) -> Optional[str]:
+        """Read FETCH_HEAD's leading object ID directly on files backend."""
+        for special in ("reftable", "commondir"):
+            if os.path.lexists(os.path.join(self.gitdir, special)):
+                return None
+        fh_path = os.path.join(self.gitdir, "FETCH_HEAD")
+        try:
+            if platform_utils.islink(fh_path):
+                return None
+            with open(fh_path, "r", encoding="utf-8") as fd:
+                raw_line = fd.readline(4096)
+        except (OSError, UnicodeDecodeError):
+            return None
+        if not raw_line:
+            return None
+        line = raw_line.rstrip("\r\n")
+        oid = line.split("\t", 1)[0]
+        if git_refs._HEX_OID_RE.match(oid) and not git_refs.GitRefs._IsNullRef(
+            oid
+        ):
+            return oid
+        return None
 
     def _IsSameCommit(self, oid: str, expected: str) -> bool:
         """Whether object ID |oid| names the same commit as |expected|.
@@ -4255,14 +4503,12 @@ class Project:
             revid,
         ):
             try:
-                p = subprocess.run(
+                p = _RunHookCommand(
                     cmd_str,
-                    shell=True,
                     cwd=self.manifest.topdir,
                     env=env,
                     stdout=output,
                     stderr=None if verbose else subprocess.STDOUT,
-                    text=True,
                 )
             except OSError as e:
                 raise LocalSyncFail(
@@ -4312,6 +4558,18 @@ class Project:
         tmp_gitdir = None
         curr_gitdir = self.gitdir
         curr_config = self.config
+        use_local_worktree_git = (
+            not self.manifest.IsMirror
+            and bool(self.worktree)
+            and not self.use_git_worktrees
+            and self.objdir == self.gitdir
+            and os.path.normpath(self.gitdir)
+            == os.path.normpath(os.path.join(self.worktree, ".git"))
+            and isinstance(self.work_git, self._GitGetByExec)
+            and isinstance(self.bare_objdir, self._GitGetByExec)
+            and "GIT_DIR" not in os.environ
+            and "GIT_WORK_TREE" not in os.environ
+        )
         try:
             # Initialize the bare repository, which contains all of the objects.
             if init_obj_dir:
@@ -4319,7 +4577,10 @@ class Project:
                 init_args = ["-q"] if quiet else []
                 if not _HasCustomGitTemplateDir(_GitTemplateEnvKey()):
                     init_args.append("--template=")
-                self.bare_objdir.init(*init_args)
+                if use_local_worktree_git:
+                    self.work_git.init(*init_args)
+                else:
+                    self.bare_objdir.init(*init_args)
 
                 self._UpdateHooks(quiet=quiet)
 
@@ -4422,9 +4683,16 @@ class Project:
                             "filter.lfs.process",
                             "git-lfs filter-process --skip",
                         )
-                    curr_config.SetBoolean(
-                        "core.bare", True if self.manifest.IsMirror else None
-                    )
+                    if self.manifest.IsMirror:
+                        bare_val: Optional[bool] = True
+                    elif (
+                        use_local_worktree_git
+                        and curr_config.GetBoolean("core.bare") is False
+                    ):
+                        bare_val = False
+                    else:
+                        bare_val = None
+                    curr_config.SetBoolean("core.bare", bare_val)
 
                 if tmp_gitdir:
                     platform_utils.rename(tmp_gitdir, self.gitdir)
@@ -4606,6 +4874,8 @@ class Project:
                 msg = "manifest set to %s" % self.revisionId
                 dst = self.revisionId + "^0"
                 active_git.UpdateRef(ref, dst, message=msg, detach=True)
+                if active_git is self.bare_git:
+                    self.bare_ref.UpdateRef(ref)
         else:
             remote = self.GetRemote()
             dst = remote.ToLocal(self.revisionExpr)
@@ -4613,6 +4883,8 @@ class Project:
                 msg = "manifest set to %s" % self.revisionExpr
                 if detach:
                     active_git.UpdateRef(ref, dst, message=msg, detach=True)
+                    if active_git is self.bare_git:
+                        self.bare_ref.UpdateRef(ref)
                 else:
                     active_git.symbolic_ref("-m", msg, ref, dst)
                     if active_git is self.bare_git:

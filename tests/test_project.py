@@ -3911,6 +3911,120 @@ class FetchCmdGitTests(unittest.TestCase):
 
             self.assertFalse(proj._CustomFetch())
 
+    def test_resolve_direct_hook_exec_and_fallback(self) -> None:
+        """Direct hook exec bypasses /bin/sh for plain binaries safely."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            tool = os.path.join(topdir, "my-hook")
+            with open(tool, "w", encoding="utf-8") as fp:
+                fp.write("#!/bin/sh\n" 'printf "%s|%s|%s\\n" "$1" "$2" "$3"\n')
+            os.chmod(tool, 0o755)
+            env = dict(os.environ)
+            env["PATH"] = topdir + os.pathsep + env.get("PATH", "")
+            env["REPO_PATH"] = "a/b"
+            env["REPO_TREV"] = "deadbeef"
+
+            resolved = project._ResolveDirectHookExec(
+                'my-hook fetch "$REPO_PATH" "${REPO_TREV}"', env, topdir
+            )
+            self.assertIsNotNone(resolved)
+            argv, exe = resolved
+            self.assertEqual(argv, ["my-hook", "fetch", "a/b", "deadbeef"])
+            self.assertEqual(os.path.realpath(exe), os.path.realpath(tool))
+
+            # Builtins, operators, unquoted vars, and assignments use /bin/sh.
+            for shell_only in (
+                "echo hi",
+                "true",
+                "my-hook $REPO_PATH",
+                "FOO=1 my-hook",
+                "my-hook && my-hook",
+                "missing-binary arg",
+            ):
+                self.assertIsNone(
+                    project._ResolveDirectHookExec(shell_only, env, topdir),
+                    shell_only,
+                )
+
+            res = project._RunHookCommand(
+                'my-hook fetch "$REPO_PATH" "${REPO_TREV}"',
+                cwd=topdir,
+                env=env,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            self.assertEqual(res.returncode, 0)
+            self.assertEqual(res.stdout.strip(), "fetch|a/b|deadbeef")
+
+            # Shebangless scripts raise ENOEXEC and fall back to /bin/sh.
+            noshebang = os.path.join(topdir, "noshebang")
+            with open(noshebang, "w", encoding="utf-8") as fp:
+                fp.write('echo "fallback:$1"\n')
+            os.chmod(noshebang, 0o755)
+            res2 = project._RunHookCommand(
+                "./noshebang ok",
+                cwd=topdir,
+                env=env,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            self.assertEqual(res2.returncode, 0)
+            self.assertEqual(res2.stdout.strip(), "fallback:ok")
+
+    def test_custom_fetch_new_unpinned_zero_git_subprocesses(self) -> None:
+        """Cold unpinned _CustomFetch runs zero git subprocesses on files."""
+        with tempfile.TemporaryDirectory(
+            prefix="repo-tests"
+        ) as topdir, mock.patch.dict(
+            os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}, clear=False
+        ):
+            os.environ.pop("GIT_DIR", None)
+            os.environ.pop("GIT_COMMON_DIR", None)
+            commit = "1234abcd" * 5
+            hook = os.path.join(topdir, "fake-fetch")
+            with open(hook, "w", encoding="utf-8") as fp:
+                fp.write(
+                    "#!/bin/sh\n"
+                    'mkdir -p "$REPO_PATH/.git/refs/remotes/origin"\n'
+                    f'printf "{commit}\\n" > '
+                    '"$REPO_PATH/.git/refs/remotes/origin/main"\n'
+                    f'printf "{commit}\\t\\tbranch main\\n" > '
+                    '"$REPO_PATH/.git/FETCH_HEAD"\n'
+                )
+            os.chmod(hook, 0o755)
+
+            proj = self._make_project(
+                topdir,
+                f"{hook} fetch",
+                revision_expr="main",
+                revision_id=None,
+            )
+            proj.config.SetString("remote.origin.url", "http://example.com/r")
+            proj.config.SetString(
+                "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*"
+            )
+            seen_cmds: List[List[str]] = []
+
+            class SpyGitCommand(git_command.GitCommand):
+                def __init__(
+                    self,
+                    proj_arg: Any,
+                    cmdv: List[str],
+                    *args: Any,
+                    **kwargs: Any,
+                ) -> None:
+                    seen_cmds.append(list(cmdv))
+                    super().__init__(proj_arg, cmdv, *args, **kwargs)
+
+            with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
+                self.assertTrue(proj._CustomFetch(is_new=True))
+
+            self.assertEqual(seen_cmds, [])
+            self.assertTrue(proj.bare_ref.is_loaded)
+            self.assertEqual(
+                proj.bare_ref.get("refs/remotes/origin/main"), commit
+            )
+            self.assertEqual(proj.GetRevisionId(), commit)
+
 
 class ReprojectCmdTests(unittest.TestCase):
     """Tests for the repo.reprojectcmd feature."""
@@ -5095,8 +5209,13 @@ class InitGitDirConfigTests(unittest.TestCase):
                 any("--replace-all" in cmd for cmd in seen_cmds),
                 f"Expected BatchWrites to avoid --replace-all, got {seen_cmds}",
             )
+            self.assertFalse(
+                any("--unset-all" in cmd for cmd in seen_cmds),
+                f"Expected local init to avoid --unset-all, got {seen_cmds}",
+            )
             reloaded = git_config.GitConfig.ForRepository(gitdir=proj.gitdir)
             fresh = reloaded._ReadGit()
+            self.assertEqual(["false"], fresh.get("core.bare"))
             self.assertEqual(
                 ["git-lfs smudge --skip -- %f"], fresh.get("filter.lfs.smudge")
             )
