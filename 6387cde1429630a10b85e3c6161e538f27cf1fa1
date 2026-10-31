@@ -208,6 +208,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da530532_ed687f2f",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1469,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-31T01:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb68a6c0_c1ccc421",
+      "range": {
+        "startLine": 1469,
+        "startChar": 0,
+        "endLine": 1469,
+        "endChar": 38
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2437737_0cac0aff",
@@ -279,6 +303,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e61cb1e5_20f14774",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 3985,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-31T01:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "535a74ca_5e464075",
+      "range": {
+        "startLine": 3980,
+        "startChar": 12,
+        "endLine": 3985,
+        "endChar": 0
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33c882f3_93d248cd",
@@ -340,6 +388,30 @@
       "side": 1,
       "message": "so we explicitly disable sparse checkout if it was set before? yeah I think that\u0027s reasonable.",
       "parentUuid": "33c882f3_93d248cd",
+      "range": {
+        "startLine": 4046,
+        "startChar": 0,
+        "endLine": 4046,
+        "endChar": 72
+      },
+      "revId": "6387cde1429630a10b85e3c6161e538f27cf1fa1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e24a128_c132d7c0",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 4046,
+      "author": {
+        "id": 4508790
+      },
+      "writtenOn": "2026-10-31T01:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cccf3a6b_58bae826",
       "range": {
         "startLine": 4046,
         "startChar": 0,
