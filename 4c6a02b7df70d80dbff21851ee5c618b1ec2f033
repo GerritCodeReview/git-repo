@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8fba7d3d_0e8130d9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-11-02T17:09:51Z",
+      "side": 1,
+      "message": "this needs an explanation/justification as to why.  this adds quite a bit of complicated logic, including re-implementing git internal logic.",
+      "revId": "4c6a02b7df70d80dbff21851ee5c618b1ec2f033",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db5c6c25_15b0fa4c",
         "filename": "git_config.py",
         "patchSetId": 5
