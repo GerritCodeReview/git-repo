@@ -47,10 +47,11 @@ class EventLog:
     Specific tasks may include additional informational properties.
     """
 
-    def __init__(self):
+    def __init__(self, enabled=True):
         """Initializes the event log."""
         self._log = []
         self._parent = None
+        self.enabled = enabled
 
     def Add(
         self,
@@ -74,8 +75,11 @@ class EventLog:
             kind: The kind of the object for the unique identifier.
 
         Returns:
-            A dictionary of the event added to the log.
+            A dictionary of the event added to the log, or None if disabled.
         """
+        if not self.enabled:
+            return None
+
         event = {
             "id": (kind, _NextEventId()),
             "name": name,

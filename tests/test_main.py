@@ -14,10 +14,12 @@
 
 """Tests for the main repo script and subcommand routing."""
 
+from pathlib import Path
 from unittest import mock
 
 import pytest
 
+import event_log
 from main import _Repo
 
 
@@ -164,3 +166,54 @@ def test_autocorrect_prompt_interrupt(mock_input, repo, mock_config):
     res = repo._autocorrect_command_name("tart", mock_config)
 
     assert res is None
+
+
+def test_event_log_disabled_skips_add_and_git_hash() -> None:
+    """Test disabled EventLog returns None and skips GetCommitRevisionId."""
+    log = event_log.EventLog(enabled=False)
+    project = mock.MagicMock()
+
+    assert log.Add("sync", event_log.TASK_COMMAND, 1.0) is None
+    assert (
+        log.AddSync(project, event_log.TASK_SYNC_NETWORK, 1.0, 2.0, True)
+        is None
+    )
+    project.GetCommitRevisionId.assert_not_called()
+
+
+@mock.patch("main.RepoClient")
+def test_run_long_gates_event_log_on_flag(
+    mock_client_cls: mock.MagicMock, tmp_path: Path
+) -> None:
+    """Test _RunLong enables cmd.event_log only when --event-log is set."""
+    client = mock_client_cls.return_value
+    client.manifest.IsMirror = False
+    client.manifest.manifestProject.config.DumpConfigDict.return_value = {}
+    repo = _Repo("repodir")
+
+    for log_path, expected in (
+        (None, False),
+        (str(tmp_path / "events.log"), True),
+    ):
+        cmd = mock.MagicMock()
+        cmd.event_log = event_log.EventLog(enabled=False)
+        cmd.manifest = client.manifest
+        cmd.MULTI_MANIFEST_SUPPORT = True
+        cmd.OptionParser.parse_args.return_value = (mock.MagicMock(), [])
+        cmd.ReadEnvironmentOptions.side_effect = lambda copts: copts
+        cmd.Execute.return_value = 0
+        repo.commands = {"sync": mock.Mock(return_value=cmd)}
+        gopts = mock.MagicMock(
+            color=None,
+            submanifest_path="",
+            pager=False,
+            time=False,
+            event_log=log_path,
+            git_trace2_event_log=None,
+        )
+
+        assert repo._RunLong("sync", gopts, [], mock.MagicMock()) == 0
+        assert cmd.event_log.enabled is expected
+        assert (
+            bool(log_path and Path(log_path).exists()) is expected
+        )
