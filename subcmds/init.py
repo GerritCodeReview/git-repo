@@ -139,7 +139,6 @@ to update the working directory files.
         # Normally this value is set when instantiating the project, but the
         # manifest project is special and is created when instantiating the
         # manifest which happens before we parse options.
-        self.manifest.manifestProject.clone_depth = opt.manifest_depth
         self.manifest.manifestProject.upstream = opt.manifest_upstream_branch
         clone_filter_for_depth = (
             "blob:none" if (_REPO_ALLOW_SHALLOW == "0") else None
@@ -169,6 +168,7 @@ to update the working directory files.
             current_branch_only=opt.current_branch_only,
             tags=opt.tags,
             depth=opt.depth,
+            manifest_depth=opt.manifest_depth,
             git_event_log=self.git_event_log,
             manifest_name=opt.manifest_name,
             use_local_gitdirs=opt.use_local_gitdirs,

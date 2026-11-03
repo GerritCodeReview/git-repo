@@ -337,25 +337,101 @@ def test_standalone_manifest(host: GitHost, client: RepoClient) -> None:
     assert "cannot be re-initialized without --manifest-url/-u" in result.stderr
 
 
+@pytest.mark.parametrize("git_defaults", GIT_DEFAULTS_PARAMS)
 def test_manifest_depth(host: GitHost, client: RepoClient) -> None:
-    """`init --manifest-depth` shallow-clones the manifest repo only."""
+    """`init --manifest-depth` persists across `sync` and re-`init`."""
     foo = host.create_repo("platform/foo", {"f": "1"})
     foo.commit({"f": "2"})
+    bar = host.create_repo("platform/bar", {"b": "1"})
+    bar.commit({"b": "2"})
     host.create_manifest(manifest_xml())
     host.update_manifest(manifest_xml('<project name="platform/foo" />'))
 
     client.init(host.manifest_url, "--manifest-depth=1")
 
     manifests = ".repo/manifests"
+    assert client.config(manifests, "repo.manifestdepth") == "1"
     assert client.is_shallow(manifests)
     assert client.git(manifests, "rev-list", "--count", "HEAD") == "1"
 
-    # `--nmu` skips updating the manifest project, keeping it shallow while
-    # syncing projects at full depth.
-    client.sync("--nmu")
+    # Plain `repo sync` keeps the manifest shallow while syncing projects at
+    # full depth.
+    client.sync()
     assert client.is_shallow(manifests)
+    assert client.git(manifests, "rev-list", "--count", "HEAD") == "1"
     assert not client.is_shallow("platform/foo")
     assert client.git("platform/foo", "rev-list", "--count", "HEAD") == "2"
+
+    # Advancing the remote manifest keeps `.repo/manifests` shallow without
+    # emitting bogus "discarding" warnings, and also succeeds when the manifest
+    # committer matches the client's user.email.
+    res = None
+    new_rev = host.update_manifest(
+        manifest_xml(
+            '<project name="platform/foo" />',
+            '<project name="platform/bar" />',
+        )
+    )
+    res = client.sync()
+    assert "discarding" not in res.output
+    assert client.head(manifests) == new_rev
+    assert client.is_shallow(manifests)
+    assert client.git(manifests, "rev-list", "--count", "HEAD") == "1"
+    assert not client.is_shallow("platform/bar")
+    assert client.git("platform/bar", "rev-list", "--count", "HEAD") == "2"
+
+    # Match the server harness committer email (`committer@example.com`) to
+    # ensure advancing a shallow manifest branch never tries to rebase a
+    # grafted shallow root.
+    client.git(manifests, "config", "user.email", "committer@example.com")
+    bar.commit({"b": "3"})
+    newer_rev = host.update_manifest(
+        manifest_xml('<project name="platform/bar" />')
+    )
+    res = client.sync()
+    assert "discarding" not in res.output
+    assert client.head(manifests) == newer_rev
+    assert client.is_shallow(manifests)
+    assert client.git(manifests, "rev-list", "--count", "HEAD") == "1"
+    assert (client.top / "platform/bar" / "b").read_text() == "3"
+
+    # Re-running `repo init` without `--manifest-depth` preserves the setting.
+    client.init(host.manifest_url, "-g", "all")
+    assert client.config(manifests, "repo.manifestdepth") == "1"
+    assert client.is_shallow(manifests)
+    assert client.git(manifests, "rev-list", "--count", "HEAD") == "1"
+
+    # Passing `--manifest-depth=0` unshallows the manifest repo and persists.
+    client.init(host.manifest_url, "--manifest-depth=0")
+    assert client.config(manifests, "repo.manifestdepth") == "0"
+    assert not client.is_shallow(manifests)
+    assert client.git(manifests, "rev-list", "--count", "HEAD") == "4"
+
+    client.sync()
+    assert not client.is_shallow(manifests)
+    assert client.git(manifests, "rev-list", "--count", "HEAD") == "4"
+
+
+def test_depth_with_manifest_depth_zero(
+    host: GitHost, client: RepoClient
+) -> None:
+    """`init --depth=1 --manifest-depth=0` keeps only projects shallow."""
+    foo = host.create_repo("platform/foo", {"f": "1"})
+    foo.commit({"f": "2"})
+    host.create_manifest(manifest_xml())
+    host.update_manifest(manifest_xml('<project name="platform/foo" />'))
+
+    client.init(host.manifest_url, "--depth=1", "--manifest-depth=0")
+
+    manifests = ".repo/manifests"
+    assert not client.is_shallow(manifests)
+    assert client.git(manifests, "rev-list", "--count", "HEAD") == "2"
+
+    client.sync()
+    assert not client.is_shallow(manifests)
+    assert client.git(manifests, "rev-list", "--count", "HEAD") == "2"
+    assert client.is_shallow("platform/foo")
+    assert client.git("platform/foo", "rev-list", "--count", "HEAD") == "1"
 
 
 @contextlib.contextmanager

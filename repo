@@ -328,11 +328,10 @@ def InitParser(parser: optparse.OptionParser) -> optparse.OptionParser:
     group.add_option(
         "--manifest-depth",
         type="int",
-        default=0,
+        default=None,
         metavar="DEPTH",
         help="create a shallow clone of the manifest repo with "
-        "given depth (0 for full clone); see git clone "
-        "(default: %default)",
+        "given depth (0 for full clone); see git clone",
     )
 
     # Options that only affect manifest project, and not any of the projects
