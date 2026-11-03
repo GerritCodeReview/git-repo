@@ -311,6 +311,7 @@ class _FetchOneResult(NamedTuple):
       finish (float): The ending time.time().
       remote_fetched (bool): True if the remote was actually queried.
       git_hash (Optional[str]): Pre-resolved commit hash for event_log.
+      pre_fetch_revid (Optional[str]): Pre-fetch commit hash for shallow sync.
     """
 
     success: bool
@@ -320,6 +321,7 @@ class _FetchOneResult(NamedTuple):
     finish: float
     remote_fetched: bool
     git_hash: Optional[str] = None
+    pre_fetch_revid: Optional[str] = None
 
 
 class _FetchResult(NamedTuple):
@@ -1150,6 +1152,7 @@ later is required to fix a server side protocol bug.
             finish,
             remote_fetched,
             git_hash,
+            getattr(project, "_pre_fetch_revid", None),
         )
 
     def _GetSyncProgressMessage(self):
@@ -1204,6 +1207,7 @@ later is required to fix a server side protocol bug.
                 for result in results:
                     success = result.success
                     project = projects[result.project_idx]
+                    project._pre_fetch_revid = result.pre_fetch_revid
                     start = result.start
                     finish = result.finish
                     self._fetch_times.Set(project, finish - start)
