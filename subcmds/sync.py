@@ -354,6 +354,7 @@ class _FetchOneResult(NamedTuple):
       start (float): The starting time.time().
       finish (float): The ending time.time().
       remote_fetched (bool): True if the remote was actually queried.
+      pre_fetch_revid (Optional[str]): Pre-fetch commit hash for shallow sync.
     """
 
     success: bool
@@ -362,6 +363,7 @@ class _FetchOneResult(NamedTuple):
     start: float
     finish: float
     remote_fetched: bool
+    pre_fetch_revid: Optional[str] = None
 
 
 class _FetchResult(NamedTuple):
@@ -1165,7 +1167,13 @@ later is required to fix a server side protocol bug.
 
         finish = time.time()
         return _FetchOneResult(
-            success, errors, project_idx, start, finish, remote_fetched
+            success,
+            errors,
+            project_idx,
+            start,
+            finish,
+            remote_fetched,
+            getattr(project, "_pre_fetch_revid", None),
         )
 
     def _GetSyncProgressMessage(self):
@@ -1234,6 +1242,7 @@ later is required to fix a server side protocol bug.
                 for result in results:
                     success = result.success
                     project = projects[result.project_idx]
+                    project._pre_fetch_revid = result.pre_fetch_revid
                     start = result.start
                     finish = result.finish
                     if success:
@@ -1359,10 +1368,21 @@ later is required to fix a server side protocol bug.
         Returns:
             List of all projects that should be checked out.
         """
+        pre_fetch_revids: Dict[Tuple[str, Optional[str]], str] = {}
+
+        def _record_pre_fetch_revids(projects: Iterable[Project]) -> None:
+            for project in projects:
+                revid = getattr(project, "_pre_fetch_revid", None)
+                if revid:
+                    pre_fetch_revids.setdefault(
+                        (project.gitdir, project.worktree), revid
+                    )
+
         try:
             result = self._FetchParentFirst(
                 all_projects, opt, err_event, ssh_proxy, errors
             )
+            _record_pre_fetch_revids(all_projects)
             success = result.success
             fetched = result.projects
             if not success:
@@ -1408,6 +1428,7 @@ later is required to fix a server side protocol bug.
                 result = self._FetchParentFirst(
                     missing, opt, err_event, ssh_proxy, errors
                 )
+                _record_pre_fetch_revids(missing)
                 success = result.success
                 new_fetched = result.projects
                 if not success:
@@ -1417,6 +1438,10 @@ later is required to fix a server side protocol bug.
             self._fetch_times.Save()
             self._local_sync_state.Save()
 
+        for project in all_projects:
+            project._pre_fetch_revid = pre_fetch_revids.get(
+                (project.gitdir, project.worktree)
+            )
         return _FetchMainResult(all_projects)
 
     @classmethod
