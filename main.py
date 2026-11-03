@@ -413,6 +413,7 @@ class _Repo:
             outer_manifest=outer_client.manifest,
             git_event_log=git_trace2_event_log,
         )
+        cmd.event_log.enabled = bool(gopts.event_log)
 
         Editor.globalConfig = cmd.client.globalConfig
 
@@ -588,9 +589,10 @@ class _Repo:
                         file=sys.stderr,
                     )
 
-            cmd.event_log.FinishEvent(
-                cmd_event, finish, result is None or result == 0
-            )
+            if cmd_event is not None:
+                cmd.event_log.FinishEvent(
+                    cmd_event, finish, result is None or result == 0
+                )
             git_trace2_event_log.DefParamRepoEvents(
                 cmd.manifest.manifestProject.config.DumpConfigDict()
             )
