@@ -20,6 +20,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "520985df_d7d5ce39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3151240
+      },
+      "writtenOn": "2026-11-03T23:35:12Z",
+      "side": 1,
+      "message": "Based on the comments, I don\u0027t have enough knowledge of the codebase to fix. I\u0027ll wait for the `repo` team to fix this properly.",
+      "revId": "ac9cff4ed6f0fd86f09928a9b6ba89c1a64f950c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "616018f3_cf94233b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3151240
+      },
+      "writtenOn": "2026-11-03T23:35:12Z",
+      "side": 1,
+      "message": "If I run the same repro steps as listed in b/574048485#comment1 but use `Running repo sync --no-interleaved` I don\u0027t see this issue.",
+      "parentUuid": "05ddfe24_b7863bf4",
+      "revId": "ac9cff4ed6f0fd86f09928a9b6ba89c1a64f950c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d8582750_873042d5",
         "filename": "subcmds/sync.py",
         "patchSetId": 3
