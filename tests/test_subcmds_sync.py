@@ -1028,6 +1028,7 @@ class FakeProject:
         self.UseReprojectCmd = False
         self.sync_s = False
         self.Exists = False
+        self._pre_fetch_revid: Optional[str] = None
         self.manifest = mock.MagicMock()
         self.manifest.GetProjectsWithName.return_value = [self]
         self.config = mock.MagicMock()
@@ -1308,6 +1309,60 @@ class FetchParentFirst(unittest.TestCase):
                 ("read gitlinks of", "a"),
                 ("fetch", ["a/b"]),
             ],
+        )
+
+
+class FetchMain(unittest.TestCase):
+    def test_preserves_pre_fetch_revid_across_manifest_reload(self) -> None:
+        cmd = sync.Sync()
+        cmd._fetch_times = mock.Mock()
+        cmd._local_sync_state = mock.Mock()
+
+        p_a = FakeProject("a")
+        p_b = FakeProject("b")
+
+        reloads = 0
+
+        def fake_get_projects(*_args: object, **_kwargs: object) -> List[Any]:
+            nonlocal reloads
+            reloads += 1
+            # Return fresh FakeProject instances on each manifest reload, adding
+            # a newly discovered project on the first reload.
+            return [FakeProject("a"), FakeProject("b"), FakeProject("sub")]
+
+        revids_by_path = {"a": "1" * 40, "sub": "2" * 40}
+
+        def fake_fetch_parent_first(
+            projects: List[FakeProject], *_args: object
+        ) -> sync._FetchResult:
+            for proj in projects:
+                proj._pre_fetch_revid = revids_by_path.get(proj.relpath)
+            return sync._FetchResult(True, {p.gitdir for p in projects})
+
+        opt = mock.Mock(
+            network_only=False,
+            groups="",
+            recurse_submodules=False,
+            this_manifest_only=False,
+        )
+        err_event = mock.Mock()
+        err_event.is_set.return_value = False
+
+        with mock.patch.object(cmd, "_ReloadManifest"), mock.patch.object(
+            cmd, "GetProjects", side_effect=fake_get_projects
+        ):
+            with mock.patch.object(
+                cmd, "_FetchParentFirst", side_effect=fake_fetch_parent_first
+            ):
+                res = cmd._FetchMain(
+                    opt, [], [p_a, p_b], err_event, None, mock.Mock(), []
+                )
+
+        self.assertEqual(reloads, 2)
+        by_path = {p.relpath: p._pre_fetch_revid for p in res.all_projects}
+        self.assertEqual(
+            by_path,
+            {"a": "1" * 40, "b": None, "sub": "2" * 40},
         )
 
 
