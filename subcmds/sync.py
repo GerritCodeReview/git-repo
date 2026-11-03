@@ -309,6 +309,7 @@ class _FetchOneResult(NamedTuple):
       start (float): The starting time.time().
       finish (float): The ending time.time().
       remote_fetched (bool): True if the remote was actually queried.
+      pre_fetch_revid (Optional[str]): Pre-fetch commit hash for shallow sync.
     """
 
     success: bool
@@ -317,6 +318,7 @@ class _FetchOneResult(NamedTuple):
     start: float
     finish: float
     remote_fetched: bool
+    pre_fetch_revid: Optional[str] = None
 
 
 class _FetchResult(NamedTuple):
@@ -1124,7 +1126,13 @@ later is required to fix a server side protocol bug.
 
         finish = time.time()
         return _FetchOneResult(
-            success, errors, project_idx, start, finish, remote_fetched
+            success,
+            errors,
+            project_idx,
+            start,
+            finish,
+            remote_fetched,
+            getattr(project, "_pre_fetch_revid", None),
         )
 
     def _GetSyncProgressMessage(self):
@@ -1179,6 +1187,7 @@ later is required to fix a server side protocol bug.
                 for result in results:
                     success = result.success
                     project = projects[result.project_idx]
+                    project._pre_fetch_revid = result.pre_fetch_revid
                     start = result.start
                     finish = result.finish
                     self._fetch_times.Set(project, finish - start)
