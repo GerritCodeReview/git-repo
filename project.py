@@ -29,7 +29,7 @@ import sys
 import tarfile
 import tempfile
 import time
-from typing import Any, Dict, List, NamedTuple, Optional, Tuple
+from typing import Any, Dict, List, NamedTuple, Optional, Set, Tuple
 import urllib.parse
 
 import color
@@ -169,6 +169,32 @@ def _lwrite(path, content):
 
 def not_rev(r):
     return "^" + r
+
+
+def _SameTrackedUpstream(
+    branch_merge: Optional[str], revision_expr: Optional[str]
+) -> bool:
+    """Return whether |branch_merge| tracks |revision_expr|'s upstream."""
+    if (
+        not isinstance(branch_merge, str)
+        or not isinstance(revision_expr, str)
+        or not branch_merge
+        or not revision_expr
+    ):
+        return False
+    if git_config.IsId(branch_merge) and git_config.IsId(revision_expr):
+        return True
+    norm_merge = (
+        branch_merge
+        if git_config.IsId(branch_merge) or branch_merge.startswith("refs/")
+        else git_refs.R_HEADS + branch_merge
+    )
+    norm_rev = (
+        revision_expr
+        if git_config.IsId(revision_expr) or revision_expr.startswith("refs/")
+        else git_refs.R_HEADS + revision_expr
+    )
+    return norm_merge == norm_rev
 
 
 def sq(r):
@@ -612,6 +638,7 @@ class RemoteSpec:
 class Project:
     # How long to wait before the first retry of a failed fetch.
     RETRY_SLEEP_INITIAL_SEC = 4.0
+    _pre_fetch_revid: Optional[str] = None
 
     # These objects can be shared between several working trees.
     @property
@@ -719,6 +746,7 @@ class Project:
         self.annotations = []
         self.dest_branch = dest_branch
         self.stateless_prune_needed = False
+        self._pre_fetch_revid = None
 
         # This will be filled in if a project is later identified to be the
         # project containing repo hooks.
@@ -1989,22 +2017,23 @@ class Project:
         if tags is None:
             tags = self.sync_tags
 
-        if self.clone_depth:
-            depth = self.clone_depth
-        else:
-            depth = self.manifest.manifestProject.depth
+        depth = self._GetCloneDepth()
+        has_shallow = self._HasShallow()
 
         # If the project has been manually unshallowed (e.g. via
         # `git fetch --unshallow`), don't re-shallow it during sync.
-        if depth and not is_new and not self._HasShallow():
+        if depth and not is_new and not has_shallow:
             depth = None
 
         if depth and clone_filter_for_depth:
             depth = None
             clone_filter = clone_filter_for_depth
 
+        self._pre_fetch_revid = None
         remote_fetched = False
         if use_fetch_cmd:
+            if has_shallow and not is_new:
+                self._pre_fetch_revid = self._GetPreFetchRevisionId()
             # The custom fetch command is executed unconditionally on every sync
             # because it is responsible for updating tracking refs and
             # FETCH_HEAD.
@@ -2026,7 +2055,6 @@ class Project:
                 )
         else:
             # See if we can skip the standard network fetch entirely.
-            has_shallow = self._HasShallow()
             skip_fetch = (
                 optimized_fetch
                 and git_config.IsId(self.revisionExpr)
@@ -2038,6 +2066,8 @@ class Project:
             )
 
             if not skip_fetch:
+                if has_shallow and not is_new:
+                    self._pre_fetch_revid = self._GetPreFetchRevisionId()
                 remote_fetched = True
                 try:
                     if not self._RemoteFetch(
@@ -2401,6 +2431,7 @@ class Project:
 
         # See if we can perform a fast forward merge.  This can happen if our
         # branch isn't in the exact same state as we last published.
+        is_ancestor = True
         try:
             self.work_git.merge_base(
                 "--is-ancestor", git_refs.HEAD, revid, log_as_error=False
@@ -2408,6 +2439,7 @@ class Project:
             # Skip the published logic.
             pub = False
         except error.GitError:
+            is_ancestor = False
             pub = self.WasPublished(branch.name, all_refs)
 
         if pub:
@@ -2449,9 +2481,23 @@ class Project:
 
         # Examine the local commits not in the remote.  Find the
         # last one attributed to this user, if any.
-        local_changes = self._revlist(
-            not_rev(revid), git_refs.HEAD, format="%H %ce"
-        )
+        revlist_args = [not_rev(revid), git_refs.HEAD]
+        shallow_oids: Set[str] = set()
+        if not is_ancestor and upstream_gain and self._HasShallow():
+            if (
+                self._pre_fetch_revid
+                and self._pre_fetch_revid != revid
+                and _SameTrackedUpstream(branch.merge, self.revisionExpr)
+            ):
+                revlist_args.append(not_rev(self._pre_fetch_revid))
+            shallow_oids = self._ReadShallowCommits()
+        local_changes = self._revlist(*revlist_args, format="%H %ce")
+        if shallow_oids:
+            local_changes = [
+                commit
+                for commit in local_changes
+                if commit.split(" ", 1)[0] not in shallow_oids
+            ]
         last_mine = None
         cnt_mine = 0
         for commit in local_changes:
@@ -2511,7 +2557,7 @@ class Project:
             if submodules:
                 syncbuf.later2(self, _dosubmodules, not verbose)
             syncbuf.later2(self, _docopyandlink, not verbose)
-        elif local_changes:
+        elif local_changes or not is_ancestor:
             try:
                 if reproject:
                     self._ReprojectBranch(
@@ -3284,6 +3330,45 @@ class Project:
             # There is no such persistent revision. We have to fetch it.
             return False
 
+    def _GetCloneDepth(self) -> Optional[int]:
+        """Return configured shallow clone depth for this project, or None."""
+        return self.clone_depth or self.manifest.manifestProject.depth
+
+    def _GetPreFetchRevisionId(self) -> Optional[str]:
+        """Return the checked-out branch's pre-fetch upstream commit ID."""
+        if not self.worktree or not os.path.exists(self.worktree):
+            return None
+        try:
+            cb = self.CurrentBranch
+            if not isinstance(cb, str) or not cb:
+                return None
+            branch = self.GetBranch(cb)
+            if not isinstance(branch.merge, str) or not branch.merge:
+                return None
+            local_merge = branch.LocalMerge
+            if not isinstance(local_merge, str) or not local_merge:
+                return None
+            if git_config.IsId(local_merge):
+                return local_merge
+            if self.bare_ref.is_loaded:
+                val = self.bare_ref.get(local_merge)
+                return val if isinstance(val, str) and val else None
+            resolved = self.bare_git.ResolveCommit(local_merge)
+            return resolved if isinstance(resolved, str) and resolved else None
+        except error.RepoError:
+            return None
+
+    def _ReadShallowCommits(self) -> Set[str]:
+        """Return commit OIDs listed in this project's shallow file."""
+        if not self.gitdir:
+            return set()
+        shallow_path = os.path.join(self.gitdir, "shallow")
+        try:
+            with open(shallow_path, "r", encoding="utf-8") as fd:
+                return {line.strip() for line in fd if line.strip()}
+        except OSError:
+            return set()
+
     def _HasShallow(self) -> bool:
         """Check if this project has a shallow file in its gitdir."""
         return bool(
@@ -3657,9 +3742,7 @@ class Project:
         # large binaries and disable auto GC to prevent potential hangs.
         # Check the configured depth because the `depth` argument might be None
         # if REPO_ALLOW_SHALLOW=0 converted it to a partial clone.
-        effective_depth = (
-            self.clone_depth or self.manifest.manifestProject.depth
-        )
+        effective_depth = self._GetCloneDepth()
         if effective_depth == 1 and git_command.git_require((2, 23, 0)):
             cmd.append("--no-auto-gc")
 
@@ -3916,9 +3999,7 @@ class Project:
         return ok
 
     def _ApplyCloneBundle(self, initial=False, quiet=False, verbose=False):
-        if initial and (
-            self.manifest.manifestProject.depth or self.clone_depth
-        ):
+        if initial and self._GetCloneDepth():
             return False
 
         remote = self.GetRemote()
@@ -4605,9 +4686,7 @@ class Project:
 
         # Disable auto-gc for depth=1 to prevent hangs during lazy fetches
         # inside git checkout for partial clones.
-        effective_depth = (
-            self.clone_depth or self.manifest.manifestProject.depth
-        )
+        effective_depth = self._GetCloneDepth()
         if effective_depth == 1:
             self.config.SetBoolean("maintenance.auto", False)
             self.config.SetInt("gc.auto", 0)
@@ -5979,6 +6058,20 @@ class ManifestProject(MetaProject):
         return self.config.GetInt("repo.depth")
 
     @property
+    def manifest_depth(self) -> Optional[int]:
+        """Shallow clone depth for the manifest repository."""
+        return self.config.GetInt("repo.manifestdepth")
+
+    def _GetCloneDepth(self) -> Optional[int]:
+        """Return configured shallow clone depth for this manifest project."""
+        if self.clone_depth is not None:
+            return self.clone_depth if self.clone_depth > 0 else None
+        manifest_depth = self.manifest_depth
+        if manifest_depth is not None:
+            return manifest_depth if manifest_depth > 0 else None
+        return self.depth
+
+    @property
     def clone_filter(self):
         """The clone filter."""
         return self.config.GetString("repo.clonefilter")
@@ -6067,6 +6160,7 @@ class ManifestProject(MetaProject):
             current_branch_only=current_branch_only,
             tags=tags,
             depth=mp.depth,
+            manifest_depth=mp.manifest_depth,
             git_event_log=git_event_log,
             manifest_name=spec.manifestName,
             this_manifest_only=True,
@@ -6089,6 +6183,7 @@ class ManifestProject(MetaProject):
         archive=False,
         partial_clone=None,
         depth=None,
+        manifest_depth: Optional[int] = None,
         clone_filter="blob:none",
         partial_clone_exclude=None,
         clone_bundle=None,
@@ -6128,6 +6223,8 @@ class ManifestProject(MetaProject):
                 See git-archive.
             partial_clone: a boolean, whether to perform a partial clone.
             depth: an int, how deep of a shallow clone to create.
+            manifest_depth: an int, how deep of a shallow manifest clone to
+                create (0 for full clone).
             clone_filter: a string, filter to use with partial_clone.
             partial_clone_exclude : a string, comma-delimeted list of project
                 names to exclude from partial clone.
@@ -6189,6 +6286,7 @@ class ManifestProject(MetaProject):
                 current_branch_only=current_branch_only,
                 tags=tags,
                 depth=depth,
+                manifest_depth=manifest_depth,
                 git_event_log=git_event_log,
                 manifest_name=manifest_name,
                 this_manifest_only=this_manifest_only,
@@ -6270,6 +6368,7 @@ class ManifestProject(MetaProject):
             self.config.SetString("manifest.standalone", None)
 
         self._ConfigureDepth(depth)
+        self._ConfigureManifestDepth(manifest_depth)
 
         # Set the remote URL before the remote branch as we might need it below.
         if manifest_url:
@@ -6552,6 +6651,7 @@ class ManifestProject(MetaProject):
                     current_branch_only=current_branch_only,
                     tags=tags,
                     depth=depth,
+                    manifest_depth=manifest_depth,
                     git_event_log=git_event_log,
                     manifest_name=spec.manifestName,
                     this_manifest_only=False,
@@ -6609,3 +6709,15 @@ class ManifestProject(MetaProject):
 
             # We store the depth in the main manifest project.
             self.config.SetString("repo.depth", depth)
+
+    def _ConfigureManifestDepth(self, manifest_depth: Optional[int]) -> None:
+        """Configure the shallow clone depth for the manifest repository.
+
+        Args:
+            manifest_depth: Positive depth for a shallow manifest clone, 0 for
+                an explicit full clone, negative to clear, or None to leave
+                unchanged.
+        """
+        if manifest_depth is not None:
+            value = str(manifest_depth) if manifest_depth >= 0 else None
+            self.config.SetString("repo.manifestdepth", value)

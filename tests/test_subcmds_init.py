@@ -14,7 +14,7 @@
 
 """Unittests for the subcmds/init.py module."""
 
-from typing import List
+from typing import List, Optional
 
 import pytest
 
@@ -29,6 +29,8 @@ from subcmds import init
         ["--smart-sync"],
         ["--no-smart-sync"],
         ["--head"],
+        ["--manifest-depth=0"],
+        ["--manifest-depth=1"],
     ),
 )
 def test_cli_parser_good(argv: List[str]) -> None:
@@ -36,6 +38,23 @@ def test_cli_parser_good(argv: List[str]) -> None:
     cmd = init.Init()
     opts, args = cmd.OptionParser.parse_args(argv)
     cmd.ValidateOptions(opts, args)
+
+
+@pytest.mark.parametrize(
+    "argv,expected",
+    (
+        ([], None),
+        (["--manifest-depth=0"], 0),
+        (["--manifest-depth=2"], 2),
+    ),
+)
+def test_manifest_depth_option(
+    argv: List[str], expected: Optional[int]
+) -> None:
+    """Check --manifest-depth defaults to None so re-init preserves config."""
+    cmd = init.Init()
+    opts, _ = cmd.OptionParser.parse_args(argv)
+    assert opts.manifest_depth == expected
 
 
 @pytest.mark.parametrize(
