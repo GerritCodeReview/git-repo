@@ -31,6 +31,8 @@ from subcmds import init
         ["--head"],
         ["--smart-sync-branch=git_main-warmup"],
         ["--smart-sync-branch="],
+        ["--manifest-depth=0"],
+        ["--manifest-depth=1"],
     ),
 )
 def test_cli_parser_good(argv: List[str]) -> None:
@@ -56,6 +58,23 @@ def test_cli_smart_sync_branch_value(
     opts, args = cmd.OptionParser.parse_args(argv)
     cmd.ValidateOptions(opts, args)
     assert opts.smart_sync_branch == expected
+
+
+@pytest.mark.parametrize(
+    "argv,expected",
+    (
+        ([], None),
+        (["--manifest-depth=0"], 0),
+        (["--manifest-depth=2"], 2),
+    ),
+)
+def test_manifest_depth_option(
+    argv: List[str], expected: Optional[int]
+) -> None:
+    """Check --manifest-depth defaults to None so re-init preserves config."""
+    cmd = init.Init()
+    opts, _ = cmd.OptionParser.parse_args(argv)
+    assert opts.manifest_depth == expected
 
 
 @pytest.mark.parametrize(
