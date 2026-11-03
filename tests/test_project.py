@@ -1987,6 +1987,29 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             fakeproj.config.SetString("repo.depth", "invalid_depth")
             self.assertEqual(fakeproj.depth, None)
 
+            self.assertIsNone(fakeproj.manifest_depth)
+            fakeproj._ConfigureManifestDepth(2)
+            self.assertEqual(fakeproj.manifest_depth, 2)
+            self.assertEqual(fakeproj._GetCloneDepth(), 2)
+
+            # None leaves the persisted setting untouched.
+            fakeproj._ConfigureManifestDepth(None)
+            self.assertEqual(fakeproj.manifest_depth, 2)
+
+            # 0 explicitly configures a full manifest clone even if repo.depth
+            # is set.
+            fakeproj._ConfigureDepth(5)
+            fakeproj._ConfigureManifestDepth(0)
+            self.assertEqual(fakeproj.manifest_depth, 0)
+            self.assertIsNone(fakeproj._GetCloneDepth())
+
+            # Negative values clear repo.manifestdepth so repo.depth applies.
+            fakeproj._ConfigureManifestDepth(-1)
+            self.assertIsNone(fakeproj.manifest_depth)
+            self.assertEqual(fakeproj._GetCloneDepth(), 5)
+            fakeproj._ConfigureDepth(-1)
+            self.assertIsNone(fakeproj._GetCloneDepth())
+
             fakeproj.config.SetString("repo.clonefilter", "blob:limit=10M")
             self.assertEqual(fakeproj.clone_filter, "blob:limit=10M")
 
@@ -3237,6 +3260,8 @@ class SyncOptimizationTests(unittest.TestCase):
                 os.path.join(tempdir, ".git"),
                 tempdir,
             )
+            manifest.manifestProject = proj
+            _ = proj.depth
             proj.revisionExpr = sha
             proj.upstream = None
             proj._CheckForImmutableRevision = mock.MagicMock(return_value=False)
@@ -4540,6 +4565,93 @@ class ReprojectCmdTests(unittest.TestCase):
             )
             proj._Reproject.assert_not_called()
             proj.work_git.UpdateRef.assert_not_called()
+
+    def test_sync_local_half_shallow_advance_skips_rebase_and_discard(
+        self,
+    ) -> None:
+        """Shallow tracking branches reset cleanly without rebasing old base."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_synced_project(
+                tempdir,
+                head=self.HEAD_ID,
+                branch="default",
+                upstream_gain=[self.REVID],
+            )
+            proj.manifest.manifestProject.reproject_cmd = None
+            proj.GetBranch = mock.MagicMock(
+                return_value=self._tracking_branch(name="default", merge="main")
+            )
+            proj.work_git.merge_base.side_effect = error.GitError("shallow")
+            proj.WasPublished = mock.MagicMock(return_value=None)
+            proj._HasShallow = mock.MagicMock(return_value=True)
+            proj._ReadShallowCommits = mock.MagicMock(
+                return_value={self.HEAD_ID, self.REVID}
+            )
+            proj._pre_fetch_revid = self.HEAD_ID
+
+            def _shallow_revlist(*args: Any, **kwargs: Any) -> List[str]:
+                if kwargs.get("format"):
+                    if project.not_rev(self.HEAD_ID) in args:
+                        return []
+                    return [f"{self.HEAD_ID} me@example.com"]
+                if "--count" in args:
+                    return ["1"]
+                return [self.REVID]
+
+            proj._revlist = mock.MagicMock(side_effect=_shallow_revlist)
+            syncbuf = project.SyncBuffer(proj.config)
+            syncbuf.out = io.StringIO()
+            proj.Sync_LocalHalf(syncbuf)
+
+            self.assertTrue(syncbuf.Finish())
+            self.assertNotIn("discarding", syncbuf.out.getvalue())
+            proj._Rebase.assert_not_called()
+            proj._FastForward.assert_not_called()
+            proj._ResetHard.assert_called_once_with(self.REVID)
+
+    def test_sync_local_half_shallow_rebases_only_local_commits(self) -> None:
+        """Shallow tracking branches still rebase genuine local commits."""
+        local_id = "9999999999999999999999999999999999999999"
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_synced_project(
+                tempdir,
+                head=local_id,
+                branch="topic",
+                upstream_gain=[self.REVID],
+            )
+            proj.manifest.manifestProject.reproject_cmd = None
+            proj.GetBranch = mock.MagicMock(
+                return_value=self._tracking_branch(name="topic", merge="main")
+            )
+            proj.work_git.merge_base.side_effect = error.GitError("shallow")
+            proj.WasPublished = mock.MagicMock(return_value=None)
+            proj._HasShallow = mock.MagicMock(return_value=True)
+            proj._ReadShallowCommits = mock.MagicMock(
+                return_value={self.HEAD_ID, self.REVID}
+            )
+            proj._pre_fetch_revid = self.HEAD_ID
+
+            def _shallow_revlist(*args: Any, **kwargs: Any) -> List[str]:
+                if kwargs.get("format"):
+                    if project.not_rev(self.HEAD_ID) in args:
+                        return [f"{local_id} me@example.com"]
+                    return [
+                        f"{local_id} me@example.com",
+                        f"{self.HEAD_ID} me@example.com",
+                    ]
+                if "--count" in args:
+                    return ["1"]
+                return [self.REVID]
+
+            proj._revlist = mock.MagicMock(side_effect=_shallow_revlist)
+            syncbuf = project.SyncBuffer(proj.config)
+            proj.Sync_LocalHalf(syncbuf)
+
+            self.assertTrue(syncbuf.Finish())
+            proj._Rebase.assert_called_once_with(
+                upstream=f"{local_id}^1", onto=self.REVID
+            )
+            proj._ResetHard.assert_not_called()
 
     def test_sync_local_half_rejects_a_nested_project(self) -> None:
         """Test a submodule or nested project fails before any checkout."""
