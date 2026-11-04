@@ -33,6 +33,24 @@
       "message": "calling it `--remote` seems very easy to confuse as to its purpose and how it\u0027s applied.  it seems the intention is to match `--groups` behavior as in, used to filter the set of projects to operate on.  i would name it `--filter-remote` instead to make that more clear.",
       "revId": "c91957b903c5c4c5f15109ed0c2d2cb19d39c710",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a30d141d_655df263",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3614203
+      },
+      "writtenOn": "2026-11-04T17:52:52Z",
+      "side": 1,
+      "message": "Sure. I can see how that would be confusing. I\u0027ll make that change.",
+      "parentUuid": "5c66a471_d050f214",
+      "revId": "c91957b903c5c4c5f15109ed0c2d2cb19d39c710",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
