@@ -14,6 +14,7 @@
 
 import os
 import re
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -89,8 +90,6 @@ least one of these before using this command.""",  # noqa: E501
 
             if platform_utils.isWindows():
                 # Split on spaces, respecting quoted strings
-                import shlex
-
                 args = shlex.split(editor)
                 shell = False
             elif re.compile("^.*[$ \t'].*$").match(editor):

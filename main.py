@@ -274,7 +274,9 @@ class _Repo:
             first_trace=True,
         ):
             if gopts.trace_python:
-                import trace
+                # This is a debug module that is not otherwise used, so don't
+                # import it all the time.
+                import trace  # noqa: IMR200
 
                 tracer = trace.Trace(
                     count=False,

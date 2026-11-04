@@ -19,6 +19,7 @@ import optparse
 import os
 from pathlib import Path
 import shutil
+import subprocess
 import tempfile
 import threading
 import time
@@ -3012,8 +3013,6 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         self, mock_transport_class, mock_server_class, mock_popen, mock_which
     ):
         """Test _SmartSyncSetup when a helper is present and succeeds."""
-        import subprocess
-
         self.manifest.manifest_server = (
             "persistent-https://android-smartsync.corp.google.com/"
             "manifestserver"
