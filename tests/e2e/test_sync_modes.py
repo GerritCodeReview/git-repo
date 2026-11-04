@@ -275,7 +275,49 @@ def test_force_sync(host: GitHost, client: RepoClient) -> None:
     assert client.git("foo", "status", "--porcelain") == ""
 
 
-def test_force_remove_dirty(host: GitHost, client: RepoClient) -> None:
+@pytest.mark.parametrize("mode_args", SYNC_MODES, ids=["interleaved", "phased"])
+def test_network_only_keeps_removed_project(
+    host: GitHost, client: RepoClient, mode_args: List[str]
+) -> None:
+    """`sync -n` leaves projects dropped from the manifest to `sync -l`.
+
+    Removing their checkouts and copyfiles changes the worktree, which `-n`
+    must not do.
+    """
+    host.create_repo("platform/foo", {"f": "foo"})
+    host.create_repo("platform/bar", {"f": "bar"})
+    host.create_manifest(
+        manifest_xml(
+            '<project name="platform/foo" path="foo" />',
+            '<project name="platform/bar" path="bar">'
+            '<copyfile src="f" dest="bar-copy" />'
+            "</project>",
+        )
+    )
+    client.init(host.manifest_url)
+    client.sync(*mode_args)
+    host.update_manifest(
+        manifest_xml('<project name="platform/foo" path="foo" />')
+    )
+
+    assert client.sync("-n", *mode_args).stderr == ""
+
+    assert (client.top / "bar/f").read_text() == "bar"
+    assert (client.top / "bar-copy").read_text() == "bar"
+
+    with host.watch_requests() as requests, host.offline():
+        client.sync("-l", *mode_args)
+
+    assert requests == []
+    assert not (client.top / "bar").exists()
+    assert not (client.top / "bar-copy").exists()
+    assert client.list_projects() == {"foo": "platform/foo"}
+
+
+@pytest.mark.parametrize("mode_args", SYNC_MODES, ids=["interleaved", "phased"])
+def test_force_remove_dirty(
+    host: GitHost, client: RepoClient, mode_args: List[str]
+) -> None:
     """Removed projects with uncommitted changes need `--force-remove-dirty`."""
     host.create_repo("platform/foo", {"f": "foo"})
     host.create_repo("platform/bar", {"f": "bar"})
@@ -286,7 +328,7 @@ def test_force_remove_dirty(host: GitHost, client: RepoClient) -> None:
         )
     )
     client.init(host.manifest_url)
-    client.sync()
+    client.sync(*mode_args)
     (client.top / "bar/f").write_text("dirty")
     host.update_manifest(
         manifest_xml('<project name="platform/foo" path="foo" />')
@@ -295,15 +337,21 @@ def test_force_remove_dirty(host: GitHost, client: RepoClient) -> None:
     # Repeat to check that the project stays tracked in project.list (rather
     # than forgotten & left behind) after the first failure.
     for _ in range(2):
-        result = client.sync(check=False)
+        result = client.sync(*mode_args, check=False)
         assert result.returncode != 0
+        # Logged once when removal fails and once in the final error summary:
+        # removal is not attempted (and reported) a second time in the same
+        # sync.
         assert (
-            "bar: Cannot remove project: uncommitted changes are present"
-            in result.stderr
+            result.stderr.count(
+                "bar: Cannot remove project: uncommitted changes are present"
+            )
+            == 2
         )
+        assert result.stderr.count("Updating local project lists failed") == 1
         assert (client.top / "bar/f").read_text() == "dirty"
 
-    result = client.sync("--force-remove-dirty")
+    result = client.sync("--force-remove-dirty", *mode_args)
     assert "bar: Removing dirty project" in result.stderr
     assert not (client.top / "bar").exists()
     assert client.list_projects() == {"foo": "platform/foo"}

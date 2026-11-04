@@ -245,6 +245,93 @@ def test_nested_projects(host: GitHost, client: RepoClient) -> None:
     assert (client.top / "foo/f").read_text() == "foo"
 
 
+@pytest.mark.parametrize(
+    "sync_args", [[], ["--no-interleaved"]], ids=["interleaved", "phased"]
+)
+def test_project_replaced_by_nested_project(
+    host: GitHost, client: RepoClient, sync_args: List[str]
+) -> None:
+    """Replacing a parent project with a nested child project removes parent.
+
+    Regression test for b/574048485: in interleaved mode, checking out the new
+    child project `foo/bar` before deleting the obsolete parent worktree `foo`
+    made `foo` appear dirty (`git status` in `foo` saw `foo/bar`'s files as
+    modifications and untracked files under `bar/`).
+    """
+    host.create_repo(
+        "platform/foo",
+        {
+            "root.txt": "parent",
+            "bar/shared/version.txt": "v1",
+            "bar/old-version/file.txt": "old",
+        },
+    )
+    host.create_repo(
+        "platform/foo_bar",
+        {
+            "shared/version.txt": "v2",
+            "new-version/file.txt": "new",
+        },
+    )
+    host.create_manifest(
+        manifest_xml('<project name="platform/foo" path="foo" />')
+    )
+    client.init(host.manifest_url)
+    client.sync(*sync_args)
+
+    assert (client.top / "foo/root.txt").read_text() == "parent"
+    assert (client.top / "foo/bar/shared/version.txt").read_text() == "v1"
+
+    host.update_manifest(
+        manifest_xml('<project name="platform/foo_bar" path="foo/bar" />')
+    )
+    client.sync(*sync_args)
+
+    assert client.list_projects() == {"foo/bar": "platform/foo_bar"}
+    assert (client.repodir / "project.list").read_text() == "foo/bar\n"
+    assert not (client.top / "foo/.git").exists()
+    assert not (client.top / "foo/root.txt").exists()
+    assert not (client.top / "foo/bar/old-version").exists()
+    assert (client.top / "foo/bar/shared/version.txt").read_text() == "v2"
+    assert (client.top / "foo/bar/new-version/file.txt").read_text() == "new"
+    assert client.git("foo/bar", "status", "--porcelain") == ""
+
+
+@pytest.mark.parametrize(
+    "sync_args", [[], ["--no-interleaved"]], ids=["interleaved", "phased"]
+)
+def test_nested_project_merged_into_parent(
+    host: GitHost, client: RepoClient, sync_args: List[str]
+) -> None:
+    """A nested project whose files move to its parent is removed first.
+
+    Otherwise the parent's new files clash with the removed project's
+    checkout. The reverse of test_project_replaced_by_nested_project.
+    """
+    foo = host.create_repo("platform/foo", {"f": "foo"})
+    host.create_repo("platform/bar", {"shared/version.txt": "v1"})
+    host.create_manifest(
+        manifest_xml(
+            '<project name="platform/foo" path="foo" />',
+            '<project name="platform/bar" path="foo/bar" />',
+        )
+    )
+    client.init(host.manifest_url)
+    client.sync(*sync_args)
+
+    latest = foo.commit({"bar/shared/version.txt": "v2"})
+    host.update_manifest(
+        manifest_xml('<project name="platform/foo" path="foo" />')
+    )
+    client.sync(*sync_args)
+
+    assert client.list_projects() == {"foo": "platform/foo"}
+    assert client.head("foo") == latest
+    assert not os.path.lexists(client.top / "foo/bar/.git")
+    assert (client.top / "foo/bar/shared/version.txt").read_text() == "v2"
+    assert client.git("foo", "status", "--porcelain") == ""
+
+
 def test_copyfile_linkfile(host: GitHost, client: RepoClient) -> None:
     """copyfile and linkfile are created, updated and cleaned up.
 
@@ -328,6 +415,51 @@ def test_submodules(
     for path in paths:
         assert client.head(path) == latest
         assert (client.top / path / "sub/s").read_text() == "2"
+
+
+@pytest.mark.parametrize(
+    "sync_args", [[], ["--no-interleaved"]], ids=["interleaved", "phased"]
+)
+def test_pinned_parent_keeps_unfetched_submodule(
+    host: GitHost, client: RepoClient, sync_args: List[str]
+) -> None:
+    """A sync-s parent moving to an unfetched SHA keeps its submodule."""
+    sub = host.create_repo("platform/sub", {"s": "1"})
+    host.create_repo("platform/bar", {"b": "old"})
+    gitmodules = '[submodule "sub"]\n\tpath = sub\n\turl = ../sub\n'
+    foo = host.create_repo(
+        "platform/foo",
+        {".gitmodules": gitmodules, "sub": Gitlink(sub.rev_parse("main"))},
+    )
+
+    def manifest_for(rev: str, include_bar: bool = False) -> str:
+        extra = (
+            '\n  <project name="platform/bar" path="foo/bar" />'
+            if include_bar
+            else ""
+        )
+        return manifest_xml(
+            f'<project name="platform/foo" path="foo" sync-s="true" '
+            f'revision="{rev}" />{extra}'
+        )
+
+    host.create_manifest(manifest_for(foo.rev_parse("main"), include_bar=True))
+    client.init(host.manifest_url)
+    client.sync(*sync_args)
+    (client.top / "foo/sub/s").write_text("dirty")
+
+    latest = foo.commit({"bar/b": "from-foo"})
+    host.update_manifest(manifest_for(latest))
+    client.sync("-v", *sync_args)
+
+    assert client.head("foo") == latest
+    assert (client.top / "foo/sub/s").read_text() == "dirty"
+    assert (client.top / "foo/bar/b").read_text() == "from-foo"
+    assert not (client.top / "foo/bar/.git").exists()
+    expected_sub = os.path.join("foo", "sub")
+    assert (
+        client.repodir / "project.list"
+    ).read_text() == f"foo\n{expected_sub}\n"
 
 
 # The default layout reads HEAD from the ref cache instead of GetHead().
