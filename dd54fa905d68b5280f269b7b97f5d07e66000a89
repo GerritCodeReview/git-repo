@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04c67f5b_f5e57c32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-04T18:52:19Z",
+      "side": 1,
+      "message": "please make sure `Verify git-repo CL` and `Repo Analyzer` passes, and format the commit msg",
+      "revId": "dd54fa905d68b5280f269b7b97f5d07e66000a89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
