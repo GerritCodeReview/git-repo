@@ -292,6 +292,55 @@ def _WithoutProjects(
     return [p for p in projects if p not in dropped]
 
 
+def _FlattenDeleteWorktreeError(err: DeleteWorktreeError) -> List[Exception]:
+    """Extract individual exceptions from a `DeleteWorktreeError`."""
+    flat: List[Exception] = []
+    if err.args or not err.aggregate_errors:
+        flat.append(err)
+    flat.extend(err.aggregate_errors)
+    return flat
+
+
+def _ResolveDotGit(dotgit: str) -> Optional[str]:
+    """Return the normalized resolved gitdir path for a worktree `.git`."""
+    if os.path.isfile(dotgit) and not platform_utils.islink(dotgit):
+        try:
+            with open(dotgit, encoding="utf-8", errors="replace") as fp:
+                line = fp.readline()
+        except OSError:
+            return None
+        if not line.startswith("gitdir:"):
+            return None
+        target = line.split(":", 1)[1].strip()
+        if not target:
+            return None
+        return os.path.normcase(
+            os.path.realpath(os.path.join(os.path.dirname(dotgit), target))
+        )
+    if os.path.exists(dotgit):
+        return os.path.normcase(os.path.realpath(dotgit))
+    return None
+
+
+def _UnfetchedSubmoduleGitdirPrefixes(
+    projects: List[Project], norm_obsolete: List[str]
+) -> Tuple[str, ...]:
+    """Return submodule gitdir prefixes for `sync-s` parents not yet fetched."""
+    prefixes: List[str] = []
+    for p in projects:
+        if not (p.relpath and p.sync_s and p.Exists):
+            continue
+        norm_relpath = p.relpath.replace("\\", "/")
+        prefix = "" if norm_relpath == "." else f"{norm_relpath}/"
+        if (
+            not prefix or any(c.startswith(prefix) for c in norm_obsolete)
+        ) and p.GetSubmoduleRevisions() is None:
+            parent_gitdir = os.path.normcase(os.path.realpath(p.gitdir))
+            for sub in ("modules", "subprojects"):
+                prefixes.append(os.path.join(parent_gitdir, sub) + os.sep)
+    return tuple(prefixes)
+
+
 def _chunksize(projects: int, jobs: int) -> int:
     """Calculate chunk size for the given number of projects and jobs."""
     return min(max(1, projects // jobs), WORKER_BATCH_SIZE)
@@ -1874,7 +1923,12 @@ later is required to fix a server side protocol bug.
         else:
             manifest.Unload()
 
-    def UpdateProjectList(self, opt, manifest):
+    def UpdateProjectList(
+        self,
+        opt: optparse.Values,
+        manifest: manifest_xml.XmlManifest,
+        skip_paths: Optional[Set[str]] = None,
+    ) -> int:
         """Update the cached projects list for |manifest|
 
         In a multi-manifest checkout, each manifest has its own project.list.
@@ -1882,32 +1936,74 @@ later is required to fix a server side protocol bug.
         Args:
             opt: Program options returned from optparse.  See _Options().
             manifest: The manifest to use.
+            skip_paths: Obsolete relpaths that already failed removal in an
+                earlier pass of the same sync and should be retained without
+                retrying `DeleteWorktree`; newly failed paths are added to it.
 
         Returns:
-            0: success
-            1: failure
+            0 on success.
+
+        Raises:
+            DeleteWorktreeError: If one or more obsolete worktrees failed to be
+                removed.
         """
-        new_project_paths = []
-        for project in self.GetProjects(
+        projects = self.GetProjects(
             None, missing_ok=True, manifest=manifest, all_manifests=False
-        ):
-            if project.relpath:
-                new_project_paths.append(project.relpath)
+        )
+        new_project_paths: Set[str] = {p.relpath for p in projects if p.relpath}
         file_name = "project.list"
         file_path = os.path.join(manifest.subdir, file_name)
-        old_project_paths = []
+        delete_errors: List[DeleteWorktreeError] = []
 
         if os.path.exists(file_path):
             with open(file_path) as fd:
                 old_project_paths = fd.read().split("\n")
             # In reversed order, so subfolders are deleted before parent folder.
-            for path in sorted(old_project_paths, reverse=True):
-                if not path:
-                    continue
-                if path not in new_project_paths:
+            obsolete_paths = sorted(
+                (
+                    p
+                    for p in set(old_project_paths)
+                    if p and p not in new_project_paths
+                ),
+                key=lambda p: p.replace("\\", "/").split("/"),
+                reverse=True,
+            )
+            if obsolete_paths:
+                # Submodules are derived from their parent's revision, which
+                # may not be fetched yet (e.g. a new pinned SHA before
+                # interleaved sync). Keep existing submodule checkouts under
+                # such parents until a post-fetch update can tell whether they
+                # were removed.
+                norm_obsolete = [p.replace("\\", "/") for p in obsolete_paths]
+                unresolved_gitdir_prefixes = _UnfetchedSubmoduleGitdirPrefixes(
+                    projects, norm_obsolete
+                )
+
+                retained_obsolete: List[str] = []
+                for path, norm_path in zip(obsolete_paths, norm_obsolete):
+                    gitdir = os.path.join(manifest.topdir, path, ".git")
+                    norm_prefix = "" if norm_path == "." else f"{norm_path}/"
+                    is_retained_ancestor = any(
+                        not norm_prefix or r.startswith(norm_prefix)
+                        for r in retained_obsolete
+                    )
+                    is_unresolved_submodule = bool(
+                        unresolved_gitdir_prefixes
+                        and (_ResolveDotGit(gitdir) or "").startswith(
+                            unresolved_gitdir_prefixes
+                        )
+                    )
+                    if is_unresolved_submodule:
+                        new_project_paths.add(path)
+                        continue
+                    if (
+                        skip_paths and path in skip_paths
+                    ) or is_retained_ancestor:
+                        new_project_paths.add(path)
+                        retained_obsolete.append(norm_path)
+                        continue
                     # If the path has already been deleted, we don't need to do
                     # it.
-                    gitdir = os.path.join(manifest.topdir, path, ".git")
                     if os.path.exists(gitdir):
                         project = Project(
                             manifest=manifest,
@@ -1922,14 +2018,31 @@ later is required to fix a server side protocol bug.
                             revisionId=None,
                             groups=None,
                         )
-                        project.DeleteWorktree(
-                            verbose=opt.verbose, force=opt.force_remove_dirty
-                        )
+                        try:
+                            project.DeleteWorktree(
+                                verbose=opt.verbose,
+                                force=opt.force_remove_dirty,
+                            )
+                        except DeleteWorktreeError as e:
+                            new_project_paths.add(path)
+                            retained_obsolete.append(norm_path)
+                            if skip_paths is not None:
+                                skip_paths.add(path)
+                            delete_errors.append(e)
 
-        new_project_paths.sort()
         with open(file_path, "w") as fd:
-            fd.write("\n".join(new_project_paths))
+            fd.write("\n".join(sorted(new_project_paths)))
             fd.write("\n")
+        if len(delete_errors) == 1:
+            raise delete_errors[0]
+        if delete_errors:
+            raise DeleteWorktreeError(
+                aggregate_errors=[
+                    err
+                    for e in delete_errors
+                    for err in _FlattenDeleteWorktreeError(e)
+                ]
+            )
         return 0
 
     def UpdateCopyLinkfileList(self, manifest):
@@ -2835,6 +2948,92 @@ later is required to fix a server side protocol bug.
 
         return _threading.Thread(target=_monitor_loop, daemon=True)
 
+    def _UpdateProjectLists(
+        self,
+        opt: optparse.Values,
+        err_event: multiprocessing.Event,
+        errors: List[Exception],
+        skip_by_manifest: Optional[Dict[str, Set[str]]] = None,
+    ) -> bool:
+        """Updates project lists for all manifests.
+
+        This removes the worktrees of projects no longer in the manifests.
+
+        Args:
+            opt: Program options from optparse.
+            err_event: An event to set if any error occurs.
+            errors: A list to append any encountered exceptions to.
+            skip_by_manifest: Optional mapping from `manifest.subdir` to
+                obsolete relpaths that already failed removal in an earlier
+                pass and should not be retried.
+
+        Returns:
+            True if an error occurred while updating project lists.
+        """
+        if opt.network_only:
+            return False
+
+        err_update_projects = False
+        for m in self.ManifestList(opt):
+            if m.IsMirror or m.IsArchive:
+                continue
+
+            skip = (
+                skip_by_manifest.setdefault(m.subdir, set())
+                if skip_by_manifest is not None
+                else None
+            )
+            try:
+                self.UpdateProjectList(opt, m, skip_paths=skip)
+            except Exception as e:
+                err_event.set()
+                err_update_projects = True
+                if isinstance(e, DeleteWorktreeError):
+                    errors.extend(_FlattenDeleteWorktreeError(e))
+                else:
+                    errors.append(e)
+                if opt.fail_fast:
+                    logger.error("error: Local checkouts *not* updated.")
+                    raise SyncFailFastError(aggregate_errors=errors)
+        return err_update_projects
+
+    def _UpdateCopyLinkfileLists(
+        self,
+        opt: optparse.Values,
+        err_event: multiprocessing.Event,
+        errors: List[Exception],
+    ) -> bool:
+        """Updates copy/link files for all manifests.
+
+        Args:
+            opt: Program options from optparse.
+            err_event: An event to set if any error occurs.
+            errors: A list to append any encountered exceptions to.
+
+        Returns:
+            True if an error occurred while updating copy/link files.
+        """
+        if opt.network_only:
+            return False
+
+        err_update_linkfiles = False
+        for m in self.ManifestList(opt):
+            if m.IsMirror or m.IsArchive:
+                continue
+
+            try:
+                self.UpdateCopyLinkfileList(m)
+            except Exception as e:
+                err_event.set()
+                err_update_linkfiles = True
+                errors.append(e)
+                if opt.fail_fast:
+                    logger.error(
+                        "error: Local update copyfile or linkfile failed."
+                    )
+                    raise SyncFailFastError(aggregate_errors=errors)
+        return err_update_linkfiles
+
     def _UpdateManifestLists(
         self,
         opt: optparse.Values,
@@ -2852,35 +3051,10 @@ later is required to fix a server side protocol bug.
             A tuple (err_update_projects, err_update_linkfiles) indicating
                 an error for each task.
         """
-        err_update_projects = False
-        err_update_linkfiles = False
-        for m in self.ManifestList(opt):
-            if m.IsMirror or m.IsArchive:
-                continue
-
-            try:
-                self.UpdateProjectList(opt, m)
-            except Exception as e:
-                err_event.set()
-                err_update_projects = True
-                errors.append(e)
-                if isinstance(e, DeleteWorktreeError):
-                    errors.extend(e.aggregate_errors)
-                if opt.fail_fast:
-                    logger.error("error: Local checkouts *not* updated.")
-                    raise SyncFailFastError(aggregate_errors=errors)
-
-            try:
-                self.UpdateCopyLinkfileList(m)
-            except Exception as e:
-                err_event.set()
-                err_update_linkfiles = True
-                errors.append(e)
-                if opt.fail_fast:
-                    logger.error(
-                        "error: Local update copyfile or linkfile failed."
-                    )
-                    raise SyncFailFastError(aggregate_errors=errors)
+        err_update_projects = self._UpdateProjectLists(opt, err_event, errors)
+        err_update_linkfiles = self._UpdateCopyLinkfileLists(
+            opt, err_event, errors
+        )
         return err_update_projects, err_update_linkfiles
 
     def _ReportErrors(
@@ -3272,11 +3446,16 @@ later is required to fix a server side protocol bug.
         checkout operations back-to-back. These independent tasks are run in
         parallel.
 
-        It respects two constraints for correctness:
+        It respects three constraints for correctness:
         1.  Projects in nested directories (e.g. 'foo' and 'foo/bar') are
             processed in hierarchical order.
         2.  Projects that share git objects are processed serially to prevent
             race conditions.
+        3.  Projects removed from the manifest are deleted before syncing
+            begins, as a new project may be nested inside an obsolete worktree
+            (e.g. 'foo/bar' replacing 'foo'). Project lists are updated again
+            after syncing to remove derived submodules dropped when reloading
+            the manifest.
         """
         # Temporary state for tracking errors in interleaved mode.
         self._interleaved_err_network = False
@@ -3289,6 +3468,10 @@ later is required to fix a server side protocol bug.
         _RelPath = lambda p: p.RelPath(local=opt.this_manifest_only)
 
         err_event = multiprocessing.Event()
+        skip_by_manifest: Dict[str, Set[str]] = {}
+        err_update_projects = self._UpdateProjectLists(
+            opt, err_event, errors, skip_by_manifest
+        )
         finished_relpaths = set()
         project_list = list(all_projects)
         pm = progress.Progress(
@@ -3432,7 +3615,15 @@ later is required to fix a server side protocol bug.
 
         pm.end()
 
-        err_update_projects, err_update_linkfiles = self._UpdateManifestLists(
+        # Derived submodules discovered or dropped when the manifest was
+        # reloaded during syncing are only known now. Pass |skip_by_manifest|
+        # so obsolete worktrees that already failed removal pre-sync are not
+        # reported twice.
+        err_update_projects = (
+            self._UpdateProjectLists(opt, err_event, errors, skip_by_manifest)
+            or err_update_projects
+        )
+        err_update_linkfiles = self._UpdateCopyLinkfileLists(
             opt, err_event, errors
         )
         if not self.outer_client.manifest.IsArchive:
