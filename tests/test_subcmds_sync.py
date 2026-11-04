@@ -22,7 +22,7 @@ import shutil
 import tempfile
 import threading
 import time
-from typing import Any, Dict, Iterator, List, Optional, Tuple, Type
+from typing import Any, Dict, Iterator, List, Optional, Set, Tuple, Type
 import unittest
 from unittest import mock
 import xmlrpc.client
@@ -971,6 +971,7 @@ class FakeProject:
         self.path_prefix = path_prefix
         self.name = name or relpath
         self.objdir = objdir or relpath
+        self.gitdir = self.objdir
         self.worktree = relpath
         self.parent = parent
         self.is_derived = is_derived
@@ -980,6 +981,8 @@ class FakeProject:
         self.use_git_worktrees = False
         self.UseAlternates = False
         self.UseReprojectCmd = False
+        self.sync_s = False
+        self.Exists = False
         self.manifest = mock.MagicMock()
         self.manifest.GetProjectsWithName.return_value = [self]
         self.config = mock.MagicMock()
@@ -2380,10 +2383,6 @@ class InterleavedSyncTest(unittest.TestCase):
         |initial_projects| make up the first pass, |reloaded_projects| every
         later one, the way reloading the manifest between passes does.
         """
-        mock.patch.object(
-            self.cmd, "GetProjects", return_value=reloaded_projects
-        ).start()
-        mock.patch.object(self.cmd, "event_log").start()
 
         def execute_side_effect(
             jobs: int,
@@ -2394,11 +2393,13 @@ class InterleavedSyncTest(unittest.TestCase):
             results = [target(item) for item in work_items]
             return kwargs["callback"](None, kwargs["output"], results)
 
-        mock.patch.object(
+        with mock.patch.object(
+            self.cmd, "GetProjects", return_value=reloaded_projects
+        ), mock.patch.object(self.cmd, "event_log"), mock.patch.object(
             self.cmd, "ExecuteInParallel", side_effect=execute_side_effect
-        ).start()
-
-        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+        ), mock.patch(
+            "subcmds.sync.SyncBuffer"
+        ) as mock_sync_buffer:
             mock_sync_buffer.return_value.Finish.return_value = True
             mock_sync_buffer.return_value.errors = []
             self.cmd._SyncInterleaved(
@@ -2448,6 +2449,118 @@ class InterleavedSyncTest(unittest.TestCase):
         self.assertEqual(
             self.cmd._interleaved_err_checkout_results, ["sub/foo"]
         )
+
+    def test_interleaved_updates_project_list_before_and_after_checkout(
+        self,
+    ) -> None:
+        """Test UpdateProjectList runs before checkout and again after sync."""
+        self.manifest.IsMirror = False
+        self.manifest.all_children = []
+        events: List[str] = []
+
+        for extra_args, expected_events in (
+            (
+                [],
+                [
+                    "update_projects",
+                    "checkout",
+                    "update_projects",
+                    "update_linkfiles",
+                ],
+            ),
+            (["--network-only"], []),
+        ):
+            with self.subTest(extra_args=extra_args):
+                events.clear()
+                opt = self._get_opts(["--interleaved", "-j1", *extra_args])
+                proj = self._make_syncable(FakeProject("foo/bar", objdir="a"))
+
+                proj.Sync_LocalHalf.side_effect = (
+                    lambda *a, **kw: events.append("checkout")
+                )
+                with mock.patch.object(
+                    self.cmd,
+                    "UpdateProjectList",
+                    side_effect=lambda *a, **kw: events.append(
+                        "update_projects"
+                    ),
+                ), mock.patch.object(
+                    self.cmd,
+                    "UpdateCopyLinkfileList",
+                    side_effect=lambda *a, **kw: events.append(
+                        "update_linkfiles"
+                    ),
+                ):
+                    self._run_interleaved(opt, [proj], [proj])
+
+                self.assertEqual(events, expected_events)
+
+    def test_interleaved_update_project_list_failure_not_duplicated(
+        self,
+    ) -> None:
+        """Test pre-sync UpdateProjectList failure is not repeated post-sync."""
+        self.manifest.IsMirror = False
+        self.manifest.all_children = []
+        self.cmd.git_event_log = mock.MagicMock()
+        delete_err = sync.DeleteWorktreeError("dirty", project="old")
+
+        for (
+            fail_fast,
+            side_effects,
+            expected_exc,
+            expected_calls,
+            expect_checkout,
+        ) in (
+            (False, [delete_err, 0], error.SyncError, 2, True),
+            (True, [delete_err], sync.SyncFailFastError, 1, False),
+            (False, [0, delete_err], error.SyncError, 2, True),
+        ):
+            with self.subTest(
+                fail_fast=fail_fast, side_effects=len(side_effects)
+            ):
+                args = ["--interleaved", "-j1"]
+                if fail_fast:
+                    args.append("--fail-fast")
+                opt = self._get_opts(args)
+                proj = self._make_syncable(FakeProject("foo", objdir="a"))
+
+                with mock.patch.object(
+                    self.cmd,
+                    "UpdateProjectList",
+                    side_effect=side_effects,
+                ) as mock_update_projects, mock.patch.object(
+                    self.cmd, "UpdateCopyLinkfileList"
+                ) as mock_update_linkfiles, self.assertLogs(
+                    sync.logger, "ERROR"
+                ) as logs:
+                    with self.assertRaises(expected_exc) as ctx:
+                        self._run_interleaved(opt, [proj], [proj])
+
+                self.assertEqual(
+                    mock_update_projects.call_count, expected_calls
+                )
+                self.assertEqual(ctx.exception.aggregate_errors, [delete_err])
+                if expect_checkout:
+                    self.assertIs(
+                        mock_update_projects.call_args_list[0].kwargs[
+                            "skip_paths"
+                        ],
+                        mock_update_projects.call_args_list[1].kwargs[
+                            "skip_paths"
+                        ],
+                    )
+                    proj.Sync_LocalHalf.assert_called_once()
+                    mock_update_linkfiles.assert_called_once_with(self.manifest)
+                    self.assertTrue(
+                        any(
+                            "Updating local project lists failed." in line
+                            for line in logs.output
+                        )
+                    )
+                else:
+                    proj.Sync_NetworkHalf.assert_not_called()
+                    proj.Sync_LocalHalf.assert_not_called()
+                    mock_update_linkfiles.assert_not_called()
 
     def test_interleaved_shared_objdir_serial(self):
         """Test that projects with shared objdir are processed serially."""
@@ -2683,6 +2796,237 @@ class InterleavedSyncTest(unittest.TestCase):
         self.assertTrue(result.checkout_success)
         project.Sync_NetworkHalf.assert_called_once()
         project.Sync_LocalHalf.assert_not_called()
+
+
+def _setup_update_project_list_cmd(
+    topdir: Path,
+) -> Tuple[sync.Sync, optparse.Values, mock.MagicMock, Path]:
+    """Create a `Sync` instance and `.repo` dir for `UpdateProjectList`."""
+    repodir = topdir / ".repo"
+    repodir.mkdir(exist_ok=True)
+    manifest = mock.MagicMock(topdir=str(topdir), subdir=str(repodir))
+    cmd = sync.Sync(manifest=manifest)
+    opt = mock.Mock(verbose=False, force_remove_dirty=False)
+    return cmd, opt, manifest, repodir / "project.list"
+
+
+def _create_submodule_gitdir(
+    topdir: Path, relpath: str, parent_gitdir: str, sub_name: str = "sub"
+) -> None:
+    """Create a submodule `.git` file pointing into `parent_gitdir/modules`."""
+    worktree = os.path.join(str(topdir), relpath)
+    os.makedirs(worktree, exist_ok=True)
+    mod_gitdir = os.path.join(parent_gitdir, "modules", sub_name)
+    os.makedirs(mod_gitdir, exist_ok=True)
+    with open(os.path.join(worktree, ".git"), "w") as f:
+        f.write(f"gitdir: {os.path.relpath(mod_gitdir, worktree)}\n")
+
+
+@pytest.mark.parametrize(
+    "kind, content, expect_resolved",
+    [
+        ("gitfile", b"gitdir: ../modules/sub\n", True),
+        ("dir", None, True),
+        ("symlink", None, True),
+        ("no_prefix", b"not-a-gitdir\n", False),
+        ("empty_target", b"gitdir:   \n", False),
+        ("invalid_utf8", b"\xff\xfe\x00", False),
+        ("missing", None, False),
+    ],
+)
+def test_resolve_dotgit(
+    tmp_path: Path,
+    kind: str,
+    content: Optional[bytes],
+    expect_resolved: bool,
+) -> None:
+    """`_ResolveDotGit` resolves valid `.git` entries and rejects bad ones."""
+    worktree = tmp_path / "work"
+    worktree.mkdir()
+    dotgit = worktree / ".git"
+    target = tmp_path / "modules" / "sub"
+    target.mkdir(parents=True)
+
+    if kind == "dir":
+        dotgit.mkdir()
+        expected = os.path.normcase(os.path.realpath(str(dotgit)))
+    elif kind == "symlink":
+        dotgit.symlink_to(target)
+        expected = os.path.normcase(os.path.realpath(str(target)))
+    elif content is not None:
+        dotgit.write_bytes(content)
+        expected = os.path.normcase(os.path.realpath(str(target)))
+    else:
+        expected = None
+
+    assert sync._ResolveDotGit(str(dotgit)) == (
+        expected if expect_resolved else None
+    )
+
+
+@pytest.mark.parametrize(
+    "initial_list, submodule_revs, expect_rev_call, expect_deleted, "
+    "expected_list",
+    [
+        ("foo\nfoo/sub\n", None, True, [], "foo\nfoo/sub\n"),
+        ("foo\nfoo\\sub\n", None, True, [], "foo\nfoo\\sub\n"),
+        (
+            "foo\nfoo/sub\nfoo/standalone\n",
+            None,
+            True,
+            ["foo/standalone"],
+            "foo\nfoo/sub\n",
+        ),
+        ("foo\nfoo/sub\n", {}, True, ["foo/sub"], "foo\n"),
+        ("foo\n", None, False, [], "foo\n"),
+    ],
+)
+def test_update_project_list_retains_unfetched_sync_s_submodules(
+    tmp_path: Path,
+    initial_list: str,
+    submodule_revs: Optional[Dict[str, str]],
+    expect_rev_call: bool,
+    expect_deleted: List[str],
+    expected_list: str,
+) -> None:
+    """Submodules under a sync-s parent with unfetched revision are kept."""
+    cmd, opt, manifest, project_list_path = _setup_update_project_list_cmd(
+        tmp_path
+    )
+    parent = FakeProject("foo")
+    parent.gitdir = os.path.join(manifest.subdir, "projects", "foo.git")
+    parent.sync_s = True
+    parent.Exists = True
+    parent.GetSubmoduleRevisions = mock.Mock(return_value=submodule_revs)
+
+    for relpath in ("foo", "foo/standalone"):
+        os.makedirs(os.path.join(str(tmp_path), relpath, ".git"), exist_ok=True)
+    _create_submodule_gitdir(tmp_path, "foo/sub", parent.gitdir)
+    _create_submodule_gitdir(tmp_path, "foo\\sub", parent.gitdir)
+    project_list_path.write_text(initial_list)
+
+    deleted: List[str] = []
+    with mock.patch.object(
+        cmd, "GetProjects", return_value=[parent]
+    ), mock.patch.object(
+        sync.Project,
+        "DeleteWorktree",
+        autospec=True,
+        side_effect=lambda proj, **kw: deleted.append(proj.relpath),
+    ):
+        cmd.UpdateProjectList(opt, manifest)
+
+    assert parent.GetSubmoduleRevisions.called == expect_rev_call
+    assert deleted == expect_deleted
+    assert project_list_path.read_text() == expected_list
+
+
+@pytest.mark.parametrize(
+    "failing_kind, failing_paths, retained_extra",
+    [
+        ("dirty", ["dirty_z"], []),
+        ("os_error", ["dirty_z"], []),
+        ("mixed", ["dirty_b", "dirty_z"], []),
+        ("dirty_child", ["foo/bar"], ["foo"]),
+        ("dirty_mixed_sep_child", ["foo/a/b"], ["foo\\a", "foo"]),
+    ],
+)
+def test_update_project_list_continues_past_delete_worktree_failure(
+    tmp_path: Path,
+    failing_kind: str,
+    failing_paths: List[str],
+    retained_extra: List[str],
+) -> None:
+    """Failed removed projects stay in project.list while clean ones go."""
+    cmd, opt, manifest, project_list_path = _setup_update_project_list_cmd(
+        tmp_path
+    )
+    obsolete = (
+        "clean_a",
+        "dirty_b",
+        "dirty_z",
+        "foo",
+        "foo\\a",
+        "foo/a/b",
+        "foo/bar",
+    )
+    for path in obsolete:
+        os.makedirs(os.path.join(str(tmp_path), path, ".git"), exist_ok=True)
+    project_list_path.write_text("\n".join([*obsolete, "keep"]) + "\n")
+
+    perm_err = PermissionError("busy")
+    wrapped_os_err = sync.DeleteWorktreeError(aggregate_errors=[perm_err])
+    active_errors: Dict[str, sync.DeleteWorktreeError] = {}
+    expected_flat: List[Exception] = []
+    for path in sorted(
+        failing_paths,
+        key=lambda p: p.replace("\\", "/").split("/"),
+        reverse=True,
+    ):
+        if failing_kind == "os_error" or (
+            failing_kind == "mixed" and path == "dirty_b"
+        ):
+            active_errors[path] = wrapped_os_err
+            expected_flat.append(perm_err)
+        else:
+            err = sync.DeleteWorktreeError(f"dirty: {path}", project=path)
+            active_errors[path] = err
+            expected_flat.append(err)
+
+    deleted: List[str] = []
+
+    def fake_delete(proj: sync.Project, **_kw: object) -> None:
+        if proj.relpath in active_errors:
+            raise active_errors[proj.relpath]
+        deleted.append(proj.relpath)
+
+    retained = {*failing_paths, *retained_extra}
+    skip_paths: Set[str] = set()
+    keep = FakeProject("keep")
+    with mock.patch.object(
+        cmd, "GetProjects", return_value=[keep]
+    ), mock.patch.object(
+        sync.Project,
+        "DeleteWorktree",
+        autospec=True,
+        side_effect=fake_delete,
+    ):
+        with pytest.raises(sync.DeleteWorktreeError) as exc_info:
+            cmd.UpdateProjectList(opt, manifest, skip_paths=skip_paths)
+
+    expected_order = sorted(
+        obsolete,
+        key=lambda p: p.replace("\\", "/").split("/"),
+        reverse=True,
+    )
+    assert deleted == [p for p in expected_order if p not in retained]
+    assert skip_paths == set(failing_paths)
+    assert (
+        project_list_path.read_text()
+        == "\n".join(sorted([*retained, "keep"])) + "\n"
+    )
+    assert sync._FlattenDeleteWorktreeError(exc_info.value) == expected_flat
+
+    # A second pass with the same skip_paths retains the failed worktrees (and
+    # any ancestors) without retrying DeleteWorktree while recording newly
+    # added projects.
+    deleted.clear()
+    new_sub = FakeProject("new_sub")
+    with mock.patch.object(
+        cmd, "GetProjects", return_value=[keep, new_sub]
+    ), mock.patch.object(
+        sync.Project,
+        "DeleteWorktree",
+        autospec=True,
+        side_effect=fake_delete,
+    ):
+        cmd.UpdateProjectList(opt, manifest, skip_paths=skip_paths)
+
+    assert deleted == []
+    assert (
+        project_list_path.read_text()
+        == "\n".join(sorted([*retained, "keep", "new_sub"])) + "\n"
+    )
 
 
 class UpdateCopyLinkfileListTest(unittest.TestCase):
