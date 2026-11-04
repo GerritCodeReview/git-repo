@@ -857,18 +857,6 @@ later is required to fix a server side protocol bug.
         )
         RepoHook.AddOptionGroup(p, "post-sync")
 
-    def _GetBranch(self, manifest_project):
-        """Returns the branch name for getting the approved smartsync manifest.
-
-        Args:
-            manifest_project: The manifestProject to query.
-        """
-        b = manifest_project.GetBranch(manifest_project.CurrentBranch)
-        branch = b.merge
-        if branch.startswith(git_refs.R_HEADS):
-            branch = branch[len(git_refs.R_HEADS) :]
-        return branch
-
     @classmethod
     def _GetCurrentBranchOnly(cls, opt, manifest):
         """Returns whether current-branch or use-superproject options are
@@ -2162,45 +2150,56 @@ later is required to fix a server side protocol bug.
                 "manifest"
             )
 
+        # Changes in behavior should update docs/smart-sync.md accordingly.
+        branch = None
+        target = None
+        if opt.smart_sync:
+            # SYNC_BRANCH overrides the branch sent to the manifest server
+            # (e.g. to select a specific CI branch that builds the same
+            # manifest branch). An empty value is treated as unset.
+            branch = os.environ.get("SYNC_BRANCH") or (
+                manifest.manifestProject.GetMergeBranch(heads_only=True)
+            )
+            # Fail before running the helper or contacting the server.
+            if not branch:
+                raise SmartSyncError(
+                    "error: cannot smart sync: the manifest checkout is not "
+                    "tracking a remote branch; run `repo init -b <branch>` "
+                    "or set SYNC_BRANCH to fix"
+                )
+
+            if "SYNC_TARGET" in os.environ:
+                target = os.environ["SYNC_TARGET"]
+            elif (
+                "TARGET_PRODUCT" in os.environ
+                and "TARGET_BUILD_VARIANT" in os.environ
+                and "TARGET_RELEASE" in os.environ
+            ):
+                target = (
+                    f"{os.environ['TARGET_PRODUCT']}-"
+                    f"{os.environ['TARGET_RELEASE']}-"
+                    f"{os.environ['TARGET_BUILD_VARIANT']}"
+                )
+            elif (
+                "TARGET_PRODUCT" in os.environ
+                and "TARGET_BUILD_VARIANT" in os.environ
+            ):
+                target = (
+                    f"{os.environ['TARGET_PRODUCT']}-"
+                    f"{os.environ['TARGET_BUILD_VARIANT']}"
+                )
+
         if not opt.quiet:
-            print("Using manifest server %s" % manifest.manifest_server)
+            print(f"Using manifest server {manifest.manifest_server}")
 
         server_url, transport = self._ResolveManifestServerTransport(
             opt, manifest
         )
 
-        # Changes in behavior should update docs/smart-sync.md accordingly.
         try:
             server = xmlrpc.client.Server(server_url, transport=transport)
             if opt.smart_sync:
-                # SYNC_BRANCH overrides the branch sent to the manifest server
-                # (e.g. to select a specific CI branch that builds the same
-                # manifest branch). An empty value is treated as unset.
-                branch = os.environ.get("SYNC_BRANCH")
-                if not branch:
-                    branch = self._GetBranch(manifest.manifestProject)
-                target = None
-                if "SYNC_TARGET" in os.environ:
-                    target = os.environ["SYNC_TARGET"]
-                elif (
-                    "TARGET_PRODUCT" in os.environ
-                    and "TARGET_BUILD_VARIANT" in os.environ
-                    and "TARGET_RELEASE" in os.environ
-                ):
-                    target = "%s-%s-%s" % (
-                        os.environ["TARGET_PRODUCT"],
-                        os.environ["TARGET_RELEASE"],
-                        os.environ["TARGET_BUILD_VARIANT"],
-                    )
-                elif (
-                    "TARGET_PRODUCT" in os.environ
-                    and "TARGET_BUILD_VARIANT" in os.environ
-                ):
-                    target = "%s-%s" % (
-                        os.environ["TARGET_PRODUCT"],
-                        os.environ["TARGET_BUILD_VARIANT"],
-                    )
-
+                assert branch is not None
                 success, manifest_str = _GetApprovedManifest(
                     server, branch, target, best_effort
                 )

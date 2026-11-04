@@ -1205,11 +1205,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 self.manifestFile = override
 
             try:
-                m = self.manifestProject
-                b = m.GetBranch(m.CurrentBranch).merge
-                if b is not None and b.startswith(git_refs.R_HEADS):
-                    b = b[len(git_refs.R_HEADS) :]
-                self.branch = b
+                self.branch = self.manifestProject.GetMergeBranch()
 
                 parent_groups = self.parent_groups.copy()
                 if self.path_prefix:

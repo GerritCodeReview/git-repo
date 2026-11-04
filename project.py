@@ -5563,6 +5563,24 @@ class RepoProject(MetaProject):
 class ManifestProject(MetaProject):
     """The MetaProject for manifests."""
 
+    def GetMergeBranch(self, heads_only: bool = False) -> Optional[str]:
+        """Return the upstream merge ref of the current branch.
+
+        The `refs/heads/` prefix is stripped when present.
+
+        Args:
+            heads_only: If True, return None unless the upstream merge ref is
+                under `refs/heads/` (i.e. tracking a remote branch rather than
+                pinned to a tag or commit via `repo init -b`).
+        """
+        current_branch = self.CurrentBranch
+        if not current_branch:
+            return None
+        merge = self.GetBranch(current_branch).merge or ""
+        if merge.startswith(git_refs.R_HEADS):
+            return merge[len(git_refs.R_HEADS) :] or None
+        return None if heads_only else (merge or None)
+
     def MetaBranchSwitch(self, submodules=False, verbose=False):
         """Prepare for manifest branch switch."""
 

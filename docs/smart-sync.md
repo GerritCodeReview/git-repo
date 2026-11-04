@@ -200,9 +200,10 @@ following precedence order (highest to lowest):
 Running `repo init --no-smart-sync` (or `repo init --head`) disables default
 Smart Sync for the checkout even when enabled by the user setting or manifest.
 As with the [manifest setting](#sync-smartsync-manifest-attribute), a
-checkout-enabled default Smart Sync falls back to a regular ToT sync if the
-manifest does not define a `<manifest-server>` or the manifest server cannot
-provide a usable manifest.
+checkout-enabled default Smart Sync falls back to a regular ToT sync if Smart
+Sync fails (e.g. the manifest checkout is not tracking a remote branch,
+`<manifest-server>` is not defined, or the server cannot provide a usable
+manifest).
 
 ### sync-smartsync (Manifest Attribute)
 
@@ -215,16 +216,17 @@ by setting `sync-smartsync="true"` on the `<default>` element:
 
 When enabled in the manifest, `repo sync` will automatically perform a Smart
 Sync unless explicitly overridden on the command line. Since the user did not
-ask for a Smart Sync, any failure to obtain a manifest from the manifest server
-(e.g. the server is unreachable, or it returns a manifest that cannot be parsed)
-is silently ignored and `repo sync` falls back to a regular ToT sync; pass
-`--verbose` to see the reason. Repo marks these requests as `best_effort` (see
-[GetApprovedManifestV2](#GetApprovedManifestV2)), so the server may also decline
-them, e.g. during a staged rollout. This is only a fallback for the
-manifest-driven default: an explicit `-s`/`--smart-sync` or `-t`/`--smart-tag`
-still fails the sync, as before. Options that specify an explicit target or
-manifest source (such as `-t`/`--smart-tag`, `-m`/`--manifest-name` or
-`--superproject-revision`) will also disable the default Smart Sync behavior.
+ask for a Smart Sync, any failure to smart sync (e.g. the manifest checkout is
+not tracking a remote branch, the server is unreachable, or it returns a
+manifest that cannot be parsed) is silently ignored and `repo sync` falls back
+to a regular ToT sync; pass `--verbose` to see the reason. Repo marks these
+requests as `best_effort` (see [GetApprovedManifestV2](#GetApprovedManifestV2)),
+so the server may also decline them, e.g. during a staged rollout. This is only
+a fallback for the manifest-driven default: an explicit `-s`/`--smart-sync` or
+`-t`/`--smart-tag` still fails the sync, as before. Options that specify an
+explicit target or manifest source (such as `-t`/`--smart-tag`,
+`-m`/`--manifest-name` or `--superproject-revision`) will also disable the
+default Smart Sync behavior.
 
 Users can override this manifest default on their workstation with the
 `sync.smartsync` user setting; see
@@ -240,7 +242,10 @@ The `branch` is determined by the current manifest branch as specified by
 `--manifest-branch=BRANCH` when running `repo init`.  If `${SYNC_BRANCH}` is
 defined and non-empty, its value is sent instead.  This allows selecting a
 branch other than the one the checkout tracks, e.g. a server-side (CI) branch
-name that builds from the same manifest branch.
+name that builds from the same manifest branch.  If `${SYNC_BRANCH}` is unset or
+empty and the manifest checkout is not tracking a remote branch (e.g. it is on a
+detached HEAD, or was initialized with `-b <sha>` or `-b refs/tags/<tag>`),
+Smart Sync fails without contacting the manifest server.
 
 The `target` is defined by environment variables in the order below.  If none
 of them match, then `target` is omitted.  These variables were decided as they
@@ -266,8 +271,8 @@ Smart Sync by default by setting the boolean `sync.smartsync` key in their
 Command line flags (`-s`, `--no-smart-sync`, `-t`) override the user setting,
 which in turn overrides the manifest's `sync-smartsync` default.  A Smart Sync
 enabled this way is treated as an explicit request, so it is subject to the
-same restrictions as `-s` and fails the sync if no manifest can be obtained
-from the server instead of silently falling back to ToT.
+same restrictions as `-s` and fails the sync if Smart Sync fails instead of
+silently falling back to ToT.
 
 ### --smart-tag=TAG / -t
 
