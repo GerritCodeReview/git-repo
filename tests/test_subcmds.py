@@ -21,6 +21,7 @@ import pytest
 
 from command import Command
 import subcmds
+from subcmds import sync
 
 
 # NB: We don't test all subcommands as we want to avoid "change detection"
@@ -164,9 +165,7 @@ def test_common_validate_options(name: str, cls: Type[Command]) -> None:
 
 def test_attribute_error_repro() -> None:
     """Confirm that accessing verbose before CommonValidateOptions fails."""
-    from subcmds.sync import Sync
-
-    cmd = Sync()
+    cmd = sync.Sync()
     opts, args = cmd.OptionParser.parse_args([])
 
     # This confirms that without the fix in main.py, an AttributeError
