@@ -1961,6 +1961,51 @@ class SyncCommand(unittest.TestCase):
             with self.assertRaises(error.ManifestParseError):
                 self.cmd.Execute(self.opt, [])
 
+    @contextlib.contextmanager
+    def _DetachedManifestCheckout(self) -> Iterator[mock.MagicMock]:
+        """Smart sync with the manifest checkout on a detached HEAD.
+
+        There is then no manifest branch to send to the manifest server.
+
+        Yields:
+            The _ResolveManifestServerTransport mock, which runs the helper.
+        """
+        self.manifest.manifest_server = "http://example.com/manifestserver"
+        self.manifest.default.sync_smartsync = True
+        self.manifest.manifestProject.GetMergeBranch.return_value = None
+        user_cfg = mock.MagicMock()
+        user_cfg.GetBoolean.return_value = None
+        with mock.patch.dict(os.environ), mock.patch.object(
+            git_config.RepoConfig, "ForUser", return_value=user_cfg
+        ), mock.patch.object(
+            self.cmd,
+            "_ResolveManifestServerTransport",
+            return_value=(self.manifest.manifest_server, mock.MagicMock()),
+        ) as mock_resolve:
+            os.environ.pop("SYNC_BRANCH", None)
+            yield mock_resolve
+
+    def test_implicit_smart_sync_detached_manifest_checkout(self) -> None:
+        """Ensure default smart sync falls back to ToT without a branch."""
+        self.opt.smart_sync = None
+        self.opt.verbose = False
+        with self._DetachedManifestCheckout() as mock_resolve:
+            phased, interleaved = self._ExecuteUntilSync([])
+        mock_resolve.assert_not_called()
+        self.assertTrue(phased.called or interleaved.called)
+        self.assertFalse(self.opt.smart_sync)
+        self.manifest.ClearOverride.assert_called_once_with()
+
+    def test_explicit_smart_sync_detached_manifest_checkout(self) -> None:
+        """Ensure explicit smart sync explains why it cannot run."""
+        self.opt.smart_sync = True
+        with self._DetachedManifestCheckout() as mock_resolve:
+            with self.assertRaisesRegex(
+                sync.SmartSyncError, "not tracking a remote branch"
+            ):
+                self._ExecuteUntilSync([])
+        mock_resolve.assert_not_called()
+
     def _ExecuteWithSmartSyncOverride(
         self,
         reload_error: Optional[Exception] = None,
@@ -3374,6 +3419,7 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         self.opt.quiet = False
         self.opt.smart_sync = True
         self.manifest = mock.MagicMock()
+        self.manifest.manifestProject.GetMergeBranch.return_value = "main"
         self.smart_sync_manifest_path = "/fake/path/to/manifest.xml"
 
     @mock.patch("shutil.which")
@@ -3408,8 +3454,6 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         }
         mock_server_class.return_value = mock_server
 
-        # Mock manifest project branch
-        self.cmd._GetBranch = mock.MagicMock(return_value="main")
         self.cmd._ReloadManifest = mock.MagicMock()
 
         # Mock open to avoid writing to disk
@@ -3463,7 +3507,6 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         }
         mock_server_class.return_value = mock_server
 
-        self.cmd._GetBranch = mock.MagicMock(return_value="main")
         self.cmd._ReloadManifest = mock.MagicMock(
             side_effect=error.ManifestParseError("mismatched tag")
         )
@@ -3624,10 +3667,10 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         )
 
 
-class TestSmartSyncSetupBranch(unittest.TestCase):
+class TestSmartSyncSetupBranch:
     """Tests for how _SmartSyncSetup picks the branch sent to the server."""
 
-    def setUp(self) -> None:
+    def setup_method(self) -> None:
         self.cmd = sync.Sync()
         self.opt = mock.MagicMock()
         self.opt.quiet = True
@@ -3638,13 +3681,13 @@ class TestSmartSyncSetupBranch(unittest.TestCase):
             "http://android-smartsync.corp.google.com/manifestserver"
         )
         self.manifest.manifest_server_helper = None
+        self.manifest.manifestProject.GetMergeBranch.return_value = "main"
         self.smart_sync_manifest_path = "/fake/path/to/manifest.xml"
         self.mock_server = mock.MagicMock()
         self.mock_server.GetApprovedManifestV2.return_value = {
             "success": True,
             "manifest_xml": "<manifest></manifest>",
         }
-        self.cmd._GetBranch = mock.MagicMock(return_value="main")
         self.cmd._ReloadManifest = mock.MagicMock()
         self.cmd._ResolveManifestServerTransport = mock.MagicMock(
             return_value=(self.manifest.manifest_server, mock.MagicMock())
@@ -3658,48 +3701,77 @@ class TestSmartSyncSetupBranch(unittest.TestCase):
                 self.opt, self.smart_sync_manifest_path, self.manifest
             )
 
-    def test_default_branch(self) -> None:
-        """Without SYNC_BRANCH the manifest branch is used."""
-        self._RunSetup({})
-        self.cmd._GetBranch.assert_called_once_with(
-            self.manifest.manifestProject
-        )
+    @pytest.mark.parametrize(
+        "env, get_branch_ret, expect_get_branch, expected_request",
+        [
+            ({}, "main", True, {"branch": "main"}),
+            ({"SYNC_BRANCH": ""}, "main", True, {"branch": "main"}),
+            (
+                {"SYNC_BRANCH": "git_main-abfs"},
+                None,
+                False,
+                {"branch": "git_main-abfs"},
+            ),
+            (
+                {
+                    "SYNC_BRANCH": "git_main-abfs",
+                    "SYNC_TARGET": "cf_x86_64_phone-trunk_staging-eng",
+                },
+                None,
+                False,
+                {
+                    "branch": "git_main-abfs",
+                    "target": "cf_x86_64_phone-trunk_staging-eng",
+                },
+            ),
+        ],
+    )
+    def test_branch_selection(
+        self,
+        env: Dict[str, str],
+        get_branch_ret: Optional[str],
+        expect_get_branch: bool,
+        expected_request: Dict[str, str],
+    ) -> None:
+        """Check branch selection from SYNC_BRANCH vs the manifest branch."""
+        mp = self.manifest.manifestProject
+        mp.GetMergeBranch.return_value = get_branch_ret
+        self._RunSetup(env)
+        if expect_get_branch:
+            mp.GetMergeBranch.assert_called_once_with(heads_only=True)
+        else:
+            mp.GetMergeBranch.assert_not_called()
         self.mock_server.GetApprovedManifestV2.assert_called_once_with(
-            {"branch": "main"}
+            expected_request
         )
 
-    def test_sync_branch(self) -> None:
-        """SYNC_BRANCH replaces the manifest branch."""
-        self._RunSetup({"SYNC_BRANCH": "git_main-abfs"})
-        self.cmd._GetBranch.assert_not_called()
-        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
-            {"branch": "git_main-abfs"}
-        )
+    @pytest.mark.parametrize("env", [{}, {"SYNC_BRANCH": ""}])
+    def test_no_branch(self, env: Dict[str, str]) -> None:
+        """Without any branch, fail before printing or contacting the server."""
+        self.opt.quiet = False
+        self.manifest.manifestProject.GetMergeBranch.return_value = None
+        with mock.patch("builtins.print") as mock_print:
+            with pytest.raises(
+                sync.SmartSyncError, match="not tracking a remote branch"
+            ):
+                self._RunSetup(env)
+            mock_print.assert_not_called()
+        self.cmd._ResolveManifestServerTransport.assert_not_called()
+        self.mock_server.GetApprovedManifestV2.assert_not_called()
 
-    def test_sync_branch_with_target(self) -> None:
-        """SYNC_BRANCH and SYNC_TARGET are both forwarded."""
-        self._RunSetup(
-            {
-                "SYNC_BRANCH": "git_main-abfs",
-                "SYNC_TARGET": "cf_x86_64_phone-trunk_staging-eng",
-            }
-        )
-        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
-            {
-                "branch": "git_main-abfs",
-                "target": "cf_x86_64_phone-trunk_staging-eng",
-            }
-        )
-
-    def test_empty_sync_branch(self) -> None:
-        """An empty SYNC_BRANCH falls back to the manifest branch."""
-        self._RunSetup({"SYNC_BRANCH": ""})
-        self.cmd._GetBranch.assert_called_once_with(
-            self.manifest.manifestProject
-        )
-        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
-            {"branch": "main"}
-        )
+    def test_smart_tag_without_branch(self) -> None:
+        """A smart tag does not need a manifest branch."""
+        mp = self.manifest.manifestProject
+        mp.GetMergeBranch.return_value = None
+        self.opt.smart_sync = False
+        self.opt.smart_tag = "build-1234"
+        self.mock_server.GetManifest.return_value = [
+            True,
+            "<manifest></manifest>",
+        ]
+        assert self._RunSetup({}) == "manifest.xml"
+        mp.GetMergeBranch.assert_not_called()
+        self.mock_server.GetManifest.assert_called_once_with("build-1234")
 
 
 class GetApprovedManifestTests(unittest.TestCase):

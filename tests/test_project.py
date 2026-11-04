@@ -5807,3 +5807,132 @@ class SparseCheckoutFetchFilterTests(unittest.TestCase):
             self.assertTrue(
                 self._bundle_applied(proj, partial_clone_exclude={proj.name})
             )
+
+
+@pytest.mark.parametrize(
+    "current_branch, merge, expected_all, expected_heads_only",
+    [
+        ("default", "refs/heads/main", "main", "main"),
+        ("default", "refs/heads/android/main", "android/main", "android/main"),
+        # `repo init -b` with a tag, change, or commit SHA keeps the ref for
+        # `m/<branch>`, but is not tracking a remote branch under `refs/heads/`.
+        ("default", "refs/tags/v1.0", "refs/tags/v1.0", None),
+        (
+            "default",
+            "refs/changes/23/655123/1",
+            "refs/changes/23/655123/1",
+            None,
+        ),
+        (
+            "default",
+            "1234567890abcdef1234567890abcdef12345678",
+            "1234567890abcdef1234567890abcdef12345678",
+            None,
+        ),
+        ("default", "main", "main", None),
+        # A local branch without an upstream.
+        ("default", None, None, None),
+        ("default", "", None, None),
+        ("default", "refs/heads/", None, None),
+        # A detached HEAD or empty branch name.
+        (None, "refs/heads/main", None, None),
+        (None, None, None, None),
+        ("", "refs/heads/main", None, None),
+    ],
+)
+def test_manifest_project_get_merge_branch(
+    current_branch: Optional[str],
+    merge: Optional[str],
+    expected_all: Optional[str],
+    expected_heads_only: Optional[str],
+) -> None:
+    """Check ManifestProject.GetMergeBranch with and without heads_only."""
+    mp = mock.MagicMock(CurrentBranch=current_branch)
+    mp.GetBranch.return_value.merge = merge
+    assert (
+        project.ManifestProject.GetMergeBranch(mp, heads_only=False)
+        == expected_all
+    )
+    assert (
+        project.ManifestProject.GetMergeBranch(mp, heads_only=True)
+        == expected_heads_only
+    )
+    if current_branch:
+        assert mp.GetBranch.call_args_list == [
+            mock.call(current_branch),
+            mock.call(current_branch),
+        ]
+    else:
+        mp.GetBranch.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "git_cmds, expected_current, expected_all, expected_heads_only",
+    [
+        (
+            [["config", "branch.main.merge", "refs/heads/android-main"]],
+            "main",
+            "android-main",
+            "android-main",
+        ),
+        (
+            [["config", "branch.main.merge", "refs/tags/v1.0"]],
+            "main",
+            "refs/tags/v1.0",
+            None,
+        ),
+        (
+            [
+                [
+                    "config",
+                    "branch.main.merge",
+                    "1234567890abcdef1234567890abcdef12345678",
+                ]
+            ],
+            "main",
+            "1234567890abcdef1234567890abcdef12345678",
+            None,
+        ),
+        ([], "main", None, None),
+        (
+            [
+                ["config", "branch.main.merge", "refs/heads/android-main"],
+                ["checkout", "-q", "--detach"],
+            ],
+            None,
+            None,
+            None,
+        ),
+    ],
+)
+def test_manifest_project_get_merge_branch_checkout(
+    tmp_path: Path,
+    git_cmds: List[List[str]],
+    expected_current: Optional[str],
+    expected_all: Optional[str],
+    expected_heads_only: Optional[str],
+) -> None:
+    """Check GetMergeBranch and XmlManifest.branch on a real checkout."""
+    repodir = tmp_path / ".repo"
+    manifests = repodir / "manifests"
+    manifests_git = repodir / "manifests.git"
+    manifests.mkdir(parents=True)
+    utils_for_test.init_git_tree(manifests)
+    (manifests / "default.xml").write_text("<manifest />\n")
+    shutil.move(str(manifests / ".git"), str(manifests_git))
+    (manifests / ".git").write_text("gitdir: ../manifests.git\n")
+    for args in [
+        ["add", "default.xml"],
+        ["commit", "-q", "-m", "init"],
+    ] + git_cmds:
+        subprocess.run(["git", "-C", str(manifests), *args], check=True)
+
+    manifest_file = repodir / manifest_xml.MANIFEST_FILE_NAME
+    manifest = manifest_xml.XmlManifest(str(repodir), str(manifest_file))
+    manifest.Link("default.xml")
+    mp = manifest.manifestProject
+
+    assert mp.CurrentBranch == expected_current
+    assert mp.GetMergeBranch() == expected_all
+    assert mp.GetMergeBranch(heads_only=True) == expected_heads_only
+    assert manifest.branch == expected_all

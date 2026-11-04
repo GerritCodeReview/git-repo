@@ -385,3 +385,60 @@ def test_detach(host: GitHost, client: RepoClient) -> None:
     # A regular sync afterwards stays detached.
     client.sync()
     assert client.is_detached("foo")
+
+
+@pytest.mark.parametrize("mode", ["detached", "commit", "tag"])
+def test_smart_sync_without_tracked_branch(
+    host: GitHost, client: RepoClient, mode: str
+) -> None:
+    """Smart sync requires `.repo/manifests` to track a remote branch.
+
+    When `sync-smartsync="true"` is set in the manifest, plain `repo sync`
+    falls back to a regular sync without contacting the manifest server, while
+    an explicit `repo sync -s` fails early with an actionable error
+    (b/580004259).
+    """
+    foo = host.create_repo("platform/foo", {"f": "foo"})
+    manifest = host.create_manifest(
+        manifest_xml(
+            f'<manifest-server url="{host.url}/manifestserver" />',
+            '<project name="platform/foo" path="foo" />',
+            default='remote="origin" revision="main" sync-smartsync="true"',
+        )
+    )
+    pinned = manifest.rev_parse("main")
+    manifest.tag("v1.0", pinned)
+    # Detached `.repo/manifests` falls back to `init.defaultBranch` (`master`
+    # under Git 2 defaults) when updating the manifest repo during `repo sync`.
+    manifest.set_ref("refs/heads/master", pinned)
+
+    if mode == "detached":
+        client.init(host.manifest_url)
+        client.git(".repo/manifests", "checkout", "-q", "--detach")
+        assert client.is_detached(".repo/manifests")
+    elif mode == "commit":
+        client.init(host.manifest_url, "-b", pinned)
+        assert (
+            client.config(".repo/manifests", "branch.default.merge") == pinned
+        )
+    else:
+        client.init(host.manifest_url, "-b", "refs/tags/v1.0")
+        assert (
+            client.config(".repo/manifests", "branch.default.merge")
+            == "refs/tags/v1.0"
+        )
+
+    with host.watch_requests() as requests:
+        explicit = client.sync("-s", check=False)
+    assert explicit.returncode != 0
+    assert "not tracking a remote branch" in explicit.stderr
+    assert "Using manifest server" not in explicit.output
+    assert requests == []
+
+    with host.watch_requests() as requests:
+        implicit = client.sync()
+    assert implicit.stderr == ""
+    assert "Using manifest server" not in implicit.output
+    assert not [r for r in requests if "manifestserver" in r.path]
+    assert client.head("foo") == foo.rev_parse("main")
+    assert (client.top / "foo/f").read_text() == "foo"
