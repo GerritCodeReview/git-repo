@@ -34,6 +34,24 @@
       "parentUuid": "747e2fd8_8c442215",
       "revId": "99c71b2cc2e49d6ec1577370d2edf3a89772d326",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89b32ca3_a09ce090",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-11-04T18:04:32Z",
+      "side": 1,
+      "message": "delete the env var.  add an explicit CLI option to `repo sync` and make it clear it\u0027s unsupported.  have the code emit a warning whenever selfupdate is skipped that it\u0027s unsupported and bug reports are not accepted.",
+      "parentUuid": "0501999e_2532eb21",
+      "revId": "99c71b2cc2e49d6ec1577370d2edf3a89772d326",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
