@@ -19,6 +19,7 @@ import optparse
 import os
 from pathlib import Path
 import shutil
+import subprocess
 import tempfile
 import threading
 import time
@@ -29,6 +30,7 @@ import xmlrpc.client
 import xmlrpc.server
 
 import pytest
+import utils_for_test
 
 import command
 import error
@@ -1930,6 +1932,54 @@ class SyncCommand(unittest.TestCase):
             with self.assertRaises(error.ManifestParseError):
                 self.cmd.Execute(self.opt, [])
 
+    @contextlib.contextmanager
+    def _DetachedManifestCheckout(self) -> Iterator[mock.MagicMock]:
+        """Smart sync with the manifest checkout on a detached HEAD.
+
+        There is then no manifest branch to send to the manifest server.
+
+        Yields:
+            The _ResolveManifestServerTransport mock, which runs the helper.
+        """
+        self.manifest.manifest_server = "http://example.com/manifestserver"
+        self.manifest.default.sync_smartsync = True
+        mp = self.manifest.manifestProject
+        mp.CurrentBranch = None
+        # Like the real git config, there is no branch.None.merge setting.
+        mp.GetBranch.return_value.merge = None
+        user_cfg = mock.MagicMock()
+        user_cfg.GetBoolean.return_value = None
+        with mock.patch.dict(os.environ), mock.patch.object(
+            sync.RepoConfig, "ForUser", return_value=user_cfg
+        ), mock.patch.object(
+            self.cmd,
+            "_ResolveManifestServerTransport",
+            return_value=(self.manifest.manifest_server, mock.MagicMock()),
+        ) as mock_resolve:
+            os.environ.pop("SYNC_BRANCH", None)
+            yield mock_resolve
+
+    def test_implicit_smart_sync_detached_manifest_checkout(self) -> None:
+        """Ensure default smart sync falls back to ToT without a branch."""
+        self.opt.smart_sync = None
+        self.opt.verbose = False
+        with self._DetachedManifestCheckout() as mock_resolve:
+            phased, interleaved = self._ExecuteUntilSync([])
+        mock_resolve.assert_not_called()
+        self.assertTrue(phased.called or interleaved.called)
+        self.assertFalse(self.opt.smart_sync)
+        self.manifest.ClearOverride.assert_called_once_with()
+
+    def test_explicit_smart_sync_detached_manifest_checkout(self) -> None:
+        """Ensure explicit smart sync explains why it cannot run."""
+        self.opt.smart_sync = True
+        with self._DetachedManifestCheckout() as mock_resolve:
+            with self.assertRaisesRegex(
+                sync.SmartSyncError, "not tracking a remote branch"
+            ):
+                self._ExecuteUntilSync([])
+        mock_resolve.assert_not_called()
+
     def _ExecuteWithSmartSyncOverride(
         self,
         reload_error: Optional[Exception] = None,
@@ -2998,6 +3048,7 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
 
     def setUp(self):
         self.cmd = sync.Sync()
+        self.cmd._GetBranch = mock.MagicMock(return_value="main")
         self.opt = mock.MagicMock()
         self.opt.quiet = False
         self.opt.smart_sync = True
@@ -3012,8 +3063,6 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         self, mock_transport_class, mock_server_class, mock_popen, mock_which
     ):
         """Test _SmartSyncSetup when a helper is present and succeeds."""
-        import subprocess
-
         self.manifest.manifest_server = (
             "persistent-https://android-smartsync.corp.google.com/"
             "manifestserver"
@@ -3038,8 +3087,6 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         }
         mock_server_class.return_value = mock_server
 
-        # Mock manifest project branch
-        self.cmd._GetBranch = mock.MagicMock(return_value="main")
         self.cmd._ReloadManifest = mock.MagicMock()
 
         # Mock open to avoid writing to disk
@@ -3093,7 +3140,6 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         }
         mock_server_class.return_value = mock_server
 
-        self.cmd._GetBranch = mock.MagicMock(return_value="main")
         self.cmd._ReloadManifest = mock.MagicMock(
             side_effect=error.ManifestParseError("mismatched tag")
         )
@@ -3254,10 +3300,93 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         )
 
 
-class TestSmartSyncSetupBranch(unittest.TestCase):
+@pytest.mark.parametrize(
+    "current_branch, merge, expected",
+    [
+        ("default", "refs/heads/main", "main"),
+        ("default", "refs/heads/android/main", "android/main"),
+        ("default", "main", "main"),
+        # `repo init -b` with a tag or commit keeps the revision as-is.
+        ("default", "refs/tags/v1.0", "refs/tags/v1.0"),
+        (
+            "default",
+            "1234567890abcdef1234567890abcdef12345678",
+            "1234567890abcdef1234567890abcdef12345678",
+        ),
+        # A local branch without an upstream.
+        ("default", None, None),
+        ("default", "", None),
+        ("default", "refs/heads/", None),
+        # A detached HEAD or empty branch name.
+        (None, "refs/heads/main", None),
+        (None, None, None),
+        ("", "refs/heads/main", None),
+    ],
+)
+def test_get_branch(
+    current_branch: Optional[str],
+    merge: Optional[str],
+    expected: Optional[str],
+) -> None:
+    """Check the manifest branch requested from the manifest server."""
+    manifest_project = mock.MagicMock(CurrentBranch=current_branch)
+    manifest_project.GetBranch.return_value.merge = merge
+    assert sync.Sync()._GetBranch(manifest_project) == expected
+    if current_branch:
+        manifest_project.GetBranch.assert_called_once_with(current_branch)
+    else:
+        manifest_project.GetBranch.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "git_cmds, expected_current, expected_branch",
+    [
+        (
+            [["config", "branch.main.merge", "refs/heads/android-main"]],
+            "main",
+            "android-main",
+        ),
+        ([], "main", None),
+        (
+            [
+                ["config", "branch.main.merge", "refs/heads/android-main"],
+                ["checkout", "-q", "--detach"],
+            ],
+            None,
+            None,
+        ),
+    ],
+)
+def test_get_branch_manifest_project(
+    tmp_path: Path,
+    git_cmds: List[List[str]],
+    expected_current: Optional[str],
+    expected_branch: Optional[str],
+) -> None:
+    """Check _GetBranch against a real .repo/manifests checkout."""
+    repodir = tmp_path / ".repo"
+    manifests = repodir / "manifests"
+    manifests_git = repodir / "manifests.git"
+    manifests.mkdir(parents=True)
+    utils_for_test.init_git_tree(manifests)
+    shutil.move(str(manifests / ".git"), str(manifests_git))
+    (manifests / ".git").write_text("gitdir: ../manifests.git\n")
+    for args in [["commit", "-q", "--allow-empty", "-m", "init"]] + git_cmds:
+        subprocess.run(["git", "-C", str(manifests), *args], check=True)
+
+    manifest = manifest_xml.XmlManifest(
+        str(repodir), str(repodir / manifest_xml.MANIFEST_FILE_NAME)
+    )
+    mp = manifest.manifestProject
+
+    assert mp.CurrentBranch == expected_current
+    assert sync.Sync()._GetBranch(mp) == expected_branch
+
+
+class TestSmartSyncSetupBranch:
     """Tests for how _SmartSyncSetup picks the branch sent to the server."""
 
-    def setUp(self) -> None:
+    def setup_method(self) -> None:
         self.cmd = sync.Sync()
         self.opt = mock.MagicMock()
         self.opt.quiet = True
@@ -3288,48 +3417,77 @@ class TestSmartSyncSetupBranch(unittest.TestCase):
                 self.opt, self.smart_sync_manifest_path, self.manifest
             )
 
-    def test_default_branch(self) -> None:
-        """Without SYNC_BRANCH the manifest branch is used."""
-        self._RunSetup({})
-        self.cmd._GetBranch.assert_called_once_with(
-            self.manifest.manifestProject
-        )
+    @pytest.mark.parametrize(
+        "env, get_branch_ret, expect_get_branch, expected_request",
+        [
+            ({}, "main", True, {"branch": "main"}),
+            ({"SYNC_BRANCH": ""}, "main", True, {"branch": "main"}),
+            (
+                {"SYNC_BRANCH": "git_main-abfs"},
+                None,
+                False,
+                {"branch": "git_main-abfs"},
+            ),
+            (
+                {
+                    "SYNC_BRANCH": "git_main-abfs",
+                    "SYNC_TARGET": "cf_x86_64_phone-trunk_staging-eng",
+                },
+                None,
+                False,
+                {
+                    "branch": "git_main-abfs",
+                    "target": "cf_x86_64_phone-trunk_staging-eng",
+                },
+            ),
+        ],
+    )
+    def test_branch_selection(
+        self,
+        env: Dict[str, str],
+        get_branch_ret: Optional[str],
+        expect_get_branch: bool,
+        expected_request: Dict[str, str],
+    ) -> None:
+        """Check branch selection from SYNC_BRANCH vs the manifest branch."""
+        self.cmd._GetBranch.return_value = get_branch_ret
+        self._RunSetup(env)
+        if expect_get_branch:
+            self.cmd._GetBranch.assert_called_once_with(
+                self.manifest.manifestProject
+            )
+        else:
+            self.cmd._GetBranch.assert_not_called()
         self.mock_server.GetApprovedManifestV2.assert_called_once_with(
-            {"branch": "main"}
+            expected_request
         )
 
-    def test_sync_branch(self) -> None:
-        """SYNC_BRANCH replaces the manifest branch."""
-        self._RunSetup({"SYNC_BRANCH": "git_main-abfs"})
+    @pytest.mark.parametrize("env", [{}, {"SYNC_BRANCH": ""}])
+    def test_no_branch(self, env: Dict[str, str]) -> None:
+        """Without any branch, fail before printing or contacting the server."""
+        self.opt.quiet = False
+        self.cmd._GetBranch.return_value = None
+        with mock.patch("builtins.print") as mock_print:
+            with pytest.raises(
+                sync.SmartSyncError, match="not tracking a remote branch"
+            ):
+                self._RunSetup(env)
+            mock_print.assert_not_called()
+        self.cmd._ResolveManifestServerTransport.assert_not_called()
+        self.mock_server.GetApprovedManifestV2.assert_not_called()
+
+    def test_smart_tag_without_branch(self) -> None:
+        """A smart tag does not need a manifest branch."""
+        self.cmd._GetBranch.return_value = None
+        self.opt.smart_sync = False
+        self.opt.smart_tag = "build-1234"
+        self.mock_server.GetManifest.return_value = [
+            True,
+            "<manifest></manifest>",
+        ]
+        assert self._RunSetup({}) == "manifest.xml"
         self.cmd._GetBranch.assert_not_called()
-        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
-            {"branch": "git_main-abfs"}
-        )
-
-    def test_sync_branch_with_target(self) -> None:
-        """SYNC_BRANCH and SYNC_TARGET are both forwarded."""
-        self._RunSetup(
-            {
-                "SYNC_BRANCH": "git_main-abfs",
-                "SYNC_TARGET": "cf_x86_64_phone-trunk_staging-eng",
-            }
-        )
-        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
-            {
-                "branch": "git_main-abfs",
-                "target": "cf_x86_64_phone-trunk_staging-eng",
-            }
-        )
-
-    def test_empty_sync_branch(self) -> None:
-        """An empty SYNC_BRANCH falls back to the manifest branch."""
-        self._RunSetup({"SYNC_BRANCH": ""})
-        self.cmd._GetBranch.assert_called_once_with(
-            self.manifest.manifestProject
-        )
-        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
-            {"branch": "main"}
-        )
+        self.mock_server.GetManifest.assert_called_once_with("build-1234")
 
 
 class GetApprovedManifestTests(unittest.TestCase):
