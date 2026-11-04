@@ -1,8 +1,65 @@
+# https://flake8.pycqa.org/en/latest/user/configuration.html
 [flake8]
 max-line-length = 80
 per-file-ignores =
     # E501: line too long
-    tests/test_git_superproject.py: E501
+    tests/test_git_superproject.py: E501 IMR241,
+    # IMR241: When using the from syntax, only submodules are imported, not module elements.
+    # NB: Do not add any more here.
+    command.py: IMR241,
+    fetch.py: IMR241,
+    git_command.py: IMR241,
+    git_status.py: IMR241,
+    git_superproject.py: IMR241,
+    git_trace2_event_log.py: IMR241,
+    main.py: IMR241,
+    manifest_xml.py: IMR241,
+    project.py: IMR241,
+    repo_logging.py: IMR241,
+    subcmds/abandon.py: IMR241,
+    subcmds/branches.py: IMR241,
+    subcmds/checkout.py: IMR241,
+    subcmds/cherry_pick.py: IMR241,
+    subcmds/diffmanifests.py: IMR241,
+    subcmds/diff.py: IMR241,
+    subcmds/download.py: IMR241,
+    subcmds/forall.py: IMR241,
+    subcmds/gc.py: IMR241,
+    subcmds/grep.py: IMR241,
+    subcmds/help.py: IMR241,
+    subcmds/info.py: IMR241,
+    subcmds/init.py: IMR241,
+    subcmds/list.py: IMR241,
+    subcmds/manifest.py: IMR241,
+    subcmds/overview.py: IMR241,
+    subcmds/prune.py: IMR241,
+    subcmds/rebase.py: IMR241,
+    subcmds/selfupdate.py: IMR241,
+    subcmds/smartsync.py: IMR241,
+    subcmds/stage.py: IMR241,
+    subcmds/start.py: IMR241,
+    subcmds/status.py: IMR241,
+    subcmds/sync.py: IMR241,
+    subcmds/upload.py: IMR241,
+    subcmds/version.py: IMR241,
+    subcmds/wipe.py: IMR241,
+    tests/e2e/test_failures.py: IMR241,
+    tests/e2e/test_groups.py: IMR241,
+    tests/e2e/test_init_sync.py: IMR241,
+    tests/e2e/test_manifest_regressions.py: IMR241,
+    tests/e2e/test_partial_clone.py: IMR241,
+    tests/e2e/test_sync_modes.py: IMR241,
+    tests/e2e/test_workflows.py: IMR241,
+    tests/test_command.py: IMR241,
+    tests/test_editor.py: IMR241,
+    tests/test_error.py: IMR241,
+    tests/test_hooks.py: IMR241,
+    tests/test_main.py: IMR241,
+    tests/test_release_update_manpages.py: IMR241,
+    tests/test_repo_logging.py: IMR241,
+    tests/test_subcmds.py: IMR241,
+    tests/test_subcmds_rebase.py: IMR241,
+    tests/test_subcmds_sync.py: IMR241,
 extend-ignore =
     # E203: Whitespace before ':'
     # See https://github.com/PyCQA/pycodestyle/issues/373
@@ -15,3 +72,7 @@ exclude =
     .venv,
     venv,
     .tox,
+# IMR241: When using the from syntax, only submodules are imported, not module elements.
+imr241_exclude =
+    pathlib,
+    typing,
