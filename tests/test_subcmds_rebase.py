@@ -16,7 +16,7 @@
 
 import contextlib
 import io
-from types import SimpleNamespace
+import types
 from unittest import mock
 
 import error
@@ -66,7 +66,7 @@ def test_execute_delegates_autostash_to_rebase() -> None:
     branch.LocalMerge = "refs/remotes/origin/main"
     project.GetBranch.return_value = branch
     cmd.GetProjects = mock.MagicMock(return_value=[project])
-    opt = SimpleNamespace(
+    opt = types.SimpleNamespace(
         interactive=False,
         fail_fast=False,
         whitespace=None,

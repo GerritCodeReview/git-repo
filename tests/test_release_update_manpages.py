@@ -16,7 +16,7 @@
 
 import runpy
 import sys
-from types import ModuleType
+import types
 
 import pytest
 import utils_for_test
@@ -31,7 +31,7 @@ def test_wrapper_does_not_run_main_for_multiprocessing_child(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Do not rerun main when multiprocessing re-executes the wrapper."""
-    fake_update_manpages = ModuleType("update_manpages")
+    fake_update_manpages = types.ModuleType("update_manpages")
 
     # Mock this because the real module requires newer Python versions than
     # our unittest framework does.
