@@ -7,7 +7,6 @@ per-file-ignores =
     # IMR241: When using the from syntax, only submodules are imported, not module elements.
     # NB: Do not add any more here.
     command.py: IMR241,
-    fetch.py: IMR241,
     git_command.py: IMR241,
     git_status.py: IMR241,
     git_superproject.py: IMR241,

@@ -16,8 +16,8 @@
 
 import subprocess
 import sys
-from urllib.parse import urlparse
-from urllib.request import urlopen
+import urllib.parse
+import urllib.request
 
 import error
 
@@ -32,7 +32,7 @@ def fetch_file(url, verbose=False):
     Returns:
         The contents of the file as bytes.
     """
-    scheme = urlparse(url).scheme
+    scheme = urllib.parse.urlparse(url).scheme
     if scheme == "gs":
         cmd = ["gcloud", "storage", "cat", url]
         errors = []
@@ -54,5 +54,5 @@ def fetch_file(url, verbose=False):
                 file=sys.stderr,
             )
         raise FetchFileError(aggregate_errors=errors)
-    with urlopen(url) as f:
+    with urllib.request.urlopen(url) as f:
         return f.read()
