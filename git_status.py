@@ -14,7 +14,7 @@
 
 """Read a worktree's state from one machine-readable git status snapshot."""
 
-from collections import OrderedDict
+import collections
 import os
 from typing import Iterator, List, Optional, TYPE_CHECKING
 
@@ -45,8 +45,8 @@ class StatusSnapshot:
     """A consistent view of worktree, index, and branch state."""
 
     def __init__(self) -> None:
-        self.index_changes = OrderedDict()
-        self.worktree_changes = OrderedDict()
+        self.index_changes = collections.OrderedDict()
+        self.worktree_changes = collections.OrderedDict()
         self.untracked = []
         self.branch_oid = None
         self.branch_head = None
