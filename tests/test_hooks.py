@@ -14,7 +14,7 @@
 
 """Unittests for the hooks.py module."""
 
-from io import StringIO
+import io
 from pathlib import Path
 import sys
 
@@ -82,7 +82,7 @@ def test_post_sync_argument_validation() -> None:
     )
 
     old_stderr = sys.stderr
-    sys.stderr = StringIO()
+    sys.stderr = io.StringIO()
 
     try:
         # Call with missing arg `sync_duration_seconds`

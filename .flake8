@@ -52,7 +52,6 @@ per-file-ignores =
     tests/test_command.py: IMR241,
     tests/test_editor.py: IMR241,
     tests/test_error.py: IMR241,
-    tests/test_hooks.py: IMR241,
     tests/test_main.py: IMR241,
     tests/test_repo_logging.py: IMR241,
     tests/test_subcmds.py: IMR241,
