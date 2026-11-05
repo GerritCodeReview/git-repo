@@ -51,8 +51,7 @@ import git_command
 from git_config import RepoConfig
 from git_trace2_event_log import EventLog
 from manifest_xml import RepoClient
-from pager import RunPager
-from pager import TerminatePager
+import pager
 import repo_trace
 from subcmds import all_commands
 from subcmds.version import Version
@@ -445,7 +444,7 @@ class _Repo:
                 if use_pager is None:
                     use_pager = cmd.WantPager(copts)
             if use_pager:
-                RunPager(config)
+                pager.RunPager(config)
 
         start = time.time()
         cmd_event = cmd.event_log.Add(name, event_log.TASK_COMMAND, start)
@@ -959,7 +958,7 @@ def _Main(argv):
             print("fatal: %s" % e, file=sys.stderr)
             result = 128
 
-    TerminatePager()
+    pager.TerminatePager()
     sys.exit(result)
 
 
