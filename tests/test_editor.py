@@ -16,30 +16,30 @@
 
 import pytest
 
-from editor import Editor
+import editor
 
 
 @pytest.fixture(autouse=True)
 def reset_editor() -> None:
     """Take care of resetting Editor state across tests."""
-    Editor._editor = None
+    editor.Editor._editor = None
     yield
-    Editor._editor = None
+    editor.Editor._editor = None
 
 
 def test_basic() -> None:
     """Basic checking of _GetEditor."""
-    Editor._editor = ":"
-    assert Editor._GetEditor() == ":"
+    editor.Editor._editor = ":"
+    assert editor.Editor._GetEditor() == ":"
 
 
 def test_no_editor() -> None:
     """Check behavior when no editor is available."""
-    Editor._editor = ":"
-    assert Editor.EditString("foo") == "foo"
+    editor.Editor._editor = ":"
+    assert editor.Editor.EditString("foo") == "foo"
 
 
 def test_cat_editor() -> None:
     """Check behavior when editor is `cat`."""
-    Editor._editor = "cat"
-    assert Editor.EditString("foo") == "foo"
+    editor.Editor._editor = "cat"
+    assert editor.Editor.EditString("foo") == "foo"
