@@ -16,6 +16,24 @@
       "message": "please make sure `Verify git-repo CL` passes and format the commit msg",
       "revId": "346ec45767b7696c3101017b1c97101c4faba8aa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbeffb29_b3669032",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3290476
+      },
+      "writtenOn": "2026-11-05T03:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e3a8620_da970341",
+      "revId": "346ec45767b7696c3101017b1c97101c4faba8aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
