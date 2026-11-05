@@ -50,7 +50,6 @@ per-file-ignores =
     tests/e2e/test_sync_modes.py: IMR241,
     tests/e2e/test_workflows.py: IMR241,
     tests/test_command.py: IMR241,
-    tests/test_editor.py: IMR241,
     tests/test_error.py: IMR241,
     tests/test_main.py: IMR241,
     tests/test_repo_logging.py: IMR241,

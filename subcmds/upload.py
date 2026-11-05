@@ -21,7 +21,7 @@ from typing import List
 
 from command import DEFAULT_LOCAL_JOBS
 from command import InteractiveCommand
-from editor import Editor
+import editor
 import error
 import git_refs
 import git_superproject
@@ -494,7 +494,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             branches[project_path] = b
         script.append("")
 
-        script = Editor.EditString("\n".join(script)).split("\n")
+        script = editor.Editor.EditString("\n".join(script)).split("\n")
 
         project_re = re.compile(r"^#?\s*project\s*([^\s]+)/:$")
         branch_re = re.compile(r"^\s*branch\s*([^\s(]+)\s*\(.*")

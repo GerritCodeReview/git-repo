@@ -44,7 +44,7 @@ except ImportError:
 from color import SetDefaultColoring
 from command import InteractiveCommand
 from command import MirrorSafeCommand
-from editor import Editor
+import editor
 import error
 import event_log
 import git_command
@@ -417,7 +417,7 @@ class _Repo:
         )
         cmd.event_log.enabled = bool(gopts.event_log)
 
-        Editor.globalConfig = cmd.client.globalConfig
+        editor.Editor.globalConfig = cmd.client.globalConfig
 
         if not isinstance(cmd, MirrorSafeCommand) and cmd.manifest.IsMirror:
             logger.error("fatal: '%s' requires a working directory", name)
