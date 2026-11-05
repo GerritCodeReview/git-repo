@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "573d49b6_62b08a32",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-11-05T18:48:28Z",
+      "side": 1,
+      "message": "it seems your ~/.gitconfig is misconfigured.  it\u0027s too late to fix the CLs you\u0027ve already merged, but please fix all pending ones.",
+      "revId": "2a1df4eac541a96045e154577796d7236ba3d3d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
