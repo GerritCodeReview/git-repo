@@ -31,7 +31,7 @@ from project import ManifestProject
 from project import Project
 from project import RemoteSpec
 from project import RepoProject
-from wrapper import Wrapper
+import wrapper
 
 
 MANIFEST_FILE_NAME = "manifest.xml"
@@ -820,7 +820,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 e.setAttribute("revision", self._superproject.revision)
             root.appendChild(e)
 
-        if self._contactinfo.bugurl != Wrapper().BUG_URL:
+        if self._contactinfo.bugurl != wrapper.Wrapper().BUG_URL:
             root.appendChild(doc.createTextNode(""))
             e = doc.createElement("contactinfo")
             e.setAttribute("bugurl", self._contactinfo.bugurl)
@@ -1182,7 +1182,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         self._submanifests = {}
         self._repo_hooks_project = None
         self._superproject = None
-        self._contactinfo = ContactInfo(Wrapper().BUG_URL)
+        self._contactinfo = ContactInfo(wrapper.Wrapper().BUG_URL)
         self._notice = None
         self.branch = None
         self._manifest_server = None

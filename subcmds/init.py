@@ -21,8 +21,7 @@ from command import MirrorSafeCommand
 import error
 import git_command
 import repo_logging
-from wrapper import Wrapper
-from wrapper import WrapperDir
+import wrapper
 
 
 logger = repo_logging.RepoLogger(__file__)
@@ -95,7 +94,7 @@ to update the working directory files.
         """Disable due to re-use of Wrapper()."""
 
     def _Options(self, p):
-        Wrapper().InitParser(p)
+        wrapper.Wrapper().InitParser(p)
         m = p.add_option_group("Multi-manifest")
         m.add_option(
             "--outer-manifest",
@@ -344,9 +343,7 @@ to update the working directory files.
                 self.OptionParser.error("too many arguments to init")
 
     def Execute(self, opt, args):
-        wrapper = Wrapper()
-
-        reqs = wrapper.Requirements.from_dir(WrapperDir())
+        reqs = wrapper.Wrapper().Requirements.from_dir(wrapper.WrapperDir())
         git_command.git_require(reqs.get_hard_ver("git"), fail=True)
         min_git_version_soft = reqs.get_soft_ver("git")
         if not git_command.git_require(min_git_version_soft):
@@ -368,13 +365,13 @@ to update the working directory files.
         # Handle new --repo-rev requests.
         if opt.repo_rev:
             try:
-                remote_ref, rev = wrapper.check_repo_rev(
+                remote_ref, rev = wrapper.Wrapper().check_repo_rev(
                     rp.worktree,
                     opt.repo_rev,
                     repo_verify=opt.repo_verify,
                     quiet=opt.quiet,
                 )
-            except wrapper.CloneFailure as e:
+            except wrapper.Wrapper().CloneFailure as e:
                 err_msg = "fatal: double check your --repo-rev setting."
                 logger.error(err_msg)
                 self.git_event_log.ErrorEvent(err_msg)
