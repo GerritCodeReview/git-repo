@@ -24,7 +24,7 @@ import xml.dom.minidom
 import error
 import git_config
 import git_refs
-from git_superproject import Superproject
+import git_superproject
 import platform_utils
 from project import Annotation
 from project import ManifestProject
@@ -1616,7 +1616,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         "no revision for superproject %s within %s"
                         % (name, self.manifestFile)
                     )
-                self._superproject = Superproject(
+                self._superproject = git_superproject.Superproject(
                     self,
                     name=name,
                     remote=remote.ToRemoteSpec(name),
