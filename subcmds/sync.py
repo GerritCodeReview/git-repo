@@ -2297,10 +2297,21 @@ later is required to fix a server side protocol bug.
         if opt.smart_sync:
             # SYNC_BRANCH overrides the branch sent to the manifest server
             # (e.g. to select a specific CI branch that builds the same
-            # manifest branch). An empty value is treated as unset.
-            branch = os.environ.get("SYNC_BRANCH") or (
-                manifest.manifestProject.GetMergeBranch(heads_only=True)
-            )
+            # manifest branch). Setting SYNC_BRANCH="" forces the raw
+            # manifest branch, bypassing repo.<branch>.smartsyncbranch.
+            if "SYNC_BRANCH" in os.environ:
+                branch = os.environ["SYNC_BRANCH"] or (
+                    manifest.manifestProject.GetMergeBranch(heads_only=True)
+                )
+            else:
+                manifest_branch = manifest.manifestProject.GetMergeBranch(
+                    heads_only=True
+                )
+                if manifest_branch:
+                    cfg_branch = manifest.manifestProject.GetSmartSyncBranch(
+                        manifest_branch
+                    )
+                    branch = cfg_branch or manifest_branch
             # Fail before running the helper or contacting the server.
             if not branch:
                 raise SmartSyncError(

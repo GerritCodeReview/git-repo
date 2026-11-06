@@ -166,6 +166,12 @@ def clean_environ() -> Dict[str, str]:
             "pythonwarnings",
             # LUCI's git wrapper replaces HOME with this.
             "infra_git_wrapper_home",
+            # Smart sync reads these (e.g. set by Android's envsetup/lunch).
+            "sync_branch",
+            "sync_target",
+            "target_product",
+            "target_release",
+            "target_build_variant",
         ):
             continue
         env[key] = value
