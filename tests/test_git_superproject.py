@@ -22,7 +22,7 @@ import unittest
 from unittest import mock
 
 import pytest
-from test_manifest_xml import sort_attributes
+import test_manifest_xml
 
 import git_superproject
 import git_trace2_event_log
@@ -255,7 +255,7 @@ class SuperprojectTestCase(unittest.TestCase):
         with open(manifest_path) as fp:
             manifest_xml_data = fp.read()
         self.assertEqual(
-            sort_attributes(manifest_xml_data),
+            test_manifest_xml.sort_attributes(manifest_xml_data),
             '<?xml version="1.0" ?><manifest>'
             '<remote fetch="http://localhost" name="default-remote"/>'
             '<default remote="default-remote" revision="refs/heads/main"/>'
@@ -290,7 +290,7 @@ class SuperprojectTestCase(unittest.TestCase):
                     with open(update_result.manifest_path) as fp:
                         manifest_xml_data = fp.read()
                     self.assertEqual(
-                        sort_attributes(manifest_xml_data),
+                        test_manifest_xml.sort_attributes(manifest_xml_data),
                         '<?xml version="1.0" ?><manifest>'
                         '<remote fetch="http://localhost" name="default-remote"/>'
                         '<default remote="default-remote" revision="refs/heads/main"/>'
@@ -317,7 +317,7 @@ class SuperprojectTestCase(unittest.TestCase):
         self.maxDiff = None
         self.assertIsNone(manifest.superproject)
         self.assertEqual(
-            sort_attributes(manifest.ToXml().toxml()),
+            test_manifest_xml.sort_attributes(manifest.ToXml().toxml()),
             '<?xml version="1.0" ?><manifest>'
             '<remote fetch="http://localhost" name="default-remote"/>'
             '<default remote="default-remote" revision="refs/heads/main"/>'
@@ -379,7 +379,7 @@ class SuperprojectTestCase(unittest.TestCase):
                     # Verify platform/vendor/x's project revision hasn't
                     # changed.
                     self.assertEqual(
-                        sort_attributes(manifest_xml_data),
+                        test_manifest_xml.sort_attributes(manifest_xml_data),
                         '<?xml version="1.0" ?><manifest>'
                         '<remote fetch="http://localhost" name="default-remote"/>'
                         '<remote fetch="http://localhost2" name="goog"/>'
@@ -444,7 +444,7 @@ class SuperprojectTestCase(unittest.TestCase):
                     # Verify platform/vendor/x's project revision hasn't
                     # changed.
                     self.assertEqual(
-                        sort_attributes(manifest_xml_data),
+                        test_manifest_xml.sort_attributes(manifest_xml_data),
                         '<?xml version="1.0" ?><manifest>'
                         '<remote fetch="http://localhost" name="default-remote"/>'
                         '<default remote="default-remote" revision="refs/heads/main"/>'
