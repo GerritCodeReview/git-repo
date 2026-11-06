@@ -20,7 +20,7 @@ import re
 from typing import List, Optional, TYPE_CHECKING
 
 import error
-from event_log import EventLog
+import event_log
 import progress
 
 
@@ -57,7 +57,7 @@ class Command:
     # provide event summary to callers. Only used by sync subcommand currently.
     #
     # NB: This is being replaced by git trace2 events. See git_trace2_event_log.
-    event_log = EventLog(enabled=False)
+    event_log = event_log.EventLog(enabled=False)
 
     # Whether this command is a "common" one, i.e. whether the user would
     # commonly use it or it's a more uncommon command. This is used by the help
