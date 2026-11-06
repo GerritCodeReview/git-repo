@@ -1502,7 +1502,7 @@ class CheckForBloatedProjects(unittest.TestCase):
         self.assertFalse(self.cmd.git_event_log.ErrorEvent.called)
 
     @mock.patch.object(git_command, "git_require", return_value=True)
-    @mock.patch("subcmds.sync.Progress")
+    @mock.patch("progress.Progress")
     def test_network_only_skips_check(
         self, mock_progress: mock.Mock, mock_git_require: mock.Mock
     ) -> None:
@@ -1516,7 +1516,7 @@ class CheckForBloatedProjects(unittest.TestCase):
         self.cmd.ExecuteInParallel.assert_not_called()
 
     @mock.patch.object(git_command, "git_require", return_value=True)
-    @mock.patch("subcmds.sync.Progress")
+    @mock.patch("progress.Progress")
     def test_projects_without_worktree_excluded(
         self, mock_progress: mock.Mock, mock_git_require: mock.Mock
     ) -> None:
@@ -1538,7 +1538,7 @@ class CheckForBloatedProjects(unittest.TestCase):
                 self.cmd.ExecuteInParallel.assert_not_called()
 
     @mock.patch.object(git_command, "git_require")
-    @mock.patch("subcmds.sync.Progress")
+    @mock.patch("progress.Progress")
     def test_bloated_project_found(self, mock_progress, mock_git_require):
         """Test that it adds project to _bloated_projects."""
         mock_git_require.return_value = True
@@ -1561,7 +1561,7 @@ class CheckForBloatedProjects(unittest.TestCase):
         self.assertEqual(self.cmd._bloated_projects, ["project"])
 
     @mock.patch.object(git_command, "git_require")
-    @mock.patch("subcmds.sync.Progress")
+    @mock.patch("progress.Progress")
     def test_stateless_prune_excluded(self, mock_progress, mock_git_require):
         """Test that projects pruned for stateless sync are excluded."""
         mock_git_require.return_value = True
@@ -1609,7 +1609,7 @@ class GCProjectsTest(unittest.TestCase):
         self.project.bare_git._project = self.project
         self.cmd.git_event_log = mock.MagicMock()
 
-    @mock.patch("subcmds.sync.Progress")
+    @mock.patch("progress.Progress")
     def test_GCProjects_skip_gc(self, mock_progress):
         """Test that it skips GC if opt.auto_gc is False."""
         self.opt.auto_gc = False
@@ -1620,7 +1620,7 @@ class GCProjectsTest(unittest.TestCase):
             mock_set_state.assert_called_once_with(self.project, self.opt)
         self.assertFalse(self.project.bare_git.gc.called)
 
-    @mock.patch("subcmds.sync.Progress")
+    @mock.patch("progress.Progress")
     def test_GCProjects_sequential(self, mock_progress):
         """Test sequential GC (jobs < 2)."""
         with mock.patch.object(sync.Sync, "_SetPreciousObjectsState"):
@@ -1632,7 +1632,7 @@ class GCProjectsTest(unittest.TestCase):
         for call in self.project.config.SetString.call_args_list:
             self.assertNotEqual(call.args[0], "gc.autoDetach")
 
-    @mock.patch("subcmds.sync.Progress")
+    @mock.patch("progress.Progress")
     def test_GCProjects_parallel(self, mock_progress):
         """Test parallel GC (jobs >= 2)."""
         self.opt.jobs = 2
