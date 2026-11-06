@@ -20,7 +20,7 @@ import color
 from command import MirrorSafeCommand
 from command import PagedCommand
 import error
-from subcmds import all_commands
+import subcmds
 import wrapper
 
 
@@ -46,7 +46,7 @@ Displays detailed usage information about a command.
         fmt = "  %%-%ds  %%s" % maxlen
 
         for name in commandNames:
-            command = all_commands[name]()
+            command = subcmds.all_commands[name]()
             try:
                 summary = command.helpSummary.strip()
             except AttributeError:
@@ -59,7 +59,7 @@ Displays detailed usage information about a command.
 
     def PrintAllCommandsBody(self):
         print("The complete list of recognized repo commands is:")
-        commandNames = sorted(all_commands)
+        commandNames = sorted(subcmds.all_commands)
         self._PrintCommands(commandNames)
         print(
             "See 'repo help <command>' for more information on a "
@@ -75,7 +75,7 @@ Displays detailed usage information about a command.
         print("The most commonly used repo commands are:")
 
         commandNames = sorted(
-            name for name, command in all_commands.items() if command.COMMON
+            name for name, cmd in subcmds.all_commands.items() if cmd.COMMON
         )
         self._PrintCommands(commandNames)
 
@@ -146,8 +146,8 @@ Displays detailed usage information about a command.
         out._PrintSection("Description", "helpDescription")
 
     def _PrintAllCommandHelp(self):
-        for name in sorted(all_commands):
-            cmd = all_commands[name](manifest=self.manifest)
+        for name in sorted(subcmds.all_commands):
+            cmd = subcmds.all_commands[name](manifest=self.manifest)
             self._PrintCommandHelp(cmd, header_prefix=f"[{name}] ")
 
     def _Options(self, p):
@@ -178,7 +178,7 @@ Displays detailed usage information about a command.
             name = args[0]
 
             try:
-                cmd = all_commands[name](manifest=self.manifest)
+                cmd = subcmds.all_commands[name](manifest=self.manifest)
             except KeyError:
                 print(
                     "repo: '%s' is not a repo command." % name, file=sys.stderr

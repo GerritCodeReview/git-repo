@@ -25,10 +25,10 @@ import error
 import fetch
 import git_command
 import project
-from subcmds import all_modules
+import subcmds
 
 
-_IMPORTS = all_modules + [
+_IMPORTS = subcmds.all_modules + [
     error,
     project,
     git_command,
