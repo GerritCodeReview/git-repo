@@ -14,7 +14,6 @@ per-file-ignores =
     main.py: IMR241,
     manifest_xml.py: IMR241,
     project.py: IMR241,
-    repo_logging.py: IMR241,
     subcmds/abandon.py: IMR241,
     subcmds/branches.py: IMR241,
     subcmds/checkout.py: IMR241,
@@ -52,7 +51,6 @@ per-file-ignores =
     tests/test_command.py: IMR241,
     tests/test_error.py: IMR241,
     tests/test_main.py: IMR241,
-    tests/test_repo_logging.py: IMR241,
     tests/test_subcmds.py: IMR241,
     tests/test_subcmds_sync.py: IMR241,
 extend-ignore =

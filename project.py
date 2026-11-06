@@ -32,7 +32,7 @@ import time
 from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 import urllib.parse
 
-from color import Coloring
+import color
 import error
 import fetch
 import git_command
@@ -382,7 +382,7 @@ class ReviewableBranch:
         return refs
 
 
-class StatusColoring(Coloring):
+class StatusColoring(color.Coloring):
     def __init__(self, config):
         super().__init__(config, "status")
         self.project = self.printer("header", attr="bold")
@@ -395,7 +395,7 @@ class StatusColoring(Coloring):
         self.untracked = self.printer("untracked", fg="red")
 
 
-class DiffColoring(Coloring):
+class DiffColoring(color.Coloring):
     def __init__(self, config):
         super().__init__(config, "diff")
         self.project = self.printer("header", attr="bold")
@@ -5512,7 +5512,7 @@ class _Later:
             return False
 
 
-class _SyncColoring(Coloring):
+class _SyncColoring(color.Coloring):
     def __init__(self, config):
         super().__init__(config, "reposync")
         self.project = self.printer("header", attr="bold")

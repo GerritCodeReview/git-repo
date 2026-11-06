@@ -14,7 +14,7 @@
 
 import sys
 
-from color import Coloring
+import color
 from command import Command
 import error
 import git_command
@@ -25,9 +25,9 @@ import repo_logging
 logger = repo_logging.RepoLogger(__file__)
 
 
-class RebaseColoring(Coloring):
+class RebaseColoring(color.Coloring):
     def __init__(self, config):
-        Coloring.__init__(self, config, "rebase")
+        super().__init__(config, "rebase")
         self.project = self.printer("project", attr="bold")
         self.fail = self.printer("fail", fg="red")
 

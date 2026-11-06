@@ -14,7 +14,7 @@
 
 import sys
 
-from color import Coloring
+import color
 from command import InteractiveCommand
 import git_command
 import repo_logging
@@ -23,9 +23,9 @@ import repo_logging
 logger = repo_logging.RepoLogger(__file__)
 
 
-class _ProjectList(Coloring):
+class _ProjectList(color.Coloring):
     def __init__(self, gc):
-        Coloring.__init__(self, gc, "interactive")
+        super().__init__(gc, "interactive")
         self.prompt = self.printer("prompt", fg="blue", attr="bold")
         self.header = self.printer("header", attr="bold")
         self.help = self.printer("help", fg="red", attr="bold")

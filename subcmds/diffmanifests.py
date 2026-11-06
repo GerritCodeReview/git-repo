@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from color import Coloring
+import color
 from command import PagedCommand
 from manifest_xml import RepoClient
 
 
-class _Coloring(Coloring):
+class _Coloring(color.Coloring):
     def __init__(self, config):
-        Coloring.__init__(self, config, "status")
+        super().__init__(config, "status")
 
 
 class Diffmanifests(PagedCommand):

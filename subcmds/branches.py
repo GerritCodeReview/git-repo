@@ -15,14 +15,14 @@
 import itertools
 import sys
 
-from color import Coloring
+import color
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
 
 
-class BranchColoring(Coloring):
+class BranchColoring(color.Coloring):
     def __init__(self, config):
-        Coloring.__init__(self, config, "branch")
+        super().__init__(config, "branch")
         self.current = self.printer("current", fg="green")
         self.local = self.printer("local")
         self.notinproject = self.printer("notinproject", fg="red")

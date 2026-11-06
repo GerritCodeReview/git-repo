@@ -16,7 +16,7 @@ import re
 import sys
 import textwrap
 
-from color import Coloring
+import color
 from command import MirrorSafeCommand
 from command import PagedCommand
 import error
@@ -87,9 +87,9 @@ Displays detailed usage information about a command.
         print("Bug reports:", Wrapper().BUG_URL)
 
     def _PrintCommandHelp(self, cmd, header_prefix=""):
-        class _Out(Coloring):
+        class _Out(color.Coloring):
             def __init__(self, gc):
-                Coloring.__init__(self, gc, "help")
+                super().__init__(gc, "help")
                 self.heading = self.printer("heading", attr="bold")
                 self._first = True
 

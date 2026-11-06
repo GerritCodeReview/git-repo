@@ -20,7 +20,7 @@ import optparse
 import sys
 from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
-from color import Coloring
+import color
 from command import DEFAULT_LOCAL_JOBS
 from command import PagedCommand
 import git_refs
@@ -46,9 +46,9 @@ class OutputFormat(enum.Enum):
     JSON = enum.auto()
 
 
-class _Coloring(Coloring):
+class _Coloring(color.Coloring):
     def __init__(self, config):
-        Coloring.__init__(self, config, "status")
+        super().__init__(config, "status")
 
 
 class Info(PagedCommand):

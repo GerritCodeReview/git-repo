@@ -14,7 +14,7 @@
 
 import optparse
 
-from color import Coloring
+import color
 from command import PagedCommand
 
 
@@ -73,9 +73,9 @@ are displayed.
         if not all_branches:
             return
 
-        class Report(Coloring):
+        class Report(color.Coloring):
             def __init__(self, config):
-                Coloring.__init__(self, config, "status")
+                super().__init__(config, "status")
                 self.project = self.printer("header", attr="bold")
                 self.text = self.printer("text")
 
