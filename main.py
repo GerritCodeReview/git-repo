@@ -53,7 +53,7 @@ import git_trace2_event_log
 import manifest_xml
 import pager
 import repo_trace
-from subcmds import all_commands
+import subcmds
 from subcmds.version import Version
 import wrapper
 
@@ -181,7 +181,7 @@ global_options.add_option(
 class _Repo:
     def __init__(self, repodir):
         self.repodir = repodir
-        self.commands = all_commands
+        self.commands = subcmds.all_commands
 
     def _PrintHelp(self, short: bool = False, all_commands: bool = False):
         """Show --help screen."""
