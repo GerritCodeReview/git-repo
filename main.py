@@ -49,7 +49,7 @@ import error
 import event_log
 import git_command
 import git_config
-from git_trace2_event_log import EventLog
+import git_trace2_event_log
 import manifest_xml
 import pager
 import repo_trace
@@ -262,14 +262,12 @@ class _Repo:
             self._PrintHelp(short=True)
             return 1
 
-        git_trace2_event_log = EventLog()
-        run = (
-            lambda: self._RunLong(name, gopts, argv, git_trace2_event_log) or 0
-        )
+        git_event_log = git_trace2_event_log.EventLog()
+        run = lambda: self._RunLong(name, gopts, argv, git_event_log) or 0
         with repo_trace.Trace(
             "starting new command: %s [sid=%s]",
             ", ".join([name] + argv),
-            git_trace2_event_log.full_sid,
+            git_event_log.full_sid,
             first_trace=True,
         ):
             if gopts.trace_python:
