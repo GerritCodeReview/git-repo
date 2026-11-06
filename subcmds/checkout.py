@@ -18,7 +18,7 @@ from typing import NamedTuple
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
 import error
-from progress import Progress
+import progress
 import repo_logging
 
 
@@ -98,7 +98,7 @@ The command is equivalent to:
                 functools.partial(self._ExecuteOne, nb),
                 range(len(all_projects)),
                 callback=_ProcessResults,
-                output=Progress(
+                output=progress.Progress(
                     f"Checkout {nb}", len(all_projects), quiet=opt.quiet
                 ),
             )
