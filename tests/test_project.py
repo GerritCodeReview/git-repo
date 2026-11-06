@@ -1945,6 +1945,57 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             fakeproj.config.SetString("manifest.platform", "auto")
             self.assertEqual(fakeproj.manifest_platform, "auto")
 
+    def test_smart_sync_branch_config(self) -> None:
+        """Test branch-scoped smart sync branch getters and setters."""
+        with utils_for_test.TempGitTree() as tempdir:
+            fakeproj = self.setUpManifest(tempdir)
+
+            for branch, target in (
+                ("main", "git_main-dev-warmup-abfs"),
+                ("Main", "git_Main-warmup"),
+                ("release/16", "git_r16-warmup"),
+                ("16-release", "git_16-warmup"),
+            ):
+                fakeproj.SetSmartSyncBranch(branch, target)
+
+            self.assertEqual(
+                fakeproj.GetSmartSyncBranch("main"),
+                "git_main-dev-warmup-abfs",
+            )
+            self.assertEqual(
+                fakeproj.GetSmartSyncBranch("Main"), "git_Main-warmup"
+            )
+            self.assertEqual(
+                fakeproj.GetSmartSyncBranch("release/16"), "git_r16-warmup"
+            )
+            self.assertEqual(
+                fakeproj.GetSmartSyncBranch("16-release"), "git_16-warmup"
+            )
+            self.assertIsNone(fakeproj.GetSmartSyncBranch("other"))
+            self.assertEqual(
+                fakeproj.config.GetString("repo.release/16.smartsyncbranch"),
+                "git_r16-warmup",
+            )
+
+            # Default lookup resolves the tracked manifest branch.
+            fakeproj.work_git.checkout("-q", "-b", "default")
+            b = fakeproj.GetBranch("default")
+            b.merge = "refs/heads/release/16"
+            b.Save()
+            self.assertEqual(fakeproj.GetManifestBranch(), "release/16")
+            self.assertEqual(fakeproj.GetSmartSyncBranch(), "git_r16-warmup")
+
+            # Empty string or None clears only that branch's setting.
+            fakeproj.SetSmartSyncBranch("release/16", "")
+            self.assertIsNone(fakeproj.GetSmartSyncBranch("release/16"))
+            self.assertIsNone(fakeproj.GetSmartSyncBranch())
+            self.assertEqual(
+                fakeproj.GetSmartSyncBranch("main"),
+                "git_main-dev-warmup-abfs",
+            )
+            fakeproj.SetSmartSyncBranch("main", None)
+            self.assertIsNone(fakeproj.GetSmartSyncBranch("main"))
+
     def test_check_immutable_revision_metaproject_skips_manifest_load(self):
         """MetaProjects must not parse manifest.xml during immutable check.
 

@@ -14,8 +14,11 @@
 
 """E2E tests for the core `repo init` & `repo sync` options."""
 
+import contextlib
 from pathlib import Path
-from typing import List, Set
+import threading
+from typing import Any, Callable, Dict, Iterator, List, Set
+import xmlrpc.server
 
 from harness import GIT_DEFAULTS_PARAMS
 from harness import GitHost
@@ -353,3 +356,105 @@ def test_manifest_depth(host: GitHost, client: RepoClient) -> None:
     assert client.is_shallow(manifests)
     assert not client.is_shallow("platform/foo")
     assert client.git("platform/foo", "rev-list", "--count", "HEAD") == "2"
+
+
+@contextlib.contextmanager
+def _manifest_server(
+    handler: Callable[[Dict[str, Any]], Dict[str, Any]],
+) -> Iterator[str]:
+    """Run a local XML-RPC manifest server exposing GetApprovedManifestV2."""
+    server = xmlrpc.server.SimpleXMLRPCServer(
+        ("127.0.0.1", 0), logRequests=False
+    )
+    server.register_function(handler, "GetApprovedManifestV2")
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        addr, port = server.server_address[:2]
+        yield f"http://{addr}:{port}/"
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join()
+
+
+@pytest.mark.parametrize("git_defaults", GIT_DEFAULTS_PARAMS)
+def test_smart_sync_branch(host: GitHost, client: RepoClient) -> None:
+    """`init --smart-sync-branch` persists per-manifest-branch server branch."""
+    foo = host.create_repo("platform/foo", {"f": "v1"})
+    v1 = foo.rev_parse("main")
+    warmup = foo.commit({"f": "warmup"})
+    foo.commit({"f": "tot"})
+    r16 = foo.commit({"f": "r16"}, branch="release/16")
+
+    requests: List[Dict[str, Any]] = []
+    by_branch = {
+        "main": v1,
+        "git_main-dev-warmup-abfs": warmup,
+        "release/16": r16,
+    }
+
+    def handle_v2(req: Dict[str, Any]) -> Dict[str, Any]:
+        requests.append(req)
+        rev = by_branch[req["branch"]]
+        return {
+            "success": True,
+            "manifest_xml": manifest_xml(
+                f'<project name="platform/foo" path="foo" revision="{rev}" />',
+                fetch=host.url,
+            ),
+        }
+
+    with _manifest_server(handle_v2) as server_url:
+        m_xml = manifest_xml(
+            f'<manifest-server url="{server_url}" />',
+            '<project name="platform/foo" path="foo" />',
+        )
+        manifest = host.create_manifest(m_xml)
+        manifest.commit({"default.xml": m_xml}, branch="release/16")
+
+        client.init(
+            host.manifest_url,
+            "-s",
+            "--smart-sync-branch=git_main-dev-warmup-abfs",
+        )
+        assert (
+            client.config(".repo/manifests", "repo.main.smartsyncbranch")
+            == "git_main-dev-warmup-abfs"
+        )
+
+        client.sync()
+        assert requests[-1]["branch"] == "git_main-dev-warmup-abfs"
+        assert client.head("foo") == warmup
+
+        # SYNC_BRANCH="" forces the raw manifest branch over checkout config.
+        saved_env = dict(client.env)
+        client.env["SYNC_BRANCH"] = ""
+        try:
+            client.sync()
+        finally:
+            client.env = saved_env
+        assert requests[-1]["branch"] == "main"
+        assert client.head("foo") == v1
+
+        # Switching manifest branches does not leak main's override.
+        client.init(host.manifest_url, "-b", "release/16")
+        client.sync()
+        assert requests[-1]["branch"] == "release/16"
+        assert client.head("foo") == r16
+
+        # Switching back to main restores main's configured override.
+        client.init(host.manifest_url, "-b", "main")
+        client.sync()
+        assert requests[-1]["branch"] == "git_main-dev-warmup-abfs"
+        assert client.head("foo") == warmup
+
+        # Passing an empty --smart-sync-branch clears the override.
+        client.init(host.manifest_url, "--smart-sync-branch=")
+        assert (
+            client.config(".repo/manifests", "repo.main.smartsyncbranch")
+            is None
+        )
+        client.sync()
+        assert requests[-1]["branch"] == "main"
+        assert client.head("foo") == v1
