@@ -22,7 +22,7 @@ from unittest import mock
 
 import pytest
 
-from color import SetDefaultColoring
+import color
 import error
 import repo_logging
 
@@ -86,7 +86,7 @@ def test_log_with_format_string(level: int) -> None:
     # Set color output to "always" for consistent test results.
     # This ensures the logger's behavior is uniform across different
     # environments and git configurations.
-    SetDefaultColoring("always")
+    color.SetDefaultColoring("always")
 
     # Regex pattern to match optional ANSI color codes.
     # \033    - Escape character

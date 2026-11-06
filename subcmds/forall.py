@@ -21,7 +21,7 @@ import signal
 import subprocess
 import sys
 
-from color import Coloring
+import color
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
 from command import MirrorSafeCommand
@@ -37,9 +37,9 @@ _CAN_COLOR = [
 ]
 
 
-class ForallColoring(Coloring):
+class ForallColoring(color.Coloring):
     def __init__(self, config):
-        Coloring.__init__(self, config, "forall")
+        super().__init__(config, "forall")
         self.project = self.printer("project", attr="bold")
 
 
@@ -234,9 +234,9 @@ without iterating through the remaining projects.
                 cn = None
             if cn and cn in _CAN_COLOR:
 
-                class ColorCmd(Coloring):
+                class ColorCmd(color.Coloring):
                     def __init__(self, config, cmd):
-                        Coloring.__init__(self, config, cmd)
+                        super().__init__(config, cmd)
 
                 if ColorCmd(self.manifest.manifestProject.config, cn).is_on:
                     cmd.insert(cmd.index(cn) + 1, "--color")

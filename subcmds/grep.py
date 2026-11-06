@@ -16,7 +16,7 @@ import functools
 import sys
 from typing import NamedTuple
 
-from color import Coloring
+import color
 from command import DEFAULT_LOCAL_JOBS
 from command import PagedCommand
 import error
@@ -27,9 +27,9 @@ import repo_logging
 logger = repo_logging.RepoLogger(__file__)
 
 
-class GrepColoring(Coloring):
+class GrepColoring(color.Coloring):
     def __init__(self, config):
-        Coloring.__init__(self, config, "grep")
+        super().__init__(config, "grep")
         self.project = self.printer("project", attr="bold")
         self.fail = self.printer("fail", fg="red")
 

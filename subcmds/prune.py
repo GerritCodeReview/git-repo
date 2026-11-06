@@ -14,7 +14,7 @@
 
 import itertools
 
-from color import Coloring
+import color
 from command import DEFAULT_LOCAL_JOBS
 from command import PagedCommand
 
@@ -56,9 +56,9 @@ class Prune(PagedCommand):
         if not all_branches:
             return
 
-        class Report(Coloring):
+        class Report(color.Coloring):
             def __init__(self, config):
-                Coloring.__init__(self, config, "status")
+                super().__init__(config, "status")
                 self.project = self.printer("header", attr="bold")
 
         out = Report(all_branches[0].project.config)

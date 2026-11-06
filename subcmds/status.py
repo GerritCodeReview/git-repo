@@ -17,7 +17,7 @@ import glob
 import io
 import os
 
-from color import Coloring
+import color
 from command import DEFAULT_LOCAL_JOBS
 from command import PagedCommand
 import platform_utils
@@ -180,9 +180,9 @@ the following meanings:
                     (head, _tail) = os.path.split(head)
             proj_dirs.add(".repo")
 
-            class StatusColoring(Coloring):
+            class StatusColoring(color.Coloring):
                 def __init__(self, config):
-                    Coloring.__init__(self, config, "status")
+                    super().__init__(config, "status")
                     self.project = self.printer("header", attr="bold")
                     self.untracked = self.printer("untracked", fg="red")
 

@@ -15,7 +15,7 @@
 import os
 import sys
 
-from color import Coloring
+import color
 from command import InteractiveCommand
 from command import MirrorSafeCommand
 import error
@@ -244,9 +244,9 @@ to update the working directory files.
         if self._HasColorSet(gc):
             return
 
-        class _Test(Coloring):
+        class _Test(color.Coloring):
             def __init__(self):
-                Coloring.__init__(self, gc, "test color display")
+                super().__init__(gc, "test color display")
                 self._on = True
 
         out = _Test()

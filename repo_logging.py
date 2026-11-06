@@ -16,7 +16,7 @@
 
 import logging
 
-from color import Coloring
+import color
 import error
 
 
@@ -34,7 +34,7 @@ class _ConfigMock:
         return self.default_values.get(x, None)
 
 
-class _LogColoring(Coloring):
+class _LogColoring(color.Coloring):
     """Coloring outstream for logging."""
 
     def __init__(self, config):

@@ -41,7 +41,7 @@ try:
 except ImportError:
     kerberos = None
 
-from color import SetDefaultColoring
+import color
 from command import InteractiveCommand
 from command import MirrorSafeCommand
 import editor
@@ -387,7 +387,7 @@ class _Repo:
     def _RunLong(self, name, gopts, argv, git_trace2_event_log):
         """Execute the (longer running) requested subcommand."""
         result = 0
-        SetDefaultColoring(gopts.color)
+        color.SetDefaultColoring(gopts.color)
 
         outer_client = RepoClient(self.repodir)
         repo_client = outer_client
