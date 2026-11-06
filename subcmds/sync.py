@@ -1748,7 +1748,9 @@ later is required to fix a server side protocol bug.
             return project.name
         return None
 
-    def _CheckForBloatedProjects(self, projects, opt):
+    def _CheckForBloatedProjects(
+        self, projects: List[Project], opt: optparse.Values
+    ) -> None:
         """Check for shallow projects that are accumulating unoptimized data.
 
         For projects with clone-depth="1" that are dirty (have local changes),
@@ -1766,12 +1768,14 @@ later is required to fix a server side protocol bug.
         if not git_command.git_require((2, 23, 0)):
             return
 
-        # Skip projects with no worktree on disk, e.g. ones only ever synced
-        # with --network-only.
+        # Skip projects fetched via repo.fetchcmd (which bypasses _RemoteFetch
+        # and manages object storage externally) or with no worktree on disk,
+        # e.g. ones only ever synced with --network-only.
         projects = [
             p
             for p in projects
             if p.clone_depth
+            and not p.UseFetchCmd
             and not p.stateless_prune_needed
             and p.worktree
             and p.Exists

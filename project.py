@@ -1940,15 +1940,11 @@ class Project:
         else:
             alt_dir = None
 
-        custom_fetch_configured = (
-            self.manifest.manifestProject.use_local_gitdirs
-            and self.manifest.manifestProject.fetch_cmd
-            and not isinstance(self, MetaProject)
-        )
+        use_fetch_cmd = self.UseFetchCmd
 
         if (
             clone_bundle
-            and not custom_fetch_configured
+            and not use_fetch_cmd
             and alt_dir is None
             and self._ApplyCloneBundle(
                 initial=is_new, quiet=quiet, verbose=verbose
@@ -1983,7 +1979,7 @@ class Project:
             clone_filter = clone_filter_for_depth
 
         remote_fetched = False
-        if custom_fetch_configured:
+        if use_fetch_cmd:
             # The custom fetch command is executed unconditionally on every sync
             # because it is responsible for updating tracking refs and
             # FETCH_HEAD.
@@ -2153,6 +2149,18 @@ class Project:
             self.upstream = self.revisionExpr
 
         self.revisionId = revisionId
+
+    @property
+    def UseFetchCmd(self) -> bool:
+        """Whether repo.fetchcmd fetches this project's objects.
+
+        MetaProjects (repo itself and the manifests) always use Git. See
+        docs/fetch-cmd.md.
+        """
+        if isinstance(self, MetaProject):
+            return False
+        mp = self.manifest.manifestProject
+        return bool(mp.use_local_gitdirs and mp.fetch_cmd)
 
     @property
     def UseReprojectCmd(self) -> bool:
@@ -5797,7 +5805,7 @@ class ManifestProject(MetaProject):
         return self.config.GetBoolean("repo.uselocalgitdirs")
 
     @property
-    def fetch_cmd(self):
+    def fetch_cmd(self) -> Optional[str]:
         """The fetch command to use."""
         return self.config.GetString("repo.fetchcmd")
 
