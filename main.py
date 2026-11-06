@@ -50,7 +50,7 @@ import event_log
 import git_command
 import git_config
 from git_trace2_event_log import EventLog
-from manifest_xml import RepoClient
+import manifest_xml
 import pager
 import repo_trace
 from subcmds import all_commands
@@ -389,10 +389,10 @@ class _Repo:
         result = 0
         color.SetDefaultColoring(gopts.color)
 
-        outer_client = RepoClient(self.repodir)
+        outer_client = manifest_xml.RepoClient(self.repodir)
         repo_client = outer_client
         if gopts.submanifest_path:
-            repo_client = RepoClient(
+            repo_client = manifest_xml.RepoClient(
                 self.repodir,
                 submanifest_path=gopts.submanifest_path,
                 outer_client=outer_client,

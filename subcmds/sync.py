@@ -64,7 +64,7 @@ import git_config
 import git_refs
 import git_superproject
 from hooks import RepoHook
-from manifest_xml import XmlManifest
+import manifest_xml
 import platform_utils
 from progress import elapsed_str
 from progress import jobs_str
@@ -887,7 +887,7 @@ later is required to fix a server side protocol bug.
         )
 
     def _GetSuperprojectRevision(
-        self, opt: optparse.Values, manifest: XmlManifest
+        self, opt: optparse.Values, manifest: manifest_xml.XmlManifest
     ) -> Optional[str]:
         """Returns the --superproject-revision to apply to manifest.
 
@@ -906,7 +906,7 @@ later is required to fix a server side protocol bug.
         return None
 
     def _ConfigureSuperproject(
-        self, opt: optparse.Values, manifest: XmlManifest
+        self, opt: optparse.Values, manifest: manifest_xml.XmlManifest
     ) -> bool:
         """Configure superproject with options.
 
@@ -2156,7 +2156,7 @@ later is required to fix a server side protocol bug.
         self,
         opt: optparse.Values,
         smart_sync_manifest_path: str,
-        manifest: XmlManifest,
+        manifest: manifest_xml.XmlManifest,
         best_effort: bool = False,
     ) -> str:
         if not manifest.manifest_server:
@@ -2474,7 +2474,7 @@ later is required to fix a server side protocol bug.
     def _SyncToSuperprojectRev(
         self,
         opt: optparse.Values,
-        manifest: XmlManifest,
+        manifest: manifest_xml.XmlManifest,
         mp: Project,
         manifest_name: Optional[str],
         errors: List[Exception],
@@ -2520,7 +2520,7 @@ later is required to fix a server side protocol bug.
             )
 
     def _ResolveSmartSyncOption(
-        self, opt: optparse.Values, manifest: XmlManifest
+        self, opt: optparse.Values, manifest: manifest_xml.XmlManifest
     ) -> bool:
         """Resolve opt.smart_sync from CLI flags, config, and manifest.
 
@@ -2773,7 +2773,7 @@ later is required to fix a server side protocol bug.
         self,
         opt: optparse.Values,
         args: List[str],
-        manifest: XmlManifest,
+        manifest: manifest_xml.XmlManifest,
         all_projects: List[Project],
     ) -> None:
         """Fail when repo.reprojectcmd is used on a manifest nesting projects.

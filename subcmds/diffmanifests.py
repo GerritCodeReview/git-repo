@@ -14,7 +14,7 @@
 
 import color
 from command import PagedCommand
-from manifest_xml import RepoClient
+import manifest_xml
 
 
 class _Coloring(color.Coloring):
@@ -238,12 +238,12 @@ synced and their revisions won't be found.
                 self.printRevision
             ) = self.printText
 
-        manifest1 = RepoClient(self.repodir)
+        manifest1 = manifest_xml.RepoClient(self.repodir)
         manifest1.Override(args[0], load_local_manifests=False)
         if len(args) == 1:
             manifest2 = self.manifest
         else:
-            manifest2 = RepoClient(self.repodir)
+            manifest2 = manifest_xml.RepoClient(self.repodir)
             manifest2.Override(args[1], load_local_manifests=False)
 
         diff = manifest1.projectsDiff(manifest2)
