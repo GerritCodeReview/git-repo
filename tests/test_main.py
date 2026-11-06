@@ -181,7 +181,7 @@ def test_event_log_disabled_skips_add_and_git_hash() -> None:
     project.GetCommitRevisionId.assert_not_called()
 
 
-@mock.patch("main.RepoClient")
+@mock.patch("manifest_xml.RepoClient")
 def test_run_long_gates_event_log_on_flag(
     mock_client_cls: mock.MagicMock, tmp_path: Path
 ) -> None:
