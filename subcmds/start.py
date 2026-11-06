@@ -20,7 +20,7 @@ from command import DEFAULT_LOCAL_JOBS
 import error
 import git_command
 import git_config
-from progress import Progress
+import progress
 import repo_logging
 
 
@@ -137,7 +137,7 @@ revision specified in the manifest.
                 ),
                 range(len(all_projects)),
                 callback=_ProcessResults,
-                output=Progress(
+                output=progress.Progress(
                     f"Starting {nb}", len(all_projects), quiet=opt.quiet
                 ),
                 chunksize=1,

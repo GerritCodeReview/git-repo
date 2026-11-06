@@ -18,7 +18,7 @@ from typing import List, Set
 from command import Command
 import git_command
 import platform_utils
-from progress import Progress
+import progress
 from project import Project
 
 
@@ -124,7 +124,7 @@ are still in the manifests.
             if ask.lower() != "y":
                 return 1
 
-        pm = Progress(
+        pm = progress.Progress(
             "Deleting",
             len(to_delete),
             delay=False,
@@ -180,7 +180,7 @@ are still in the manifests.
             print(f"Would have repacked {len(repack_projects)} projects.")
             return 0
 
-        pm = Progress(
+        pm = progress.Progress(
             "Repacking (this will take a while)",
             len(repack_projects),
             delay=False,
