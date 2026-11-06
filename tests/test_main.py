@@ -20,12 +20,12 @@ from unittest import mock
 import pytest
 
 import event_log
-from main import _Repo
+import main
 
 
 @pytest.fixture(name="repo")
 def fixture_repo():
-    repo = _Repo("repodir")
+    repo = main._Repo("repodir")
     # Overriding the command list here ensures that we are only testing
     # against a fixed set of commands, reducing fragility to new
     # subcommands being added to the main repo tool.
@@ -189,7 +189,7 @@ def test_run_long_gates_event_log_on_flag(
     client = mock_client_cls.return_value
     client.manifest.IsMirror = False
     client.manifest.manifestProject.config.DumpConfigDict.return_value = {}
-    repo = _Repo("repodir")
+    repo = main._Repo("repodir")
 
     for log_path, expected in (
         (None, False),
