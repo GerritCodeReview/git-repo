@@ -20,7 +20,7 @@ from command import Command
 from command import DEFAULT_LOCAL_JOBS
 import error
 import git_command
-from progress import Progress
+import progress
 import repo_logging
 
 
@@ -119,7 +119,7 @@ It is equivalent to "git branch -D <branchname>".
                 functools.partial(self._ExecuteOne, opt.all, nb),
                 range(len(all_projects)),
                 callback=_ProcessResults,
-                output=Progress(
+                output=progress.Progress(
                     f"Abandon {nb}", len(all_projects), quiet=opt.quiet
                 ),
                 chunksize=1,
