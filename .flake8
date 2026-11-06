@@ -12,7 +12,6 @@ per-file-ignores =
     git_trace2_event_log.py: IMR241,
     main.py: IMR241,
     manifest_xml.py: IMR241,
-    project.py: IMR241,
     subcmds/abandon.py: IMR241,
     subcmds/branches.py: IMR241,
     subcmds/checkout.py: IMR241,

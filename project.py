@@ -40,7 +40,7 @@ import git_config
 import git_refs
 import git_status
 import git_superproject
-from git_trace2_event_log import EventLog
+import git_trace2_event_log
 import platform_utils
 import progress
 import repo_logging
@@ -340,7 +340,7 @@ class ReviewableBranch:
         validate_certs=True,
         push_options=None,
         patchset_description=None,
-        git_event_log: Optional[EventLog] = None,
+        git_event_log: Optional[git_trace2_event_log.EventLog] = None,
         quiet: bool = False,
     ) -> None:
         self.project.UploadForReview(
@@ -1569,7 +1569,7 @@ class Project:
         validate_certs=True,
         push_options=None,
         patchset_description=None,
-        git_event_log: Optional[EventLog] = None,
+        git_event_log: Optional[git_trace2_event_log.EventLog] = None,
         quiet: bool = False,
     ) -> None:
         """Uploads the named branch for code review."""
@@ -6032,7 +6032,7 @@ class ManifestProject(MetaProject):
         # TODO(lamontjones): when refactoring sync (and init?) consider how to
         # better get the init options that we should use for new submanifests
         # that are added when syncing an existing workspace.
-        git_event_log = git_event_log or EventLog()
+        git_event_log = git_event_log or git_trace2_event_log.EventLog()
         spec = submanifest.ToSubmanifestSpec()
         # Use the init options from the existing manifestProject, or the parent
         # if it doesn't exist.
@@ -6162,7 +6162,7 @@ class ManifestProject(MetaProject):
             with_platform=False
         )
         platform = platform or "auto"
-        git_event_log = git_event_log or EventLog()
+        git_event_log = git_event_log or git_trace2_event_log.EventLog()
         if outer_manifest and self.manifest.is_submanifest:
             # In a multi-manifest checkout, use the outer manifest unless we are
             # told not to.
