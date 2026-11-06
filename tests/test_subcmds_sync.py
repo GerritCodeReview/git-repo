@@ -3936,6 +3936,7 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         self.opt.smart_sync = True
         self.manifest = mock.MagicMock()
         self.manifest.manifestProject.GetMergeBranch.return_value = "main"
+        self.manifest.manifestProject.GetSmartSyncBranch.return_value = None
         self.smart_sync_manifest_path = "/fake/path/to/manifest.xml"
 
     @mock.patch.object(shutil, "which")
@@ -4198,6 +4199,7 @@ class TestSmartSyncSetupBranch:
         )
         self.manifest.manifest_server_helper = None
         self.manifest.manifestProject.GetMergeBranch.return_value = "main"
+        self.manifest.manifestProject.GetSmartSyncBranch.return_value = None
         self.smart_sync_manifest_path = "/fake/path/to/manifest.xml"
         self.mock_server = mock.MagicMock()
         self.mock_server.GetApprovedManifestV2.return_value = {
@@ -4265,13 +4267,16 @@ class TestSmartSyncSetupBranch:
     def test_no_branch(self, env: Dict[str, str]) -> None:
         """Without any branch, fail before printing or contacting the server."""
         self.opt.quiet = False
-        self.manifest.manifestProject.GetMergeBranch.return_value = None
+        mp = self.manifest.manifestProject
+        mp.GetMergeBranch.return_value = None
+        mp.GetSmartSyncBranch.return_value = "git_main-warmup"
         with mock.patch("builtins.print") as mock_print:
             with pytest.raises(
                 sync.SmartSyncError, match="not tracking a remote branch"
             ):
                 self._RunSetup(env)
             mock_print.assert_not_called()
+        mp.GetSmartSyncBranch.assert_not_called()
         self.cmd._ResolveManifestServerTransport.assert_not_called()
         self.mock_server.GetApprovedManifestV2.assert_not_called()
 
@@ -4288,6 +4293,41 @@ class TestSmartSyncSetupBranch:
         assert self._RunSetup({}) == "manifest.xml"
         mp.GetMergeBranch.assert_not_called()
         self.mock_server.GetManifest.assert_called_once_with("build-1234")
+
+    def test_config_smart_sync_branch(self) -> None:
+        """Configured repo.<branch>.smartsyncbranch overrides manifest
+        branch."""
+        mp = self.manifest.manifestProject
+        mp.GetSmartSyncBranch.return_value = "git_main-warmup"
+        self._RunSetup({})
+        mp.GetMergeBranch.assert_called_once_with(heads_only=True)
+        mp.GetSmartSyncBranch.assert_called_once_with("main")
+        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
+            {"branch": "git_main-warmup"}
+        )
+
+    def test_sync_branch_overrides_config(self) -> None:
+        """Non-empty SYNC_BRANCH takes precedence over checkout config."""
+        mp = self.manifest.manifestProject
+        mp.GetSmartSyncBranch.return_value = "git_main-warmup"
+        self._RunSetup({"SYNC_BRANCH": "git_main-env"})
+        mp.GetMergeBranch.assert_not_called()
+        mp.GetSmartSyncBranch.assert_not_called()
+        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
+            {"branch": "git_main-env"}
+        )
+
+    def test_empty_sync_branch_bypasses_config(self) -> None:
+        """SYNC_BRANCH='' forces the raw manifest branch over checkout
+        config."""
+        mp = self.manifest.manifestProject
+        mp.GetSmartSyncBranch.return_value = "git_main-warmup"
+        self._RunSetup({"SYNC_BRANCH": ""})
+        mp.GetMergeBranch.assert_called_once_with(heads_only=True)
+        mp.GetSmartSyncBranch.assert_not_called()
+        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
+            {"branch": "main"}
+        )
 
 
 class GetApprovedManifestTests(unittest.TestCase):
