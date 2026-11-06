@@ -205,6 +205,21 @@ Sync fails (e.g. the manifest checkout is not tracking a remote branch,
 `<manifest-server>` is not defined, or the server cannot provide a usable
 manifest).
 
+### `repo init --smart-sync-branch=BRANCH`
+
+Users can configure a server-side Smart Sync branch override for the initialized
+manifest branch by passing `--smart-sync-branch=BRANCH` to `repo init`:
+
+```bash
+repo init -u <url> -b main -s --smart-sync-branch=git_main-warmup
+```
+
+This persists `repo.<manifest-branch>.smartsyncbranch` in
+`.repo/manifests.git/config`. Because the setting is scoped to the manifest
+branch, switching branches with `repo init -b <other>` will not send the
+override branch when syncing `<other>`. Passing `--smart-sync-branch=""` clears
+the override for the target manifest branch.
+
 ### sync-smartsync (Manifest Attribute)
 
 The manifest can enable Smart Sync by default for all `repo sync` invocations
@@ -238,14 +253,22 @@ Explicitly enables Smart Sync. Repo will call
 `GetApprovedManifestV2({branch[, target]})`, or
 `GetApprovedManifest(branch[, target])` if the server does not implement it.
 
-The `branch` is determined by the current manifest branch as specified by
-`--manifest-branch=BRANCH` when running `repo init`.  If `${SYNC_BRANCH}` is
-defined and non-empty, its value is sent instead.  This allows selecting a
-branch other than the one the checkout tracks, e.g. a server-side (CI) branch
-name that builds from the same manifest branch.  If `${SYNC_BRANCH}` is unset or
-empty and the manifest checkout is not tracking a remote branch (e.g. it is on a
-detached HEAD, or was initialized with `-b <sha>` or `-b refs/tags/<tag>`),
-Smart Sync fails without contacting the manifest server.
+The `branch` sent to the manifest server is resolved in the following order:
+
+1.  `${SYNC_BRANCH}`: If defined and non-empty, its value is sent directly.
+    If defined as an empty string (`SYNC_BRANCH=""`), repo sends the checkout's
+    raw manifest branch, bypassing `repo.<manifest-branch>.smartsyncbranch`.
+2.  `repo.<manifest-branch>.smartsyncbranch`: If configured via
+    `repo init --smart-sync-branch=BRANCH`, its value is sent for that manifest
+    branch.
+3.  The current manifest branch (as selected by `--manifest-branch=BRANCH` when
+    running `repo init`).
+
+Overriding the branch allows selecting a server-side (CI) branch name that
+builds or warms caches from the same manifest branch. If `${SYNC_BRANCH}` is
+unset or empty and the manifest checkout is not tracking a remote branch (e.g.
+it is on a detached HEAD, or was initialized with `-b <sha>` or
+`-b refs/tags/<tag>`), Smart Sync fails without contacting the manifest server.
 
 The `target` is defined by environment variables in the order below.  If none
 of them match, then `target` is omitted.  These variables were decided as they

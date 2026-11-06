@@ -127,7 +127,7 @@ REPO_REV = os.environ.get("REPO_REV") or "stable"
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 71)
+VERSION = (2, 72)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -249,7 +249,7 @@ def GetParser():
     return parser
 
 
-def InitParser(parser):
+def InitParser(parser: optparse.OptionParser) -> optparse.OptionParser:
     """Setup the CLI parser."""
     # NB: Keep in sync with command.py:_CommonOptions().
 
@@ -454,6 +454,14 @@ def InitParser(parser):
         action="store_false",
         dest="smart_sync",
         help="do not default to smart sync when syncing projects",
+    )
+    group.add_option(
+        "--smart-sync-branch",
+        action="store",
+        default=None,
+        metavar="BRANCH",
+        help="server branch to query when smart syncing the manifest branch "
+        "(empty string to clear)",
     )
     group.add_option(
         "--clone-bundle",
