@@ -21,7 +21,7 @@ import sys
 from typing import Any, Optional
 
 import error
-from git_trace2_event_log_base import BaseEventLog
+import git_trace2_event_log_base
 import platform_utils
 import repo_logging
 import repo_trace
@@ -347,7 +347,7 @@ class GitCommand:
         command.extend(cmdv[1:])
 
         event_log = (
-            BaseEventLog(env=env, add_init_count=True)
+            git_trace2_event_log_base.BaseEventLog(env=env, add_init_count=True)
             if add_event_log
             else None
         )
