@@ -33,8 +33,7 @@ from typing import NamedTuple
 import urllib.parse
 
 import git_command
-from git_config import IsId
-from git_config import RepoConfig
+import git_config
 import platform_utils
 
 
@@ -324,7 +323,7 @@ class Superproject:
             # creating a local branch of the same name.
             refspec = (
                 self.revision
-                if IsId(self.revision)
+                if git_config.IsId(self.revision)
                 else f"{self.revision}:{self.revision}"
             )
             cmd.append(refspec)
@@ -429,7 +428,7 @@ class Superproject:
 
         if not self._Init():
             return SyncResult(False, should_exit)
-        if IsId(self.revision) and self.commit_id:
+        if git_config.IsId(self.revision) and self.commit_id:
             return SyncResult(True, False)
         if not self._Fetch():
             return SyncResult(False, should_exit)
@@ -568,7 +567,7 @@ class Superproject:
 @functools.lru_cache(maxsize=None)
 def _UseSuperprojectFromConfiguration():
     """Returns the user choice of whether to use superproject."""
-    user_cfg = RepoConfig.ForUser()
+    user_cfg = git_config.RepoConfig.ForUser()
     time_now = int(time.time())
 
     user_value = user_cfg.GetBoolean("repo.superprojectChoice")
@@ -602,7 +601,7 @@ def _UseSuperprojectFromConfiguration():
             return user_value
 
     # We don't have an unexpired choice, ask for one.
-    system_cfg = RepoConfig.ForSystem()
+    system_cfg = git_config.RepoConfig.ForSystem()
     system_value = system_cfg.GetBoolean("repo.superprojectChoice")
     if system_value:
         # The system configuration is proposing that we should enable the

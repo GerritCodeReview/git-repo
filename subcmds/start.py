@@ -19,7 +19,7 @@ from command import Command
 from command import DEFAULT_LOCAL_JOBS
 import error
 import git_command
-from git_config import IsImmutable
+import git_config
 from progress import Progress
 import repo_logging
 
@@ -87,7 +87,7 @@ revision specified in the manifest.
         branch_merge = ""
         err = None
         project = cls.get_parallel_context()["projects"][project_idx]
-        if IsImmutable(project.revisionExpr):
+        if git_config.IsImmutable(project.revisionExpr):
             if project.dest_branch:
                 branch_merge = project.dest_branch
             else:

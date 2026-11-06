@@ -48,7 +48,7 @@ import editor
 import error
 import event_log
 import git_command
-from git_config import RepoConfig
+import git_config
 from git_trace2_event_log import EventLog
 from manifest_xml import RepoClient
 import pager
@@ -229,9 +229,9 @@ class _Repo:
             return name, []
 
         key = f"alias.{name}"
-        alias = RepoConfig.ForRepository(self.repodir).GetString(key)
+        alias = git_config.RepoConfig.ForRepository(self.repodir).GetString(key)
         if alias is None:
-            alias = RepoConfig.ForUser().GetString(key)
+            alias = git_config.RepoConfig.ForUser().GetString(key)
         if alias is None:
             return name, []
 
@@ -289,7 +289,7 @@ class _Repo:
         return result
 
     def _autocorrect_command_name(
-        self, name: str, config: RepoConfig
+        self, name: str, config: git_config.RepoConfig
     ) -> Optional[str]:
         """Autocorrect command name based on user's git config."""
 

@@ -36,11 +36,7 @@ import color
 import error
 import fetch
 import git_command
-from git_config import Branch
-from git_config import GetSchemeFromUrl
-from git_config import GetUrlCookieFile
-from git_config import GitConfig
-from git_config import IsId
+import git_config
 import git_refs
 import git_status
 import git_superproject
@@ -237,7 +233,7 @@ class ReviewableBranch:
     def __init__(
         self,
         project: "Project",
-        branch: Branch,
+        branch: git_config.Branch,
         base: str,
         ignore_remote_commits: bool = False,
     ) -> None:
@@ -788,7 +784,11 @@ class Project:
     def SetRevision(self, revisionExpr, revisionId=None):
         """Set revisionId based on revision expression and id"""
         self.revisionExpr = revisionExpr
-        if revisionId is None and revisionExpr and IsId(revisionExpr):
+        if (
+            revisionId is None
+            and revisionExpr
+            and git_config.IsId(revisionExpr)
+        ):
             self.revisionId = self.revisionExpr
         else:
             self.revisionId = revisionId
@@ -803,7 +803,7 @@ class Project:
             self.worktree = None
         self.relpath = relpath
 
-        self.config = GitConfig.ForRepository(
+        self.config = git_config.GitConfig.ForRepository(
             gitdir=self.gitdir, defaults=self.manifest.globalConfig
         )
 
@@ -1767,7 +1767,7 @@ class Project:
 
         # Query the target hash from remote to see if we are up-to-date.
         target_hash = None
-        if IsId(self.revisionExpr):
+        if git_config.IsId(self.revisionExpr):
             target_hash = self.revisionExpr
         else:
             output = self._LsRemote(self.upstream or self.revisionExpr)
@@ -2033,7 +2033,7 @@ class Project:
             has_shallow = self._HasShallow()
             skip_fetch = (
                 optimized_fetch
-                and IsId(self.revisionExpr)
+                and git_config.IsId(self.revisionExpr)
                 and self._CheckForImmutableRevision(
                     use_superproject=use_superproject,
                     depth=depth,
@@ -2484,7 +2484,7 @@ class Project:
             )
 
         branch.remote = self.GetRemote()
-        if not IsId(self.revisionExpr):
+        if not git_config.IsId(self.revisionExpr):
             # In case of manifest sync the revisionExpr might be a SHA1.
             branch.merge = self.revisionExpr
             if not branch.merge.startswith("refs/"):
@@ -2780,7 +2780,9 @@ class Project:
         branch = self.GetBranch(name)
         branch.remote = self.GetRemote()
         branch.merge = branch_merge
-        if not branch.merge.startswith("refs/") and not IsId(branch_merge):
+        if not branch.merge.startswith("refs/") and not git_config.IsId(
+            branch_merge
+        ):
             branch.merge = git_refs.R_HEADS + branch_merge
 
         if revision is None:
@@ -2934,7 +2936,7 @@ class Project:
                 )
                 b.Wait()
             finally:
-                if IsId(old):
+                if git_config.IsId(old):
                     self.bare_git.DetachHead(old)
                 else:
                     branch = (
@@ -3293,7 +3295,7 @@ class Project:
     ) -> bool:
         """Whether to verify upstream ancestry during immutable revision
         check."""
-        if not (IsId(self.revisionExpr) and self.upstream):
+        if not (git_config.IsId(self.revisionExpr) and self.upstream):
             return False
         if self._UseSuperprojectForUpstream(use_superproject):
             return True
@@ -3386,9 +3388,9 @@ class Project:
         # let fetchcmd resolve REPO_RREV from its remote without a separate
         # git ls-remote round-trip.
         repo_trev = None
-        if self.revisionId and IsId(self.revisionId):
+        if self.revisionId and git_config.IsId(self.revisionId):
             repo_trev = self.revisionId
-        elif self.revisionExpr and IsId(self.revisionExpr):
+        elif self.revisionExpr and git_config.IsId(self.revisionExpr):
             repo_trev = self.revisionExpr
 
         env = os.environ.copy()
@@ -3435,7 +3437,7 @@ class Project:
                 self._RefreshConfigIfModified(config_stat)
 
         # Verify postconditions.
-        if not IsId(self.revisionExpr):
+        if not git_config.IsId(self.revisionExpr):
             try:
                 ref_name = self.GetRemote().ToLocal(self.revisionExpr)
             except error.GitError as e:
@@ -3489,7 +3491,11 @@ class Project:
         if not default:
             return None
         for cand in (default.upstreamExpr, default.revisionExpr):
-            if cand and not IsId(cand) and not cand.startswith(git_refs.R_TAGS):
+            if (
+                cand
+                and not git_config.IsId(cand)
+                and not cand.startswith(git_refs.R_TAGS)
+            ):
                 return cand
         return None
 
@@ -3524,7 +3530,7 @@ class Project:
         if depth:
             current_branch_only = True
 
-        is_sha1 = IsId(self.revisionExpr)
+        is_sha1 = git_config.IsId(self.revisionExpr)
         upstream = self.upstream
 
         if current_branch_only:
@@ -3540,7 +3546,7 @@ class Project:
                     upstream = self._GetUpstreamFallback()
 
                 if upstream:
-                    current_branch_only = not IsId(upstream)
+                    current_branch_only = not git_config.IsId(upstream)
                 else:
                     current_branch_only = False
 
@@ -3895,8 +3901,8 @@ class Project:
 
         remote = self.GetRemote()
         bundle_url = remote.url + "/clone.bundle"
-        bundle_url = GitConfig.ForUser().UrlInsteadOf(bundle_url)
-        if GetSchemeFromUrl(bundle_url) not in (
+        bundle_url = git_config.GitConfig.ForUser().UrlInsteadOf(bundle_url)
+        if git_config.GetSchemeFromUrl(bundle_url) not in (
             "http",
             "https",
             "persistent-http",
@@ -3966,7 +3972,7 @@ class Project:
                 cmd += ["--continue-at", "%d" % (size,)]
             else:
                 platform_utils.remove(tmpPath)
-        with GetUrlCookieFile(srcUrl, quiet) as (cookiefile, proxy):
+        with git_config.GetUrlCookieFile(srcUrl, quiet) as (cookiefile, proxy):
             if cookiefile:
                 cmd += ["--cookie", cookiefile]
             if proxy:
@@ -4394,7 +4400,7 @@ class Project:
                         prefix=TMP_GITDIR_PREFIX,
                         dir=os.path.dirname(self.gitdir),
                     )
-                    curr_config = GitConfig.ForRepository(
+                    curr_config = git_config.GitConfig.ForRepository(
                         gitdir=tmp_gitdir, defaults=self.manifest.globalConfig
                     )
                     curr_gitdir = tmp_gitdir
@@ -5337,7 +5343,7 @@ class Project:
                 # Normalize commit IDs to canonical lowercase hexadecimal,
                 # matching the output format of `git rev-parse`.
                 line_lower = line.lower()
-                if IsId(line_lower):
+                if git_config.IsId(line_lower):
                     return line_lower
             return None
 
@@ -6212,7 +6218,11 @@ class ManifestProject(MetaProject):
             if verbose:
                 print(
                     "Downloading manifest from %s"
-                    % (GitConfig.ForUser().UrlInsteadOf(manifest_url),),
+                    % (
+                        git_config.GitConfig.ForUser().UrlInsteadOf(
+                            manifest_url
+                        ),
+                    ),
                     file=sys.stderr,
                 )
 
