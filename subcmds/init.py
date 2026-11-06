@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import optparse
 import os
 import sys
+from typing import List
 
 import color
 from command import InteractiveCommand
@@ -130,7 +132,7 @@ to update the working directory files.
             "REPO_GIT_LFS": "git_lfs",
         }
 
-    def _SyncManifest(self, opt):
+    def _SyncManifest(self, opt: optparse.Values) -> None:
         """Call manifestProject.Sync with arguments from opt.
 
         Args:
@@ -164,6 +166,7 @@ to update the working directory files.
             git_lfs=opt.git_lfs,
             use_superproject=opt.use_superproject,
             smart_sync=opt.smart_sync,
+            smart_sync_branch=opt.smart_sync_branch,
             verbose=opt.verbose,
             current_branch_only=opt.current_branch_only,
             tags=opt.tags,
@@ -296,7 +299,7 @@ to update the working directory files.
             print("   rm -r %s" % os.path.join(self.manifest.topdir, ".repo"))
             print("and try again.")
 
-    def ValidateOptions(self, opt, args):
+    def ValidateOptions(self, opt: optparse.Values, args: List[str]) -> None:
         if opt.reference:
             opt.reference = os.path.expanduser(opt.reference)
 
@@ -323,6 +326,11 @@ to update the working directory files.
             self.OptionParser.error(
                 "--manifest-branch and --manifest-name cannot"
                 " be used with --standalone-manifest."
+            )
+
+        if opt.standalone_manifest and opt.smart_sync_branch is not None:
+            self.OptionParser.error(
+                "--smart-sync-branch cannot be used with --standalone-manifest."
             )
 
         if opt.manifest_upstream_branch and opt.manifest_branch is None:

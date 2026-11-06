@@ -29,7 +29,7 @@ import sys
 import tarfile
 import tempfile
 import time
-from typing import Any, Dict, List, NamedTuple, Optional, Tuple
+from typing import Any, Dict, List, NamedTuple, Optional, Tuple, Union
 import urllib.parse
 
 import color
@@ -5968,6 +5968,43 @@ class ManifestProject(MetaProject):
         """Whether we use smart sync by default."""
         return self.config.GetBoolean("repo.smartsync")
 
+    @staticmethod
+    def _SmartSyncBranchKey(branch: str) -> str:
+        """Return the git config key for a branch's smart sync branch."""
+        return f"repo.{branch}.smartsyncbranch"
+
+    def GetManifestBranch(self) -> Optional[str]:
+        """Return the tracked manifest branch name, or None if unavailable."""
+        cb = self.CurrentBranch
+        if not cb and self.work_git:
+            head = self.work_git.GetHead()
+            if head and head.startswith(git_refs.R_HEADS):
+                cb = head[len(git_refs.R_HEADS) :]
+        if not cb:
+            return None
+        branch = self.GetBranch(cb).merge
+        if not branch:
+            return None
+        if branch.startswith(git_refs.R_HEADS):
+            branch = branch[len(git_refs.R_HEADS) :]
+        return branch
+
+    def GetSmartSyncBranch(self, branch: Optional[str] = None) -> Optional[str]:
+        """Return the configured smart sync branch for |branch|."""
+        if branch is None:
+            branch = self.GetManifestBranch()
+        if not branch:
+            return None
+        return self.config.GetString(self._SmartSyncBranchKey(branch))
+
+    def SetSmartSyncBranch(
+        self, branch: str, smart_sync_branch: Optional[str]
+    ) -> None:
+        """Set or clear the smart sync branch for |branch|."""
+        self.config.SetString(
+            self._SmartSyncBranchKey(branch), smart_sync_branch or None
+        )
+
     @property
     def partial_clone(self):
         """Whether this is a partial clone."""
@@ -6076,36 +6113,37 @@ class ManifestProject(MetaProject):
 
     def Sync(
         self,
-        _kwargs_only=(),
-        manifest_url="",
-        manifest_branch=None,
-        standalone_manifest=False,
-        groups="",
-        mirror=False,
-        reference="",
-        dissociate=False,
-        worktree=False,
-        submodules=False,
-        archive=False,
-        partial_clone=None,
-        depth=None,
-        clone_filter="blob:none",
-        partial_clone_exclude=None,
-        clone_bundle=None,
-        git_lfs=None,
-        use_superproject=None,
+        _kwargs_only: Tuple[Any, ...] = (),
+        manifest_url: Optional[str] = "",
+        manifest_branch: Optional[str] = None,
+        standalone_manifest: Union[bool, str, None] = False,
+        groups: Optional[str] = "",
+        mirror: Optional[bool] = False,
+        reference: Optional[str] = "",
+        dissociate: Optional[bool] = False,
+        worktree: Optional[bool] = False,
+        submodules: Optional[bool] = False,
+        archive: Optional[bool] = False,
+        partial_clone: Optional[bool] = None,
+        depth: Optional[int] = None,
+        clone_filter: Optional[str] = "blob:none",
+        partial_clone_exclude: Optional[str] = None,
+        clone_bundle: Optional[bool] = None,
+        git_lfs: Optional[bool] = None,
+        use_superproject: Optional[bool] = None,
         smart_sync: Optional[bool] = None,
-        verbose=False,
-        current_branch_only=False,
-        git_event_log=None,
-        platform="",
-        manifest_name="default.xml",
-        tags="",
-        this_manifest_only=False,
-        outer_manifest=True,
-        clone_filter_for_depth=None,
-        use_local_gitdirs=False,
-    ):
+        smart_sync_branch: Optional[str] = None,
+        verbose: Optional[bool] = False,
+        current_branch_only: Optional[bool] = False,
+        git_event_log: Optional[EventLog] = None,
+        platform: Optional[str] = "",
+        manifest_name: Optional[str] = "default.xml",
+        tags: Union[bool, str, None] = "",
+        this_manifest_only: Optional[bool] = False,
+        outer_manifest: bool = True,
+        clone_filter_for_depth: Optional[str] = None,
+        use_local_gitdirs: Optional[bool] = False,
+    ) -> bool:
         """Sync the manifest and all submanifests.
 
         Args:
@@ -6137,6 +6175,8 @@ class ManifestProject(MetaProject):
             use_superproject: a boolean, whether to use the manifest
                 superproject to sync projects.
             smart_sync: a boolean, whether to default to smart sync.
+            smart_sync_branch: a string, server branch to query when smart
+                syncing the manifest branch (empty string to clear).
             verbose: a boolean, whether to show all output, rather than only
                 errors.
             current_branch_only: a boolean, whether to only fetch the current
@@ -6185,6 +6225,7 @@ class ManifestProject(MetaProject):
                 git_lfs=git_lfs,
                 use_superproject=use_superproject,
                 smart_sync=smart_sync,
+                smart_sync_branch=smart_sync_branch,
                 verbose=verbose,
                 current_branch_only=current_branch_only,
                 tags=tags,
@@ -6505,6 +6546,11 @@ class ManifestProject(MetaProject):
                         "fatal: cannot create default in manifest %s", msg
                     )
                     return False
+
+            if smart_sync_branch is not None:
+                target_branch = self.GetManifestBranch()
+                if target_branch:
+                    self.SetSmartSyncBranch(target_branch, smart_sync_branch)
 
             if not manifest_name:
                 logger.error("fatal: manifest name (-m) is required.")

@@ -3356,6 +3356,41 @@ class TestSmartSyncSetupBranch(unittest.TestCase):
             {"branch": "main"}
         )
 
+    def test_config_smart_sync_branch(self) -> None:
+        """Configured repo.<branch>.smartsyncbranch overrides manifest
+        branch."""
+        mp = self.manifest.manifestProject
+        mp.GetSmartSyncBranch.return_value = "git_main-warmup"
+        self._RunSetup({})
+        self.cmd._GetBranch.assert_called_once_with(mp)
+        mp.GetSmartSyncBranch.assert_called_once_with("main")
+        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
+            {"branch": "git_main-warmup"}
+        )
+
+    def test_sync_branch_overrides_config(self) -> None:
+        """Non-empty SYNC_BRANCH takes precedence over checkout config."""
+        mp = self.manifest.manifestProject
+        mp.GetSmartSyncBranch.return_value = "git_main-warmup"
+        self._RunSetup({"SYNC_BRANCH": "git_main-env"})
+        self.cmd._GetBranch.assert_not_called()
+        mp.GetSmartSyncBranch.assert_not_called()
+        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
+            {"branch": "git_main-env"}
+        )
+
+    def test_empty_sync_branch_bypasses_config(self) -> None:
+        """SYNC_BRANCH='' forces the raw manifest branch over checkout
+        config."""
+        mp = self.manifest.manifestProject
+        mp.GetSmartSyncBranch.return_value = "git_main-warmup"
+        self._RunSetup({"SYNC_BRANCH": ""})
+        self.cmd._GetBranch.assert_called_once_with(mp)
+        mp.GetSmartSyncBranch.assert_not_called()
+        self.mock_server.GetApprovedManifestV2.assert_called_once_with(
+            {"branch": "main"}
+        )
+
 
 class GetApprovedManifestTests(unittest.TestCase):
     """Tests for _GetApprovedManifest."""

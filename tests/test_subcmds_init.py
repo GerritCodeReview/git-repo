@@ -14,7 +14,7 @@
 
 """Unittests for the subcmds/init.py module."""
 
-from typing import List
+from typing import List, Optional
 
 import pytest
 
@@ -29,6 +29,8 @@ from subcmds import init
         ["--smart-sync"],
         ["--no-smart-sync"],
         ["--head"],
+        ["--smart-sync-branch=git_main-warmup"],
+        ["--smart-sync-branch="],
     ),
 )
 def test_cli_parser_good(argv: List[str]) -> None:
@@ -39,12 +41,32 @@ def test_cli_parser_good(argv: List[str]) -> None:
 
 
 @pytest.mark.parametrize(
+    "argv,expected",
+    (
+        ([], None),
+        (["--smart-sync-branch=git_main-warmup"], "git_main-warmup"),
+        (["--smart-sync-branch="], ""),
+    ),
+)
+def test_cli_smart_sync_branch_value(
+    argv: List[str], expected: Optional[str]
+) -> None:
+    """Check --smart-sync-branch parsed values."""
+    cmd = init.Init()
+    opts, args = cmd.OptionParser.parse_args(argv)
+    cmd.ValidateOptions(opts, args)
+    assert opts.smart_sync_branch == expected
+
+
+@pytest.mark.parametrize(
     "argv",
     (
         # Too many arguments.
         ["url", "asdf"],
         # Conflicting options.
         ["--mirror", "--archive"],
+        ["--standalone-manifest", "--smart-sync-branch=git_main-warmup"],
+        ["--standalone-manifest", "--smart-sync-branch="],
     ),
 )
 def test_cli_parser_bad(argv: List[str]) -> None:
