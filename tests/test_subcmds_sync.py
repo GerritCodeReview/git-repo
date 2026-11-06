@@ -34,6 +34,7 @@ import pytest
 import command
 import error
 import git_command
+import git_config
 import manifest_xml
 from project import SyncNetworkHalfResult
 from subcmds import sync
@@ -556,7 +557,9 @@ def test_cli_smart_sync_with_config(
     cmd = sync.Sync(manifest=manifest)
     opts, args = cmd.OptionParser.parse_args(argv)
     cmd.ValidateOptions(opts, args)
-    with mock.patch.object(sync.RepoConfig, "ForUser", return_value=user_cfg):
+    with mock.patch.object(
+        git_config.RepoConfig, "ForUser", return_value=user_cfg
+    ):
         implicit = cmd._ResolveSmartSyncOption(opts, manifest)
     assert opts.smart_sync == expected_smart_sync
     assert implicit == expected_implicit
@@ -604,7 +607,9 @@ def test_user_config_smart_sync(
     cmd = sync.Sync(manifest=manifest)
     opts, args = cmd.OptionParser.parse_args(argv)
     cmd.ValidateOptions(opts, args)
-    with mock.patch.object(sync.RepoConfig, "ForUser", return_value=user_cfg):
+    with mock.patch.object(
+        git_config.RepoConfig, "ForUser", return_value=user_cfg
+    ):
         implicit = cmd._ResolveSmartSyncOption(opts, manifest)
     user_cfg.GetBoolean.assert_called_once_with("sync.smartsync")
     assert opts.smart_sync == expected_smart_sync
@@ -623,7 +628,7 @@ def test_user_config_smart_sync_from_file(
 ) -> None:
     """Tests that sync.smartsync is read from ~/.repoconfig/config."""
     # ForUser() caches its instance process-wide; make it pick up this HOME.
-    monkeypatch.setattr(sync.RepoConfig, "_ForUser", None)
+    monkeypatch.setattr(git_config.RepoConfig, "_ForUser", None)
     monkeypatch.delenv("REPO_CONFIG_DIR", raising=False)
     cfg_dir = tmp_home_dir / ".repoconfig"
     cfg_dir.mkdir()
@@ -685,7 +690,9 @@ def test_cli_manifest_server_credentials(
 
     cmd = sync.Sync(manifest=manifest)
     opts, args = cmd.OptionParser.parse_args(argv)
-    with mock.patch.object(sync.RepoConfig, "ForUser", return_value=user_cfg):
+    with mock.patch.object(
+        git_config.RepoConfig, "ForUser", return_value=user_cfg
+    ):
         if expected_exception:
             with pytest.raises(expected_exception):
                 cmd.ValidateOptions(opts, args)
@@ -1862,7 +1869,7 @@ class SyncCommand(unittest.TestCase):
         user_cfg = mock.MagicMock()
         user_cfg.GetBoolean.return_value = False
         with mock.patch.object(
-            sync.RepoConfig, "ForUser", return_value=user_cfg
+            git_config.RepoConfig, "ForUser", return_value=user_cfg
         ):
             with mock.patch.object(self.cmd, "_SmartSyncSetup") as mock_setup:
                 with mock.patch.object(self.cmd, "_UpdateRepoProject"):
@@ -1885,7 +1892,7 @@ class SyncCommand(unittest.TestCase):
         user_cfg = mock.MagicMock()
         user_cfg.GetBoolean.return_value = True
         with mock.patch.object(
-            sync.RepoConfig, "ForUser", return_value=user_cfg
+            git_config.RepoConfig, "ForUser", return_value=user_cfg
         ):
             with mock.patch.object(
                 self.cmd,

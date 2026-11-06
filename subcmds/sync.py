@@ -60,8 +60,7 @@ from command import WORKER_BATCH_SIZE
 import error
 import event_log
 import git_command
-from git_config import GetUrlCookieFile
-from git_config import RepoConfig
+import git_config
 import git_refs
 import git_superproject
 from hooks import RepoHook
@@ -2533,7 +2532,7 @@ later is required to fix a server side protocol bug.
         checkout_pref = getattr(manifest.manifestProject, "smart_sync", None)
         if not isinstance(checkout_pref, bool):
             checkout_pref = None
-        user_pref = RepoConfig.ForUser().GetBoolean("sync.smartsync")
+        user_pref = git_config.RepoConfig.ForUser().GetBoolean("sync.smartsync")
         default_allowed = (
             opt.smart_sync is None
             and not opt.smart_tag
@@ -3652,7 +3651,7 @@ class PersistentTransport(xmlrpc.client.Transport):
         self.proxy = proxy
 
     def request(self, host, handler, request_body, verbose=False):
-        with GetUrlCookieFile(self.orig_host, not verbose) as (
+        with git_config.GetUrlCookieFile(self.orig_host, not verbose) as (
             cookiefile,
             cookie_proxy,
         ):
