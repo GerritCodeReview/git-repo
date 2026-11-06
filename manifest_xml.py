@@ -22,7 +22,7 @@ import urllib.parse
 import xml.dom.minidom
 
 import error
-from git_config import GitConfig
+import git_config
 import git_refs
 from git_superproject import Superproject
 import platform_utils
@@ -414,7 +414,7 @@ class XmlManifest:
             default_groups: a string, the default manifest groups to use.
         """
         # TODO(vapier): Move this out of this class.
-        self.globalConfig = GitConfig.ForUser()
+        self.globalConfig = git_config.GitConfig.ForUser()
 
         self.repodir = os.path.abspath(repodir)
         self._CheckLocalPath(submanifest_path)
