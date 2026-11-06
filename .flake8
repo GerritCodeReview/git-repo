@@ -3,7 +3,7 @@
 max-line-length = 80
 per-file-ignores =
     # E501: line too long
-    tests/test_git_superproject.py: E501 IMR241,
+    tests/test_git_superproject.py: E501,
     # IMR241: When using the from syntax, only submodules are imported, not module elements.
     # NB: Do not add any more here.
     command.py: IMR241,
