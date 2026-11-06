@@ -3722,6 +3722,24 @@ class FetchCmdTests(unittest.TestCase):
                     proj._CustomFetch()
                 mock_run.assert_not_called()
 
+    def test_use_fetch_cmd_property(self) -> None:
+        """Test UseFetchCmd requires use_local_gitdirs and skips MetaProject."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir)
+            self.assertTrue(proj.UseFetchCmd)
+
+            proj.manifest.manifestProject.use_local_gitdirs = False
+            self.assertFalse(proj.UseFetchCmd)
+
+            proj.manifest.manifestProject.use_local_gitdirs = True
+            proj.manifest.manifestProject.fetch_cmd = None
+            self.assertFalse(proj.UseFetchCmd)
+
+            fakeproj = _create_meta_project(tempdir)
+            fakeproj.config.SetString("repo.fetchcmd", "echo hi")
+            fakeproj.config.SetBoolean("repo.uselocalgitdirs", True)
+            self.assertFalse(fakeproj.UseFetchCmd)
+
 
 class ReprojectCmdTests(unittest.TestCase):
     """Tests for the repo.reprojectcmd feature."""

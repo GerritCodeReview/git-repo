@@ -987,6 +987,7 @@ class FakeProject:
 
         self.use_git_worktrees = False
         self.UseAlternates = False
+        self.UseFetchCmd = False
         self.UseReprojectCmd = False
         self.manifest = mock.MagicMock()
         self.manifest.GetProjectsWithName.return_value = [self]
@@ -1433,6 +1434,7 @@ class CheckForBloatedProjects(unittest.TestCase):
         self.project.name = "project"
         self.project.Exists = True
         self.project.worktree = self.tempdirobj.name
+        self.project.UseFetchCmd = False
         self.project.stateless_prune_needed = False
         self.cmd.git_event_log = mock.MagicMock()
         self.cmd._bloated_projects = []
@@ -1573,6 +1575,22 @@ class CheckForBloatedProjects(unittest.TestCase):
         self.assertFalse(self.cmd.ExecuteInParallel.called)
         self.assertEqual(self.cmd._bloated_projects, [])
 
+    @mock.patch.object(git_command, "git_require", return_value=True)
+    @mock.patch("subcmds.sync.Progress")
+    def test_fetch_cmd_excluded(
+        self, mock_progress: mock.Mock, mock_git_require: mock.Mock
+    ) -> None:
+        """Projects using repo.fetchcmd are excluded from the bloat check."""
+        self.project.UseFetchCmd = True
+        self.cmd.ExecuteInParallel = mock.Mock()
+
+        with mock.patch.object(self.cmd, "ParallelContext"):
+            self.cmd._CheckForBloatedProjects([self.project], self.opt)
+
+        mock_progress.assert_not_called()
+        self.cmd.ExecuteInParallel.assert_not_called()
+        self.assertEqual(self.cmd._bloated_projects, [])
+
 
 class GCProjectsTest(unittest.TestCase):
     """Tests for Sync._GCProjects."""
@@ -1662,6 +1680,7 @@ class SyncCommand(unittest.TestCase):
         self.project = p = mock.MagicMock(
             use_git_worktrees=False,
             UseAlternates=False,
+            UseFetchCmd=False,
             UseReprojectCmd=False,
             name="project",
             relpath="rel_path",
