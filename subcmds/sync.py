@@ -66,9 +66,7 @@ import git_superproject
 from hooks import RepoHook
 import manifest_xml
 import platform_utils
-from progress import elapsed_str
-from progress import jobs_str
-from progress import Progress
+import progress
 from project import DeleteWorktreeError
 from project import Project
 from project import RemoteSpec
@@ -1142,8 +1140,8 @@ later is required to fix a server side protocol bug.
             return "..working.."
 
         elapsed = time.time() - earliest_time
-        jobs = jobs_str(len(items))
-        return f"{jobs} | {elapsed_str(elapsed)} {earliest_proj}"
+        jobs = progress.jobs_str(len(items))
+        return f"{jobs} | {progress.elapsed_str(elapsed)} {earliest_proj}"
 
     @classmethod
     def InitWorker(cls):
@@ -1160,7 +1158,7 @@ later is required to fix a server side protocol bug.
 
         fetched = set()
         remote_fetched = set()
-        pm = Progress(
+        pm = progress.Progress(
             "Fetching",
             len(projects),
             delay=False,
@@ -1484,7 +1482,7 @@ later is required to fix a server side protocol bug.
                     ),
                     range(len(projects)),
                     callback=_ProcessResults,
-                    output=Progress(
+                    output=progress.Progress(
                         "Checking out", len(all_projects), quiet=opt.quiet
                     ),
                     # Use chunksize=1 to avoid the chance that some workers are
@@ -1616,7 +1614,7 @@ later is required to fix a server side protocol bug.
                 cls._SetPreciousObjectsState(project, opt)
             return
 
-        pm = Progress(
+        pm = progress.Progress(
             "Garbage collecting", len(projects), delay=False, quiet=opt.quiet
         )
         pm.update(inc=0, msg="prescan")
@@ -1783,7 +1781,7 @@ later is required to fix a server side protocol bug.
         if not projects:
             return
 
-        pm = Progress(
+        pm = progress.Progress(
             "Checking for bloat", len(projects), delay=False, quiet=opt.quiet
         )
 
@@ -2810,7 +2808,7 @@ later is required to fix a server side protocol bug.
         raise e
 
     def _CreateSyncProgressThread(
-        self, pm: Progress, stop_event: _threading.Event
+        self, pm: progress.Progress, stop_event: _threading.Event
     ) -> _threading.Thread:
         """Creates and returns a daemon thread to update a Progress object.
 
@@ -3194,7 +3192,7 @@ later is required to fix a server side protocol bug.
         errors: List[Exception],
         opt: optparse.Values,
         pool: Optional[multiprocessing.Pool],
-        pm: Progress,
+        pm: progress.Progress,
         results_sets: List[_InterleavedSyncResult],
     ):
         """Callback to process results from interleaved sync workers."""
@@ -3293,7 +3291,7 @@ later is required to fix a server side protocol bug.
         err_event = multiprocessing.Event()
         finished_relpaths = set()
         project_list = list(all_projects)
-        pm = Progress(
+        pm = progress.Progress(
             "Syncing",
             len(project_list),
             delay=False,
