@@ -15,10 +15,10 @@
 """Event logging in the git trace2 EVENT format."""
 
 import git_command
-from git_trace2_event_log_base import BaseEventLog
+import git_trace2_event_log_base
 
 
-class EventLog(BaseEventLog):
+class EventLog(git_trace2_event_log_base.BaseEventLog):
     """Event log that records events that occurred during a repo invocation.
 
     Events are written to the log as a consecutive JSON entries, one per line.
