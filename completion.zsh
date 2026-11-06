@@ -249,6 +249,7 @@ _repo() {
         '(-s --smart-sync)'{-s,--smart-sync}'[Default to smart sync]' \
         '--no-smart-sync[Do not default to smart sync]' \
         '--head[Do not default to smart sync]' \
+        '--smart-sync-branch=[Smart sync branch]:branch:' \
         '--clone-bundle[Use clone bundle]' \
         '--no-clone-bundle[Do not use clone bundle]' \
         '--git-lfs[Use git lfs]' \
