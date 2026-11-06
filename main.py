@@ -55,8 +55,7 @@ import pager
 import repo_trace
 from subcmds import all_commands
 from subcmds.version import Version
-from wrapper import Wrapper
-from wrapper import WrapperPath
+import wrapper
 
 
 logger = repo_logging.RepoLogger(__file__)
@@ -194,7 +193,7 @@ class _Repo:
             help_commands = "".join(f"\n  {x}" for x in wrapped_commands)
             print(f"Available commands:{help_commands}")
             print("\nRun `repo help <command>` for command-specific details.")
-            print("Bug reports:", Wrapper().BUG_URL)
+            print("Bug reports:", wrapper.Wrapper().BUG_URL)
         else:
             cmd = self.commands["help"]()
             if all_commands:
@@ -628,7 +627,7 @@ def _CheckWrapperVersion(ver_str, repo_path):
         sys.exit(1)
 
     # Pull out the version of the repo launcher we know about to compare.
-    exp = Wrapper().VERSION
+    exp = wrapper.Wrapper().VERSION
     ver = tuple(map(int, ver_str.split(".")))
 
     exp_str = ".".join(map(str, exp))
@@ -646,7 +645,7 @@ repo: error:
             ver_str,
             min_str,
             exp_str,
-            WrapperPath(),
+            wrapper.WrapperPath(),
             repo_path,
         )
         sys.exit(1)
@@ -661,7 +660,7 @@ repo: error:
 ... You should upgrade soon:
     cp %s %s
 """,
-                WrapperPath(),
+                wrapper.WrapperPath(),
                 repo_path,
             )
         else:
@@ -672,7 +671,7 @@ repo: error:
 !!! The launcher is not writable.  Please talk to your sysadmin or distro
 !!! to get an update installed.
 """,
-                WrapperPath(),
+                wrapper.WrapperPath(),
                 repo_path,
             )
 

@@ -25,7 +25,7 @@ import git_trace2_event_log_base
 import platform_utils
 import repo_logging
 import repo_trace
-from wrapper import Wrapper
+import wrapper
 
 
 GIT = "git"
@@ -46,7 +46,7 @@ logger = repo_logging.RepoLogger(__file__)
 class _GitCall:
     @functools.lru_cache(maxsize=None)  # noqa: B019
     def version_tuple(self):
-        ret = Wrapper().ParseGitVersion()
+        ret = wrapper.Wrapper().ParseGitVersion()
         if ret is None:
             msg = "fatal: unable to detect git version"
             logger.error(msg)

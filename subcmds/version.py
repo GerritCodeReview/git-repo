@@ -20,7 +20,7 @@ from command import Command
 from command import MirrorSafeCommand
 import git_command
 import git_refs
-from wrapper import Wrapper
+import wrapper
 
 
 class Version(Command, MirrorSafeCommand):
@@ -81,4 +81,4 @@ class Version(Command, MirrorSafeCommand):
             print(f"OS {uname.system} {uname.release} ({uname.version})")
             processor = uname.processor if uname.processor else "unknown"
             print(f"CPU {uname.machine} ({processor})")
-        print("Bug reports:", Wrapper().BUG_URL)
+        print("Bug reports:", wrapper.Wrapper().BUG_URL)

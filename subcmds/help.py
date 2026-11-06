@@ -21,7 +21,7 @@ from command import MirrorSafeCommand
 from command import PagedCommand
 import error
 from subcmds import all_commands
-from wrapper import Wrapper
+import wrapper
 
 
 class InvalidHelpCommand(error.RepoExitError):
@@ -65,7 +65,7 @@ Displays detailed usage information about a command.
             "See 'repo help <command>' for more information on a "
             "specific command."
         )
-        print("Bug reports:", Wrapper().BUG_URL)
+        print("Bug reports:", wrapper.Wrapper().BUG_URL)
 
     def _PrintCommonCommands(self):
         print("usage: repo COMMAND [ARGS]")
@@ -84,7 +84,7 @@ Displays detailed usage information about a command.
             "command.\nSee 'repo help --all' for a complete list of recognized "
             "commands."
         )
-        print("Bug reports:", Wrapper().BUG_URL)
+        print("Bug reports:", wrapper.Wrapper().BUG_URL)
 
     def _PrintCommandHelp(self, cmd, header_prefix=""):
         class _Out(color.Coloring):

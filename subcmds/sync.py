@@ -76,7 +76,7 @@ from project import SyncBuffer
 import repo_logging
 import repo_trace
 import ssh
-from wrapper import Wrapper
+import wrapper
 
 
 _ONE_DAY_S = 24 * 60 * 60
@@ -3459,9 +3459,8 @@ def _PostRepoUpgrade(manifest, quiet=False):
         except Exception:
             pass
 
-    wrapper = Wrapper()
-    if wrapper.NeedSetupGnuPG():
-        wrapper.SetupGnuPG(quiet)
+    if wrapper.Wrapper().NeedSetupGnuPG():
+        wrapper.Wrapper().SetupGnuPG(quiet)
     for project in manifest.projects:
         if project.Exists:
             project.PostRepoUpgrade()
@@ -3470,12 +3469,11 @@ def _PostRepoUpgrade(manifest, quiet=False):
 def _PostRepoFetch(rp, repo_verify=True, verbose=False):
     if rp.HasChanges:
         logger.warning("info: A new version of repo is available")
-        wrapper = Wrapper()
         try:
             rev = rp.bare_git.describe(rp.GetRevisionId())
         except error.GitError:
             rev = None
-        _, new_rev = wrapper.check_repo_rev(
+        _, new_rev = wrapper.Wrapper().check_repo_rev(
             rp.gitdir, rev, repo_verify=repo_verify
         )
         # See if we're held back due to missing signed tag.
