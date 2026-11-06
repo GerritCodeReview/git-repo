@@ -44,7 +44,6 @@ per-file-ignores =
     tests/e2e/test_partial_clone.py: IMR241,
     tests/e2e/test_sync_modes.py: IMR241,
     tests/e2e/test_workflows.py: IMR241,
-    tests/test_main.py: IMR241,
     tests/test_subcmds_sync.py: IMR241,
 extend-ignore =
     # E203: Whitespace before ':'
