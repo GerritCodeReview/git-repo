@@ -18,7 +18,7 @@ from typing import Iterable, List, Optional
 
 import pytest
 
-from command import Command
+import command
 
 
 class FakeProject:
@@ -136,7 +136,7 @@ def test_get_projects_keeps_derived_subprojects_for_repeated_repo():
         sync_s=True,
     )
     manifest = FakeManifest([project_a, project_b])
-    cmd = Command(manifest=manifest)
+    cmd = command.Command(manifest=manifest)
 
     projects = cmd.GetProjects([])
 
@@ -165,7 +165,7 @@ def test_get_projects_submodule_override(
         derived_subprojects=[submodule],
         sync_s=sync_s,
     )
-    cmd = Command(manifest=FakeManifest([project]))
+    cmd = command.Command(manifest=FakeManifest([project]))
 
     projects = cmd.GetProjects([], submodules_ok=submodules_ok)
 
@@ -214,7 +214,7 @@ def test_get_projects_uses_groups_from_each_manifest_unless_overridden(
         all_projects=[outer_project, *child_manifest.projects],
         effective_groups="outer-group",
     )
-    cmd = Command(manifest=outer_manifest)
+    cmd = command.Command(manifest=outer_manifest)
 
     projects = cmd.GetProjects(
         [],
@@ -248,7 +248,7 @@ def test_get_projects_by_name_uses_groups_from_each_manifest() -> None:
         all_projects=[outer_project, *child_manifest.projects],
         effective_groups="outer-group",
     )
-    cmd = Command(manifest=outer_manifest)
+    cmd = command.Command(manifest=outer_manifest)
 
     projects = cmd.GetProjects(
         ["shared"],
@@ -296,7 +296,7 @@ def test_find_projects_uses_groups_from_each_manifest() -> None:
     )
     outer_manifest.outer_client = outer_manifest
 
-    cmd = Command(manifest=outer_manifest)
+    cmd = command.Command(manifest=outer_manifest)
 
     projects = cmd.FindProjects(["match"], all_manifests=True)
 
@@ -322,7 +322,7 @@ def test_find_projects_uses_explicit_groups() -> None:
         [default_project, override_project],
         effective_groups="default-group",
     )
-    cmd = Command(manifest=manifest)
+    cmd = command.Command(manifest=manifest)
 
     projects = cmd.FindProjects(
         ["override"],
@@ -339,7 +339,7 @@ def test_find_projects_allows_missing_projects() -> None:
         "missing",
         exists=False,
     )
-    cmd = Command(manifest=FakeManifest([project]))
+    cmd = command.Command(manifest=FakeManifest([project]))
 
     projects = cmd.FindProjects(
         ["missing"],

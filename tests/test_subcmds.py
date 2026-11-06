@@ -19,7 +19,7 @@ from typing import Type
 
 import pytest
 
-from command import Command
+import command
 import subcmds
 from subcmds import sync
 
@@ -49,7 +49,7 @@ def test_naming(name: str) -> None:
 
 
 @pytest.mark.parametrize("name, cls", subcmds.all_commands.items())
-def test_help_desc_style(name: str, cls: Type[Command]) -> None:
+def test_help_desc_style(name: str, cls: Type[command.Command]) -> None:
     """Force some consistency in option descriptions.
 
     Python's optparse & argparse has a few default options like --help.
@@ -79,7 +79,7 @@ def test_help_desc_style(name: str, cls: Type[Command]) -> None:
 
 
 @pytest.mark.parametrize("name, cls", subcmds.all_commands.items())
-def test_cli_option_style(name: str, cls: Type[Command]) -> None:
+def test_cli_option_style(name: str, cls: Type[command.Command]) -> None:
     """Force some consistency in option flags."""
     cmd = cls()
     parser = cmd.OptionParser
@@ -142,7 +142,7 @@ def test_cli_option_dest() -> None:
 
 
 @pytest.mark.parametrize("name, cls", subcmds.all_commands.items())
-def test_common_validate_options(name: str, cls: Type[Command]) -> None:
+def test_common_validate_options(name: str, cls: Type[command.Command]) -> None:
     """Verify CommonValidateOptions sets up expected fields."""
     cmd = cls()
     opts, args = cmd.OptionParser.parse_args([])
