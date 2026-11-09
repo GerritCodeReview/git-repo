@@ -33,6 +33,24 @@
       "message": "@gavinmak@google.com forgive me, this is my first code change in this project. Is there anything else I need to do to get this merged? thanks!",
       "revId": "a0ea40d70354a2fc246f50eba9e0f8aaea8a93b8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59f5b4f3_cf3867c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-11-09T18:56:58Z",
+      "side": 1,
+      "message": "this is covered in the docs:\n\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/CONTRIBUTING.md#verify\n\n(yes, we\u0027re expecting you to handle the final steps)",
+      "parentUuid": "c054f8b4_5d09a9d2",
+      "revId": "a0ea40d70354a2fc246f50eba9e0f8aaea8a93b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
