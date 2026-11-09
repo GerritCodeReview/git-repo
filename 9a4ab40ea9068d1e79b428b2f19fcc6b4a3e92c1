@@ -1,0 +1,70 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "974dd666_8eede8ef",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 875,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-09T21:45:19Z",
+      "side": 1,
+      "message": "nit: `XmlManifest._Load` in `manifest_xml.py` has a similar  `m.GetBranch(m.CurrentBranch).merge` logic, would be nice to share a helper/property on `ManifestProject`",
+      "isAi": true,
+      "revId": "9a4ab40ea9068d1e79b428b2f19fcc6b4a3e92c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14863034_61e58030",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3315,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-09T21:45:19Z",
+      "side": 1,
+      "message": "shouldn\u0027t these return `None` too? if someone pins a manifest with `repo init -b \u003csha\u003e` or `repo init -b refs/tags/v1.0` on a manifest with `sync-smartsync\u003d\"true\"`, they aren\u0027t tracking a remote branch (which also contradicts the docs/error msg saying smart sync requires tracking a remote branch)",
+      "range": {
+        "startLine": 3309,
+        "startChar": 0,
+        "endLine": 3315,
+        "endChar": 9999
+      },
+      "isAi": true,
+      "revId": "9a4ab40ea9068d1e79b428b2f19fcc6b4a3e92c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e4fd81e_ab744068",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3384,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-09T21:45:19Z",
+      "side": 1,
+      "message": "would also be great to add an e2e case in `tests/e2e/` covering `repo sync` (and `repo sync -s`) with a detached `.repo/manifests` / `repo init -b \u003csha\u003e` and `sync-smartsync\u003d\"true\"` so we exercise the real `StartBranch(\"default\")` config setup end-to-end",
+      "range": {
+        "startLine": 3360,
+        "startChar": 0,
+        "endLine": 3384,
+        "endChar": 9999
+      },
+      "isAi": true,
+      "revId": "9a4ab40ea9068d1e79b428b2f19fcc6b4a3e92c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
