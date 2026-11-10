@@ -14,16 +14,15 @@ colorama==0.4.6 ; python_full_version < '3.12' and sys_platform == 'win32' \
     # via
     #   click
     #   pytest
-flake8==6.0.0 ; python_full_version < '3.12' \
-    --hash=sha256:9b5bf0ebd06aff1601e38dfc4e91f9b99ba3cdf446e74ee25a9cbbe01aef81ee \
-    --hash=sha256:f34b5cb8bf908ff49e4673d3dbc557b2381a14132b637d53e9d3a59816f4b6ba
+flake8==7.4.1 ; python_full_version < '3.12' \
+    --hash=sha256:7ff3b14668bfec70da5ce3eeaf1756098330598a9a69f1ee312ed315d27c6508
     # via
     #   flake8-bugbear
     #   flake8-comprehensions
-flake8-bugbear==24.12.12 ; python_full_version < '3.12' \
-    --hash=sha256:1b6967436f65ca22a42e5373aaa6f2d87966ade9aa38d4baf2a1be550767545e
-flake8-comprehensions==3.16.0 ; python_full_version < '3.12' \
-    --hash=sha256:7c1eadc9d22e765f39857798febe7766b4d9c519793c6c149e3e13bf99693f70
+flake8-bugbear==26.9.30 ; python_full_version < '3.12' \
+    --hash=sha256:d0fec65b92eb79adde488515c925c33afabbf85d194bd881e845c71444960fc5
+flake8-comprehensions==3.17.0 ; python_full_version < '3.12' \
+    --hash=sha256:3943a9c6f2593c3bc5cc64106c2f89d63c6ecd49c8343597f8257b8fcfc8b0a2
 flake8-import-restrictions==2.1 ; python_full_version < '3.12' \
     --hash=sha256:77522e76b82a6ccb25820b1e195825a695094ceded23a18c1b5ce026c23e1071
 iniconfig==2.3.0 ; python_full_version < '3.12' \
@@ -65,13 +64,11 @@ pluggy==1.6.0 ; python_full_version < '3.12' \
     --hash=sha256:88349c39e440567519b15b27a781bcd3430de6bae17c44c37e758795be96dc5a \
     --hash=sha256:e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746
     # via pytest
-pycodestyle==2.10.0 ; python_full_version < '3.12' \
-    --hash=sha256:8a4eaf0d0495c7395bdab3589ac2db602797d76207242c17d470186815706610 \
-    --hash=sha256:aacf8d28ecea10fad31b2d14943a42d85d007f4d2fee8f212fc05751c8460647
+pycodestyle==2.15.0 ; python_full_version < '3.12' \
+    --hash=sha256:12fd2f73c7b8ee8845a0431111df8faf4c1a07d6e64e2ee7f0c74014dab14181
     # via flake8
-pyflakes==3.0.1 ; python_full_version < '3.12' \
-    --hash=sha256:a968b8baa43926124b692c7e76279bc5fa8c6ef9a2281e4a2a475be69f954bdf \
-    --hash=sha256:ec55bf7fe21fff7f1ad2f7da62363d749e2a470500eab1b555334b67aa1ef8cf
+pyflakes==4.0.3 ; python_full_version < '3.12' \
+    --hash=sha256:330ba92b8c1db2eb0b8f4068f6c58674e2649a99e334769aa50e3e9c5b11c23a
     # via flake8
 pytest==8.3.4 ; python_full_version < '3.12' \
     --hash=sha256:00cba7845d2dccfe5403025a688d60ceae228b1ddaa866d2eb86b2edb6923e73 \
