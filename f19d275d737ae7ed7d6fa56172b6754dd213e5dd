@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d7a2ff6_d54acbf0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2003,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-10T23:10:27Z",
+      "side": 1,
+      "message": "unresolved children/submodules shouldn\u0027t be appended to retained_obsolete since it defers deleting obsolete ancestors until after nested checkouts. DeleteWorktree skips nested .git dirs so this should be safe\n\n```suggestion\n                    if is_unresolved_submodule:\n                        new_project_paths.add(path)\n                        continue\n                    if (skip_paths and path in skip_paths) or is_retained_ancestor:\n                        new_project_paths.add(path)\n                        retained_obsolete.append(norm_path)\n                        continue\n```",
+      "range": {
+        "startLine": 1996,
+        "startChar": 20,
+        "endLine": 2003,
+        "endChar": 32
+      },
+      "revId": "f19d275d737ae7ed7d6fa56172b6754dd213e5dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
