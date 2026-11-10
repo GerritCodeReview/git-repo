@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c17e8bbe_416b10b2",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-10T17:18:57Z",
+      "side": 1,
+      "message": "\"Verify git-repo CL\" is getting:\n```\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d FAILURES \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n___________ GitCommandWaitTest.test_default_returns_non_zero_result ____________\nNot allowed with --fail-on-skip: Skipped: Popen mocking is incomplete \u0026 buggy\n__________ GitCommandWaitTest.test_raises_when_verify_non_zero_result __________\nNot allowed with --fail-on-skip: Skipped: Popen mocking is incomplete \u0026 buggy\n________ GitCommandWaitTest.test_returns_when_no_verify_non_zero_result ________\nNot allowed with --fail-on-skip: Skipped: Popen mocking is incomplete \u0026 buggy\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d short test summary info \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\nFAILED tests/test_git_command.py::GitCommandWaitTest::test_default_returns_non_zero_result\nFAILED tests/test_git_command.py::GitCommandWaitTest::test_raises_when_verify_non_zero_result\nFAILED tests/test_git_command.py::GitCommandWaitTest::test_returns_when_no_verify_non_zero_result\n```\n\nid be fine with deleting these tests altogether if we can\u0027t fix/replace the Popen mocking",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 53
+      },
+      "revId": "808fb1ed39ffe4214215fdf88088c8c9b55993c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
