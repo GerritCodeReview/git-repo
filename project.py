@@ -2157,8 +2157,27 @@ class Project:
         is_tag = rev.startswith(
             git_refs.R_TAGS
         ) or self.revisionExpr.startswith(git_refs.R_TAGS)
-        if all_refs is None and not is_tag and self.bare_ref.is_loaded:
-            all_refs = self.bare_ref.all
+        use_exec_bare_git = isinstance(self.bare_git, self._GitGetByExec)
+        if all_refs is None and not is_tag:
+            if self.bare_ref.is_loaded:
+                all_refs = self.bare_ref.all
+                if (
+                    rev not in all_refs
+                    and use_exec_bare_git
+                    and rev.startswith("refs/")
+                    and self.bare_ref.is_files_authoritative
+                ):
+                    raise error.ManifestInvalidRevisionError(
+                        f"revision {self.revisionExpr} in {self.name} not found"
+                    )
+            elif use_exec_bare_git and rev.startswith("refs/"):
+                resolved = self.bare_ref.TryResolveRef(rev)
+                if resolved is not None:
+                    if resolved:
+                        return resolved
+                    raise error.ManifestInvalidRevisionError(
+                        f"revision {self.revisionExpr} in {self.name} not found"
+                    )
         if all_refs is not None and not is_tag and rev in all_refs:
             return all_refs[rev]
 
@@ -3443,24 +3462,43 @@ class Project:
                 return False
             finally:
                 self._RefreshConfigIfModified(config_stat)
+                self.bare_ref.Invalidate()
 
         # Verify postconditions against the object IDs that the refs record.
         # Peeling them would read the object store, and on one that is
         # populated lazily that downloads the objects fetchcmd just registered
         # before anything needs them. The checkout reads them when it does.
+        use_exec_bare_git = (
+            isinstance(self.bare_git, self._GitGetByExec)
+            and "GIT_DIR" not in os.environ
+            and "GIT_COMMON_DIR" not in os.environ
+        )
         if not git_config.IsId(self.revisionExpr):
             try:
                 ref_name = self.GetRemote().ToLocal(self.revisionExpr)
             except error.GitError as e:
                 logger.error("error: Failed to resolve tracking ref: %s", e)
                 return False
-            try:
-                resolved_ref = self.bare_git.ResolveRef(ref_name)
-            except error.GitError:
-                logger.error(
-                    "error: Postcondition failed: %s not found", ref_name
-                )
-                return False
+            resolved_ref = (
+                self.bare_ref.get(ref_name) if use_exec_bare_git else ""
+            )
+            if not resolved_ref:
+                if (
+                    use_exec_bare_git
+                    and ref_name.startswith("refs/")
+                    and self.bare_ref.is_files_authoritative
+                ):
+                    logger.error(
+                        "error: Postcondition failed: %s not found", ref_name
+                    )
+                    return False
+                try:
+                    resolved_ref = self.bare_git.ResolveRef(ref_name)
+                except error.GitError:
+                    logger.error(
+                        "error: Postcondition failed: %s not found", ref_name
+                    )
+                    return False
             if repo_trev and not self._IsSameCommit(resolved_ref, repo_trev):
                 logger.error(
                     "error: Postcondition failed: %s is %s, expected %s",
@@ -3472,11 +3510,15 @@ class Project:
             if not repo_trev:
                 repo_trev = resolved_ref
 
-        try:
-            fetch_head = self.bare_git.ResolveRef("FETCH_HEAD")
-        except error.GitError:
-            logger.error("error: Postcondition failed: FETCH_HEAD not found")
-            return False
+        fetch_head = self._ReadSimpleFetchHead() if use_exec_bare_git else None
+        if not fetch_head:
+            try:
+                fetch_head = self.bare_git.ResolveRef("FETCH_HEAD")
+            except error.GitError:
+                logger.error(
+                    "error: Postcondition failed: FETCH_HEAD not found"
+                )
+                return False
         if not self._IsSameCommit(fetch_head, repo_trev):
             logger.error(
                 "error: Postcondition failed: FETCH_HEAD is %s, expected %s",
@@ -3486,6 +3528,26 @@ class Project:
             return False
 
         return True
+
+    def _ReadSimpleFetchHead(self) -> Optional[str]:
+        """Read FETCH_HEAD's leading object ID directly when unambiguous."""
+        if os.path.lexists(os.path.join(self.gitdir, "commondir")):
+            return None
+        fh_path = os.path.join(self.gitdir, "FETCH_HEAD")
+        try:
+            if platform_utils.islink(fh_path):
+                return None
+            with open(fh_path, "r", encoding="utf-8") as fd:
+                raw_line = fd.readline(4096)
+        except (OSError, UnicodeDecodeError):
+            return None
+        if not raw_line:
+            return None
+        line = raw_line.rstrip("\r\n")
+        oid = line.split("\t", 1)[0]
+        if git_config.IsId(oid) and not all(ch == "0" for ch in oid):
+            return oid
+        return None
 
     def _IsSameCommit(self, oid: str, expected: str) -> bool:
         """Whether object ID |oid| names the same commit as |expected|.
