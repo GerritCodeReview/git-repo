@@ -1151,7 +1151,7 @@ later is required to fix a server side protocol bug.
         # job at the same time. Then the connection may fail if too many
         # connections are pending and execeeded the socket listening backlog,
         # especially on MacOS.
-        len(cls.get_parallel_context()["sync_dict"])
+        _ = len(cls.get_parallel_context()["sync_dict"])
 
     def _Fetch(self, projects, opt, err_event, ssh_proxy, errors):
         ret = True

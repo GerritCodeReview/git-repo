@@ -46,6 +46,9 @@ per-file-ignores =
     tests/e2e/test_workflows.py: IMR241,
     tests/test_subcmds_sync.py: IMR241,
 extend-ignore =
+    # B042: Exception class with __init__ should pass all args to super().__init__()
+    # We should fix this by reworking our exception classes.
+    B042,
     # E203: Whitespace before ':'
     # See https://github.com/PyCQA/pycodestyle/issues/373
     E203,
