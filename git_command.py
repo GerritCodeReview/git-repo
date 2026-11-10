@@ -87,7 +87,7 @@ def RepoSourceVersion():
     # We avoid GitCommand so we don't run into circular deps -- GitCommand needs
     # to initialize version info we provide.
     if ver is None:
-        env = GitCommand._GetBasicEnv()
+        env = _get_basic_env()
 
         proj = os.path.dirname(os.path.abspath(__file__))
         env[GIT_DIR] = os.path.join(proj, ".git")
@@ -220,6 +220,25 @@ def git_require(min_version, fail=False, msg=""):
     return False
 
 
+def _get_basic_env() -> None:
+    """Return a basic env for running git under.
+
+    This is guaranteed to be side-effect free.
+    """
+    env = os.environ.copy()
+    for key in (
+        repo_trace.REPO_TRACE,
+        GIT_DIR,
+        "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+        "GIT_OBJECT_DIRECTORY",
+        "GIT_WORK_TREE",
+        "GIT_GRAFT_FILE",
+        "GIT_INDEX_FILE",
+    ):
+        env.pop(key, None)
+    return env
+
+
 def _build_env(
     _kwargs_only=(),
     bare: Optional[bool] = False,
@@ -232,7 +251,7 @@ def _build_env(
 
     assert _kwargs_only == (), "_build_env only accepts keyword arguments."
 
-    env = GitCommand._GetBasicEnv()
+    env = _get_basic_env()
 
     if disable_editor:
         env["GIT_EDITOR"] = ":"
@@ -541,25 +560,6 @@ class GitCommand:
             chunk = in_stream.read1(read_size)
 
         return buffer
-
-    @staticmethod
-    def _GetBasicEnv():
-        """Return a basic env for running git under.
-
-        This is guaranteed to be side-effect free.
-        """
-        env = os.environ.copy()
-        for key in (
-            repo_trace.REPO_TRACE,
-            GIT_DIR,
-            "GIT_ALTERNATE_OBJECT_DIRECTORIES",
-            "GIT_OBJECT_DIRECTORY",
-            "GIT_WORK_TREE",
-            "GIT_GRAFT_FILE",
-            "GIT_INDEX_FILE",
-        ):
-            env.pop(key, None)
-        return env
 
     def VerifyCommand(self) -> None:
         if self.rc == 0:
