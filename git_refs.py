@@ -37,7 +37,7 @@ _BAD_REF_CHARS = frozenset(" ~^:?*[\\")
 _StatKey = Tuple[int, int, int, int]
 
 
-def _IsValidRefName(name: str) -> bool:
+def IsValidRefName(name: str) -> bool:
     """Validate a Git refname per git-check-ref-format rules."""
     if not name or name.endswith(".") or ".." in name or "@{" in name:
         return False
@@ -129,7 +129,7 @@ class GitRefs:
             unborn, or None if git must be invoked as a fallback.
         """
         if name != HEAD and (
-            not name.startswith("refs/") or not _IsValidRefName(name)
+            not name.startswith("refs/") or not IsValidRefName(name)
         ):
             return None
 
@@ -325,6 +325,10 @@ class GitRefs:
 
     def _NeedUpdate(self) -> bool:
         with repo_trace.Trace(": scan refs %s", self._gitdir):
+            if self._files_authoritative and (
+                "GIT_DIR" in os.environ or "GIT_COMMON_DIR" in os.environ
+            ):
+                return True
             for name, prev_stat in self._mtime.items():
                 if (
                     self._StatPath(os.path.join(self._gitdir, name))
@@ -397,7 +401,7 @@ class GitRefs:
             if not target or target == R_HEADS + ".invalid":
                 return None
             if target != HEAD and (
-                not target.startswith("refs/") or not _IsValidRefName(target)
+                not target.startswith("refs/") or not IsValidRefName(target)
             ):
                 return None
             return (True, target, st)
@@ -433,7 +437,7 @@ class GitRefs:
                         not _HEX_OID_RE.match(oid)
                         or cls._IsNullRef(oid)
                         or not ref_name.startswith("refs/")
-                        or not _IsValidRefName(ref_name)
+                        or not IsValidRefName(ref_name)
                     ):
                         return None
                     packed[ref_name] = oid
@@ -497,7 +501,7 @@ class GitRefs:
                         if entry.is_symlink():
                             return False
                         ref_name = f"{ref_prefix}/{entry.name}"
-                        if not _IsValidRefName(ref_name):
+                        if not IsValidRefName(ref_name):
                             return False
                         rel_os = os.path.join(rel_os_prefix, entry.name)
                         if entry.is_dir(follow_symlinks=False):
