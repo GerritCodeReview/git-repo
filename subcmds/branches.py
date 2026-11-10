@@ -16,8 +16,7 @@ import itertools
 import sys
 
 import color
-from command import Command
-from command import DEFAULT_LOCAL_JOBS
+import command
 
 
 class BranchColoring(color.Coloring):
@@ -62,7 +61,7 @@ class BranchInfo:
         return self.published_equal == len(self.projects)
 
 
-class Branches(Command):
+class Branches(command.Command):
     COMMON = True
     helpSummary = "View current topic branches"
     helpUsage = """
@@ -96,7 +95,7 @@ the branch appears in, or does not appear in.  If no project list
 is shown, then the branch appears in all projects.
 
 """
-    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = command.DEFAULT_LOCAL_JOBS
 
     @classmethod
     def _ExpandProjectToBranches(cls, project_idx):

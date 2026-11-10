@@ -17,8 +17,7 @@ import sys
 from typing import NamedTuple
 
 import color
-from command import DEFAULT_LOCAL_JOBS
-from command import PagedCommand
+import command
 import error
 import git_command
 import repo_logging
@@ -50,7 +49,7 @@ class GrepCommandError(error.SilentRepoExitError):
     aggregate errors exit silently."""
 
 
-class Grep(PagedCommand):
+class Grep(command.PagedCommand):
     COMMON = True
     helpSummary = "Print lines matching a pattern"
     helpUsage = """
@@ -84,7 +83,7 @@ contain a line that matches both expressions:
   repo grep --all-match -e NODE -e Unexpected
 
 """
-    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = command.DEFAULT_LOCAL_JOBS
 
     @staticmethod
     def _carry_option(_option, opt_str, value, parser):

@@ -18,12 +18,11 @@ import io
 import os
 
 import color
-from command import DEFAULT_LOCAL_JOBS
-from command import PagedCommand
+import command
 import platform_utils
 
 
-class Status(PagedCommand):
+class Status(command.PagedCommand):
     COMMON = True
     helpSummary = "Show the working tree status"
     helpUsage = """
@@ -82,7 +81,7 @@ the following meanings:
  d:  deleted       (    in index, not in work tree                )
 
 """
-    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = command.DEFAULT_LOCAL_JOBS
 
     def _Options(self, p):
         p.add_option(

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import color
-from command import PagedCommand
+import command
 import manifest_xml
 
 
@@ -22,7 +22,7 @@ class _Coloring(color.Coloring):
         super().__init__(config, "status")
 
 
-class Diffmanifests(PagedCommand):
+class Diffmanifests(command.PagedCommand):
     """A command to see logs in projects represented by manifests
 
     This is used to see deeper differences between manifests. Where a simple

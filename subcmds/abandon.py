@@ -16,8 +16,7 @@ import collections
 import functools
 import itertools
 
-from command import Command
-from command import DEFAULT_LOCAL_JOBS
+import command
 import error
 import git_command
 import progress
@@ -31,7 +30,7 @@ class AbandonError(error.RepoExitError):
     """Exit error when abandon command fails."""
 
 
-class Abandon(Command):
+class Abandon(command.Command):
     COMMON = True
     helpSummary = "Permanently abandon a development branch"
     helpUsage = """
@@ -42,7 +41,7 @@ deleting it (and all its history) from your local repository.
 
 It is equivalent to "git branch -D <branchname>".
 """
-    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = command.DEFAULT_LOCAL_JOBS
 
     def _Options(self, p):
         p.add_option(
