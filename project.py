@@ -4664,6 +4664,8 @@ class Project:
                 msg = "manifest set to %s" % self.revisionId
                 dst = self.revisionId + "^0"
                 active_git.UpdateRef(ref, dst, message=msg, detach=True)
+                if active_git is self.bare_git:
+                    self.bare_ref.UpdateRef(ref)
         else:
             remote = self.GetRemote()
             dst = remote.ToLocal(self.revisionExpr)
@@ -4671,6 +4673,8 @@ class Project:
                 msg = "manifest set to %s" % self.revisionExpr
                 if detach:
                     active_git.UpdateRef(ref, dst, message=msg, detach=True)
+                    if active_git is self.bare_git:
+                        self.bare_ref.UpdateRef(ref)
                 else:
                     active_git.symbolic_ref("-m", msg, ref, dst)
                     if active_git is self.bare_git:

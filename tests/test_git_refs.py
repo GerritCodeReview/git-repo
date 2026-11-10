@@ -16,7 +16,9 @@
 
 import os
 from pathlib import Path
+import stat
 import subprocess
+import time
 from typing import Any, List
 from unittest import mock
 
@@ -25,6 +27,7 @@ import utils_for_test
 
 import git_command
 import git_refs
+import platform_utils
 
 
 def _run(repo: str, *args: str) -> str:
@@ -406,3 +409,334 @@ def test_update_symref_propagates_chained_symrefs(tmp_path: Path) -> None:
         assert refs.get("refs/remotes/m/main") == c2
         assert refs.get("refs/remotes/m/alias") == c2
         assert refs.get("HEAD") == c2
+
+
+def test_files_backend_reads_loose_and_packed_without_git(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Files backend reads packed-refs, loose refs, and symrefs in Python."""
+    repo = _init_repo(tmp_path, reftable=False)
+    branch = _run(repo, "symbolic-ref", "--short", "HEAD")
+    c1 = _run(repo, "rev-parse", "HEAD")
+    _run(repo, "tag", "-a", "-m", "v1", "v1.0")
+    tag_oid = _run(repo, "rev-parse", "refs/tags/v1.0")
+    _run(repo, "branch", "packed-only", c1)
+    _run(repo, "branch", "overridden", c1)
+    _run(repo, "pack-refs", "--all")
+
+    Path(os.path.join(repo, "a")).write_text("2", encoding="utf-8")
+    _run(repo, "add", "a")
+    _run(repo, "commit", "-q", "-m", "second")
+    c2 = _run(repo, "rev-parse", "HEAD")
+    _run(repo, "update-ref", "refs/heads/overridden", c2)
+    _run(repo, "symbolic-ref", "refs/remotes/m/main", "refs/heads/overridden")
+
+    monkeypatch.delenv("GIT_DIR", raising=False)
+    monkeypatch.delenv("GIT_COMMON_DIR", raising=False)
+    seen_cmds: List[List[str]] = []
+
+    class SpyGitCommand(git_command.GitCommand):
+        def __init__(
+            self,
+            proj: Any,
+            cmdv: List[str],
+            *args: Any,
+            **kwargs: Any,
+        ) -> None:
+            seen_cmds.append(list(cmdv))
+            super().__init__(proj, cmdv, *args, **kwargs)
+
+    monkeypatch.setattr(git_command, "GitCommand", SpyGitCommand)
+    refs = git_refs.GitRefs(os.path.join(repo, ".git"))
+    assert refs.get("HEAD") == c2
+    assert refs.is_files_authoritative
+    with mock.patch.object(
+        refs,
+        "_LoadAll",
+        side_effect=AssertionError("expected warm GitRefs snapshot"),
+    ):
+        assert refs.get(f"refs/heads/{branch}") == c2
+        assert refs.get("refs/heads/packed-only") == c1
+        assert refs.get("refs/heads/overridden") == c2
+        assert refs.get("refs/remotes/m/main") == c2
+        assert refs.get("refs/tags/v1.0") == tag_oid
+    assert seen_cmds == []
+
+    # A concurrent .lock file triggers clean fallback to git for-each-ref.
+    lock_file = Path(repo, ".git", "refs", "heads", "packed-only.lock")
+    lock_file.write_text("", encoding="utf-8")
+    refs2 = git_refs.GitRefs(os.path.join(repo, ".git"))
+    assert refs2.get("refs/heads/packed-only") == c1
+    assert not refs2.is_files_authoritative
+    assert any(cmd and cmd[0] == "for-each-ref" for cmd in seen_cmds)
+
+
+def test_try_resolve_ref_loose_packed_symref_and_missing(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """TryResolveRef resolves loose/packed/symref refs without full scan."""
+    repo = _init_repo(tmp_path, reftable=False)
+    c1 = _run(repo, "rev-parse", "HEAD")
+    _run(repo, "branch", "packed-branch", c1)
+    _run(repo, "pack-refs", "--all")
+
+    Path(os.path.join(repo, "a")).write_text("2", encoding="utf-8")
+    _run(repo, "add", "a")
+    _run(repo, "commit", "-q", "-m", "second")
+    c2 = _run(repo, "rev-parse", "HEAD")
+    _run(repo, "update-ref", "refs/remotes/origin/main", c2)
+    _run(
+        repo,
+        "symbolic-ref",
+        "refs/remotes/m/main",
+        "refs/remotes/origin/main",
+    )
+
+    monkeypatch.delenv("GIT_DIR", raising=False)
+    monkeypatch.delenv("GIT_COMMON_DIR", raising=False)
+    gitdir = os.path.join(repo, ".git")
+    refs = git_refs.GitRefs(gitdir)
+
+    assert refs.TryResolveRef("refs/remotes/origin/main") == c2
+    assert refs.TryResolveRef("refs/heads/packed-branch") == c1
+    assert refs.TryResolveRef("refs/remotes/m/main") == c2
+    assert refs.TryResolveRef("refs/remotes/origin/missing") == ""
+    assert not refs.is_loaded
+
+    # A .lock file forces None so callers fall back to git.
+    lock_file = Path(gitdir, "refs", "remotes", "origin", "main.lock")
+    lock_file.write_text("", encoding="utf-8")
+    assert refs.TryResolveRef("refs/remotes/origin/main") is None
+
+
+def test_detects_new_packed_refs_and_same_mtime_replace(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """GitRefs reloads on newly created packed-refs and same-mtime replaces."""
+    monkeypatch.delenv("GIT_DIR", raising=False)
+    monkeypatch.delenv("GIT_COMMON_DIR", raising=False)
+
+    repo = os.path.join(tmp_path, "fresh")
+    utils_for_test.init_git_tree(repo, ref_format="files")
+    gitdir = os.path.join(repo, ".git")
+    refs = git_refs.GitRefs(gitdir)
+    assert refs.all == {}
+
+    c1 = "1" * 40
+    c2 = "2" * 40
+    Path(gitdir, "packed-refs").write_text(
+        f"# pack-refs with: peeled fully-peeled sorted \n"
+        f"{c1} refs/remotes/origin/main\n",
+        encoding="utf-8",
+    )
+    assert refs.get("refs/remotes/origin/main") == c1
+
+    loose = Path(gitdir, "refs", "remotes", "origin", "topic")
+    loose.parent.mkdir(parents=True, exist_ok=True)
+    loose.write_text(c1 + "\n", encoding="utf-8")
+    assert refs.get("refs/remotes/origin/topic") == c1
+
+    # Replace the ref the way git does, by renaming a new file over it, then
+    # put the mtimes back so that only the new inode shows.
+    file_st = os.stat(loose)
+    dir_st = os.stat(loose.parent)
+    replacement = Path(gitdir, "topic.new")
+    replacement.write_text(c2 + "\n", encoding="utf-8")
+    os.replace(replacement, loose)
+    os.utime(loose, ns=(file_st.st_atime_ns, file_st.st_mtime_ns))
+    os.utime(loose.parent, ns=(dir_st.st_atime_ns, dir_st.st_mtime_ns))
+    assert refs.get("refs/remotes/origin/topic") == c2
+
+
+@pytest.mark.skipif(
+    platform_utils.isWindows(),
+    reason="st_ctime is the creation time on Windows",
+)
+def test_ctime_only_change_keeps_snapshot_warm(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A ref file whose ctime alone moves does not invalidate the snapshot."""
+    monkeypatch.delenv("GIT_DIR", raising=False)
+    monkeypatch.delenv("GIT_COMMON_DIR", raising=False)
+    repo = _init_repo(tmp_path, reftable=False)
+    branch = _run(repo, "symbolic-ref", "--short", "HEAD")
+    head = _run(repo, "rev-parse", "HEAD")
+    gitdir = os.path.join(repo, ".git")
+    refs = git_refs.GitRefs(gitdir)
+    assert refs.get(f"refs/heads/{branch}") == head
+
+    # Backup agents and file system crawlers tag files with xattrs, which moves
+    # ctime and nothing else. Flipping a mode bit and putting it back does the
+    # same; repeat it until the timestamp granularity lets the change show.
+    loose = os.path.join(gitdir, "refs", "heads", branch)
+    before = os.lstat(loose)
+    mode = stat.S_IMODE(before.st_mode)
+    for _ in range(1000):
+        os.chmod(loose, mode ^ stat.S_IXUSR)
+        os.chmod(loose, mode)
+        if os.lstat(loose).st_ctime_ns != before.st_ctime_ns:
+            break
+        time.sleep(0.001)
+    else:
+        pytest.fail("chmod did not move ctime")
+
+    with mock.patch.object(
+        refs,
+        "_LoadAll",
+        side_effect=AssertionError("expected warm GitRefs snapshot"),
+    ):
+        assert refs.get(f"refs/heads/{branch}") == head
+
+
+@pytest.mark.parametrize("reftable", [False, True])
+def test_update_ref_keeps_snapshot_warm(
+    tmp_path: Path, reftable: bool, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """UpdateRef stays warm on files backend and reloads on reftable."""
+    if reftable and not utils_for_test.supports_reftable():
+        pytest.skip("reftable not supported")
+
+    monkeypatch.delenv("GIT_DIR", raising=False)
+    monkeypatch.delenv("GIT_COMMON_DIR", raising=False)
+    repo = _init_repo(tmp_path, reftable=reftable)
+    branch = _run(repo, "symbolic-ref", "--short", "HEAD")
+    c1 = _run(repo, "rev-parse", "HEAD")
+    _run(repo, "symbolic-ref", "refs/remotes/m/main", f"refs/heads/{branch}")
+
+    Path(os.path.join(repo, "a")).write_text("2", encoding="utf-8")
+    _run(repo, "add", "a")
+    _run(repo, "commit", "-q", "-m", "second")
+    c2 = _run(repo, "rev-parse", "HEAD")
+
+    refs = git_refs.GitRefs(os.path.join(repo, ".git"))
+    assert refs.symref("refs/remotes/m/main") == f"refs/heads/{branch}"
+    assert refs.get("refs/remotes/m/main") == c2
+
+    _run(repo, "update-ref", "--no-deref", "refs/remotes/m/main", c1)
+    refs.UpdateRef("refs/remotes/m/main")
+
+    if reftable:
+        assert not refs.is_loaded
+        assert refs.symref("refs/remotes/m/main") == ""
+        assert refs.get("refs/remotes/m/main") == c1
+    else:
+        with mock.patch.object(
+            refs,
+            "_LoadAll",
+            side_effect=AssertionError("expected warm GitRefs snapshot"),
+        ):
+            assert refs.symref("refs/remotes/m/main") == ""
+            assert refs.get("refs/remotes/m/main") == c1
+
+        # Setting GIT_COMMON_DIR invalidates instead of reading self._gitdir.
+        monkeypatch.setenv("GIT_COMMON_DIR", os.path.join(repo, ".git"))
+        refs.UpdateRef("refs/remotes/m/main")
+        assert not refs.is_loaded
+
+
+def test_symlinked_ref_fallback_reloads_and_breaks_cycles(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Symlink fallback reloads on target changes and breaks dir cycles."""
+    monkeypatch.delenv("GIT_DIR", raising=False)
+    monkeypatch.delenv("GIT_COMMON_DIR", raising=False)
+    repo = _init_repo(tmp_path, reftable=False)
+    c1 = _run(repo, "rev-parse", "HEAD")
+
+    Path(os.path.join(repo, "a")).write_text("2", encoding="utf-8")
+    _run(repo, "add", "a")
+    _run(repo, "commit", "-q", "-m", "second")
+    c2 = _run(repo, "rev-parse", "HEAD")
+
+    gitdir = os.path.join(repo, ".git")
+    ext_dir = tmp_path / "ext_refs"
+    ext_dir.mkdir()
+    target_ref = ext_dir / "linked"
+    target_ref.write_text(c1 + "\n", encoding="utf-8")
+
+    link_ref = os.path.join(gitdir, "refs", "heads", "linked")
+    loop_dir = os.path.join(gitdir, "refs", "heads", "loop")
+    refs_root = os.path.join(gitdir, "refs")
+    used_junction = False
+    try:
+        os.symlink(str(target_ref), link_ref)
+        os.symlink(refs_root, loop_dir, target_is_directory=True)
+        tracked_ref = "refs/heads/linked"
+    except OSError:
+        if not platform_utils.isWindows():
+            raise
+        used_junction = True
+        ext_link_dir = os.path.join(gitdir, "refs", "remotes", "ext")
+        os.makedirs(os.path.dirname(ext_link_dir), exist_ok=True)
+        subprocess.run(
+            ["cmd", "/c", "mklink", "/J", ext_link_dir, str(ext_dir)],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        subprocess.run(
+            ["cmd", "/c", "mklink", "/J", loop_dir, refs_root],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        tracked_ref = "refs/remotes/ext/linked"
+
+    try:
+        # Remove loop_dir before running git for-each-ref, then verify cycle
+        # handling directly on _TrackTreeMtimes so git itself does not walk
+        # deep cyclic paths.
+        if used_junction:
+            os.rmdir(loop_dir)
+        else:
+            os.unlink(loop_dir)
+
+        refs = git_refs.GitRefs(gitdir)
+        assert refs.get(tracked_ref) == c1
+        assert not refs.is_files_authoritative
+
+        replacement = ext_dir / "linked.new"
+        replacement.write_text(c2 + "\n", encoding="utf-8")
+        st = os.stat(target_ref)
+        os.replace(replacement, target_ref)
+        os.utime(target_ref, ns=(st.st_atime_ns, st.st_mtime_ns))
+        assert refs.get(tracked_ref) == c2
+
+        if used_junction:
+            subprocess.run(
+                ["cmd", "/c", "mklink", "/J", loop_dir, refs_root],
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+        else:
+            os.symlink(refs_root, loop_dir, target_is_directory=True)
+
+        refs._TrackTreeMtimes("refs")
+        assert os.path.join("refs", "heads", "loop") in refs._mtime
+    finally:
+        if used_junction:
+            for junc in (
+                loop_dir,
+                os.path.join(gitdir, "refs", "remotes", "ext"),
+            ):
+                if os.path.lexists(junc):
+                    os.rmdir(junc)
+
+    # Also exercise S_ISLNK target and dangling-link tracking directly so
+    # unprivileged Windows runs cover POSIX symlink stat transitions too.
+    lnk = stat.S_IFLNK | 0o777
+    reg = stat.S_IFREG | 0o644
+    fake_link = os.stat_result((lnk, 10, 1, 1, 0, 0, 8, 1, 1, 1))
+    fake_t1 = os.stat_result((reg, 20, 1, 1, 0, 0, 41, 1, 2, 1))
+    fake_t2 = os.stat_result((reg, 21, 1, 1, 0, 0, 41, 1, 2, 1))
+    with mock.patch("os.lstat", return_value=fake_link):
+        with mock.patch("os.stat", return_value=fake_t1):
+            s_t1 = git_refs.GitRefs._StatPath("sym")
+        with mock.patch("os.stat", return_value=fake_t2):
+            s_t2 = git_refs.GitRefs._StatPath("sym")
+        with mock.patch("os.stat", side_effect=FileNotFoundError):
+            s_dangling = git_refs.GitRefs._StatPath("sym")
+    assert s_t1 != s_t2
+    assert s_t1 != s_dangling
+    assert s_dangling is not None and not stat.S_ISDIR(s_dangling[0])
