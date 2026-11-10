@@ -630,6 +630,7 @@ def test_update_ref_keeps_snapshot_warm(
 
         # Setting GIT_COMMON_DIR invalidates instead of reading self._gitdir.
         monkeypatch.setenv("GIT_COMMON_DIR", os.path.join(repo, ".git"))
+        assert refs.TryResolveRef("refs/remotes/m/main") is None
         refs.UpdateRef("refs/remotes/m/main")
         assert not refs.is_loaded
 
