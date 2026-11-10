@@ -4437,14 +4437,29 @@ class Project:
         tmp_gitdir = None
         curr_gitdir = self.gitdir
         curr_config = self.config
+        use_local_worktree_git = (
+            not self.manifest.IsMirror
+            and bool(self.worktree)
+            and not self.use_git_worktrees
+            and self.objdir == self.gitdir
+            and os.path.normpath(self.gitdir)
+            == os.path.normpath(os.path.join(self.worktree, ".git"))
+            and isinstance(self.work_git, self._GitGetByExec)
+            and isinstance(self.bare_objdir, self._GitGetByExec)
+            and "GIT_DIR" not in os.environ
+            and "GIT_WORK_TREE" not in os.environ
+        )
         try:
-            # Initialize the bare repository, which contains all of the objects.
+            # Initialize the object repository, or local worktree .git directly.
             if init_obj_dir:
                 os.makedirs(self.objdir)
                 init_args = ["-q"] if quiet else []
                 if not _HasCustomGitTemplateDir(_GitTemplateEnvKey()):
                     init_args.append("--template=")
-                self.bare_objdir.init(*init_args)
+                if use_local_worktree_git:
+                    self.work_git.init(*init_args)
+                else:
+                    self.bare_objdir.init(*init_args)
 
                 self._UpdateHooks(quiet=quiet)
 
@@ -4544,9 +4559,10 @@ class Project:
                     curr_config.SetString(
                         "filter.lfs.process", "git-lfs filter-process --skip"
                     )
-                curr_config.SetBoolean(
-                    "core.bare", True if self.manifest.IsMirror else None
-                )
+                if self.manifest.IsMirror:
+                    curr_config.SetBoolean("core.bare", True)
+                elif curr_config.GetBoolean("core.bare"):
+                    curr_config.SetBoolean("core.bare", None)
 
                 if tmp_gitdir:
                     platform_utils.rename(tmp_gitdir, self.gitdir)
