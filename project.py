@@ -4539,9 +4539,10 @@ class Project:
                     curr_config.SetString(
                         "filter.lfs.process", "git-lfs filter-process --skip"
                     )
-                curr_config.SetBoolean(
-                    "core.bare", True if self.manifest.IsMirror else None
-                )
+                if self.manifest.IsMirror:
+                    curr_config.SetBoolean("core.bare", True)
+                elif curr_config.GetBoolean("core.bare"):
+                    curr_config.SetBoolean("core.bare", None)
 
                 if tmp_gitdir:
                     platform_utils.rename(tmp_gitdir, self.gitdir)
