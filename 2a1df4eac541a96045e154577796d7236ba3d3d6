@@ -16,6 +16,23 @@
       "message": "it seems your ~/.gitconfig is misconfigured.  it\u0027s too late to fix the CLs you\u0027ve already merged, but please fix all pending ones.",
       "revId": "2a1df4eac541a96045e154577796d7236ba3d3d6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0763eca_fce502cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-10T01:17:55Z",
+      "side": 1,
+      "message": "please rebase again. also I have https://gerrit-review.git.corp.google.com/c/git-repo/+/652263 as a followup CL to this which should address some of the bugs I found. feel free to squash/take what you want from that CL. i\u0027ll review this one regardless after you rebase onto main",
+      "revId": "2a1df4eac541a96045e154577796d7236ba3d3d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
