@@ -29,7 +29,7 @@ import sys
 import tarfile
 import tempfile
 import time
-from typing import Any, Dict, List, NamedTuple, Optional, Tuple
+from typing import Any, Dict, List, Mapping, NamedTuple, Optional, Tuple
 import urllib.parse
 
 import color
@@ -143,6 +143,204 @@ def _HasCustomGitTemplateDir(env_key: Tuple[Any, ...]) -> bool:
         add_event_log=False,
     )
     return p.Wait() == 0 and bool(p.stdout.strip())
+
+
+_SHELL_BUILTINS = frozenset(
+    {
+        ".",
+        "alias",
+        "bg",
+        "bind",
+        "break",
+        "builtin",
+        "caller",
+        "case",
+        "cd",
+        "chdir",
+        "command",
+        "compgen",
+        "complete",
+        "compopt",
+        "continue",
+        "declare",
+        "dirs",
+        "disown",
+        "do",
+        "done",
+        "echo",
+        "elif",
+        "else",
+        "enable",
+        "esac",
+        "eval",
+        "exec",
+        "exit",
+        "export",
+        "false",
+        "fc",
+        "fg",
+        "fi",
+        "for",
+        "function",
+        "getopts",
+        "hash",
+        "help",
+        "history",
+        "if",
+        "in",
+        "jobs",
+        "kill",
+        "let",
+        "local",
+        "logout",
+        "mapfile",
+        "popd",
+        "printf",
+        "pushd",
+        "pwd",
+        "read",
+        "readarray",
+        "readonly",
+        "return",
+        "select",
+        "set",
+        "shift",
+        "shopt",
+        "source",
+        "suspend",
+        "test",
+        "then",
+        "time",
+        "times",
+        "trap",
+        "true",
+        "type",
+        "typeset",
+        "ulimit",
+        "umask",
+        "unalias",
+        "unset",
+        "until",
+        "wait",
+        "while",
+    }
+)
+_HOOK_PROG_RE = re.compile(r"^[A-Za-z0-9_./,@+-]+$")
+_HOOK_PLAIN_ARG_RE = re.compile(r"^[A-Za-z0-9_./:=,@+-]+$")
+_HOOK_ENV_ARG_RE = re.compile(
+    r'^"\$(?:\{([A-Za-z_][A-Za-z0-9_]*)\}|([A-Za-z_][A-Za-z0-9_]*))"$'
+)
+
+
+@functools.lru_cache(maxsize=64)
+def _ParseDirectHookTokens(
+    cmd_str: str,
+) -> Optional[Tuple[str, Tuple[Tuple[bool, str], ...]]]:
+    """Parse a simple hook command into (prog, ((is_env_var, token), ...))."""
+    if not cmd_str or "\n" in cmd_str or "\r" in cmd_str:
+        return None
+    stripped = cmd_str.strip()
+    if not stripped:
+        return None
+    tokens = re.split(r"[ \t]+", stripped)
+    prog = tokens[0]
+    if prog in _SHELL_BUILTINS or not _HOOK_PROG_RE.match(prog):
+        return None
+
+    specs: List[Tuple[bool, str]] = []
+    for tok in tokens[1:]:
+        if _HOOK_PLAIN_ARG_RE.match(tok):
+            specs.append((False, tok))
+        else:
+            m = _HOOK_ENV_ARG_RE.match(tok)
+            if not m:
+                return None
+            specs.append((True, m.group(1) or m.group(2)))
+    return (prog, tuple(specs))
+
+
+def _ResolveDirectHookExec(
+    cmd_str: str, env: Mapping[str, str], cwd: str
+) -> Optional[Tuple[List[str], str]]:
+    """Resolve a simple POSIX hook command to (argv, abs_exe) without /bin/sh.
+
+    Returns None on Windows or when the command uses shell builtins, operators,
+    quoting, or any token whose expansion could differ from direct execve().
+    """
+    if platform_utils.isWindows():
+        return None
+    parsed = _ParseDirectHookTokens(cmd_str)
+    if parsed is None:
+        return None
+    prog, specs = parsed
+    abs_cwd = os.path.abspath(cwd)
+
+    if "/" in prog:
+        cand = (
+            prog
+            if os.path.isabs(prog)
+            else os.path.normpath(os.path.join(abs_cwd, prog))
+        )
+        if not (os.path.isfile(cand) and os.access(cand, os.X_OK)):
+            return None
+        exe = cand
+    else:
+        raw_path = env.get("PATH", os.defpath)
+        if not raw_path:
+            return None
+        norm_dirs = [
+            (
+                p
+                if os.path.isabs(p)
+                else os.path.normpath(os.path.join(abs_cwd, p or "."))
+            )
+            for p in raw_path.split(os.pathsep)
+        ]
+        resolved = shutil.which(prog, path=os.pathsep.join(norm_dirs))
+        if not resolved:
+            return None
+        exe = resolved
+
+    argv: List[str] = [prog]
+    for is_env, val in specs:
+        argv.append(env.get(val, "") if is_env else val)
+    return (argv, exe)
+
+
+def _RunHookCommand(
+    cmd_str: str,
+    cwd: str,
+    env: Dict[str, str],
+    stdout: Any,
+    stderr: Any,
+) -> subprocess.CompletedProcess:
+    """Execute a fetchcmd/reprojectcmd string, avoiding /bin/sh when exact."""
+    resolved = _ResolveDirectHookExec(cmd_str, env, cwd)
+    if resolved is not None:
+        argv, exe = resolved
+        try:
+            return subprocess.run(
+                argv,
+                executable=exe,
+                shell=False,
+                cwd=cwd,
+                env=env,
+                stdout=stdout,
+                stderr=stderr,
+                text=True,
+            )
+        except OSError as e:
+            if e.errno not in (errno.ENOEXEC, errno.EACCES, errno.ENOENT):
+                raise
+    return subprocess.run(
+        cmd_str,
+        shell=True,
+        cwd=cwd,
+        env=env,
+        stdout=stdout,
+        stderr=stderr,
+        text=True,
+    )
 
 
 def _FirstLines(lines: List[str], limit: int = 10) -> str:
@@ -3439,14 +3637,12 @@ class Project:
             repo_trev or "",
         ):
             try:
-                p = subprocess.run(
+                p = _RunHookCommand(
                     cmd_str,
-                    shell=True,
                     cwd=self.manifest.topdir,
                     env=env,
                     stdout=stdout,
                     stderr=stderr,
-                    text=True,
                 )
 
                 if p.returncode != 0:
@@ -4380,14 +4576,12 @@ class Project:
             revid,
         ):
             try:
-                p = subprocess.run(
+                p = _RunHookCommand(
                     cmd_str,
-                    shell=True,
                     cwd=self.manifest.topdir,
                     env=env,
                     stdout=output,
                     stderr=None if verbose else subprocess.STDOUT,
-                    text=True,
                 )
             except OSError as e:
                 raise LocalSyncFail(

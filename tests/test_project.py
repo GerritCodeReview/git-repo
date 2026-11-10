@@ -4048,6 +4048,123 @@ class FetchCmdGitTests(unittest.TestCase):
                 )
                 self.assertEqual(proj.GetRevisionId(), c2)
 
+    def test_resolve_direct_hook_exec_and_fallback(self) -> None:
+        """Direct hook exec bypasses /bin/sh safely and handles relative cwd."""
+        with tempfile.TemporaryDirectory(prefix="repo-tests") as topdir:
+            tool = os.path.join(topdir, "my-hook")
+            with open(tool, "w", encoding="utf-8") as fp:
+                fp.write(
+                    "#!/bin/sh\n"
+                    'printf "%s|%s|%s|%s|%s|%s\\n" "$1" "$2" "$3" "$4" "$5" '
+                    '"$6"\n'
+                )
+            os.chmod(tool, 0o755)
+            env = dict(os.environ)
+            env["PATH"] = topdir + os.pathsep + env.get("PATH", "")
+            env["REPO_PATH"] = "a/b"
+            env["REPO_REMOTE"] = "origin"
+            env["REPO_RREV"] = "main"
+
+            cmd = (
+                'my-hook -i inst git -C "$REPO_PATH" fetch "$REPO_REMOTE" '
+                '"${REPO_RREV}"'
+            )
+            with mock.patch("platform_utils.isWindows", return_value=False):
+                resolved = project._ResolveDirectHookExec(cmd, env, topdir)
+            self.assertIsNotNone(resolved)
+            argv, exe = resolved
+            self.assertEqual(
+                argv,
+                [
+                    "my-hook",
+                    "-i",
+                    "inst",
+                    "git",
+                    "-C",
+                    "a/b",
+                    "fetch",
+                    "origin",
+                    "main",
+                ],
+            )
+            self.assertEqual(os.path.realpath(exe), os.path.realpath(tool))
+
+            # Windows always falls back to shell=True (cmd.exe).
+            with mock.patch("platform_utils.isWindows", return_value=True):
+                self.assertIsNone(
+                    project._ResolveDirectHookExec(cmd, env, topdir)
+                )
+
+            # Builtins, operators, unquoted vars, and assignments use /bin/sh.
+            for shell_only in (
+                "echo hi",
+                "true",
+                "chdir /tmp",
+                "my-hook $REPO_PATH",
+                "FOO=1 my-hook",
+                "my-hook && my-hook",
+                "missing-binary arg",
+            ):
+                self.assertIsNone(
+                    project._ResolveDirectHookExec(shell_only, env, topdir),
+                    shell_only,
+                )
+
+            res = project._RunHookCommand(
+                cmd,
+                cwd=topdir,
+                env=env,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            self.assertEqual(res.returncode, 0)
+            self.assertEqual(res.stdout.strip(), "-i|inst|git|-C|a/b|fetch")
+
+            # Relative PATH entries resolve against cwd, not os.getcwd(), and
+            # relative cwd works with ./prog.
+            subdir = os.path.join(topdir, "subdir")
+            os.makedirs(subdir)
+            wrong_hook = os.path.join(subdir, "only-in-sub")
+            with open(wrong_hook, "w", encoding="utf-8") as fp:
+                fp.write("#!/bin/sh\necho wrong\n")
+            os.chmod(wrong_hook, 0o755)
+            rel_env = dict(env, PATH="." + os.pathsep + "/usr/bin:/bin")
+            old_cwd = os.getcwd()
+            try:
+                os.chdir(subdir)
+                self.assertIsNone(
+                    project._ResolveDirectHookExec(
+                        "only-in-sub", rel_env, topdir
+                    )
+                )
+                os.chdir(os.path.dirname(topdir))
+                rel_res = project._RunHookCommand(
+                    "./my-hook a b c d e f",
+                    cwd=os.path.basename(topdir),
+                    env=rel_env,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                )
+                self.assertEqual(rel_res.returncode, 0)
+                self.assertEqual(rel_res.stdout.strip(), "a|b|c|d|e|f")
+            finally:
+                os.chdir(old_cwd)
+
+            # Shebangless scripts raise ENOEXEC and fall back to /bin/sh.
+            noshebang = os.path.join(topdir, "noshebang")
+            with open(noshebang, "w", encoding="utf-8") as fp:
+                fp.write('echo "fallback:$1"\n')
+            os.chmod(noshebang, 0o755)
+            res2 = project._RunHookCommand(
+                "./noshebang ok",
+                cwd=topdir,
+                env=env,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            self.assertEqual(res2.returncode, 0)
+            self.assertEqual(res2.stdout.strip(), "fallback:ok")
+
 
 class ReprojectCmdTests(unittest.TestCase):
     """Tests for the repo.reprojectcmd feature."""
