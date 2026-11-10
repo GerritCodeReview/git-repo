@@ -15,14 +15,14 @@
 import os
 from typing import List, Set
 
-from command import Command
+import command
 import git_command
 import platform_utils
 import progress
 from project import Project
 
 
-class Gc(Command):
+class Gc(command.Command):
     COMMON = True
     helpSummary = "Cleaning up internal repo and Git state."
     helpUsage = """

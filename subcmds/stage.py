@@ -15,7 +15,7 @@
 import sys
 
 import color
-from command import InteractiveCommand
+import command
 import git_command
 import repo_logging
 
@@ -31,7 +31,7 @@ class _ProjectList(color.Coloring):
         self.help = self.printer("help", fg="red", attr="bold")
 
 
-class Stage(InteractiveCommand):
+class Stage(command.InteractiveCommand):
     COMMON = True
     helpSummary = "Stage file(s) for commit"
     helpUsage = """

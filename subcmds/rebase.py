@@ -15,7 +15,7 @@
 import sys
 
 import color
-from command import Command
+import command
 import error
 import git_command
 from project import Project
@@ -43,7 +43,7 @@ def _ResolveOntoManifest(project: Project) -> str:
         return project.revisionExpr
 
 
-class Rebase(Command):
+class Rebase(command.Command):
     COMMON = True
     helpSummary = "Rebase local branches on upstream branch"
     helpUsage = """

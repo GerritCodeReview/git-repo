@@ -15,17 +15,16 @@
 import itertools
 
 import color
-from command import DEFAULT_LOCAL_JOBS
-from command import PagedCommand
+import command
 
 
-class Prune(PagedCommand):
+class Prune(command.PagedCommand):
     COMMON = True
     helpSummary = "Prune (delete) already merged topics"
     helpUsage = """
 %prog [<project>...]
 """
-    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = command.DEFAULT_LOCAL_JOBS
 
     @classmethod
     def _ExecuteOne(cls, project_idx):

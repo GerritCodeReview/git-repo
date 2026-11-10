@@ -360,7 +360,7 @@ def test_jobs_checkout_help_default(
     expected_default: str,
 ) -> None:
     """Test checkout-jobs default help in interactive and manpage modes."""
-    with mock.patch.object(sync, "DEFAULT_LOCAL_JOBS", 7), mock.patch.object(
+    with mock.patch.object(command, "DEFAULT_LOCAL_JOBS", 7), mock.patch.object(
         command,
         "GENERATE_MANPAGES",
         generate_manpages,

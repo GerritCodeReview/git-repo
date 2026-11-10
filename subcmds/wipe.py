@@ -16,7 +16,7 @@ import os
 import sys
 from typing import List
 
-from command import Command
+import command
 import error
 import platform_utils
 from project import DeleteWorktreeError
@@ -26,7 +26,7 @@ class Error(error.RepoExitError):
     """Exit error when wipe command fails."""
 
 
-class Wipe(Command):
+class Wipe(command.Command):
     """Delete projects from the worktree and .repo"""
 
     COMMON = True

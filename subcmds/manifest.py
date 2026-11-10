@@ -18,7 +18,7 @@ import optparse
 import os
 import sys
 
-from command import PagedCommand
+import command
 import repo_logging
 
 
@@ -35,7 +35,7 @@ class OutputFormat(enum.Enum):
     JSON = enum.auto()
 
 
-class Manifest(PagedCommand):
+class Manifest(command.PagedCommand):
     COMMON = False
     helpSummary = "Manifest inspection utility"
     helpUsage = """

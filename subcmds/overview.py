@@ -15,10 +15,10 @@
 import optparse
 
 import color
-from command import PagedCommand
+import command
 
 
-class Overview(PagedCommand):
+class Overview(command.PagedCommand):
     COMMON = True
     helpSummary = "Display overview of unmerged project branches"
     helpUsage = """

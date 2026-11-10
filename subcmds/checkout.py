@@ -15,8 +15,7 @@
 import functools
 from typing import NamedTuple
 
-from command import Command
-from command import DEFAULT_LOCAL_JOBS
+import command
 import error
 import progress
 import repo_logging
@@ -40,7 +39,7 @@ class MissingBranchError(error.RepoExitError):
     """Exception thrown when no project has specified branch."""
 
 
-class Checkout(Command):
+class Checkout(command.Command):
     COMMON = True
     helpSummary = "Checkout a branch for development"
     helpUsage = """
@@ -54,7 +53,7 @@ The command is equivalent to:
 
   repo forall [<project>...] -c git checkout <branchname>
 """
-    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = command.DEFAULT_LOCAL_JOBS
 
     def ValidateOptions(self, opt, args):
         if not args:
