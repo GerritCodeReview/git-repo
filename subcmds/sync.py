@@ -53,10 +53,7 @@ except ImportError:
         return (256, 256)
 
 
-from command import Command
-from command import DEFAULT_LOCAL_JOBS
-from command import MirrorSafeCommand
-from command import WORKER_BATCH_SIZE
+import command
 import error
 import event_log
 import git_command
@@ -294,7 +291,7 @@ def _WithoutProjects(
 
 def _chunksize(projects: int, jobs: int) -> int:
     """Calculate chunk size for the given number of projects and jobs."""
-    return min(max(1, projects // jobs), WORKER_BATCH_SIZE)
+    return min(max(1, projects // jobs), command.WORKER_BATCH_SIZE)
 
 
 class _FetchOneResult(NamedTuple):
@@ -447,7 +444,7 @@ class TeeStringIO(io.StringIO):
         return ret
 
 
-class Sync(Command, MirrorSafeCommand):
+class Sync(command.Command, command.MirrorSafeCommand):
     COMMON = True
     RESPECT_SMART_SYNC_OVERRIDE = False
     MULTI_MANIFEST_SUPPORT = True
@@ -592,7 +589,9 @@ later is required to fix a server side protocol bug.
             "--jobs or 1). Ignored unless --no-interleaved is set",
         )
 
-        jobs_checkout_default = self._GetHelpForCpuJobCount(DEFAULT_LOCAL_JOBS)
+        jobs_checkout_default = self._GetHelpForCpuJobCount(
+            command.DEFAULT_LOCAL_JOBS
+        )
         p.add_option(
             "--jobs-checkout",
             default=None,
@@ -2389,7 +2388,7 @@ later is required to fix a server side protocol bug.
             if not opt.jobs_network:
                 opt.jobs_network = 1
             if not opt.jobs_checkout:
-                opt.jobs_checkout = DEFAULT_LOCAL_JOBS
+                opt.jobs_checkout = command.DEFAULT_LOCAL_JOBS
             opt.jobs = os.cpu_count()
 
         # Try to stay under user rlimit settings.

@@ -19,8 +19,7 @@ import re
 import sys
 from typing import List
 
-from command import DEFAULT_LOCAL_JOBS
-from command import InteractiveCommand
+import command
 import editor
 import error
 import git_refs
@@ -104,7 +103,7 @@ def _SplitEmails(values):
     return result
 
 
-class Upload(InteractiveCommand):
+class Upload(command.InteractiveCommand):
     COMMON = True
     helpSummary = "Upload changes for code review"
     helpUsage = """
@@ -211,7 +210,7 @@ threshold to a different value.
 Gerrit Code Review:  https://www.gerritcodereview.com/
 
 """
-    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = command.DEFAULT_LOCAL_JOBS
 
     def _Options(self, p):
         p.add_option(

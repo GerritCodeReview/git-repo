@@ -15,7 +15,7 @@
 import re
 import sys
 
-from command import Command
+import command
 import error
 import repo_logging
 
@@ -28,7 +28,7 @@ class DownloadCommandError(error.RepoExitError):
     """Error raised when download command fails."""
 
 
-class Download(Command):
+class Download(command.Command):
     COMMON = True
     helpSummary = "Download and checkout a change"
     helpUsage = """

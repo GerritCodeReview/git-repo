@@ -16,7 +16,7 @@ import re
 import sys
 from typing import Tuple
 
-from command import Command
+import command
 import error
 import git_command
 import repo_logging
@@ -26,7 +26,7 @@ CHANGE_ID_RE = re.compile(r"^\s*Change-Id: I([0-9a-f]{40})\s*$")
 logger = repo_logging.RepoLogger(__file__)
 
 
-class CherryPick(Command):
+class CherryPick(command.Command):
     COMMON = True
     helpSummary = "Cherry-pick a change."
     helpUsage = """

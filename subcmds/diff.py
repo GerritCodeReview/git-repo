@@ -15,11 +15,10 @@
 import functools
 import io
 
-from command import DEFAULT_LOCAL_JOBS
-from command import PagedCommand
+import command
 
 
-class Diff(PagedCommand):
+class Diff(command.PagedCommand):
     COMMON = True
     helpSummary = "Show changes between commit and working tree"
     helpUsage = """
@@ -29,7 +28,7 @@ The -u option causes '%prog' to generate diff output with file paths
 relative to the repository root, so the output can be applied
 to the Unix 'patch' command.
 """
-    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = command.DEFAULT_LOCAL_JOBS
 
     def _Options(self, p):
         p.add_option(

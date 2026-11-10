@@ -16,8 +16,7 @@ import os
 import sys
 
 import color
-from command import InteractiveCommand
-from command import MirrorSafeCommand
+import command
 import error
 import git_command
 import repo_logging
@@ -29,7 +28,7 @@ logger = repo_logging.RepoLogger(__file__)
 _REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
 
 
-class Init(InteractiveCommand, MirrorSafeCommand):
+class Init(command.InteractiveCommand, command.MirrorSafeCommand):
     COMMON = True
     RESPECT_SMART_SYNC_OVERRIDE = False
     MULTI_MANIFEST_SUPPORT = True

@@ -14,11 +14,10 @@
 
 import os
 
-from command import Command
-from command import MirrorSafeCommand
+import command
 
 
-class List(Command, MirrorSafeCommand):
+class List(command.Command, command.MirrorSafeCommand):
     COMMON = True
     helpSummary = "List projects and their associated directories"
     helpUsage = """

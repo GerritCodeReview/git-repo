@@ -16,14 +16,13 @@ import platform
 import sys
 from typing import Any, Tuple
 
-from command import Command
-from command import MirrorSafeCommand
+import command
 import git_command
 import git_refs
 import wrapper
 
 
-class Version(Command, MirrorSafeCommand):
+class Version(command.Command, command.MirrorSafeCommand):
     wrapper_version = None
     wrapper_path = None
 
