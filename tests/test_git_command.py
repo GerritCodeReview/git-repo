@@ -65,6 +65,7 @@ class GitCommandTest(unittest.TestCase):
         )
 
 
+@unittest.skip("Popen mocking is incomplete & buggy")
 class GitCommandWaitTest(unittest.TestCase):
     """Tests the GitCommand class .Wait()"""
 
