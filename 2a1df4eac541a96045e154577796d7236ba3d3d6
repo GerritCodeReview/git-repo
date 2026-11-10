@@ -69,6 +69,24 @@
       "parentUuid": "f0763eca_fce502cd",
       "revId": "2a1df4eac541a96045e154577796d7236ba3d3d6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33182c40_76c7eaa1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-10T23:50:28Z",
+      "side": 1,
+      "message": "thanks, the main thing left is the `_ApplyBatchViaGit` failure path (see inline comment) but overall LGTM",
+      "parentUuid": "1ce1897f_c73aaef0",
+      "revId": "2a1df4eac541a96045e154577796d7236ba3d3d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

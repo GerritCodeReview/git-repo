@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d57c79b2_82b6b5c8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-10T23:50:28Z",
+      "side": 1,
+      "message": "afaict SyncAnalysisState isn\u0027t wrapped in this CL (and runs once per sync, not per project). please wrap SyncAnalysisState or reword the commit msg",
+      "range": {
+        "startLine": 17,
+        "startChar": 49,
+        "endLine": 17,
+        "endChar": 66
+      },
+      "revId": "bc79a4f2903a6c38f0b7bbfe403032ba68239f07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "942f0e1d_c07197c5",
+        "filename": "git_config.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-10T23:50:28Z",
+      "side": 1,
+      "message": "nit: if the body raises and this flush also fails, the caller gets the flush\u0027s `GitError` instead of the original error. let\u0027s swallow flush errors on the exception path\n\n```suggestion\n        try:\n            yield\n        except BaseException:\n            self._batch_depth -\u003d 1\n            if self._batch_depth \u003d\u003d 0:\n                try:\n                    self._FlushBatch(save_json\u003dTrue)\n                except Exception:\n                    self._batch_ops.clear()\n                    self._batch_json_dirty \u003d False\n                    self.ClearCache()\n                    self._RemoveJson()\n            raise\n        else:\n            self._batch_depth -\u003d 1\n            if self._batch_depth \u003d\u003d 0:\n                self._FlushBatch(save_json\u003dTrue)\n```",
+      "range": {
+        "startLine": 285,
+        "startChar": 0,
+        "endLine": 290,
+        "endChar": 48
+      },
+      "revId": "bc79a4f2903a6c38f0b7bbfe403032ba68239f07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ed56e1e_fa3d7abd",
+        "filename": "git_config.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-10T23:50:28Z",
+      "side": 1,
+      "message": "queued values will stay in `_cache` and `_batch_json_dirty` if `_do` fails here. let\u0027s catch, reset, and re-raise (taken from https://gerrit-review.git.corp.google.com/c/git-repo/+/652263/ which also has a test for this change)\n\n```suggestion\n        try:\n            for name, vals in ops:\n                self._do(\"--replace-all\", name, vals[0])\n                for extra in vals[1:]:\n                    self._do(\"--add\", name, extra)\n        except BaseException:\n            self._batch_json_dirty \u003d False\n            self.ClearCache()\n            self._RemoveJson()\n            raise```",
+      "range": {
+        "startLine": 610,
+        "startChar": 0,
+        "endLine": 613,
+        "endChar": 46
+      },
+      "revId": "bc79a4f2903a6c38f0b7bbfe403032ba68239f07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
