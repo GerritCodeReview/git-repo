@@ -14,6 +14,10 @@ colorama==0.4.6 ; python_full_version < '3.12' and sys_platform == 'win32' \
     # via
     #   click
     #   pytest
+execnet==2.1.1 ; python_full_version < '3.12' \
+    --hash=sha256:26dee51f1b80cebd6d0ca8e74dd8745419761d3bef34163928cbebbdc4749fdc \
+    --hash=sha256:58d6d58362e52bfab78f40ebfed9575a3334c41593bee4eb5fcda518290018dc
+    # via pytest-xdist
 flake8==7.4.1 ; python_full_version < '3.12' \
     --hash=sha256:7ff3b14668bfec70da5ce3eeaf1756098330598a9a69f1ee312ed315d27c6508
     # via
@@ -73,3 +77,7 @@ pyflakes==4.0.3 ; python_full_version < '3.12' \
 pytest==8.3.4 ; python_full_version < '3.12' \
     --hash=sha256:00cba7845d2dccfe5403025a688d60ceae228b1ddaa866d2eb86b2edb6923e73 \
     --hash=sha256:50e16d954148559c9a74109af1eaf0c945ba2d8f30f0a3d3335edde19788b6f6
+    # via pytest-xdist
+pytest-xdist==3.8.0 ; python_full_version < '3.12' \
+    --hash=sha256:202ca578cfeb7370784a8c33d6d05bc6e13b4f25b5053c30a152269fd10f0b88 \
+    --hash=sha256:9e659fa2eacbed776070a08a075eff2d9c8e010bab4eea169640c22a1b079f2c
