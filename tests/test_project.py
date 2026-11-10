@@ -3477,6 +3477,11 @@ class FetchCmdTests(unittest.TestCase):
         proj.GetRevisionId = mock.MagicMock(return_value="1234abcd")
         # Every ID names a commit unless a test says otherwise.
         proj.bare_git.ResolveCommit.side_effect = lambda rev: rev
+        # These tests supply ref values through bare_git, so give them a ref
+        # snapshot that knows nothing and does not claim to be complete.
+        proj.bare_ref = mock.MagicMock()
+        proj.bare_ref.get.return_value = ""
+        proj.bare_ref.is_files_authoritative = False
         return proj
 
     def test_fetch_cmd_execution_unpinned_branch(self) -> None:
@@ -3974,6 +3979,79 @@ class FetchCmdGitTests(unittest.TestCase):
             )
 
             self.assertFalse(proj._CustomFetch())
+
+    def test_custom_fetch_cold_and_warm_packed_zero_git_subprocesses(
+        self,
+    ) -> None:
+        """Cold and warm packed-refs _CustomFetch run zero git subprocesses."""
+        with tempfile.TemporaryDirectory(
+            prefix="repo-tests"
+        ) as topdir, mock.patch.dict(
+            os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}, clear=False
+        ):
+            os.environ.pop("GIT_DIR", None)
+            os.environ.pop("GIT_COMMON_DIR", None)
+            c1 = "1111abcd" * 5
+            c2 = "2222ef01" * 5
+            hook = os.path.join(topdir, "fake-fetch")
+            with open(hook, "w", encoding="utf-8") as fp:
+                fp.write(
+                    "#!/bin/sh\n"
+                    'printf "# pack-refs with: peeled fully-peeled sorted \\n'
+                    f'{c1} refs/remotes/origin/main\\n" > '
+                    '"$REPO_PATH/.git/packed-refs"\n'
+                    f'printf "{c1}\\t\\tbranch main\\n" > '
+                    '"$REPO_PATH/.git/FETCH_HEAD"\n'
+                )
+            os.chmod(hook, 0o755)
+
+            proj = self._make_project(
+                topdir,
+                f"{hook} fetch",
+                revision_expr="main",
+                revision_id=None,
+            )
+            proj.config.SetString("remote.origin.url", "http://example.com/r")
+            proj.config.SetString(
+                "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*"
+            )
+            seen_cmds: List[List[str]] = []
+
+            class SpyGitCommand(git_command.GitCommand):
+                def __init__(
+                    self,
+                    proj_arg: Any,
+                    cmdv: List[str],
+                    *args: Any,
+                    **kwargs: Any,
+                ) -> None:
+                    seen_cmds.append(list(cmdv))
+                    super().__init__(proj_arg, cmdv, *args, **kwargs)
+
+            with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
+                # Cold unpinned fetch: tracking ref does not exist yet.
+                self.assertTrue(proj._CustomFetch())
+                self.assertEqual(seen_cmds, [])
+                self.assertTrue(proj.bare_ref.is_loaded)
+                self.assertEqual(proj.GetRevisionId(), c1)
+
+                # Warm unpinned fetch: bare_ref is pre-loaded AND tracking ref
+                # lives only in packed-refs without objects in .git/objects.
+                with open(hook, "w", encoding="utf-8") as fp:
+                    fp.write(
+                        "#!/bin/sh\n"
+                        'printf "# pack-refs with: peeled sorted \\n'
+                        f'{c2} refs/remotes/origin/main\\n" > '
+                        '"$REPO_PATH/.git/packed-refs"\n'
+                        f'printf "{c2}\\tnot-for-merge\\tcommit\\n" > '
+                        '"$REPO_PATH/.git/FETCH_HEAD"\n'
+                    )
+                self.assertTrue(proj._CustomFetch())
+                self.assertEqual(seen_cmds, [])
+                self.assertEqual(
+                    proj.bare_ref.get("refs/remotes/origin/main"), c2
+                )
+                self.assertEqual(proj.GetRevisionId(), c2)
 
 
 class ReprojectCmdTests(unittest.TestCase):
