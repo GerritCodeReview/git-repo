@@ -22,9 +22,7 @@ import subprocess
 import sys
 
 import color
-from command import Command
-from command import DEFAULT_LOCAL_JOBS
-from command import MirrorSafeCommand
+import command
 import repo_logging
 
 
@@ -43,7 +41,7 @@ class ForallColoring(color.Coloring):
         self.project = self.printer("project", attr="bold")
 
 
-class Forall(Command, MirrorSafeCommand):
+class Forall(command.Command, command.MirrorSafeCommand):
     COMMON = False
     helpSummary = "Run a shell command in each project"
     helpUsage = """
@@ -136,7 +134,7 @@ terminal and are not redirected.
 If -e is used, when a command exits unsuccessfully, '%prog' will abort
 without iterating through the remaining projects.
 """
-    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = command.DEFAULT_LOCAL_JOBS
 
     @staticmethod
     def _cmd_option(option, _opt_str, _value, parser):

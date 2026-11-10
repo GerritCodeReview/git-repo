@@ -15,10 +15,10 @@
 import re
 import sys
 import textwrap
+from typing import Sequence
 
 import color
-from command import MirrorSafeCommand
-from command import PagedCommand
+import command
 import error
 import subcmds
 import wrapper
@@ -28,7 +28,7 @@ class InvalidHelpCommand(error.RepoExitError):
     """Invalid command passed into help."""
 
 
-class Help(PagedCommand, MirrorSafeCommand):
+class Help(command.PagedCommand, command.MirrorSafeCommand):
     COMMON = False
     helpSummary = "Display detailed help on a command"
     helpUsage = """
@@ -38,17 +38,17 @@ class Help(PagedCommand, MirrorSafeCommand):
 Displays detailed usage information about a command.
 """
 
-    def _PrintCommands(self, commandNames):
-        """Helper to display |commandNames| summaries."""
+    def _PrintCommands(self, names: Sequence[str]) -> None:
+        """Helper to display |names| summaries."""
         maxlen = 0
-        for name in commandNames:
+        for name in names:
             maxlen = max(maxlen, len(name))
         fmt = "  %%-%ds  %%s" % maxlen
 
-        for name in commandNames:
-            command = subcmds.all_commands[name]()
+        for name in names:
+            cmd = subcmds.all_commands[name]()
             try:
-                summary = command.helpSummary.strip()
+                summary = cmd.helpSummary.strip()
             except AttributeError:
                 summary = ""
             print(fmt % (name, summary))
@@ -59,8 +59,8 @@ Displays detailed usage information about a command.
 
     def PrintAllCommandsBody(self):
         print("The complete list of recognized repo commands is:")
-        commandNames = sorted(subcmds.all_commands)
-        self._PrintCommands(commandNames)
+        names = sorted(subcmds.all_commands)
+        self._PrintCommands(names)
         print(
             "See 'repo help <command>' for more information on a "
             "specific command."
@@ -74,12 +74,10 @@ Displays detailed usage information about a command.
     def PrintCommonCommandsBody(self):
         print("The most commonly used repo commands are:")
 
-        commandNames = sorted(
-            name
-            for name, command in subcmds.all_commands.items()
-            if command.COMMON
+        names = sorted(
+            name for name, cmd in subcmds.all_commands.items() if cmd.COMMON
         )
-        self._PrintCommands(commandNames)
+        self._PrintCommands(names)
 
         print(
             "See 'repo help <command>' for more information on a specific "

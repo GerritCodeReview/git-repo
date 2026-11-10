@@ -15,8 +15,7 @@
 import functools
 from typing import NamedTuple
 
-from command import Command
-from command import DEFAULT_LOCAL_JOBS
+import command
 import error
 import git_command
 import git_config
@@ -36,7 +35,7 @@ class StartError(error.RepoExitError):
     """Exit error for failed start command."""
 
 
-class Start(Command):
+class Start(command.Command):
     COMMON = True
     helpSummary = "Start a new branch for development"
     helpUsage = """
@@ -46,7 +45,7 @@ class Start(Command):
 '%prog' begins a new branch of development, starting from the
 revision specified in the manifest.
 """
-    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = command.DEFAULT_LOCAL_JOBS
 
     def _Options(self, p):
         p.add_option(

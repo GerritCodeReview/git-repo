@@ -42,8 +42,7 @@ except ImportError:
     kerberos = None
 
 import color
-from command import InteractiveCommand
-from command import MirrorSafeCommand
+import command
 import editor
 import error
 import event_log
@@ -415,7 +414,10 @@ class _Repo:
 
         editor.Editor.globalConfig = cmd.client.globalConfig
 
-        if not isinstance(cmd, MirrorSafeCommand) and cmd.manifest.IsMirror:
+        if (
+            not isinstance(cmd, command.MirrorSafeCommand)
+            and cmd.manifest.IsMirror
+        ):
             logger.error("fatal: '%s' requires a working directory", name)
             return 1
 
@@ -432,7 +434,9 @@ class _Repo:
         cmd.CommonValidateOptions(copts, cargs)
         git_trace2_event_log.verbose = copts.verbose
 
-        if gopts.pager is not False and not isinstance(cmd, InteractiveCommand):
+        if gopts.pager is not False and not isinstance(
+            cmd, command.InteractiveCommand
+        ):
             config = cmd.client.globalConfig
             if gopts.pager:
                 use_pager = True

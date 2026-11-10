@@ -21,8 +21,7 @@ import sys
 from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
 import color
-from command import DEFAULT_LOCAL_JOBS
-from command import PagedCommand
+import command
 import git_refs
 
 
@@ -51,9 +50,9 @@ class _Coloring(color.Coloring):
         super().__init__(config, "status")
 
 
-class Info(PagedCommand):
+class Info(command.PagedCommand):
     COMMON = True
-    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = command.DEFAULT_LOCAL_JOBS
     helpSummary = (
         "Get info on the manifest branch, current branch or unmerged branches"
     )

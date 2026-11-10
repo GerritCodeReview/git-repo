@@ -14,8 +14,7 @@
 
 import optparse
 
-from command import Command
-from command import MirrorSafeCommand
+import command
 import error
 import repo_logging
 from subcmds.sync import _PostRepoFetch
@@ -29,7 +28,7 @@ class SelfupdateError(error.RepoExitError):
     """Exit error for failed selfupdate command."""
 
 
-class Selfupdate(Command, MirrorSafeCommand):
+class Selfupdate(command.Command, command.MirrorSafeCommand):
     COMMON = False
     helpSummary = "Update repo to the latest version"
     helpUsage = """
