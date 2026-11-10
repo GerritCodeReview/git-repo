@@ -5179,8 +5179,14 @@ class InitGitDirConfigTests(unittest.TestCase):
                 any("--replace-all" in cmd for cmd in seen_cmds),
                 f"Expected BatchWrites to avoid --replace-all, got {seen_cmds}",
             )
+            self.assertFalse(
+                any("core.bare" in cmd for cmd in seen_cmds),
+                f"Expected local init to avoid core.bare config spawns: "
+                f"{seen_cmds}",
+            )
             reloaded = git_config.GitConfig.ForRepository(gitdir=proj.gitdir)
             fresh = reloaded._ReadGit()
+            self.assertEqual(["false"], fresh.get("core.bare"))
             self.assertEqual(
                 ["git-lfs smudge --skip -- %f"], fresh.get("filter.lfs.smudge")
             )
