@@ -20,6 +20,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type
 import unittest
@@ -3492,6 +3493,11 @@ class FetchCmdTests(unittest.TestCase):
         proj.GetRevisionId = mock.MagicMock(return_value="1234abcd")
         # Every ID names a commit unless a test says otherwise.
         proj.bare_git.ResolveCommit.side_effect = lambda rev: rev
+        # These tests supply ref values through bare_git, so give them a ref
+        # snapshot that knows nothing and does not claim to be complete.
+        proj.bare_ref = mock.MagicMock()
+        proj.bare_ref.get.return_value = ""
+        proj.bare_ref.is_files_authoritative = False
         return proj
 
     def test_fetch_cmd_execution_unpinned_branch(self) -> None:
@@ -3991,6 +3997,112 @@ class FetchCmdGitTests(unittest.TestCase):
             )
 
             self.assertFalse(proj._CustomFetch())
+
+    def test_custom_fetch_cold_and_warm_packed_zero_git_subprocesses(
+        self,
+    ) -> None:
+        """Cold and warm packed-refs _CustomFetch run zero git subprocesses."""
+        with tempfile.TemporaryDirectory(
+            prefix="repo-tests"
+        ) as topdir, mock.patch.dict(
+            os.environ, {"GIT_DEFAULT_REF_FORMAT": "files"}, clear=False
+        ):
+            os.environ.pop("GIT_DIR", None)
+            os.environ.pop("GIT_COMMON_DIR", None)
+            c1 = "1111abcd" * 5
+            c2 = "2222ef01" * 5
+            hook = os.path.join(topdir, "fake_fetch.py")
+            state = Path(topdir, "state.txt")
+            lrev_out = Path(topdir, "lrev.txt")
+            Path(hook).write_text(
+                "import os, pathlib\n"
+                "gitdir = pathlib.Path(os.environ['REPO_PATH'], '.git')\n"
+                "pathlib.Path('lrev.txt').write_text(\n"
+                "    os.environ.get('REPO_LREV', ''), encoding='utf-8'\n"
+                ")\n"
+                "mode, oid = pathlib.Path('state.txt').read_text().split(':')\n"
+                "packed = gitdir / 'packed-refs'\n"
+                "st = packed.stat() if packed.exists() else None\n"
+                "if mode != 'skip_ref':\n"
+                "    hdr = '# pack-refs with: peeled sorted \\n'\n"
+                "    ref = f'{oid} refs/remotes/origin/main\\n'\n"
+                "    packed.write_bytes((hdr + ref).encode())\n"
+                "    if st is not None:\n"
+                "        ns = (st.st_atime_ns, st.st_mtime_ns)\n"
+                "        os.utime(packed, ns=ns)\n"
+                "(gitdir / 'FETCH_HEAD').write_bytes(\n"
+                "    f'{oid}\\tnot-for-merge\\tcommit\\n'.encode()\n"
+                ")\n",
+                encoding="utf-8",
+            )
+            state.write_text(f"write:{c1}", encoding="utf-8")
+
+            proj = self._make_project(
+                topdir,
+                f'"{sys.executable}" fake_fetch.py',
+                revision_expr="main",
+                revision_id=None,
+            )
+            proj.config.SetString("remote.origin.url", "http://example.com/r")
+            proj.config.SetString(
+                "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*"
+            )
+            seen_cmds: List[List[str]] = []
+
+            class SpyGitCommand(git_command.GitCommand):
+                def __init__(
+                    self,
+                    proj_arg: Any,
+                    cmdv: List[str],
+                    *args: Any,
+                    **kwargs: Any,
+                ) -> None:
+                    seen_cmds.append(list(cmdv))
+                    super().__init__(proj_arg, cmdv, *args, **kwargs)
+
+            with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
+                # Cold unpinned fetch: tracking ref does not exist yet.
+                self.assertTrue(proj._CustomFetch())
+                self.assertEqual(seen_cmds, [])
+                self.assertEqual(lrev_out.read_text(encoding="utf-8"), "")
+                self.assertTrue(proj.bare_ref.is_loaded)
+                self.assertEqual(proj.GetRevisionId(), c1)
+
+                # Cold TryResolveRef hit resolves packed-refs without scanning.
+                proj.bare_ref.Invalidate()
+                self.assertEqual(proj.GetRevisionId(), c1)
+                self.assertFalse(proj.bare_ref.is_loaded)
+                self.assertEqual(seen_cmds, [])
+
+                # Warm unpinned fetch: bare_ref is pre-loaded AND packed-refs
+                # keeps identical size and mtime, requiring Invalidate().
+                self.assertEqual(
+                    proj.bare_ref.get("refs/remotes/origin/main"), c1
+                )
+                state.write_text(f"write:{c2}", encoding="utf-8")
+                self.assertTrue(proj._CustomFetch())
+                self.assertEqual(seen_cmds, [])
+                self.assertEqual(lrev_out.read_text(encoding="utf-8"), c1)
+                self.assertEqual(
+                    proj.bare_ref.get("refs/remotes/origin/main"), c2
+                )
+                self.assertEqual(proj.GetRevisionId(), c2)
+
+                # Authoritative missing tracking ref fails with zero git spawns.
+                proj.revisionExpr = "missing"
+                with self.assertRaises(error.ManifestInvalidRevisionError):
+                    proj.GetRevisionId()
+                state.write_text(f"skip_ref:{c2}", encoding="utf-8")
+                self.assertFalse(proj._CustomFetch())
+                self.assertEqual(seen_cmds, [])
+
+                # Rev-parse syntax falls back to git instead of fast-failing.
+                proj.revisionExpr = "main~1"
+                with self.assertRaises(error.ManifestInvalidRevisionError):
+                    proj.GetRevisionId()
+                self.assertTrue(
+                    any(cmd and cmd[0] == "rev-parse" for cmd in seen_cmds)
+                )
 
 
 class ReprojectCmdTests(unittest.TestCase):
