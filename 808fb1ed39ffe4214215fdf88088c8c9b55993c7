@@ -22,6 +22,30 @@
       },
       "revId": "808fb1ed39ffe4214215fdf88088c8c9b55993c7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24062d70_f1d0121e",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-11-10T19:03:24Z",
+      "side": 1,
+      "message": "i don\u0027t have the cycles to rewrite the subprocess mocking, so just going to delete",
+      "parentUuid": "c17e8bbe_416b10b2",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 53
+      },
+      "revId": "808fb1ed39ffe4214215fdf88088c8c9b55993c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
