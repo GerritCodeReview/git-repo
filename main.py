@@ -37,6 +37,8 @@ import repo_logging
 
 
 try:
+    # Optional third-party module.
+    # pyrefly: ignore
     import kerberos
 except ImportError:
     kerberos = None
