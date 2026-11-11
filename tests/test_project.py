@@ -5807,3 +5807,131 @@ class SparseCheckoutFetchFilterTests(unittest.TestCase):
             self.assertTrue(
                 self._bundle_applied(proj, partial_clone_exclude={proj.name})
             )
+
+
+class CloneDepthPartialCloneTagsTests(unittest.TestCase):
+    """Check tag syncing and depth filters on depth-configured projects."""
+
+    def _get_project(
+        self,
+        tempdir: str,
+        clone_depth: Optional[int] = 1,
+        manifest_depth: Optional[int] = None,
+        sync_tags: Optional[bool] = None,
+    ) -> project.Project:
+        proj = _create_mock_project(
+            tempdir,
+            revisionExpr="refs/heads/main",
+            depth=manifest_depth,
+        )
+        proj.clone_depth = clone_depth
+        if sync_tags is None:
+            sync_tags = not bool(clone_depth or manifest_depth)
+        proj.sync_tags = sync_tags
+        proj.manifest.globalConfig.GetString.return_value = None
+        proj._InitGitDir = mock.MagicMock()
+        proj._InitRemote = mock.MagicMock()
+        proj._InitMRef = mock.MagicMock()
+        proj._ApplyCloneBundle = mock.MagicMock(return_value=False)
+        proj._RemoteFetch = mock.MagicMock(return_value=True)
+        return proj
+
+    def _sync_kwargs(
+        self, proj: project.Project, **kwargs: object
+    ) -> Dict[str, Any]:
+        proj._RemoteFetch.reset_mock()
+        res = proj.Sync_NetworkHalf(clone_bundle=False, **kwargs)
+        self.assertTrue(res.success)
+        proj._RemoteFetch.assert_called_once()
+        return proj._RemoteFetch.call_args.kwargs
+
+    def test_clone_filter_for_depth_keeps_filter_and_no_tags_across_syncs(
+        self,
+    ) -> None:
+        """clone_filter_for_depth keeps filter and --no-tags across syncs."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, clone_depth=1)
+            for is_new in (True, False):
+                fetch_kwargs = self._sync_kwargs(
+                    proj,
+                    is_new=is_new,
+                    clone_filter_for_depth="blob:none",
+                )
+                self.assertIsNone(fetch_kwargs["depth"])
+                self.assertEqual("blob:none", fetch_kwargs["clone_filter"])
+                self.assertFalse(fetch_kwargs["tags"])
+
+    def test_explicit_sync_tags_and_cli_tags_override_clone_depth_default(
+        self,
+    ) -> None:
+        """Explicit sync-tags="true" or --tags fetches tags."""
+        with utils_for_test.TempGitTree() as tempdir:
+            opt_in_proj = self._get_project(
+                tempdir, clone_depth=2, sync_tags=True
+            )
+            fetch_kwargs = self._sync_kwargs(
+                opt_in_proj,
+                is_new=False,
+                clone_filter_for_depth="blob:none",
+            )
+            self.assertTrue(fetch_kwargs["tags"])
+
+            cli_proj = self._get_project(tempdir, clone_depth=2)
+            cli_kwargs = self._sync_kwargs(
+                cli_proj,
+                is_new=True,
+                tags=True,
+                clone_filter_for_depth="blob:none",
+            )
+            self.assertTrue(cli_kwargs["tags"])
+
+    def test_partial_clone_without_depth_keeps_tags(self) -> None:
+        """Regular partial-clone projects without depth still get tags."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, clone_depth=None)
+            fetch_kwargs = self._sync_kwargs(
+                proj,
+                is_new=True,
+                clone_filter="blob:none",
+            )
+            self.assertTrue(fetch_kwargs["tags"])
+
+    def test_derived_shallow_submodule_defaults_sync_tags_false(self) -> None:
+        """Derived submodules with shallow=true default sync_tags to False."""
+        with utils_for_test.TempGitTree() as tempdir:
+            parent = _create_mock_project(tempdir, revisionExpr="main")
+            parent.sync_tags = True
+            parent.manifest.IsMirror = False
+            parent.manifest.paths = {}
+            parent.manifest.GetSubprojectName.side_effect = [
+                "proj/sub1",
+                "proj/sub2",
+            ]
+            parent.manifest.GetSubprojectPaths.side_effect = [
+                (
+                    "proj/sub1",
+                    f"{tempdir}/sub1",
+                    f"{tempdir}/s1.git",
+                    f"{tempdir}/s1.git",
+                ),
+                (
+                    "proj/sub2",
+                    f"{tempdir}/sub2",
+                    f"{tempdir}/s2.git",
+                    f"{tempdir}/s2.git",
+                ),
+            ]
+            with mock.patch.object(
+                project.Project,
+                "_GetSubmodules",
+                return_value=[
+                    ("a" * 40, "sub1", "https://example.com/s1", "true"),
+                    ("b" * 40, "sub2", "https://example.com/s2", ""),
+                ],
+            ):
+                subs = parent.GetDerivedSubprojects()
+            self.assertEqual(2, len(subs))
+            self.assertEqual(1, subs[0].clone_depth)
+            self.assertFalse(subs[0].sync_tags)
+            self.assertIsNone(subs[1].clone_depth)
+            self.assertTrue(subs[1].sync_tags)

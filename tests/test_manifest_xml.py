@@ -811,6 +811,116 @@ class TestProjectElement:
             "</manifest>"
         )
 
+    def test_sync_tags_defaults_and_clone_depth(
+        self, repo_client: RepoClient
+    ) -> None:
+        """Check sync-tags defaults with clone-depth, <default>, and --depth."""
+        manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="plain" />
+  <project name="explicit-off" sync-tags="false" />
+  <project name="depth-one" clone-depth="1" />
+  <project name="depth-five" clone-depth="5" />
+  <project name="depth-opt-in" clone-depth="2" sync-tags="true" />
+  <project name="depth-opt-out" clone-depth="2" sync-tags="false" />
+</manifest>
+"""
+        )
+        by_name = {p.name: p for p in manifest.projects}
+        assert by_name["plain"].sync_tags is True
+        assert by_name["explicit-off"].sync_tags is False
+        assert by_name["depth-one"].sync_tags is False
+        assert by_name["depth-five"].sync_tags is False
+        assert by_name["depth-opt-in"].sync_tags is True
+        assert by_name["depth-opt-out"].sync_tags is False
+
+        serialized = sort_attributes(manifest.ToXml().toxml())
+        assert (
+            serialized == '<?xml version="1.0" ?><manifest>'
+            '<remote fetch="http://localhost" name="default-remote"/>'
+            '<default remote="default-remote" revision="refs/heads/main"/>'
+            '<project clone-depth="5" name="depth-five"/>'
+            '<project clone-depth="1" name="depth-one"/>'
+            '<project clone-depth="2" name="depth-opt-in" sync-tags="true"/>'
+            '<project clone-depth="2" name="depth-opt-out"/>'
+            '<project name="explicit-off" sync-tags="false"/>'
+            '<project name="plain"/>'
+            "</manifest>"
+        )
+        reparsed = repo_client.get_xml_manifest(serialized)
+        assert {p.name: p.sync_tags for p in reparsed.projects} == {
+            p.name: p.sync_tags for p in manifest.projects
+        }
+
+        # <default sync-tags="false"> propagates to all projects unless
+        # overridden with sync-tags="true", and round-trips through ToXml().
+        default_off = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main"
+           sync-tags="false" />
+  <project name="plain" />
+  <project name="opt-in" sync-tags="true" />
+  <project name="depth-one" clone-depth="1" />
+</manifest>
+"""
+        )
+        default_off_map = {p.name: p.sync_tags for p in default_off.projects}
+        assert default_off_map == {
+            "plain": False,
+            "opt-in": True,
+            "depth-one": False,
+        }
+        default_off_xml = sort_attributes(default_off.ToXml().toxml())
+        assert (
+            default_off_xml == '<?xml version="1.0" ?><manifest>'
+            '<remote fetch="http://localhost" name="default-remote"/>'
+            '<default remote="default-remote" revision="refs/heads/main" '
+            'sync-tags="false"/>'
+            '<project clone-depth="1" name="depth-one"/>'
+            '<project name="opt-in" sync-tags="true"/>'
+            '<project name="plain"/>'
+            "</manifest>"
+        )
+        reparsed_default_off = repo_client.get_xml_manifest(default_off_xml)
+        assert {
+            p.name: p.sync_tags for p in reparsed_default_off.projects
+        } == default_off_map
+
+        # `repo init --depth` also defaults non-mirror project sync-tags to
+        # false, while preserving mirror tag syncing.
+        depth_manifest = repo_client.get_xml_manifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="plain" />
+  <project name="opt-in" sync-tags="true" />
+</manifest>
+"""
+        )
+        depth_manifest.manifestProject.config.SetString("repo.depth", "3")
+        depth_manifest.Unload()
+        assert {p.name: p.sync_tags for p in depth_manifest.projects} == {
+            "plain": False,
+            "opt-in": True,
+        }
+        depth_manifest.repoProject.config.SetString(
+            "remote.origin.url", "http://localhost/repo"
+        )
+        depth_manifest.manifestProject.config.SetString(
+            "remote.origin.url", "http://localhost/manifests"
+        )
+        depth_manifest.manifestProject.config.SetBoolean("repo.mirror", True)
+        depth_manifest.Unload()
+        by_mirror = {p.name: p.sync_tags for p in depth_manifest.projects}
+        assert by_mirror["plain"] is True
+        assert by_mirror["opt-in"] is True
+
     def test_trailing_slash(self, repo_client: RepoClient) -> None:
         """Check handling of trailing slashes in attributes."""
 

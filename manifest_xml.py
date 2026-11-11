@@ -18,6 +18,7 @@ import os
 import platform
 import re
 import sys
+from typing import Optional
 import urllib.parse
 import xml.dom.minidom
 
@@ -776,8 +777,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             if p.sync_s:
                 e.setAttribute("sync-s", "true")
 
-            if not p.sync_tags:
-                e.setAttribute("sync-tags", "false")
+            if p.sync_tags != self._default_project_sync_tags(p.clone_depth):
+                e.setAttribute("sync-tags", "true" if p.sync_tags else "false")
 
             if p.clone_depth:
                 e.setAttribute("clone-depth", str(p.clone_depth))
@@ -1924,6 +1925,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     def _UnjoinName(self, parent_name, name):
         return os.path.relpath(name, parent_name)
 
+    def _default_project_sync_tags(self, clone_depth: Optional[int]) -> bool:
+        """Return the default sync-tags value for a project."""
+        if (clone_depth or self.manifestProject.depth) and not self.IsMirror:
+            return False
+        return self._default.sync_tags
+
     def _ParseProject(self, node, parent=None, **extra_proj_attrs):
         """
         reads a <project> element from the manifest file
@@ -1969,7 +1976,6 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         rebase = XmlBool(node, "rebase", True)
         sync_c = XmlBool(node, "sync-c", False)
         sync_s = XmlBool(node, "sync-s", self._default.sync_s)
-        sync_tags = XmlBool(node, "sync-tags", self._default.sync_tags)
 
         clone_depth = XmlInt(node, "clone-depth")
         if clone_depth is not None and clone_depth <= 0:
@@ -1977,6 +1983,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 '%s: clone-depth must be greater than 0, not "%s"'
                 % (self.manifestFile, clone_depth)
             )
+
+        sync_tags = XmlBool(
+            node, "sync-tags", self._default_project_sync_tags(clone_depth)
+        )
 
         sync_strategy = node.getAttribute("sync-strategy") or None
 
