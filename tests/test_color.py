@@ -14,6 +14,7 @@
 
 """Unittests for the color.py module."""
 
+import os
 from unittest import mock
 
 import pytest
@@ -21,6 +22,7 @@ import utils_for_test
 
 import color
 import git_config
+import pager
 
 
 @pytest.fixture
@@ -147,8 +149,8 @@ class TestColoringInit:
         pager_active: bool,
         expected: bool,
     ) -> None:
-        with mock.patch("os.isatty", return_value=isatty), mock.patch(
-            "pager.active", pager_active
-        ):
+        with mock.patch.object(
+            os, "isatty", return_value=isatty
+        ), mock.patch.object(pager, "active", pager_active):
             c = _make_coloring(state)
         assert c.is_on is expected

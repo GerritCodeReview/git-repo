@@ -437,7 +437,9 @@ class TestEventLogVerbose:
         event_log.verbose = False
         with contextlib.redirect_stderr(
             io.StringIO()
-        ) as mock_stderr, mock.patch("socket.socket", side_effect=OSError):
+        ) as mock_stderr, mock.patch.object(
+            socket, "socket", side_effect=OSError
+        ):
             event_log.Write(path="af_unix:stream:/tmp/test_sock")
             assert mock_stderr.getvalue() == ""
 
@@ -447,8 +449,8 @@ class TestEventLogVerbose:
         event_log.verbose = True
         with contextlib.redirect_stderr(
             io.StringIO()
-        ) as mock_stderr, mock.patch(
-            "socket.socket", side_effect=OSError("Mock error")
+        ) as mock_stderr, mock.patch.object(
+            socket, "socket", side_effect=OSError("Mock error")
         ):
             event_log.Write(path="af_unix:stream:/tmp/test_sock")
             assert (
@@ -462,8 +464,8 @@ class TestEventLogVerbose:
         event_log.verbose = False
         with contextlib.redirect_stderr(
             io.StringIO()
-        ) as mock_stderr, mock.patch(
-            "tempfile.NamedTemporaryFile", side_effect=FileExistsError
+        ) as mock_stderr, mock.patch.object(
+            tempfile, "NamedTemporaryFile", side_effect=FileExistsError
         ):
             event_log.Write(path="/tmp")
             assert mock_stderr.getvalue() == ""
@@ -474,8 +476,9 @@ class TestEventLogVerbose:
         event_log.verbose = True
         with contextlib.redirect_stderr(
             io.StringIO()
-        ) as mock_stderr, mock.patch(
-            "tempfile.NamedTemporaryFile",
+        ) as mock_stderr, mock.patch.object(
+            tempfile,
+            "NamedTemporaryFile",
             side_effect=FileExistsError("Mock error"),
         ):
             event_log.Write(path="/tmp")

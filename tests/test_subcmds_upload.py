@@ -19,7 +19,9 @@ from unittest import mock
 
 import pytest
 
+import editor
 import error
+import git_superproject
 from subcmds import upload
 
 
@@ -183,8 +185,10 @@ def test_MultipleBranches_yes_with_current_branch_flag_bypasses_editor(
     branch2 = _create_mock_branch("b2", project_relpath="p2")
     pending = [(branch1.project, [branch1]), (branch2.project, [branch2])]
 
-    with mock.patch.object(cmd, "_UploadAndReport") as mock_upload, mock.patch(
-        "editor.Editor.EditString"
+    with mock.patch.object(
+        cmd, "_UploadAndReport"
+    ) as mock_upload, mock.patch.object(
+        editor.Editor, "EditString"
     ) as mock_edit:
         cmd._MultipleBranches(opt, pending, _STUB_PEOPLE)
         mock_edit.assert_not_called()
@@ -202,8 +206,10 @@ def test_MultipleBranches_yes_with_cbr_flag_bypasses_editor(
     branch2 = _create_mock_branch("b2", project_relpath="p2")
     pending = [(branch1.project, [branch1]), (branch2.project, [branch2])]
 
-    with mock.patch.object(cmd, "_UploadAndReport") as mock_upload, mock.patch(
-        "editor.Editor.EditString"
+    with mock.patch.object(
+        cmd, "_UploadAndReport"
+    ) as mock_upload, mock.patch.object(
+        editor.Editor, "EditString"
     ) as mock_edit:
         cmd._MultipleBranches(opt, pending, _STUB_PEOPLE)
         mock_edit.assert_not_called()
@@ -221,8 +227,10 @@ def test_MultipleBranches_yes_with_branch_flag_bypasses_editor(
     branch2 = _create_mock_branch("feature", project_relpath="p2")
     pending = [(branch1.project, [branch1]), (branch2.project, [branch2])]
 
-    with mock.patch.object(cmd, "_UploadAndReport") as mock_upload, mock.patch(
-        "editor.Editor.EditString"
+    with mock.patch.object(
+        cmd, "_UploadAndReport"
+    ) as mock_upload, mock.patch.object(
+        editor.Editor, "EditString"
     ) as mock_edit:
         cmd._MultipleBranches(opt, pending, _STUB_PEOPLE)
         mock_edit.assert_not_called()
@@ -265,8 +273,10 @@ def test_MultipleBranches_yes_without_branch_or_cbr_uses_editor(
         "  branch b1 ( 1 commit, 2026-08-26) to remote branch "
         "refs/heads/main:\n"
     )
-    with mock.patch.object(cmd, "_UploadAndReport") as mock_upload, mock.patch(
-        "editor.Editor.EditString", return_value=edited_script
+    with mock.patch.object(
+        cmd, "_UploadAndReport"
+    ) as mock_upload, mock.patch.object(
+        editor.Editor, "EditString", return_value=edited_script
     ) as mock_edit:
         cmd._MultipleBranches(opt, pending, _STUB_PEOPLE)
         mock_edit.assert_called_once()
@@ -324,7 +334,9 @@ def test_UploadBranch_forwards_quiet(
     cmd.CommonValidateOptions(opt, [])
     branch = mock.MagicMock()
     branch.project.dest_branch = None
-    with mock.patch("git_superproject.UseSuperproject", return_value=False):
+    with mock.patch.object(
+        git_superproject, "UseSuperproject", return_value=False
+    ):
         cmd._UploadBranch(opt, branch, _STUB_PEOPLE)
 
     branch.UploadForReview.assert_called_once()

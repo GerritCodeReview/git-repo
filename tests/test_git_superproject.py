@@ -24,6 +24,7 @@ from unittest import mock
 import pytest
 import test_manifest_xml
 
+import git_command
 import git_superproject
 import git_trace2_event_log
 import manifest_xml
@@ -464,8 +465,8 @@ class SuperprojectTestCase(unittest.TestCase):
     def test_Init_success(self):
         """Test _Init succeeds and creates the work git dir."""
         self.assertFalse(os.path.exists(self._superproject._work_git))
-        with mock.patch(
-            "git_command.GitCommand", autospec=True
+        with mock.patch.object(
+            git_command, "GitCommand", autospec=True
         ) as mock_git_command:
             instance = mock_git_command.return_value
             instance.Wait.return_value = 0
@@ -491,16 +492,16 @@ class SuperprojectTestCase(unittest.TestCase):
         """Test _Init returns early if the work git dir already exists."""
         os.mkdir(self._superproject._superproject_path)
         os.mkdir(self._superproject._work_git)
-        with mock.patch(
-            "git_command.GitCommand", autospec=True
+        with mock.patch.object(
+            git_command, "GitCommand", autospec=True
         ) as mock_git_command:
             self.assertTrue(self._superproject._Init())
             mock_git_command.assert_not_called()
 
     def test_Init_failure_cleans_up(self):
         """Test _Init cleans up the temporary directory if 'git init' fails."""
-        with mock.patch(
-            "git_command.GitCommand", autospec=True
+        with mock.patch.object(
+            git_command, "GitCommand", autospec=True
         ) as mock_git_command:
             instance = mock_git_command.return_value
             instance.Wait.return_value = 1
@@ -539,8 +540,8 @@ class SuperprojectTestCase(unittest.TestCase):
         os.mkdir(self._superproject._superproject_path)
         os.mkdir(self._superproject._work_git)
         with mock.patch.object(self._superproject, "_Init", return_value=True):
-            with mock.patch(
-                "git_command.GitCommand", autospec=True
+            with mock.patch.object(
+                git_command, "GitCommand", autospec=True
             ) as mock_git_command:
                 with mock.patch.object(
                     self._superproject, "_GetRef"
@@ -599,12 +600,12 @@ class SuperprojectTestCase(unittest.TestCase):
     def test_GetRef_resolves_only_the_requested_ref(self) -> None:
         command = mock.MagicMock(stdout="1234\n")
         command.Wait.return_value = 0
-        with mock.patch(
-            "git_command.GitCommand", return_value=command
-        ) as git_command:
+        with mock.patch.object(
+            git_command, "GitCommand", return_value=command
+        ) as mock_git_command:
             self.assertEqual("1234", self._superproject._GetRef("HEAD"))
 
-        git_command.assert_called_once_with(
+        mock_git_command.assert_called_once_with(
             None,
             ["rev-parse", "--verify", "--quiet", "HEAD"],
             gitdir=self._superproject._work_git,
