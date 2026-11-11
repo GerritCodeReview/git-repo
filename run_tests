@@ -25,7 +25,8 @@
 #   'flake8-bugbear==26.9.30',
 #   'flake8-comprehensions==3.17.0',
 #   'flake8-import-restrictions==2.1',
-#   'isort==5.10.1'
+#   'isort==5.10.1',
+#   'pyrefly==1.4.0'
 # ]
 # ///
 
@@ -40,6 +41,7 @@ import sys
 import black
 import flake8.main.cli
 import isort.main
+import pyrefly.__main__
 import pytest
 
 
@@ -169,6 +171,30 @@ def run_isort():
     ).returncode
 
 
+def run_pyrefly() -> int:
+    """Returns the exit code from pyrefly."""
+    argv = ["--version"]
+    log_cmd("pyrefly", argv)
+    subprocess.run(
+        [pyrefly.__main__.get_pyrefly_bin()] + argv,
+        check=True,
+        cwd=ROOT_DIR,
+    )
+
+    argv = [
+        "check",
+        "--verbose",
+        "--output-format=full-text",
+        "--progress-bar=simple",
+    ]
+    log_cmd("pyrefly", argv)
+    return subprocess.run(
+        [pyrefly.__main__.get_pyrefly_bin()] + argv,
+        check=False,
+        cwd=ROOT_DIR,
+    ).returncode
+
+
 def run_check_metadata():
     """Returns the exit code from check-metadata."""
     argv = []
@@ -215,12 +241,21 @@ def main_run_tests(argv: list[str]) -> int:
         run_black,
         run_flake8,
         run_isort,
+        run_pyrefly,
         run_check_metadata,
         run_update_manpages,
     )
     # Run all the tests all the time to get full feedback.  Don't exit on the
     # first error as that makes it more difficult to iterate in the CQ.
     return 1 if sum(c() for c in checks) else 0
+
+
+def main_pyrefly(argv: list[str]) -> int:
+    """The pyrefly program."""
+    result = subprocess.run(
+        [pyrefly.__main__.get_pyrefly_bin()] + argv, check=False
+    )
+    return result.returncode
 
 
 main_black = black.main
