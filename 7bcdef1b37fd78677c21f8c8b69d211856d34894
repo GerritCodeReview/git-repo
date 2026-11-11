@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f85527e_1eb861b0",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-11-11T23:30:19Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Repo Analyzer: Missing type annotation for function argument `now`",
+      "range": {
+        "startLine": 731,
+        "startChar": 0,
+        "endLine": 732,
+        "endChar": 0
+      },
+      "revId": "7bcdef1b37fd78677c21f8c8b69d211856d34894",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
