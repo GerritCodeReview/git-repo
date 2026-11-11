@@ -1998,22 +1998,27 @@ class Project:
             elif self.manifest.default.sync_c:
                 current_branch_only = True
 
-        if tags is None:
-            tags = self.sync_tags
-
-        if self.clone_depth:
+        if self.manifest.IsMirror or isinstance(self, RepoProject):
+            depth = None
+        elif self.clone_depth:
             depth = self.clone_depth
         else:
             depth = self.manifest.manifestProject.depth
+
+        if tags is None:
+            if isinstance(self, MetaProject) and depth:
+                tags = False
+            else:
+                tags = self.sync_tags
+
+        if depth and clone_filter_for_depth:
+            depth = None
+            clone_filter = clone_filter_for_depth
 
         # If the project has been manually unshallowed (e.g. via
         # `git fetch --unshallow`), don't re-shallow it during sync.
         if depth and not is_new and not self._HasShallow():
             depth = None
-
-        if depth and clone_filter_for_depth:
-            depth = None
-            clone_filter = clone_filter_for_depth
 
         remote_fetched = False
         if use_fetch_cmd:
@@ -3207,6 +3212,15 @@ class Project:
                 revision=self.remote.revision,
             )
             clone_depth = 1 if shallow.lower() == "true" else None
+            sync_tags = (
+                False
+                if (
+                    clone_depth
+                    and not self.manifest.IsMirror
+                    and self.manifest.default.sync_tags is not True
+                )
+                else self.sync_tags
+            )
             subproject = Project(
                 manifest=self.manifest,
                 name=name,
@@ -3221,7 +3235,7 @@ class Project:
                 groups=self.groups,
                 sync_c=self.sync_c,
                 sync_s=self.sync_s,
-                sync_tags=self.sync_tags,
+                sync_tags=sync_tags,
                 parent=self,
                 clone_depth=clone_depth,
                 is_derived=True,
@@ -3602,7 +3616,7 @@ class Project:
         verbose=False,
         output_redir=None,
         alt_dir=None,
-        tags=True,
+        tags: Optional[bool] = None,
         prune=False,
         depth=None,
         submodules=False,
@@ -3617,8 +3631,11 @@ class Project:
         # it will result in a shallow repository that cannot be cloned or
         # fetched from.
         # The repo project should also never be synced with partial depth.
-        if self.manifest.IsMirror or self.relpath == ".repo/repo":
+        if self.manifest.IsMirror or isinstance(self, RepoProject):
             depth = None
+
+        if tags is None:
+            tags = not bool(depth)
 
         if depth:
             current_branch_only = True
@@ -3790,9 +3807,7 @@ class Project:
                 str(("+refs/heads/*:") + remote.ToLocal("refs/heads/*"))
             )
 
-        # If using depth then we should not get all the tags since they may
-        # be outside of the depth.
-        if not tags or depth:
+        if not tags:
             cmd.append("--no-tags")
         else:
             cmd.append("--tags")

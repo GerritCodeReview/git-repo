@@ -390,13 +390,24 @@ whole ref space.
 
 Attribute `sync-s`: Set to true to also sync sub-projects.
 
+Attribute `sync-tags`: Set to false to only sync the given Git
+branch (specified in the `revision` attribute) rather than other
+ref tags, or set to true to force syncing tags.  If unspecified,
+the `default` element's `sync-tags` setting is used if set;
+otherwise defaults to false when `clone-depth` (or
+`repo init --depth`) is set on a non-mirror checkout, and true
+otherwise.
+
 Attribute `upstream`: Name of the Git ref in which a sha1
 can be found.  Used when syncing a revision locked manifest in
 -c mode to avoid having to sync the entire ref space.
 
 Attribute `clone-depth`: Set the depth to use when fetching this
 project.  If specified, this value will override any value given
-to repo init with the --depth option on the command line.
+to repo init with the --depth option on the command line.  Setting
+`clone-depth` also defaults this project's `sync-tags` attribute
+to false unless `sync-tags` is explicitly set on the `project` or
+`default` element.
 
 Attribute `force-path`: Set to true to force this project to create the
 local mirror repository according to its `path` attribute (if supplied)
