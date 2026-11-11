@@ -1986,6 +1986,7 @@ class Project:
             elif self.manifest.default.sync_c:
                 current_branch_only = True
 
+        explicit_tags = tags is not None
         if tags is None:
             tags = self.sync_tags
 
@@ -1993,15 +1994,30 @@ class Project:
             depth = self.clone_depth
         else:
             depth = self.manifest.manifestProject.depth
+        configured_depth = depth
+
+        if depth and clone_filter_for_depth:
+            depth = None
+            clone_filter = clone_filter_for_depth
 
         # If the project has been manually unshallowed (e.g. via
         # `git fetch --unshallow`), don't re-shallow it during sync.
         if depth and not is_new and not self._HasShallow():
             depth = None
 
-        if depth and clone_filter_for_depth:
-            depth = None
-            clone_filter = clone_filter_for_depth
+        # Shallow fetches pass --no-tags in _RemoteFetch because tags may point
+        # outside the shallow history. Keep that default when a depth-limited
+        # project is synced as a partial clone rather than a shallow clone,
+        # while still honoring an explicit `repo sync --tags`.
+        if (
+            not explicit_tags
+            and configured_depth
+            and not depth
+            and not self.manifest.IsMirror
+            and self.relpath != ".repo/repo"
+            and (clone_filter or self._IsPartialClone())
+        ):
+            tags = False
 
         remote_fetched = False
         if use_fetch_cmd:
@@ -3295,6 +3311,24 @@ class Project:
         return bool(
             self._HasShallow() or self._SharingProjectHasShallow() or depth
         )
+
+    def _IsPartialClone(self) -> bool:
+        """Check if this project is configured as a partial clone."""
+        if self.config.Has(
+            "extensions.partialclone", include_defaults=False
+        ) and self.config.GetString("extensions.partialclone"):
+            return True
+        if self.remote and self.remote.name:
+            prefix = f"remote.{self.remote.name}"
+            if self.config.Has(
+                f"{prefix}.promisor", include_defaults=False
+            ) and self.config.GetBoolean(f"{prefix}.promisor"):
+                return True
+            if self.config.Has(
+                f"{prefix}.partialclonefilter", include_defaults=False
+            ) and self.config.GetString(f"{prefix}.partialclonefilter"):
+                return True
+        return False
 
     def _ShouldVerifyUpstream(
         self,

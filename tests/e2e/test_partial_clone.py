@@ -292,3 +292,119 @@ def test_partial_clone_two_phase_sync(
     assert (client.top / path / "small").read_text() == "s2"
     assert client.has_object(path, s2_blob)
     assert host.requested_repos(inc_requests) == {"platform/foo"}
+
+
+@pytest.mark.parametrize("git_defaults", GIT_DEFAULTS_PARAMS)
+def test_clone_depth_allow_shallow_zero_skips_tags(
+    host: GitHost, client: RepoClient
+) -> None:
+    """`REPO_ALLOW_SHALLOW=0` keeps `--no-tags` on `clone-depth` projects.
+
+    Non-`clone-depth` projects still fetch tags by default, and an explicit
+    `repo sync --tags` still fetches tags when requested.
+    """
+    llvm, llvm_old_blob = create_with_big_history(host, "platform/llvm")
+    llvm.tag("v1", "main")
+    off_branch = llvm.commit({"release.bin": BIG + "rel"}, branch="release")
+    llvm.tag("llvmorg-23.1.0", off_branch)
+
+    foo = host.create_repo("platform/foo", {"f": "1"})
+    foo.tag("foo-v1", "main")
+    foo_rel = foo.commit({"f": "rel"}, branch="release")
+    foo.tag("foo-v2", foo_rel)
+
+    host.create_manifest(
+        manifest_xml(
+            '<project name="platform/llvm" path="llvm" clone-depth="1" />',
+            '<project name="platform/foo" path="foo" />',
+        )
+    )
+
+    client.env["REPO_ALLOW_SHALLOW"] = "0"
+    client.init(host.manifest_url)
+    assert client.sync("-c").stderr == ""
+    client.env.pop("REPO_ALLOW_SHALLOW")
+
+    assert not client.is_shallow("llvm")
+    assert client.config("llvm", "extensions.partialclone") == "origin"
+    assert client.config("llvm", FILTER_KEY) == "blob:none"
+    assert not client.has_object("llvm", llvm_old_blob)
+    assert not client.has_object("llvm", off_branch)
+    assert client.tags("llvm") == set()
+    assert client.tags("foo") == {"foo-v1", "foo-v2"}
+
+    # Incremental sync after a new branch commit and a new off-branch tag keeps
+    # skipping tags on the clone-depth partial clone.
+    new_tip = llvm.commit({"small": "s2"})
+    off_branch_2 = llvm.commit({"release.bin": BIG + "rel2"}, branch="release")
+    llvm.tag("llvmorg-23.1.1", off_branch_2)
+    assert client.sync("-c").stderr == ""
+
+    assert client.head("llvm") == new_tip
+    assert not client.has_object("llvm", off_branch_2)
+    assert client.tags("llvm") == set()
+
+    # Explicit `--tags` still overrides the clone-depth default.
+    assert client.sync("-c", "--tags", "llvm").stderr == ""
+    assert client.tags("llvm") == {
+        "v1",
+        "llvmorg-23.1.0",
+        "llvmorg-23.1.1",
+    }
+
+
+def test_clone_depth_converted_partial_clone_skips_tags(
+    host: GitHost, client: RepoClient
+) -> None:
+    """Converted partial-clone checkouts without `shallow` keep `--no-tags`."""
+    llvm, _ = create_with_big_history(host, "platform/llvm")
+    off_branch = llvm.commit({"release.bin": BIG + "rel"}, branch="release")
+    llvm.tag("llvmorg-23.1.0", off_branch)
+    host.create_manifest(
+        manifest_xml(
+            '<project name="platform/llvm" path="llvm" clone-depth="1" />'
+        )
+    )
+
+    client.init(host.manifest_url, "--partial-clone")
+    assert client.sync("-c").stderr == ""
+    assert client.is_shallow("llvm")
+    assert client.tags("llvm") == set()
+
+    # Simulate a checkout whose shallow boundary was removed during partial
+    # clone conversion/compaction (and without repo.partialclone set globally).
+    (client.repodir / "projects/llvm.git/shallow").unlink()
+    client.git(".repo/manifests", "config", "--unset", "repo.partialclone")
+    new_tip = llvm.commit({"small": "s2"})
+    llvm.tag("llvmorg-23.1.1", off_branch)
+
+    assert client.sync("-c").stderr == ""
+    assert client.head("llvm") == new_tip
+    assert not client.is_shallow("llvm")
+    assert not client.has_object("llvm", off_branch)
+    assert client.tags("llvm") == set()
+
+
+def test_clone_depth_partial_clone_tag_revision(
+    host: GitHost, client: RepoClient
+) -> None:
+    """Tag-pinned `clone-depth` partial clones fetch only the pinned tag."""
+    llvm, _ = create_with_big_history(host, "platform/llvm")
+    llvm.git("tag", "-a", "-m", "pinned release", "v1.0", "main")
+    off_branch = llvm.commit({"release.bin": BIG + "rel"}, branch="release")
+    llvm.tag("v2.0", off_branch)
+    host.create_manifest(
+        manifest_xml(
+            '<project name="platform/llvm" path="llvm" '
+            'clone-depth="1" revision="refs/tags/v1.0" />'
+        )
+    )
+
+    client.env["REPO_ALLOW_SHALLOW"] = "0"
+    client.init(host.manifest_url)
+    assert client.sync("-c").stderr == ""
+    client.env.pop("REPO_ALLOW_SHALLOW")
+
+    assert client.head("llvm") == llvm.rev_parse("v1.0^{commit}")
+    assert client.tags("llvm") == {"v1.0"}
+    assert not client.has_object("llvm", off_branch)

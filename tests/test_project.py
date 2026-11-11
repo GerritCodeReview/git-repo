@@ -5807,3 +5807,125 @@ class SparseCheckoutFetchFilterTests(unittest.TestCase):
             self.assertTrue(
                 self._bundle_applied(proj, partial_clone_exclude={proj.name})
             )
+
+
+class CloneDepthPartialCloneTagsTests(unittest.TestCase):
+    """Check tag syncing when clone-depth projects use partial clones."""
+
+    def _get_project(
+        self,
+        tempdir: str,
+        clone_depth: Optional[int] = 1,
+        manifest_depth: Optional[int] = None,
+    ) -> project.Project:
+        proj = _create_mock_project(
+            tempdir,
+            revisionExpr="refs/heads/main",
+            depth=manifest_depth,
+        )
+        proj.clone_depth = clone_depth
+        proj.manifest.globalConfig.GetString.return_value = None
+        proj._InitGitDir = mock.MagicMock()
+        proj._InitRemote = mock.MagicMock()
+        proj._InitMRef = mock.MagicMock()
+        proj._ApplyCloneBundle = mock.MagicMock(return_value=False)
+        proj._RemoteFetch = mock.MagicMock(return_value=True)
+        return proj
+
+    def _sync_kwargs(
+        self, proj: project.Project, **kwargs: object
+    ) -> Dict[str, Any]:
+        proj._RemoteFetch.reset_mock()
+        res = proj.Sync_NetworkHalf(clone_bundle=False, **kwargs)
+        self.assertTrue(res.success)
+        proj._RemoteFetch.assert_called_once()
+        return proj._RemoteFetch.call_args.kwargs
+
+    def test_clone_filter_for_depth_disables_tags_initial_and_incremental(
+        self,
+    ) -> None:
+        """clone_filter_for_depth keeps filter and --no-tags across syncs."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, clone_depth=1)
+            for is_new in (True, False):
+                fetch_kwargs = self._sync_kwargs(
+                    proj,
+                    is_new=is_new,
+                    clone_filter_for_depth="blob:none",
+                )
+                self.assertIsNone(fetch_kwargs["depth"])
+                self.assertEqual("blob:none", fetch_kwargs["clone_filter"])
+                self.assertFalse(fetch_kwargs["tags"])
+
+    def test_converted_partial_clone_without_shallow_disables_tags(
+        self,
+    ) -> None:
+        """Converted partial clones with clone-depth skip tags."""
+        for key, value in (
+            ("extensions.partialclone", "origin"),
+            ("remote.origin.promisor", "true"),
+            ("remote.origin.partialclonefilter", "blob:none"),
+        ):
+            with self.subTest(config_key=key):
+                with utils_for_test.TempGitTree() as tempdir:
+                    proj = self._get_project(tempdir, clone_depth=1)
+                    proj.config.SetString(key, value)
+                    fetch_kwargs = self._sync_kwargs(proj, is_new=False)
+                    self.assertIsNone(fetch_kwargs["depth"])
+                    self.assertFalse(fetch_kwargs["tags"])
+
+    def test_explicit_tags_flag_overrides_clone_depth_default(self) -> None:
+        """Explicit `repo sync --tags` fetches tags on partial clones."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, clone_depth=1)
+            fetch_kwargs = self._sync_kwargs(
+                proj,
+                is_new=True,
+                tags=True,
+                clone_filter_for_depth="blob:none",
+            )
+            self.assertTrue(fetch_kwargs["tags"])
+
+    def test_partial_clone_without_depth_keeps_tags(self) -> None:
+        """Regular partial-clone projects without clone-depth still get tags."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, clone_depth=None)
+            fetch_kwargs = self._sync_kwargs(
+                proj,
+                is_new=True,
+                clone_filter="blob:none",
+            )
+            self.assertTrue(fetch_kwargs["tags"])
+
+    def test_manually_unshallowed_full_clone_keeps_tags(self) -> None:
+        """Full clones unshallowed manually keep depth=None and default tags."""
+        with utils_for_test.TempGitTree() as tempdir:
+            proj = self._get_project(tempdir, clone_depth=1)
+            fetch_kwargs = self._sync_kwargs(proj, is_new=False)
+            self.assertIsNone(fetch_kwargs["depth"])
+            self.assertTrue(fetch_kwargs["tags"])
+
+    def test_mirror_and_repo_project_keep_tags(self) -> None:
+        """Mirrors and .repo/repo keep tags even when repo.depth is set."""
+        with utils_for_test.TempGitTree() as tempdir:
+            mirror_proj = self._get_project(
+                tempdir, clone_depth=1, manifest_depth=1
+            )
+            mirror_proj.manifest.IsMirror = True
+            mirror_kwargs = self._sync_kwargs(
+                mirror_proj,
+                is_new=False,
+                clone_filter="blob:none",
+            )
+            self.assertTrue(mirror_kwargs["tags"])
+
+            repo_proj = self._get_project(
+                tempdir, clone_depth=None, manifest_depth=1
+            )
+            repo_proj.relpath = ".repo/repo"
+            repo_kwargs = self._sync_kwargs(
+                repo_proj,
+                is_new=False,
+                clone_filter="blob:none",
+            )
+            self.assertTrue(repo_kwargs["tags"])
