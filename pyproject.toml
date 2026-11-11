@@ -54,3 +54,7 @@ markers = """
     skip_cq: Skip tests in the CQ. Should be rarely used!
     e2e: Hermetic end-to-end tests (tests/e2e/). Deselect with -m 'not e2e'.
 """
+# Only keep the temp dirs of failed tests.  By default, pytest keeps the temp
+# dirs of all tests for the last 3 runs, and each e2e test has its own checkout.
+# Use `-o tmp_path_retention_policy=all` to inspect the dirs of passing tests.
+tmp_path_retention_policy = "failed"
