@@ -18,6 +18,7 @@ import io
 import os
 import re
 import subprocess
+import sys
 import unittest
 from unittest import mock
 
@@ -76,7 +77,7 @@ class GitCommandStreamLogsTest(unittest.TestCase):
 
         self.mock_popen = mock.MagicMock()
         self.mock_popen.return_value = self.mock_process
-        mock.patch("subprocess.Popen", self.mock_popen).start()
+        mock.patch.object(subprocess, "Popen", self.mock_popen).start()
 
     def tearDown(self):
         mock.patch.stopall()
@@ -145,7 +146,7 @@ class GitCommandStreamLogsTest(unittest.TestCase):
         self.mock_process.communicate.assert_called_once_with(input=None)
         self.mock_process.stderr.read1.assert_not_called()
 
-    @mock.patch("sys.stderr")
+    @mock.patch.object(sys, "stderr")
     def test_streams_stderr_when_no_stream_is_set(self, mock_stderr):
         mock_stderr.isatty.return_value = False
         logs = "\n".join(
@@ -175,7 +176,7 @@ class GitCommandStreamLogsTest(unittest.TestCase):
         mock_stderr.write.assert_called_once_with(logs)
         self.assertEqual(cmd.stderr, logs)
 
-    @mock.patch("sys.stderr")
+    @mock.patch.object(sys, "stderr")
     def test_push_injects_progress_only_when_tty_and_not_suppressed(
         self, mock_stderr: mock.MagicMock
     ) -> None:
@@ -186,7 +187,7 @@ class GitCommandStreamLogsTest(unittest.TestCase):
         cmd = self.mock_popen.call_args[0][0]
         self.assertEqual(cmd, ["git", "push", "--progress"])
 
-    @mock.patch("sys.stderr")
+    @mock.patch.object(sys, "stderr")
     def test_push_does_not_inject_progress_when_no_progress_set(
         self, mock_stderr: mock.MagicMock
     ) -> None:
@@ -209,7 +210,7 @@ class GitCommandCaptureBytesTest(unittest.TestCase):
 
         self.mock_popen = mock.MagicMock()
         self.mock_popen.return_value = self.mock_process
-        mock.patch("subprocess.Popen", self.mock_popen).start()
+        mock.patch.object(subprocess, "Popen", self.mock_popen).start()
 
     def tearDown(self) -> None:
         mock.patch.stopall()

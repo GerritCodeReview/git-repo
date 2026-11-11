@@ -53,7 +53,9 @@ def test_parse_ssh_version(input_str: str, expected: Tuple[int, ...]) -> None:
 
 def test_version() -> None:
     """Check version() handling."""
-    with mock.patch("ssh._run_ssh_version", return_value="OpenSSH_1.2\n"):
+    with mock.patch.object(
+        ssh, "_run_ssh_version", return_value="OpenSSH_1.2\n"
+    ):
         assert ssh.version() == (1, 2)
 
 
@@ -67,7 +69,7 @@ def test_context_manager_empty() -> None:
 def test_context_manager_child_cleanup() -> None:
     """Verify orphaned clients & masters get cleaned up."""
     with multiprocessing.Manager() as manager:
-        with mock.patch("ssh.version", return_value=(1, 2)):
+        with mock.patch.object(ssh, "version", return_value=(1, 2)):
             with ssh.ProxyManager(manager) as ssh_proxy:
                 client = subprocess.Popen(["sleep", "964853320"])
                 ssh_proxy.add_client(client)
@@ -87,13 +89,13 @@ def test_ssh_sock(monkeypatch: pytest.MonkeyPatch) -> None:
         )
 
         # Old ssh version uses port.
-        with mock.patch("ssh.version", return_value=(6, 6)):
+        with mock.patch.object(ssh, "version", return_value=(6, 6)):
             with proxy as ssh_proxy:
                 assert ssh_proxy.sock().endswith("%p")
 
         proxy._sock_path = None
         # New ssh version uses hash.
-        with mock.patch("ssh.version", return_value=(6, 7)):
+        with mock.patch.object(ssh, "version", return_value=(6, 7)):
             with proxy as ssh_proxy:
                 assert ssh_proxy.sock().endswith("%C")
         proxy._sock_path = None
