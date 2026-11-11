@@ -19,6 +19,25 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d54d8f3_f1e2f52d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 875,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-11-11T00:54:07Z",
+      "side": 1,
+      "message": "Done — added `ManifestProject.GetMergeBranch(heads_only: bool \u003d False)` in `project.py`, shared by `XmlManifest._Load` (`heads_only\u003dFalse` so `m/\u003ctag\u003e` and `m/\u003csha\u003e` refs for `_InitMRef` and `repo info -d` are preserved) and `Sync._SmartSyncSetup` (`heads_only\u003dTrue`), and removed `Sync._GetBranch`.",
+      "parentUuid": "974dd666_8eede8ef",
+      "isAi": true,
+      "revId": "9a4ab40ea9068d1e79b428b2f19fcc6b4a3e92c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14863034_61e58030",
@@ -43,6 +62,31 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d421c70_d50c1f07",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3315,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-11-11T00:54:07Z",
+      "side": 1,
+      "message": "Good catch! Done — `ManifestProject.GetMergeBranch(heads_only\u003dTrue)` now returns `None` unless `branch.\u003ccurrent\u003e.merge` is under `refs/heads/`, and updated `docs/smart-sync.md` and the unit tests in `tests/test_project.py` accordingly.",
+      "parentUuid": "14863034_61e58030",
+      "range": {
+        "startLine": 3309,
+        "startChar": 0,
+        "endLine": 3315,
+        "endChar": 9999
+      },
+      "isAi": true,
+      "revId": "9a4ab40ea9068d1e79b428b2f19fcc6b4a3e92c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e4fd81e_ab744068",
@@ -56,6 +100,31 @@
       "writtenOn": "2026-11-09T21:45:19Z",
       "side": 1,
       "message": "would also be great to add an e2e case in `tests/e2e/` covering `repo sync` (and `repo sync -s`) with a detached `.repo/manifests` / `repo init -b \u003csha\u003e` and `sync-smartsync\u003d\"true\"` so we exercise the real `StartBranch(\"default\")` config setup end-to-end",
+      "range": {
+        "startLine": 3360,
+        "startChar": 0,
+        "endLine": 3384,
+        "endChar": 9999
+      },
+      "isAi": true,
+      "revId": "9a4ab40ea9068d1e79b428b2f19fcc6b4a3e92c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24dc8db5_deb8d4dd",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3384,
+      "author": {
+        "id": 4950251
+      },
+      "writtenOn": "2026-11-11T00:54:07Z",
+      "side": 1,
+      "message": "Done — added parameterized `test_smart_sync_without_tracked_branch` (`detached`, `commit`, `tag`) in `tests/e2e/test_sync_modes.py` covering both `repo sync -s` and plain `repo sync` with `sync-smartsync\u003d\"true\"`.",
+      "parentUuid": "3e4fd81e_ab744068",
       "range": {
         "startLine": 3360,
         "startChar": 0,
