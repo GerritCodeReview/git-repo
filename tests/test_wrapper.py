@@ -83,9 +83,11 @@ class TestRepoWrapper:
     def test_version(self, repo_wrapper: wrapper.Wrapper) -> None:
         """Make sure _Version works."""
         with pytest.raises(SystemExit) as e:
-            with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
-                with mock.patch(
-                    "sys.stderr", new_callable=io.StringIO
+            with mock.patch.object(
+                sys, "stdout", new_callable=io.StringIO
+            ) as stdout:
+                with mock.patch.object(
+                    sys, "stderr", new_callable=io.StringIO
                 ) as stderr:
                     repo_wrapper._Version()
         assert e.value.code == 0

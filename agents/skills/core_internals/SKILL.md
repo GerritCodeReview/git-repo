@@ -3471,6 +3471,12 @@ standard streams and filesystem paths.
 :           :                                 :          : asserted directly   :
 :           :                                 :          : in the test         :
 :           :                                 :          : docstring.          :
+| **T5-29** | Object-Referenced Mocking via   | High     | Passing a dotted    |
+:           : `mock.patch.object`             :          : string target to    :
+:           :                                 :          : `mock.patch`        :
+:           :                                 :          : instead of using    :
+:           :                                 :          : `mock.patch.object` :
+:           :                                 :          : on the object.      :
 
 --------------------------------------------------------------------------------
 
@@ -3903,13 +3909,13 @@ file where it was locally imported.**
 **Don't:**
 
 ```python
-@mock.patch("main.time.sleep")
+@mock.patch.object(main.time, "sleep")
 ```
 
 **Do:**
 
 ```python
-@mock.patch("time.sleep")
+@mock.patch.object(time, "sleep")
 ```
 
 --------------------------------------------------------------------------------
@@ -3939,7 +3945,7 @@ LRU cache intact across tests.**
 ```python
 class SshTests(unittest.TestCase):
     def test_version(self):
-        with mock.patch("ssh._run_ssh_version", return_value="OpenSSH_1.2\n"):
+        with mock.patch.object(ssh, "_run_ssh_version", return_value="OpenSSH_1.2\n"):
             self.assertEqual(ssh.version(), (1, 2))
 ```
 
@@ -3951,7 +3957,7 @@ class SshTests(unittest.TestCase):
         ssh.version.cache_clear()
 
     def test_version(self):
-        with mock.patch("ssh._run_ssh_version", return_value="OpenSSH_1.2\n"):
+        with mock.patch.object(ssh, "_run_ssh_version", return_value="OpenSSH_1.2\n"):
             self.assertEqual(ssh.version(), (1, 2))
 ```
 
@@ -4015,15 +4021,15 @@ with contextlib.redirect_stderr(f):
 **Don't:**
 
 ```python
-with mock.patch("sys.stderr") as mock_stderr:
-    with mock.patch("socket.socket") as ms:
+with mock.patch.object(time, "sleep") as mock_sleep:
+    with mock.patch.object(socket, "socket") as ms:
         run_test()
 ```
 
 **Do:**
 
 ```python
-with mock.patch("sys.stderr") as mock_stderr, mock.patch("socket.socket") as ms:
+with mock.patch.object(time, "sleep") as mock_sleep, mock.patch.object(socket, "socket") as ms:
     run_test()
 ```
 
@@ -4075,7 +4081,7 @@ mock_socket.connect.side_effect = OSError("Mock error")
 **Do:**
 
 ```python
-mock.patch("socket.socket", side_effect=OSError)
+mock.patch.object(socket, "socket", side_effect=OSError)
 ```
 
 **Exceptions:** Tests explicitly verifying exact formatting serialization (e.g.,
@@ -4609,6 +4615,43 @@ def test_Color_Parse_first_parameter_none(self):
     """check fg & bg & attr"""
     val = self.color._parse(None, "black", "red", "ul")
     self.assertEqual("\x1b[4;30;41m", val)
+```
+
+--------------------------------------------------------------------------------
+
+#### T5-29: Object-Referenced Mocking via `mock.patch.object`
+
+> **Rule:** Never use `mock.patch`; always use `mock.patch.object`.
+>
+> **What:** All attribute and function patching in unit tests must use
+> `mock.patch.object(target, "attribute", ...)` against an explicitly imported
+> module or class object rather than passing dotted string paths to
+> `mock.patch("module.attribute", ...)`.
+>
+> **Applies To:** All unit tests utilizing `unittest.mock`.
+>
+> **Why:** String-based `mock.patch` paths bypass static analysis and module
+> import validation, making tests brittle during refactoring and prone to silent
+> resolution errors or import ordering bugs. Referencing the imported object
+> directly via `mock.patch.object` ensures the target module is explicitly
+> imported and validated at load time. Failing to adhere to this typically
+> results in **Brittle Patch Routing / Unvalidated String Targets**.
+
+**Trap 1: Passing a dotted string target to `mock.patch` instead of using
+`mock.patch.object` on the object.**
+
+**Don't:**
+
+```python
+with mock.patch("ssh._run_ssh_version", return_value="OpenSSH_1.2\n"):
+    ...
+```
+
+**Do:**
+
+```python
+with mock.patch.object(ssh, "_run_ssh_version", return_value="OpenSSH_1.2\n"):
+    ...
 ```
 
 --------------------------------------------------------------------------------

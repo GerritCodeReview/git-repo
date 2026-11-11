@@ -14,13 +14,16 @@
 
 """Tests for the main repo script and subcommand routing."""
 
+import builtins
 from pathlib import Path
+import time
 from unittest import mock
 
 import pytest
 
 import event_log
 import main
+import manifest_xml
 
 
 @pytest.fixture(name="repo")
@@ -38,7 +41,7 @@ def fixture_mock_config():
     return mock.MagicMock()
 
 
-@mock.patch("time.sleep")
+@mock.patch.object(time, "sleep")
 def test_autocorrect_delay(mock_sleep, repo, mock_config):
     """Test autocorrect with positive delay."""
     mock_config.GetString.return_value = "10"
@@ -50,7 +53,7 @@ def test_autocorrect_delay(mock_sleep, repo, mock_config):
     assert res == "start"
 
 
-@mock.patch("time.sleep")
+@mock.patch.object(time, "sleep")
 def test_autocorrect_delay_one(mock_sleep, repo, mock_config):
     """Test autocorrect with '1' (0.1s delay, not immediate)."""
     mock_config.GetString.return_value = "1"
@@ -61,7 +64,7 @@ def test_autocorrect_delay_one(mock_sleep, repo, mock_config):
     assert res == "start"
 
 
-@mock.patch("time.sleep", side_effect=KeyboardInterrupt())
+@mock.patch.object(time, "sleep", side_effect=KeyboardInterrupt())
 def test_autocorrect_delay_interrupt(mock_sleep, repo, mock_config):
     """Test autocorrect handles KeyboardInterrupt during delay."""
     mock_config.GetString.return_value = "10"
@@ -72,7 +75,7 @@ def test_autocorrect_delay_interrupt(mock_sleep, repo, mock_config):
     assert res is None
 
 
-@mock.patch("time.sleep")
+@mock.patch.object(time, "sleep")
 def test_autocorrect_immediate(mock_sleep, repo, mock_config):
     """Test autocorrect with immediate/negative delay."""
     # Test numeric negative.
@@ -125,7 +128,7 @@ def test_autocorrect_never(repo, mock_config):
     assert res is None
 
 
-@mock.patch("builtins.input", return_value="y")
+@mock.patch.object(builtins, "input", return_value="y")
 def test_autocorrect_prompt_yes(mock_input, repo, mock_config):
     """Test autocorrect with prompt and user answers yes."""
     mock_config.GetString.return_value = "prompt"
@@ -135,7 +138,7 @@ def test_autocorrect_prompt_yes(mock_input, repo, mock_config):
     assert res == "start"
 
 
-@mock.patch("builtins.input", return_value="n")
+@mock.patch.object(builtins, "input", return_value="n")
 def test_autocorrect_prompt_no(mock_input, repo, mock_config):
     """Test autocorrect with prompt and user answers no."""
     mock_config.GetString.return_value = "prompt"
@@ -145,7 +148,7 @@ def test_autocorrect_prompt_no(mock_input, repo, mock_config):
     assert res is None
 
 
-@mock.patch("builtins.input", return_value="y")
+@mock.patch.object(builtins, "input", return_value="y")
 def test_autocorrect_multiple_candidates(mock_input, repo, mock_config):
     """Test autocorrect with multiple matches forces a prompt."""
     mock_config.GetString.return_value = "10"  # Normally just delay
@@ -158,7 +161,7 @@ def test_autocorrect_multiple_candidates(mock_input, repo, mock_config):
     assert res == "start"
 
 
-@mock.patch("builtins.input", side_effect=KeyboardInterrupt())
+@mock.patch.object(builtins, "input", side_effect=KeyboardInterrupt())
 def test_autocorrect_prompt_interrupt(mock_input, repo, mock_config):
     """Test autocorrect with prompt and user interrupts."""
     mock_config.GetString.return_value = "prompt"
@@ -181,7 +184,7 @@ def test_event_log_disabled_skips_add_and_git_hash() -> None:
     project.GetCommitRevisionId.assert_not_called()
 
 
-@mock.patch("manifest_xml.RepoClient")
+@mock.patch.object(manifest_xml, "RepoClient")
 def test_run_long_gates_event_log_on_flag(
     mock_client_cls: mock.MagicMock, tmp_path: Path
 ) -> None:

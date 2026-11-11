@@ -13,6 +13,7 @@
 # limitations under the License.
 """Unittests for the subcmds/sync.py module."""
 
+import builtins
 import contextlib
 import json
 import optparse
@@ -35,6 +36,7 @@ import command
 import error
 import git_command
 import git_config
+import git_superproject
 import manifest_xml
 import progress
 from project import SyncNetworkHalfResult
@@ -101,8 +103,8 @@ def test_get_current_branch_only(use_superproject, cli_args, result):
     cmd = sync.Sync()
     opts, _ = cmd.OptionParser.parse_args(cli_args)
 
-    with mock.patch(
-        "git_superproject.UseSuperproject", return_value=use_superproject
+    with mock.patch.object(
+        git_superproject, "UseSuperproject", return_value=use_superproject
     ):
         assert cmd._GetCurrentBranchOnly(opts, cmd.manifest) == result
 
@@ -726,8 +728,8 @@ class LocalSyncState(unittest.TestCase):
         """Common teardown."""
         shutil.rmtree(self.topdir)
 
-    def _new_state(self, time=_TIME):
-        with mock.patch("time.time", return_value=time):
+    def _new_state(self, now=_TIME):
+        with mock.patch.object(time, "time", return_value=now):
             return sync.LocalSyncState(self.manifest)
 
     def test_set(self):
@@ -885,7 +887,7 @@ class LocalSyncState(unittest.TestCase):
         self.state = self._new_state()
         self.assertEqual(self.state.GetFetchTime(projA), 5)
         self.assertEqual(self.state.GetFetchTime(projB), 7)
-        with mock.patch("os.path.exists", side_effect=mock_exists):
+        with mock.patch.object(os.path, "exists", side_effect=mock_exists):
             self.state.PruneRemovedProjects()
         self.assertIsNone(self.state.GetFetchTime(projA))
 
@@ -917,7 +919,7 @@ class LocalSyncState(unittest.TestCase):
             outer_client=self.manifest,
         )
 
-        with mock.patch("time.time", return_value=self._TIME):
+        with mock.patch.object(time, "time", return_value=self._TIME):
             state = sync.LocalSyncState(child_manifest)
 
         state.SetFetchTime(project)
@@ -954,8 +956,8 @@ class LocalSyncState(unittest.TestCase):
         self.state = self._new_state()
         self.assertEqual(self.state.GetFetchTime(projA), 5)
         self.assertEqual(self.state.GetFetchTime(projB), 7)
-        with mock.patch("os.path.exists", side_effect=mock_exists):
-            with mock.patch("os.path.islink", side_effect=mock_islink):
+        with mock.patch.object(os.path, "exists", side_effect=mock_exists):
+            with mock.patch.object(os.path, "islink", side_effect=mock_islink):
                 self.state.PruneRemovedProjects()
         self.assertIsNone(self.state.GetFetchTime(projB))
 
@@ -1394,7 +1396,7 @@ class KeyboardInterruptTest(unittest.TestCase):
             "ssh_proxy": None,
         }
 
-    @mock.patch("subcmds.sync.Sync.is_multiprocessing_active")
+    @mock.patch.object(sync.Sync, "is_multiprocessing_active")
     def test_fetch_one_keyboard_interrupt_main_process(self, mock_is_active):
         """Test that _FetchOne re-raises KeyboardInterrupt if not worker."""
         mock_is_active.return_value = False
@@ -1408,7 +1410,7 @@ class KeyboardInterruptTest(unittest.TestCase):
             with self.assertRaises(KeyboardInterrupt):
                 sync.Sync._FetchOne(self.opt, 0)
 
-    @mock.patch("subcmds.sync.Sync.is_multiprocessing_active")
+    @mock.patch.object(sync.Sync, "is_multiprocessing_active")
     def test_fetch_one_keyboard_interrupt_worker_process(self, mock_is_active):
         """Test that _FetchOne suppresses KeyboardInterrupt in workers."""
         mock_is_active.return_value = True
@@ -1641,7 +1643,7 @@ class GCProjectsTest(unittest.TestCase):
         """Test parallel GC (jobs >= 2)."""
         self.opt.jobs = 2
         with mock.patch.object(sync.Sync, "_SetPreciousObjectsState"):
-            with mock.patch("subcmds.sync._threading.Thread") as mock_thread:
+            with mock.patch.object(threading, "Thread") as mock_thread:
                 mock_t = mock.MagicMock()
                 mock_thread.return_value = mock_t
                 err_event = mock.Mock()
@@ -2226,8 +2228,8 @@ class InterleavedSyncTest(unittest.TestCase):
         mock.patch.object(sync, "_PostRepoFetch").start()
 
         # Mock parallel context for worker tests.
-        self.parallel_context_patcher = mock.patch(
-            "subcmds.sync.Sync.get_parallel_context"
+        self.parallel_context_patcher = mock.patch.object(
+            sync.Sync, "get_parallel_context"
         )
         self.mock_get_parallel_context = self.parallel_context_patcher.start()
         self.sync_dict = {}
@@ -2425,8 +2427,8 @@ class InterleavedSyncTest(unittest.TestCase):
             self.cmd, "GetProjects", return_value=reloaded_projects
         ), mock.patch.object(self.cmd, "event_log"), mock.patch.object(
             self.cmd, "ExecuteInParallel", side_effect=execute_side_effect
-        ), mock.patch(
-            "subcmds.sync.SyncBuffer"
+        ), mock.patch.object(
+            sync, "SyncBuffer"
         ) as mock_sync_buffer:
             mock_sync_buffer.return_value.Finish.return_value = True
             mock_sync_buffer.return_value.errors = []
@@ -2667,7 +2669,7 @@ class InterleavedSyncTest(unittest.TestCase):
         project.manifest.manifestProject.config = mock.MagicMock()
         self.mock_context["projects"] = [project]
 
-        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+        with mock.patch.object(sync, "SyncBuffer") as mock_sync_buffer:
             mock_sync_buf_instance = mock.MagicMock()
             mock_sync_buf_instance.Finish.return_value = True
             mock_sync_buf_instance.errors = []
@@ -2694,7 +2696,7 @@ class InterleavedSyncTest(unittest.TestCase):
             with self.subTest(this_manifest_only=this_manifest_only):
                 opt = self._get_opts()
                 opt.this_manifest_only = this_manifest_only
-                with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+                with mock.patch.object(sync, "SyncBuffer") as mock_sync_buffer:
                     mock_sync_buffer.return_value.Finish.return_value = True
                     mock_sync_buffer.return_value.errors = []
                     result_obj = self.cmd._SyncProjectList(opt, [0])
@@ -2773,7 +2775,7 @@ class InterleavedSyncTest(unittest.TestCase):
         project.manifest.manifestProject.config = mock.MagicMock()
         self.mock_context["projects"] = [project]
 
-        with mock.patch("subcmds.sync.SyncBuffer"):
+        with mock.patch.object(sync, "SyncBuffer"):
             result_obj = self.cmd._SyncProjectList(opt, [0])
             result = result_obj.results[0]
 
@@ -2793,7 +2795,7 @@ class InterleavedSyncTest(unittest.TestCase):
         project.manifest.manifestProject.config = mock.MagicMock()
         self.mock_context["projects"] = [project]
 
-        with mock.patch("subcmds.sync.SyncBuffer") as mock_sync_buffer:
+        with mock.patch.object(sync, "SyncBuffer") as mock_sync_buffer:
             mock_sync_buf_instance = mock.MagicMock()
             mock_sync_buf_instance.Finish.return_value = True
             mock_sync_buf_instance.errors = []
@@ -3376,10 +3378,10 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         self.manifest = mock.MagicMock()
         self.smart_sync_manifest_path = "/fake/path/to/manifest.xml"
 
-    @mock.patch("shutil.which")
-    @mock.patch("subprocess.Popen")
-    @mock.patch("xmlrpc.client.Server")
-    @mock.patch("subcmds.sync.PersistentTransport")
+    @mock.patch.object(shutil, "which")
+    @mock.patch.object(subprocess, "Popen")
+    @mock.patch.object(xmlrpc.client, "Server")
+    @mock.patch.object(sync, "PersistentTransport")
     def test_smart_sync_setup_with_helper(
         self, mock_transport_class, mock_server_class, mock_popen, mock_which
     ):
@@ -3413,7 +3415,7 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
         self.cmd._ReloadManifest = mock.MagicMock()
 
         # Mock open to avoid writing to disk
-        with mock.patch("builtins.open", mock.mock_open()):
+        with mock.patch.object(builtins, "open", mock.mock_open()):
             manifest_name = self.cmd._SmartSyncSetup(
                 self.opt, self.smart_sync_manifest_path, self.manifest
             )
@@ -3442,7 +3444,7 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
 
         self.assertEqual(manifest_name, "manifest.xml")
 
-    @mock.patch("xmlrpc.client.Server")
+    @mock.patch.object(xmlrpc.client, "Server")
     def test_smart_sync_setup_unparsable_manifest(
         self, mock_server_class: mock.MagicMock
     ) -> None:
@@ -3468,14 +3470,14 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
             side_effect=error.ManifestParseError("mismatched tag")
         )
 
-        with mock.patch("builtins.open", mock.mock_open()):
+        with mock.patch.object(builtins, "open", mock.mock_open()):
             with self.assertRaises(error.ManifestParseError):
                 self.cmd._SmartSyncSetup(
                     self.opt, self.smart_sync_manifest_path, self.manifest
                 )
 
-    @mock.patch("shutil.which")
-    @mock.patch("subprocess.Popen")
+    @mock.patch.object(shutil, "which")
+    @mock.patch.object(subprocess, "Popen")
     def test_smart_sync_setup_helper_error(self, mock_popen, mock_which):
         """Test _SmartSyncSetup when helper returns an error status."""
         self.manifest.manifest_server = (
@@ -3503,7 +3505,7 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
             str(context.exception),
         )
 
-    @mock.patch("shutil.which")
+    @mock.patch.object(shutil, "which")
     def test_smart_sync_setup_missing_declared_helper(self, mock_which):
         """Test _SmartSyncSetup when helper declared in manifest is missing."""
         self.manifest.manifest_server = (
@@ -3523,8 +3525,8 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
             str(context.exception),
         )
 
-    @mock.patch("shutil.which")
-    @mock.patch("subprocess.Popen")
+    @mock.patch.object(shutil, "which")
+    @mock.patch.object(subprocess, "Popen")
     def test_smart_sync_setup_helper_exit_code_error(
         self, mock_popen, mock_which
     ):
@@ -3555,8 +3557,8 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
             str(context.exception),
         )
 
-    @mock.patch("shutil.which")
-    @mock.patch("subprocess.Popen")
+    @mock.patch.object(shutil, "which")
+    @mock.patch.object(subprocess, "Popen")
     def test_smart_sync_setup_helper_json_decode_error_with_stderr(
         self, mock_popen, mock_which
     ):
@@ -3589,8 +3591,8 @@ class TestSmartSyncSetupRemoteHelper(unittest.TestCase):
             str(context.exception),
         )
 
-    @mock.patch("shutil.which")
-    @mock.patch("subprocess.Popen")
+    @mock.patch.object(shutil, "which")
+    @mock.patch.object(subprocess, "Popen")
     def test_smart_sync_setup_helper_error_with_stderr(
         self, mock_popen, mock_which
     ):
@@ -3651,9 +3653,9 @@ class TestSmartSyncSetupBranch(unittest.TestCase):
         )
 
     def _RunSetup(self, env: Dict[str, str]) -> str:
-        with mock.patch.dict(os.environ, env, clear=True), mock.patch(
-            "xmlrpc.client.Server", return_value=self.mock_server
-        ), mock.patch("builtins.open", mock.mock_open()):
+        with mock.patch.dict(os.environ, env, clear=True), mock.patch.object(
+            xmlrpc.client, "Server", return_value=self.mock_server
+        ), mock.patch.object(builtins, "open", mock.mock_open()):
             return self.cmd._SmartSyncSetup(
                 self.opt, self.smart_sync_manifest_path, self.manifest
             )
