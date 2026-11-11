@@ -34,10 +34,14 @@
 import functools
 import os
 import shlex
-import shutil
 import subprocess
 import sys
+from typing import Sequence
 
+import black
+import flake8.main.cli
+import isort.main
+import pytest
 
 # NB: While tests/* support Python >=3.6 to match requirements.json for `repo`,
 # the higher level runner logic does not need to be held back.
@@ -202,9 +206,10 @@ def cipd_bootstrap() -> None:
         return
 
 
-def main(argv):
-    """The main entry."""
+def main_run_tests(argv: Sequence[str]) -> int:
+    """The run_tests program."""
     cipd_bootstrap()
+
     checks = (
         functools.partial(run_pytest, argv),
         functools.partial(run_pytest_py38, argv),
@@ -217,6 +222,22 @@ def main(argv):
     # Run all the tests all the time to get full feedback.  Don't exit on the
     # first error as that makes it more difficult to iterate in the CQ.
     return 1 if sum(c() for c in checks) else 0
+
+
+main_black = black.main
+main_flake8 = flake8.main.cli.main
+main_isort = isort.main.main
+main_pytest = pytest.main
+
+
+def main(argv: Sequence[str]) -> int:
+    """The main dispatcher."""
+    # Figure out what script we're running as and dispatch to its main.
+    # This makes it easier for people to use the same env as run_tests.
+    argv0 = os.path.basename(sys.argv[0])
+    funcname = f"main_{argv0}"
+    func = globals().get(funcname, main_run_tests)
+    return func(argv)
 
 
 if __name__ == "__main__":
