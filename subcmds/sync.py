@@ -60,7 +60,7 @@ import git_command
 import git_config
 import git_refs
 import git_superproject
-from hooks import RepoHook
+import hooks
 import manifest_xml
 import platform_utils
 import progress
@@ -900,7 +900,7 @@ later is required to fix a server side protocol bug.
             action="store_true",
             help=optparse.SUPPRESS_HELP,
         )
-        RepoHook.AddOptionGroup(p, "post-sync")
+        hooks.RepoHook.AddOptionGroup(p, "post-sync")
 
     def _GetBranch(self, manifest_project):
         """Returns the branch name for getting the approved smartsync manifest.
@@ -2568,7 +2568,7 @@ later is required to fix a server side protocol bug.
 
     def _RunPostSyncHook(self, opt, sync_duration_seconds=None):
         """Run post-sync hook if configured in manifest <repo-hooks>."""
-        hook = RepoHook.FromSubcmd(
+        hook = hooks.RepoHook.FromSubcmd(
             hook_type="post-sync",
             manifest=self.manifest,
             opt=opt,

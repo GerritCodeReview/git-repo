@@ -24,7 +24,7 @@ import editor
 import error
 import git_refs
 import git_superproject
-from hooks import RepoHook
+import hooks
 from project import ReviewableBranch
 import repo_logging
 from subcmds.sync import LocalSyncState
@@ -381,7 +381,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             default=True,
             help="disable verifying ssl certs (unsafe)",
         )
-        RepoHook.AddOptionGroup(p, "pre-upload", allow_fix=True)
+        hooks.RepoHook.AddOptionGroup(p, "pre-upload", allow_fix=True)
 
     def _SingleBranch(self, opt, branch, people):
         project = branch.project
@@ -827,7 +827,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 for (project, available) in pending
                 if project.manifest.topdir == manifest.topdir
             ]
-            hook = RepoHook.FromSubcmd(
+            hook = hooks.RepoHook.FromSubcmd(
                 hook_type="pre-upload",
                 manifest=manifest,
                 opt=opt,
