@@ -1,46 +1,46 @@
-attrs==25.4.0 ; python_full_version < '3.12' \
+attrs==25.4.0 \
     --hash=sha256:3e2be3ccc931d6c0cda7d37122b992d6d4b905968a437da7843cff016e2c41e8 \
     --hash=sha256:adcf7e2a1fb3b36ac48d97835bb6d8ade15b8dcce26aba8bf1d14847b57a3373
     # via flake8-bugbear
-black==25.1.0 ; python_full_version < '3.12' \
+black==25.1.0 \
     --hash=sha256:95e8176dae143ba9097f351d174fdaf0ccd29efb414b362ae3fd72bf0f710717 \
     --hash=sha256:c9ed033e41998dd45d6f19bf9923e2444cb401185ccb26d1a2101a9049637c1f
-click==8.4.1 ; python_full_version < '3.12' \
+click==8.4.1 \
     --hash=sha256:482be17c6991b8c19c5429a1e995d9b0efdbb63172824c41f99965dc0ade8ec2
     # via black
-colorama==0.4.6 ; python_full_version < '3.12' and sys_platform == 'win32' \
+colorama==0.4.6 ; sys_platform == 'win32' \
     --hash=sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6 \
     --hash=sha256:8a5a9494346d7ae2d8f599e4661738007d2df56dbbf4ccbbf7a6a23679a3a302
     # via
     #   click
     #   pytest
-execnet==2.1.1 ; python_full_version < '3.12' \
+execnet==2.1.1 \
     --hash=sha256:26dee51f1b80cebd6d0ca8e74dd8745419761d3bef34163928cbebbdc4749fdc \
     --hash=sha256:58d6d58362e52bfab78f40ebfed9575a3334c41593bee4eb5fcda518290018dc
     # via pytest-xdist
-flake8==7.4.1 ; python_full_version < '3.12' \
+flake8==7.4.1 \
     --hash=sha256:7ff3b14668bfec70da5ce3eeaf1756098330598a9a69f1ee312ed315d27c6508
     # via
     #   flake8-bugbear
     #   flake8-comprehensions
-flake8-bugbear==26.9.30 ; python_full_version < '3.12' \
+flake8-bugbear==26.9.30 \
     --hash=sha256:d0fec65b92eb79adde488515c925c33afabbf85d194bd881e845c71444960fc5
-flake8-comprehensions==3.17.0 ; python_full_version < '3.12' \
+flake8-comprehensions==3.17.0 \
     --hash=sha256:3943a9c6f2593c3bc5cc64106c2f89d63c6ecd49c8343597f8257b8fcfc8b0a2
-flake8-import-restrictions==2.1 ; python_full_version < '3.12' \
+flake8-import-restrictions==2.1 \
     --hash=sha256:77522e76b82a6ccb25820b1e195825a695094ceded23a18c1b5ce026c23e1071
-iniconfig==2.3.0 ; python_full_version < '3.12' \
+iniconfig==2.3.0 \
     --hash=sha256:e6ae3625a739878eeb4baf25f17a0b4e9d985421e45b897d1332ed7478f822d9 \
     --hash=sha256:f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12
     # via pytest
-isort==5.10.1 ; python_full_version < '3.12' \
+isort==5.10.1 \
     --hash=sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7 \
     --hash=sha256:ec0da0d88470e89ade75bf1e2ea7b4349ec906f95c84aff08e4d41dea6864d25
-mccabe==0.7.0 ; python_full_version < '3.12' \
+mccabe==0.7.0 \
     --hash=sha256:6c2d30ab6be0e4a46919781807b4f0d834ebdd6c6e3dca0bda5a15f863427b6e \
     --hash=sha256:b85abd0a321cdd357d0be34adbf49cf01453a857a23e94d44612ec6f159cb261
     # via flake8
-mypy-extensions==1.1.0 ; python_full_version < '3.12' \
+mypy-extensions==1.1.0 \
     --hash=sha256:1be4cccdb0f2482337c4743e60421de3a356cd97508abadd57d47403e94f5505 \
     --hash=sha256:1be4cccdb0f2482337c4743e60421de3a356cd97508abadd57d47403e94f5505 \
     --hash=sha256:1be4cccdb0f2482337c4743e60421de3a356cd97508abadd57d47403e94f5505 \
@@ -51,33 +51,38 @@ mypy-extensions==1.1.0 ; python_full_version < '3.12' \
     --hash=sha256:1be4cccdb0f2482337c4743e60421de3a356cd97508abadd57d47403e94f5505 \
     --hash=sha256:4ec363d206d93f233330fa7f08eefe9a382dd1e326112a94244f95ec2f22f10e
     # via black
-packaging==26.2 ; python_full_version < '3.12' \
+packaging==26.2 \
     --hash=sha256:5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e
     # via
     #   black
     #   pytest
-pathspec==1.0.4 ; python_full_version < '3.12' \
+pathspec==1.0.4 \
     --hash=sha256:eeaf9fc7cbc0a4492b666be276f38956baa67cd3faca745462db83d98f1cef87 \
     --hash=sha256:fb6ae2fd4e7c921a165808a552060e722767cfa526f99ca5156ed2ce45a5c723
     # via black
-platformdirs==4.9.2 ; python_full_version < '3.12' \
+platformdirs==4.9.2 \
     --hash=sha256:9170634f126f8efdae22fb58ae8a0eaa86f38365bc57897a6c4f781d1f5875bd \
     --hash=sha256:ef245e78eb7a2ba57599bdb39c4ff323cfae3de356a47207b58bb29e7f479f46
     # via black
-pluggy==1.6.0 ; python_full_version < '3.12' \
+pluggy==1.6.0 \
     --hash=sha256:88349c39e440567519b15b27a781bcd3430de6bae17c44c37e758795be96dc5a \
     --hash=sha256:e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746
     # via pytest
-pycodestyle==2.15.0 ; python_full_version < '3.12' \
+pycodestyle==2.15.0 \
     --hash=sha256:12fd2f73c7b8ee8845a0431111df8faf4c1a07d6e64e2ee7f0c74014dab14181
     # via flake8
-pyflakes==4.0.3 ; python_full_version < '3.12' \
+pyflakes==4.0.3 \
     --hash=sha256:330ba92b8c1db2eb0b8f4068f6c58674e2649a99e334769aa50e3e9c5b11c23a
     # via flake8
-pytest==8.3.4 ; python_full_version < '3.12' \
+pyrefly==1.4.0 \
+    --hash=sha256:460cec39bc8743915e9c2c8c10ba926ad0b29b099d89c1859fb97e0059f42fa7 \
+    --hash=sha256:5a6370d686b6cbbac8869832f09a52012888371956fbc68d446a349bc85ccd43 \
+    --hash=sha256:7aff37c2b711c8240ed650da0c6148237b327bf7e5dfacee65884f1adea22305 \
+    --hash=sha256:b6951f51687304caebfedf13dd1a943aeafdbc95abcc4e24a683b97467a77007
+pytest==8.3.4 \
     --hash=sha256:00cba7845d2dccfe5403025a688d60ceae228b1ddaa866d2eb86b2edb6923e73 \
     --hash=sha256:50e16d954148559c9a74109af1eaf0c945ba2d8f30f0a3d3335edde19788b6f6
     # via pytest-xdist
-pytest-xdist==3.8.0 ; python_full_version < '3.12' \
+pytest-xdist==3.8.0 \
     --hash=sha256:202ca578cfeb7370784a8c33d6d05bc6e13b4f25b5053c30a152269fd10f0b88 \
     --hash=sha256:9e659fa2eacbed776070a08a075eff2d9c8e010bab4eea169640c22a1b079f2c
