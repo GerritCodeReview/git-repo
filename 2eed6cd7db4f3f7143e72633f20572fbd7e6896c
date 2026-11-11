@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29905803_e00212f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-11-11T21:55:51Z",
+      "side": 1,
+      "message": "this is a bit of an RFC",
+      "revId": "2eed6cd7db4f3f7143e72633f20572fbd7e6896c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
