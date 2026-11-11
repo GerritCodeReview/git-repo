@@ -27,7 +27,7 @@ import git_superproject
 import hooks
 from project import ReviewableBranch
 import repo_logging
-from subcmds.sync import LocalSyncState
+from subcmds import sync
 
 
 _DEFAULT_UNUSUAL_COMMIT_THRESHOLD = 5
@@ -836,7 +836,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             if not hook.Run(
                 project_list=pending_proj_names, worktree_list=pending_worktrees
             ):
-                if LocalSyncState(manifest).IsPartiallySynced():
+                if sync.LocalSyncState(manifest).IsPartiallySynced():
                     logger.info(
                         "Tip: A partially synced tree was detected. "
                         "If this failure involves cross-project dependencies, "

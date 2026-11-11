@@ -12,8 +12,6 @@ per-file-ignores =
     manifest_xml.py: IMR241,
     subcmds/gc.py: IMR241,
     subcmds/rebase.py: IMR241,
-    subcmds/selfupdate.py: IMR241,
-    subcmds/smartsync.py: IMR241,
     subcmds/sync.py: IMR241,
     subcmds/upload.py: IMR241,
     subcmds/wipe.py: IMR241,

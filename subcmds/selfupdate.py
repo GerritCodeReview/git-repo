@@ -17,8 +17,7 @@ import optparse
 import command
 import error
 import repo_logging
-from subcmds.sync import _PostRepoFetch
-from subcmds.sync import _PostRepoUpgrade
+from subcmds import sync
 
 
 logger = repo_logging.RepoLogger(__file__)
@@ -62,7 +61,7 @@ need to be performed by an end-user.
         rp.PreSync()
 
         if opt.repo_upgraded:
-            _PostRepoUpgrade(self.manifest)
+            sync._PostRepoUpgrade(self.manifest)
 
         else:
             result = rp.Sync_NetworkHalf()
@@ -71,4 +70,4 @@ need to be performed by an end-user.
                 raise SelfupdateError(aggregate_errors=[result.error])
 
             rp.bare_git.gc("--auto")
-            _PostRepoFetch(rp, repo_verify=opt.repo_verify, verbose=True)
+            sync._PostRepoFetch(rp, repo_verify=opt.repo_verify, verbose=True)
