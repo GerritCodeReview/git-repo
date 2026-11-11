@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from subcmds.sync import Sync
+from subcmds import sync
 
 
-class Smartsync(Sync):
+class Smartsync(sync.Sync):
     COMMON = True
     helpSummary = "Update working tree to the latest known good revision"
     helpUsage = """
@@ -26,8 +26,8 @@ The '%prog' command is a shortcut for sync -s.
 """
 
     def _Options(self, p):
-        Sync._Options(self, p, show_smart=False)
+        sync.Sync._Options(self, p, show_smart=False)
 
     def Execute(self, opt, args):
         opt.smart_sync = True
-        Sync.Execute(self, opt, args)
+        sync.Sync.Execute(self, opt, args)
