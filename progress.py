@@ -20,6 +20,8 @@ import time
 try:
     import threading as _threading
 except ImportError:
+    # This module was removed in Python 3.9, but we still support Python 3.6.
+    # pyrefly: ignore
     import dummy_threading as _threading
 
 import repo_trace
