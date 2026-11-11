@@ -98,6 +98,8 @@ class BaseEventLog:
         try:
             env[KEY] = self._full_sid
         except UnicodeEncodeError:
+            # This is a specific fallback for Windows for string-vs-bytes.
+            # pyrefly: ignore
             env[KEY] = self._full_sid.encode()
 
         if repo_source_version is not None:
