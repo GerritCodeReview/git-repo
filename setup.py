@@ -17,6 +17,8 @@
 
 import os
 
+# Not installed in the test virtualenv.
+# pyrefly: ignore
 import setuptools
 
 

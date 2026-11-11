@@ -17,6 +17,8 @@ from ctypes import wintypes
 import errno
 
 
+# Windows-only ctypes APIs are not in typeshed when checking on non-Windows.
+# pyrefly: ignore
 kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
 
 UCHAR = ctypes.c_ubyte
@@ -164,7 +166,9 @@ def _create_symlink(source, link_name, dwFlags):
         # "the unprivileged create flag is unsupported below Windows 10 (1703,
         # v10.0.14972). retry without it."
         if not CreateSymbolicLinkW(link_name, source, dwFlags):
+            # pyrefly: ignore
             code = ctypes.get_last_error()
+            # pyrefly: ignore
             error_desc = ctypes.FormatError(code).strip()
             if code == ERROR_PRIVILEGE_NOT_HELD:
                 raise OSError(errno.EPERM, error_desc, link_name)
@@ -190,7 +194,9 @@ def readlink(path):
     )
     if reparse_point_handle == INVALID_HANDLE_VALUE:
         _raise_winerror(
-            ctypes.get_last_error(), f'Error opening symbolic link "{path}"'
+            # pyrefly: ignore
+            ctypes.get_last_error(),
+            f'Error opening symbolic link "{path}"',
         )
     target_buffer = ctypes.c_buffer(MAXIMUM_REPARSE_DATA_BUFFER_SIZE)
     n_bytes_returned = wintypes.DWORD()
@@ -207,7 +213,9 @@ def readlink(path):
     CloseHandle(reparse_point_handle)
     if not io_result:
         _raise_winerror(
-            ctypes.get_last_error(), f'Error reading symbolic link "{path}"'
+            # pyrefly: ignore
+            ctypes.get_last_error(),
+            f'Error reading symbolic link "{path}"',
         )
     rdb = REPARSE_DATA_BUFFER.from_buffer(target_buffer)
     if rdb.ReparseTag == IO_REPARSE_TAG_SYMLINK:
@@ -221,6 +229,8 @@ def readlink(path):
 
 
 def _raise_winerror(code, error_desc):
+    # pyrefly: ignore
     win_error_desc = ctypes.FormatError(code).strip()
     error_desc = f"{error_desc}: {win_error_desc}"
+    # pyrefly: ignore
     raise ctypes.WinError(code, error_desc)
