@@ -18,6 +18,7 @@ import os
 import platform
 import re
 import sys
+from typing import Optional
 import urllib.parse
 import xml.dom.minidom
 
@@ -157,7 +158,7 @@ class _Default:
     sync_j_max = None
     sync_c = False
     sync_s = False
-    sync_tags = True
+    sync_tags = None
     sync_smartsync = False
 
     def __eq__(self, other):
@@ -654,9 +655,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if d.sync_s:
             have_default = True
             e.setAttribute("sync-s", "true")
-        if not d.sync_tags:
+        if d.sync_tags is not None:
             have_default = True
-            e.setAttribute("sync-tags", "false")
+            e.setAttribute("sync-tags", "true" if d.sync_tags else "false")
         if d.sync_smartsync:
             have_default = True
             e.setAttribute("sync-smartsync", "true")
@@ -776,8 +777,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             if p.sync_s:
                 e.setAttribute("sync-s", "true")
 
-            if not p.sync_tags:
-                e.setAttribute("sync-tags", "false")
+            sync_tags = self._project_sync_tags.get(p)
+            if sync_tags is not None:
+                e.setAttribute("sync-tags", "true" if sync_tags else "false")
 
             if p.clone_depth:
                 e.setAttribute("clone-depth", str(p.clone_depth))
@@ -1176,6 +1178,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         """
         self._loaded = False
         self._projects = {}
+        self._project_sync_tags = {}
         self._paths = {}
         self._remotes = {}
         self._default = None
@@ -1810,7 +1813,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         d.sync_c = XmlBool(node, "sync-c", False)
         d.sync_s = XmlBool(node, "sync-s", False)
-        d.sync_tags = XmlBool(node, "sync-tags", True)
+        d.sync_tags = XmlBool(node, "sync-tags")
         d.sync_smartsync = XmlBool(node, "sync-smartsync", False)
         return d
 
@@ -1920,6 +1923,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     def _UnjoinName(self, parent_name, name):
         return os.path.relpath(name, parent_name)
 
+    def _default_project_sync_tags(self, clone_depth: Optional[int]) -> bool:
+        """Return the default sync-tags value for a project."""
+        if self._default.sync_tags is not None:
+            return self._default.sync_tags
+        if (clone_depth or self.manifestProject.depth) and not self.IsMirror:
+            return False
+        return True
+
     def _ParseProject(self, node, parent=None, **extra_proj_attrs):
         """
         reads a <project> element from the manifest file
@@ -1965,7 +1976,6 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         rebase = XmlBool(node, "rebase", True)
         sync_c = XmlBool(node, "sync-c", False)
         sync_s = XmlBool(node, "sync-s", self._default.sync_s)
-        sync_tags = XmlBool(node, "sync-tags", self._default.sync_tags)
 
         clone_depth = XmlInt(node, "clone-depth")
         if clone_depth is not None and clone_depth <= 0:
@@ -1973,6 +1983,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 '%s: clone-depth must be greater than 0, not "%s"'
                 % (self.manifestFile, clone_depth)
             )
+
+        sync_tags_attr = XmlBool(node, "sync-tags")
+        sync_tags = (
+            sync_tags_attr
+            if sync_tags_attr is not None
+            else self._default_project_sync_tags(clone_depth)
+        )
 
         sync_strategy = node.getAttribute("sync-strategy") or None
 
@@ -2029,6 +2046,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             use_git_worktrees=use_git_worktrees,
             **extra_proj_attrs,
         )
+        if sync_tags_attr is not None:
+            self._project_sync_tags[project] = sync_tags_attr
 
         for n in node.childNodes:
             if n.nodeName == "copyfile":

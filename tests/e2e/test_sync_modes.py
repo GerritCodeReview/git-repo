@@ -193,6 +193,10 @@ def test_two_phase_sync_superproject(host: GitHost, client: RepoClient) -> None:
         (["-c", "--no-tags"], "", False),
         (["-c"], 'sync-tags="false"', False),
         (["-c", "--tags"], 'sync-tags="false"', True),
+        (["-c"], 'clone-depth="2"', False),
+        (["-c"], 'clone-depth="2" sync-tags="false"', False),
+        (["-c"], 'clone-depth="2" sync-tags="true"', True),
+        (["-c", "--tags"], 'clone-depth="2"', True),
     ],
 )
 def test_tags(
