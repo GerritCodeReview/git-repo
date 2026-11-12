@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72059970_b6a8ae1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-12T18:18:38Z",
+      "side": 1,
+      "message": "LGTM but this change has https://gerrit-review.git.corp.google.com/c/git-repo/+/656663/ as its parent. should I review that one too?",
+      "revId": "0bb94e984cc053b50d89731a065269dde5ef04c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
