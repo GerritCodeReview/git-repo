@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "561dd139_1741677d",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-11-12T19:03:15Z",
+      "side": 1,
+      "message": "Done. Updated _Default.sync_tags to default to None when unspecified so an explicit \u003cdefault sync-tags\u003d\"...\"\u003e takes precedence over the clone-depth / --depth heuristic, and updated the docs + man page to match.",
+      "parentUuid": "0a497151_20f4a6bf",
+      "revId": "7de7b0bd916fc0911309886807dde7e836d4d025",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "860f01e4_68f60ea7",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-11-12T04:19:37Z",
       "side": 1,
       "message": "we have a proper RepoProject class.  don\u0027t hardcode internal paths like this.\n\ni know _RemoteFetch is doing this, but that should be updated (looks like it predates the existence of RepoProject)",
+      "revId": "7de7b0bd916fc0911309886807dde7e836d4d025",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "958c991f_79d69dd3",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1999,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-11-12T19:03:15Z",
+      "side": 1,
+      "message": "Done. Switched both Sync_NetworkHalf and _RemoteFetch to check isinstance(self, RepoProject)",
+      "parentUuid": "860f01e4_68f60ea7",
       "revId": "7de7b0bd916fc0911309886807dde7e836d4d025",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
