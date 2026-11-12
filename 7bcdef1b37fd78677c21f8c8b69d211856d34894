@@ -22,6 +22,30 @@
       },
       "revId": "7bcdef1b37fd78677c21f8c8b69d211856d34894",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6943fb07_1b67f685",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-11-12T00:08:50Z",
+      "side": 1,
+      "message": "i was leaving it be since it\u0027s not a new error.  the analyzer is firing because i happened to touch the line for unrelated reasons.\n\ni\u0027ll change this one since it\u0027s fairly simple, but we shouldn\u0027t push on unrelated changes in general simply because AyeAye showed up.",
+      "parentUuid": "2f85527e_1eb861b0",
+      "range": {
+        "startLine": 731,
+        "startChar": 0,
+        "endLine": 732,
+        "endChar": 0
+      },
+      "revId": "7bcdef1b37fd78677c21f8c8b69d211856d34894",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
