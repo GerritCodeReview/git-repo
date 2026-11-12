@@ -130,7 +130,7 @@ class Info(command.PagedCommand):
             help=f"output format: {', '.join(formats)} (default: %default)",
         )
 
-    def WantPager(self, opt):
+    def WantPager(self, opt):  # pyrefly: ignore[bad-override-param-name]
         return OutputFormat[opt.format.upper()] == OutputFormat.TEXT
 
     def ValidateOptions(self, opt, args):
@@ -219,7 +219,7 @@ class Info(command.PagedCommand):
 
     def _ExecuteJson(self, opt, args) -> None:
         """Output info as JSON."""
-        result = {}
+        result: Dict[str, Any] = {}
         if opt.include_summary:
             result["summary"] = self._getSummaryData()
         if opt.include_projects:

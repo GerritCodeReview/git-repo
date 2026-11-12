@@ -43,16 +43,29 @@ import repo_trace
 class FakeProject:
     """A fake for Project for basic functionality."""
 
+    sparse_paths: List[str]
+    parent: Any = None
+    use_git_worktrees: bool = False
+    manifest: Any = None
+    GetRevisionId: Any = None
+    _InitMRef: Any = None
+    _ConfigureSparseCheckout: Any = None
+    _InitGitWorktree: Any = None
+    _CopyAndLinkFiles: Any = None
+    _createDotGit: Any = None
+    _IsSparseCheckoutConfigured: Any = None
+    _InitWorkTree: Any = None
+
     def __init__(self, worktree: str, gitdir: Optional[str] = None) -> None:
         self.worktree = worktree
         self.gitdir = (
             gitdir if gitdir is not None else os.path.join(worktree, ".git")
         )
         self.name = "fakeproject"
-        self.work_git = project.Project._GitGetByExec(
+        self.work_git: Any = project.Project._GitGetByExec(
             self, bare=False, gitdir=self.gitdir
         )
-        self.bare_git = project.Project._GitGetByExec(
+        self.bare_git: Any = project.Project._GitGetByExec(
             self, bare=True, gitdir=self.gitdir
         )
         self.config = git_config.GitConfig.ForRepository(gitdir=self.gitdir)
@@ -2212,6 +2225,7 @@ def test_metaproject_has_changes_bounds_revision_walk() -> None:
     meta._GetHead.return_value = "local"
     meta._revlist.return_value = ["remote"]
 
+    assert project.MetaProject.HasChanges.fget is not None
     assert project.MetaProject.HasChanges.fget(meta)
 
     meta._revlist.assert_called_once_with("-1", "^HEAD", "remote")
@@ -2375,7 +2389,7 @@ def _create_mock_project(
     objdir=None,
     revisionExpr="main",
     sync_strategy=None,
-):
+) -> Any:
     manifest = mock.MagicMock()
     manifest.manifestProject.use_local_gitdirs = use_local_gitdirs
     manifest.manifestProject.fetch_cmd = fetch_cmd
@@ -2704,7 +2718,7 @@ class SyncOptimizationTests(unittest.TestCase):
         tempdir: str,
         depth: Optional[int] = None,
         revisionExpr: Optional[str] = None,
-    ) -> project.Project:
+    ) -> Any:
         if revisionExpr is None:
             revisionExpr = "0123456789abcdef0123456789abcdef01234567"
         proj = _create_mock_project(
@@ -3465,7 +3479,7 @@ class GetEnvVarsTests(unittest.TestCase):
 def _create_meta_project(
     tempdir: str,
     project_cls: Type[project.MetaProject] = project.ManifestProject,
-) -> project.MetaProject:
+) -> Any:
     """Return a |project_cls| for a new .repo/ under |tempdir|."""
     repodir = os.path.join(tempdir, ".repo")
     manifest_dir = os.path.join(repodir, "manifests")
@@ -4002,7 +4016,7 @@ class ReprojectCmdTests(unittest.TestCase):
     OTHER_ID = "9abcdef0" * 5
     PUB_ID = "0fedcba9" * 5
 
-    def _get_project(self, tempdir: str) -> project.Project:
+    def _get_project(self, tempdir: str) -> Any:
         proj = _create_mock_project(
             tempdir, use_local_gitdirs=True, reproject_cmd="echo reproject"
         )
@@ -4205,7 +4219,7 @@ class ReprojectCmdTests(unittest.TestCase):
         branch: Optional[str] = None,
         upstream_gain: Sequence[str] = (),
         local_changes: Sequence[str] = (),
-    ) -> project.Project:
+    ) -> Any:
         """Return a project ready for Sync_LocalHalf with Git mocked out.
 
         Args:
@@ -5710,9 +5724,7 @@ class SparseCheckoutTests(unittest.TestCase):
 class SparseCheckoutFetchFilterTests(unittest.TestCase):
     """Check the partial clone filter used for sparse-checkout projects."""
 
-    def _get_project(
-        self, tempdir: str, sparse_paths: List[str]
-    ) -> project.Project:
+    def _get_project(self, tempdir: str, sparse_paths: List[str]) -> Any:
         # Point objdir somewhere that does not exist yet: Sync_NetworkHalf
         # skips the clone bundle outright once the shared object dir is
         # present, which would mask what these tests are checking.
@@ -5734,9 +5746,7 @@ class SparseCheckoutFetchFilterTests(unittest.TestCase):
         proj._RemoteFetch = mock.MagicMock(return_value=True)
         return proj
 
-    def _fetch_filter(
-        self, proj: project.Project, **kwargs: object
-    ) -> Optional[str]:
+    def _fetch_filter(self, proj: Any, **kwargs: object) -> Optional[str]:
         """Return the clone_filter Sync_NetworkHalf passes down to fetch."""
         res = proj.Sync_NetworkHalf(clone_bundle=False, **kwargs)
         self.assertTrue(res.success)
@@ -5794,7 +5804,7 @@ class SparseCheckoutFetchFilterTests(unittest.TestCase):
             proj.manifest.IsMirror = True
             self.assertIsNone(self._fetch_filter(proj))
 
-    def _bundle_applied(self, proj: project.Project, **kwargs: object) -> bool:
+    def _bundle_applied(self, proj: Any, **kwargs: object) -> bool:
         """Return whether Sync_NetworkHalf reached for the clone bundle."""
         res = proj.Sync_NetworkHalf(clone_bundle=True, **kwargs)
         self.assertTrue(res.success)
