@@ -24,7 +24,17 @@ import subprocess
 import tempfile
 import threading
 import time
-from typing import Any, Dict, Iterator, List, Optional, Set, Tuple, Type
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Iterator,
+    List,
+    Optional,
+    Set,
+    Tuple,
+    Type,
+)
 import unittest
 from unittest import mock
 import xmlrpc.client
@@ -2271,6 +2281,11 @@ class InterleavedSyncTest(unittest.TestCase):
         mock.patch.object(self.cmd, "_ValidateOptionsWithManifest").start()
         mock.patch.object(sync, "_PostRepoUpgrade").start()
         mock.patch.object(sync, "_PostRepoFetch").start()
+        self.mock_warm_init_template = mock.patch.object(
+            sync.Project,
+            "WarmInitTemplateCache",
+            return_value=(("env",), False),
+        ).start()
 
         # Mock parallel context for worker tests.
         self.parallel_context_patcher = mock.patch.object(
@@ -2683,6 +2698,159 @@ class InterleavedSyncTest(unittest.TestCase):
         work_items_sets = {frozenset(item) for item in work_items}
         expected_sets = {frozenset([0, 2]), frozenset([1])}
         self.assertEqual(work_items_sets, expected_sets)
+
+    def test_interleaved_init_template_cache_warmup(self) -> None:
+        """Test _SyncInterleaved warms init.templateDir cache when needed."""
+        projB_sub = FakeProject(
+            "projB/sub", name="projB_sub", objdir="objB_sub"
+        )
+        all_projects = [self.projA, self.projB, self.projA_sub, projB_sub]
+        mock.patch.object(
+            self.cmd, "GetProjects", return_value=all_projects
+        ).start()
+
+        def execute_side_effect(
+            jobs: int,
+            target: object,
+            work_items: List[List[int]],
+            **kwargs: Any,
+        ) -> bool:
+            synced_relpaths_set = kwargs["callback"].args[0]
+            projects_in_pass = self.cmd.get_parallel_context()["projects"]
+            for item in work_items:
+                for project_idx in item:
+                    synced_relpaths_set.add(
+                        projects_in_pass[project_idx].relpath
+                    )
+            return True
+
+        mock.patch.object(
+            self.cmd, "ExecuteInParallel", side_effect=execute_side_effect
+        ).start()
+
+        # Multi-level cold sync with -j2 warms once across both levels.
+        opt, args = self.cmd.OptionParser.parse_args(["--interleaved", "-j2"])
+        opt.quiet = True
+        self.cmd._SyncInterleaved(
+            opt,
+            args,
+            [],
+            self.manifest,
+            self.manifest.manifestProject,
+            all_projects,
+            {},
+        )
+        self.mock_warm_init_template.assert_called_once()
+        self.assertEqual(
+            self.mock_context["init_template_cache"], (("env",), False)
+        )
+
+        # Single-job sync skips warming.
+        self.mock_warm_init_template.reset_mock()
+        self.mock_context.pop("init_template_cache", None)
+        opt_j1, args_j1 = self.cmd.OptionParser.parse_args(
+            ["--interleaved", "-j1"]
+        )
+        opt_j1.quiet = True
+        self.cmd._SyncInterleaved(
+            opt_j1,
+            args_j1,
+            [],
+            self.manifest,
+            self.manifest.manifestProject,
+            all_projects,
+            {},
+        )
+        self.mock_warm_init_template.assert_not_called()
+
+        # Existing objdirs skip warming unless --force-sync is passed.
+        for p in all_projects:
+            p.objdir = os.path.join(self.repodir, p.name)
+            os.makedirs(p.objdir, exist_ok=True)
+
+        self.cmd._SyncInterleaved(
+            opt,
+            args,
+            [],
+            self.manifest,
+            self.manifest.manifestProject,
+            all_projects,
+            {},
+        )
+        self.mock_warm_init_template.assert_not_called()
+
+        opt_force, args_force = self.cmd.OptionParser.parse_args(
+            ["--interleaved", "-j2", "--force-sync"]
+        )
+        opt_force.quiet = True
+        self.cmd._SyncInterleaved(
+            opt_force,
+            args_force,
+            [],
+            self.manifest,
+            self.manifest.manifestProject,
+            all_projects,
+            {},
+        )
+        self.mock_warm_init_template.assert_called_once()
+
+    def test_fetch_and_init_worker_seed_template_cache(self) -> None:
+        """Test _Fetch populates parallel_context and InitWorker seeds it."""
+        self.parallel_context_patcher.stop()
+        self.outer_client.manifest.IsArchive = True
+        p1 = FakeProject("p1", objdir=os.path.join(self.repodir, "missing1"))
+        p2 = FakeProject("p2", objdir=os.path.join(self.repodir, "missing2"))
+
+        def execute_side_effect(
+            jobs: int,
+            func: object,
+            inputs: List[List[int]],
+            callback: Callable[..., bool],
+            **kwargs: Any,
+        ) -> bool:
+            if jobs > 1 and kwargs.get("initializer"):
+                kwargs["initializer"]()
+            return callback(None, kwargs["output"], [])
+
+        with mock.patch.object(
+            sync.multiprocessing, "Manager"
+        ) as mock_mgr, mock.patch.object(
+            self.cmd, "ExecuteInParallel", side_effect=execute_side_effect
+        ), mock.patch.object(
+            sync.Project, "SeedInitTemplateCache"
+        ) as mock_seed:
+            mock_mgr.return_value.dict.return_value = {}
+
+            # Cold parallel fetch warms once and seeds worker via InitWorker.
+            opt, _ = self.cmd.OptionParser.parse_args(["-j2"])
+            opt.jobs_network = 2
+            opt.quiet = True
+            self.cmd._Fetch([p1, p2], opt, mock.Mock(), None, [])
+            self.mock_warm_init_template.assert_called_once()
+            mock_seed.assert_called_once_with((("env",), False))
+
+            # Single-worker fetch neither warms nor seeds.
+            self.mock_warm_init_template.reset_mock()
+            mock_seed.reset_mock()
+            opt.jobs_network = 1
+            self.cmd._Fetch([p1, p2], opt, mock.Mock(), None, [])
+            self.mock_warm_init_template.assert_not_called()
+            mock_seed.assert_not_called()
+
+            # Warm parallel fetch (existing objdirs, no --force-sync) skips
+            # warming, and InitWorker does not seed when unset.
+            os.makedirs(p1.objdir, exist_ok=True)
+            os.makedirs(p2.objdir, exist_ok=True)
+            opt.jobs_network = 2
+            self.cmd._Fetch([p1, p2], opt, mock.Mock(), None, [])
+            self.mock_warm_init_template.assert_not_called()
+            mock_seed.assert_not_called()
+
+            # --force-sync warms and seeds even when objdirs exist.
+            opt.force_sync = True
+            self.cmd._Fetch([p1, p2], opt, mock.Mock(), None, [])
+            self.mock_warm_init_template.assert_called_once()
+            mock_seed.assert_called_once_with((("env",), False))
 
     def _get_opts(self, args=None):
         """Helper to get default options for worker tests."""
