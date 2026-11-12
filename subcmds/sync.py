@@ -3381,11 +3381,9 @@ later is required to fix a server side protocol bug.
                 if result.stderr_text and (opt.verbose or not success):
                     pm.display_message(result.stderr_text)
 
+                total_sync_time: Optional[float] = None
                 if result.fetch_start:
-                    self._fetch_times.Set(
-                        project,
-                        result.fetch_finish - result.fetch_start,
-                    )
+                    total_sync_time = result.fetch_finish - result.fetch_start
                     self._local_sync_state.SetFetchTime(project)
                     self.event_log.AddSync(
                         project,
@@ -3395,6 +3393,10 @@ later is required to fix a server side protocol bug.
                         result.fetch_success,
                     )
                 if result.checkout_start:
+                    checkout_dur = (
+                        result.checkout_finish - result.checkout_start
+                    )
+                    total_sync_time = (total_sync_time or 0.0) + checkout_dur
                     if result.checkout_success:
                         self._local_sync_state.SetCheckoutTime(project)
                     self.event_log.AddSync(
@@ -3404,6 +3406,8 @@ later is required to fix a server side protocol bug.
                         result.checkout_finish,
                         result.checkout_success,
                     )
+                if total_sync_time is not None:
+                    self._fetch_times.Set(project, total_sync_time)
 
                 finished_relpaths.add(result.relpath)
 
@@ -3557,6 +3561,11 @@ later is required to fix a server side protocol bug.
                                 )
                                 if not level_projects:
                                     continue
+
+                                if isinstance(self._fetch_times, _FetchTimes):
+                                    level_projects.sort(
+                                        key=self._fetch_times.Get, reverse=True
+                                    )
 
                                 objdir_project_map = collections.defaultdict(
                                     list
