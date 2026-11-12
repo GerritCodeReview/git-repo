@@ -29,7 +29,7 @@ import sys
 import tarfile
 import tempfile
 import time
-from typing import Any, Dict, List, NamedTuple, Optional, Tuple
+from typing import Any, Dict, List, NamedTuple, Optional, Sequence, Tuple
 import urllib.parse
 
 import color
@@ -57,7 +57,7 @@ class SyncNetworkHalfResult(NamedTuple):
     # the commit already present.
     remote_fetched: bool
     # Error from SyncNetworkHalf
-    error: Exception = None
+    error: Optional[Exception] = None
 
     @property
     def success(self) -> bool:
@@ -72,7 +72,10 @@ class DeleteWorktreeError(error.RepoError):
     """Failure to delete worktree."""
 
     def __init__(
-        self, *args, aggregate_errors: List[Exception] = None, **kwargs
+        self,
+        *args,
+        aggregate_errors: Optional[Sequence[Exception]] = None,
+        **kwargs,
     ) -> None:
         super().__init__(*args, **kwargs)
         self.aggregate_errors = aggregate_errors or []
@@ -227,12 +230,12 @@ class DownloadedChange:
 
 
 class ReviewableBranch:
-    _commit_cache = None
-    _base_exists = None
+    _commit_cache: Optional[List[str]] = None
+    _base_exists: Optional[bool] = None
 
     def __init__(
         self,
-        project: "Project",
+        project: Any,
         branch: git_config.Branch,
         base: str,
         ignore_remote_commits: bool = False,
@@ -251,7 +254,7 @@ class ReviewableBranch:
         return getattr(self.branch, "current", False)
 
     @property
-    def commits(self):
+    def commits(self) -> List[str]:
         if self._commit_cache is None:
             args = (
                 "--abbrev=8",
@@ -278,6 +281,7 @@ class ReviewableBranch:
 
                 self._commit_cache = []
 
+        assert self._commit_cache is not None
         return self._commit_cache
 
     @property
@@ -436,6 +440,7 @@ def _SafeExpandPath(base, subpath, skipfinal=False):
     # / in their paths.
     resep = re.compile(r"[/%s]" % re.escape(os.path.sep))
     components = resep.split(subpath)
+    finalpart = ""
     if skipfinal:
         # Whether the caller handles the final component itself.
         finalpart = components.pop()
@@ -700,7 +705,7 @@ class Project:
         self.clone_depth = clone_depth
         self.sync_strategy = sync_strategy
         self.upstream = upstream
-        self.parent = parent
+        self.parent: Any = parent
         # NB: Do not use this setting in __init__ to change behavior so that the
         # manifest.git checkout can inspect & change it after instantiating.
         # See the XmlManifest init code for more info.
@@ -798,7 +803,7 @@ class Project:
         self.gitdir = gitdir.replace("\\", "/")
         self.objdir = objdir.replace("\\", "/")
         if worktree:
-            self.worktree = os.path.normpath(worktree).replace("\\", "/")
+            self.worktree: Any = os.path.normpath(worktree).replace("\\", "/")
         else:
             self.worktree = None
         self.relpath = relpath
@@ -808,7 +813,7 @@ class Project:
         )
 
         if self.worktree:
-            self.work_git = self._GitGetByExec(
+            self.work_git: Any = self._GitGetByExec(
                 self, bare=False, gitdir=self.gitdir
             )
         else:
@@ -1546,7 +1551,7 @@ class Project:
         """Get a single uploadable branch, or None."""
         branch = self.GetBranch(branch_name)
         base = branch.LocalMerge
-        if branch.LocalMerge:
+        if base:
             rb = ReviewableBranch(
                 self, branch, base, ignore_remote_commits=ignore_remote_commits
             )
@@ -1739,7 +1744,7 @@ class Project:
         """
         try:
             with tarfile.open(tarpath, "r") as tar:
-                tar.extractall(path=path)
+                tar.extractall(path=path or ".")
                 return True
         except (OSError, tarfile.TarError) as e:
             logger.error("error: Cannot extract archive %s: %s", tarpath, e)
@@ -2880,7 +2885,7 @@ class Project:
             return None
 
         head = self._GetHead()
-        if head == rev:
+        if head is not None and head == rev:
             # We can't destroy the branch while we are sitting
             # on it.  Switch to a detached HEAD.
             head = all_refs[head]
@@ -2945,6 +2950,7 @@ class Project:
                 )
                 b.Wait()
             finally:
+                assert old is not None
                 if git_config.IsId(old):
                     self.bare_git.DetachHead(old)
                 else:
@@ -3099,9 +3105,9 @@ class Project:
                     gitdir=gitdir,
                 )
             except error.GitError:
-                return []
+                return {}
             if p.Wait() != 0:
-                return []
+                return {}
             objects = {}
             for line in p.stdout.split("\n"):
                 if not line.strip():
@@ -3478,7 +3484,7 @@ class Project:
         except error.GitError:
             logger.error("error: Postcondition failed: FETCH_HEAD not found")
             return False
-        if not self._IsSameCommit(fetch_head, repo_trev):
+        if not repo_trev or not self._IsSameCommit(fetch_head, repo_trev):
             logger.error(
                 "error: Postcondition failed: FETCH_HEAD is %s, expected %s",
                 fetch_head,
@@ -3702,7 +3708,8 @@ class Project:
         if not self.manifest.IsMirror and is_sha1 and depth:
             # Shallow checkout of a specific commit, fetch from that commit and
             # not the heads only as the commit might be deeper in the history.
-            spec.append(branch)
+            if branch:
+                spec.append(branch)
             if upstream:
                 spec.append(upstream)
         else:
@@ -4438,21 +4445,25 @@ class Project:
                 mp = self.manifest.manifestProject
                 ref_dir = mp.reference or ""
 
-                def _expanded_ref_dirs():
+                def _expanded_ref_dirs(base_ref_dir: str):
                     """Iterate through possible git reference dir paths."""
                     name = self.name + ".git"
-                    yield mirror_git or os.path.join(ref_dir, name)
+                    yield mirror_git or os.path.join(base_ref_dir, name)
                     for prefix in "", self.remote.name:
                         yield os.path.join(
-                            ref_dir, ".repo", "project-objects", prefix, name
+                            base_ref_dir,
+                            ".repo",
+                            "project-objects",
+                            prefix,
+                            name,
                         )
                         yield os.path.join(
-                            ref_dir, ".repo", "worktrees", prefix, name
+                            base_ref_dir, ".repo", "worktrees", prefix, name
                         )
 
                 if ref_dir or mirror_git:
                     found_ref_dir = None
-                    for path in _expanded_ref_dirs():
+                    for path in _expanded_ref_dirs(ref_dir):
                         if os.path.exists(path):
                             found_ref_dir = path
                             break

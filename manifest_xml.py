@@ -18,6 +18,7 @@ import os
 import platform
 import re
 import sys
+from typing import Any, Optional
 import urllib.parse
 import xml.dom.minidom
 
@@ -58,7 +59,7 @@ urllib.parse.uses_netloc.extend(
 )
 
 
-def XmlBool(node, attr, default=None):
+def XmlBool(node, attr, default=None) -> Any:
     """Determine boolean value of |node|'s |attr|.
 
     Invalid values will issue a non-fatal warning.
@@ -149,16 +150,16 @@ def normalize_url(url: str) -> str:
 class _Default:
     """Project defaults within the manifest."""
 
-    revisionExpr = None
-    destBranchExpr = None
-    upstreamExpr = None
-    remote = None
-    sync_j = None
-    sync_j_max = None
-    sync_c = False
-    sync_s = False
-    sync_tags = True
-    sync_smartsync = False
+    revisionExpr: Optional[str] = None
+    destBranchExpr: Optional[str] = None
+    upstreamExpr: Optional[str] = None
+    remote: Optional["_XmlRemote"] = None
+    sync_j: Optional[int] = None
+    sync_j_max: Optional[int] = None
+    sync_c: bool = False
+    sync_s: bool = False
+    sync_tags: bool = True
+    sync_smartsync: bool = False
 
     def __eq__(self, other):
         if not isinstance(other, _Default):
@@ -213,6 +214,7 @@ class _XmlRemote:
             return ""
 
         fetch_url = normalize_url(self.fetchUrl)
+        assert self.manifestUrl is not None
         manifest_url = normalize_url(self.manifestUrl)
 
         # urljoin doesn't like URLs with no scheme in the base URL
@@ -285,6 +287,7 @@ class _XmlSubmanifest:
         self.groups = groups or set()
         self.default_groups = default_groups
         self.path = path
+        assert parent is not None
         self.parent = parent
         self.annotations = []
         outer_client = parent._outer_client or parent
@@ -334,9 +337,11 @@ class _XmlSubmanifest:
     def ToSubmanifestSpec(self):
         """Return a SubmanifestSpec object, populating attributes"""
         mp = self.parent.manifestProject
-        remote = self.parent.remotes[
-            self.remote or self.parent.default.remote.name
-        ]
+        remote_name = self.remote
+        if not remote_name:
+            assert self.parent.default.remote is not None
+            remote_name = self.parent.default.remote.name
+        remote = self.parent.remotes[remote_name]
         # If a project was given, generate the url from the remote and project.
         # If not, use this manifestProject's url.
         if self.project:
@@ -476,6 +481,7 @@ class XmlManifest:
 
         # Look for manifests by name from the manifests repo.
         if path is None:
+            assert self.manifestProject.worktree is not None
             path = os.path.join(self.manifestProject.worktree, name)
             if not os.path.isfile(path):
                 raise error.ManifestParseError("manifest %s not found" % name)
@@ -987,9 +993,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         return self._remotes
 
     @property
-    def default(self):
+    def default(self) -> _Default:
         """Return default values for this manifest."""
         self._Load()
+        assert self._default is not None
         return self._default
 
     @property
@@ -1050,14 +1057,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
     @property
     def PartialCloneExclude(self):
-        exclude = self.manifest.manifestProject.partial_clone_exclude or ""
+        exclude = self.manifestProject.partial_clone_exclude or ""
         return {x.strip() for x in exclude.split(",")}
 
     def SetManifestOverride(self, path):
         """Override manifestFile.  The caller must call Unload()"""
-        self._outer_client.manifest.manifestFileOverrides[self.path_prefix] = (
-            path
-        )
+        self._outer_client.manifestFileOverrides[self.path_prefix] = path
 
     @property
     def UseLocalManifests(self):
@@ -1177,11 +1182,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         self._loaded = False
         self._projects = {}
         self._paths = {}
-        self._remotes = {}
-        self._default = None
+        self._remotes: Any = {}
+        self._default: Any = None
         self._submanifests = {}
-        self._repo_hooks_project = None
-        self._superproject = None
+        self._repo_hooks_project: Any = None
+        self._superproject: Any = None
         self._contactinfo = ContactInfo(wrapper.Wrapper().BUG_URL)
         self._notice = None
         self.branch = None
@@ -1334,7 +1339,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         for manifest in root.childNodes:
             if (
-                manifest.nodeType == manifest.ELEMENT_NODE
+                isinstance(manifest, xml.dom.minidom.Element)
                 and manifest.nodeName == "manifest"
             ):
                 break
@@ -1342,7 +1347,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             raise error.ManifestParseError(f"no <manifest> in {path}")
 
         nodes = []
-        for node in manifest.childNodes:
+        child_nodes: Any = manifest.childNodes
+        for node in child_nodes:
             if (
                 parent_node
                 and node.nodeName in ("include", "project")
@@ -1546,6 +1552,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         p.SetRevision(revision)
 
                     if remote_name:
+                        assert remote is not None
                         p.remote = remote.ToRemoteSpec(name)
                     if dest_branch:
                         p.dest_branch = dest_branch
@@ -1553,6 +1560,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         p.upstream = upstream
 
                     if dest_path:
+                        assert remote is not None
                         del self._paths[p.relpath]
                         (
                             relpath,
@@ -1709,6 +1717,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
     def _AddMetaProjectMirror(self, m):
         name = None
+        remote = None
         m_url = m.GetRemote().url
         if m_url.endswith("/.git"):
             raise error.ManifestParseError("refusing to mirror %s" % m_url)
@@ -1735,6 +1744,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             name = name[:-4]
 
         if name not in self._projects:
+            assert remote is not None
             m.PreSync()
             gitdir = os.path.join(self.topdir, "%s.git" % name)
             project = Project(

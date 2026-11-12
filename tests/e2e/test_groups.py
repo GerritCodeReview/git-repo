@@ -37,7 +37,9 @@ GROUPED_MANIFEST = manifest_xml(
 def create_grouped_projects(host: GitHost) -> Dict[str, ServerRepo]:
     """Create the projects of `GROUPED_MANIFEST` & the manifest itself."""
     repos = {}
-    for name in "abcd":
+    # TODO: Once we require Python 3.11+, drop str() and use LiteralString,
+    # if pyrefly still wants us to do so.
+    for name in str("abcd"):
         repos[name] = host.create_repo(f"platform/{name}", {"f": name})
     host.create_manifest(GROUPED_MANIFEST)
     return repos

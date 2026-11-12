@@ -14,7 +14,7 @@
 
 import functools
 import sys
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 
 import color
 import command
@@ -38,9 +38,9 @@ class ExecuteOneResult(NamedTuple):
 
     project_idx: int
     rc: int
-    stdout: str
-    stderr: str
-    error: error.GitError
+    stdout: Optional[str]
+    stderr: Optional[str]
+    error: Optional[error.GitError]
 
 
 class GrepCommandError(error.SilentRepoExitError):

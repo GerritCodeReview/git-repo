@@ -57,20 +57,22 @@ def _IsValidRefName(name: str) -> bool:
 class GitRefs:
     def __init__(self, gitdir):
         self._gitdir = gitdir
-        self._phyref = None
-        self._symref = None
+        self._phyref: Optional[Dict[str, str]] = None
+        self._symref: Optional[Dict[str, str]] = None
         self._mtime: Dict[str, Optional[_StatKey]] = {}
         self._files_authoritative = False
 
     @property
-    def all(self):
+    def all(self) -> Dict[str, str]:
         self._EnsureLoaded()
+        assert self._phyref is not None
         return self._phyref
 
     @property
     def head(self) -> str:
         """Return HEAD's symbolic target or detached object ID."""
         self._EnsureLoaded()
+        assert self._symref is not None and self._phyref is not None
         return self._symref.get(HEAD) or self._phyref.get(HEAD, "")
 
     @property
@@ -101,7 +103,7 @@ class GitRefs:
             if name in self._phyref:
                 del self._phyref[name]
 
-            if name in self._symref:
+            if self._symref is not None and name in self._symref:
                 del self._symref[name]
 
             if name in self._mtime:
@@ -113,6 +115,7 @@ class GitRefs:
     def symref(self, name):
         try:
             self._EnsureLoaded()
+            assert self._symref is not None
             return self._symref[name]
         except KeyError:
             return ""
@@ -198,7 +201,7 @@ class GitRefs:
             name: Full symbolic reference name (e.g. "refs/remotes/m/main").
             target: Target reference name that the symref points to.
         """
-        if self._phyref is None:
+        if self._phyref is None or self._symref is None:
             return
         if self._HasExternalRefChanges(name):
             self.Invalidate()
@@ -220,7 +223,7 @@ class GitRefs:
             name: Full reference name just updated on disk (e.g.
                 "refs/remotes/m/main").
         """
-        if self._phyref is None:
+        if self._phyref is None or self._symref is None:
             return
         if self._HasExternalRefChanges(name):
             self.Invalidate()
@@ -304,6 +307,7 @@ class GitRefs:
 
     def _ResolveSymrefs(self) -> None:
         """Resolve all symbolic references into _phyref up to max depth."""
+        assert self._symref is not None and self._phyref is not None
         for name in self._symref:
             self._phyref.pop(name, None)
 
@@ -614,6 +618,7 @@ class GitRefs:
         if p.Wait() != 0:
             return False
 
+        assert self._symref is not None and self._phyref is not None
         for line in p.stdout.splitlines():
             ref_id, name, symref = line.split("\0")
             if symref:
@@ -624,6 +629,7 @@ class GitRefs:
 
     def _ReadSymbolicRef(self, name: str) -> None:
         """Read a symbolic reference."""
+        assert self._symref is not None and self._phyref is not None
         if name == HEAD:
             path = os.path.join(self._gitdir, HEAD)
             try:

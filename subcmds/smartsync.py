@@ -25,8 +25,8 @@ class Smartsync(sync.Sync):
 The '%prog' command is a shortcut for sync -s.
 """
 
-    def _Options(self, p):
-        sync.Sync._Options(self, p, show_smart=False)
+    def _Options(self, p, show_smart=False):
+        sync.Sync._Options(self, p, show_smart=show_smart)
 
     def Execute(self, opt, args):
         opt.smart_sync = True

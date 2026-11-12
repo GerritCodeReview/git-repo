@@ -105,7 +105,7 @@ def RepoSourceVersion():
                 ver = ver[1:]
         else:
             ver = "unknown"
-        RepoSourceVersion.version = ver
+        RepoSourceVersion.version = ver  # pyrefly: ignore
 
     return ver
 
@@ -320,7 +320,8 @@ class GitCommand:
         self.project = project
         self.cmdv = cmdv
         self.verify_command = verify_command
-        self.stdout, self.stderr = None, None
+        self.stdout: Any = None
+        self.stderr: Any = None
         if capture_stdout_bytes:
             if merge_output:
                 raise ValueError(
@@ -415,7 +416,7 @@ class GitCommand:
         merge_output=False,
         ssh_proxy=None,
         cwd=None,
-        input=None,
+        input: Any = None,
     ):
         # Set subprocess.PIPE for streams that need to be captured.
         stdin = subprocess.PIPE if input else None
@@ -442,7 +443,10 @@ class GitCommand:
         # not disrupt the existing flow.
         # See go/tee-repo-stderr for more context.
         tee_stderr = False
-        kwargs = {"encoding": "utf-8", "errors": "backslashreplace"}
+        kwargs: Dict[str, Any] = {
+            "encoding": "utf-8",
+            "errors": "backslashreplace",
+        }
         if capture_stdout_bytes:
             kwargs = {}
             if isinstance(input, str):
@@ -454,11 +458,11 @@ class GitCommand:
             stderr = subprocess.PIPE
             kwargs = {}
 
+        global LAST_CWD
+        global LAST_GITDIR
+
         dbg = ""
         if repo_trace.IsTrace():
-            global LAST_CWD
-            global LAST_GITDIR
-
             if cwd and LAST_CWD != cwd:
                 if LAST_GITDIR or LAST_CWD:
                     dbg += "\n"
@@ -648,9 +652,9 @@ class GitCommandError(error.GitError):
     def __init__(
         self,
         message: str = DEFAULT_GIT_FAIL_MESSAGE,
-        git_rc: int = None,
-        git_stdout: str = None,
-        git_stderr: str = None,
+        git_rc: Optional[int] = None,
+        git_stdout: Optional[str] = None,
+        git_stderr: Optional[str] = None,
         **kwargs,
     ):
         super().__init__(

@@ -967,6 +967,10 @@ class LocalSyncState(unittest.TestCase):
 
 
 class FakeProject:
+    GetSubmoduleRevisions: Any = None
+    Sync_NetworkHalf: Any = None
+    Sync_LocalHalf: Any = None
+
     def __init__(
         self,
         relpath: str,
@@ -983,7 +987,7 @@ class FakeProject:
         self.name = name or relpath
         self.objdir = objdir or relpath
         self.gitdir = self.objdir
-        self.worktree = relpath
+        self.worktree: Optional[str] = relpath
         self.parent = parent
         self.is_derived = is_derived
         self.revisionId = revisionId
@@ -1244,7 +1248,7 @@ class FetchParentFirst(unittest.TestCase):
         cmd._fetch_times = mock.Mock()
         cmd._fetch_times.Get = mock.Mock(return_value=0)
 
-        calls = []
+        calls: List[Any] = []
         p_a = FakeProject("a")
 
         def fake_read() -> Dict[str, str]:
@@ -1553,10 +1557,8 @@ class CheckForBloatedProjects(unittest.TestCase):
             return_value={"projects": [self.project]}
         )
 
-        def mock_execute_in_parallel(
-            jobs, func, work_items, callback, **kwargs
-        ):
-            callback(None, mock.Mock(), ["project"])
+        def mock_execute_in_parallel(*args, **kwargs):
+            kwargs["callback"](None, mock.Mock(), ["project"])
             return True
 
         self.cmd.ExecuteInParallel = mock_execute_in_parallel
@@ -1670,7 +1672,7 @@ class SyncCommand(unittest.TestCase):
         manifest.repoProject.LastFetch = time.time()
         self.sync_network_half_error = None
         self.sync_local_half_error = None
-        self.cmd = sync.Sync(
+        self.cmd: Any = sync.Sync(
             manifest=manifest,
             outer_client=outer_client,
             git_event_log=git_event_log,
@@ -1733,8 +1735,13 @@ class SyncCommand(unittest.TestCase):
         )
         with self.assertRaises(error.RepoExitError) as e:
             self.cmd.Execute(self.opt, [])
-            self.assertIn(self.sync_local_half_error, e.aggregate_errors)
-            self.assertIn(self.sync_network_half_error, e.aggregate_errors)
+            assert e.exception.aggregate_errors is not None
+            self.assertIn(
+                self.sync_local_half_error, e.exception.aggregate_errors
+            )
+            self.assertIn(
+                self.sync_network_half_error, e.exception.aggregate_errors
+            )
 
     def test_groups_passed_to_get_projects(self):
         """Ensure Execute passes opt.groups to GetProjects."""
@@ -2357,9 +2364,9 @@ class InterleavedSyncTest(unittest.TestCase):
 
         def execute_side_effect(
             jobs: int,
-            target: object,
+            target: Any,
             work_items: List[List[int]],
-            **kwargs: object,
+            **kwargs: Any,
         ) -> bool:
             synced_relpaths_set = kwargs["callback"].args[0]
             projects_in_pass = self.cmd.get_parallel_context()["projects"]
@@ -2411,9 +2418,9 @@ class InterleavedSyncTest(unittest.TestCase):
 
         def execute_side_effect(
             jobs: int,
-            target: object,
+            target: Any,
             work_items: List[List[int]],
-            **kwargs: object,
+            **kwargs: Any,
         ) -> bool:
             synced_relpaths_set = kwargs["callback"].args[0]
             projects_in_pass = self.cmd.get_parallel_context()["projects"]
@@ -2461,9 +2468,9 @@ class InterleavedSyncTest(unittest.TestCase):
 
         def execute_side_effect(
             jobs: int,
-            target: object,
+            target: Any,
             work_items: List[List[int]],
-            **kwargs: object,
+            **kwargs: Any,
         ) -> bool:
             results = [target(item) for item in work_items]
             return kwargs["callback"](None, kwargs["output"], results)
@@ -3673,7 +3680,7 @@ class TestSmartSyncSetupBranch:
     """Tests for how _SmartSyncSetup picks the branch sent to the server."""
 
     def setup_method(self) -> None:
-        self.cmd = sync.Sync()
+        self.cmd: Any = sync.Sync()
         self.opt = mock.MagicMock()
         self.opt.quiet = True
         self.opt.smart_sync = True
@@ -3864,7 +3871,7 @@ def _LiveManifestServer(**funcs: Any) -> Iterator[xmlrpc.client.ServerProxy]:
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
-        host, port = server.server_address
+        host, port = server.server_address[:2]
         yield xmlrpc.client.ServerProxy(f"http://{host}:{port}/")
     finally:
         server.shutdown()
