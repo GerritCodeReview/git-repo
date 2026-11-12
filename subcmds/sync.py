@@ -1230,7 +1230,7 @@ later is required to fix a server side protocol bug.
                     project = projects[result.project_idx]
                     start = result.start
                     finish = result.finish
-                    self._fetch_times.Set(project, finish - start)
+                    self._sync_times.Set(project, finish - start)
                     self._local_sync_state.SetFetchTime(project)
                     self.event_log.AddSync(
                         project,
@@ -1328,7 +1328,7 @@ later is required to fix a server side protocol bug.
             batch = _WithoutProjects(batch, _RefreshDerivedRevisions(batch))
             if not batch:
                 continue
-            batch.sort(key=self._fetch_times.Get, reverse=True)
+            batch.sort(key=self._sync_times.Get, reverse=True)
             result = self._Fetch(batch, opt, err_event, ssh_proxy, errors)
             success = success and result.success
             fetched.update(result.projects)
@@ -1407,7 +1407,7 @@ later is required to fix a server side protocol bug.
                     err_event.set()
                 fetched.update(new_fetched)
         finally:
-            self._fetch_times.Save()
+            self._sync_times.Save()
             self._local_sync_state.Save()
 
         return _FetchMainResult(all_projects)
@@ -2851,7 +2851,7 @@ later is required to fix a server side protocol bug.
             "repo.newprojectcount", str(len(all_projects) - len(existing))
         )
 
-        self._fetch_times = _FetchTimes(manifest)
+        self._sync_times = _SyncTimes(manifest)
         self._local_sync_state = LocalSyncState(manifest)
         self._bloated_projects = []
 
@@ -3407,11 +3407,9 @@ later is required to fix a server side protocol bug.
                 if result.stderr_text and (opt.verbose or not success):
                     pm.display_message(result.stderr_text)
 
-                if result.fetch_start:
-                    self._fetch_times.Set(
-                        project,
-                        result.fetch_finish - result.fetch_start,
-                    )
+                total_sync_time: Optional[float] = None
+                if result.fetch_start is not None:
+                    total_sync_time = result.fetch_finish - result.fetch_start
                     self._local_sync_state.SetFetchTime(project)
                     self.event_log.AddSync(
                         project,
@@ -3420,7 +3418,11 @@ later is required to fix a server side protocol bug.
                         result.fetch_finish,
                         result.fetch_success,
                     )
-                if result.checkout_start:
+                if result.checkout_start is not None:
+                    checkout_dur = (
+                        result.checkout_finish - result.checkout_start
+                    )
+                    total_sync_time = (total_sync_time or 0.0) + checkout_dur
                     if result.checkout_success:
                         self._local_sync_state.SetCheckoutTime(project)
                     self.event_log.AddSync(
@@ -3430,6 +3432,8 @@ later is required to fix a server side protocol bug.
                         result.checkout_finish,
                         result.checkout_success,
                     )
+                if total_sync_time is not None:
+                    self._sync_times.Set(project, total_sync_time)
 
                 finished_relpaths.add(result.relpath)
 
@@ -3584,6 +3588,10 @@ later is required to fix a server side protocol bug.
                                 if not level_projects:
                                     continue
 
+                                level_projects.sort(
+                                    key=self._sync_times.Get, reverse=True
+                                )
+
                                 objdir_project_map = collections.defaultdict(
                                     list
                                 )
@@ -3640,7 +3648,7 @@ later is required to fix a server side protocol bug.
                         sync_event.set()
                         sync_progress_thread.join()
         finally:
-            self._fetch_times.Save()
+            self._sync_times.Save()
             self._local_sync_state.Save()
 
         pm.end()
@@ -3726,7 +3734,14 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
             )
 
 
-class _FetchTimes:
+class _SyncTimes:
+    """Moving average of per-project sync durations for slowest-first ordering.
+
+    Records fetch duration in phased mode and combined fetch + checkout
+    duration in interleaved mode. Persisted under `.repo_fetchtimes.json` for
+    compatibility with existing workspaces and older repo versions.
+    """
+
     _ALPHA = 0.5
 
     def __init__(self, manifest):
