@@ -838,7 +838,7 @@ class ProjectTests(unittest.TestCase):
             proj._GetStatusSnapshot = mock.MagicMock(return_value=status)
             proj.IsRebaseInProgress = mock.MagicMock(return_value=True)
 
-            self.assertTrue(proj.HasChanges())
+            self.assertTrue(proj.HasChanges)
             self.assertEqual(
                 ["rebase in progress"], proj.UncommittedFiles(get_all=False)
             )

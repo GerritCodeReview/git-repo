@@ -1211,6 +1211,7 @@ class Project:
         """Returns a list of strings, untracked files in the git tree."""
         return self.work_git.LsOthers()
 
+    @property
     def HasChanges(self) -> bool:
         """Returns true if there are uncommitted changes."""
         return bool(self.UncommittedFiles(get_all=False))
@@ -5826,7 +5827,7 @@ class MetaProject(Project):
         return False
 
     @property
-    def HasChanges(self):
+    def HasChanges(self) -> bool:
         """Has the remote received new commits not yet checked out?"""
         if not self.remote or not self.revisionExpr:
             return False
