@@ -563,3 +563,198 @@ def test_set_string_after_external_edit_preserves_external_keys(
     assert reader2.GetString("other.key") == "ext2"
     assert reader2.GetString("user.name") == "Alice"
     assert reader2.GetString("user.email") == "alice@example.com"
+
+
+def test_batch_writes_coalesces_new_keys_without_git_replace(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Test BatchWrites writes new sections atomically with one JSON save."""
+    cfg_path = tmp_path / "config"
+    cfg_path.write_text("[core]\n\trepositoryformatversion = 0\n")
+    config = git_config.GitConfig(str(cfg_path))
+
+    orig_do = config._do
+    seen_do = []
+    save_count = 0
+    orig_save = config._SaveJson
+
+    def spy_do(*args: str) -> str:
+        seen_do.append(args)
+        return orig_do(*args)
+
+    def spy_save(cache: Any) -> None:
+        nonlocal save_count
+        save_count += 1
+        orig_save(cache)
+
+    monkeypatch.setattr(config, "_do", spy_do)
+    monkeypatch.setattr(config, "_SaveJson", spy_save)
+
+    with config.BatchWrites():
+        config.SetString("filter.lfs.smudge", "git-lfs smudge --skip -- %f")
+        config.SetString("filter.lfs.process", "git-lfs filter-process --skip")
+        config.SetString("remote.goog.url", "https://example.com/platform/art")
+        config.SetString(
+            "remote.goog.fetch",
+            [
+                "+refs/heads/*:refs/remotes/goog/*",
+                "+refs/tags/*:refs/tags/*",
+            ],
+        )
+        config.SetBoolean("maintenance.auto", False)
+
+    assert seen_do == [("--null", "--list")]
+    assert save_count == 1
+    assert not (tmp_path / "config.lock").exists()
+
+    reloaded = git_config.GitConfig(str(cfg_path))
+    fresh = reloaded._ReadGit()
+    assert fresh["filter.lfs.smudge"] == ["git-lfs smudge --skip -- %f"]
+    assert fresh["filter.lfs.process"] == ["git-lfs filter-process --skip"]
+    assert fresh["remote.goog.url"] == ["https://example.com/platform/art"]
+    assert fresh["remote.goog.fetch"] == [
+        "+refs/heads/*:refs/remotes/goog/*",
+        "+refs/tags/*:refs/tags/*",
+    ]
+    assert fresh["maintenance.auto"] == ["false"]
+
+
+def test_batch_writes_falls_back_on_lock_or_external_edit(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Test BatchWrites preserves concurrent edits and respects config.lock."""
+    # 1. External edit between cache load and flush falls back to git config CLI
+    # so neither the external key nor the batched key is lost.
+    cfg_path = tmp_path / "config"
+    cfg_path.write_text("[core]\n\tfilemode = true\n")
+    config = git_config.GitConfig(str(cfg_path))
+
+    with config.BatchWrites():
+        config.SetString("remote.origin.url", "https://example.com/a")
+        with open(cfg_path, "a", encoding="utf-8") as fp:
+            fp.write("[external]\n\tadded = yes\n")
+
+    reloaded = git_config.GitConfig(str(cfg_path))
+    fresh = reloaded._ReadGit()
+    assert fresh["external.added"] == ["yes"]
+    assert fresh["remote.origin.url"] == ["https://example.com/a"]
+    assert config.GetString("external.added") == "yes"
+
+    # 2. Pre-existing config.lock is never clobbered; BatchWrites delegates to
+    # _do instead.
+    locked_path = tmp_path / "locked_config"
+    locked_path.write_text("[core]\n\tfilemode = true\n")
+    lock_file = tmp_path / "locked_config.lock"
+    lock_file.write_text("held-by-other-process")
+
+    locked_cfg = git_config.GitConfig(str(locked_path))
+    _ = locked_cfg.GetBoolean("core.filemode")
+    do_calls = []
+    monkeypatch.setattr(
+        locked_cfg,
+        "_do",
+        lambda *args: do_calls.append(args) or "core.filemode\ntrue\0",
+    )
+
+    with locked_cfg.BatchWrites():
+        locked_cfg.SetString("remote.origin.url", "https://example.com/b")
+
+    assert lock_file.read_text() == "held-by-other-process"
+    assert ("--replace-all", "remote.origin.url", "https://example.com/b") in (
+        do_calls
+    )
+
+
+def test_batch_writes_direct_do_refreshes_fingerprint_and_branch_save_batches(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Direct _do in BatchWrites updates fingerprint; Save uses BatchWrites."""
+    cfg_path = tmp_path / "config"
+    cfg_path.write_text("[core]\n\tfilemode = true\n")
+    config = git_config.GitConfig(str(cfg_path))
+    _ = config.GetBoolean("core.filemode")
+
+    orig_do = config._do
+    seen_do = []
+
+    def spy_do(*args: str, **kwargs: Any) -> str:
+        seen_do.append(args)
+        return orig_do(*args, **kwargs)
+
+    monkeypatch.setattr(config, "_do", spy_do)
+
+    # Updating an existing key runs _do() directly inside BatchWrites; the next
+    # SetString must not see a stale _cache_fingerprint or re-run --list.
+    with config.BatchWrites():
+        config.SetString("core.filemode", "false")
+        config.SetString("new.section.key", "val")
+
+    assert seen_do == [("--replace-all", "core.filemode", "false")]
+    assert config.GetString("core.filemode") == "false"
+    assert config.GetString("new.section.key") == "val"
+
+    # Remote.Save() and Branch.Save() coalesce new keys via BatchWrites without
+    # spawning git config --replace-all subprocesses.
+    seen_do.clear()
+    remote = config.GetRemote("origin")
+    remote.url = "https://example.com/repo"
+    remote.ResetFetch()
+    remote.Save()
+
+    branch = config.GetBranch("main")
+    branch.remote = remote
+    branch.merge = "refs/heads/main"
+    branch.Save()
+
+    assert seen_do == []
+
+    # When include.path is present, _CanQueueInBatch returns False so writes go
+    # through git config immediately instead of queueing for lockfile append.
+    inc_file = tmp_path / "inc.gitconfig"
+    inc_file.write_text("[extra]\n\tflag = 1\n")
+    config.SetString("include.path", str(inc_file))
+    _ = config.GetString("extra.flag")
+    seen_do.clear()
+    with config.BatchWrites():
+        config.SetString("after.include", "yes")
+    assert ("--replace-all", "after.include", "yes") in seen_do
+
+
+def test_batch_writes_failure_paths(tmp_path: Path) -> None:
+    """BatchWrites clears state on failure and preserves body errors."""
+    # 1. Failed fallback flush clears poisoned in-memory cache and dirty flag.
+    fail_path = tmp_path / "fail_config"
+    fail_path.write_text("[core]\n\tfilemode = true\n")
+    lock_path = tmp_path / "fail_config.lock"
+    lock_path.write_text("locked")
+    fail_cfg = git_config.GitConfig(str(fail_path))
+    assert fail_cfg.GetBoolean("core.filemode") is True
+
+    with pytest.raises(error.GitError):
+        with fail_cfg.BatchWrites():
+            fail_cfg.SetString("remote.origin.url", "https://bad.example.com")
+
+    lock_path.unlink()
+    assert fail_cfg.GetString("remote.origin.url") is None
+    with fail_cfg.BatchWrites():
+        pass
+    assert (
+        git_config.GitConfig(str(fail_path)).GetString("remote.origin.url")
+        is None
+    )
+
+    # 2. If body raises and flush also fails, original body error propagates.
+    body_path = tmp_path / "body_config"
+    body_path.write_text("[core]\n\tfilemode = true\n")
+    body_lock = tmp_path / "body_config.lock"
+    body_lock.write_text("locked")
+    body_cfg = git_config.GitConfig(str(body_path))
+    assert body_cfg.GetBoolean("core.filemode") is True
+
+    with pytest.raises(RuntimeError, match="body boom"):
+        with body_cfg.BatchWrites():
+            body_cfg.SetString("remote.origin.url", "https://bad.example.com")
+            raise RuntimeError("body boom")
+
+    body_lock.unlink()
+    assert body_cfg.GetString("remote.origin.url") is None
