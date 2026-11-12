@@ -28,7 +28,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from typing import Dict, List, NamedTuple, Optional, Set, Tuple, Union
+from typing import Dict, Iterable, List, NamedTuple, Optional, Set, Tuple, Union
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -1189,7 +1189,21 @@ later is required to fix a server side protocol bug.
         # job at the same time. Then the connection may fail if too many
         # connections are pending and execeeded the socket listening backlog,
         # especially on MacOS.
-        _ = len(cls.get_parallel_context()["sync_dict"])
+        context = cls.get_parallel_context()
+        _ = len(context["sync_dict"])
+        init_template_cache = context.get("init_template_cache")
+        if init_template_cache is not None:
+            Project.SeedInitTemplateCache(init_template_cache)
+
+    def _WarmInitTemplateCache(
+        self, objdirs: Iterable[str], force_sync: Optional[bool]
+    ) -> None:
+        """Populate parallel_context with init.templateDir state if needed."""
+        context = self.get_parallel_context()
+        if "init_template_cache" in context:
+            return
+        if force_sync is True or any(not os.path.exists(d) for d in objdirs):
+            context["init_template_cache"] = Project.WarmInitTemplateCache()
 
     def _Fetch(self, projects, opt, err_event, ssh_proxy, errors):
         ret = True
@@ -1260,6 +1274,8 @@ later is required to fix a server side protocol bug.
             # pass it as an argument to _FetchProjectList below as
             # multiprocessing is unable to pickle those.
             self.get_parallel_context()["ssh_proxy"] = ssh_proxy
+            if jobs > 1:
+                self._WarmInitTemplateCache(objdir_project_map, opt.force_sync)
 
             sync_progress_thread.start()
             if not opt.quiet:
@@ -3571,6 +3587,10 @@ later is required to fix a server side protocol bug.
                                     continue
 
                                 jobs = max(1, min(opt.jobs, len(work_items)))
+                                if jobs > 1:
+                                    self._WarmInitTemplateCache(
+                                        objdir_project_map, opt.force_sync
+                                    )
                                 callback = functools.partial(
                                     self._ProcessSyncInterleavedResults,
                                     finished_relpaths,

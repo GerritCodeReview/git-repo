@@ -120,7 +120,9 @@ def _GitTemplateEnvKey() -> Tuple[Any, ...]:
     return base + extra
 
 
-@functools.lru_cache(maxsize=None)
+_INIT_TEMPLATE_CACHE: Dict[Tuple[Any, ...], bool] = {}
+
+
 def _HasCustomGitTemplateDir(env_key: Tuple[Any, ...]) -> bool:
     """Return whether Git has a custom template directory configured.
 
@@ -130,19 +132,26 @@ def _HasCustomGitTemplateDir(env_key: Tuple[Any, ...]) -> bool:
     Returns:
         True if a non-empty GIT_TEMPLATE_DIR or init.templatedir is configured.
     """
+    cached = _INIT_TEMPLATE_CACHE.get(env_key)
+    if cached is not None:
+        return cached
+
     git_template_dir = env_key[0]
     if git_template_dir is not None:
-        return bool(git_template_dir)
+        result = bool(git_template_dir)
+    else:
+        p = git_command.GitCommand(
+            None,
+            ["config", "--get", "init.templatedir"],
+            capture_stdout=True,
+            capture_stderr=True,
+            bare=True,
+            add_event_log=False,
+        )
+        result = p.Wait() == 0 and bool(p.stdout.strip())
 
-    p = git_command.GitCommand(
-        None,
-        ["config", "--get", "init.templatedir"],
-        capture_stdout=True,
-        capture_stderr=True,
-        bare=True,
-        add_event_log=False,
-    )
-    return p.Wait() == 0 and bool(p.stdout.strip())
+    _INIT_TEMPLATE_CACHE[env_key] = result
+    return result
 
 
 def _FirstLines(lines: List[str], limit: int = 10) -> str:
@@ -4367,6 +4376,20 @@ class Project:
                 "owns every ref write",
                 project=self.name,
             )
+
+    @staticmethod
+    def WarmInitTemplateCache() -> Tuple[Tuple[Any, ...], bool]:
+        """Resolve and cache the init.templateDir lookup for sync workers."""
+        env_key = _GitTemplateEnvKey()
+        return env_key, _HasCustomGitTemplateDir(env_key)
+
+    @staticmethod
+    def SeedInitTemplateCache(
+        cache_entry: Tuple[Tuple[Any, ...], bool],
+    ) -> None:
+        """Seed the init.templateDir lookup cache in a worker process."""
+        env_key, has_custom = cache_entry
+        _INIT_TEMPLATE_CACHE[env_key] = has_custom
 
     def _InitGitDir(self, mirror_git=None, force_sync=False, quiet=False):
         # Prefix for temporary directories created during gitdir initialization.
