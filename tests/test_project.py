@@ -5258,6 +5258,70 @@ class InitGitDirConfigTests(unittest.TestCase):
                 os.path.exists(os.path.join(hooks_dir, "post-checkout"))
             )
 
+    def test_warm_and_seed_init_template_cache(self) -> None:
+        """Warming in parent and seeding in worker avoids re-querying git."""
+        with tempfile.TemporaryDirectory() as topdir, mock.patch.dict(
+            project._INIT_TEMPLATE_CACHE, {}, clear=True
+        ), mock.patch.dict(
+            os.environ,
+            {
+                "GIT_CONFIG_NOSYSTEM": "1",
+                "GIT_CONFIG_GLOBAL": os.path.join(topdir, "empty_gitconfig"),
+            },
+            clear=False,
+        ):
+            os.environ.pop("GIT_TEMPLATE_DIR", None)
+            os.environ.pop("GIT_CONFIG_PARAMETERS", None)
+            os.environ.pop("GIT_CONFIG_COUNT", None)
+            seen_cmds: List[List[str]] = []
+
+            class SpyGitCommand(git_command.GitCommand):
+                def __init__(
+                    self,
+                    proj_arg: Any,
+                    cmdv: List[str],
+                    *args: Any,
+                    **kwargs: Any,
+                ) -> None:
+                    seen_cmds.append(list(cmdv))
+                    super().__init__(proj_arg, cmdv, *args, **kwargs)
+
+            with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
+                entry = project.Project.WarmInitTemplateCache()
+
+            self.assertFalse(entry[1])
+            self.assertEqual(
+                [["config", "--get", "init.templatedir"]], seen_cmds
+            )
+
+            # Simulate a fresh spawn/forkserver worker seeded via InitWorker.
+            seen_cmds.clear()
+            project._INIT_TEMPLATE_CACHE.clear()
+            project.Project.SeedInitTemplateCache(entry)
+            proj = self._make_uninitialized_project(topdir, clone_depth=1)
+            with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
+                proj._InitGitDir(quiet=True)
+
+            tpl_cmds = [cmd for cmd in seen_cmds if "init.templatedir" in cmd]
+            init_cmds = [cmd for cmd in seen_cmds if cmd and cmd[0] == "init"]
+            self.assertEqual([], tpl_cmds)
+            self.assertEqual([["init", "-q", "--template="]], init_cmds)
+
+            # Seeding True omits --template= without querying git config.
+            seen_cmds.clear()
+            project._INIT_TEMPLATE_CACHE.clear()
+            project.Project.SeedInitTemplateCache((entry[0], True))
+            proj2 = self._make_uninitialized_project(
+                os.path.join(topdir, "sub"), clone_depth=1
+            )
+            with mock.patch.object(git_command, "GitCommand", SpyGitCommand):
+                proj2._InitGitDir(quiet=True)
+
+            tpl_cmds2 = [cmd for cmd in seen_cmds if "init.templatedir" in cmd]
+            init_cmds2 = [cmd for cmd in seen_cmds if cmd and cmd[0] == "init"]
+            self.assertEqual([], tpl_cmds2)
+            self.assertEqual([["init", "-q"]], init_cmds2)
+
 
 class SparseCheckoutTests(unittest.TestCase):
     """Check sparse-checkout handling."""
