@@ -31,6 +31,7 @@ def Wrapper():
     modname = "wrapper"
     loader = importlib.machinery.SourceFileLoader(modname, WrapperPath())
     spec = importlib.util.spec_from_loader(modname, loader)
+    assert spec is not None
     module = importlib.util.module_from_spec(spec)
     loader.exec_module(module)
     return module

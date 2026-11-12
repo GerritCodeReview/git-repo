@@ -17,6 +17,7 @@ import os
 import platform
 import shutil
 import stat
+from typing import Union
 
 
 def isWindows():
@@ -224,7 +225,7 @@ def rmdir(path):
     os.rmdir(_makelongpath(path))
 
 
-def removedirs(path: str) -> None:
+def removedirs(path: Union[str, os.PathLike]) -> None:
     """Remove a directory tree of symlinks and empty directories.
 
     Walks |path| bottom-up without following symlinks.  Removes symlinks

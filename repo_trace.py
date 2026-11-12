@@ -25,6 +25,7 @@ import os
 import sys
 import tempfile
 import time
+from typing import Optional
 
 import platform_utils
 
@@ -35,7 +36,7 @@ REPO_TRACE = "REPO_TRACE"
 # Temporarily set tracing to always on unless user expicitly sets to 0.
 _TRACE = os.environ.get(REPO_TRACE) != "0"
 _TRACE_TO_STDERR = False
-_TRACE_FILE = None
+_TRACE_FILE: Optional[str] = None
 _TRACE_FILE_NAME = "TRACE_FILE"
 _MAX_SIZE = 70  # in MiB
 _NEW_COMMAND_SEP = "+++++++++++++++NEW COMMAND+++++++++++++++++++"
@@ -104,6 +105,7 @@ class Trace(contextlib.ContextDecorator):
             f"PID: {os.getpid()} START: {self._time()} :{self._trace_msg}\n"
         )
 
+        assert _TRACE_FILE is not None
         with open(_TRACE_FILE, "a") as f:
             print(print_msg, file=f)
 
@@ -120,6 +122,7 @@ class Trace(contextlib.ContextDecorator):
             f"PID: {os.getpid()} END: {self._time()} :{self._trace_msg}\n"
         )
 
+        assert _TRACE_FILE is not None
         with open(_TRACE_FILE, "a") as f:
             print(print_msg, file=f)
 
@@ -141,6 +144,7 @@ def _GetTraceFile(quiet):
 
 def _ClearOldTraces():
     """Clear the oldest commands if trace file is too big."""
+    assert _TRACE_FILE is not None
     try:
         with open(_TRACE_FILE, errors="ignore") as f:
             if os.path.getsize(f.name) / (1024 * 1024) <= _MAX_SIZE:

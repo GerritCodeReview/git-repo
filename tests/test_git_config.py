@@ -214,6 +214,9 @@ def test_get_sync_analysis_state_data(rw_config_file: Path) -> None:
     class Options:
         """Container for testing."""
 
+        verbose: str
+        mp_update: str
+
     options = Options()
     options.verbose = "true"
     options.mp_update = "false"
