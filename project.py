@@ -6331,7 +6331,7 @@ class ManifestProject(MetaProject):
         elif platform in all_platforms:
             groups.append(platformize(platform))
         elif platform != "none":
-            logger.error("fatal: invalid platform flag", file=sys.stderr)
+            logger.error("fatal: invalid platform flag: %s", platform)
             return False
         self.config.SetString("manifest.platform", platform)
 
