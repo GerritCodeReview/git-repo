@@ -46,7 +46,7 @@ class FakeProject:
     def GetDerivedSubprojects(self):
         return list(self._derived_subprojects)
 
-    def MatchesGroups(self, _groups):
+    def MatchesGroups(self, groups: Iterable[str]) -> bool:
         return True
 
     def RelPath(self, local=True):
@@ -69,6 +69,7 @@ class FakeManifest:
         )
         self._effective_groups = effective_groups
         self.path_prefix = ""
+        self.outer_client = self
 
         # all_projects may include projects owned by child manifests,
         # so only set this manifest on its direct projects.

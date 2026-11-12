@@ -455,7 +455,7 @@ class _GitHttpHandler(http.server.BaseHTTPRequestHandler):
     # Keep the protocol simple: one request per connection.
     protocol_version = "HTTP/1.0"
 
-    def log_message(self, *args: object) -> None:
+    def log_message(self, format: str, *args: object) -> None:
         """Silence the default stderr logging."""
 
     def _read_body(self) -> bytes:
@@ -550,7 +550,7 @@ class _GitHttpHandler(http.server.BaseHTTPRequestHandler):
 
         body = self._read_body()
         output = self.git_server.run_backend(
-            self.command, path, query, self.headers, body
+            self.command, path, query, dict(self.headers), body
         )
         # Split the CGI response into headers & body at the first blank line.
         match = re.search(rb"\r?\n\r?\n", output)

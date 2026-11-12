@@ -14,7 +14,7 @@
 
 import functools
 import sys
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 
 import color
 import command
@@ -38,9 +38,9 @@ class ExecuteOneResult(NamedTuple):
 
     project_idx: int
     rc: int
-    stdout: str
-    stderr: str
-    error: error.GitError
+    stdout: Optional[str]
+    stderr: Optional[str]
+    error: Optional[error.GitError]
 
 
 class GrepCommandError(error.SilentRepoExitError):
@@ -102,9 +102,9 @@ contain a line that matches both expressions:
         if value is not None:
             pt.append(value)
 
-    def _CommonOptions(self, p):
+    def _CommonOptions(self, p, opt_v=False):
         """Override common options slightly."""
-        super()._CommonOptions(p, opt_v=False)
+        super()._CommonOptions(p, opt_v=opt_v)
 
     def _Options(self, p):
         g = p.add_option_group("Sources")

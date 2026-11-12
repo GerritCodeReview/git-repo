@@ -30,7 +30,7 @@ import signal
 import sys
 import textwrap
 import time
-from typing import Optional
+from typing import List, Optional
 import urllib.request
 
 import repo_logging
@@ -279,7 +279,7 @@ class _Repo:
                     count=False,
                     trace=True,
                     timing=True,
-                    ignoredirs=set(sys.path[1:]),
+                    ignoredirs=tuple(set(sys.path[1:])),
                 )
                 result = tracer.runfunc(run)
             else:
@@ -287,7 +287,7 @@ class _Repo:
         return result
 
     def _autocorrect_command_name(
-        self, name: str, config: git_config.RepoConfig
+        self, name: str, config: git_config.GitConfig
     ) -> Optional[str]:
         """Autocorrect command name based on user's git config."""
 
@@ -404,7 +404,7 @@ class _Repo:
                 return 1
             name = corrected_name
 
-        cmd = self.commands[name](
+        cmd: command.Command = self.commands[name](
             repodir=self.repodir,
             client=repo_client,
             manifest=repo_client.manifest,
@@ -789,10 +789,11 @@ class _DigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
 
 
 class _KerberosAuthHandler(urllib.request.BaseHandler):
+    handler_order = urllib.request.BaseHandler.handler_order - 50
+
     def __init__(self):
         self.retried = 0
         self.context = None
-        self.handler_order = urllib.request.BaseHandler.handler_order - 50
 
     def http_error_401(self, req, fp, code, msg, headers):
         host = req.get_host()
@@ -802,6 +803,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
         return retry
 
     def http_error_auth_reqed(self, auth_header, host, req, headers):
+        assert kerberos is not None
         try:
             spn = "HTTP@%s" % host
             authdata = self._negotiate_get_authdata(auth_header, headers)
@@ -851,6 +853,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
         if authdata is None:
             return None
 
+        assert kerberos is not None
         result, self.context = kerberos.authGSSClientInit(spn)
         if result < kerberos.AUTH_GSS_COMPLETE:
             return None
@@ -865,6 +868,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
     def _validate_response(self, authdata):
         if authdata is None:
             return None
+        assert kerberos is not None
         result = kerberos.authGSSClientStep(self.context, authdata)
         if result == kerberos.AUTH_GSS_COMPLETE:
             return True
@@ -872,12 +876,13 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
 
     def _clean_context(self):
         if self.context is not None:
+            assert kerberos is not None
             kerberos.authGSSClientClean(self.context)
             self.context = None
 
 
 def init_http():
-    handlers = [_UserAgentHandler()]
+    handlers: List[urllib.request.BaseHandler] = [_UserAgentHandler()]
 
     mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
     try:
