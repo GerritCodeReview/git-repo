@@ -2288,6 +2288,7 @@ class InterleavedSyncTest(unittest.TestCase):
         mock.patch.object(sync.Sync, "_GetCurrentBranchOnly").start()
 
         self.cmd._fetch_times = mock.Mock()
+        self.cmd._fetch_times.Get.return_value = 0
         self.cmd._local_sync_state = mock.Mock()
 
     def tearDown(self):
@@ -2683,6 +2684,90 @@ class InterleavedSyncTest(unittest.TestCase):
         work_items_sets = {frozenset(item) for item in work_items}
         expected_sets = {frozenset([0, 2]), frozenset([1])}
         self.assertEqual(work_items_sets, expected_sets)
+
+    def test_interleaved_sorts_by_fetch_times_descending(self) -> None:
+        """Interleaved sync dispatches slowest projects first."""
+        opt, args = self.cmd.OptionParser.parse_args(["--interleaved", "-j4"])
+        opt.quiet = True
+
+        fetch_times = sync._FetchTimes(self.manifest)
+        fetch_times._saved = {"projA": 1.0, "projB": 10.0, "projC": 5.0}
+        self.cmd._fetch_times = fetch_times
+
+        all_projects = [self.projA, self.projB, self.projC]
+        mock.patch.object(
+            self.cmd, "GetProjects", return_value=all_projects
+        ).start()
+
+        dispatched: List[str] = []
+
+        def execute_side_effect(
+            jobs: int,
+            target: Any,
+            work_items: List[List[int]],
+            **kwargs: Any,
+        ) -> bool:
+            projects_in_pass = self.cmd.get_parallel_context()["projects"]
+            results = []
+            for item in work_items:
+                idx = item[0]
+                proj = projects_in_pass[idx]
+                dispatched.append(proj.name)
+                results.append(
+                    sync._InterleavedSyncResult(
+                        results=[
+                            sync._SyncResult(
+                                project_index=idx,
+                                relpath=proj.relpath,
+                                fetch_success=True,
+                                remote_fetched=True,
+                                checkout_success=True,
+                                fetch_errors=[],
+                                checkout_errors=[],
+                                stderr_text="",
+                                fetch_start=100.0,
+                                fetch_finish=102.0,
+                                checkout_start=102.0,
+                                checkout_finish=105.0,
+                            )
+                        ]
+                    )
+                )
+            return kwargs["callback"](None, kwargs["output"], results)
+
+        mock.patch.object(
+            self.cmd, "ExecuteInParallel", side_effect=execute_side_effect
+        ).start()
+
+        self.cmd._SyncInterleaved(
+            opt,
+            args,
+            [],
+            self.manifest,
+            self.manifest.manifestProject,
+            all_projects,
+            {},
+        )
+
+        self.assertEqual(dispatched, ["projB", "projC", "projA"])
+        # Saved EMA blends seeded 1.0s with recorded (2.0s fetch + 3.0s co).
+        self.assertAlmostEqual(fetch_times.Get(self.projA), 3.0)
+
+    def test_interleaved_partial_sync_preserves_fetch_times(self) -> None:
+        """Partial (--local-only / --network-only) syncs keep saved times."""
+        for flag in ("--local-only", "--network-only"):
+            with self.subTest(flag=flag):
+                opt = self._get_opts(["--interleaved", "-j4", flag])
+                fetch_times = sync._FetchTimes(self.manifest)
+                fetch_times._saved = {"projA": 100.0}
+                self.cmd._fetch_times = fetch_times
+
+                proj = self._make_syncable(
+                    FakeProject("projA", name="projA", objdir="objA")
+                )
+                self._run_interleaved(opt, [proj], [proj])
+
+                self.assertEqual(fetch_times.Get(proj), 100.0)
 
     def _get_opts(self, args=None):
         """Helper to get default options for worker tests."""
