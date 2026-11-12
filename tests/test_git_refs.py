@@ -141,6 +141,7 @@ def test_root_ref_snapshot_falls_back_for_unborn_head(
 
     def read_head(name: str) -> None:
         assert name == "HEAD"
+        assert refs._symref is not None
         refs._symref[name] = "refs/heads/main"
 
     monkeypatch.setattr(refs, "_ReadSymbolicRef", read_head)
@@ -171,6 +172,7 @@ def test_old_git_keeps_separate_head_fallback(
 
     def read_head(name: str) -> None:
         assert name == "HEAD"
+        assert refs._symref is not None
         refs._symref[name] = "refs/heads/main"
 
     monkeypatch.setattr(refs, "_ReadSymbolicRef", read_head)
@@ -204,6 +206,7 @@ def test_for_each_ref_failure_falls_back_to_symbolic_ref(
 
     def read_head(name: str) -> None:
         assert name == "HEAD"
+        assert refs._symref is not None
         refs._symref[name] = "refs/heads/main"
 
     monkeypatch.setattr(refs, "_ReadSymbolicRef", read_head)

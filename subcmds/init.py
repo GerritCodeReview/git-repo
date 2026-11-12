@@ -89,7 +89,7 @@ manifest, a subsequent `repo sync` (or `repo sync -d`) is necessary
 to update the working directory files.
 """
 
-    def _CommonOptions(self, p):
+    def _CommonOptions(self, p, opt_v=True):
         """Disable due to re-use of Wrapper()."""
 
     def _Options(self, p):

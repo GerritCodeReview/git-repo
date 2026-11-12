@@ -195,7 +195,7 @@ without iterating through the remaining projects.
             "--interactive", action="store_true", help="force interactive usage"
         )
 
-    def WantPager(self, opt):
+    def WantPager(self, opt) -> bool:
         return opt.project_header and opt.jobs == 1
 
     def ValidateOptions(self, opt, args):

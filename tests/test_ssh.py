@@ -91,11 +91,15 @@ def test_ssh_sock(monkeypatch: pytest.MonkeyPatch) -> None:
         # Old ssh version uses port.
         with mock.patch.object(ssh, "version", return_value=(6, 6)):
             with proxy as ssh_proxy:
-                assert ssh_proxy.sock().endswith("%p")
+                sock = ssh_proxy.sock()
+                assert sock is not None
+                assert sock.endswith("%p")
 
         proxy._sock_path = None
         # New ssh version uses hash.
         with mock.patch.object(ssh, "version", return_value=(6, 7)):
             with proxy as ssh_proxy:
-                assert ssh_proxy.sock().endswith("%C")
+                sock = ssh_proxy.sock()
+                assert sock is not None
+                assert sock.endswith("%C")
         proxy._sock_path = None

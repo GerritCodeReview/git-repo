@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import functools
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 
 import command
 import error
@@ -26,9 +26,9 @@ logger = repo_logging.RepoLogger(__file__)
 
 class CheckoutBranchResult(NamedTuple):
     # Whether the Project is on the branch (i.e. branch exists and no errors)
-    result: bool
+    result: Optional[bool]
     project_idx: int
-    error: Exception
+    error: Optional[Exception]
 
 
 class CheckoutCommandError(error.RepoExitError):

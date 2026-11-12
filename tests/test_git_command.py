@@ -444,13 +444,13 @@ class GitRequireTests(unittest.TestCase):
         """Test fatal require calls with old versions."""
         with self.assertRaises(git_command.GitRequireError) as e:
             git_command.git_require((2,), fail=True)
-            self.assertNotEqual(0, e.code)
+        self.assertNotEqual(0, e.exception.exit_code)
 
     def test_older_fatal_msg(self):
         """Test fatal require calls with old versions and message."""
         with self.assertRaises(git_command.GitRequireError) as e:
             git_command.git_require((2,), fail=True, msg="so sad")
-            self.assertNotEqual(0, e.code)
+        self.assertNotEqual(0, e.exception.exit_code)
 
 
 class GitCommandErrorTest(unittest.TestCase):

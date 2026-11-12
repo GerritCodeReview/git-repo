@@ -28,6 +28,7 @@ def _http_request(
 ) -> Tuple[int, bytes]:
     """Send a request to `server` & return the response status & body."""
     url = urllib.parse.urlsplit(server.url)
+    assert url.hostname is not None
     conn = http.client.HTTPConnection(url.hostname, url.port, timeout=30)
     try:
         conn.request(method, path)
@@ -113,6 +114,7 @@ def test_http_post_body(
     if expect_continue:
         headers["Expect"] = "100-continue"
     url = urllib.parse.urlsplit(git_server.url)
+    assert url.hostname is not None
     conn = http.client.HTTPConnection(url.hostname, url.port, timeout=30)
     try:
         # http.client skips any interim `100 Continue` response.

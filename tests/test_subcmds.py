@@ -112,6 +112,7 @@ def test_cli_option_dest() -> None:
             bad_opts.append((str(opt), opt.dest))
 
     # Hook the option check list.
+    assert optparse.Option.CHECK_METHODS is not None
     optparse.Option.CHECK_METHODS.insert(0, _check_dest)
 
     try:
