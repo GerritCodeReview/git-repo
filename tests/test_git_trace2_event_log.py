@@ -98,8 +98,9 @@ def verify_common_keys(
     assert re.match(r"^\d+-\d+-\d+T\d+:\d+:\d+\.\d+\+00:00$", log_entry["time"])
 
 
-def read_log(log_path: str) -> List[Dict[str, Any]]:
+def read_log(log_path: Optional[str]) -> List[Dict[str, Any]]:
     """Helper function to read log data into a list."""
+    assert log_path is not None
     log_data = []
     with open(log_path, mode="rb") as f:
         for line in f:
@@ -379,7 +380,9 @@ def test_write_with_git_config(
         "_GetEventTargetPath",
         return_value=str(tmp_path),
     ):
-        assert os.path.dirname(event_log.Write()) == str(tmp_path)
+        path = event_log.Write()
+        assert path is not None
+        assert os.path.dirname(path) == str(tmp_path)
 
 
 def test_write_no_git_config(event_log: git_trace2_event_log.EventLog) -> None:

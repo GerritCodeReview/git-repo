@@ -17,7 +17,7 @@ import multiprocessing
 import optparse
 import os
 import re
-from typing import List, Optional, TYPE_CHECKING
+from typing import Any, List, Optional, TYPE_CHECKING
 
 import error
 import event_log
@@ -81,6 +81,9 @@ class Command:
     # Shared data across parallel execution workers.
     _parallel_context = None
 
+    NAME: str
+    helpUsage: str
+
     @classmethod
     def get_parallel_context(cls):
         assert cls._parallel_context is not None
@@ -88,12 +91,12 @@ class Command:
 
     def __init__(
         self,
-        repodir=None,
-        client=None,
-        manifest=None,
-        git_event_log=None,
-        outer_client=None,
-        outer_manifest=None,
+        repodir: Any = None,
+        client: Any = None,
+        manifest: Any = None,
+        git_event_log: Any = None,
+        outer_client: Any = None,
+        outer_manifest: Any = None,
     ):
         self.repodir = repodir
         self.client = client

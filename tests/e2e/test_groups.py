@@ -15,7 +15,7 @@
 """E2E tests for manifest groups beyond `repo init -g`."""
 
 import platform
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, LiteralString, Optional, Set
 
 from harness import GitHost
 from harness import Gitlink
@@ -34,7 +34,7 @@ GROUPED_MANIFEST = manifest_xml(
 )
 
 
-def create_grouped_projects(host: GitHost) -> Dict[str, ServerRepo]:
+def create_grouped_projects(host: GitHost) -> Dict[LiteralString, ServerRepo]:
     """Create the projects of `GROUPED_MANIFEST` & the manifest itself."""
     repos = {}
     for name in "abcd":

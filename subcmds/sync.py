@@ -28,7 +28,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from typing import Dict, List, NamedTuple, Optional, Set, Tuple, Union
+from typing import Any, Dict, List, NamedTuple, Optional, Set, TextIO, Tuple
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -100,7 +100,7 @@ def _IsMethodNotFoundFault(fault: xmlrpc.client.Fault, method: str) -> bool:
 
 
 def _GetApprovedManifest(
-    server: xmlrpc.client.ServerProxy,
+    server: Any,
     branch: str,
     target: Optional[str],
     best_effort: bool,
@@ -117,7 +117,7 @@ def _GetApprovedManifest(
     Returns:
         A (success, manifest XML or error message) tuple.
     """
-    request = {"branch": branch}
+    request: Dict[str, Any] = {"branch": branch}
     if target:
         request["target"] = target
     if best_effort:
@@ -150,7 +150,7 @@ def _GetApprovedManifest(
     return False, response.get("error_message", "unknown error")
 
 
-def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
+def _SafeCheckoutOrder(checkouts: List[Any]) -> List[List[Any]]:
     """Generate a sequence of checkouts that is safe to perform.
 
     The client should checkout everything from n-th index before moving to
@@ -209,12 +209,12 @@ def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
     return res
 
 
-def _NestedProjects(projects: List[Project]) -> List[Project]:
+def _NestedProjects(projects: List[Any]) -> List[Any]:
     """Return the projects in |projects| living inside another one's path."""
     return [p for level in _SafeCheckoutOrder(projects)[1:] for p in level]
 
 
-def _ParentFirstBatches(projects: List[Project]) -> List[List[Project]]:
+def _ParentFirstBatches(projects: List[Any]) -> List[List[Any]]:
     """Group |projects| so that a parent is fetched before its submodules.
 
     A discovered submodule can only be fetched at the right revision once the
@@ -235,9 +235,9 @@ def _ParentFirstBatches(projects: List[Project]) -> List[List[Project]]:
 
 
 def _RefreshDerivedRevisions(
-    projects: List[Project],
-    submodule_revisions: Optional[Dict[Project, Dict[str, str]]] = None,
-) -> List[Project]:
+    projects: List[Any],
+    submodule_revisions: Optional[Dict[Any, Dict[str, str]]] = None,
+) -> List[Any]:
     """Re-resolve the gitlinks of the discovered submodules in |projects|.
 
     The revision of a discovered submodule is read from its parent when the
@@ -281,9 +281,7 @@ def _RefreshDerivedRevisions(
     return removed
 
 
-def _WithoutProjects(
-    projects: List[Project], unwanted: List[Project]
-) -> List[Project]:
+def _WithoutProjects(projects: List[Any], unwanted: List[Any]) -> List[Any]:
     """Return |projects| without the projects in |unwanted|."""
     if not unwanted:
         return projects
@@ -481,9 +479,7 @@ class ManifestInterruptError(error.RepoError):
 class TeeStringIO(io.StringIO):
     """StringIO class that can write to an additional destination."""
 
-    def __init__(
-        self, io: Union[io.TextIOWrapper, None], *args, **kwargs
-    ) -> None:
+    def __init__(self, io: Optional[TextIO], *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.io = io
 
@@ -1288,10 +1284,10 @@ later is required to fix a server side protocol bug.
 
     def _FetchParentFirst(
         self,
-        projects: List[Project],
+        projects: List[Any],
         opt: optparse.Values,
-        err_event: _threading.Event,
-        ssh_proxy: ssh.ProxyManager,
+        err_event: Optional[_threading.Event],
+        ssh_proxy: Optional[ssh.ProxyManager],
         errors: List[Exception],
     ) -> _FetchResult:
         """Fetch |projects|, holding submodules back until their parent is done.
@@ -1505,6 +1501,7 @@ later is required to fix a server side protocol bug.
                 pm.update(msg=project.name)
             return ret
 
+        proc_res = True
         for projects in _SafeCheckoutOrder(all_projects):
             with self.ParallelContext():
                 self.get_parallel_context()["projects"] = projects
@@ -2312,7 +2309,7 @@ later is required to fix a server side protocol bug.
         )
 
         try:
-            server = xmlrpc.client.Server(server_url, transport=transport)
+            server: Any = xmlrpc.client.Server(server_url, transport=transport)
             if opt.smart_sync:
                 assert branch is not None
                 success, manifest_str = _GetApprovedManifest(
@@ -2951,7 +2948,7 @@ later is required to fix a server side protocol bug.
     def _UpdateProjectLists(
         self,
         opt: optparse.Values,
-        err_event: multiprocessing.Event,
+        err_event: _threading.Event,
         errors: List[Exception],
         skip_by_manifest: Optional[Dict[str, Set[str]]] = None,
     ) -> bool:
@@ -3000,7 +2997,7 @@ later is required to fix a server side protocol bug.
     def _UpdateCopyLinkfileLists(
         self,
         opt: optparse.Values,
-        err_event: multiprocessing.Event,
+        err_event: _threading.Event,
         errors: List[Exception],
     ) -> bool:
         """Updates copy/link files for all manifests.
@@ -3037,7 +3034,7 @@ later is required to fix a server side protocol bug.
     def _UpdateManifestLists(
         self,
         opt: optparse.Values,
-        err_event: multiprocessing.Event,
+        err_event: _threading.Event,
         errors: List[Exception],
     ) -> Tuple[bool, bool]:
         """Updates project lists and copy/link files for all manifests.
@@ -3365,7 +3362,7 @@ later is required to fix a server side protocol bug.
         err_event: _threading.Event,
         errors: List[Exception],
         opt: optparse.Values,
-        pool: Optional[multiprocessing.Pool],
+        pool: Any,
         pm: progress.Progress,
         results_sets: List[_InterleavedSyncResult],
     ):
@@ -3381,7 +3378,7 @@ later is required to fix a server side protocol bug.
                 if result.stderr_text and (opt.verbose or not success):
                     pm.display_message(result.stderr_text)
 
-                if result.fetch_start:
+                if result.fetch_start and result.fetch_finish is not None:
                     self._fetch_times.Set(
                         project,
                         result.fetch_finish - result.fetch_start,
@@ -3701,11 +3698,12 @@ class _FetchTimes:
 
     def __init__(self, manifest):
         self._path = os.path.join(manifest.repodir, ".repo_fetchtimes.json")
-        self._saved = None
+        self._saved: Optional[Dict[str, float]] = None
         self._seen = {}
 
     def Get(self, project):
         self._Load()
+        assert self._saved is not None
         return self._saved.get(project.name, _ONE_DAY_S)
 
     def Set(self, project, t):
@@ -3728,6 +3726,7 @@ class _FetchTimes:
             return
 
         self._Load()
+        assert self._saved is not None
 
         for name, t in self._seen.items():
             # Keep a moving average across the previous/current sync runs.
@@ -3751,7 +3750,7 @@ class LocalSyncState:
             self._manifest.repodir, ".repo_localsyncstate.json"
         )
         self._time = time.time()
-        self._state = None
+        self._state: Optional[Dict[str, Dict[str, float]]] = None
         self._Load()
 
     def SetFetchTime(self, project):
@@ -3768,12 +3767,14 @@ class LocalSyncState:
 
     def _Get(self, project, key):
         self._Load()
+        assert self._state is not None
         p = project.RelPath(local=False)
         if p not in self._state:
             return
         return self._state[p].get(key)
 
     def _Set(self, project, key):
+        assert self._state is not None
         p = project.RelPath(local=False)
         if p not in self._state:
             self._state[p] = {}
@@ -3816,6 +3817,7 @@ class LocalSyncState:
     def IsPartiallySynced(self):
         """Return whether a partial sync state is detected."""
         self._Load()
+        assert self._state is not None
         prev_checkout_t = None
         for path, data in self._state.items():
             if path == self._manifest.repoProject.relpath:
