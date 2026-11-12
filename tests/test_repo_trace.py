@@ -27,6 +27,7 @@ def test_trace_max_size_enforced(monkeypatch: pytest.MonkeyPatch) -> None:
 
     # Enable trace for the test, in case users have it disabled.
     monkeypatch.setattr(repo_trace, "_TRACE", True)
+    assert repo_trace._TRACE_FILE is not None
 
     with repo_trace.Trace(content, first_trace=True):
         pass

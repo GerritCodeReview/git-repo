@@ -14,7 +14,7 @@
 
 """Unittests for the subcmds/upload.py module."""
 
-from typing import List, Optional
+from typing import Iterator, List, Optional
 from unittest import mock
 
 import pytest
@@ -34,7 +34,7 @@ _STUB_PEOPLE = ([], [])
 
 
 @pytest.fixture
-def cmd() -> upload.Upload:
+def cmd() -> Iterator[upload.Upload]:
     """Fixture to provide an Upload command instance with mocked methods."""
     cmd = upload.Upload()
     with mock.patch.object(

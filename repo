@@ -26,7 +26,7 @@ import platform
 import shlex
 import subprocess
 import sys
-from typing import NamedTuple, Tuple
+from typing import List, NamedTuple, Tuple
 
 
 # These should never be newer than the main.py version since this needs to be a
@@ -119,12 +119,10 @@ if __name__ == "__main__":
 
 # repo default configuration
 #
-REPO_URL = os.environ.get("REPO_URL", None)
-if not REPO_URL:
-    REPO_URL = "https://gerrit.googlesource.com/git-repo"
-REPO_REV = os.environ.get("REPO_REV")
-if not REPO_REV:
-    REPO_REV = "stable"
+REPO_URL = (
+    os.environ.get("REPO_URL") or "https://gerrit.googlesource.com/git-repo"
+)
+REPO_REV = os.environ.get("REPO_REV") or "stable"
 # URL to file bug reports for repo tool issues.
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
@@ -902,7 +900,7 @@ def _GetRepoConfig(name):
 
 
 def _InitHttp():
-    handlers = []
+    handlers: List[urllib.request.BaseHandler] = []
 
     mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
     try:

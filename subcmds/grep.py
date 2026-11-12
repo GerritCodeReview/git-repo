@@ -102,8 +102,9 @@ contain a line that matches both expressions:
         if value is not None:
             pt.append(value)
 
-    def _CommonOptions(self, p):
+    def _CommonOptions(self, p, opt_v=True):
         """Override common options slightly."""
+        del opt_v  # Unused.
         super()._CommonOptions(p, opt_v=False)
 
     def _Options(self, p):

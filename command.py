@@ -43,7 +43,7 @@ WORKER_BATCH_SIZE = 32
 
 # How many jobs to run in parallel by default?  This assumes the jobs are
 # largely I/O bound and do not hit the network.
-DEFAULT_LOCAL_JOBS = min(os.cpu_count(), 8)
+DEFAULT_LOCAL_JOBS = min(os.cpu_count() or 1, 8)
 
 
 class UsageError(error.RepoExitError):
@@ -105,7 +105,8 @@ class Command:
         # Cache for the OptionParser property.
         self._optparse = None
 
-    def WantPager(self, _opt):
+    def WantPager(self, opt) -> bool:
+        del opt  # Unused.
         return False
 
     @staticmethod
@@ -623,7 +624,8 @@ class InteractiveCommand(Command):
     within a pager, even if the user asks to.
     """
 
-    def WantPager(self, _opt):
+    def WantPager(self, opt) -> bool:
+        del opt  # Unused.
         return False
 
 
@@ -632,7 +634,8 @@ class PagedCommand(Command):
     larger than one screen full.
     """
 
-    def WantPager(self, _opt):
+    def WantPager(self, opt) -> bool:
+        del opt  # Unused.
         return True
 
 
