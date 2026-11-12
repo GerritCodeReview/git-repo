@@ -35,7 +35,10 @@ def _create_mock_project(tempdir, name, objdir_path=None, has_changes=False):
     os.makedirs(gitdir, exist_ok=True)
     os.makedirs(objdir, exist_ok=True)
 
-    proj = project.Project(
+    class MockProject(project.Project):
+        HasChanges = mock.PropertyMock(return_value=has_changes)
+
+    proj = MockProject(
         manifest=mock.MagicMock(),
         name=name,
         remote=mock.MagicMock(),
@@ -46,8 +49,6 @@ def _create_mock_project(tempdir, name, objdir_path=None, has_changes=False):
         revisionExpr="main",
         revisionId="abcd",
     )
-
-    proj.HasChanges = mock.MagicMock(return_value=has_changes)
 
     def side_effect_delete_worktree(force=False, verbose=False):
         if os.path.exists(proj.worktree):

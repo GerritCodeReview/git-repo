@@ -98,7 +98,7 @@ Examples:
                 )
 
             try:
-                if project.HasChanges():
+                if project.HasChanges:
                     uncommitted_projects.append(project.name)
             except error.GitError:
                 uncommitted_projects.append(f"{project.name} (corrupted)")
