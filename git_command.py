@@ -18,7 +18,7 @@ import os
 import re
 import subprocess
 import sys
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 import error
 import git_trace2_event_log_base
@@ -220,7 +220,7 @@ def git_require(min_version, fail=False, msg=""):
     return False
 
 
-def _get_basic_env() -> None:
+def _get_basic_env() -> Dict[str, str]:
     """Return a basic env for running git under.
 
     This is guaranteed to be side-effect free.

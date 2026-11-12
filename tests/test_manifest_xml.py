@@ -180,7 +180,9 @@ class TestValue:
     """Check utility parsing code."""
 
     def _get_node(self, text: str) -> xml.dom.minidom.Element:
-        return xml.dom.minidom.parseString(text).firstChild
+        node = xml.dom.minidom.parseString(text).firstChild
+        assert isinstance(node, xml.dom.minidom.Element)
+        return node
 
     def test_bool_default(self) -> None:
         """Check XmlBool default handling."""
