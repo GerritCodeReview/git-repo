@@ -1260,6 +1260,10 @@ later is required to fix a server side protocol bug.
             # pass it as an argument to _FetchProjectList below as
             # multiprocessing is unable to pickle those.
             self.get_parallel_context()["ssh_proxy"] = ssh_proxy
+            if jobs > 1 and any(
+                isinstance(p, Project) and not p.Exists for p in projects
+            ):
+                Project.WarmInitTemplateCache()
 
             sync_progress_thread.start()
             if not opt.quiet:
@@ -3571,6 +3575,11 @@ later is required to fix a server side protocol bug.
                                     continue
 
                                 jobs = max(1, min(opt.jobs, len(work_items)))
+                                if jobs > 1 and any(
+                                    isinstance(p, Project) and not p.Exists
+                                    for p in level_projects
+                                ):
+                                    Project.WarmInitTemplateCache()
                                 callback = functools.partial(
                                     self._ProcessSyncInterleavedResults,
                                     finished_relpaths,

@@ -4368,6 +4368,11 @@ class Project:
                 project=self.name,
             )
 
+    @staticmethod
+    def WarmInitTemplateCache() -> None:
+        """Warm the init.templateDir lookup cache before forking workers."""
+        _HasCustomGitTemplateDir(_GitTemplateEnvKey())
+
     def _InitGitDir(self, mirror_git=None, force_sync=False, quiet=False):
         # Prefix for temporary directories created during gitdir initialization.
         TMP_GITDIR_PREFIX = ".tmp-project-initgitdir-"
