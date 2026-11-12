@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a497151_20f4a6bf",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-11-12T04:19:37Z",
+      "side": 1,
+      "message": "i think the heuristic should come last -- the \u003cdefault\u003e setting should apply over it\n\nthat\u0027s also what the text below says is happening",
+      "revId": "7de7b0bd916fc0911309886807dde7e836d4d025",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "860f01e4_68f60ea7",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1999,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-11-12T04:19:37Z",
+      "side": 1,
+      "message": "we have a proper RepoProject class.  don\u0027t hardcode internal paths like this.\n\ni know _RemoteFetch is doing this, but that should be updated (looks like it predates the existence of RepoProject)",
+      "revId": "7de7b0bd916fc0911309886807dde7e836d4d025",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
