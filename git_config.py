@@ -24,7 +24,7 @@ import ssl
 import subprocess
 import sys
 import tempfile
-from typing import Optional, Tuple, Union
+from typing import Any, Optional, Tuple, Union
 import urllib.error
 import urllib.request
 
@@ -171,12 +171,14 @@ class GitConfig:
         self._remotes = {}
         self._branches = {}
 
-        self._json = jsonFile
-        if self._json is None:
-            self._json = os.path.join(
+        self._json: str = (
+            jsonFile
+            if jsonFile is not None
+            else os.path.join(
                 os.path.dirname(self.file),
                 ".repo_" + os.path.basename(self.file) + ".json",
             )
+        )
 
     def ClearCache(self):
         """Clear the in-memory cache of config."""
@@ -273,13 +275,11 @@ class GitConfig:
             value = "true" if value else "false"
         self.SetString(name, value)
 
-    def SetInt(self, name: str, value: int) -> None:
+    def SetInt(self, name: str, value: Optional[int]) -> None:
         """Set an integer value for a key."""
-        if value is not None:
-            value = str(value)
-        self.SetString(name, value)
+        self.SetString(name, str(value) if value is not None else None)
 
-    def GetString(self, name: str, all_keys: bool = False) -> Union[str, None]:
+    def GetString(self, name: str, all_keys: bool = False) -> Any:
         """Get the first value for a key, or None if it is not defined.
 
         This configuration file is used first, if the key is not
@@ -722,6 +722,7 @@ def GetUrlCookieFile(url, quiet):
                 proxyprefix = "http.proxy="
                 cookiefile = None
                 proxy = None
+                assert p.stdout is not None
                 for line in p.stdout:
                     line = line.strip().decode("utf-8")
                     if line.startswith(cookieprefix):
@@ -735,6 +736,8 @@ def GetUrlCookieFile(url, quiet):
                     yield cookiefile, proxy
                     return
             finally:
+                assert p.stdin is not None
+                assert p.stderr is not None
                 p.stdin.close()
                 if p.wait():
                     err_msg = p.stderr.read().decode("utf-8")
@@ -940,16 +943,19 @@ class Remote:
 class Branch:
     """Configuration options related to a single branch."""
 
+    current: bool = False
+    published: Optional[str] = None
+    revision: Optional[str] = None
+
     def __init__(self, config, name):
         self._config = config
         self.name = name
         self.merge = self._Get("merge")
+        self.remote: Any = None
 
         r = self._Get("remote")
         if r:
             self.remote = self._config.GetRemote(r)
-        else:
-            self.remote = None
 
     @property
     def LocalMerge(self):

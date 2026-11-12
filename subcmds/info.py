@@ -219,7 +219,7 @@ class Info(command.PagedCommand):
 
     def _ExecuteJson(self, opt, args) -> None:
         """Output info as JSON."""
-        result = {}
+        result: Dict[str, Any] = {}
         if opt.include_summary:
             result["summary"] = self._getSummaryData()
         if opt.include_projects:
