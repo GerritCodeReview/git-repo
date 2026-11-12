@@ -50,7 +50,7 @@ def init_git_tree(
         else:
             # Use template dir for init.
             templatedir = stack.enter_context(
-                tempfile.mkdtemp(prefix="git-template")
+                tempfile.TemporaryDirectory(prefix="git-template")
             )
             (Path(templatedir) / "HEAD").write_text("ref: refs/heads/main\n")
             cmd += ["--template", templatedir]

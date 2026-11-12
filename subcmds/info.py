@@ -130,7 +130,7 @@ class Info(command.PagedCommand):
             help=f"output format: {', '.join(formats)} (default: %default)",
         )
 
-    def WantPager(self, opt):
+    def WantPager(self, opt) -> bool:
         return OutputFormat[opt.format.upper()] == OutputFormat.TEXT
 
     def ValidateOptions(self, opt, args):

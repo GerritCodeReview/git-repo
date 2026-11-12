@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import functools
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 
 import command
 import error
@@ -28,7 +28,7 @@ logger = repo_logging.RepoLogger(__file__)
 
 class ExecuteOneResult(NamedTuple):
     project_idx: int
-    error: Exception
+    error: Optional[Exception]
 
 
 class StartError(error.RepoExitError):

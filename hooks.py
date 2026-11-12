@@ -323,6 +323,7 @@ class RepoHook:
         """
         # Exec, storing global context in the context dict.  We catch exceptions
         # and convert to a HookError w/ just the failing traceback.
+        assert self._script_fullpath is not None
         try:
             exec(compile(data, self._script_fullpath, "exec"), context)
         except Exception:
@@ -367,6 +368,7 @@ class RepoHook:
             # Always run hooks with CWD as topdir.
             os.chdir(self._repo_topdir)
 
+            assert self._script_fullpath is not None
             # Put the hook dir as the first item of sys.path so hooks can do
             # relative imports.  We want to replace the repo dir as [0] so
             # hooks can't import repo files.
@@ -407,6 +409,7 @@ class RepoHook:
 
     def _CheckHook(self):
         # Bail with a nice error if we can't find the hook.
+        assert self._script_fullpath is not None
         if not os.path.isfile(self._script_fullpath):
             raise error.HookError(
                 "Couldn't find repo hook: %s" % self._script_fullpath

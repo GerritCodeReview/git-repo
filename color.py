@@ -82,7 +82,7 @@ def _Color(fg=None, bg=None, attr=None):
     return code
 
 
-DEFAULT = None
+DEFAULT: Optional[str] = None
 
 
 class _CheckConsoleSentinel:

@@ -14,13 +14,15 @@
 
 """Unittests for the editor.py module."""
 
+from typing import Iterator
+
 import pytest
 
 import editor
 
 
 @pytest.fixture(autouse=True)
-def reset_editor() -> None:
+def reset_editor() -> Iterator[None]:
     """Take care of resetting Editor state across tests."""
     editor.Editor._editor = None
     yield

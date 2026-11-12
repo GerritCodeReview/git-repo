@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
+from typing import Optional, Sequence
 
 
 class BaseRepoError(Exception):
@@ -22,7 +22,7 @@ class BaseRepoError(Exception):
 class RepoError(BaseRepoError):
     """Exceptions thrown inside repo that can be handled."""
 
-    def __init__(self, *args, project: str = None) -> None:
+    def __init__(self, *args, project: Optional[str] = None) -> None:
         super().__init__(*args)
         self.project = project
 
@@ -36,7 +36,7 @@ class RepoExitError(BaseRepoError):
         self,
         *args,
         exit_code: int = 1,
-        aggregate_errors: List[Exception] = None,
+        aggregate_errors: Optional[Sequence[Exception]] = None,
         **kwargs,
     ) -> None:
         super().__init__(*args, **kwargs)

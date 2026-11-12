@@ -29,7 +29,7 @@ import os
 import sys
 import tempfile
 import time
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 import urllib.parse
 
 import git_command
@@ -54,7 +54,7 @@ class CommitIdsResult(NamedTuple):
     """Return the commit ids and whether caller should exit."""
 
     # A dictionary with the projects/commit ids on success, otherwise None.
-    commit_ids: dict
+    commit_ids: Optional[dict]
     # Whether the caller should exit.
     fatal: bool
 
@@ -63,7 +63,7 @@ class UpdateProjectsResult(NamedTuple):
     """Return the overriding manifest file and whether caller should exit."""
 
     # Path name of the overriding manifest file if successful, otherwise None.
-    manifest_path: str
+    manifest_path: Optional[str]
     # Whether the caller should exit.
     fatal: bool
 
