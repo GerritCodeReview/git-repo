@@ -1230,7 +1230,8 @@ later is required to fix a server side protocol bug.
                     project = projects[result.project_idx]
                     start = result.start
                     finish = result.finish
-                    self._fetch_times.Set(project, finish - start)
+                    if success:
+                        self._fetch_times.Set(project, finish - start)
                     self._local_sync_state.SetFetchTime(project)
                     self.event_log.AddSync(
                         project,
@@ -1508,6 +1509,7 @@ later is required to fix a server side protocol bug.
                 # Check for any errors before running any more tasks.
                 # ...we'll let existing jobs finish, though.
                 if success:
+                    self._checkout_times.Set(project, finish - start)
                     self._local_sync_state.SetCheckoutTime(project)
                 else:
                     ret = False
@@ -1521,31 +1523,35 @@ later is required to fix a server side protocol bug.
                 pm.update(msg=project.name)
             return ret
 
-        for projects in _SafeCheckoutOrder(all_projects):
-            with self.ParallelContext():
-                self.get_parallel_context()["projects"] = projects
-                proc_res = self.ExecuteInParallel(
-                    opt.jobs_checkout,
-                    functools.partial(
-                        self._CheckoutOne,
-                        opt.detach_head,
-                        opt.force_sync,
-                        opt.force_checkout,
-                        opt.rebase,
-                        opt.verbose,
-                    ),
-                    range(len(projects)),
-                    callback=_ProcessResults,
-                    output=progress.Progress(
-                        "Checking out", len(all_projects), quiet=opt.quiet
-                    ),
-                    # Use chunksize=1 to avoid the chance that some workers are
-                    # idle while other workers still have more than one job in
-                    # their chunk queue.
-                    chunksize=1,
-                )
-
-        self._local_sync_state.Save()
+        proc_res = True
+        try:
+            for projects in _SafeCheckoutOrder(all_projects):
+                projects.sort(key=self._checkout_times.Get, reverse=True)
+                with self.ParallelContext():
+                    self.get_parallel_context()["projects"] = projects
+                    proc_res = self.ExecuteInParallel(
+                        opt.jobs_checkout,
+                        functools.partial(
+                            self._CheckoutOne,
+                            opt.detach_head,
+                            opt.force_sync,
+                            opt.force_checkout,
+                            opt.rebase,
+                            opt.verbose,
+                        ),
+                        range(len(projects)),
+                        callback=_ProcessResults,
+                        output=progress.Progress(
+                            "Checking out", len(all_projects), quiet=opt.quiet
+                        ),
+                        # Use chunksize=1 to avoid the chance that some workers
+                        # are idle while other workers still have more than one
+                        # job in their chunk queue.
+                        chunksize=1,
+                    )
+        finally:
+            self._checkout_times.Save()
+            self._local_sync_state.Save()
         return proc_res and not err_results
 
     def _PrintManifestNotices(self, opt):
@@ -2851,7 +2857,8 @@ later is required to fix a server side protocol bug.
             "repo.newprojectcount", str(len(all_projects) - len(existing))
         )
 
-        self._fetch_times = _FetchTimes(manifest)
+        self._fetch_times = _SyncTimes(manifest, ".repo_fetchtimes.json")
+        self._checkout_times = _SyncTimes(manifest, ".repo_checkouttimes.json")
         self._local_sync_state = LocalSyncState(manifest)
         self._bloated_projects = []
 
@@ -3385,6 +3392,15 @@ later is required to fix a server side protocol bug.
 
         return _InterleavedSyncResult(results=results)
 
+    def _GetSyncTime(self, opt: optparse.Values, project: Project) -> float:
+        """Estimate sync duration of |project| for the phases in |opt|."""
+        total = 0.0
+        if not opt.local_only:
+            total += self._fetch_times.Get(project)
+        if not opt.network_only and project.worktree:
+            total += self._checkout_times.Get(project)
+        return total
+
     def _ProcessSyncInterleavedResults(
         self,
         finished_relpaths: Set[str],
@@ -3407,11 +3423,11 @@ later is required to fix a server side protocol bug.
                 if result.stderr_text and (opt.verbose or not success):
                     pm.display_message(result.stderr_text)
 
-                if result.fetch_start:
-                    self._fetch_times.Set(
-                        project,
-                        result.fetch_finish - result.fetch_start,
-                    )
+                if result.fetch_start is not None:
+                    if result.fetch_success:
+                        self._fetch_times.Set(
+                            project, result.fetch_finish - result.fetch_start
+                        )
                     self._local_sync_state.SetFetchTime(project)
                     self.event_log.AddSync(
                         project,
@@ -3420,8 +3436,12 @@ later is required to fix a server side protocol bug.
                         result.fetch_finish,
                         result.fetch_success,
                     )
-                if result.checkout_start:
+                if result.checkout_start is not None:
                     if result.checkout_success:
+                        self._checkout_times.Set(
+                            project,
+                            result.checkout_finish - result.checkout_start,
+                        )
                         self._local_sync_state.SetCheckoutTime(project)
                     self.event_log.AddSync(
                         project,
@@ -3584,6 +3604,13 @@ later is required to fix a server side protocol bug.
                                 if not level_projects:
                                     continue
 
+                                level_projects.sort(
+                                    key=functools.partial(
+                                        self._GetSyncTime, opt
+                                    ),
+                                    reverse=True,
+                                )
+
                                 objdir_project_map = collections.defaultdict(
                                     list
                                 )
@@ -3641,6 +3668,7 @@ later is required to fix a server side protocol bug.
                         sync_progress_thread.join()
         finally:
             self._fetch_times.Save()
+            self._checkout_times.Save()
             self._local_sync_state.Save()
 
         pm.end()
@@ -3726,11 +3754,15 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
             )
 
 
-class _FetchTimes:
+class _SyncTimes:
+    """Moving average of per-project durations for slowest-first ordering."""
+
     _ALPHA = 0.5
 
-    def __init__(self, manifest):
-        self._path = os.path.join(manifest.repodir, ".repo_fetchtimes.json")
+    def __init__(
+        self, manifest, filename: str = ".repo_fetchtimes.json"
+    ) -> None:
+        self._path = os.path.join(manifest.repodir, filename)
         self._saved = None
         self._seen = {}
 
