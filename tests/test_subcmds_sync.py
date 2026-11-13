@@ -441,15 +441,28 @@ def test_cli_jobs(argv, jobs_manifest, jobs, jobs_net, jobs_check):
 
 
 @pytest.mark.parametrize(
-    "argv, jobs_manifest, jobs_manifest_max, jobs, jobs_net, jobs_check",
+    "argv, jobs_manifest, jobs_manifest_max, jobs, jobs_net, jobs_check, "
+    "expect_limit_warning",
     [
-        (["--jobs=10"], None, 5, 5, 5, 5),
-        (["--jobs=10", "--jobs-network=10"], None, 5, 5, 5, 5),
-        (["--jobs=10", "--jobs-checkout=10"], None, 5, 5, 5, 5),
+        (["--jobs=10"], None, 5, 5, 5, 5, True),
+        (["--jobs=10", "--jobs-network=10"], None, 5, 5, 5, 5, True),
+        (["--jobs=10", "--jobs-checkout=10"], None, 5, 5, 5, 5, True),
+        # --force-jobs bypasses sync-j-max without warning.
+        (["--force-jobs", "--jobs=10"], None, 5, 10, 10, 10, False),
+        (["--force-jobs", "--jobs-network=10"], 3, 5, 3, 10, 3, False),
+        (["--force-jobs", "--jobs-checkout=10"], 3, 5, 3, 3, 10, False),
+        # --force-jobs still respects OS file descriptor rlimits.
+        (["--force-jobs", "--jobs=1000000"], None, 5, 83, 83, 83, False),
     ],
 )
 def test_cli_jobs_sync_j_max(
-    argv, jobs_manifest, jobs_manifest_max, jobs, jobs_net, jobs_check
+    argv,
+    jobs_manifest,
+    jobs_manifest_max,
+    jobs,
+    jobs_net,
+    jobs_check,
+    expect_limit_warning,
 ):
     """Tests --jobs option behavior with sync-j-max."""
     mp = mock.MagicMock()
@@ -462,10 +475,20 @@ def test_cli_jobs_sync_j_max(
 
     with mock.patch.object(sync, "_rlimit_nofile", return_value=(256, 256)):
         with mock.patch.object(os, "cpu_count", return_value=OS_CPU_COUNT):
-            cmd._ValidateOptionsWithManifest(opts, mp)
-            assert opts.jobs == jobs
-            assert opts.jobs_network == jobs_net
-            assert opts.jobs_checkout == jobs_check
+            with mock.patch.object(sync.logger, "warning") as mock_warning:
+                cmd._ValidateOptionsWithManifest(opts, mp)
+                assert opts.jobs == jobs
+                assert opts.jobs_network == jobs_net
+                assert opts.jobs_checkout == jobs_check
+
+    if expect_limit_warning:
+        mock_warning.assert_called_once_with(
+            "warning: manifest limits %s to %d; use --force-jobs to override",
+            "--jobs",
+            5,
+        )
+    else:
+        mock_warning.assert_not_called()
 
 
 @pytest.mark.parametrize(
