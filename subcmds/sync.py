@@ -656,6 +656,12 @@ later is required to fix a server side protocol bug.
         )
 
         p.add_option(
+            "--force-jobs",
+            action="store_true",
+            help="force jobs to be the value of -j even if the manifest "
+            "caps it",
+        )
+        p.add_option(
             "-f",
             "--force-broken",
             action="store_true",
@@ -2543,7 +2549,10 @@ later is required to fix a server side protocol bug.
         opt.jobs_network = min(opt.jobs_network, jobs_soft_limit)
         opt.jobs_checkout = min(opt.jobs_checkout, jobs_soft_limit)
 
-        sync_j_max = mp.manifest.default.sync_j_max or None
+        if not opt.force_jobs and mp.manifest.default.sync_j_max:
+            sync_j_max = mp.manifest.default.sync_j_max
+        else:
+            sync_j_max = None
 
         # Check for shared options.
         # Prioritize --jobs, then --jobs-network, then --jobs-checkout.
@@ -2561,7 +2570,8 @@ later is required to fix a server side protocol bug.
             if sync_j_max and value > sync_j_max:
                 if not limit_warned:
                     logger.warning(
-                        "warning: manifest limits %s to %d",
+                        "warning: manifest limits %s to %d; "
+                        "use --force-jobs to override",
                         name,
                         sync_j_max,
                     )

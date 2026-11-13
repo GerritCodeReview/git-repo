@@ -315,6 +315,7 @@ _repo() {
         ${common_opts} \
         '--jobs-network=[Number of network jobs]:jobs:' \
         '--jobs-checkout=[Number of checkout jobs]:jobs:' \
+        '--force-jobs[Force jobs even if manifest caps it]' \
         '(-f --force-broken)'{-f,--force-broken}'[Continue sync even if a project fails]' \
         '--fail-fast[Fail fast]' \
         '--force-sync[Overwrite existing git directories]' \
