@@ -127,7 +127,7 @@ REPO_REV = os.environ.get("REPO_REV") or "stable"
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 72)
+VERSION = (2, 74)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
