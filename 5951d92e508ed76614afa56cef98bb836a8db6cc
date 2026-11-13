@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceac1ff4_3df40ccf",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-13T22:31:03Z",
+      "side": 1,
+      "message": "`\u003cdefault sync-tags\u003d\"true\"\u003e` used to be a no-op and now has real behavior, please update",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 0
+      },
+      "revId": "5951d92e508ed76614afa56cef98bb836a8db6cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7787eb2a_4534da60",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 851,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-13T22:31:03Z",
+      "side": 1,
+      "message": "let\u0027s keep `sync-tags\u003d\"false\"` here. ToXml should record the parsed attribute and write only that",
+      "range": {
+        "startLine": 851,
+        "startChar": 0,
+        "endLine": 851,
+        "endChar": 61
+      },
+      "revId": "5951d92e508ed76614afa56cef98bb836a8db6cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
