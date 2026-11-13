@@ -2340,6 +2340,9 @@ class InterleavedSyncTest(unittest.TestCase):
         mock.patch.object(sync.Sync, "_GetCurrentBranchOnly").start()
 
         self.cmd._fetch_times = mock.Mock()
+        self.cmd._fetch_times.Get.return_value = 0
+        self.cmd._checkout_times = mock.Mock()
+        self.cmd._checkout_times.Get.return_value = 0
         self.cmd._local_sync_state = mock.Mock()
 
     def tearDown(self):
@@ -2888,6 +2891,289 @@ class InterleavedSyncTest(unittest.TestCase):
             self.cmd._Fetch([p1, p2], opt, mock.Mock(), None, [])
             self.mock_warm_init_template.assert_called_once()
             mock_seed.assert_called_once_with((("env",), False))
+
+    def _seed_sync_times(
+        self,
+        fetch: Optional[Dict[str, float]] = None,
+        checkout: Optional[Dict[str, float]] = None,
+    ) -> Tuple[str, str]:
+        """Write initial timing JSON files on disk and bind _SyncTimes."""
+        fetch_path = os.path.join(self.repodir, ".repo_fetchtimes.json")
+        checkout_path = os.path.join(self.repodir, ".repo_checkouttimes.json")
+        if fetch is not None:
+            with open(fetch_path, "w") as f:
+                json.dump(fetch, f)
+        if checkout is not None:
+            with open(checkout_path, "w") as f:
+                json.dump(checkout, f)
+        self.cmd._fetch_times = sync._SyncTimes(
+            self.manifest, ".repo_fetchtimes.json"
+        )
+        self.cmd._checkout_times = sync._SyncTimes(
+            self.manifest, ".repo_checkouttimes.json"
+        )
+        return fetch_path, checkout_path
+
+    def _run_interleaved_for_timing(
+        self,
+        cli_args: List[str],
+        all_projects: List[FakeProject],
+        make_result: Optional[
+            Callable[[int, FakeProject], sync._SyncResult]
+        ] = None,
+        expect_error: bool = False,
+    ) -> List[str]:
+        """Run _SyncInterleaved and return the dispatched project name order."""
+        opt, args = self.cmd.OptionParser.parse_args(cli_args)
+        opt.quiet = True
+        mock.patch.object(
+            self.cmd, "GetProjects", return_value=all_projects
+        ).start()
+
+        dispatched: List[str] = []
+
+        def default_result(idx: int, proj: FakeProject) -> sync._SyncResult:
+            run_fetch = not opt.local_only
+            run_checkout = not opt.network_only and bool(proj.worktree)
+            return sync._SyncResult(
+                project_index=idx,
+                relpath=proj.relpath,
+                fetch_success=True,
+                remote_fetched=run_fetch,
+                checkout_success=True,
+                fetch_errors=[],
+                checkout_errors=[],
+                stderr_text="",
+                fetch_start=100.0 if run_fetch else None,
+                fetch_finish=102.0 if run_fetch else None,
+                checkout_start=102.0 if run_checkout else None,
+                checkout_finish=106.0 if run_checkout else None,
+            )
+
+        build_result = make_result or default_result
+
+        def execute_side_effect(
+            jobs: int,
+            target: Any,
+            work_items: List[List[int]],
+            **kwargs: Any,
+        ) -> bool:
+            projects_in_pass = self.cmd.get_parallel_context()["projects"]
+            results = []
+            for item in work_items:
+                idx = item[0]
+                proj = projects_in_pass[idx]
+                dispatched.append(proj.name)
+                results.append(
+                    sync._InterleavedSyncResult(
+                        results=[build_result(idx, proj)]
+                    )
+                )
+            return kwargs["callback"](None, kwargs["output"], results)
+
+        mock.patch.object(
+            self.cmd, "ExecuteInParallel", side_effect=execute_side_effect
+        ).start()
+
+        ctx = (
+            self.assertRaises(error.SyncError)
+            if expect_error
+            else contextlib.nullcontext()
+        )
+        with ctx:
+            self.cmd._SyncInterleaved(
+                opt,
+                args,
+                [],
+                self.manifest,
+                self.manifest.manifestProject,
+                all_projects,
+                {},
+            )
+        return dispatched
+
+    def test_interleaved_full_sync_sorts_and_saves_phase_times(self) -> None:
+        """Full interleaved sync sorts by fetch + checkout and saves each."""
+        fetch_path, checkout_path = self._seed_sync_times(
+            fetch={"projA": 1.0, "projB": 10.0, "projC": 2.0},
+            checkout={"projA": 2.0, "projB": 1.0, "projC": 12.0},
+        )
+        dispatched = self._run_interleaved_for_timing(
+            ["--interleaved", "-j4"],
+            [self.projA, self.projB, self.projC],
+        )
+
+        # Totals: projC=14.0, projB=11.0, projA=3.0.
+        self.assertEqual(dispatched, ["projC", "projB", "projA"])
+        with open(fetch_path) as f:
+            saved_fetch = json.load(f)
+        with open(checkout_path) as f:
+            saved_checkout = json.load(f)
+        # Recorded 2.0s fetch and 4.0s checkout blend separately at alpha=0.5.
+        self.assertAlmostEqual(saved_fetch["projA"], 1.5)
+        self.assertAlmostEqual(saved_checkout["projA"], 3.0)
+
+    def test_interleaved_network_only_uses_and_updates_fetch_only(
+        self,
+    ) -> None:
+        """Interleaved -n sorts by fetch and leaves checkout times alone."""
+        seeded_checkout = {"projA": 2.0, "projB": 1.0, "projC": 12.0}
+        fetch_path, checkout_path = self._seed_sync_times(
+            fetch={"projA": 1.0, "projB": 10.0, "projC": 2.0},
+            checkout=seeded_checkout,
+        )
+        dispatched = self._run_interleaved_for_timing(
+            ["--interleaved", "-n", "-j4"],
+            [self.projA, self.projB, self.projC],
+        )
+
+        self.assertEqual(dispatched, ["projB", "projC", "projA"])
+        with open(fetch_path) as f:
+            saved_fetch = json.load(f)
+        with open(checkout_path) as f:
+            saved_checkout = json.load(f)
+        self.assertAlmostEqual(saved_fetch["projA"], 1.5)
+        self.assertEqual(saved_checkout, seeded_checkout)
+
+    def test_interleaved_local_only_uses_and_updates_checkout_only(
+        self,
+    ) -> None:
+        """Interleaved -l sorts by checkout and leaves fetch times alone."""
+        seeded_fetch = {"projA": 1.0, "projB": 10.0, "projC": 2.0}
+        fetch_path, checkout_path = self._seed_sync_times(
+            fetch=seeded_fetch,
+            checkout={"projA": 2.0, "projB": 1.0, "projC": 12.0},
+        )
+        dispatched = self._run_interleaved_for_timing(
+            ["--interleaved", "-l", "-j4"],
+            [self.projA, self.projB, self.projC],
+        )
+
+        self.assertEqual(dispatched, ["projC", "projA", "projB"])
+        with open(fetch_path) as f:
+            saved_fetch = json.load(f)
+        with open(checkout_path) as f:
+            saved_checkout = json.load(f)
+        self.assertEqual(saved_fetch, seeded_fetch)
+        self.assertAlmostEqual(saved_checkout["projA"], 3.0)
+
+    def test_interleaved_no_worktree_omits_checkout_estimate(self) -> None:
+        """Projects without a worktree do not include unknown checkout time."""
+        self.projA.worktree = None
+        _, checkout_path = self._seed_sync_times(
+            fetch={"projA": 2.0, "projB": 5.0},
+            checkout={"projB": 5.0},
+        )
+        dispatched = self._run_interleaved_for_timing(
+            ["--interleaved", "-j4"],
+            [self.projA, self.projB],
+        )
+
+        self.assertEqual(dispatched, ["projB", "projA"])
+        with open(checkout_path) as f:
+            saved_checkout = json.load(f)
+        self.assertNotIn("projA", saved_checkout)
+
+    def test_interleaved_failed_phases_do_not_skew_estimates(self) -> None:
+        """Failed fetches or checkouts do not overwrite saved durations."""
+        self.cmd.git_event_log = mock.Mock()
+        seeded_checkout = {"projA": 15.0, "projB": 25.0}
+        fetch_path, checkout_path = self._seed_sync_times(
+            fetch={"projA": 20.0, "projB": 30.0},
+            checkout=seeded_checkout,
+        )
+
+        def make_result(idx: int, proj: FakeProject) -> sync._SyncResult:
+            if proj.name == "projA":
+                return sync._SyncResult(
+                    project_index=idx,
+                    relpath=proj.relpath,
+                    fetch_success=False,
+                    remote_fetched=False,
+                    checkout_success=False,
+                    fetch_errors=[error.GitError("fetch failed")],
+                    checkout_errors=[],
+                    stderr_text="",
+                    fetch_start=100.0,
+                    fetch_finish=100.1,
+                    checkout_start=None,
+                    checkout_finish=None,
+                )
+            return sync._SyncResult(
+                project_index=idx,
+                relpath=proj.relpath,
+                fetch_success=True,
+                remote_fetched=True,
+                checkout_success=False,
+                fetch_errors=[],
+                checkout_errors=[error.GitError("dirty worktree")],
+                stderr_text="",
+                fetch_start=100.0,
+                fetch_finish=102.0,
+                checkout_start=102.0,
+                checkout_finish=102.1,
+            )
+
+        self._run_interleaved_for_timing(
+            ["--interleaved", "-j4"],
+            [self.projA, self.projB],
+            make_result=make_result,
+            expect_error=True,
+        )
+
+        with open(fetch_path) as f:
+            saved_fetch = json.load(f)
+        with open(checkout_path) as f:
+            saved_checkout = json.load(f)
+        self.assertAlmostEqual(saved_fetch["projA"], 20.0)
+        self.assertAlmostEqual(saved_fetch["projB"], 16.0)
+        self.assertEqual(saved_checkout, seeded_checkout)
+
+    def test_phased_checkout_sorts_and_saves_checkout_times(self) -> None:
+        """Phased _Checkout sorts each level slowest-first and saves times."""
+        opt = self._get_opts(["--no-interleaved", "-j4"])
+        opt.jobs_checkout = 4
+
+        _, checkout_path = self._seed_sync_times(
+            checkout={"projA": 1.0, "projB": 10.0, "projC": 5.0}
+        )
+
+        checked_out: List[str] = []
+
+        def execute_side_effect(
+            jobs: int,
+            target: Any,
+            inputs: Any,
+            **kwargs: Any,
+        ) -> bool:
+            projects = self.cmd.get_parallel_context()["projects"]
+            results = []
+            for idx in inputs:
+                checked_out.append(projects[idx].name)
+                results.append(
+                    sync._CheckoutOneResult(
+                        success=True,
+                        errors=[],
+                        project_idx=idx,
+                        start=100.0,
+                        finish=104.0,
+                    )
+                )
+            return kwargs["callback"](None, kwargs["output"], results)
+
+        mock.patch.object(
+            self.cmd, "ExecuteInParallel", side_effect=execute_side_effect
+        ).start()
+
+        ok = self.cmd._Checkout(
+            [self.projA, self.projB, self.projC], opt, [], []
+        )
+
+        self.assertTrue(ok)
+        self.assertEqual(checked_out, ["projB", "projC", "projA"])
+        with open(checkout_path) as f:
+            saved_checkout = json.load(f)
+        self.assertAlmostEqual(saved_checkout["projA"], 2.5)
 
     def _get_opts(self, args=None):
         """Helper to get default options for worker tests."""
