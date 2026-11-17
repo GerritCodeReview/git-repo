@@ -22,6 +22,30 @@
       },
       "revId": "f68e76df479116b2669bc8cbd678a2571b8fd1a9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63c0a2a3_7a8de43e",
+        "filename": "repo",
+        "patchSetId": 10
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-17T23:14:47Z",
+      "side": 1,
+      "message": "version num was already bumped in https://gerrit-review.git.corp.google.com/c/git-repo/+/657024",
+      "parentUuid": "dcf416fe_09c589c5",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 0
+      },
+      "revId": "f68e76df479116b2669bc8cbd678a2571b8fd1a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
