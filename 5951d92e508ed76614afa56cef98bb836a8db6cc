@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8a2df53_c838ffee",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-11-17T18:24:19Z",
+      "side": 1,
+      "message": "Done. Updated `\u003cdefault sync-tags\u003e` in `docs/manifest-format.md` and regenerated `man/repo-manifest.1`.",
+      "parentUuid": "ceac1ff4_3df40ccf",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 0
+      },
+      "revId": "5951d92e508ed76614afa56cef98bb836a8db6cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7787eb2a_4534da60",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-11-13T22:31:03Z",
       "side": 1,
       "message": "let\u0027s keep `sync-tags\u003d\"false\"` here. ToXml should record the parsed attribute and write only that",
+      "range": {
+        "startLine": 851,
+        "startChar": 0,
+        "endLine": 851,
+        "endChar": 61
+      },
+      "revId": "5951d92e508ed76614afa56cef98bb836a8db6cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52f0afe1_51d05a19",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 851,
+      "author": {
+        "id": 3427767
+      },
+      "writtenOn": "2026-11-17T18:24:19Z",
+      "side": 1,
+      "message": "Done. `XmlManifest` now tracks the parsed `sync-tags` attribute per project and `ToXml()` writes only explicitly set values; kept `sync-tags\u003d\"false\"` on `depth-opt-out` and added an explicit `sync-tags\u003d\"true\"` case.",
+      "parentUuid": "7787eb2a_4534da60",
       "range": {
         "startLine": 851,
         "startChar": 0,
