@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "688690ae_3f6a267a",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3793,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2026-11-17T04:41:02Z",
+      "side": 0,
+      "message": "preserve this comment in the new code in Sync_NetworkHalf",
+      "revId": "1702d7fb558a7114f9f4061e8e89f7a565db8d5a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
