@@ -572,3 +572,136 @@ def test_smart_sync_branch(host: GitHost, client: RepoClient) -> None:
         )
         assert res.returncode != 0
         assert "requires the manifest checkout to track a branch" in res.stderr
+
+
+def test_smart_sync_default_explicit(
+    host: GitHost, client: RepoClient, tmp_path: Path
+) -> None:
+    """`repo.smartsyncdefault=explicit` enables explicit Smart Sync fallback."""
+    foo = host.create_repo("platform/foo", {"f": "v1"})
+    v1 = foo.rev_parse("main")
+    tot = foo.commit({"f": "tot"})
+
+    requests: List[Dict[str, Any]] = []
+    fail_server = False
+
+    def handle_v2(req: Dict[str, Any]) -> Dict[str, Any]:
+        requests.append(req)
+        if fail_server:
+            return {"success": False, "error_message": "server unavailable"}
+        return {
+            "success": True,
+            "manifest_xml": manifest_xml(
+                f'<project name="platform/foo" path="foo" revision="{v1}" />',
+                fetch=host.url,
+            ),
+        }
+
+    with _manifest_server(handle_v2) as server_url:
+        manifest = host.create_manifest(
+            manifest_xml(
+                f'<manifest-server url="{server_url}" />',
+                '<project name="platform/foo" path="foo" />',
+            )
+        )
+        manifest.commit(
+            {
+                "default.xml": manifest_xml(
+                    f'<manifest-server url="{server_url}" />',
+                    '<project name="platform/foo" path="foo" />',
+                    default=(
+                        'remote="origin" revision="main" '
+                        'sync-smartsync="false"'
+                    ),
+                )
+            },
+            branch="opt-out",
+        )
+        manifest.commit(
+            {
+                "default.xml": manifest_xml(
+                    f'<manifest-server url="{server_url}" />',
+                    '<project name="platform/foo" path="foo" />',
+                    default=(
+                        'remote="origin" revision="main" '
+                        'sync-smartsync="true"'
+                    ),
+                )
+            },
+            branch="opt-in",
+        )
+        manifest.commit(
+            {
+                "default.xml": manifest_xml(
+                    '<project name="platform/foo" path="foo" />'
+                )
+            },
+            branch="no-server",
+        )
+
+        client.init(host.manifest_url)
+        client.git(
+            ".repo/manifests", "config", "repo.smartsyncdefault", "explicit"
+        )
+
+        # Enables explicit Smart Sync when <manifest-server> is present.
+        client.sync()
+        assert len(requests) == 1
+        assert "best_effort" not in requests[-1]
+        assert client.head("foo") == v1
+
+        # Fails hard with a hint instead of falling back to ToT on error.
+        fail_server = True
+        res = client.sync(check=False)
+        assert res.returncode != 0
+        assert "--no-smart-sync" in res.stderr
+        assert len(requests) == 2
+        assert "best_effort" not in requests[-1]
+
+        # Explicit CLI -s failure does not emit the default-enabled hint.
+        res = client.sync("-s", check=False)
+        assert res.returncode != 0
+        assert "--no-smart-sync" not in res.stderr
+        assert len(requests) == 3
+
+        # <default sync-smartsync="false"/> opts out while keeping -s usable.
+        client.init(host.manifest_url, "-b", "opt-out")
+        client.sync()
+        assert len(requests) == 3
+        assert client.head("foo") == tot
+
+        fail_server = False
+        client.sync("-s")
+        assert len(requests) == 4
+        assert client.head("foo") == v1
+
+        # <default sync-smartsync="true"/> is also treated as explicit.
+        client.init(host.manifest_url, "-b", "opt-in")
+        fail_server = True
+        res = client.sync(check=False)
+        assert res.returncode != 0
+        assert "--no-smart-sync" in res.stderr
+        assert len(requests) == 5
+        assert "best_effort" not in requests[-1]
+
+        # Per-user sync.smartsync=false overrides repo.smartsyncdefault.
+        client.init(host.manifest_url, "-b", "main")
+        cfg_dir = tmp_path / "repoconfig"
+        (cfg_dir / ".repoconfig").mkdir(parents=True)
+        (cfg_dir / ".repoconfig" / "config").write_text(
+            "[sync]\n\tsmartsync = false\n"
+        )
+        saved_env = dict(client.env)
+        client.env["REPO_CONFIG_DIR"] = str(cfg_dir)
+        try:
+            client.sync()
+        finally:
+            client.env = saved_env
+        assert len(requests) == 5
+        assert client.head("foo") == tot
+
+        # Without <manifest-server>, sync falls through to regular ToT.
+        client.init(host.manifest_url, "-b", "no-server")
+        client.sync()
+        assert len(requests) == 5
+        assert client.head("foo") == tot

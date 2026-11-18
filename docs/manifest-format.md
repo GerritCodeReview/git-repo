@@ -242,7 +242,9 @@ will use this value if specified; otherwise projects default to
 false when depth is set on a non-mirror checkout, and true
 otherwise.
 
-Attribute `sync-smartsync`: Set to true to enable smart sync by default.
+Attribute `sync-smartsync`: Set to true to enable smart sync by default,
+or set to false to disable default smart sync for the manifest (explicit
+`-s`/`-t` invocations still work when `<manifest-server>` is defined).
 
 
 ### Element manifest-server

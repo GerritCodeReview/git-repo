@@ -245,6 +245,11 @@ explicit target or manifest source (such as `-t`/`--smart-tag`,
 `-m`/`--manifest-name` or `--superproject-revision`) will also disable the
 default Smart Sync behavior.
 
+Setting `sync-smartsync="false"` explicitly opts the manifest out of default
+Smart Sync (for example, overriding a checkout fallback policy) while keeping
+`<manifest-server>` available for explicit `-s`/`--smart-sync` and
+`-t`/`--smart-tag` invocations.
+
 Users can override this manifest default on their workstation with the
 `sync.smartsync` user setting; see
 [Per-user default](#Per_user-default-sync_smartsync) below.

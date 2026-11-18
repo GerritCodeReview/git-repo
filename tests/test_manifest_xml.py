@@ -427,7 +427,8 @@ class TestXmlManifest:
         manifest = repo_client.get_xml_manifest(
             "<manifest><default /></manifest>"
         )
-        assert manifest.default.sync_smartsync is False
+        assert manifest.default.sync_smartsync is None
+        assert manifest.ToXml().toxml() == '<?xml version="1.0" ?><manifest/>'
 
         manifest = repo_client.get_xml_manifest(
             '<manifest><default sync-smartsync="true" /></manifest>'
@@ -442,7 +443,10 @@ class TestXmlManifest:
             '<manifest><default sync-smartsync="false" /></manifest>'
         )
         assert manifest.default.sync_smartsync is False
-        assert manifest.ToXml().toxml() == '<?xml version="1.0" ?><manifest/>'
+        assert (
+            manifest.ToXml().toxml() == '<?xml version="1.0" ?>'
+            '<manifest><default sync-smartsync="false"/></manifest>'
+        )
 
     def test_clear_override(self, repo_client: RepoClient) -> None:
         """Check ClearOverride reverts to the default manifest."""

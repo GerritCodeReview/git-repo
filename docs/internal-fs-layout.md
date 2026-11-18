@@ -181,6 +181,7 @@ User controlled settings are initialized when running `repo init`.
 | repo.partialcloneexclude | `--partial-clone-exclude` | Comma-delimited list of project names (not paths) to exclude while using [partial git clones] |
 | repo.reference           | `--reference`             | Reference repo client checkout |
 | repo.smartsync           | `--smart-sync`            | Default to [Smart Sync](./smart-sync.md) when syncing |
+| repo.smartsyncdefault    | (internal)                | Fallback [Smart Sync](./smart-sync.md) policy; `explicit` enables Smart Sync when `<manifest-server>` is set (below CLI, `repo.smartsync`, `sync.smartsync`, and `sync-smartsync`) and treats default Smart Syncs as explicit |
 | repo.\<branch\>.smartsyncbranch | `--smart-sync-branch` | Server branch to query when [Smart Sync](./smart-sync.md)ing `<branch>` |
 | repo.submodules          | `--submodules`            | Sync git submodules |
 | repo.superproject        | `--use-superproject`      | Sync [superproject] |
