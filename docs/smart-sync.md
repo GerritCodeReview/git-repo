@@ -194,16 +194,39 @@ following precedence order (highest to lowest):
 1.  Per-invocation CLI flags (`-s`/`--smart-sync`, `--no-smart-sync`/`--head`,
     or target selection flags like `-t`, `-m`, `--superproject-revision`, `-l`).
 2.  Checkout `repo init` setting (`repo init --[no-]smart-sync`).
-3.  [Per-user `sync.smartsync` setting](#Per_user-default-sync_smartsync).
-4.  Manifest [`sync-smartsync`](#sync-smartsync-manifest-attribute) setting.
+3.  [Checkout `repo.smartsyncdefault` policy](#Checkout-policy-repo_smartsyncdefault).
+4.  [Per-user `sync.smartsync` setting](#Per_user-default-sync_smartsync).
+5.  Manifest [`sync-smartsync`](#sync-smartsync-manifest-attribute) setting.
 
 Running `repo init --no-smart-sync` (or `repo init --head`) disables default
-Smart Sync for the checkout even when enabled by the user setting or manifest.
-As with the [manifest setting](#sync-smartsync-manifest-attribute), a
-checkout-enabled default Smart Sync falls back to a regular ToT sync if Smart
-Sync fails (e.g. the manifest checkout is not tracking a remote branch,
-`<manifest-server>` is not defined, or the server cannot provide a usable
-manifest).
+Smart Sync for the checkout even when enabled by lower-precedence settings.
+Unless `repo.smartsyncdefault` is set to `explicit`, a checkout-enabled default
+Smart Sync falls back to a regular ToT sync if Smart Sync fails (e.g. the
+manifest checkout is not tracking a remote branch, `<manifest-server>` is not
+defined, or the server cannot provide a usable manifest).
+
+### Checkout policy (repo.smartsyncdefault)
+
+Workspace managers can set `repo.smartsyncdefault` in
+`.repo/manifests.git/config` to establish a per-checkout default Smart Sync
+policy. Supported values (case-insensitive):
+
+*   `explicit`: Enables Smart Sync whenever the manifest defines a
+    `<manifest-server>` (and leaves it off when `<manifest-server>` is absent).
+    All default Smart Syncs in the checkout—including `repo init --smart-sync`
+    (`repo.smartsync=true`)—are treated as explicit requests
+    (`best_effort=False`), failing the sync on error instead of falling back to
+    ToT.
+*   `implicit`: Enables Smart Sync whenever the manifest defines a
+    `<manifest-server>` (and leaves it off when `<manifest-server>` is absent).
+    Requests are marked `best_effort=True` and fall back to a regular ToT sync
+    on error.
+*   `off`: Disables default Smart Sync for the checkout.
+
+Unset defers to `sync.smartsync` and `<default sync-smartsync>`. Unrecognized
+values log a warning and are ignored. Users can still override this policy per
+checkout with `repo init --[no-]smart-sync` or per invocation with `-s` /
+`--no-smart-sync` / `--head`.
 
 ### `repo init --smart-sync-branch=BRANCH`
 

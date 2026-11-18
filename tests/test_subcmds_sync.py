@@ -653,6 +653,255 @@ def test_user_config_smart_sync(
 
 
 @pytest.mark.parametrize(
+    "mode, argv, config_smart_sync, user_pref, sync_smartsync_manifest, "
+    "manifest_server, expected_smart_sync, expected_implicit",
+    [
+        # explicit: enabled iff <manifest-server> is defined, always explicit.
+        (
+            "explicit",
+            [],
+            None,
+            None,
+            False,
+            "http://localhost/ms",
+            True,
+            False,
+        ),
+        (
+            "explicit",
+            [],
+            None,
+            False,
+            False,
+            "http://localhost/ms",
+            True,
+            False,
+        ),
+        (
+            "explicit",
+            [],
+            None,
+            False,
+            True,
+            "http://localhost/ms",
+            True,
+            False,
+        ),
+        ("explicit", [], None, None, False, None, False, False),
+        ("explicit", [], None, None, False, "", False, False),
+        ("explicit", [], None, True, True, None, False, False),
+        # explicit also upgrades repo.smartsync=true to explicit.
+        ("explicit", [], True, False, False, None, True, False),
+        (
+            "explicit",
+            [],
+            False,
+            True,
+            True,
+            "http://localhost/ms",
+            False,
+            False,
+        ),
+        # implicit: enabled iff <manifest-server> is defined, best-effort.
+        (
+            "implicit",
+            [],
+            None,
+            None,
+            False,
+            "http://localhost/ms",
+            True,
+            True,
+        ),
+        (
+            "implicit",
+            [],
+            None,
+            False,
+            False,
+            "http://localhost/ms",
+            True,
+            True,
+        ),
+        ("implicit", [], None, None, False, None, False, False),
+        ("implicit", [], None, True, True, None, False, False),
+        ("implicit", [], True, False, False, None, True, True),
+        (
+            "implicit",
+            [],
+            False,
+            True,
+            True,
+            "http://localhost/ms",
+            False,
+            False,
+        ),
+        ("implicit", ["-s"], None, None, False, None, True, False),
+        (
+            "implicit",
+            ["--head"],
+            None,
+            None,
+            True,
+            "http://localhost/ms",
+            False,
+            False,
+        ),
+        (
+            "implicit",
+            ["-l"],
+            None,
+            None,
+            False,
+            "http://localhost/ms",
+            False,
+            False,
+        ),
+        (
+            "implicit",
+            ["--nmu"],
+            None,
+            False,
+            False,
+            "http://localhost/ms",
+            True,
+            True,
+        ),
+        # off: disables default smart sync, overridden by repo.smartsync or CLI.
+        ("off", [], None, True, True, "http://localhost/ms", False, False),
+        ("off", [], None, None, True, "http://localhost/ms", False, False),
+        ("off", [], True, False, False, None, True, True),
+        ("off", ["-s"], None, None, False, None, True, False),
+        # CLI flags and target-selecting flags override explicit mode too.
+        (
+            "explicit",
+            ["--no-smart-sync"],
+            True,
+            True,
+            True,
+            "http://localhost/ms",
+            False,
+            False,
+        ),
+        (
+            "explicit",
+            ["--head"],
+            None,
+            None,
+            False,
+            "http://localhost/ms",
+            False,
+            False,
+        ),
+        ("explicit", ["-s"], False, False, False, None, True, False),
+        (
+            "explicit",
+            ["-t", "tag123"],
+            None,
+            None,
+            False,
+            "http://localhost/ms",
+            False,
+            False,
+        ),
+        (
+            "explicit",
+            ["-m", "other.xml"],
+            None,
+            None,
+            False,
+            "http://localhost/ms",
+            False,
+            False,
+        ),
+        (
+            "explicit",
+            ["--superproject-revision=abc"],
+            None,
+            None,
+            False,
+            "http://localhost/ms",
+            False,
+            False,
+        ),
+        (
+            "explicit",
+            ["-l"],
+            None,
+            None,
+            False,
+            "http://localhost/ms",
+            False,
+            False,
+        ),
+        (
+            "explicit",
+            ["--nmu"],
+            None,
+            False,
+            False,
+            "http://localhost/ms",
+            True,
+            False,
+        ),
+    ],
+)
+def test_checkout_smart_sync_default_policy(
+    mode: str,
+    argv: List[str],
+    config_smart_sync: Optional[bool],
+    user_pref: Optional[bool],
+    sync_smartsync_manifest: bool,
+    manifest_server: Optional[str],
+    expected_smart_sync: bool,
+    expected_implicit: bool,
+) -> None:
+    """Tests repo.smartsyncdefault (explicit, implicit, off) precedence."""
+    manifest = mock.MagicMock()
+    manifest.default.sync_smartsync = sync_smartsync_manifest
+    manifest.manifestServer = manifest_server
+    manifest.manifestProject.smart_sync = config_smart_sync
+    manifest.manifestProject.smart_sync_default = mode
+
+    user_cfg = mock.MagicMock()
+    user_cfg.GetBoolean.return_value = user_pref
+
+    cmd = sync.Sync(manifest=manifest)
+    opts, args = cmd.OptionParser.parse_args(argv)
+    cmd.ValidateOptions(opts, args)
+    with mock.patch.object(
+        git_config.RepoConfig, "ForUser", return_value=user_cfg
+    ):
+        implicit = cmd._ResolveSmartSyncOption(opts, manifest)
+    assert opts.smart_sync == expected_smart_sync
+    assert implicit == expected_implicit
+
+
+def test_checkout_smart_sync_default_unknown_warns() -> None:
+    """Unknown repo.smartsyncdefault values log a warning and are ignored."""
+    manifest = mock.MagicMock()
+    manifest.default.sync_smartsync = False
+    manifest.manifestServer = "http://localhost/manifestserver"
+    manifest.manifestProject.smart_sync = None
+    manifest.manifestProject.smart_sync_default = "bogus"
+
+    user_cfg = mock.MagicMock()
+    user_cfg.GetBoolean.return_value = None
+
+    cmd = sync.Sync(manifest=manifest)
+    opts, args = cmd.OptionParser.parse_args([])
+    cmd.ValidateOptions(opts, args)
+    with mock.patch.object(
+        git_config.RepoConfig, "ForUser", return_value=user_cfg
+    ):
+        with mock.patch.object(sync.logger, "warning") as mock_warn:
+            implicit = cmd._ResolveSmartSyncOption(opts, manifest)
+    mock_warn.assert_called_once()
+    assert opts.smart_sync is False
+    assert implicit is False
+
+
+@pytest.mark.parametrize(
     "value, expected_smart_sync",
     [("true", True), ("false", False), ("yes", True), ("no", False)],
 )
@@ -2052,6 +2301,34 @@ class SyncCommand(unittest.TestCase):
                 with self.assertRaises(sync.SmartSyncError):
                     self.cmd.Execute(self.opt, [])
         mock_setup.assert_called_once()
+
+    def test_checkout_smart_sync_default_explicit_error(self) -> None:
+        """Ensure repo.smartsyncdefault=explicit fails hard without ToT
+        fallback.
+        """
+        self.manifest.default.sync_smartsync = False
+        self.manifest.manifestServer = "http://localhost/manifestserver"
+        self.manifest.manifestProject.smart_sync_default = "explicit"
+        self.opt.smart_sync = None
+        self.opt.mp_update = False
+        user_cfg = mock.MagicMock()
+        user_cfg.GetBoolean.return_value = False
+        with mock.patch.object(
+            git_config.RepoConfig, "ForUser", return_value=user_cfg
+        ):
+            with mock.patch.object(
+                self.cmd,
+                "_SmartSyncSetup",
+                side_effect=sync.SmartSyncError("target not found"),
+            ) as mock_setup:
+                with self.assertRaises(sync.SmartSyncError):
+                    self.cmd.Execute(self.opt, [])
+        mock_setup.assert_called_once_with(
+            self.opt,
+            mock.ANY,
+            self.manifest,
+            best_effort=False,
+        )
 
     def test_implicit_smart_sync_unparsable_manifest(self) -> None:
         """Ensure an unparsable smart sync manifest falls back to ToT."""

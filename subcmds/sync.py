@@ -89,6 +89,7 @@ logger = repo_logging.RepoLogger(__file__)
 # Manifest server RPC that takes a single struct of named options.  Servers
 # that do not implement it are called via the positional GetApprovedManifest.
 _GET_APPROVED_MANIFEST_V2 = "GetApprovedManifestV2"
+_SMART_SYNC_DEFAULT_MODES = ("explicit", "implicit", "off")
 
 
 def _IsMethodNotFoundFault(fault: xmlrpc.client.Fault, method: str) -> bool:
@@ -2713,19 +2714,42 @@ later is required to fix a server side protocol bug.
     ) -> bool:
         """Resolve opt.smart_sync from CLI flags, config, and manifest.
 
-        Precedence: CLI flags > per-checkout settings > per-user settings >
-        per-manifest settings.
+        Precedence: CLI flags > repo.smartsync > repo.smartsyncdefault >
+        sync.smartsync > <default sync-smartsync>.
         See docs/repoconfig.md and docs/smart-sync.md for details.
 
         Returns:
             True if smart_sync was enabled implicitly by checkout or manifest
             default, False otherwise.  Smart sync enabled via per-user settings
-            counts as an explicit user request, not implicit.
+            or in a checkout with repo.smartsyncdefault=explicit counts as an
+            explicit request, not implicit.
         """
         checkout_pref = getattr(manifest.manifestProject, "smart_sync", None)
         if not isinstance(checkout_pref, bool):
             checkout_pref = None
+        checkout_default = getattr(
+            manifest.manifestProject, "smart_sync_default", None
+        )
+        if not isinstance(checkout_default, str):
+            checkout_default = None
+        else:
+            checkout_default = checkout_default.strip().lower() or None
+            if (
+                checkout_default is not None
+                and checkout_default not in _SMART_SYNC_DEFAULT_MODES
+            ):
+                logger.warning(
+                    "warning: ignoring unknown repo.smartsyncdefault "
+                    'value "%s"',
+                    checkout_default,
+                )
+                checkout_default = None
+
         user_pref = git_config.RepoConfig.ForUser().GetBoolean("sync.smartsync")
+        has_manifest_server = bool(
+            isinstance(getattr(manifest, "manifestServer", None), str)
+            and manifest.manifestServer
+        )
         default_allowed = (
             opt.smart_sync is None
             and not opt.smart_tag
@@ -2733,25 +2757,32 @@ later is required to fix a server side protocol bug.
             and not opt.superproject_revision
             and not opt.local_only
         )
-        default_smart_sync = (
-            checkout_pref
-            if checkout_pref is not None
-            else getattr(manifest.default, "sync_smartsync", False) is True
-        )
-        implicit = (
-            default_allowed
-            and (checkout_pref is not None or user_pref is None)
-            and default_smart_sync
-        )
         if opt.smart_sync is None:
-            if checkout_pref is not None:
-                opt.smart_sync = implicit
-            elif user_pref is False:
+            if not default_allowed:
                 opt.smart_sync = False
-            elif user_pref is True:
-                opt.smart_sync = default_allowed
+                implicit = False
+            elif checkout_pref is not None:
+                opt.smart_sync = checkout_pref
+                implicit = checkout_pref and checkout_default != "explicit"
+            elif checkout_default == "explicit":
+                opt.smart_sync = has_manifest_server
+                implicit = False
+            elif checkout_default == "implicit":
+                opt.smart_sync = has_manifest_server
+                implicit = opt.smart_sync
+            elif checkout_default == "off":
+                opt.smart_sync = False
+                implicit = False
+            elif user_pref is not None:
+                opt.smart_sync = user_pref
+                implicit = False
             else:
-                opt.smart_sync = implicit
+                opt.smart_sync = (
+                    getattr(manifest.default, "sync_smartsync", False) is True
+                )
+                implicit = opt.smart_sync
+        else:
+            implicit = False
 
         if (
             opt.manifest_server_username or opt.manifest_server_password
