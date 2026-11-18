@@ -2713,19 +2713,43 @@ later is required to fix a server side protocol bug.
     ) -> bool:
         """Resolve opt.smart_sync from CLI flags, config, and manifest.
 
-        Precedence: CLI flags > per-checkout settings > per-user settings >
-        per-manifest settings.
+        Precedence: CLI flags > repo.smartsync > sync.smartsync >
+        <default sync-smartsync> > repo.smartsyncdefault.
         See docs/repoconfig.md and docs/smart-sync.md for details.
 
         Returns:
             True if smart_sync was enabled implicitly by checkout or manifest
             default, False otherwise.  Smart sync enabled via per-user settings
-            counts as an explicit user request, not implicit.
+            or in a checkout with repo.smartsyncdefault=explicit counts as an
+            explicit request, not implicit.
         """
         checkout_pref = getattr(manifest.manifestProject, "smart_sync", None)
         if not isinstance(checkout_pref, bool):
             checkout_pref = None
+        checkout_default = getattr(
+            manifest.manifestProject, "smart_sync_default", None
+        )
+        if not isinstance(checkout_default, str):
+            checkout_default = None
+        else:
+            checkout_default = checkout_default.strip().lower() or None
+            if checkout_default not in (None, "explicit"):
+                logger.warning(
+                    "warning: ignoring unknown repo.smartsyncdefault "
+                    'value "%s"',
+                    checkout_default,
+                )
+                checkout_default = None
+        explicit_checkout_default = checkout_default == "explicit"
+
         user_pref = git_config.RepoConfig.ForUser().GetBoolean("sync.smartsync")
+        manifest_pref = getattr(manifest.default, "sync_smartsync", None)
+        if not isinstance(manifest_pref, bool):
+            manifest_pref = None
+        has_manifest_server = bool(
+            isinstance(getattr(manifest, "manifestServer", None), str)
+            and manifest.manifestServer
+        )
         default_allowed = (
             opt.smart_sync is None
             and not opt.smart_tag
@@ -2733,25 +2757,27 @@ later is required to fix a server side protocol bug.
             and not opt.superproject_revision
             and not opt.local_only
         )
-        default_smart_sync = (
-            checkout_pref
-            if checkout_pref is not None
-            else getattr(manifest.default, "sync_smartsync", False) is True
-        )
-        implicit = (
-            default_allowed
-            and (checkout_pref is not None or user_pref is None)
-            and default_smart_sync
-        )
         if opt.smart_sync is None:
-            if checkout_pref is not None:
-                opt.smart_sync = implicit
-            elif user_pref is False:
+            if not default_allowed:
                 opt.smart_sync = False
-            elif user_pref is True:
-                opt.smart_sync = default_allowed
+                implicit = False
+            elif checkout_pref is not None:
+                opt.smart_sync = checkout_pref
+                implicit = checkout_pref and not explicit_checkout_default
+            elif user_pref is not None:
+                opt.smart_sync = user_pref
+                implicit = False
+            elif manifest_pref is not None:
+                opt.smart_sync = manifest_pref
+                implicit = manifest_pref and not explicit_checkout_default
+            elif explicit_checkout_default:
+                opt.smart_sync = has_manifest_server
+                implicit = False
             else:
-                opt.smart_sync = implicit
+                opt.smart_sync = False
+                implicit = False
+        else:
+            implicit = False
 
         if (
             opt.manifest_server_username or opt.manifest_server_password

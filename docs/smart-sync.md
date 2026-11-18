@@ -196,6 +196,11 @@ following precedence order (highest to lowest):
 2.  Checkout `repo init` setting (`repo init --[no-]smart-sync`).
 3.  [Per-user `sync.smartsync` setting](#Per_user-default-sync_smartsync).
 4.  Manifest [`sync-smartsync`](#sync-smartsync-manifest-attribute) setting.
+5.  Checkout `repo.smartsyncdefault` setting: when set to `explicit` in
+    `.repo/manifests.git/config`, Smart Sync is enabled whenever the manifest
+    defines a `<manifest-server>`, and all default Smart Syncs in the checkout
+    are treated as explicit (`best_effort=False`, failing the sync on error
+    rather than falling back to ToT).
 
 Running `repo init --no-smart-sync` (or `repo init --head`) disables default
 Smart Sync for the checkout even when enabled by the user setting or manifest.
