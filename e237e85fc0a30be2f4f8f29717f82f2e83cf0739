@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8c4c5ea_724c626a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-18T22:12:01Z",
+      "side": 1,
+      "message": "following up on our chat, why not keep `repo.smartsyncdefault` below `CLI \u003e repo.smartsync \u003e sync.smartsync \u003e sync-smartsync` (making `_Default.sync_smartsync` tri-state), while still treating default smart syncs as explicit? \n\nremoving `\u003cmanifest-server\u003e` breaks `-s`/`-t`, and overriding `sync.smartsync` breaks `repo config` (diverging from go/ksos/44082). ABFS can warn on mount if `sync.smartsync\u003dfalse`",
+      "revId": "e237e85fc0a30be2f4f8f29717f82f2e83cf0739",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1619fed_855f7d80",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-18T22:12:01Z",
+      "side": 1,
+      "message": "lets keep `.repo/manifests.git/config` details in `docs/internal-fs-layout.md` rather than adding a `.repo/manifests.git/config` section to user-facing `docs/smart-sync.md`",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 212,
+        "endChar": 44
+      },
+      "revId": "e237e85fc0a30be2f4f8f29717f82f2e83cf0739",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cf6a071_6ffff9ce",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-18T22:12:01Z",
+      "side": 1,
+      "message": "do we need this yet? feels like YAGNI",
+      "range": {
+        "startLine": 92,
+        "startChar": 54,
+        "endLine": 92,
+        "endChar": 57
+      },
+      "revId": "e237e85fc0a30be2f4f8f29717f82f2e83cf0739",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bf65cc2_0e939b29",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2751,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-18T22:12:01Z",
+      "side": 1,
+      "message": "this should be `manifest_server` and not `manifestServer`, tests should\u0027ve caught this. please add an e2e test in `tests/e2e/test_init_sync.py` alongside `test_smart_sync_branch`",
+      "range": {
+        "startLine": 2750,
+        "startChar": 41,
+        "endLine": 2751,
+        "endChar": 39
+      },
+      "revId": "e237e85fc0a30be2f4f8f29717f82f2e83cf0739",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
