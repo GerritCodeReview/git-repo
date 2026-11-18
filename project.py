@@ -6176,6 +6176,14 @@ class ManifestProject(MetaProject):
         """Whether we use smart sync by default."""
         return self.config.GetBoolean("repo.smartsync")
 
+    @property
+    def smart_sync_default(self) -> Optional[str]:
+        """Checkout-level fallback smart sync policy (e.g. 'explicit')."""
+        val = self.config.GetString("repo.smartsyncdefault")
+        if val is None:
+            return None
+        return val.strip().lower() or None
+
     @staticmethod
     def _SmartSyncBranchKey(branch: str) -> str:
         """Return the git config key for a branch's smart sync branch."""

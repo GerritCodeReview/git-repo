@@ -159,7 +159,7 @@ class _Default:
     sync_c = False
     sync_s = False
     sync_tags = None
-    sync_smartsync = False
+    sync_smartsync = None
 
     def __eq__(self, other):
         if not isinstance(other, _Default):
@@ -658,9 +658,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if d.sync_tags is not None:
             have_default = True
             e.setAttribute("sync-tags", "true" if d.sync_tags else "false")
-        if d.sync_smartsync:
+        if d.sync_smartsync is not None:
             have_default = True
-            e.setAttribute("sync-smartsync", "true")
+            e.setAttribute(
+                "sync-smartsync", "true" if d.sync_smartsync else "false"
+            )
         if have_default:
             root.appendChild(e)
             root.appendChild(doc.createTextNode(""))
@@ -1814,7 +1816,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         d.sync_c = XmlBool(node, "sync-c", False)
         d.sync_s = XmlBool(node, "sync-s", False)
         d.sync_tags = XmlBool(node, "sync-tags")
-        d.sync_smartsync = XmlBool(node, "sync-smartsync", False)
+        d.sync_smartsync = XmlBool(node, "sync-smartsync")
         return d
 
     def _ParseNotice(self, node):
