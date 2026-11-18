@@ -1978,6 +1978,12 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             fakeproj.config.SetBoolean("repo.smartsync", False)
             self.assertFalse(fakeproj.smart_sync)
 
+            self.assertIsNone(fakeproj.smart_sync_default)
+            fakeproj.config.SetString("repo.smartsyncdefault", "Explicit")
+            self.assertEqual(fakeproj.smart_sync_default, "explicit")
+            fakeproj.config.SetString("repo.smartsyncdefault", None)
+            self.assertIsNone(fakeproj.smart_sync_default)
+
             fakeproj.config.SetBoolean("repo.partialclone", False)
             self.assertFalse(fakeproj.partial_clone)
 
