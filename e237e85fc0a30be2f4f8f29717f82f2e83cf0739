@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cea629ac_47b5390f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-11-19T09:53:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8c4c5ea_724c626a",
+      "revId": "e237e85fc0a30be2f4f8f29717f82f2e83cf0739",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1619fed_855f7d80",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-11-18T22:12:01Z",
       "side": 1,
       "message": "lets keep `.repo/manifests.git/config` details in `docs/internal-fs-layout.md` rather than adding a `.repo/manifests.git/config` section to user-facing `docs/smart-sync.md`",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 212,
+        "endChar": 44
+      },
+      "revId": "e237e85fc0a30be2f4f8f29717f82f2e83cf0739",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5c7e84c_435184ff",
+        "filename": "docs/smart-sync.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-11-19T09:53:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1619fed_855f7d80",
       "range": {
         "startLine": 210,
         "startChar": 0,
@@ -64,6 +106,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58d5a18e_dfc75ef6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-11-19T09:53:11Z",
+      "side": 1,
+      "message": "Done. Removed both \"implicit\" and \"off\". We can add when needed.",
+      "parentUuid": "6cf6a071_6ffff9ce",
+      "range": {
+        "startLine": 92,
+        "startChar": 54,
+        "endLine": 92,
+        "endChar": 57
+      },
+      "revId": "e237e85fc0a30be2f4f8f29717f82f2e83cf0739",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2bf65cc2_0e939b29",
@@ -77,6 +143,30 @@
       "writtenOn": "2026-11-18T22:12:01Z",
       "side": 1,
       "message": "this should be `manifest_server` and not `manifestServer`, tests should\u0027ve caught this. please add an e2e test in `tests/e2e/test_init_sync.py` alongside `test_smart_sync_branch`",
+      "range": {
+        "startLine": 2750,
+        "startChar": 41,
+        "endLine": 2751,
+        "endChar": 39
+      },
+      "revId": "e237e85fc0a30be2f4f8f29717f82f2e83cf0739",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf5ff645_18dbba8f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2751,
+      "author": {
+        "id": 1095178
+      },
+      "writtenOn": "2026-11-19T09:53:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bf65cc2_0e939b29",
       "range": {
         "startLine": 2750,
         "startChar": 41,
