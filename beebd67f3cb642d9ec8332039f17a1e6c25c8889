@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75d2964e_f02f79fb",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3377,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2026-11-24T18:00:07Z",
+      "side": 1,
+      "message": "some of _CheckForImmutableRevision\u0027s callers (_ShouldStatelessPrune and the post-fetch verification in _RemoteFetch) expect a read-only check. the post-fetch check shouldn\u0027t overwrite a freshly fetched tracking ref from a stale prefetch ref\n\nplease gate _FastForwardUpstreamFromPrefetch behind something like `allow_prefetch: bool \u003d False` on _CheckForImmutableRevision and set it to True only at the two pre-fetch skip sites (in Sync_NetworkHalf and the pre-fetch skip in _RemoteFetch)",
+      "range": {
+        "startLine": 3377,
+        "startChar": 27,
+        "endLine": 3377,
+        "endChar": 64
+      },
+      "revId": "beebd67f3cb642d9ec8332039f17a1e6c25c8889",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
