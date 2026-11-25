@@ -3204,9 +3204,30 @@ later is required to fix a server side protocol bug.
                     "Failing repos (checkout):\n%s",
                     "\n".join(sorted(failing_checkout_repos)),
                 )
-        logger.error(
-            'Try re-running with "-j1 --fail-fast" to exit at the first error.'
+        published_errors = [
+            err
+            for err in (errors or [])
+            if getattr(err, "published_not_merged", False)
+        ]
+        only_published_errors = (
+            bool(published_errors)
+            and len(published_errors) == len(errors)
+            and not err_network_sync
+            and not err_update_projects
+            and not err_update_linkfiles
         )
+        if published_errors:
+            logger.error(
+                "Hint: %d project(s) have published (unmerged) branches behind "
+                'upstream. Re-run with "repo sync --rebase" to rebase them, or '
+                'rebase each project manually with "repo rebase <project>".',
+                len(published_errors),
+            )
+        if not only_published_errors:
+            logger.error(
+                'Try re-running with "-j1 --fail-fast" to exit at the first '
+                "error."
+            )
         raise error.SyncError(aggregate_errors=errors)
 
     def _SyncPhased(

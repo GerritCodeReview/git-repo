@@ -19,6 +19,7 @@ import json
 import optparse
 import os
 from pathlib import Path
+import pickle
 import shutil
 import subprocess
 import tempfile
@@ -49,6 +50,7 @@ import git_config
 import git_superproject
 import manifest_xml
 import progress
+from project import LocalSyncFail
 from project import SyncNetworkHalfResult
 from subcmds import sync
 
@@ -4676,3 +4678,91 @@ class GetApprovedManifestLiveTests(unittest.TestCase):
                 (False, "declined"),
             )
         self.assertEqual(requests, [{"branch": "main", "best_effort": True}])
+
+
+def test_report_errors_published_only_prints_rebase_hint() -> None:
+    """Published-only sync failures replace -j1 --fail-fast with rebase hint."""
+    cmd = sync.Sync()
+    cmd.git_event_log = mock.MagicMock()
+    err = pickle.loads(
+        pickle.dumps(
+            LocalSyncFail(
+                "branch topic is published (but not merged)",
+                project="platform/foo",
+                published_not_merged=True,
+            )
+        )
+    )
+    assert err.published_not_merged is True
+    assert type(err).__name__ == "LocalSyncFail"
+
+    with mock.patch.object(sync.logger, "error") as mock_err:
+        with pytest.raises(error.SyncError) as exc_info:
+            cmd._ReportErrors(
+                [err],
+                err_checkout=True,
+                failing_checkout_repos=["platform/foo"],
+            )
+
+    logged = "\n".join(
+        call.args[0] % call.args[1:] if len(call.args) > 1 else call.args[0]
+        for call in mock_err.call_args_list
+    )
+    assert exc_info.value.aggregate_errors == [err]
+    assert "repo sync --rebase" in logged
+    assert "-j1 --fail-fast" not in logged
+
+
+def test_report_errors_mixed_prints_both_hints() -> None:
+    """Mixed failures show both the rebase hint and -j1 --fail-fast."""
+    cmd = sync.Sync()
+    cmd.git_event_log = mock.MagicMock()
+    pub_err = LocalSyncFail(
+        "branch topic is published (but not merged)",
+        project="platform/foo",
+        published_not_merged=True,
+    )
+    other_err = LocalSyncFail(
+        "contains uncommitted changes",
+        project="platform/bar",
+    )
+
+    with mock.patch.object(sync.logger, "error") as mock_err:
+        with pytest.raises(error.SyncError):
+            cmd._ReportErrors(
+                [pub_err, other_err],
+                err_checkout=True,
+                failing_checkout_repos=["platform/foo", "platform/bar"],
+            )
+
+    logged = "\n".join(
+        call.args[0] % call.args[1:] if len(call.args) > 1 else call.args[0]
+        for call in mock_err.call_args_list
+    )
+    assert "repo sync --rebase" in logged
+    assert "-j1 --fail-fast" in logged
+
+
+def test_report_errors_non_published_keeps_fail_fast_hint() -> None:
+    """Non-published sync failures keep only the -j1 --fail-fast hint."""
+    cmd = sync.Sync()
+    cmd.git_event_log = mock.MagicMock()
+    other_err = LocalSyncFail(
+        "contains uncommitted changes",
+        project="platform/bar",
+    )
+
+    with mock.patch.object(sync.logger, "error") as mock_err:
+        with pytest.raises(error.SyncError):
+            cmd._ReportErrors(
+                [other_err],
+                err_checkout=True,
+                failing_checkout_repos=["platform/bar"],
+            )
+
+    logged = "\n".join(
+        call.args[0] % call.args[1:] if len(call.args) > 1 else call.args[0]
+        for call in mock_err.call_args_list
+    )
+    assert "repo sync --rebase" not in logged
+    assert "-j1 --fail-fast" in logged
