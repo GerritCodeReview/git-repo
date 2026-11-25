@@ -2500,6 +2500,7 @@ class Project:
                                 "or rerun with the --rebase option to force a "
                                 "rebase." % (branch.name, upstream_gain),
                                 project=self.name,
+                                published_not_merged=True,
                             )
                         )
                     return
@@ -5855,6 +5856,12 @@ class Project:
 
 class LocalSyncFail(error.RepoError):
     """Default error when there is an Sync_LocalHalf error."""
+
+    def __init__(
+        self, *args, published_not_merged: bool = False, **kwargs
+    ) -> None:
+        super().__init__(*args, **kwargs)
+        self.published_not_merged = published_not_merged
 
 
 class _PriorSyncFailedError(LocalSyncFail):

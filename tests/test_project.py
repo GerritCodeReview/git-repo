@@ -2733,6 +2733,9 @@ class StatelessSyncTests(unittest.TestCase):
                 ],
             )
             syncbuf.fail.assert_called_once()
+            err = syncbuf.fail.call_args.args[1]
+            self.assertIsInstance(err, project.LocalSyncFail)
+            self.assertTrue(err.published_not_merged)
 
     def test_sync_network_half_stateless_skips_if_stash(self):
         """Test stateless sync skips if stash exists."""
