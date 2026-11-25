@@ -16,6 +16,7 @@ import collections
 import itertools
 import os
 import platform
+import posixpath
 import re
 import sys
 from typing import Optional
@@ -1312,6 +1313,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         parent_groups=None,
         restrict_includes=True,
         parent_node=None,
+        path_prefix: str = "",
     ):
         """Parse a manifest XML and return the computed nodes.
 
@@ -1323,6 +1325,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 includes.
             parent_node: The parent include node, to apply attributes to this
                 manifest.
+            path_prefix: Prefix for every checkout-relative path in this
+                manifest (accumulated from parent includes).
 
         Returns:
             List of XML nodes.
@@ -1369,6 +1373,17 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     include_groups |= self._ParseSet(
                         node.getAttribute("groups")
                     )
+                include_prefix = path_prefix
+                if node.hasAttribute("path-prefix"):
+                    prefix = node.getAttribute("path-prefix")
+                    msg = self._CheckLocalPath(prefix, dir_ok=True)
+                    if msg:
+                        raise error.ManifestInvalidPathError(
+                            f'<include> invalid "path-prefix": {prefix}: {msg}'
+                        )
+                    include_prefix = posixpath.join(
+                        path_prefix, prefix.rstrip("/")
+                    )
                 fp = os.path.join(include_root, name)
                 if not os.path.isfile(fp):
                     raise error.ManifestParseError(
@@ -1378,7 +1393,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 try:
                     nodes.extend(
                         self._ParseManifestXml(
-                            fp, include_root, include_groups, parent_node=node
+                            fp,
+                            include_root,
+                            include_groups,
+                            parent_node=node,
+                            path_prefix=include_prefix,
                         )
                     )
                 # should isolate this to the exact exception, but that's
@@ -1400,8 +1419,46 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                             node.getAttribute("groups")
                         )
                     node.setAttribute("groups", ",".join(sorted(nodeGroups)))
+                if path_prefix:
+                    self._PrefixPaths(node, path_prefix)
                 nodes.append(node)
         return nodes
+
+    @staticmethod
+    def _PrefixPaths(node: xml.dom.minidom.Element, prefix: str) -> None:
+        """Prefix the checkout-relative paths of a manifest node in place.
+
+        copyfile/linkfile |src| is project-relative, so it is left alone.
+        """
+
+        def join(path: str) -> str:
+            return prefix if path == "." else posixpath.join(prefix, path)
+
+        if node.nodeName == "project":
+            # An implicit path defaults to the name; children of a project
+            # are relative to their parent, so only top-level ones apply.
+            node.setAttribute(
+                "path",
+                join(node.getAttribute("path") or node.getAttribute("name")),
+            )
+        elif node.nodeName == "submanifest":
+            # Same implicit default as _XmlSubmanifest.ToSubmanifestSpec.
+            revision = node.getAttribute("revision") or node.getAttribute(
+                "name"
+            )
+            node.setAttribute(
+                "path",
+                join(node.getAttribute("path") or revision.split("/")[-1]),
+            )
+        elif node.nodeName in ("extend-project", "remove-project"):
+            for attr in ("path", "dest-path"):
+                if node.hasAttribute(attr):
+                    node.setAttribute(attr, join(node.getAttribute(attr)))
+        if node.nodeName in ("project", "extend-project"):
+            for tag in ("copyfile", "linkfile"):
+                for n in node.getElementsByTagName(tag):
+                    if n.hasAttribute("dest"):
+                        n.setAttribute("dest", join(n.getAttribute("dest")))
 
     def _ParseManifest(self, node_list):
         for node in itertools.chain(*node_list):

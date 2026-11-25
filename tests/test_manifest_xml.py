@@ -551,6 +551,152 @@ class TestIncludeElement:
             if proj.name == "man2-name2":
                 assert proj.revisionExpr == "stable-branch3"
 
+    def _prefix_manifest(
+        self, repo_client: RepoClient, root: str, **files: str
+    ) -> manifest_xml.XmlManifest:
+        (repo_client.manifest_dir / "root.xml").write_text(
+            '<manifest><remote name="r" fetch="http://localhost" />'
+            '<default remote="r" revision="refs/heads/main" />'
+            + root
+            + "</manifest>"
+        )
+        for name, body in files.items():
+            (repo_client.manifest_dir / name).write_text(
+                f"<manifest>{body}</manifest>"
+            )
+        return manifest_xml.XmlManifest(
+            str(repo_client.repodir),
+            str(repo_client.manifest_dir / "root.xml"),
+        )
+
+    def test_path_prefix(self, repo_client: RepoClient) -> None:
+        """Prefix applies to every checkout-relative path, but not src."""
+        m = self._prefix_manifest(
+            repo_client,
+            '<project name="app" path="app" />'
+            '<include name="vendor.xml" path-prefix="third_party/vendor" />',
+            **{
+                "vendor.xml": """
+  <project name="libfoo" path="libfoo">
+    <copyfile src="LICENSE" dest="LICENSES/libfoo" />
+    <linkfile src="inc" dest="include/foo" />
+  </project>
+  <project name="libbar" />
+  <project name="libbaz" path="libbaz" />
+  <project name="libqux" path="libqux" />
+  <extend-project name="libqux" path="libqux" dest-path="libqux2" />
+  <remove-project name="libbaz" path="libbaz" />
+"""
+            },
+        )
+        paths = {p.name: p.relpath for p in m.projects}
+        assert paths == {
+            "app": "app",
+            "libfoo": "third_party/vendor/libfoo",
+            "libbar": "third_party/vendor/libbar",
+            "libqux": "third_party/vendor/libqux2",
+        }
+        foo = next(p for p in m.projects if p.name == "libfoo")
+        assert [(c.src, c.dest) for c in foo.copyfiles] == [
+            ("LICENSE", "third_party/vendor/LICENSES/libfoo")
+        ]
+        assert [(c.src, c.dest) for c in foo.linkfiles] == [
+            ("inc", "third_party/vendor/include/foo")
+        ]
+
+    def test_path_prefix_edge_cases(self, repo_client: RepoClient) -> None:
+        """Dot path, nested child copyfile dest, and submanifest paths."""
+        m = self._prefix_manifest(
+            repo_client,
+            '<include name="v.xml" path-prefix="pre" />',
+            **{
+                "v.xml": """
+  <project name="dot" path="." />
+  <project name="par" path="par">
+    <project name="kid" path="kid">
+      <copyfile src="a" dest="K/a" />
+    </project>
+  </project>
+  <submanifest name="s1" project="m" path="sub" />
+  <submanifest name="s2" project="m" revision="refs/heads/rev" />
+  <submanifest name="s3" project="m" />
+"""
+            },
+        )
+        paths = {p.name: p.relpath for p in m.projects}
+        assert paths == {
+            "dot": "pre",
+            "par": "pre/par",
+            "par/kid": "pre/par/kid",
+        }
+        kid = next(p for p in m.projects if p.name == "par/kid")
+        assert [(c.src, c.dest) for c in kid.copyfiles] == [("a", "pre/K/a")]
+        assert {n: s.relpath for n, s in m.submanifests.items()} == {
+            "s1": "pre/sub",
+            "s2": "pre/rev",
+            "s3": "pre/s3",
+        }
+
+    def test_path_prefix_nested(self, repo_client: RepoClient) -> None:
+        """Nested prefixes stack."""
+        m = self._prefix_manifest(
+            repo_client,
+            '<include name="a.xml" path-prefix="a" />',
+            **{
+                "a.xml": '<include name="b.xml" path-prefix="b/" />'
+                '<project name="pa" />',
+                "b.xml": '<project name="pb" path="x" />',
+            },
+        )
+        assert {p.name: p.relpath for p in m.projects} == {
+            "pa": "a/pa",
+            "pb": "a/b/x",
+        }
+
+    @pytest.mark.parametrize("prefix", ("/abs", "../up", "a/../b", ""))
+    def test_path_prefix_invalid(
+        self, repo_client: RepoClient, prefix: str
+    ) -> None:
+        with pytest.raises(error.ManifestParseError):
+            self._prefix_manifest(
+                repo_client,
+                f'<include name="v.xml" path-prefix="{prefix}" />',
+                **{"v.xml": '<project name="p" />'},
+            ).projects
+
+    def test_path_prefix_duplicate(self, repo_client: RepoClient) -> None:
+        with pytest.raises(error.ManifestParseError):
+            self._prefix_manifest(
+                repo_client,
+                '<project name="x" path="v/p" />'
+                '<include name="v.xml" path-prefix="v" />',
+                **{"v.xml": '<project name="y" path="p" />'},
+            ).projects
+
+    def test_no_path_prefix(self, repo_client: RepoClient) -> None:
+        m = self._prefix_manifest(
+            repo_client,
+            '<include name="v.xml" />',
+            **{"v.xml": '<project name="p" /><project name="q" path="z" />'},
+        )
+        assert {p.name: p.relpath for p in m.projects} == {"p": "p", "q": "z"}
+
+    def test_path_prefix_manifest_roundtrip(
+        self, repo_client: RepoClient
+    ) -> None:
+        """Flattened output carries final paths and reparses identically."""
+        m = self._prefix_manifest(
+            repo_client,
+            '<include name="v.xml" path-prefix="pre" />',
+            **{"v.xml": '<project name="p" path="q" />'},
+        )
+        out = repo_client.topdir / "out.xml"
+        with out.open("w") as f:
+            m.Save(f)
+        assert 'path="pre/q"' in out.read_text()
+        m2 = manifest_xml.XmlManifest(str(repo_client.repodir), str(out))
+        assert [p.relpath for p in m2.projects] == ["pre/q"]
+
     def test_group_levels(self, repo_client: RepoClient) -> None:
         """Check handling of nested include groups."""
         root_m = repo_client.manifest_dir / "root.xml"

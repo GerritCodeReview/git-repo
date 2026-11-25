@@ -255,6 +255,7 @@ CDATA #IMPLIED>
 <!ATTLIST include name     CDATA #REQUIRED>
 <!ATTLIST include groups   CDATA #IMPLIED>
 <!ATTLIST include revision CDATA #IMPLIED>
+<!ATTLIST include path\-prefix CDATA #IMPLIED>
 .PP
 ]>
 ```
@@ -775,6 +776,28 @@ Attribute `revision`: Name of a Git branch (e.g. `main` or `refs/heads/main`)
 default to which all projects in the included manifest belong. This recurses,
 meaning it will apply to all projects in all manifests included as a result of
 this element.
+.PP
+Attribute `path\-prefix`: A path relative to the top directory of the checkout
+that is prepended to every checkout\-relative path in the included manifest, so
+the whole manifest is redirected to a subdirectory. This recurses and stacks: a
+nested include's prefix is appended to its parent's (`outer/inner/path`). It is
+validated like a project `path` (no absolute paths, `.`/`..` components).
+.PP
+The prefix applies to `project` `path` (including the implicit default of
+`name`), `extend\-project` `path` and `dest\-path`, `remove\-project` `path`, and
+`submanifest` `path` (including its implicit default), and `copyfile`/`linkfile`
+`dest`. It does not apply to `copyfile`/`linkfile` `src` (project\-relative),
+project `name`, or non\-path elements such as `remote`, `default`, `repo\-hooks`,
+`manifest\-server` and `superproject`.
+.PP
+Each file's paths are interpreted under its own prefix, so a `remove\-project` or
+`extend\-project` in an included manifest cannot select, by `path`, a project
+defined outside that prefix (e.g. in the parent). Selecting by `name` still
+works.
+.PP
+Example: `<include name="vendor.xml" path\-prefix="third_party/vendor"/>` places
+`<project name="libfoo" path="libfoo"/>` from `vendor.xml` at
+`third_party/vendor/libfoo`.
 .PP
 Local Manifests
 .PP
