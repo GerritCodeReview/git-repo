@@ -239,6 +239,33 @@ def _WithoutProjects(
     return [p for p in projects if p not in dropped]
 
 
+def _WriteFileAtomically(path: str, write_fn) -> None:
+    """Write |path| via a sibling temporary file and atomic rename.
+
+    If writing fails or the process is interrupted mid-write, any existing
+    file at |path| remains intact instead of being truncated in place.
+    """
+    parent_dir = os.path.dirname(os.path.abspath(path))
+    tmp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=parent_dir,
+            prefix=f".{os.path.basename(path)}.",
+            suffix=".tmp",
+            delete=False,
+        ) as fp:
+            tmp_path = fp.name
+            write_fn(fp)
+            fp.flush()
+        os.replace(tmp_path, path)
+        tmp_path = None
+    finally:
+        if tmp_path is not None:
+            platform_utils.remove(tmp_path, missing_ok=True)
+
+
 def _chunksize(projects: int, jobs: int) -> int:
     """Calculate chunk size for the given number of projects and jobs."""
     return min(max(1, projects // jobs), WORKER_BATCH_SIZE)
@@ -1368,31 +1395,38 @@ later is required to fix a server side protocol bug.
                 pm.update(msg=project.name)
             return ret
 
-        for projects in _SafeCheckoutOrder(all_projects):
-            with self.ParallelContext():
-                self.get_parallel_context()["projects"] = projects
-                proc_res = self.ExecuteInParallel(
-                    opt.jobs_checkout,
-                    functools.partial(
-                        self._CheckoutOne,
-                        opt.detach_head,
-                        opt.force_sync,
-                        opt.force_checkout,
-                        opt.rebase,
-                        opt.verbose,
-                    ),
-                    range(len(projects)),
-                    callback=_ProcessResults,
-                    output=Progress(
-                        "Checking out", len(all_projects), quiet=opt.quiet
-                    ),
-                    # Use chunksize=1 to avoid the chance that some workers are
-                    # idle while other workers still have more than one job in
-                    # their chunk queue.
-                    chunksize=1,
-                )
-
-        self._local_sync_state.Save()
+        proc_res = True
+        try:
+            for projects in _SafeCheckoutOrder(all_projects):
+                if not projects:
+                    continue
+                with self.ParallelContext():
+                    self.get_parallel_context()["projects"] = projects
+                    level_res = self.ExecuteInParallel(
+                        opt.jobs_checkout,
+                        functools.partial(
+                            self._CheckoutOne,
+                            opt.detach_head,
+                            opt.force_sync,
+                            opt.force_checkout,
+                            opt.rebase,
+                            opt.verbose,
+                        ),
+                        range(len(projects)),
+                        callback=_ProcessResults,
+                        output=Progress(
+                            "Checking out", len(all_projects), quiet=opt.quiet
+                        ),
+                        # Use chunksize=1 to avoid the chance that some workers
+                        # are idle while other workers still have more than one
+                        # job in their chunk queue.
+                        chunksize=1,
+                    )
+                    proc_res = proc_res and level_res
+                    if not level_res and opt.fail_fast:
+                        break
+        finally:
+            self._local_sync_state.Save()
         return proc_res and not err_results
 
     def _PrintManifestNotices(self, opt):
@@ -1824,9 +1858,10 @@ later is required to fix a server side protocol bug.
                         )
 
         new_project_paths.sort()
-        with open(file_path, "w") as fd:
-            fd.write("\n".join(new_project_paths))
-            fd.write("\n")
+        _WriteFileAtomically(
+            file_path,
+            lambda fd: fd.write("\n".join(new_project_paths) + "\n"),
+        )
         return 0
 
     def UpdateCopyLinkfileList(self, manifest):
@@ -1896,8 +1931,9 @@ later is required to fix a server side protocol bug.
 
         # Create copy-link-files.json, save dest path of "copyfile" and
         # "linkfile".
-        with open(copylinkfile_path, "w", encoding="utf-8") as fp:
-            json.dump(new_paths, fp)
+        _WriteFileAtomically(
+            copylinkfile_path, lambda fp: json.dump(new_paths, fp)
+        )
 
         # Retry linkfile/copyfile creation for all projects.  In
         # interleaved sync mode, _CopyAndLinkFiles runs before this
@@ -3332,10 +3368,11 @@ class _FetchTimes:
             self._saved[name] = (self._ALPHA * t) + ((1 - self._ALPHA) * old)
 
         try:
-            with open(self._path, "w") as f:
-                json.dump(self._saved, f, indent=2)
+            _WriteFileAtomically(
+                self._path, lambda f: json.dump(self._saved, f, indent=2)
+            )
         except (OSError, TypeError):
-            platform_utils.remove(self._path, missing_ok=True)
+            pass
 
 
 class LocalSyncState:
@@ -3389,10 +3426,11 @@ class LocalSyncState:
         if not self._state:
             return
         try:
-            with open(self._path, "w") as f:
-                json.dump(self._state, f, indent=2)
+            _WriteFileAtomically(
+                self._path, lambda f: json.dump(self._state, f, indent=2)
+            )
         except (OSError, TypeError):
-            platform_utils.remove(self._path, missing_ok=True)
+            pass
 
     def PruneRemovedProjects(self):
         """Remove entries don't exist on disk and save."""

@@ -517,6 +517,82 @@ class LocalSyncState(unittest.TestCase):
         self.assertIsNone(self.state.GetFetchTime(projB))
         self.assertEqual(self.state.GetFetchTime(projA), 5)
 
+    def test_save_failure_preserves_previous_file(self):
+        """A failed Save() leaves the previous valid state file intact."""
+        projA = mock.MagicMock(relpath="projA")
+        self.state.SetFetchTime(projA)
+        self.state.SetCheckoutTime(projA)
+        self.state.Save()
+
+        projB = mock.MagicMock(relpath="projB")
+        self.state.SetFetchTime(projB)
+        with mock.patch("json.dump", side_effect=OSError("disk full")):
+            self.state.Save()
+
+        self.assertEqual(
+            os.listdir(self.repodir), [".repo_localsyncstate.json"]
+        )
+        reloaded = self._new_state()
+        self.assertEqual(reloaded.GetFetchTime(projA), self._TIME)
+        self.assertEqual(reloaded.GetCheckoutTime(projA), self._TIME)
+        self.assertIsNone(reloaded.GetFetchTime(projB))
+
+
+class PhasedCheckoutTest(unittest.TestCase):
+    """Tests for Sync._Checkout."""
+
+    def setUp(self):
+        self.cmd = sync.Sync()
+        self.cmd._local_sync_state = mock.Mock()
+        self.cmd.event_log = mock.Mock()
+        self.opt, _ = self.cmd.OptionParser.parse_args(["--fail-fast", "-j1"])
+        self.opt.quiet = True
+        self.opt.verbose = False
+
+    def test_fail_fast_stops_subsequent_nested_levels(self):
+        """With --fail-fast, a parent failure skips nested child levels."""
+        parent = FakeProject("foo")
+        child = FakeProject("foo/bar")
+        levels_run = []
+
+        def fake_exec(jobs, func, items, callback=None, output=None, **kwargs):
+            projects = self.cmd.get_parallel_context()["projects"]
+            levels_run.append([p.relpath for p in projects])
+            if projects[0].relpath == "foo":
+                res = [
+                    sync._CheckoutOneResult(
+                        False, [GitError("parent failed")], 0, 1.0, 2.0
+                    )
+                ]
+            else:
+                res = [sync._CheckoutOneResult(True, [], 0, 2.0, 3.0)]
+            return callback(None, output, res)
+
+        err_results = []
+        checkout_errors = []
+        with mock.patch.object(
+            self.cmd, "ExecuteInParallel", side_effect=fake_exec
+        ):
+            ok = self.cmd._Checkout(
+                [parent, child], self.opt, err_results, checkout_errors
+            )
+
+        self.assertFalse(ok)
+        self.assertEqual(levels_run, [["foo"]])
+        self.assertEqual(err_results, ["foo"])
+        self.cmd._local_sync_state.Save.assert_called_once()
+
+    def test_saves_local_sync_state_on_interrupt(self):
+        """An interrupt mid-checkout still persists LocalSyncState."""
+        parent = FakeProject("foo")
+        with mock.patch.object(
+            self.cmd, "ExecuteInParallel", side_effect=KeyboardInterrupt
+        ):
+            with self.assertRaises(KeyboardInterrupt):
+                self.cmd._Checkout([parent], self.opt, [], [])
+
+        self.cmd._local_sync_state.Save.assert_called_once()
+
 
 class FakeProject:
     def __init__(
