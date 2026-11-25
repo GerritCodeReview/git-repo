@@ -743,6 +743,11 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         cbr = None
         if opt.current_branch:
             cbr = project.CurrentBranch
+            if cbr:
+                head_id = project.bare_ref.get(git_refs.R_HEADS + cbr)
+                pub_id = project.bare_ref.get(git_refs.R_PUB + cbr)
+                if isinstance(head_id, str) and head_id and pub_id == head_id:
+                    return (project_idx, [], cbr)
             up_branch = project.GetUploadableBranch(
                 cbr, ignore_remote_commits=opt.ignore_remote_commits
             )

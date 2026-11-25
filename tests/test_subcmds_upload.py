@@ -160,6 +160,55 @@ def test_GatherOne_forwards_ignore_remote_commits(
     )
 
 
+def test_GatherOne_current_branch_skips_already_published(
+    cmd: upload.Upload,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """--cbr returns [] when HEAD matches refs/published/<branch>."""
+    sha = "0123456789abcdef0123456789abcdef01234567"
+    project = mock.MagicMock()
+    project.CurrentBranch = "topic"
+    project.bare_ref.get.side_effect = lambda ref: (
+        sha if ref in ("refs/heads/topic", "refs/published/topic") else ""
+    )
+    monkeypatch.setattr(
+        upload.Upload,
+        "get_parallel_context",
+        lambda: {"projects": [project]},
+    )
+
+    opt_cbr, _ = cmd.OptionParser.parse_args(["--cbr"])
+    assert upload.Upload._GatherOne(opt_cbr, 0) == (0, [], "topic")
+    project.GetUploadableBranch.assert_not_called()
+
+
+def test_GatherOne_current_branch_uploads_when_head_differs_from_published(
+    cmd: upload.Upload,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """--cbr uploads when HEAD has moved past refs/published/<branch>."""
+    project = mock.MagicMock()
+    project.CurrentBranch = "topic"
+    branch = mock.sentinel.branch
+    project.GetUploadableBranch.return_value = branch
+    refs = {
+        "refs/heads/topic": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "refs/published/topic": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    }
+    project.bare_ref.get.side_effect = lambda ref: refs.get(ref, "")
+    monkeypatch.setattr(
+        upload.Upload,
+        "get_parallel_context",
+        lambda: {"projects": [project]},
+    )
+
+    opt_cbr, _ = cmd.OptionParser.parse_args(["--cbr"])
+    assert upload.Upload._GatherOne(opt_cbr, 0) == (0, [branch], "topic")
+    project.GetUploadableBranch.assert_called_once_with(
+        "topic", ignore_remote_commits=False
+    )
+
+
 def _create_mock_branch(
     name: str = "main",
     commits: Optional[List[str]] = None,
