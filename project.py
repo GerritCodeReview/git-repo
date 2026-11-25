@@ -4415,6 +4415,13 @@ class Project:
             cmd.extend(["--onto", onto])
         cmd.append(upstream)
         if git_command.GitCommand(self, cmd).Wait() != 0:
+            if self.IsRebaseInProgress():
+                self._AbortRebase()
+                raise error.GitError(
+                    f"{self.name} rebase {upstream} failed (aborted); "
+                    f"resolve conflicts manually with 'git rebase {upstream}'",
+                    project=self.name,
+                )
             raise error.GitError(
                 f"{self.name} rebase {upstream} ", project=self.name
             )
