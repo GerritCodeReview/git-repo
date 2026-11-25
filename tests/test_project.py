@@ -6690,3 +6690,88 @@ class CloneDepthPartialCloneTagsTests(unittest.TestCase):
                 clone_filter_for_depth="blob:none",
             )
             self.assertTrue(mp_opt_in["tags"])
+
+
+def test_rebase_aborts_on_conflict_and_restores_branch(tmp_path: Path) -> None:
+    """A conflicting _Rebase aborts cleanly instead of leaving rebase state."""
+    worktree = tmp_path / "repo"
+    worktree.mkdir()
+
+    def _git(*args: str) -> None:
+        subprocess.run(
+            ["git", *args],
+            cwd=worktree,
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+
+    _git("init", "-b", "main")
+    _git("config", "user.name", "Test User")
+    _git("config", "user.email", "test@example.com")
+    (worktree / "f.txt").write_text("base\n", encoding="utf-8")
+    _git("add", "f.txt")
+    _git("commit", "-m", "base")
+
+    _git("checkout", "-b", "topic")
+    (worktree / "f.txt").write_text("topic-change\n", encoding="utf-8")
+    _git("commit", "-am", "topic commit")
+
+    _git("checkout", "main")
+    (worktree / "f.txt").write_text("main-change\n", encoding="utf-8")
+    _git("commit", "-am", "main commit")
+
+    _git("checkout", "topic")
+
+    proj = _create_mock_project(str(worktree))
+    proj.worktree = str(worktree)
+    proj.gitdir = str(worktree / ".git")
+
+    with pytest.raises(error.GitError, match="aborted"):
+        proj._Rebase(upstream="main")
+
+    assert not proj.IsRebaseInProgress()
+    assert proj.CurrentBranch == "topic"
+    assert (worktree / "f.txt").read_text(encoding="utf-8") == "topic-change\n"
+
+
+def test_rebase_non_conflict_failure_does_not_abort(tmp_path: Path) -> None:
+    """A non-conflict _Rebase failure raises GitError without _AbortRebase."""
+    proj = _create_mock_project(str(tmp_path))
+    fake_cmd = mock.MagicMock()
+    fake_cmd.Wait.return_value = 1
+
+    with mock.patch.object(
+        project.git_command, "GitCommand", return_value=fake_cmd
+    ), mock.patch.object(
+        proj, "IsRebaseInProgress", return_value=False
+    ), mock.patch.object(
+        proj, "_AbortRebase"
+    ) as mock_abort:
+        with pytest.raises(error.GitError) as exc_info:
+            proj._Rebase(upstream="@{upstream}")
+
+    mock_abort.assert_not_called()
+    assert "aborted" not in str(exc_info.value)
+
+
+def test_rebase_aborts_on_conflict_includes_onto_in_hint(
+    tmp_path: Path,
+) -> None:
+    """When onto is passed, the aborted error hint includes --onto."""
+    proj = _create_mock_project(str(tmp_path))
+    fake_cmd = mock.MagicMock()
+    fake_cmd.Wait.return_value = 1
+
+    with mock.patch.object(
+        project.git_command, "GitCommand", return_value=fake_cmd
+    ), mock.patch.object(
+        proj, "IsRebaseInProgress", return_value=True
+    ), mock.patch.object(
+        proj, "_AbortRebase"
+    ) as mock_abort:
+        with pytest.raises(error.GitError) as exc_info:
+            proj._Rebase(upstream="abc123^1", onto="def456")
+
+    mock_abort.assert_called_once_with()
+    assert "git rebase --onto def456 abc123^1" in str(exc_info.value)

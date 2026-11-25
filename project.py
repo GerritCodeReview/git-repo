@@ -939,7 +939,13 @@ class Project:
 
         def _git(*args):
             # Ignore return code, in case there was no rebase in progress.
-            git_command.GitCommand(self, args, log_as_error=False).Wait()
+            git_command.GitCommand(
+                self,
+                args,
+                capture_stdout=True,
+                capture_stderr=True,
+                log_as_error=False,
+            ).Wait()
 
         _git("cherry-pick", "--abort")
         _git("rebase", "--abort")
@@ -4415,6 +4421,18 @@ class Project:
             cmd.extend(["--onto", onto])
         cmd.append(upstream)
         if git_command.GitCommand(self, cmd).Wait() != 0:
+            if self.IsRebaseInProgress():
+                self._AbortRebase()
+                manual_cmd = (
+                    f"git rebase --onto {onto} {upstream}"
+                    if onto is not None
+                    else f"git rebase {upstream}"
+                )
+                raise error.GitError(
+                    f"{self.name} rebase {upstream} failed (aborted); "
+                    f"resolve conflicts manually with '{manual_cmd}'",
+                    project=self.name,
+                )
             raise error.GitError(
                 f"{self.name} rebase {upstream} ", project=self.name
             )
